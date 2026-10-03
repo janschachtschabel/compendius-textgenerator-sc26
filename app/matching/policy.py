@@ -1,20 +1,18 @@
 """Template-driven assignment policy (PLAN.md 4.4, stage 3).
 
 Takes fused candidate scores and decides which chunk goes to which slot: lexicon hits,
-lead handling, exclusion penalties, source preferences, global best fit and slot budgets.
+lead handling, source preferences, global best fit and slot budgets.
 No topic-specific vocabulary lives here; everything comes from the template and the lexicon.
 """
 
 from __future__ import annotations
 
-import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 
 from app.domain.models import Chunk, ScoredChunk, Source, SourceRole, primary_of
 from app.knowledge.entities import is_subject
 from app.knowledge.topic import TopicMention
-from app.matching.base import tokenize
 from app.templates.schema import ROLE_KEYS, Template, TemplateSlot
 
 LEXICON_SCORE = 0.9
@@ -25,12 +23,13 @@ CONFIDENT_SCORE = 0.65  # below this a ranker hit is a guess; topical chunks the
 MIN_SCORE = 0.25  # score recorded for default-slot assignments (ranks them behind confident hits)
 # The factors of _score_candidate (audit 2026-09-27, WA-02). M44 (docs/entwicklung/05-messprotokoll.md) set each
 # to 1.0 on the ten gold topics: macro-F1 before the budgets was 0.459 with all of them, and without one as noted.
-SUBAREA_BOOST = 1.25  # a side article's introduction that carries the topic, for the overview block; M44: 0.459
+# Three more went (D88, M65): a boost of a side article's introduction that carries the topic and one of a block's
+# further preferred projects moved 3 of 11,799 paragraphs of 81 further topics; a penalty for a word of the block's
+# exclusions cost on the gold (0.466 without it) and moved 55 paragraphs, 25 of which two blind raters placed better
+# without it and 17 with it.
 OTHER_HEADING_FACTOR = 0.5  # the heading names another block in the lexicon; M44: 0.438 without it
 SECTION_LEAD_BOOST = 1.3  # the first paragraph of an H2 section, for the overview block; M44: 0.455
-EXCLUSION_FACTOR = 0.6  # a word of the block's exclusions in heading or text; M44: 0.466 without it - Jan decides
 FIRST_SOURCE_BOOST = 1.15  # the block's most preferred source project; M44: 0.412 without it
-PREFERRED_SOURCE_BOOST = 1.08  # one of its further preferred projects; M44: 0.459
 
 
 @dataclass
@@ -41,12 +40,6 @@ class AssignmentResult:
     classified: dict[str, str] = field(default_factory=dict)  # chunk id -> slot id before the budgets cut
     # slot id -> chunk id -> the policy's score of the chunk for that slot (> 0): candidates for extraction=llm
     slot_scores: dict[str, dict[str, float]] = field(default_factory=dict)
-
-
-def exclusion_terms(slot: TemplateSlot) -> set[str]:
-    """Signal words from the slot's exclusion text (numbers in brackets are slot references)."""
-    text = re.sub(r"\(\s*\d+\s*\)", " ", slot.exclusions)
-    return {t for t in tokenize(text) if len(t) >= 5}
 
 
 @dataclass(frozen=True)
@@ -70,21 +63,14 @@ def _score_candidate(
     chunk: Chunk,
     fused_score: float,
     source: Source | None,
-    exclusions: set[str],
     context: _Context,
 ) -> tuple[float, list[str]]:
     """A paragraph's score for a block: a fixed one where a rule decides, else the ranker's, weighed in turn by the
-    headings, the block's exclusions and the source. Split in three by these steps (audit 2026-09-27, WA-01)."""
+    headings and the source. Split in three by these steps (audit 2026-09-27, WA-01)."""
     decided = _decided(slot, chunk, source, context)
     if decided is not None:
         return decided
     score, reasons = _by_headings(slot, chunk, fused_score, source, context)
-    if exclusions:
-        haystack = f"{chunk.full_heading} {chunk.text}".lower()
-        hits = [term for term in exclusions if term in haystack]
-        if hits:
-            score *= EXCLUSION_FACTOR
-            reasons.append("Ausschlusssignal: " + ", ".join(sorted(hits)[:3]))
     return _by_source(slot, source, score, reasons, context)
 
 
@@ -139,12 +125,8 @@ def _by_headings(
     # Other introductions of related articles (a heading like "Allgemeines") define sub-topics;
     # those that carry the topic in their title lean towards block 2.
     is_intro = chunk.heading_level == 0 or lexicon_slot in context.definition_keys
-    if is_secondary and is_intro and source is not None:
-        if lexicon_slot in context.definition_keys:
-            lexicon_slot = None
-        if slot.role == "systematik" and context.topic.found_in(source.title):
-            score *= SUBAREA_BOOST
-            reasons.append("Teilgebiet des Themas")
+    if is_secondary and is_intro and lexicon_slot in context.definition_keys:
+        lexicon_slot = None
 
     if lexicon_slot:
         if lexicon_slot == slot.slot:
@@ -167,8 +149,6 @@ def _by_source(
     if source is not None and slot.source_preference:
         if source.project == slot.source_preference[0]:
             score *= FIRST_SOURCE_BOOST
-        elif source.project in slot.source_preference:
-            score *= PREFERRED_SOURCE_BOOST
 
     if source is not None and source.role is SourceRole.MATERIAL and source.project in slot.source_preference:
         # A paragraph of a collection material, whatever its licence (D70), counts as evidence for the blocks that want
@@ -208,7 +188,6 @@ def assign(
     fused_lookup: dict[str, dict[str, ScoredChunk]] = {
         slot_id: {sc.chunk.chunk_id: sc for sc in scored} for slot_id, scored in fused.items()
     }
-    exclusions = {slot.id: exclusion_terms(slot) for slot in content_slots}
     primary = primary_of(sources.values())
     topic = TopicMention.of(primary.title if primary else "")
 
@@ -226,7 +205,7 @@ def assign(
         for slot in content_slots:
             fused_item = fused_lookup.get(slot.id, {}).get(chunk.chunk_id)
             fused_score = fused_item.score if fused_item else 0.0
-            score, reasons = _score_candidate(slot, chunk, fused_score, source, exclusions[slot.id], context)
+            score, reasons = _score_candidate(slot, chunk, fused_score, source, context)
             if fused_item:
                 reasons = [*fused_item.reasons[:3], *reasons]
             candidates.append((slot.id, score, reasons))

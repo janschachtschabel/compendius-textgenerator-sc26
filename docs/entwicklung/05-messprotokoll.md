@@ -3409,6 +3409,28 @@ Wörter heißt das: „Funktion“ und „Bank“ bekommen einen passenden Artik
 unpassenden, „Leiter“, „Spannung“ und „Schloss“ einen vertretbaren; mit Fach wählen die Regeln dort wie bisher.
 Rohdaten: `m63_kein_kandidat.json`.
 
+## M65 Drei Faktoren der Zuordnungsregeln an 81 Themen (Audit WA-02, 03.10.2026)
+
+M44 maß die sechs Faktoren von `_score_candidate` an den zehn Goldthemen: `SUBAREA_BOOST` und `PREFERRED_SOURCE_BOOST`
+änderten dort nichts, `EXCLUSION_FACTOR` kostete etwas (macro-F1 0,466 ohne ihn statt 0,459); zehn Themen sind wenig.
+`mc_policy_faktoren_breit.py` setzt jeden der drei an 81 Themen (die 57 von M57 und die gewöhnlichen der Gold-Anfragen)
+auf 1,0 und zählt die Absätze, die ihren Baustein wechseln (Korpus von `llm-free`, `hybrid_light` samt Model2Vec):
+
+| Faktor | Absätze mit anderem Baustein (von 11.799) | im gedruckten Text | Themen |
+|---|---|---|---|
+| `SUBAREA_BOOST` 1,25 | 2 | 0 | 2 |
+| `PREFERRED_SOURCE_BOOST` 1,08 | 1 | 1 | 1 |
+| `EXCLUSION_FACTOR` 0,6 | 55 | 45 | 30 |
+
+Die 55 Absätze, die der Ausschlussfaktor verschiebt, gingen ohne ihn meist von *Fachinhalte* zu *Gesellschaftlicher
+Kontext* (20), *Praxis* (11) oder *Gliederung & Systematik* (6). Zwei Claude-Subagenten sahen je Absatz Thema,
+Überschrift und Anfang und die beiden Bausteine in zufälliger Reihenfolge, mit den Beschreibungen der Vorlage (gleiches
+Urteil bei 47 von 55): Beide fanden 25 Absätze ohne den Faktor besser zugeordnet und 17 mit ihm.
+
+**Ergebnis:** alle drei entfernt (D88): zwei ändern praktisch nichts, der dritte kostet am Gold und verschiebt mehr
+Absätze in den falschen als in den richtigen Baustein. Ohne die drei gibt das Gold macro-F1 0,467 statt 0,460 vor dem
+Budget, 0,299 statt 0,288 im gedruckten Text, micro-F1 0,674 statt 0,672. Rohdaten: `m65_policy_faktoren.json`.
+
 ## M66 Eine Regel für die Themenstämme (Audit KO-11, 03.10.2026)
 
 KO-11 (Audit vom 27.09.): Drei Regeln bildeten den Stamm eines Themas und widersprachen sich - `topic_stem` mit

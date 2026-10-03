@@ -2144,6 +2144,13 @@ API.
   Stamm im Kompositum zählt, *Mondfinsternis* für „Mond“), die Prüfung im Absatz das erste Titelwort mit der Regel für
   kurze Wörter (KO-29), das Glossar den Themenstamm ab vier Buchstaben. Gemessen (M66): An 81 Themen änderte sich ein
   Korpus (*Zelle (Biologie)*: *Zellteilung* statt *Membran*), am Gold nichts (macro-F1 0,460, micro-F1 0,672).
+- **D88 (2026-10-03)** Drei Faktoren der Zuordnungsregeln sind gestrichen (Audit WA-02; Jan: „restliche todo aus
+  den audits mit abarbeiten“). M44 fand am Gold zwei ohne Wirkung und einen, der kostet; an 81 weiteren Themen (M65)
+  verschoben `SUBAREA_BOOST` und `PREFERRED_SOURCE_BOOST` 3 von 11.799 Absätzen, `EXCLUSION_FACTOR` (ein Wort aus
+  „gehört nicht hinein“ eines Bausteins in Überschrift oder Text) 55, von denen zwei blinde Gutachter 25 ohne ihn
+  besser und 17 mit ihm besser zugeordnet fanden. Mit ihnen gehen die Ausschlusswörter (`exclusion_terms`); das
+  LLM liest „gehört nicht hinein“ weiter in seinem Prompt (D34). Am Gold steigt macro-F1 vor dem Budget von 0,460 auf
+  0,467, im gedruckten Text von 0,288 auf 0,299.
 - **D90 (2026-10-03)** Themenauflösung und Korpusbau liegen in `app/knowledge` (Audit AR-03 und WA-01; Jan:
   „restliche todo aus den audits mit abarbeiten“). `ZimRegistry` hält nur noch die Archive; `resolve_topic` steht in
   `app/knowledge/resolution.py`, `build_corpus` in `app/knowledge/corpus_sources.py`, beide als Funktionen, die die

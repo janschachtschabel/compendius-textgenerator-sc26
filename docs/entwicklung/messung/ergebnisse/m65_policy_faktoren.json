@@ -1,0 +1,2869 @@
+{
+"note": "M65 (03.10.2026): je Thema und Faktor die Absätze mit anderem Baustein, wenn der Faktor 1,0 ist; die blinden Urteile (X/Y/gleich) mit dem Schlüssel, welcher Buchstabe mit und ohne Faktor war.",
+"lauf": {
+"seconds": 284.4,
+"rows": [
+{
+"topic": "Barockliteratur",
+"title": "Barockliteratur",
+"paragraphs": 23,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 2,
+"absaetze": [
+{
+"id": "wikipedia:Barockliteratur:c020",
+"ueberschrift": "Kritik an Stil und Regelpoetik, Ende der Epoche",
+"quelle": "wikipedia:Barockliteratur",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": "gesellschaftlicher_kontext",
+"text": "Zu der rationalistischen Kritik Gottscheds gesellt sich zunehmend Kritik aus der Perspektive des erstarkenden modernen Sensualismus und der literarischen Strömung der Empfindsamkeit, die einen „natürlichen“ Ausdruck der Emotionen fordern. Der Blick richtete sich nicht mehr vertikal nach oben und unt"
+},
+{
+"id": "wikipedia:Barockliteratur:c021",
+"ueberschrift": "Kritik an Stil und Regelpoetik, Ende der Epoche",
+"quelle": "wikipedia:Barockliteratur",
+"mit": "gesellschaftlicher_kontext",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": "gesellschaftlicher_kontext",
+"gedruckt_ohne": null,
+"text": "Erst im 20. Jahrhundert findet die Barockepoche aufgrund von strukturellen Ähnlichkeiten mit der Postmoderne, nämlich wegen der kreativen Übersteigerung und Wiederverwendung von sprachlichem Material, wieder größeres Interesse. Auch im lateinamerikanischen Magischen Realismus finden sich neobarocke "
+}
+]
+}
+},
+{
+"topic": "Bruchrechnung",
+"title": "Bruchrechnung",
+"paragraphs": 67,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Demokratie",
+"title": "Demokratie",
+"paragraphs": 383,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 4,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Demokratie:c073",
+"ueberschrift": "Typologien demokratischer Herrschaftsorganisation > Direkte Demokratie",
+"quelle": "wikipedia:Demokratie",
+"mit": "fachinhalte",
+"ohne": "systematik",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Eine andere Form direkter Demokratie stellt das Rätesystem dar. Die über ein Stufensystem gewählten Räte sind ihren Wählern direkt verantwortlich und an deren Weisungen gebunden, sie sind also mit einem imperativen Mandat versehen. Räte können jederzeit von ihrem Posten abberufen oder abgewählt werd"
+},
+{
+"id": "wikipedia:Demokratie:c077",
+"ueberschrift": "Typologien demokratischer Herrschaftsorganisation > Repräsentative Demokratie",
+"quelle": "wikipedia:Demokratie",
+"mit": "fachinhalte",
+"ohne": "systematik",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Ein wichtiges Merkmal bei der Unterscheidung von repräsentativen demokratischen Regierungssystemen liegt laut Winfried Steffani in der Art, wie jeweils die Regierung abberufen werden kann, wobei zwischen parlamentarischen und präsidentiellen Systemen unterschieden wird. Demnach ist eine Demokratie a"
+},
+{
+"id": "wikipedia:Demokratie:c136",
+"ueberschrift": "Kritik an Demokratieschwächen und -defiziten > Philosophische Kritik und Würdigung > Urteile über die antike Demokratie",
+"quelle": "wikipedia:Demokratie",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Platons Haltung zur Demokratie war angelegt in seiner Rolle als Schüler des Sokrates, dem in der Attischen Demokratie der Prozess gemacht und das Todesurteil gesprochen wurde. In der Demokratie, so zitiert der Politologe Grayling Platon, „fordert und beansprucht … jedermann Freiheit und das Recht Ge"
+},
+{
+"id": "wikipedia:Demokratie:c138",
+"ueberschrift": "Kritik an Demokratieschwächen und -defiziten > Philosophische Kritik und Würdigung > Einschätzungen zu modernen Demokratieformen",
+"quelle": "wikipedia:Demokratie",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Für Karl Popper als Begründer des Kritischen Rationalismus ging es bei demokratischen Grundlagen nicht so sehr um Herrschaftslegitimation und Volkssouveränität, sondern um eine wirksame Machtbegrenzung und Kontrolle von Regierungen durch eine Gewaltenteilung und die Absetzbarkeit als Folge einer Abw"
+}
+]
+}
+},
+{
+"topic": "Französische Revolution",
+"title": "Französische Revolution",
+"paragraphs": 185,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 2,
+"absaetze": [
+{
+"id": "klexikon:Französische_Revolution:c001",
+"ueberschrift": "Einleitung",
+"quelle": "klexikon:Französische_Revolution",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": "gesellschaftlicher_kontext",
+"text": "Die Revolutionäre wollten aus Frankreich ein moderneres Land machen, um den Menschen Freiheit, Gleichheit und Brüderlichkeit zu bringen. Auf Französisch lauten die Begriffe „Liberté, Egalité, Fraternité“. Der Staat und die Gesellschaft sollten eine vernünftige Verfassung und vernünftige Gesetze habe"
+},
+{
+"id": "wikipedia:Französische_Revolution:c120",
+"ueberschrift": "Rezeption und Deutung des Revolutionsgeschehens",
+"quelle": "wikipedia:Französische_Revolution",
+"mit": "gesellschaftlicher_kontext",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": "gesellschaftlicher_kontext",
+"gedruckt_ohne": null,
+"text": "Dem liberalen Ansatz zuzurechnen sind laut Pelzer unter anderen Adolphe Thiers und François-Auguste Mignet; als national-romantisch eingeordnet wird Jules Michelet, strukturanalytisch Alexis de Tocqueville, kulturkritisch Hippolyte Taine, politisch-religiös Alphonse Aulard, internationalistisch Albe"
+}
+]
+}
+},
+{
+"topic": "Klimawandel",
+"title": "Klimawandel",
+"paragraphs": 269,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Optik",
+"title": "Optik",
+"paragraphs": 97,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Geometrische_Optik:c006",
+"ueberschrift": "Anwendungen",
+"quelle": "wikipedia:Geometrische_Optik",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Auch das Raytracing-Verfahren in der 3D-Computergrafik beruht auf den Gesetzen der geometrischen Optik."
+}
+]
+}
+},
+{
+"topic": "Photosynthese",
+"title": "Photosynthese",
+"paragraphs": 154,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Programmiersprache",
+"title": "Programmiersprache",
+"paragraphs": 140,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Programmiersprache:c013",
+"ueberschrift": "Übersicht > Übersetzer",
+"quelle": "wikipedia:Programmiersprache",
+"mit": "fachinhalte",
+"ohne": "themendefinition",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Die in der Geschichte der Computertechnik und der Softwaretechnologie eingetretenen Entwicklungssprünge brachten auch unterschiedliche Werkzeuge zur Erzeugung von Maschinencode, ggf. über mehrere Stufen, mit sich. Diese werden beispielsweise als Compiler, Interpreter, Precompiler, Linker etc. bezeic"
+}
+]
+}
+},
+{
+"topic": "Säure-Base-Konzepte",
+"title": "Säure-Base-Konzepte",
+"paragraphs": 37,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Säure-Base-Konzepte:c032",
+"ueberschrift": "Vergleich der Säure-Base-Theorien",
+"quelle": "wikipedia:Säure-Base-Konzepte",
+"mit": "fachinhalte",
+"ohne": "querschnitt",
+"gedruckt_mit": null,
+"gedruckt_ohne": "querschnitt",
+"text": "Säure | Base | Verfasser | Jahr enthalten Sauerstoff | nicht näher definiert | Lavoisier | 1789 enthalten Wasserstoff | nicht näher definiert | Davy | 1812 enthalten Wasserstoff, der durch Metall ersetzbar ist | nicht näher definiert | Liebig | 1838 geben in Wasser H+-Ionen ab | geben in Wasser OH−-"
+}
+]
+}
+},
+{
+"topic": "Sinfonie",
+"title": "Sinfonie",
+"paragraphs": 185,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Plattentektonik",
+"title": "Plattentektonik",
+"paragraphs": 94,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Ökosystem",
+"title": "Ökosystem",
+"paragraphs": 141,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 8,
+"absaetze": [
+{
+"id": "wikipedia:Ökologisches_Gleichgewicht:c010",
+"ueberschrift": "Anwendung des Begriffes „ökologischen Gleichgewicht“",
+"quelle": "wikipedia:Ökologisches_Gleichgewicht",
+"mit": null,
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Die Vorstellung von einem Gleichgewicht in der Natur kann bis in die Antike zurückverfolgt werden. Im 18. Jahrhundert findet sich die Vorstellung von einem Gleichgewicht und dem Zustreben auf eine vom Schöpfer vorgegebene Ordnung bei Carl von Linné. Mit der Entdeckung der Evolution im 19. Jahrhunder"
+},
+{
+"id": "wikipedia:Ökologisches_Gleichgewicht:c011",
+"ueberschrift": "Anwendung des Begriffes „ökologischen Gleichgewicht“",
+"quelle": "wikipedia:Ökologisches_Gleichgewicht",
+"mit": null,
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Bei der Suche nach Beweisen oder Gegenargumenten für diese Theorie wurde in der Folgezeit deutlich, dass nicht ein Gleichgewichtsstreben von Organismen die Artenvielfalt einer Fläche bestimmt, sondern verschiedene system- und artimmanente Faktoren. Aus der Gleichgewichtsdebatte entstand eine Stabili"
+},
+{
+"id": "wikipedia:Ökologisches_Gleichgewicht:c012",
+"ueberschrift": "Anwendung des Begriffes „ökologischen Gleichgewicht“",
+"quelle": "wikipedia:Ökologisches_Gleichgewicht",
+"mit": "praxis",
+"ohne": "praxis",
+"gedruckt_mit": "praxis",
+"gedruckt_ohne": null,
+"text": "Der Begriff des „ökologischen Gleichgewichts“ gilt für Begründungen in Naturschutzfragen als veraltet. Allerdings ist die Naturschutzdiskussion nach wie vor geprägt von der Vorstellung eines ökologischen Gleichgewichtes, das durch Eingriffe des Menschen geschädigt werde. Probleme in der Verwendung d"
+},
+{
+"id": "wikipedia:Ökosystem:c008",
+"ueberschrift": "Eigenschaften von Ökosystemen > Größe und Grenzen",
+"quelle": "wikipedia:Ökosystem",
+"mit": "fachinhalte",
+"ohne": "fachinhalte",
+"gedruckt_mit": "fachinhalte",
+"gedruckt_ohne": null,
+"text": "Die Definition von „Ökosystem“ beinhaltet keine Einschränkung auf eine bestimmte Größe (Skalenunabhängigkeit), sei diese Größe nun räumlich oder funktional definiert. Ökosysteme können also unterschiedliche Größen aufweisen. So kann ein sich zersetzender Baumstumpf als Ökosystem verstanden werden; e"
+},
+{
+"id": "wikipedia:Ökosystem:c009",
+"ueberschrift": "Eigenschaften von Ökosystemen > Größe und Grenzen",
+"quelle": "wikipedia:Ökosystem",
+"mit": "fachinhalte",
+"ohne": "fachinhalte",
+"gedruckt_mit": "fachinhalte",
+"gedruckt_ohne": null,
+"text": "Als offene Systeme haben Ökosysteme keine tatsächlichen Systemgrenzen gegenüber der übrigen Biosphäre. Abgegrenzte Ökosysteme sind durch den Untersucher ausgewählte Konstrukte. Die Abgrenzung ist also eine pragmatisch (durch die Fragestellung, das Untersuchungsinteresse oder das zur Verfügung stehen"
+},
+{
+"id": "wikipedia:Ökosystem:c010",
+"ueberschrift": "Eigenschaften von Ökosystemen > Größe und Grenzen",
+"quelle": "wikipedia:Ökosystem",
+"mit": "fachinhalte",
+"ohne": "fachinhalte",
+"gedruckt_mit": "fachinhalte",
+"gedruckt_ohne": null,
+"text": "Zum besseren Verständnis der Zusammenhänge konstruieren Wissenschaftler gelegentlich stark vereinfachte Ökosysteme im Labor, die nur wenige Arten enthalten; dafür hat sich der Fachbegriff „Mikrokosmen“ eingebürgert."
+},
+{
+"id": "wikipedia:Ökosystem:c011",
+"ueberschrift": "Eigenschaften von Ökosystemen > Beziehungen",
+"quelle": "wikipedia:Ökosystem",
+"mit": "fachinhalte",
+"ohne": "fachinhalte",
+"gedruckt_mit": "fachinhalte",
+"gedruckt_ohne": null,
+"text": "Der Systembegriff impliziert eine funktionale, über eine bloße morphologische/topographische Beschreibung hinausgehende Betrachtung von kausalen Beziehungen, vor allem in Gestalt von Stoff- und Energieflüssen. Wird ein Naturausschnitt als Ökosystem betrachtet, wird oft ein Verständnis der natürliche"
+},
+{
+"id": "wikipedia:Ökosystemischer_Ansatz_nach_Bronfenbrenner:c003",
+"ueberschrift": "Beschreibung",
+"quelle": "wikipedia:Ökosystemischer_Ansatz_nach_Bronfenbrenner",
+"mit": "fachinhalte",
+"ohne": "fachinhalte",
+"gedruckt_mit": null,
+"gedruckt_ohne": "fachinhalte",
+"text": "Das gesamte Ökosystem eines Menschen unterteilt Bronfenbrenner in folgende Systemebenen: Das Mikrosystem (in der Grafik rot) besteht aus einer Vielzahl von Tätigkeiten, Rollen und zwischenmenschlichen Beziehungen, die eine Person in einem Lebensbereich erlebt. Also beispielsweise die Beziehung zur F"
+}
+]
+}
+},
+{
+"topic": "Atommodell",
+"title": "Liste der Atommodelle",
+"paragraphs": 22,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Industrielle Revolution",
+"title": "Industrielle Revolution",
+"paragraphs": 160,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Elektrischer Strom",
+"title": "Elektrischer Strom",
+"paragraphs": 159,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 2,
+"absaetze": [
+{
+"id": "wikipedia:Elektrische_Spannung:c061",
+"ueberschrift": "Gefahren",
+"quelle": "wikipedia:Elektrische_Spannung",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Obwohl für die Auswirkungen eines Stromunfalls die Stromstärke pro Körperfläche, also die Stromdichte, sowie deren Einwirkdauer verantwortlich sind, wird in der Regel die Spannung als Hinweis auf mögliche Gefahren angegeben. Bei Spannungsquellen lässt sich diese Spannung einfach beziffern, während d"
+},
+{
+"id": "wikipedia:Elektrischer_Strom:c031",
+"ueberschrift": "Elektrischer Strom im Alltag > Auswirkungen des elektrischen Stroms auf den Menschen",
+"quelle": "wikipedia:Elektrischer_Strom",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": "gesellschaftlicher_kontext",
+"text": "Obwohl die Stromstärke pro Fläche – also die elektrische Stromdichte – und deren Einwirkdauer für die Auswirkungen eines Stromunfalls verantwortlich ist, wird oft die Spannung als Gefahrenquelle angegeben, da sich mithilfe des ohmschen Gesetzes über den Körperwiderstand die Stromstärke bzw. Stromdic"
+},
+{
+"id": "wikipedia:Elektrischer_Strom:c035",
+"ueberschrift": "Elektrischer Strom im Alltag > Auswirkungen des elektrischen Stroms auf den Menschen",
+"quelle": "wikipedia:Elektrischer_Strom",
+"mit": "gesellschaftlicher_kontext",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": "gesellschaftlicher_kontext",
+"gedruckt_ohne": null,
+"text": "Bei elektrischen Energieversorgungsnetzen und vor allem Bereiche und Anlagen, die mit Hochspannung betrieben werden, wie etwa Umspannwerke, Freileitungen, aber auch Oberleitungen für Bahnen, kommen auch Stromunfälle durch Spannungsüberschläge und Lichtbögen vor. Der Stromunfall mit Lichtbogeneinwirk"
+}
+]
+}
+},
+{
+"topic": "Wasserkreislauf",
+"title": "Wasserkreislauf",
+"paragraphs": 30,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Römisches Reich",
+"title": "Römisches Reich",
+"paragraphs": 400,
+"SUBAREA_BOOST": {
+"wechsel": 1,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Römisches_Recht:c002",
+"ueberschrift": "Einleitung",
+"quelle": "wikipedia:Römisches_Recht",
+"mit": "systematik",
+"ohne": "fachinhalte",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Von den Rechtshistorikern wird das römische Recht nach bisher überwiegender Auffassung in drei Epochen unterteilt, die republikanische, die von der Gründung der Republik im späten 6. Jahrhundert v. Chr. bis zu Augustus reicht, die klassische, die die ersten beiden Jahrhunderte n. Chr. erfasst, sowie"
+}
+]
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Lineare Funktion",
+"title": "Lineare Funktion",
+"paragraphs": 124,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 2,
+"absaetze": [
+{
+"id": "wikipedia:Lineare_Algebra:c001",
+"ueberschrift": "Einleitung",
+"quelle": "wikipedia:Lineare_Algebra",
+"mit": "fachinhalte",
+"ohne": "systematik",
+"gedruckt_mit": "fachinhalte",
+"gedruckt_ohne": "systematik",
+"text": "Vektorräume und deren lineare Abbildungen sind ein wichtiges Hilfsmittel in vielen Bereichen der Mathematik. Außerhalb der reinen Mathematik finden sich Anwendungen unter anderem in den Naturwissenschaften, in der Informatik und in der Wirtschaftswissenschaft (zum Beispiel in der Optimierung)."
+},
+{
+"id": "wikipedia:Lineare_Algebra:c049",
+"ueberschrift": "Beispiel > Diagonalisierbarkeit",
+"quelle": "wikipedia:Lineare_Algebra",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Da die Transformation einer Matrix dem Basiswechsel einer linearen Abbildung entspricht, besagt diese letzte Aussage, dass man zu einer linearen Abbildung bei genügend großem Zahlbereich stets eine Basis wählen kann, die „auf einfache Weise“ abgebildet wird: Im Fall der Diagonalisierbarkeit wird jed"
+},
+{
+"id": "wikipedia:Lineare_Funktion:c002",
+"ueberschrift": "Graph",
+"quelle": "wikipedia:Lineare_Funktion",
+"mit": "fachinhalte",
+"ohne": "fachinhalte",
+"gedruckt_mit": null,
+"gedruckt_ohne": "fachinhalte",
+"text": "mit reellen Zahlen und wobei (die Abszisse) die unabhängige und (die Ordinate) die abhängige Variable ist. Die Bezeichnung der beiden Konstanten mit und ist beliebig, in der Literatur finden sich zahlreiche andere Bezeichnungsweisen."
+}
+]
+}
+},
+{
+"topic": "Zelle (Biologie)",
+"title": "Zelle (Biologie)",
+"paragraphs": 137,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Gedicht",
+"title": "Lyrik",
+"paragraphs": 157,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "deutsche Dichter",
+"title": "Liste deutschsprachiger Lyriker",
+"paragraphs": 98,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Dichter der Romantik",
+"title": "Englische Romantik",
+"paragraphs": 72,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Komponisten der Klassik",
+"title": "Max Richter (Komponist)",
+"paragraphs": 22,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Philosophen der Aufklärung",
+"title": "Böse Philosophen",
+"paragraphs": 14,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Maler des Impressionismus",
+"title": "Liste der Maler des Impressionismus",
+"paragraphs": 44,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "römische Kaiser",
+"title": "Liste der römischen Kaiser der Antike",
+"paragraphs": 72,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "deutsche Bundeskanzler",
+"title": "Bundeskanzler (Deutschland)",
+"paragraphs": 194,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 4,
+"wechsel_gedruckt": 3,
+"absaetze": [
+{
+"id": "wikipedia:Friedrich_Merz:c041",
+"ueberschrift": "Politische Positionen > Gesellschaftspolitik > Positionen zur Asyl-, Migrations- und Integrationspolitik",
+"quelle": "wikipedia:Friedrich_Merz",
+"mit": "gesellschaftlicher_kontext",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": "gesellschaftlicher_kontext",
+"gedruckt_ohne": null,
+"text": "Merz forderte im Jahr 2024 eine flächendeckende Zurückweisung von Asylsuchenden an den deutschen Grenzen. Merz sieht dies als ein Signal, das zu weniger irregulärer Migration führen würde. Im Dezember 2024 forderte Merz Abschiebungen nach Syrien und einen Aufnahmestopp. Nach Afghanistan und Syrien w"
+},
+{
+"id": "wikipedia:Friedrich_Merz:c078",
+"ueberschrift": "Kritik und Kontroversen > Umgang mit Homosexualität",
+"quelle": "wikipedia:Friedrich_Merz",
+"mit": null,
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Merz äußerte 2020, er habe keine Vorbehalte gegen einen schwulen Bundeskanzler. Die sexuelle Orientierung gehe die Öffentlichkeit nichts an. Die Grenze sei der Rahmen der Gesetze und dass die sexuelle Orientierung keine Kinder betreffe. Diese von Merz hergestellte Verbindung von Homosexualität und P"
+},
+{
+"id": "wikipedia:Misstrauensvotum:c025",
+"ueberschrift": "Deutsche Bundesebene > Konstruktives Misstrauensvotum im Verteidigungsfall",
+"quelle": "wikipedia:Misstrauensvotum",
+"mit": null,
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Nach dem 1969 durch die Notstandsgesetze ins Grundgesetz eingefügten Art. 115h Abs. 2 GG kann während des Verteidigungsfalls und wenn der Bundestag nicht handlungsfähig ist, der Gemeinsame Ausschuss, der die parlamentarischen Aufgaben in einem solchen Fall übernimmt, dem Bundeskanzler nur dadurch da"
+},
+{
+"id": "wikipedia:Misstrauensvotum:c029",
+"ueberschrift": "Deutsche Bundesebene > Politische Wirkung",
+"quelle": "wikipedia:Misstrauensvotum",
+"mit": null,
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": "gesellschaftlicher_kontext",
+"text": "Das konstruktive Misstrauensvotum erhält seine Besonderheit durch die Tatsache, dass nicht nur der bisherige Bundeskanzler abgewählt, sondern auch – und dies gleichzeitig – ein neuer Bundeskanzler bestimmt wird. Die Mehrheit, die den Bundeskanzler ablösen muss, muss sich also zur gleichen Zeit auf e"
+},
+{
+"id": "wikipedia:Politisches_System_der_Bundesrepublik_Deutschland:c001",
+"ueberschrift": "Einleitung",
+"quelle": "wikipedia:Politisches_System_der_Bundesrepublik_Deutschland",
+"mit": null,
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Das politische System Deutschlands ist bundesstaatlich und als parlamentarische Demokratie organisiert. Bedeutung besitzen die stark miteinander konkurrierenden Parteien, weshalb Deutschland auch als Parteiendemokratie bezeichnet wird. Die Wahlen werden überwiegend als personalisierte Verhältniswahl"
+}
+]
+}
+},
+{
+"topic": "griechische Götter",
+"title": "Griechische Mythologie",
+"paragraphs": 165,
+"SUBAREA_BOOST": {
+"wechsel": 1,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Griechische_Vasenmalerei:c003",
+"ueberschrift": "Einleitung",
+"quelle": "wikipedia:Griechische_Vasenmalerei",
+"mit": "systematik",
+"ohne": "fachinhalte",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Durch Signaturen sind ab archaischer Zeit zahlreiche Namen von Töpfern und Malern bekannt. Wo dies nicht der Fall ist, behilft sich die Forschung mit Notnamen, um Gefäße und Malstile einzelnen Händen zuordnen zu können. Sie orientieren sich entweder an inhaltlichen Motiven, charakteristischen Merkma"
+}
+]
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Planeten des Sonnensystems",
+"title": "Liste der Planeten des Sonnensystems",
+"paragraphs": 29,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Edelgase",
+"title": "Edelgase",
+"paragraphs": 132,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Weltreligionen",
+"title": "Weltreligion",
+"paragraphs": 48,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Erstes_Parlament_der_Weltreligionen:c007",
+"ueberschrift": "Ablauf der Tagungen > Regeln",
+"quelle": "wikipedia:Erstes_Parlament_der_Weltreligionen",
+"mit": "fachinhalte",
+"ohne": "regularien",
+"gedruckt_mit": null,
+"gedruckt_ohne": "regularien",
+"text": "Für alle Teilnehmer galten bestimmte Regeln, um den friedlichen Umgang zu wahren. Während des Kongresses gab es daher keine Debatten, da direkte Kritik an gehaltenen Vorträgen offiziell ausgeschlossen wurde. Das Parlament war damit zu einer reinen Präsentations-Veranstaltung geworden und ausschließl"
+}
+]
+}
+},
+{
+"topic": "erneuerbare Energien",
+"title": "Erneuerbare Energien",
+"paragraphs": 340,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Bioenergie:c040",
+"ueberschrift": "Bedeutung in Deutschland > Förderung der biogenen Brennstoffe",
+"quelle": "wikipedia:Bioenergie",
+"mit": null,
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": "gesellschaftlicher_kontext",
+"text": "Die Nutzung von biogenen Brennstoffen wird aus mehreren Gründen gefördert. So soll z. B. das Klima durch geringeren Treibhausgasausstoß geschützt, fossile Ressourcen geschont und die Abhängigkeit von Staaten mit großen Rohstoffvorkommen (z. B. Erdöl, Erdgas) verringert werden. Mit dem Erneuerbare-En"
+}
+]
+}
+},
+{
+"topic": "Erfindungen der Industrialisierung",
+"title": "Industrialisierung",
+"paragraphs": 204,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Nobelpreisträger für Physik",
+"title": "Liste der Nobelpreisträger für Physik",
+"paragraphs": 111,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Frauen in der Wissenschaft",
+"title": "Frauen in der Wissenschaft",
+"paragraphs": 279,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Frau:c030",
+"ueberschrift": "Die Frau in der Gesellschaft > Gesellschaftliche Rolle und Emanzipation",
+"quelle": "wikipedia:Frau",
+"mit": null,
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": "gesellschaftlicher_kontext",
+"text": "Durch die Frauenbewegungen in den USA und Europa seit Ende des 19. Jahrhunderts und die durch sie ausgelöste Emanzipation der Frauen wurden in der westlichen Welt die traditionellen patriarchal strukturierten Geschlechterrollen in Frage gestellt. Heute steht Frauen vor allem in westlichen Ländern je"
+}
+]
+}
+},
+{
+"topic": "Märchen der Brüder Grimm",
+"title": "Brüder Grimm",
+"paragraphs": 115,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "deutsche Flüsse",
+"title": "Liste von Flüssen in Deutschland",
+"paragraphs": 63,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Säugetiere des Waldes",
+"title": "Nonnenbruchwald",
+"paragraphs": 10,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Vulkane Europas",
+"title": "Marsili (Vulkan)",
+"paragraphs": 7,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Entdecker der Neuzeit",
+"title": "Entdeckung",
+"paragraphs": 331,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Erfindung:c004",
+"ueberschrift": "Erfindung und Entdeckung",
+"quelle": "wikipedia:Erfindung",
+"mit": null,
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Erfindung hingegen ist die Anwendung der Naturgesetze in bisher nicht dagewesener Konstellation zur Lösung eines gegebenen Problems (Technik). Somit ist jede erstmalige Beschreibung oder Anwendung einer Technik eine Erfindung, zum Beispiel ein Sonnensegel für Raumschiffe. Ein neues Versmaß wendet ke"
+}
+]
+}
+},
+{
+"topic": "Klimawandel und Landwirtschaft",
+"title": "American Farm Bureau Federation",
+"paragraphs": 15,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Mathematik in der Musik",
+"title": "Karlheinz Schüffler",
+"paragraphs": 6,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Chemie im Alltag",
+"title": "Chemie in unserer Zeit",
+"paragraphs": 97,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Frauen im Mittelalter",
+"title": "Schreibende Frauen im Mittelalter",
+"paragraphs": 26,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Musik der Romantik",
+"title": "Musik der Romantik",
+"paragraphs": 293,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 3,
+"absaetze": [
+{
+"id": "wikipedia:Musik_der_Romantik:c001",
+"ueberschrift": "Begriffsbestimmung",
+"quelle": "wikipedia:Musik_der_Romantik",
+"mit": "fachinhalte",
+"ohne": "themendefinition",
+"gedruckt_mit": null,
+"gedruckt_ohne": "themendefinition",
+"text": "Schwierigkeiten im überlegten Gebrauch der Bezeichnungen „Romantik“ und „romantisch“ für eine bestimmte Richtung bzw. Epoche in der Musik rühren insbesondere daher, dass Begriffe übernommen werden, die seit dem Beginn des 19. Jahrhunderts mit der deutschen literarischen Romantik (Novalis, Wilhelm He"
+},
+{
+"id": "wikipedia:Musik_der_Romantik:c002",
+"ueberschrift": "Begriffsbestimmung",
+"quelle": "wikipedia:Musik_der_Romantik",
+"mit": "themendefinition",
+"ohne": "themendefinition",
+"gedruckt_mit": "themendefinition",
+"gedruckt_ohne": null,
+"text": "Die Anwendung des Romantikbegriffs auf die Musik verweist einerseits auf einen inneren, wenngleich zeitlich phasenverschobenen Zusammenhang zwischen der romantischen Bewegung in Dichtung, Kunsttheorie und Philosophie und der musikalischen Romantik, andererseits auf eine angestrebte Gegenposition zur"
+},
+{
+"id": "wikipedia:Musik_der_Romantik:c003",
+"ueberschrift": "Begriffsbestimmung",
+"quelle": "wikipedia:Musik_der_Romantik",
+"mit": "themendefinition",
+"ohne": "themendefinition",
+"gedruckt_mit": "themendefinition",
+"gedruckt_ohne": null,
+"text": "Die Antithese klassisch-romantisch war bereits im 18. Jahrhundert in England geläufig und hatte im Gegensatz zwischen deutscher Romantik und Weimarer Klassik (Friedrich von Schiller, Johann Wolfgang von Goethe) eine neue, aktuelle Dimension erhalten. Doch für die Romantiker selbst und vorab für Geor"
+}
+]
+}
+},
+{
+"topic": "Dichter aus dem Mittelalter",
+"title": "Sangspruchdichtung",
+"paragraphs": 39,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Sangspruchdichtung:c023",
+"ueberschrift": "Tendenz von Sangsprüchen",
+"quelle": "wikipedia:Sangspruchdichtung",
+"mit": "querschnitt",
+"ohne": "systematik",
+"gedruckt_mit": "querschnitt",
+"gedruckt_ohne": "systematik",
+"text": "Die Tendenzgebundenheit eines Sangspruches dient in der germanistischen Mediävistik dazu, einen Sangspruch schnell und effizient bezüglich seiner Intention bzw. Ausrichtung einzuordnen. Gleichzeitig soll sie rasch Aufschluss darüber geben, wie Dichter Position bezogen. So kann man sehen, ob ein Dich"
+}
+]
+}
+},
+{
+"topic": "OER-Förderungen",
+"title": "Open Educational Resources",
+"paragraphs": 232,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Inklusion im Sportunterricht",
+"title": "Sportdidaktik",
+"paragraphs": 50,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 2,
+"absaetze": [
+{
+"id": "wikipedia:Sportdidaktik:c004",
+"ueberschrift": "Gegenstand und Aufgaben",
+"quelle": "wikipedia:Sportdidaktik",
+"mit": "systematik",
+"ohne": "praxis",
+"gedruckt_mit": "systematik",
+"gedruckt_ohne": "praxis",
+"text": "Das Wer bezeichnet den spezifischen Adressatenkreis, der bei allen sportpädagogischen Vermittlungsbemühungen in seinen altersspezifischen, psychologischen, sozialen u. a. Voraussetzungen lernkonzeptionell zu berücksichtigen ist. So ist die geistige und emotionale Einstellung zum Sport ebenso wie das"
+},
+{
+"id": "wikipedia:Sportdidaktik:c005",
+"ueberschrift": "Gegenstand und Aufgaben",
+"quelle": "wikipedia:Sportdidaktik",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Es spielt didaktisch eine Rolle, ob die Lernprozesse Kinder, Jugendliche oder Erwachsene, Gesunde oder Behinderte betreffen, ob sie im allgemeinen Schulunterricht oder einem Trainingszentrum für Hochleistungssportler, ob sie in einem totalitären oder demokratischen Gesellschaftssystem zur Anwendung "
+}
+]
+}
+},
+{
+"topic": "Künstliche Intelligenz im Unterricht",
+"title": "Halluzination (Künstliche Intelligenz)",
+"paragraphs": 40,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Nachhaltigkeit im Chemieunterricht",
+"title": "Johannes Huwer",
+"paragraphs": 11,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Klimaanpassung in Städten",
+"title": "Katja Aufermann",
+"paragraphs": 6,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Fake News erkennen",
+"title": "Fake News",
+"paragraphs": 99,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 3,
+"absaetze": [
+{
+"id": "wikipedia:Fake_News:c061",
+"ueberschrift": "Beispiele > Vereinigte Staaten von Amerika",
+"quelle": "wikipedia:Fake_News",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Im Vorfeld der Präsidentschaftswahl in den Vereinigten Staaten 2016 hielten einige Kommentatoren es für problematisch, dass zahlreiche frei erfundene Falschmeldungen auf Facebook unter den Nutzern verbreitet wurden. Über die demokratische Kandidatin Hillary Clinton wurden zahlreiche Fake News verbre"
+},
+{
+"id": "wikipedia:Fake_News:c062",
+"ueberschrift": "Beispiele > Vereinigte Staaten von Amerika",
+"quelle": "wikipedia:Fake_News",
+"mit": "praxis",
+"ohne": "praxis",
+"gedruckt_mit": "praxis",
+"gedruckt_ohne": null,
+"text": "Möglich war das, weil das Unternehmen Facebook zwar den Nachrichtenfluss zwischen seinen Nutzern überwacht, aber die Inhalte keiner redaktionellen Kontrolle unterzieht. Verschärfend kam hinzu, dass spektakuläre Falschmeldungen mehr Leser anziehen, was von Facebook automatisch registriert wurde und d"
+},
+{
+"id": "wikipedia:Fake_News:c063",
+"ueberschrift": "Beispiele > Vereinigte Staaten von Amerika",
+"quelle": "wikipedia:Fake_News",
+"mit": "praxis",
+"ohne": "praxis",
+"gedruckt_mit": "praxis",
+"gedruckt_ohne": null,
+"text": "Durch die Ausschüttungen von Werbeeinnahmen an die Urheber populärer Falschmeldungen durch die Netzwerke scheint ein Teil des Phänomens auf solche Meldungen zurückzuführen zu sein, die von Personen ohne politisches Interesse, allein mit der Absicht, Gewinn zu erzielen, verfasst wurden. So erlangte d"
+},
+{
+"id": "wikipedia:Fake_News:c070",
+"ueberschrift": "Beispiele > Italien",
+"quelle": "wikipedia:Fake_News",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Beide Partner der Regierungskoalition von Cinque Stelle und Lega warfen den Medien vor, eine Hetzkampagne gegen sie zu führen und Volksfeinde zu sein; ausgerechnet als Minister für Wirtschaft und Arbeit feierte Luigi di Maio den vermeintlichen Tod der Printmedien, während seine Partei laut NZZ selbe"
+}
+]
+}
+},
+{
+"topic": "Energiewende in Deutschland",
+"title": "Energiewende in Deutschland",
+"paragraphs": 302,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Mikroplastik im Meer",
+"title": "Mikroplastik",
+"paragraphs": 144,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Mikroplastik:c095",
+"ueberschrift": "Reaktionen > Nationale Maßnahmen",
+"quelle": "wikipedia:Mikroplastik",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "In Frankreich trat das Verbot des Inverkehrbringens von abzuspülenden Kosmetika zur Exfoliation oder Reinigung, die Kunststoffpartikel in fester Form enthalten, am 1. Januar 2018 in Kraft, Zudem hat Frankreich vorgeschrieben, dass neue Waschmaschinen mit Mikrofaserfiltern auszustatten sind, um den E"
+},
+{
+"id": "wikipedia:Mikroplastik:c096",
+"ueberschrift": "Reaktionen > Nationale Maßnahmen",
+"quelle": "wikipedia:Mikroplastik",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "In Südkorea und Taiwan existieren ebenfalls Gesetzesentwürfe."
+}
+]
+}
+},
+{
+"topic": "Datenschutz für Schüler",
+"title": "Datenschutz",
+"paragraphs": 368,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 3,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Datenschutz-Grundverordnung:c007",
+"ueberschrift": "Debatte über die DSGVO > Debatte über Entwürfe",
+"quelle": "wikipedia:Datenschutz-Grundverordnung",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Der BvD bemängelte ferner fehlende klare Regeln für den Datentransfer aus der EU in Drittstaaten (z. B. USA) und forderte eine EU-weite Bestellung betrieblicher Datenschutzbeauftragter."
+},
+{
+"id": "wikipedia:Datenschutz-Grundverordnung:c012",
+"ueberschrift": "Debatte über die DSGVO > Kritik am endgültigen Verordnungstext",
+"quelle": "wikipedia:Datenschutz-Grundverordnung",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "So bezeichnete der Leiter des Instituts für Informations-, Telekommunikations- und Medienrecht an der Universität Münster, Thomas Hoeren, die Datenschutz-Grundverordnung als „eines der schlechtesten Gesetze des 21. Jahrhunderts“."
+},
+{
+"id": "wikipedia:Datenschutzgesetz_(Österreich):c044",
+"ueberschrift": "Sonderbestimmungen > Verwendung im familiären Rahmen",
+"quelle": "wikipedia:Datenschutzgesetz_(Österreich)",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Nach § 45 des Datenschutzgesetzes dürfen natürliche Personen Daten für ausschließlich persönliche oder familiäre Tätigkeiten verarbeiten, wenn sie ihnen vom Betroffenen selbst mitgeteilt wurden oder ihnen sonst rechtmäßigerweise, insbesondere in Übereinstimmung mit § 7 Abs. 2 zugekommen sind. Für an"
+}
+]
+}
+},
+{
+"topic": "Algorithmen im Alltag",
+"title": "Teile-und-herrsche-Verfahren",
+"paragraphs": 10,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Wasserstoff als Energieträger",
+"title": "Energieträger",
+"paragraphs": 35,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Ökosteuer_(Deutschland):c000",
+"ueberschrift": "Einleitung",
+"quelle": "wikipedia:Ökosteuer_(Deutschland)",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": "fachinhalte",
+"gedruckt_ohne": null,
+"text": "Mit dem Begriff Ökosteuer wird eine Reihe steuerpolitischer Maßnahmen bezeichnet, die mit dem „Gesetz zum Einstieg in die ökologische Steuerreform“ beschlossen wurden. Der Begriff bezeichnet mittlerweile im allgemeinen Sprachgebrauch vor allem Steuern, die auf dem Verbrauch von Energie lasten. Im Ra"
+}
+]
+}
+},
+{
+"topic": "Optik in Klasse 7",
+"title": "Optik",
+"paragraphs": 97,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Geometrische_Optik:c006",
+"ueberschrift": "Anwendungen",
+"quelle": "wikipedia:Geometrische_Optik",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Auch das Raytracing-Verfahren in der 3D-Computergrafik beruht auf den Gesetzen der geometrischen Optik."
+}
+]
+}
+},
+{
+"topic": "Physik: Optik (Sek I)",
+"title": "Optik",
+"paragraphs": 97,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Geometrische_Optik:c006",
+"ueberschrift": "Anwendungen",
+"quelle": "wikipedia:Geometrische_Optik",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "Auch das Raytracing-Verfahren in der 3D-Computergrafik beruht auf den Gesetzen der geometrischen Optik."
+}
+]
+}
+},
+{
+"topic": "Photosynthese für die Grundschule",
+"title": "Photosynthese",
+"paragraphs": 154,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Bruchrechnung Klasse 6",
+"title": "Bruchrechnung",
+"paragraphs": 67,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Demokratie in der Sekundarstufe I",
+"title": "Demokratie",
+"paragraphs": 383,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 4,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Demokratie:c073",
+"ueberschrift": "Typologien demokratischer Herrschaftsorganisation > Direkte Demokratie",
+"quelle": "wikipedia:Demokratie",
+"mit": "fachinhalte",
+"ohne": "systematik",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Eine andere Form direkter Demokratie stellt das Rätesystem dar. Die über ein Stufensystem gewählten Räte sind ihren Wählern direkt verantwortlich und an deren Weisungen gebunden, sie sind also mit einem imperativen Mandat versehen. Räte können jederzeit von ihrem Posten abberufen oder abgewählt werd"
+},
+{
+"id": "wikipedia:Demokratie:c077",
+"ueberschrift": "Typologien demokratischer Herrschaftsorganisation > Repräsentative Demokratie",
+"quelle": "wikipedia:Demokratie",
+"mit": "fachinhalte",
+"ohne": "systematik",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Ein wichtiges Merkmal bei der Unterscheidung von repräsentativen demokratischen Regierungssystemen liegt laut Winfried Steffani in der Art, wie jeweils die Regierung abberufen werden kann, wobei zwischen parlamentarischen und präsidentiellen Systemen unterschieden wird. Demnach ist eine Demokratie a"
+},
+{
+"id": "wikipedia:Demokratie:c136",
+"ueberschrift": "Kritik an Demokratieschwächen und -defiziten > Philosophische Kritik und Würdigung > Urteile über die antike Demokratie",
+"quelle": "wikipedia:Demokratie",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Platons Haltung zur Demokratie war angelegt in seiner Rolle als Schüler des Sokrates, dem in der Attischen Demokratie der Prozess gemacht und das Todesurteil gesprochen wurde. In der Demokratie, so zitiert der Politologe Grayling Platon, „fordert und beansprucht … jedermann Freiheit und das Recht Ge"
+},
+{
+"id": "wikipedia:Demokratie:c138",
+"ueberschrift": "Kritik an Demokratieschwächen und -defiziten > Philosophische Kritik und Würdigung > Einschätzungen zu modernen Demokratieformen",
+"quelle": "wikipedia:Demokratie",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Für Karl Popper als Begründer des Kritischen Rationalismus ging es bei demokratischen Grundlagen nicht so sehr um Herrschaftslegitimation und Volkssouveränität, sondern um eine wirksame Machtbegrenzung und Kontrolle von Regierungen durch eine Gewaltenteilung und die Absetzbarkeit als Folge einer Abw"
+}
+]
+}
+},
+{
+"topic": "Thema: Klimawandel",
+"title": "Klimawandel",
+"paragraphs": 269,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Geschichte: Französische Revolution",
+"title": "Französische Revolution",
+"paragraphs": 185,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 2,
+"absaetze": [
+{
+"id": "klexikon:Französische_Revolution:c001",
+"ueberschrift": "Einleitung",
+"quelle": "klexikon:Französische_Revolution",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": "gesellschaftlicher_kontext",
+"text": "Die Revolutionäre wollten aus Frankreich ein moderneres Land machen, um den Menschen Freiheit, Gleichheit und Brüderlichkeit zu bringen. Auf Französisch lauten die Begriffe „Liberté, Egalité, Fraternité“. Der Staat und die Gesellschaft sollten eine vernünftige Verfassung und vernünftige Gesetze habe"
+},
+{
+"id": "wikipedia:Französische_Revolution:c120",
+"ueberschrift": "Rezeption und Deutung des Revolutionsgeschehens",
+"quelle": "wikipedia:Französische_Revolution",
+"mit": "gesellschaftlicher_kontext",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": "gesellschaftlicher_kontext",
+"gedruckt_ohne": null,
+"text": "Dem liberalen Ansatz zuzurechnen sind laut Pelzer unter anderen Adolphe Thiers und François-Auguste Mignet; als national-romantisch eingeordnet wird Jules Michelet, strukturanalytisch Alexis de Tocqueville, kulturkritisch Hippolyte Taine, politisch-religiös Alphonse Aulard, internationalistisch Albe"
+}
+]
+}
+},
+{
+"topic": "Plattentektonik (Oberstufe)",
+"title": "Plattentektonik",
+"paragraphs": 94,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Fotosynthese",
+"title": "Photosynthese",
+"paragraphs": 154,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "photosynthese",
+"title": "Photosynthese",
+"paragraphs": 154,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Lichtlehre",
+"title": "Ernst Adalbert Voretzsch",
+"paragraphs": 39,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Klimaerwärmung",
+"title": "Globale Erwärmung",
+"paragraphs": 400,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "DNA",
+"title": "Desoxyribonukleinsäure",
+"paragraphs": 95,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "EU",
+"title": "Europäische Union",
+"paragraphs": 400,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 3,
+"absaetze": [
+{
+"id": "wikipedia:Europäische_Kommission:c026",
+"ueberschrift": "Ausschussverfahren",
+"quelle": "wikipedia:Europäische_Kommission",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": "praxis",
+"text": "„Die Europäische Kommission erhält in manchen Fällen durch einen Rechtsakt die Befugnis zur Verabschiedung von Durchführungsrechtsakten, mit denen die Bedingungen für eine einheitliche Anwendung eines bestimmten Gesetzes geschaffen werden. Das Ausschussverfahren umfasst eine Reihe von Verfahrensschr"
+},
+{
+"id": "wikipedia:Europäische_Zentralbank:c033",
+"ueberschrift": "Geldpolitik > Kritik an der Geldpolitik der EZB",
+"quelle": "wikipedia:Europäische_Zentralbank",
+"mit": "gesellschaftlicher_kontext",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": "gesellschaftlicher_kontext",
+"gedruckt_ohne": null,
+"text": "Die EZB wurde und wird für ihre Geldpolitik kritisiert. Angeführt werden in diesem Zusammenhang etwa folgende Aspekte: Kritik an der zweiten Säule: Die EZB wird zum einen dafür kritisiert, dass sie den selbstgesteckten Geldmengen-Referenzwert zu oft nicht erreicht (so lag das Wachstum der Geldmenge "
+},
+{
+"id": "wikipedia:Rat_der_Europäischen_Union:c029",
+"ueberschrift": "Kritik",
+"quelle": "wikipedia:Rat_der_Europäischen_Union",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": "gesellschaftlicher_kontext",
+"text": "Der Rat nimmt an der Legislative teil, also der Gesetzgebung. Seine Mitglieder sind jedoch Teil der nationalen Regierungen, also der Exekutive. So gilt er als ein typischer Fall von Exekutivföderalismus. Kritiker sehen darin einen Widerspruch zum Prinzip der Gewaltenteilung und einen Grund für das w"
+}
+]
+}
+},
+{
+"topic": "Bruchrechnen",
+"title": "Bruchrechnung",
+"paragraphs": 67,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Lineare Funktionen",
+"title": "Lineare Funktion",
+"paragraphs": 124,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 2,
+"absaetze": [
+{
+"id": "wikipedia:Lineare_Algebra:c001",
+"ueberschrift": "Einleitung",
+"quelle": "wikipedia:Lineare_Algebra",
+"mit": "fachinhalte",
+"ohne": "systematik",
+"gedruckt_mit": "fachinhalte",
+"gedruckt_ohne": "systematik",
+"text": "Vektorräume und deren lineare Abbildungen sind ein wichtiges Hilfsmittel in vielen Bereichen der Mathematik. Außerhalb der reinen Mathematik finden sich Anwendungen unter anderem in den Naturwissenschaften, in der Informatik und in der Wirtschaftswissenschaft (zum Beispiel in der Optimierung)."
+},
+{
+"id": "wikipedia:Lineare_Algebra:c049",
+"ueberschrift": "Beispiel > Diagonalisierbarkeit",
+"quelle": "wikipedia:Lineare_Algebra",
+"mit": "fachinhalte",
+"ohne": "praxis",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Da die Transformation einer Matrix dem Basiswechsel einer linearen Abbildung entspricht, besagt diese letzte Aussage, dass man zu einer linearen Abbildung bei genügend großem Zahlbereich stets eine Basis wählen kann, die „auf einfache Weise“ abgebildet wird: Im Fall der Diagonalisierbarkeit wird jed"
+},
+{
+"id": "wikipedia:Lineare_Funktion:c002",
+"ueberschrift": "Graph",
+"quelle": "wikipedia:Lineare_Funktion",
+"mit": "fachinhalte",
+"ohne": "fachinhalte",
+"gedruckt_mit": null,
+"gedruckt_ohne": "fachinhalte",
+"text": "mit reellen Zahlen und wobei (die Abszisse) die unabhängige und (die Ordinate) die abhängige Variable ist. Die Bezeichnung der beiden Konstanten mit und ist beliebig, in der Literatur finden sich zahlreiche andere Bezeichnungsweisen."
+}
+]
+}
+},
+{
+"topic": "Vulkane",
+"title": "Vulkan",
+"paragraphs": 211,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Treibhauseffekt",
+"title": "Treibhauseffekt",
+"paragraphs": 146,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Weimarer Republik",
+"title": "Weimarer Republik",
+"paragraphs": 400,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 6,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Weimarer_Republik:c025",
+"ueberschrift": "Geschichte > Politische Krisen und Hyperinflation (1919–1923)",
+"quelle": "wikipedia:Weimarer_Republik",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Ausdruck der eingetretenen scharfen politischen Polarisierung waren insbesondere die rechtsradikal motivierten Morde von Mitgliedern der Organisation Consul an wichtigen Repräsentanten der jungen Republik: an Finanzminister Matthias Erzberger im August 1921 und an Außenminister Walther Rathenau im J"
+},
+{
+"id": "wikipedia:Weimarer_Republik:c078",
+"ueberschrift": "Staat und Gesellschaft > Politische Strukturen",
+"quelle": "wikipedia:Weimarer_Republik",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Ein typisches Kabinett der Weimarer Zeit war ein Minderheitskabinett aus Zentrum, DDP und der rechtsliberalen Deutschen Volkspartei (DVP). Da zum effektiven Regieren Gesetze nötig sind, haben die Regierungen aus Zentrum und DDP (und seit 1921 DVP)"
+},
+{
+"id": "wikipedia:Weimarer_Republik:c079",
+"ueberschrift": "Staat und Gesellschaft > Politische Strukturen",
+"quelle": "wikipedia:Weimarer_Republik",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "- sich durch die SPD oder durch rechte Parteien wie die Deutschnationale Volkspartei (DNVP) parlamentarisch tolerieren lassen; - teilweise durch Einbezug der SPD (1923, 1928–30) oder der DNVP (1925, 1927/28) eine parlamentarische Mehrheit erlangt, zumindest theoretisch; - mit Ermächtigungsgesetzen r"
+},
+{
+"id": "wikipedia:Weimarer_Verfassung:c052",
+"ueberschrift": "Bewertung",
+"quelle": "wikipedia:Weimarer_Verfassung",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Problematisch war auch die Praxis, so genannte „verfassungsdurchbrechende“ Reichsgesetze zu beschließen. Dabei durften Gesetze der Verfassung widersprechen, wenn sie von einer Zweidrittelmehrheit unterstützt wurden. Die vier Ermächtigungsgesetze gehören zu dieser Entwicklung. Das Grundgesetz schreib"
+},
+{
+"id": "wikipedia:Weimarer_Verfassung:c053",
+"ueberschrift": "Bewertung",
+"quelle": "wikipedia:Weimarer_Verfassung",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Allerdings: Ohne die Flexibilität der Weimarer Verfassung bzw. ihrer pragmatischen Anwendung hätte die Republik vielleicht die ersten fünf Jahre nicht überstanden. Die Weimarer Verfassung erschien so erfolgreich, dass in der ersten österreichischen Republik Teile davon (namentlich die Stellung des P"
+},
+{
+"id": "wikipedia:Weimarer_Verfassung:c068",
+"ueberschrift": "Einordnung in die deutsche Verfassungstradition > Vergleich mit dem Grundgesetz",
+"quelle": "wikipedia:Weimarer_Verfassung",
+"mit": "fachinhalte",
+"ohne": "querschnitt",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Die Stellung der Regierung wurde gestärkt. Sie ist nur vom Vertrauen des Deutschen Bundestags abhängig und nicht wie früher vom Reichstag und dem Reichspräsidenten. Der Bundestag kann einen Kanzler nur dadurch absetzen, dass er gleichzeitig einen neuen wählt (konstruktives Misstrauensvotum). Dieses "
+}
+]
+}
+},
+{
+"topic": "Satz des Pythagoras",
+"title": "Satz des Pythagoras",
+"paragraphs": 112,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Physik: Energie",
+"title": "Energie",
+"paragraphs": 289,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "klexikon:Energie:c001",
+"ueberschrift": "Einleitung",
+"quelle": "klexikon:Energie",
+"mit": "gesellschaftlicher_kontext",
+"ohne": "fachinhalte",
+"gedruckt_mit": "gesellschaftlicher_kontext",
+"gedruckt_ohne": null,
+"text": "Im Alltag sagt man zum Beispiel: „Ich habe einfach keine Energie, um mit den Schularbeiten zu beginnen.“ Das bedeutet: Ich habe keinen Antrieb, keine Lust, ich bin zu müde oder so etwas ähnliches. Man spricht dann auch von der seelischen Energie oder vom Potenzial eines Menschen. Damit sind die sein"
+}
+]
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Säure",
+"title": "Säuren",
+"paragraphs": 294,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 1,
+"wechsel_gedruckt": 1,
+"absaetze": [
+{
+"id": "wikipedia:Säure-Base-Konzepte:c034",
+"ueberschrift": "Vergleich der Säure-Base-Theorien",
+"quelle": "wikipedia:Säure-Base-Konzepte",
+"mit": "fachinhalte",
+"ohne": "querschnitt",
+"gedruckt_mit": null,
+"gedruckt_ohne": "querschnitt",
+"text": "Säure | Base | Verfasser | Jahr enthalten Sauerstoff | nicht näher definiert | Lavoisier | 1789 enthalten Wasserstoff | nicht näher definiert | Davy | 1812 enthalten Wasserstoff, der durch Metall ersetzbar ist | nicht näher definiert | Liebig | 1838 geben in Wasser H+-Ionen ab | geben in Wasser OH−-"
+}
+]
+}
+},
+{
+"topic": "Klimawandels",
+"title": "Klimawandel",
+"paragraphs": 269,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+}
+},
+{
+"topic": "Evolutionstheorie",
+"title": "Evolutionstheorie",
+"paragraphs": 212,
+"SUBAREA_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"PREFERRED_SOURCE_BOOST": {
+"wechsel": 0,
+"wechsel_gedruckt": 0,
+"absaetze": []
+},
+"EXCLUSION_FACTOR": {
+"wechsel": 2,
+"wechsel_gedruckt": 0,
+"absaetze": [
+{
+"id": "wikipedia:Evolution:c056",
+"ueberschrift": "Öffentliche Wahrnehmung",
+"quelle": "wikipedia:Evolution",
+"mit": null,
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Eine grundsätzliche Gegnerschaft des Prinzips einer Evolution irdischen Lebens, speziell soweit auch die Spezies bzw. Gattung Mensch selber samt ihren Eigenschaften, wie Bewusstsein und geistiger Kreativität, in die Betrachtung einbezogen werden, wurde längere Zeit und wird erneut seit einigen Jahrz"
+},
+{
+"id": "wikipedia:Frankfurter_Evolutionstheorie:c034",
+"ueberschrift": "Rezeption und Kritik in den Biowissenschaften",
+"quelle": "wikipedia:Frankfurter_Evolutionstheorie",
+"mit": "fachinhalte",
+"ohne": "gesellschaftlicher_kontext",
+"gedruckt_mit": null,
+"gedruckt_ohne": null,
+"text": "Das Konzept stieß innerhalb Deutschlands zunächst mit Varianten einer stark deskriptiven (nicht-funktionell argumentierenden) Morphologie zusammen, wie sie von Adolf Remane (1898–1976) vertreten wurde, so beim Phylogenetischen Symposium 1970. Bald danach stieß es aber auch mit dem Konzept der Phylog"
+}
+]
+}
+}
+]
+},
+"schluessel": {
+"1": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Barockliteratur",
+"id": "wikipedia:Barockliteratur:c020"
+},
+"2": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Demokratie",
+"id": "wikipedia:Demokratie:c073"
+},
+"3": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Demokratie",
+"id": "wikipedia:Demokratie:c077"
+},
+"4": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Demokratie",
+"id": "wikipedia:Demokratie:c136"
+},
+"5": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Demokratie",
+"id": "wikipedia:Demokratie:c138"
+},
+"6": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Französische Revolution",
+"id": "klexikon:Französische_Revolution:c001"
+},
+"7": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Optik",
+"id": "wikipedia:Geometrische_Optik:c006"
+},
+"8": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Programmiersprache",
+"id": "wikipedia:Programmiersprache:c013"
+},
+"9": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Säure-Base-Konzepte",
+"id": "wikipedia:Säure-Base-Konzepte:c032"
+},
+"10": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Ökosystem",
+"id": "wikipedia:Ökologisches_Gleichgewicht:c010"
+},
+"11": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Ökosystem",
+"id": "wikipedia:Ökologisches_Gleichgewicht:c011"
+},
+"12": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Elektrischer Strom",
+"id": "wikipedia:Elektrische_Spannung:c061"
+},
+"13": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Elektrischer Strom",
+"id": "wikipedia:Elektrischer_Strom:c031"
+},
+"14": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Lineare Funktion",
+"id": "wikipedia:Lineare_Algebra:c001"
+},
+"15": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Lineare Funktion",
+"id": "wikipedia:Lineare_Algebra:c049"
+},
+"16": {
+"X": "ohne",
+"Y": "mit",
+"thema": "deutsche Bundeskanzler",
+"id": "wikipedia:Friedrich_Merz:c078"
+},
+"17": {
+"X": "mit",
+"Y": "ohne",
+"thema": "deutsche Bundeskanzler",
+"id": "wikipedia:Misstrauensvotum:c025"
+},
+"18": {
+"X": "ohne",
+"Y": "mit",
+"thema": "deutsche Bundeskanzler",
+"id": "wikipedia:Misstrauensvotum:c029"
+},
+"19": {
+"X": "ohne",
+"Y": "mit",
+"thema": "deutsche Bundeskanzler",
+"id": "wikipedia:Politisches_System_der_Bundesrepublik_Deutschland:c001"
+},
+"20": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Weltreligionen",
+"id": "wikipedia:Erstes_Parlament_der_Weltreligionen:c007"
+},
+"21": {
+"X": "ohne",
+"Y": "mit",
+"thema": "erneuerbare Energien",
+"id": "wikipedia:Bioenergie:c040"
+},
+"22": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Frauen in der Wissenschaft",
+"id": "wikipedia:Frau:c030"
+},
+"23": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Entdecker der Neuzeit",
+"id": "wikipedia:Erfindung:c004"
+},
+"24": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Musik der Romantik",
+"id": "wikipedia:Musik_der_Romantik:c001"
+},
+"25": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Dichter aus dem Mittelalter",
+"id": "wikipedia:Sangspruchdichtung:c023"
+},
+"26": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Inklusion im Sportunterricht",
+"id": "wikipedia:Sportdidaktik:c004"
+},
+"27": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Inklusion im Sportunterricht",
+"id": "wikipedia:Sportdidaktik:c005"
+},
+"28": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Fake News erkennen",
+"id": "wikipedia:Fake_News:c061"
+},
+"29": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Fake News erkennen",
+"id": "wikipedia:Fake_News:c070"
+},
+"30": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Mikroplastik im Meer",
+"id": "wikipedia:Mikroplastik:c095"
+},
+"31": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Mikroplastik im Meer",
+"id": "wikipedia:Mikroplastik:c096"
+},
+"32": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Datenschutz für Schüler",
+"id": "wikipedia:Datenschutz-Grundverordnung:c007"
+},
+"33": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Datenschutz für Schüler",
+"id": "wikipedia:Datenschutz-Grundverordnung:c012"
+},
+"34": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Datenschutz für Schüler",
+"id": "wikipedia:Datenschutzgesetz_(Österreich):c044"
+},
+"35": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Wasserstoff als Energieträger",
+"id": "wikipedia:Ökosteuer_(Deutschland):c000"
+},
+"36": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Optik in Klasse 7",
+"id": "wikipedia:Geometrische_Optik:c006"
+},
+"37": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Physik: Optik (Sek I)",
+"id": "wikipedia:Geometrische_Optik:c006"
+},
+"38": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Demokratie in der Sekundarstufe I",
+"id": "wikipedia:Demokratie:c073"
+},
+"39": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Demokratie in der Sekundarstufe I",
+"id": "wikipedia:Demokratie:c077"
+},
+"40": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Demokratie in der Sekundarstufe I",
+"id": "wikipedia:Demokratie:c136"
+},
+"41": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Demokratie in der Sekundarstufe I",
+"id": "wikipedia:Demokratie:c138"
+},
+"42": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Geschichte: Französische Revolution",
+"id": "klexikon:Französische_Revolution:c001"
+},
+"43": {
+"X": "ohne",
+"Y": "mit",
+"thema": "EU",
+"id": "wikipedia:Europäische_Kommission:c026"
+},
+"44": {
+"X": "ohne",
+"Y": "mit",
+"thema": "EU",
+"id": "wikipedia:Rat_der_Europäischen_Union:c029"
+},
+"45": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Lineare Funktionen",
+"id": "wikipedia:Lineare_Algebra:c001"
+},
+"46": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Lineare Funktionen",
+"id": "wikipedia:Lineare_Algebra:c049"
+},
+"47": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Weimarer Republik",
+"id": "wikipedia:Weimarer_Republik:c025"
+},
+"48": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Weimarer Republik",
+"id": "wikipedia:Weimarer_Republik:c078"
+},
+"49": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Weimarer Republik",
+"id": "wikipedia:Weimarer_Republik:c079"
+},
+"50": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Weimarer Republik",
+"id": "wikipedia:Weimarer_Verfassung:c052"
+},
+"51": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Weimarer Republik",
+"id": "wikipedia:Weimarer_Verfassung:c053"
+},
+"52": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Weimarer Republik",
+"id": "wikipedia:Weimarer_Verfassung:c068"
+},
+"53": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Säure",
+"id": "wikipedia:Säure-Base-Konzepte:c034"
+},
+"54": {
+"X": "mit",
+"Y": "ohne",
+"thema": "Evolutionstheorie",
+"id": "wikipedia:Evolution:c056"
+},
+"55": {
+"X": "ohne",
+"Y": "mit",
+"thema": "Evolutionstheorie",
+"id": "wikipedia:Frankfurter_Evolutionstheorie:c034"
+}
+},
+"urteile": {
+"r1": {
+"1": "Y",
+"2": "X",
+"3": "gleich",
+"4": "X",
+"5": "X",
+"6": "X",
+"7": "Y",
+"8": "X",
+"9": "X",
+"10": "gleich",
+"11": "gleich",
+"12": "Y",
+"13": "Y",
+"14": "X",
+"15": "X",
+"16": "Y",
+"17": "gleich",
+"18": "X",
+"19": "X",
+"20": "X",
+"21": "X",
+"22": "X",
+"23": "X",
+"24": "Y",
+"25": "Y",
+"26": "Y",
+"27": "gleich",
+"28": "Y",
+"29": "Y",
+"30": "Y",
+"31": "X",
+"32": "X",
+"33": "X",
+"34": "gleich",
+"35": "gleich",
+"36": "Y",
+"37": "Y",
+"38": "Y",
+"39": "gleich",
+"40": "Y",
+"41": "Y",
+"42": "X",
+"43": "Y",
+"44": "X",
+"45": "X",
+"46": "X",
+"47": "Y",
+"48": "Y",
+"49": "X",
+"50": "gleich",
+"51": "X",
+"52": "X",
+"53": "X",
+"54": "Y",
+"55": "Y"
+},
+"r2": {
+"1": "Y",
+"2": "X",
+"3": "Y",
+"4": "X",
+"5": "X",
+"6": "X",
+"7": "Y",
+"8": "X",
+"9": "X",
+"10": "gleich",
+"11": "gleich",
+"12": "X",
+"13": "X",
+"14": "X",
+"15": "X",
+"16": "Y",
+"17": "gleich",
+"18": "X",
+"19": "gleich",
+"20": "X",
+"21": "X",
+"22": "X",
+"23": "X",
+"24": "Y",
+"25": "Y",
+"26": "X",
+"27": "X",
+"28": "Y",
+"29": "Y",
+"30": "Y",
+"31": "X",
+"32": "X",
+"33": "X",
+"34": "gleich",
+"35": "gleich",
+"36": "Y",
+"37": "Y",
+"38": "Y",
+"39": "X",
+"40": "Y",
+"41": "Y",
+"42": "X",
+"43": "Y",
+"44": "X",
+"45": "X",
+"46": "X",
+"47": "Y",
+"48": "Y",
+"49": "X",
+"50": "X",
+"51": "X",
+"52": "X",
+"53": "X",
+"54": "Y",
+"55": "Y"
+}
+}
+}

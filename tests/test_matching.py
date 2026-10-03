@@ -3,7 +3,7 @@ from app.knowledge.segmentation import segment_source
 from app.matching.fusion import fuse_rankings, smooth_sections
 from app.matching.lexical import BM25Matcher, CharTfidfMatcher
 from app.matching.lexicon import HeadingLexicon
-from app.matching.policy import assign, cut_to_budgets, exclusion_terms
+from app.matching.policy import assign, cut_to_budgets
 from app.matching.registry import get_matcher, list_strategies
 from app.templates.manager import TemplateManager
 from app.templates.schema import Template, TemplateSlot
@@ -118,15 +118,6 @@ def test_budget_caps_chunks_per_slot() -> None:
     assert praxis is not None
     assert len(result.assigned[praxis.id]) <= praxis.budget.max_chunks
     assert result.unassigned >= 10 - praxis.budget.max_chunks
-
-
-def test_exclusion_terms_ignore_slot_references() -> None:
-    template = TemplateManager().get("sc26")
-    slot = template.slot_by_key("themendefinition")
-    assert slot is not None
-    terms = exclusion_terms(slot)
-    assert "baustein" not in terms
-    assert "gesellschaft" in terms
 
 
 def test_strategy_registry() -> None:
