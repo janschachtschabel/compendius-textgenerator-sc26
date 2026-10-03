@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 
 from app.domain.models import Source
+from app.knowledge.topic import title_stems, title_words
 
 _BLACKLIST: list[re.Pattern[str]] = [
     re.compile(p, re.IGNORECASE)
@@ -22,13 +23,6 @@ _BLACKLIST: list[re.Pattern[str]] = [
         r"^(internationale einheitensystem|si-einheit|meter|sekunde|kilogramm)$",
     )
 ]
-
-_WORD = re.compile(r"[a-zäöüß]{4,}")
-
-
-def _stems(title: str) -> list[str]:
-    words = set(_WORD.findall(title.lower()))
-    return [w[:-1] if len(w) > 5 else w for w in words]
 
 
 def is_blacklisted(title: str, topic: str | None = None) -> bool:
@@ -49,8 +43,8 @@ def rank_related_candidates(main: Source, candidates: list[str]) -> list[str]:
     content = "\n".join(p.text for s in main.sections for p in s.paragraphs)
     content_lower = content.lower()
     headings = {h.lower() for s in main.sections for h in s.path}
-    stems = _stems(main.title)
-    topic_words = set(_WORD.findall(main_title))
+    stems = title_stems(main.title)  # the one stem rule of the topic (KO-11)
+    topic_words = set(title_words(main.title))
 
     scored: list[tuple[float, str]] = []
     seen: set[str] = set()

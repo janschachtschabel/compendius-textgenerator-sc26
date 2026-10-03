@@ -29,3 +29,16 @@ def test_the_links_of_a_topic_named_like_a_pattern_keep_lists_out() -> None:
     )
     ranked = rank_related_candidates(main, ["Liste von Programmiersprachen", "Syntax (Programmiersprache)"])
     assert ranked == ["Syntax (Programmiersprache)"]
+
+
+def test_a_leading_article_of_the_title_boosts_no_link() -> None:
+    """KO-11: the word "eine" of "Eine kleine Nachtmusik" was a stem of its own and lifted every link holding it."""
+    main = Source(
+        source_id="wikipedia:Eine kleine Nachtmusik",
+        project="wikipedia",
+        title="Eine kleine Nachtmusik",
+        url="https://de.wikipedia.org/wiki/Eine_kleine_Nachtmusik",
+        sections=[ArticleSection(paragraphs=[Paragraph(text="Ein Werk von Mozart.")])],
+    )
+    ranked = rank_related_candidates(main, ["Serenade", "Steinerne Brücke"])
+    assert ranked == ["Serenade", "Steinerne Brücke"]  # neither holds a word of the topic: they keep their order

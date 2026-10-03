@@ -2135,6 +2135,15 @@ API.
   um 0,28 (Intervall −0,47 bis −0,06), bei Aspekt-Themen auch Nutzen und Vollständigkeit um 0,3 (M62). Eine Anfrage
   wäre 5,4 s schneller (28 → 23 s). `paragraph_assignment` bleibt in `LLM_REASONING_EFFORTS` auf `low`; wer Tempo
   vorzieht, setzt es dort auf `none`.
+- **D87 (2026-10-03)** Eine Regel für die Stämme eines Themas (Audit KO-11, Jan: „restliche todo aus den audits mit
+  abarbeiten“). Drei Regeln bildeten sie: `topic_stem`/`TopicMention` für die Prüfung, ob ein Absatz oder ein Treffer
+  vom Thema handelt, `_stems` in `related.py` für die Rangfolge der verlinkten Nebenartikel (jedes Titelwort, bis fünf
+  Buchstaben ganz, ein „eine“ am Anfang als Stamm) und `title[:5]` im Glossar („Der Prozess“ gab „der p“, und *Der Pate*
+  wurde ein Unterbegriff). Jetzt gilt `word_stem` überall: ein Artikel am Anfang zählt nicht, ab fünf Buchstaben fällt
+  der letzte weg. Die Rangfolge nimmt die Stämme aller Titelwörter (`title_stems`, der Klammerzusatz zählt mit, ein
+  Stamm im Kompositum zählt, *Mondfinsternis* für „Mond“), die Prüfung im Absatz das erste Titelwort mit der Regel für
+  kurze Wörter (KO-29), das Glossar den Themenstamm ab vier Buchstaben. Gemessen (M66): An 81 Themen änderte sich ein
+  Korpus (*Zelle (Biologie)*: *Zellteilung* statt *Membran*), am Gold nichts (macro-F1 0,460, micro-F1 0,672).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

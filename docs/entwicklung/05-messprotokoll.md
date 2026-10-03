@@ -3408,3 +3408,19 @@ Artikel hat, sonst antwortet der Dienst 404 mit den verworfenen Artikeln und dem
 Wörter heißt das: „Funktion“ und „Bank“ bekommen einen passenden Artikel, „Stamm“ und „Netz“ verlieren einen
 unpassenden, „Leiter“, „Spannung“ und „Schloss“ einen vertretbaren; mit Fach wählen die Regeln dort wie bisher.
 Rohdaten: `m63_kein_kandidat.json`.
+
+## M66 Eine Regel für die Themenstämme (Audit KO-11, 03.10.2026)
+
+KO-11 (Audit vom 27.09.): Drei Regeln bildeten den Stamm eines Themas und widersprachen sich - `topic_stem` mit
+`TopicMention` (erstes Titelwort ohne Artikel, kurze Wörter als ganzes Wort, KO-29), `_stems` in `related.py` (jedes
+Titelwort ab vier Buchstaben, bis fünf Buchstaben ganz, ein „eine“ am Anfang als eigener Stamm) und `title[:5]` im
+Glossar, mit dem Artikel („der p“). Die Vereinheitlichung (D87) verlangte eine Messung am Gold. `mc_themenstaemme.py`
+baut den Korpus von `llm-free` für die 81 Themen von M65 und die Zuordnung am Gold (`hybrid_light` samt Model2Vec), im
+Einmal-Container einmal mit dem Code vor und einmal mit dem Code nach D87:
+
+- Korpus: bei 80 von 81 Themen gleich; bei *Zelle (Biologie)* kam *Zellteilung* statt *Membran* hinein, denn der Stamm
+  „zell“ trifft jetzt Komposita, die „zelle“ nicht traf.
+- Gold: macro-F1 0,460 und micro-F1 0,672 vorher wie nachher, bei jedem der zehn Themen gleich.
+- Glossar (Test): *Der Pate* ist kein Unterbegriff von „Der Prozess“ mehr, *Der Prozess (1962)* bleibt einer.
+
+**Ergebnis:** gebaut (D87). Rohdaten: `m66_themenstaemme.json`.

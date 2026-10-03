@@ -7,6 +7,7 @@ from collections.abc import Sequence
 
 from app.domain.models import Source
 from app.knowledge.segmentation import split_sentences
+from app.knowledge.topic import topic_stem
 from app.synthesis.safe_markdown import cell_link, plain_label, table_cell
 
 MAX_ENTRIES = 20
@@ -58,14 +59,14 @@ def build_glossary(topic: str, primary: Source | None, sources: Sequence[Source]
                 )
                 seen.add(alias.lower())
 
-    stem = topic.lower()[:5]
+    stem = topic_stem(topic)  # the topic stem of the corpus checks: "Der Prozess" is "prozes", not "der p" (KO-11)
     for source in sources:
         if source.is_primary or source.title.lower() in seen:
             continue
         definition = _definition(source)
         if not definition:
             continue
-        relation = "skos:narrower" if stem and stem in source.title.lower() else "skos:related"
+        relation = "skos:narrower" if len(stem) >= 4 and stem in source.title.lower() else "skos:related"
         entries.append((source.title, definition, relation, cell_link(table_cell(source.title), source.url)))
         seen.add(source.title.lower())
         if len(entries) >= MAX_ENTRIES:

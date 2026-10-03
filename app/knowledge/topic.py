@@ -148,8 +148,28 @@ def topic_stem(title: str) -> str:
 
     "Optik" -> "opti" (matches "optisch", "Optiker"), "Demokratie" -> "demokrati", "Die Zauberflöte" -> "zauberflöt".
     """
-    word = _title_word(title)
+    return word_stem(_title_word(title))
+
+
+def word_stem(word: str) -> str:
+    """The stem of one title word, the one rule of every stem (KO-11): from five letters on without its last."""
     return word[:-1] if len(word) >= 5 else word
+
+
+_TITLE_WORD = re.compile(r"[a-zäöüß]{4,}")
+
+
+def title_words(title: str) -> list[str]:
+    """The words of a title of at least four letters, lower case, its qualifier in parentheses too ("Linse (Optik)":
+    the field names its links), without a leading article ("Eine kleine Nachtmusik")."""
+    words = _TITLE_WORD.findall(title.lower())
+    return words[1:] if words and words[0] in _LEADING_ARTICLES else words
+
+
+def title_stems(title: str) -> list[str]:
+    """The stem of each word of ``title_words``, for the titles of linked articles: there a stem inside a compound
+    counts ("Mondfinsternis" for "Mond"), unlike in a paragraph, which ``TopicMention`` checks (KO-29)."""
+    return list(dict.fromkeys(word_stem(word) for word in title_words(title)))
 
 
 # A title word of at most four letters is its own stem, and a stem that short sits inside common words: "ei" in "ein"

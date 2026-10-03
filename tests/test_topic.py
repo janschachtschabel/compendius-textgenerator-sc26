@@ -1,6 +1,6 @@
 import pytest
 
-from app.knowledge.topic import normalize_topic, topic_as_asked, topic_stem
+from app.knowledge.topic import normalize_topic, title_stems, topic_as_asked, topic_stem
 from app.sources.lehrplan.subjects import SubjectCatalog
 from tests.conftest import ROOT
 
@@ -116,6 +116,16 @@ def test_a_title_that_opens_with_an_article_is_stemmed_from_its_noun() -> None:
     assert topic_stem("Der Prozess (Roman)") == "prozes"
     assert topic_stem("Das Kapital") == "kapita"
     assert topic_stem("Die") == "die"  # nothing but the article: it stays the stem
+
+
+def test_the_stems_of_a_title_follow_the_rule_of_its_topic_stem() -> None:
+    """KO-11: three rules made the stem of a topic; the stems of a title for the ranking of its linked articles now cut
+    each word as the topic stem does, and a leading article is no stem ("eine" sits in "Steine" and "Leine")."""
+    assert title_stems("Eine kleine Nachtmusik") == ["klein", "nachtmusi"]
+    assert title_stems("Optik (Physik)") == ["opti", "physi"]  # the qualifier names the field: its links count
+    assert title_stems("Französische Revolution") == ["französisch", "revolutio"]
+    assert title_stems("Ei") == []  # a word of under four letters sits in too many titles
+    assert title_stems("Optik")[0] == topic_stem("Optik")
 
 
 @pytest.mark.parametrize(
