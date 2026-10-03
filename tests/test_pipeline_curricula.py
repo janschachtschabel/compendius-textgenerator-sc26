@@ -17,6 +17,7 @@ from tests.conftest import make_settings
 from tests.test_lehrplan_api import write_broken_cache, write_cache
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
+from tests.test_regeneration import mark_reviewed
 
 
 @pytest.fixture(autouse=True)
@@ -62,6 +63,22 @@ def test_missing_cache_yields_the_hint_instead_of_an_error(
     result = service.generate(GenerateRequest(topic="Optik"))
     assert result.curricula is not None and result.curricula.available is False
     assert "Lehrplan-Cache" in result.markdown
+
+
+def test_parts_without_world_leave_an_earlier_text_unread(service: CompendiumService, settings: Settings) -> None:
+    """Part 1 alone keeps blocks of an earlier text; without it the text was never read, and a block it keeps that the
+    template has no place for refuses no request for part 2 (F13 moved the reading to the start of prepare)."""
+    write_cache(settings.state_dir)
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"]))
+    reviewed = mark_reviewed(first.markdown, "sc26_3")
+
+    result = service.generate(
+        GenerateRequest(
+            topic="Optik", parts=["curricula"], subject="Physik", template_id="standard", existing_markdown=reviewed
+        )
+    )
+
+    assert result.curricula is not None and result.sections == []
 
 
 def test_parts_without_world_skip_part_one(service: CompendiumService, settings: Settings) -> None:
