@@ -3158,42 +3158,76 @@ entscheidet: Im Cache stehen *Fotosynthese* 111-mal und *Photosynthese* 36-mal, 
 Gruppen findet er oft nichts, für Aspekte fast nie das Angefragte, meist nur den Oberbegriff. Vorschläge in der Antwort
 an Jan, nichts gebaut. Rohdaten: `m57_lehrplan_profile.json`.
 
+**Nachtrag, gepoolt (03.10.2026):** Jan fragte, ob `llm-free` bei gewöhnlichen Themen besser sei als `balanced` und
+warum `best-quality` bei Aspekten hinter `balanced` zurückfällt. Beides ist die Stichprobe: sechs gezogene von bis zu
+200 gezeigten Elementen je Thema. `llm-free` und `balanced` wählen bei allen 20 gewöhnlichen Themen denselben Artikel
+und zeigen bei 13 dieselben Elemente. Bei Aspekten haben `balanced` und `best-quality` bei 10 von 11 Themen denselben
+Artikel; von den acht passenden Elementen der Stichprobe von `balanced` zeigt `best-quality` sieben einzeln (Note 2 der
+LLM-Prüfung), eines verwirft es. Bei „Datenschutz für Schüler“ zog `balanced` vier passende, `best-quality` keins,
+obwohl drei der vier dort einzeln stehen. Gepoolt zählt jedes gezogene und benotete Element aus M57 und M58 für jedes
+Profil, das es einzeln zeigt, gewichtet mit 1 durch seine Chance, gezogen zu werden (`mc_lehrplan_gepoolt.py`,
+Gutachter 1):
+
+| Gepoolt: passend / unpassend | gewöhnlich (20) | Gruppe (26) | Aspekt (11) |
+|---|---|---|---|
+| `llm-free` | 72 / 3 % | 24 / 35 % | 12 / 37 % |
+| `balanced` | 70 / 4 % | 42 / 18 % | 18 / 26 % |
+| `best-quality` | 76 / 2 % | 50 / 9 % | 21 / 12 % |
+
+`balanced` gegen `llm-free` bei gewöhnlichen Themen −2 Punkte (95-%-Intervall über die Themen −9 bis +3),
+`best-quality` gegen `balanced` bei Aspekten +3 (−4 bis +10): Kein Profil fällt zurück, das Unpassende sinkt von Profil
+zu Profil. Ein passendes Element zeigen bei Aspekten alle drei Profile nur für drei bis vier der elf Themen; das
+eigentliche Problem bleibt der Oberbegriff.
+
 ## M58 Laufzeit der Frage N und Lehrplan-Suchbegriffe von N (03.10.2026)
 
 Jan, nach einem Test der Prüfansicht: balanced brauchte für Teil 1 und 2 rund 20 statt 5 bis 6 s, „Thema auflösen“
 11,3 s; dazu sein Vorschlag, das Thema ab `balanced` vom LLM in Suchanfragen zerlegen zu lassen, auch mit der
 Schreibweise der Schule. Gemessen mit `gpt-6-luna`, Prototyp im Messskript `mc_lehrplan_suchbegriffe.py`.
 
-**Laufzeit:** Funktional hatte sich nichts geändert. Die Anfrage stellt ein LLM-Aufruf, die Frage N (D63); er braucht
-über die b-api 4,0 bis 5,4 s, direkt bei OpenAI 3,6 bis 5,4 s, im Median 5,1 s mit `reasoning_effort` `low`. Den Rest
-machte der Kaltstart nach einem Neustart des Containers: „Französische Revolution“ kalt 14,0 s (Zuordnen 2,8, Text
-6,3 s), warm 4,6 s (0,8 und 0,3 s). Mit `none` antwortet N im Median in 1,9 s (45 Themen von M54; `minimal` lehnt das
-Modell mit 400 ab): gleiche Übersicht bei 40 von 45 Themen, gleiches `deckt_ab` bei 38; von den genannten Artikeln passen
-86 statt 92 %, die übrigen sind verwandt, keiner unpassend (44 neue Paare, zwei Gutachter).
+**Laufzeit:** „Thema auflösen“ ist im Kern ein LLM-Aufruf, die Frage N (D63). Sie liest rund 250 Tokens und schreibt
+275 bis 452, das meiste davon Denken des Modells (`reasoning_effort` `low`); die Antwort selbst ist kurz. Seit D70
+(01.10.) fragt jeder Aufruf neu, vorher beantwortete die b-api eine wortgleiche Frage aus ihrem Speicher. Über die b-api
+nachgemessen: mit erlaubtem Speicher die erste Frage 6,1 und 10,0 s, jede Wiederholung 0,10 bis 0,12 s; frisch wie seit
+D70 4,0 bis 8,1 s jedes Mal, und die Antwort kann wechseln (*Vulkanismus in Europa* statt *Liste von Vulkanen in
+Europa*). Wer dieselben Themen wiederholt prüfte, bekam N vor D70 also in 0,1 s. Direkt bei OpenAI dauerte N 3,4 bis
+5,4 s, über die b-api 4,0 bis 10,0 s je nach Tageszeit; im Entwicklungscontainer lag „Thema auflösen“ seit dem Neustart
+bei 7 von 13 Anfragen unter 5 s, bei 5 zwischen 5 und 10 s und einmal darüber (die 11,3 s). Warm brauchte `balanced`
+für Teil 1 und 2 5,0 bis 8,7 s (sieben Themen, OpenAI direkt). Kalt kommt dazu, was ein Worker zum ersten Mal von der
+Platte liest: das Model2Vec-Modell beim Start (3,7 s, ohne Dateicache 19 s), die Archivteile eines Artikels bei der
+ersten Anfrage (*Französische Revolution* 5,6 s statt 30 ms); nach einem Neustart des Containers kam „Französische
+Revolution“ kalt in 14,0 s, warm in 4,6 s. Mit `none` antwortet N im Median in 1,9 s (45 Themen von M54; `minimal`
+lehnt das Modell mit 400 ab): gleiche Übersicht bei 40 von 45 Themen, gleiches `deckt_ab` bei 38; von den genannten
+Artikeln passen 86 statt 92 %, die übrigen sind verwandt, keiner unpassend (44 neue Paare, zwei Gutachter).
 
 **Suchbegriffe von N:** N nennt zusätzlich bis zu sechs kurze Suchbegriffe in der Sprache der Lehrpläne (Schreibweise
 der Schule, Vertreter mit Nachnamen, den Aspekt selbst, keine allgemeinen Wörter) und die Schulfächer; Teil 2 sucht mit
 dem Titel und den Begriffen, wahlweise auf die Fächer begrenzt. 57 Themen von M57, Stichprobe wie dort (Saat 58),
-Gutachter 1 alle, Gutachter 2 30 % (gleiche Note bei 91 % von 1.175 Paaren). Einzeln gezeigt, passend / unpassend:
+Gutachter 1 alle, Gutachter 2 30 % (gleiche Note bei 91 % von 1.175 Paaren). Gepoolt mit M57 wie im Nachtrag dort,
+einzeln gezeigt, passend / unpassend, in Klammern die Themen, bei denen ein passendes Element gesehen wurde:
 
-| | gewöhnlich | Gruppe | Aspekt |
+| | gewöhnlich (20) | Gruppe (26) | Aspekt (11) |
 |---|---|---|---|
-| `balanced` heute (M57) | 69 / 3 % | 42 / 21 % | 23 / 26 % |
-| `balanced`, Titel und Begriffe | 46 / 30 % | 15 / 53 % | 5 / 48 % |
-| `balanced`, dazu die Fächer | 60 / 16 % | 31 / 25 % | 20 / 38 % |
-| `best-quality` heute (M57) | 73 / 2 % | 49 / 8 % | 10 / 10 % |
-| `best-quality`, Begriffe und Fächer | 59 / 9 % | 28 / 22 % | 21 / 27 % |
-| dasselbe, nur Note 2 der LLM-Prüfung einzeln | 78 / 1 % | 46 / 8 % | 33 / 9 % |
+| `balanced` heute | 70 / 4 % (20) | 42 / 18 % (13) | 18 / 26 % (3) |
+| `balanced`, Titel und Begriffe | 48 / 28 % (20) | 17 / 50 % (17) | 4 / 51 % (5) |
+| `balanced`, dazu die Fächer | 60 / 14 % (20) | 30 / 27 % (17) | 18 / 35 % (6) |
+| `best-quality` heute | 76 / 2 % (20) | 50 / 9 % (15) | 21 / 12 % (4) |
+| `best-quality` heute, nur Note 2 der LLM-Prüfung einzeln | 88 / 0 % (20) | 67 / 1 % (15) | 26 / 8 % (4) |
+| `best-quality`, Begriffe und Fächer | 59 / 9 % (19) | 32 / 20 % (17) | 23 / 23 % (7) |
+| dasselbe, nur Note 2 einzeln | 78 / 1 % (19) | 49 / 8 % (17) | 35 / 9 % (7) |
 
 Die Begriffe bringen viel mehr Elemente (gewöhnlich im Median 183 statt 95) und kein Thema mehr ohne Element, aber
 mehr Fremdes: Über einen Wortteil getroffen passen kurze Begriffe zu 12 % (81 % unpassend), längere zu 19 %
-(„Widerstand“ in *Widerstandskämpferin*, „Kondensation“ in *Polykondensation*); als ganzes Wort passen sie zu 34 %, weil
-Fachbegriffe in anderen Fächern anderes bedeuten („Widerstand“ in Geschichte, „Spannung“ in Deutsch). Der Titel des
-Hauptartikels ist spezifischer. Nur bei Aspekten mit LLM-Prüfung bringen die Begriffe mehr: fünf statt einem Thema mit
-einem passenden Element.
+(„Widerstand“ in *Widerstandskämpferin*, „Kondensation“ in *Polykondensation*); als ganzes Wort passen sie zu 34 %,
+weil Fachbegriffe in anderen Fächern anderes bedeuten („Widerstand“ in Geschichte, „Spannung“ in Deutsch). Der Titel
+des Hauptartikels ist spezifischer. Nur bei Aspekten mit LLM-Prüfung helfen die Begriffe: sieben statt vier Themen mit
+einem passenden Element, 35 statt 26 % passend (Differenz +9 Punkte, Intervall −8 bis +26).
 
-**Nur Note 2 einzeln (an den Läufen von M57):** Zeigt `best-quality` nur die Elemente einzeln, die die LLM-Prüfung mit 2
-bewertet, und bündelt die mit 1, passen 72 bis 75 % statt 55 % der einzeln gezeigten, unpassend 0 bis 1 % statt 4 bis
-5 %; 5 bis 8 % der passenden stehen dann nur in der Bündelzeile.
+**Nur Note 2 einzeln:** Zeigt `best-quality` nur die Elemente einzeln, die die LLM-Prüfung mit 2 bewertet, und bündelt
+die mit 1, steigt der passende Anteil bei gewöhnlichen Themen von 76 auf 88 % (Intervall der Differenz +8 bis +18
+Punkte), bei Gruppen von 50 auf 67 % (+9 bis +27), bei Aspekten von 21 auf 26 % (+1 bis +10); Unpassendes fällt auf
+0 bis 8 %. In die Bündelzeile rückten 6 % der passenden Elemente gewöhnlicher Themen und 12 % bei Gruppen, bei Aspekten
+keins.
 
-**Ergebnis:** Nichts gebaut, Vorschläge an Jan. Rohdaten: `m58_lehrplan_suchbegriffe.json`.
+**Ergebnis:** Nichts gebaut, Vorschläge an Jan. Rohdaten: `m58_lehrplan_suchbegriffe.json`, gepoolt
+`m57_m58_gepoolt.json`.
