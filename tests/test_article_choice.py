@@ -10,7 +10,7 @@ from typing import Any
 import httpx
 import pytest
 
-from app.compendium.errors import LlmNotConfiguredError
+from app.compendium.errors import NO_FITTING_MEANING, LlmNotConfiguredError, TopicNotFoundError
 from app.domain.models import ArticleSection, Paragraph, Source
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import (
@@ -30,6 +30,7 @@ from app.llm.prompts import get_prompt
 from app.service import CompendiumService
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
+from app.sources.zim.registry import NONE_FITS
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 from tests.test_wlo_client import BASE, MATERIAL, FakeRepository
@@ -107,11 +108,22 @@ def test_the_model_may_name_a_title_instead() -> None:
     assert chooser.report.fallback is None
 
 
-@pytest.mark.parametrize("answer", ["keine Ahnung", {"wahl": 5}, {"wahl": 0, "titel": ""}, {"wahl": True}])
+@pytest.mark.parametrize("answer", ["keine Ahnung", {"wahl": 5}, {"wahl": True}])
 def test_an_answer_that_names_nothing_leaves_the_rules_decision(answer: Any) -> None:
     chooser = chooser_for(FakeBApi(answering(answer)))
     assert chooser(CANDIDATES) == (None, None)
     assert chooser.report.fallback and chooser.report.calls == 1
+
+
+def test_an_answer_that_no_candidate_fits_rejects_them_all() -> None:
+    """A01 (audit 2026-10-02): "wahl": 0 without a title is the model's verdict that no candidate fits. The rules'
+    article used to stay, and in M63 that was a random meaning of an ambiguous word ("Stamm (Familienname)",
+    "Funktion (Objekt)", "Netz (Textilie)"); now the verdict decides."""
+    chooser = chooser_for(FakeBApi(answering({"wahl": 0, "titel": ""})))
+    assert chooser(CANDIDATES) == (NONE_FITS, None)
+    assert chooser.report.rejected and chooser.report.fallback is None
+    block = choice_block(ChoiceAudit(requested="llm", used="llm", report=chooser.report, needed=True))
+    assert block["rejected"] and block["fallback"] is None and block["chosen"] is None
 
 
 def test_a_failed_call_leaves_the_rules_decision() -> None:
@@ -209,6 +221,36 @@ def test_a_title_the_chooser_names_counts_when_the_archive_has_it(service: Compe
     assert named.title == "Optik" and named.method == "llm"  # the redirect is followed
     unknown = service.registry.resolve_topic("Geometrische", chooser=lambda candidates: (None, "Gibt es nicht"))
     assert unknown.title == "Geometrische Optik" and unknown.method == "suggestion"
+
+
+def test_when_no_candidate_fits_the_overview_of_question_n_or_nothing_takes_the_rules_place(
+    service: CompendiumService,
+) -> None:
+    """A01: the rules' article goes when the chooser rejects every candidate. The overview the LLM named for the
+    topic (D63) takes its place where the archive has it as an article; else the topic has no article."""
+
+    def reject(candidates: Sequence[tuple[str, str]]) -> tuple[int | None, str | None]:
+        return NONE_FITS, None
+
+    # "Optik" is sure, but the thorough choice weighs its meanings (D61), so the chooser is asked
+    overview = service.registry.resolve_topic("Optik", chooser=reject, thorough=True, overview="Geometrische Optik")
+    assert overview.title == "Geometrische Optik" and overview.method == "llm" and not overview.confident
+    assert overview.alternatives[0] == "Optik"  # the rejected article stays visible
+    for named in (None, "Gibt es nicht", "Optik (Begriffsklärung)"):  # none, missing, a disambiguation page
+        nothing = service.registry.resolve_topic("Optik", chooser=reject, thorough=True, overview=named)
+        assert not nothing.resolved and nothing.method == "llm" and nothing.alternatives[0] == "Optik", named
+
+
+def test_a_topic_whose_candidates_the_model_all_rejects_has_no_article_and_the_404_says_why(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fake = FakeBApi(by_prompt({"wahl": 0, "titel": ""}))  # question N gets no usable answer from it either
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
+    with pytest.raises(TopicNotFoundError) as raised:
+        service.generate(GenerateRequest(topic="Optik", article_choice="llm-thorough", parts=["world"]))
+    detail = raised.value.detail()
+    assert detail["message"] == NO_FITTING_MEANING
+    assert detail["resolution"]["title"] is None and "Optik" in detail["resolution"]["alternatives"]
 
 
 def test_a_sure_resolution_never_asks_the_chooser(service: CompendiumService) -> None:

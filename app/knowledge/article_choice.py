@@ -6,7 +6,10 @@ Two steps, both measured against the gold of eval/artikelwahl on 2026-09-23 (doc
   with the model deciding their unsure resolutions it was 57, 23 and 11, at about 950 tokens for each of the 18 of
   94 requests it was asked for. The model sees the topic, the subject and the candidates the rules weighed, each
   with the beginning of its text, and answers with a number; when none fits it may name the title of a German
-  Wikipedia article, which counts only when the archive has it.
+  Wikipedia article, which counts only when the archive has it. Naming no candidate and no title is its verdict that
+  none fits (A01, audit 2026-10-02): the rules' article goes as well, and the overview of question N or nothing takes
+  its place (ZimRegistry.resolve_topic). Over 215 topics (M63) that was 4 to 5 bare words with several meanings and
+  no subject, where the rules had kept a random meaning ("Stamm (Familienname)", "Funktion (Objekt)").
 - The side articles of the corpus. The model rates every article of the corpus on the scale of the gold, with the
   prompt of the M8 judge, and the full-text hits it rates 0 are dropped: 11 of the 16 hits the gold calls unfit, none
   that fit, and of the paragraphs the standard strategy printed from unfit articles 10 instead of 26 were left, at
@@ -40,6 +43,7 @@ from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.llm.usage import Usage
+from app.sources.zim.registry import NONE_FITS
 
 if TYPE_CHECKING:  # node_article and topic_articles build on this module
     from app.knowledge.node_article import NodeArticleReport
@@ -49,7 +53,6 @@ OUTPUT_TOKENS = 60
 NO_SUBJECT = "nicht angegeben"
 UNREADABLE = "Antwort nicht lesbar"
 INVALID_NUMBER = "Antwort ohne gültige Nummer"
-NOTHING_FITS = "kein Kandidat passt, kein Titel genannt"
 NAMED_TITLE_MISSING = "genannter Titel ist kein Artikel des Archivs"
 CHECKED_ORIGINS = frozenset({"search", "linked"})  # the side articles the hit check may drop (M25)
 HIT_OPENING_CHARS = 180  # as the M8 judge saw each article
@@ -76,6 +79,7 @@ class ArticleChoiceJob:
 class ArticleChoiceReport(Usage):
     offered: int = 0  # candidates shown to the model; 0 when the rules were sure and it was not asked
     named: str | None = None  # a title the model named instead of choosing a candidate
+    rejected: bool = False  # the model found that no candidate fits: the rules' article went as well (A01)
     fallback: str | None = None  # why the model's answer did not decide
 
 
@@ -95,8 +99,9 @@ class HitCheckReport(Usage):
 class LlmArticleChooser:
     """What the registry asks with the (title, opening) candidates of an unsure resolution.
 
-    Answers ``(index, None)`` for a candidate, ``(None, title)`` for a title the model named, ``(None, None)`` when
-    the rules' article stays; ``report`` says what happened and what it cost.
+    Answers ``(index, None)`` for a candidate, ``(None, title)`` for a title the model named, ``(NONE_FITS, None)``
+    when it finds that no candidate fits (A01), and ``(None, None)`` when the rules' article stays because the
+    answer was of no use; ``report`` says what happened and what it cost.
     """
 
     def __init__(self, job: ArticleChoiceJob, topic: str, subjects: Sequence[str]) -> None:
@@ -136,7 +141,10 @@ class LlmArticleChooser:
         if named:
             report.named = named
             return None, named
-        report.fallback = NOTHING_FITS if number == 0 else INVALID_NUMBER
+        if number == 0:
+            report.rejected = True
+            return NONE_FITS, None
+        report.fallback = INVALID_NUMBER
         return None, None
 
 
@@ -240,6 +248,7 @@ def choice_block(audit: ChoiceAudit) -> dict[str, Any]:
         "offered": choice.offered if choice else 0,
         "chosen": chosen,
         "named": choice.named if choice else None,
+        "rejected": bool(choice and choice.rejected),  # no candidate fitted: the rules' article went (A01)
         "fallback": fallback,
         "hits_checked": hit_check.checked if hit_check else 0,
         "hits_dropped": list(hit_check.dropped) if hit_check else [],

@@ -140,6 +140,13 @@ test('rules that were sure, or a model that changed nothing, are no fallback', (
   assert.equal(choiceRow({ requested: 'llm', used: 'rule-based', needed: true }).note, 'die KI wurde nicht gefragt');
 });
 
+test('a model that found no candidate of the rules fitting says so, and what took the place (A01)', () => {
+  const overview = choiceRow({ requested: 'llm', used: 'llm', needed: true, asked: true, offered: 5, rejected: true, chosen: 'Funktion (Mathematik)' });
+
+  assert.equal(overview.fellBack, false);
+  assert.equal(overview.note, 'keiner der Kandidaten der Regeln passte; gewählt: Funktion (Mathematik)');
+});
+
 test('a switch the request set wins over its profile', () => {
   const answer = { extraction: 'llm', generation: 'rule-based', enrichment: 'sources-only', audit: { matcher: 'bm25', llm: { extraction: { requested: 'llm', used: 'llm' } } } };
   const rows = byStep(stepsAccount(answer, { parts: ['world'], matcher: 'bm25', extraction: 'llm' }, 'llm-free', options));

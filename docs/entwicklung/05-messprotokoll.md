@@ -3348,3 +3348,27 @@ Image vor D84, und wertet mit dem neuen Code aus:
   Absätze in den Korpus.
 
 **Ergebnis:** gebaut (D84). Rohdaten: `m61_formeln_archiv.json` (ohne das HTML der Artikel).
+
+## M63 „Kein Kandidat passt“ in der Artikelwahl (Audit A01, 03.10.2026)
+
+A01: Antwortet die KI-Artikelwahl (D35) mit „wahl“: 0 und ohne Titel, blieb der Artikel der Regeln stehen. Jan: „wenn
+die ki sagt der artikel passt nicht sollten sie wahrscheinlich raus weil wir sonst falsche artikel risikieren oder ?
+prüfe das mit tests nach.“ `mc_kein_kandidat.py` löst 215 Themen auf, wie `balanced` und `best-quality` es tun (Frage N,
+Regeln, Wahl unter den Kandidaten der Regeln), ohne den Korpus zu bauen: die 94 Gold-Anfragen von eval/artikelwahl,
+die Themen von M51, M54, M56 und M57, 23 weitere Eingaben, wie Lehrkräfte sie schreiben, und 47 mehrdeutige Wörter, 30
+ohne und 17 mit Fach. `gpt-6-luna` über OpenAI direkt.
+
+- Gefragt wurde die Wahl bei 42 Themen (`balanced`) und 105 (`best-quality`, die gründliche Wahl prüft auch sichere
+  Wörter mit mehreren Bedeutungen). „Kein Kandidat passt“ sagte sie bei 4 und 5, nur bei Einzelwörtern ohne Fach.
+- Der behaltene Artikel war jeweils die erste Bedeutung der Regeln: unpassend bei „Stamm“ (*Stamm (Familienname)*),
+  „Funktion“ (*Funktion (Objekt)*) und „Netz“ (*Netz (Textilie)*), vertretbar bei „Leiter“ (*Leiter (Gerät)*),
+  „Spannung“ (*Elektrische Spannung*), „Schloss“ (*Schloss (Architektur)*) und „Bank“ (*Bank*). Die Übersicht der Frage
+  N war bei „Funktion“ *Funktion (Mathematik)* und bei „Bank“ *Kreditinstitut*; bei den übrigen nannte N das Wort
+  selbst, eine Begriffsklärung, oder einen Titel, den das Archiv nicht hat (*Spannung (Physik)*).
+- Die Gold-Anfragen bekamen das Urteil nie; richtig waren 91 und 92 von 94.
+
+**Ergebnis:** gebaut (D85): Der Artikel der Regeln geht, die Übersicht von N nimmt den Platz, wenn das Archiv sie als
+Artikel hat, sonst antwortet der Dienst 404 mit den verworfenen Artikeln und dem Rat, ein Fach anzugeben. Für die sieben
+Wörter heißt das: „Funktion“ und „Bank“ bekommen einen passenden Artikel, „Stamm“ und „Netz“ verlieren einen
+unpassenden, „Leiter“, „Spannung“ und „Schloss“ einen vertretbaren; mit Fach wählen die Regeln dort wie bisher.
+Rohdaten: `m63_kein_kandidat.json`.

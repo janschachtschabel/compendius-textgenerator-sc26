@@ -112,6 +112,7 @@ function articleChoice(llm, asked, used) {
   const fellBack = used === 'rule-based' && !RULES.has(asked) && Boolean(reason);
   const parts = [];
   if (block.articles_found?.length) parts.push(`KI nannte: ${block.articles_found.join(', ')}`);
+  if (block.rejected) parts.push('keiner der Kandidaten der Regeln passte'); // A01: their article went as well
   if (block.chosen) parts.push(`gewählt: ${block.chosen}`);
   if (block.hits_dropped?.length) parts.push(`verworfen: ${block.hits_dropped.join(', ')}`);
   if (fellBack) parts.push(`Regeln, weil: ${reason}`);

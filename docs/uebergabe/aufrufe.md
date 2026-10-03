@@ -379,7 +379,7 @@ Fehler kommen als HTTP-Status mit JSON in `detail`, etwa bei einem unbekannten T
 | Status | wann |
 |---|---|
 | 401 | `API_KEYS` ist gesetzt und der Header `X-API-Key` fehlt oder passt nicht |
-| 404 | Thema nicht in den Archiven (`resolution.alternatives` schlägt andere vor), Sammlung, Knoten oder Template unbekannt |
+| 404 | Thema nicht in den Archiven (`resolution.alternatives` schlägt andere vor), oder nach dem LLM passt keiner der Artikel, die die Regeln fanden (dann ein Fach oder ein genaueres Thema angeben; D85), Sammlung, Knoten oder Template unbekannt |
 | 413 | Körper größer als erlaubt (`REQUEST_BODY_MAX_BYTES`) |
 | 422 | ein Feld oder eine Kombination ist nicht erlaubt, etwa `knowledge_collection_id` ohne Teil 1; Körper kein UTF-8-JSON |
 | 429 | mehr als `RATE_LIMIT` Anfragen je Minute |

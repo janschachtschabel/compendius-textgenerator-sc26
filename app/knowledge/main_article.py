@@ -112,8 +112,9 @@ def choose_main_article(
             overview=overview,
         )
         if articles is not None and overview is not None:
-            asked = chooser is not None and chooser.report.offered > 0
-            articles.main = resolution.title == overview and resolution.method == CHOSEN_BY_LLM and not asked
+            # the overview took the rules' place: where they missed the topic, or where the chooser rejected all (A01)
+            chose = chooser is not None and chooser.report.offered > 0 and not chooser.report.rejected
+            articles.main = resolution.title == overview and resolution.method == CHOSEN_BY_LLM and not chose
         return resolution, chooser.report if chooser is not None else None, articles
 
     if node is None or node.kind != "material":

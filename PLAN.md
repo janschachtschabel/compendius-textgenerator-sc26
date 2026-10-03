@@ -2118,6 +2118,16 @@ API.
   Semikolon. In den 80 Artikeln fallen die Löcher von 1.593 auf 124, 3.331 von 3.847 Gleichungen stehen in Absätzen,
   die in den Korpus kommen (vorher keine), und diese Artikel geben 5.770 statt 4.624 Absätze in den Korpus, weil ihre
   Einleitungen jetzt ganze Sätze sind.
+- **D85 (2026-10-03)** Audit A01: Sagt die KI-Artikelwahl, dass keiner der Kandidaten passt, fällt auch der Artikel
+  der Regeln weg (Jan: „wenn die ki sagt der artikel passt nicht sollten sie wahrscheinlich raus weil wir sonst falsche
+  artikel risikieren oder ? prüfe das mit tests nach“). Gemessen an 215 Themen (M63, `balanced` und `best-quality`,
+  OpenAI direkt): Das Urteil fiel bei 4 und 5 Themen, nur bei mehrdeutigen Einzelwörtern ohne Fach, und der behaltene
+  Artikel war eine zufällige erste Bedeutung - dreimal unpassend („Stamm (Familienname)“, „Funktion (Objekt)“, „Netz
+  (Textilie)“), viermal vertretbar („Leiter (Gerät)“, „Elektrische Spannung“, „Schloss (Architektur)“, „Bank“). Jetzt
+  nimmt die Übersicht der Frage N den Platz ein, wenn das Archiv sie als Artikel hat („Funktion (Mathematik)“,
+  „Kreditinstitut“); sonst hat das Thema keinen Artikel, und die 404 sagt, dass nach dem LLM keiner passt, rät zu einem
+  Fach oder einem genaueren Thema und nennt die verworfenen Artikel unter `resolution.alternatives`. Der Bericht der
+  Artikelwahl hat dafür `rejected`. Keine Gold-Anfrage bekam das Urteil (91 und 92 von 94 richtig wie zuvor).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

@@ -6,6 +6,7 @@ from typing import Any
 
 from app.domain.models import Resolution
 from app.knowledge.node_article import NodeArticleReport, node_block
+from app.sources.zim.registry import CHOSEN_BY_LLM
 
 
 class PartsUnavailableError(RuntimeError):
@@ -30,6 +31,10 @@ NO_MATERIAL_ARTICLE = (
     "Beschreibung führen zu einem; topic angeben, oder article_choice llm lässt das LLM das Thema bestimmen"
 )
 NO_ARTICLE_AFTER_LLM = "Zu diesem Material fanden weder das LLM noch die Regeln einen Artikel; topic angeben"
+NO_FITTING_MEANING = (
+    "Kein Artikel passt nach dem LLM zum Thema: ein Fach (subject) oder ein genaueres Thema angeben; "
+    "resolution.alternatives nennt die verworfenen Artikel"
+)
 
 
 class TopicNotFoundError(LookupError):
@@ -50,6 +55,8 @@ class TopicNotFoundError(LookupError):
     def detail(self) -> dict[str, Any]:
         """The body of the 404, alike for every endpoint: why, the resolution and, for a material, its search."""
         body: dict[str, Any] = {"message": NOT_FOUND, "resolution": self.resolution.model_dump()}
+        if self.resolution.method == CHOSEN_BY_LLM:  # the LLM found that no candidate of the rules fits (A01)
+            body["message"] = NO_FITTING_MEANING
         if self.node is not None:
             body["node_article"] = node_block(self.node)
             if self.from_material and self.node.named == "":

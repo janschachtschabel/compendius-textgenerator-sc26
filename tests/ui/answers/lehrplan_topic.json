@@ -60,6 +60,7 @@
     "offered": 1,
     "chosen": "Optik",
     "named": null,
+    "rejected": false,
     "fallback": null,
     "hits_checked": 6,
     "hits_dropped": [],

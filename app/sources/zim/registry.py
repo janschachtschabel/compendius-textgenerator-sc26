@@ -41,8 +41,9 @@ GUESSED = frozenset({"suggestion", "search"})  # resolution methods that reach a
 NODE_ORIGIN = "node"  # the article of a material sent along with a topic (D47)
 NAMED_ORIGIN = "named"  # an article the LLM named for the topic with its overview (D63)
 # article_choice=llm (D35): gets the (title, opening) candidates of an unsure resolution and answers with the index
-# of one, or with a title of its own, or with neither
+# of one, or with a title of its own, or with neither; NONE_FITS is the verdict that no candidate fits (A01)
 ArticleChooser = Callable[[Sequence[tuple[str, str]]], tuple[int | None, str | None]]
+NONE_FITS = -1
 
 
 def misses_topic(resolution: Resolution) -> bool:
@@ -164,7 +165,8 @@ class ZimRegistry:
         sure resolutions it checked turned wrong (M35).
 
         ``overview`` is the overview article the LLM named for the topic (D63): it replaces the rules' article where
-        they missed the topic (``misses_topic``), and then the chooser is not asked.
+        they missed the topic (``misses_topic``), and then the chooser is not asked. Where the chooser finds that no
+        candidate fits (A01), the overview takes the rules' place as well, and without one the topic has no article.
         """
         resolution = self._resolve_by_rules(topic, context, query, terms)
         if overview is not None and misses_topic(resolution) and self._take_overview(resolution, overview):
@@ -172,7 +174,7 @@ class ZimRegistry:
         if chooser is None or not resolution.resolved:
             return resolution
         if not resolution.confident or (thorough and self._has_meanings(resolution)):
-            self._let_choose(resolution, chooser)
+            self._let_choose(resolution, chooser, overview)
         return resolution
 
     def _has_meanings(self, resolution: Resolution) -> bool:
@@ -208,7 +210,7 @@ class ZimRegistry:
         self._take(resolution, article, archive, method=CHOSEN_BY_LLM, confident=False)
         return True
 
-    def _let_choose(self, resolution: Resolution, chooser: ArticleChooser) -> None:
+    def _let_choose(self, resolution: Resolution, chooser: ArticleChooser, overview: str | None = None) -> None:
         """Let the chooser decide an unsure resolution; its answer replaces the rules' article when it is one.
 
         The candidates are the meanings of the disambiguation page in their order, or else the rules' article
@@ -236,6 +238,9 @@ class ZimRegistry:
         if not candidates:
             return
         index, named = chooser(candidates)
+        if index == NONE_FITS:
+            self._reject(resolution, overview)
+            return
         chosen, source = None, archive
         if index is not None and 0 <= index < len(articles):
             chosen = articles[index]
@@ -249,6 +254,21 @@ class ZimRegistry:
             others = [t for t in resolution.alternatives if t != chosen.title]
             resolution.alternatives = [t for t in [resolution.title, *others] if t][:8]
         self._take(resolution, chosen, source, method=CHOSEN_BY_LLM, confident=False)
+
+    def _reject(self, resolution: Resolution, overview: str | None) -> None:
+        """The chooser found that none of the rules' candidates fits (A01): they all go, and the overview the LLM
+        named takes the place where the archive has it as an article; else the topic has no article.
+
+        Measured over 215 topics (M63): only bare words with several meanings and no subject got this verdict, and the
+        rules had kept a random meaning - "Stamm (Familienname)", "Funktion (Objekt)", "Netz (Textilie)".
+        """
+        if overview is not None and self._take_overview(resolution, overview):
+            return
+        if resolution.title is not None:
+            others = [t for t in resolution.alternatives if t != resolution.title]
+            resolution.alternatives = [resolution.title, *others][:8]
+        resolution.title = resolution.path = resolution.project = None
+        resolution.method, resolution.confident = CHOSEN_BY_LLM, False
 
     def _resolve_by_rules(
         self, topic: str, context: Sequence[str], query: str | None, terms: Sequence[str]
