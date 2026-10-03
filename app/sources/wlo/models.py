@@ -1,4 +1,5 @@
-"""Records read from edu-sharing collections (PLAN.md 6.1) and the licence policy for verbatim reuse (6.3).
+"""Records read from edu-sharing collections (PLAN.md 6.1) and the display names of their licences. A licence only
+labels a material: every material counts, whatever its licence (D70).
 
 Field names follow what the WLO repository returned on 2026-09-17 (``tests/fixtures/wlo``): vocabulary
 values come as URIs with a ``*_DISPLAYNAME`` twin, the material link sits in ``ccm:wwwurl`` or, for

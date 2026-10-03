@@ -171,7 +171,7 @@ def _by_source(
             score *= PREFERRED_SOURCE_BOOST
 
     if source is not None and source.role is SourceRole.MATERIAL and source.project in slot.source_preference:
-        # A paragraph of a reusable collection material counts as evidence for the blocks that want
+        # A paragraph of a collection material, whatever its licence (D70), counts as evidence for the blocks that want
         # materials (Bildung, Praxis in sc26); the ranker still orders those blocks among themselves. The
         # score starts at the confidence threshold, so the rule holds whatever threshold is configured.
         score = context.confident_score + (1 - context.confident_score) * min(score, 1.0)
