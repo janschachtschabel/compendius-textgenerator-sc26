@@ -3483,3 +3483,107 @@ Einmal-Container einmal mit dem Code vor und einmal mit dem Code nach D87:
 - Glossar (Test): *Der Pate* ist kein Unterbegriff von „Der Prozess“ mehr, *Der Prozess (1962)* bleibt einer.
 
 **Ergebnis:** gebaut (D87). Rohdaten: `m66_themenstaemme.json`.
+
+## M67 Was die Belegprüfung durchlässt (Audit F01, 04.10.2026)
+
+F01 des externen Audits vom 03.10.: Die Belegprüfung der schreibenden Profile (`drop_unsupported`) vergleicht die
+Wortstämme und Zahlen eines Satzes mit den Absätzen, die er zitiert; „Die Erde ist keine Kugel [1]“ besteht gegen „Die
+Erde ist eine Kugel“, ebenso vertauschte Zahlen und ein Minus. Vorgeschlagen waren Regeln für Verneinung und Vorzeichen.
+Ob solche Sätze in echten Texten vorkommen und was die Regeln träfen, misst `mc_belegpruefung.py`: best-quality-generated
+(Vorgabe seit D82) zu 40 Themen über OpenAI direkt, jeder Aufruf der Prüfung mit dem Text des Modells und den zitierten
+Absätzen festgehalten (Median 29,5 s je Thema; 123 Sätze ohne Deckung wurden wie immer zu Modellwissen). Stehen blieben
+2.802 Sätze mit Beleg; 304 davon verneinen. `mc_belegpruefung_auswertung.py` prüft drei Regeln:
+
+| Regel | Treffer | von den Gutachtern als Widerspruch erkannt |
+|---|---|---|
+| `neg_absatz`: Satz verneint, keiner der zitierten Absätze tut es | 64 | 0 von 64 (A und B); 47 bis 53 gedeckt, der Rest nicht gedeckt |
+| `neg_satz`: Satz und ähnlichster Belegsatz unterscheiden sich in der Verneinung | 299 | 3 von 80 gezogenen der 235, die nur sie trifft (beide gleich) |
+| `vorzeichen`: negative Zahl, deren Betrag der Beleg nur ohne Minus nennt | 0 | - |
+
+Der Bogen war geschichtet - alle 64 Treffer der engen Regel, 80 der 235 Treffer nur der weiten, 150 der 2.503 übrigen
+Sätze -, gemischt und ohne Angabe der Regel; zwei Claude-Subagenten urteilten je Satz *gedeckt*, *widerspricht* oder
+*nicht gedeckt* (gleiches Urteil bei 284 von 294). Unter den 150 übrigen fand keiner einen Widerspruch. Hochgerechnet
+(Hájek über die Schichten) widersprechen etwa 9 der 2.802 Sätze ihrem Beleg, 0,3 %, rund 0,2 Sätze je Text; nicht gedeckt
+sind 1,6 % (B) bis 3,1 % (A). Die drei Widersprüche sind Fehldeutungen, keine umgedrehte Verneinung: „obwohl“ statt
+„weil“ (Sonnenkorona), ein Zeitpunkt vor statt nach 1900 (Dampfmaschine), eine im 17. Jahrhundert noch bevorzugte
+Teilchentheorie als widerlegt (Licht).
+
+**Ergebnis:** keine Regel gebaut (D91). Die enge Regel hätte nur richtige Sätze getroffen, die weite für etwa 9
+Widersprüche rund 290 richtige Sätze ihrer Belegnummer beraubt (in best-quality-generated würden sie zu Modellwissen).
+Negative Zahlen schreibt das Modell nicht. Rohdaten (Sätze, Regeln, Urteile; Belege nur der Widersprüche):
+`m67_belegpruefung.json`.
+
+## M68 Der Filter gegen Cookie-Hinweise an echten Materialtexten (Audit F08, 04.10.2026)
+
+F08: `paragraphs_from_text` verwarf jede Zeile eines Materialtexts, in der „cookie“ oder „consent“ steht, „Cookies sind
+kleine Textdateien …“ also auch, und bei einem Text ohne Zeilenumbruch den ganzen Text. `mc_cookie_filter.py` liest
+die Texte (`textContent`) der Materialien, die die öffentliche Suche des WLO-Staging-Repositorys zu fünf Wörtern findet,
+ohne Anmeldung: 201 Materialien, 151 mit Text (Cookies 51, Datenschutz 18, Medienkompetenz 8, Optik 37, Photosynthese
+37). `mc_cookie_filter_auswertung.py` zählt die Zeilen ab 40 Zeichen, die ein Filter verwirft:
+
+| Filter | verworfene Zeilen | in Materialien | davon Einwilligungstext |
+|---|---|---|---|
+| alt: jede Zeile mit cookie/consent | 1 | 1 | 1 (LEIFI: „Wir nutzen Cookies und ähnliche Technologien, um Ihnen …“) |
+| neu: `is_consent_notice` | 154 | 52 | 154 |
+
+Die 51 Materialien eines Verlags, die die Suche zu „Cookies“ fand, tragen alle den Text seines Einwilligungsdialogs, je
+dreimal „Ein Teil der von diesem Anbieter erhobenen Daten dient der Personalisierung sowie der Messung der
+Werbewirksamkeit. Der Anbieter kann IP-Adressen für die Erfolgsmessung und Personalisierung von Werbung nutzen.“ - ohne
+das Wort Cookie; der alte Filter ließ sie als Absätze in Teil 1. Fachtext über Cookies enthielt die Stichprobe nicht; die
+Zeilen mit Einwilligung, Zustimmung oder Datenschutz, die der neue Filter stehen lässt, sind Fachtext (Bildrechte nach
+dem KUG). Weitere Reste fremder Seiten kommen vor, sind aber keine Einwilligung: die Hinweise eines eingebetteten
+Videoplayers in 17 der 37 Optik-Texte („Videos, die du dir ansiehst, werden möglicherweise zum TV-Wiedergabeverlauf
+hinzugefügt …“), Fehlermeldungen beim Teilen, die Browserwarnung von PeerTube.
+
+**Ergebnis:** gebaut (D91). Ein Hinweis gilt als Einwilligungstext, wenn die Seite selbst spricht („wir“, „unsere“,
+„diese Website“) oder ihren Leser siezt („Ihnen“, „Ihre Auswahl“) und dabei Cookies nennt, oder wenn er Wendungen eines
+Einwilligungsdialogs trägt (Datenschutzeinstellungen, „Informationen auf einem Gerät“, die des Verlags oben); geprüft
+wird je Stück eines Textes ohne Zeilenumbruch statt je ganzer Zeile. Rohdaten: `m68_cookie_filter.json`.
+
+## M69 Wie oft der Hauptartikel den Korpusdeckel füllt (Audit F02, 04.10.2026)
+
+F02: `segment_corpus` füllt `CORPUS_MAX_CHUNKS` (400) nach Rängen - Hauptartikel und Zwilling, dann Materialien und der
+Artikel eines Knotens, dann benannte und verlinkte Nebenartikel, zuletzt Volltexttreffer -, innerhalb einer Quelle von
+vorn. Im Gegenbeispiel des Audits (Hauptartikel 500 Absätze) bekam kein Nebenartikel einen Platz. `mc_korpusdeckel.py`
+zählt im Einmal-Container für die 215 Themen von M63 (Korpus von `llm-free`, ohne LLM) die Absätze je Rang vor dem
+Deckel und was jeder Rang bekam; `mc_korpusdeckel_auswertung.py` ordnet die 210 Themen mit Artikel ein:
+
+| Fall | Themen |
+|---|---|
+| Deckel nicht erreicht | 202 |
+| erreicht, jede Nebenquelle behält Absätze | 3 |
+| erreicht, eine oder zwei Nebenquellen ohne Absatz | 5 |
+| Hauptartikel und Zwilling allein über dem Deckel | 0 |
+
+Hauptartikel und Zwilling haben im Median 39 Absätze, höchstens 298 (*Erster Weltkrieg*). Wo der Deckel greift, kürzt
+`_share` die verlinkten Nebenartikel gleichmäßig (bei *Erster Weltkrieg* je 18 Absätze von *Grabenkrieg*, *Gaskrieg*,
+*Luftkrieg*, *Seekrieg*), und die Volltexttreffer am Ende fallen weg: fachfremde wie *Normalleistung (REFA)* oder zwei
+FFH-Gebiete bei der *Europäischen Union*, aber auch passende wie *Geoengineering* und *Kohlenstoffzyklus* bei der
+*Globalen Erwärmung* oder *Privatrecht* beim *Römischen Reich*. Ein langer Hauptartikel selbst wurde nie gekürzt.
+
+**Ergebnis:** nicht geändert (D91). Der Fall des Audits kam in 210 Themen nicht vor; der Deckel greift bei 4 % der
+Themen und trifft dann die Treffer der Volltextsuche, die ohnehin den letzten Rang haben. `audit.chunks_truncated`
+nennt die Zahl schon. Rohdaten: `m69_korpusdeckel.json`.
+
+## M70 Lange Eingaben: Artikel vor oder nach der Themenformulierung (Audit F05, 04.10.2026)
+
+F05: Die Artikelwahl läuft vor der Themenformulierung (D72); eine lange Eingabe oder eine Frage geht als Text in die
+Auflösung, und fände sie nichts, endete die Anfrage mit 404, bevor das formulierte Thema helfen könnte.
+`mc_lange_eingaben.py` läuft 20 Eingaben einer Lehrkraft („Wie entsteht ein Regenbogen und warum ist er gekrümmt?“,
+„Die Ursachen des Ersten Weltkriegs für eine 9. Klasse“) bis zum Korpus, ohne zu schreiben: wie heute, und mit dem
+Thema, das die KI dabei formulierte, als Eingabe - so, als käme die Formulierung zuerst.
+
+- best-quality-generated (OpenAI direkt): keine Eingabe ohne Artikel; die KI nennt die Übersicht aus der Frage selbst
+  (Verfahren `llm` bei allen 20): *Photosynthese*, *Regenbogen*, *Gewaltenteilung*, *Folgen der globalen Erwärmung in
+  Deutschland*. Mit dem formulierten Thema bleibt der Artikel bei 18 gleich; „Wie wird aus einer Raupe ein
+  Schmetterling?“ findet *Metamorphose (Zoologie)* statt *Schmetterlinge*, „Gefahren und Chancen sozialer Netzwerke für
+  Jugendliche“ *Soziale Medien* statt *Soziales Netzwerk (Internet)*.
+- llm-free (Regeln, keine Formulierung): ebenfalls kein 404, aber nach eigener Durchsicht bei etwa der Hälfte ein
+  sachfremder Artikel: *Mond* für den Regenbogen, *Antikörper* für die Verdauung, *Reliance (Schiff, 1920)* für die
+  Ursachen des Ersten Weltkriegs, *Das Erdbeben in Chili* für Erdbeben, *Inquisitionsverfahren* für die
+  Gewaltenteilung; passend etwa *Photosynthese*, *Bruchrechnung*, *Primzahl*.
+
+**Ergebnis:** nicht gebaut (D91). Wo die KI formuliert, findet sie den Artikel schon aus der Eingabe; die umgekehrte
+Reihenfolge änderte 2 von 20 Artikeln, einen davon zum besseren. Die Schwäche liegt bei den Regeln ohne KI, wo es keine
+Formulierung gibt; was dort hilft (die Frage auf ihre Stichwörter kürzen, oder ein Hinweis, ein Stichwort anzugeben),
+steht in der Entscheidungsgrundlage des Audits. Rohdaten: `m70_lange_eingaben.json`.

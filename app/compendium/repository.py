@@ -91,6 +91,9 @@ class RepositoryReading:
                 raise RepositoryUnavailableError(f"{NO_REPOSITORY}; repository angeben")
             return base, self.collections
         root = repository_root(repository, self.settings.edu_sharing_allowed_hosts)
+        # The host names the repository, as for the allowlist and the cache keys: the configured address may reach it
+        # another way (scheme, port, path), and a caller can only write https://<host>/edu-sharing/rest (audit
+        # 2026-10-03, F11)
         if self.collections is not None and base and urlsplit(root).hostname == urlsplit(base).hostname:
             return root, self.collections
         with self._foreign_lock:

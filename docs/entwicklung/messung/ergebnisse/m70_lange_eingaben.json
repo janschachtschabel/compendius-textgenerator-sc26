@@ -1,0 +1,1469 @@
+{
+ "note": "M70 (04.10.2026, Audit F05): 20 lange Eingaben (Fragen, Sätze) bis zum Korpus, ohne zu schreiben; wie_heute = die Eingabe als Thema, formuliert = das von der KI formulierte Thema als Eingabe. best-quality-generated über OpenAI direkt (gpt-6-luna), llm-free ohne LLM.",
+ "best-quality-generated": [
+  {
+   "input": "Wie funktioniert die Photosynthese bei Pflanzen?",
+   "wie_heute": {
+    "topic": "Wie funktioniert die Photosynthese bei Pflanzen?",
+    "main": "Photosynthese",
+    "method": "llm",
+    "asked_topic": "Photosynthese bei Pflanzen",
+    "worded": "Photosynthese bei Pflanzen",
+    "named": [
+     "Photosynthese",
+     "Calvin-Zyklus",
+     "Chloroplast",
+     "Chlorophylle",
+     "C4-Pflanze",
+     "Crassulaceen-Säurestoffwechsel"
+    ],
+    "sources": [
+     "Photosynthese",
+     "Photosynthese",
+     "Calvin-Zyklus",
+     "Chloroplast",
+     "Chlorophylle",
+     "C4-Pflanze",
+     "Crassulaceen-Säurestoffwechsel"
+    ]
+   },
+   "formuliert": {
+    "topic": "Photosynthese bei Pflanzen",
+    "main": "Photosynthese",
+    "method": "llm",
+    "asked_topic": "Photosynthese bei Pflanzen",
+    "worded": null,
+    "named": [
+     "Photosynthese",
+     "Calvin-Zyklus",
+     "C4-Pflanze",
+     "Crassulaceen-Säurestoffwechsel",
+     "Chloroplast",
+     "Chlorophylle"
+    ],
+    "sources": [
+     "Photosynthese",
+     "Photosynthese",
+     "Calvin-Zyklus",
+     "C4-Pflanze",
+     "Crassulaceen-Säurestoffwechsel",
+     "Chloroplast",
+     "Chlorophylle"
+    ]
+   }
+  },
+  {
+   "input": "Warum gibt es Jahreszeiten auf der Erde?",
+   "wie_heute": {
+    "topic": "Warum gibt es Jahreszeiten auf der Erde?",
+    "main": "Jahreszeit",
+    "method": "llm",
+    "asked_topic": "Entstehung der Jahreszeiten",
+    "worded": "Entstehung der Jahreszeiten",
+    "named": [
+     "Jahreszeit",
+     "Erde",
+     "Erdachse",
+     "Ekliptik",
+     "Sonnenstand",
+     "Äquinoktium",
+     "Sonnenwende"
+    ],
+    "sources": [
+     "Jahreszeit",
+     "Jahreszeiten",
+     "Erde",
+     "Erdachse",
+     "Ekliptik",
+     "Sonnenstand",
+     "Äquinoktium",
+     "Sonnenwende"
+    ]
+   },
+   "formuliert": {
+    "topic": "Entstehung der Jahreszeiten",
+    "main": "Jahreszeit",
+    "method": "llm",
+    "asked_topic": "Entstehung der Jahreszeiten",
+    "worded": null,
+    "named": [
+     "Jahreszeit",
+     "Erdachse",
+     "Ekliptik",
+     "Äquinoktium",
+     "Sonnenwende",
+     "Insolation (Physik)"
+    ],
+    "sources": [
+     "Jahreszeit",
+     "Jahreszeiten",
+     "Erdachse",
+     "Ekliptik",
+     "Äquinoktium",
+     "Sonnenwende",
+     "Insolation (Physik)"
+    ]
+   }
+  },
+  {
+   "input": "Erkläre den Unterschied zwischen Wetter und Klima",
+   "wie_heute": {
+    "topic": "Erkläre den Unterschied zwischen Wetter und Klima",
+    "main": "Wetter",
+    "method": "llm",
+    "asked_topic": "Unterschied zwischen Wetter und Klima",
+    "worded": "Unterschied zwischen Wetter und Klima",
+    "named": [
+     "Wetter",
+     "Klima",
+     "Klimatologie",
+     "Meteorologie"
+    ],
+    "sources": [
+     "Wetter",
+     "Wetter",
+     "Klima",
+     "Klimatologie",
+     "Meteorologie"
+    ]
+   },
+   "formuliert": {
+    "topic": "Unterschied zwischen Wetter und Klima",
+    "main": "Wetter",
+    "method": "llm",
+    "asked_topic": "Unterschied zwischen Wetter und Klima",
+    "worded": null,
+    "named": [
+     "Wetter",
+     "Klima",
+     "Klimatologie",
+     "Wettervorhersage",
+     "Wetterbeobachtung",
+     "Wetterkarte",
+     "Wetterstation"
+    ],
+    "sources": [
+     "Wetter",
+     "Wetter",
+     "Klima",
+     "Klimatologie",
+     "Wettervorhersage",
+     "Wetterbeobachtung",
+     "Wetterkarte",
+     "Wetterstation"
+    ]
+   }
+  },
+  {
+   "input": "Die Ursachen des Ersten Weltkriegs für eine 9. Klasse",
+   "wie_heute": {
+    "topic": "Die Ursachen des Ersten Weltkriegs für eine 9. Klasse",
+    "main": "Julikrise",
+    "method": "llm",
+    "asked_topic": "Ursachen des Ersten Weltkriegs",
+    "worded": "Ursachen des Ersten Weltkriegs",
+    "named": [
+     "Julikrise",
+     "Imperialismus",
+     "Nationalismus",
+     "Militarismus",
+     "Wettrüsten",
+     "Attentat von Sarajevo"
+    ],
+    "sources": [
+     "Julikrise",
+     "Imperialismus",
+     "Nationalismus",
+     "Militarismus",
+     "Wettrüsten",
+     "Attentat von Sarajevo"
+    ]
+   },
+   "formuliert": {
+    "topic": "Ursachen des Ersten Weltkriegs",
+    "main": "Julikrise",
+    "method": "llm",
+    "asked_topic": "Ursachen des Ersten Weltkriegs",
+    "worded": null,
+    "named": [
+     "Julikrise",
+     "Schlieffen-Plan",
+     "Bündnispolitik Otto von Bismarcks",
+     "Weltpolitik",
+     "Imperialismus",
+     "Nationalismus",
+     "Wettrüsten"
+    ],
+    "sources": [
+     "Julikrise",
+     "Schlieffen-Plan",
+     "Bündnispolitik Otto von Bismarcks",
+     "Weltpolitik",
+     "Imperialismus",
+     "Nationalismus",
+     "Wettrüsten"
+    ]
+   }
+  },
+  {
+   "input": "Wie entsteht ein Regenbogen und warum ist er gekrümmt?",
+   "wie_heute": {
+    "topic": "Wie entsteht ein Regenbogen und warum ist er gekrümmt?",
+    "main": "Regenbogen",
+    "method": "llm",
+    "asked_topic": "Entstehung und Krümmung von Regenbögen",
+    "worded": "Entstehung und Krümmung von Regenbögen",
+    "named": [
+     "Regenbogen",
+     "Brechung (Physik)",
+     "Totalreflexion",
+     "Mie-Streuung"
+    ],
+    "sources": [
+     "Regenbogen",
+     "Regenbogen",
+     "Brechung (Physik)",
+     "Totalreflexion",
+     "Mie-Streuung"
+    ]
+   },
+   "formuliert": {
+    "topic": "Entstehung und Krümmung von Regenbögen",
+    "main": "Regenbogen",
+    "method": "llm",
+    "asked_topic": "Entstehung und Krümmung von Regenbögen",
+    "worded": null,
+    "named": [
+     "Regenbogen",
+     "Optik",
+     "Brechung (Physik)",
+     "Reflexion (Physik)",
+     "Tropfen"
+    ],
+    "sources": [
+     "Regenbogen",
+     "Regenbogen",
+     "Optik",
+     "Brechung (Physik)",
+     "Reflexion (Physik)",
+     "Tropfen"
+    ]
+   }
+  },
+  {
+   "input": "Was passiert bei der Verdauung im menschlichen Körper?",
+   "wie_heute": {
+    "topic": "Was passiert bei der Verdauung im menschlichen Körper?",
+    "main": "Verdauung",
+    "method": "llm",
+    "asked_topic": "Verdauung im menschlichen Körper",
+    "worded": "Verdauung im menschlichen Körper",
+    "named": [
+     "Verdauung",
+     "Mund",
+     "Speiseröhre",
+     "Magen",
+     "Dünndarm",
+     "Dickdarm",
+     "Leber",
+     "Bauchspeicheldrüse",
+     "Galle"
+    ],
+    "sources": [
+     "Verdauung",
+     "Verdauung",
+     "Mund",
+     "Speiseröhre",
+     "Magen",
+     "Dünndarm",
+     "Dickdarm",
+     "Leber",
+     "Bauchspeicheldrüse",
+     "Galle"
+    ]
+   },
+   "formuliert": {
+    "topic": "Verdauung im menschlichen Körper",
+    "main": "Verdauung",
+    "method": "llm",
+    "asked_topic": "Verdauung im menschlichen Körper",
+    "worded": null,
+    "named": [
+     "Verdauung",
+     "Mundhöhle",
+     "Speiseröhre",
+     "Magen",
+     "Dünndarm",
+     "Dickdarm",
+     "Leber",
+     "Bauchspeicheldrüse",
+     "Darmflora"
+    ],
+    "sources": [
+     "Verdauung",
+     "Verdauung",
+     "Mundhöhle",
+     "Speiseröhre",
+     "Magen",
+     "Dünndarm",
+     "Dickdarm",
+     "Leber",
+     "Bauchspeicheldrüse",
+     "Darmflora"
+    ]
+   }
+  },
+  {
+   "input": "Welche Rolle spielte Martin Luther bei der Reformation?",
+   "wie_heute": {
+    "topic": "Welche Rolle spielte Martin Luther bei der Reformation?",
+    "main": "Reformation",
+    "method": "llm",
+    "asked_topic": "Rolle Martin Luthers bei der Reformation",
+    "worded": "Rolle Martin Luthers bei der Reformation",
+    "named": [
+     "Reformation",
+     "Martin Luther",
+     "95 Thesen",
+     "Rechtfertigung (Theologie)",
+     "Lutherbibel",
+     "Reichstag zu Worms (1521)",
+     "Schmalkaldischer Bund"
+    ],
+    "sources": [
+     "Reformation",
+     "Reformation",
+     "Martin Luther",
+     "95 Thesen",
+     "Rechtfertigung (Theologie)",
+     "Lutherbibel",
+     "Reichstag zu Worms (1521)",
+     "Schmalkaldischer Bund"
+    ]
+   },
+   "formuliert": {
+    "topic": "Rolle Martin Luthers bei der Reformation",
+    "main": "Reformation",
+    "method": "llm",
+    "asked_topic": "Rolle Martin Luthers bei der Reformation",
+    "worded": null,
+    "named": [
+     "Reformation",
+     "Martin Luther",
+     "95 Thesen",
+     "Lutherbibel",
+     "Reichstag zu Worms (1521)",
+     "Lutherische Orthodoxie"
+    ],
+    "sources": [
+     "Reformation",
+     "Reformation",
+     "Martin Luther",
+     "95 Thesen",
+     "Lutherbibel",
+     "Reichstag zu Worms (1521)",
+     "Lutherische Orthodoxie"
+    ]
+   }
+  },
+  {
+   "input": "Bruchrechnung mit ungleichen Nennern für Klasse 6",
+   "wie_heute": {
+    "topic": "Bruchrechnung mit ungleichen Nennern für Klasse 6",
+    "main": "Bruchrechnung",
+    "method": "llm",
+    "asked_topic": "Bruchrechnung mit ungleichen Nennern",
+    "worded": "Bruchrechnung mit ungleichen Nennern",
+    "named": [
+     "Bruchrechnung",
+     "Hauptnenner"
+    ],
+    "sources": [
+     "Bruchrechnung",
+     "Bruchrechnung",
+     "Hauptnenner"
+    ]
+   },
+   "formuliert": {
+    "topic": "Bruchrechnung mit ungleichen Nennern",
+    "main": "Bruchrechnung",
+    "method": "llm",
+    "asked_topic": "Bruchrechnung mit ungleichen Nennern",
+    "worded": null,
+    "named": [
+     "Bruchrechnung",
+     "Hauptnenner",
+     "Kleinstes gemeinsames Vielfaches"
+    ],
+    "sources": [
+     "Bruchrechnung",
+     "Bruchrechnung",
+     "Hauptnenner",
+     "Kleinstes gemeinsames Vielfaches"
+    ]
+   }
+  },
+  {
+   "input": "Wie funktioniert ein Elektromotor?",
+   "wie_heute": {
+    "topic": "Wie funktioniert ein Elektromotor?",
+    "main": "Elektromotor",
+    "method": "llm",
+    "asked_topic": "Funktionsweise eines Elektromotors",
+    "worded": "Funktionsweise eines Elektromotors",
+    "named": [
+     "Elektromotor",
+     "Gleichstrommaschine",
+     "Drehstrommaschine",
+     "Drehstrom-Asynchronmaschine",
+     "Synchronmaschine",
+     "Kommutator (Elektrotechnik)",
+     "Drehfeld",
+     "Lorentzkraft",
+     "Elektromagnetische Induktion"
+    ],
+    "sources": [
+     "Elektromotor",
+     "Gleichstrommaschine",
+     "Drehstrommaschine",
+     "Drehstrom-Asynchronmaschine",
+     "Synchronmaschine",
+     "Kommutator (Elektrotechnik)",
+     "Drehfeld",
+     "Lorentzkraft",
+     "Elektromagnetische Induktion"
+    ]
+   },
+   "formuliert": {
+    "topic": "Funktionsweise eines Elektromotors",
+    "main": "Elektromotor",
+    "method": "llm",
+    "asked_topic": "Funktionsweise eines Elektromotors",
+    "worded": null,
+    "named": [
+     "Elektromotor",
+     "Drehstrommaschine",
+     "Gleichstrommaschine",
+     "Drehstrom-Asynchronmaschine",
+     "Synchronmaschine",
+     "Lorentzkraft",
+     "Magnetismus",
+     "Elektromagnetische Induktion"
+    ],
+    "sources": [
+     "Elektromotor",
+     "Drehstrommaschine",
+     "Gleichstrommaschine",
+     "Drehstrom-Asynchronmaschine",
+     "Synchronmaschine",
+     "Lorentzkraft",
+     "Magnetismus",
+     "Elektromagnetische Induktion"
+    ]
+   }
+  },
+  {
+   "input": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+   "wie_heute": {
+    "topic": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "main": "Soziales Netzwerk (Internet)",
+    "method": "llm",
+    "asked_topic": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "worded": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "named": [
+     "Soziales Netzwerk (Internet)",
+     "Soziale Medien",
+     "Cyber-Mobbing",
+     "Datenschutz",
+     "Sexting",
+     "Internetabhängigkeit",
+     "Medienkompetenz"
+    ],
+    "sources": [
+     "Soziales Netzwerk (Internet)",
+     "Soziale Medien",
+     "Cyber-Mobbing",
+     "Datenschutz",
+     "Sexting",
+     "Internetabhängigkeit",
+     "Medienkompetenz"
+    ]
+   },
+   "formuliert": {
+    "topic": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "main": "Soziale Medien",
+    "method": "llm",
+    "asked_topic": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "worded": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "named": [
+     "Soziale Medien",
+     "Soziales Netzwerk (Internet)",
+     "Cyber-Mobbing",
+     "Sexting",
+     "Datenschutz",
+     "Medienkompetenz",
+     "Soziale Unterstützung"
+    ],
+    "sources": [
+     "Soziale Medien",
+     "Soziale Medien",
+     "Soziales Netzwerk (Internet)",
+     "Cyber-Mobbing",
+     "Sexting",
+     "Datenschutz",
+     "Medienkompetenz",
+     "Soziale Unterstützung"
+    ]
+   }
+  },
+  {
+   "input": "Wie arbeiten Lunge und Herz beim Sport zusammen?",
+   "wie_heute": {
+    "topic": "Wie arbeiten Lunge und Herz beim Sport zusammen?",
+    "main": "Herz",
+    "method": "llm",
+    "asked_topic": "Zusammenarbeit von Lunge und Herz beim Sport",
+    "worded": "Zusammenarbeit von Lunge und Herz beim Sport",
+    "named": [
+     "Herz",
+     "Lunge",
+     "Atmung",
+     "Sportmedizin",
+     "Ausdauertraining"
+    ],
+    "sources": [
+     "Herz",
+     "Herz",
+     "Lunge",
+     "Atmung",
+     "Sportmedizin",
+     "Ausdauertraining"
+    ]
+   },
+   "formuliert": {
+    "topic": "Zusammenarbeit von Lunge und Herz beim Sport",
+    "main": "Herz",
+    "method": "llm",
+    "asked_topic": "Zusammenarbeit von Lunge und Herz beim Sport",
+    "worded": "Zusammenarbeit von Lunge und Herz beim Sport",
+    "named": [
+     "Herz",
+     "Lunge",
+     "Blutkreislauf",
+     "Atmung",
+     "Sportmedizin",
+     "Ausdauertraining"
+    ],
+    "sources": [
+     "Herz",
+     "Herz",
+     "Lunge",
+     "Blutkreislauf",
+     "Atmung",
+     "Sportmedizin",
+     "Ausdauertraining"
+    ]
+   }
+  },
+  {
+   "input": "Warum ist der Regenwald wichtig für das Klima der Erde?",
+   "wie_heute": {
+    "topic": "Warum ist der Regenwald wichtig für das Klima der Erde?",
+    "main": "Regenwald",
+    "method": "llm",
+    "asked_topic": "Bedeutung des Regenwalds für das Erdklima",
+    "worded": "Bedeutung des Regenwalds für das Erdklima",
+    "named": [
+     "Regenwald",
+     "Tropischer Regenwald",
+     "Klima",
+     "Kohlenstoffdioxid",
+     "Kohlenstoffzyklus",
+     "Evapotranspiration",
+     "Amazonas-Regenwald"
+    ],
+    "sources": [
+     "Regenwald",
+     "Regenwald",
+     "Tropischer Regenwald",
+     "Klima",
+     "Kohlenstoffdioxid",
+     "Kohlenstoffzyklus",
+     "Evapotranspiration",
+     "Amazonas-Regenwald"
+    ]
+   },
+   "formuliert": {
+    "topic": "Bedeutung des Regenwalds für das Erdklima",
+    "main": "Regenwald",
+    "method": "llm",
+    "asked_topic": "Bedeutung des Regenwalds für das Erdklima",
+    "worded": null,
+    "named": [
+     "Regenwald",
+     "Tropischer Regenwald",
+     "Kohlenstoffzyklus",
+     "Kohlenstoffdioxid",
+     "Klimawandel",
+     "Amazonas-Regenwald",
+     "Evapotranspiration",
+     "Biodiversität"
+    ],
+    "sources": [
+     "Regenwald",
+     "Regenwald",
+     "Tropischer Regenwald",
+     "Kohlenstoffzyklus",
+     "Kohlenstoffdioxid",
+     "Klimawandel",
+     "Amazonas-Regenwald",
+     "Evapotranspiration",
+     "Biodiversität"
+    ]
+   }
+  },
+  {
+   "input": "Die Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+   "wie_heute": {
+    "topic": "Die Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "main": "Weimarer Republik",
+    "method": "llm",
+    "asked_topic": "Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "worded": "Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "named": [
+     "Weimarer Republik",
+     "Novemberrevolution",
+     "Rat der Volksbeauftragten",
+     "Friedensvertrag von Versailles",
+     "Weimarer Nationalversammlung",
+     "Weimarer Verfassung",
+     "Spartakusaufstand",
+     "Kapp-Putsch",
+     "Dolchstoßlegende"
+    ],
+    "sources": [
+     "Weimarer Republik",
+     "Weimarer Republik",
+     "Novemberrevolution",
+     "Rat der Volksbeauftragten",
+     "Friedensvertrag von Versailles",
+     "Weimarer Nationalversammlung",
+     "Weimarer Verfassung",
+     "Spartakusaufstand",
+     "Kapp-Putsch",
+     "Dolchstoßlegende"
+    ]
+   },
+   "formuliert": {
+    "topic": "Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "main": "Weimarer Republik",
+    "method": "llm",
+    "asked_topic": "Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "worded": "Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "named": [
+     "Weimarer Republik",
+     "Novemberrevolution",
+     "Abdankung Wilhelms II.",
+     "Rat der Volksbeauftragten",
+     "Wahl zur Deutschen Nationalversammlung",
+     "Weimarer Nationalversammlung",
+     "Weimarer Verfassung",
+     "Friedensvertrag von Versailles",
+     "Spartakusaufstand"
+    ],
+    "sources": [
+     "Weimarer Republik",
+     "Weimarer Republik",
+     "Novemberrevolution",
+     "Abdankung Wilhelms II.",
+     "Rat der Volksbeauftragten",
+     "Wahl zur Deutschen Nationalversammlung",
+     "Weimarer Nationalversammlung",
+     "Weimarer Verfassung",
+     "Friedensvertrag von Versailles",
+     "Spartakusaufstand"
+    ]
+   }
+  },
+  {
+   "input": "Wie wird aus einer Raupe ein Schmetterling?",
+   "wie_heute": {
+    "topic": "Wie wird aus einer Raupe ein Schmetterling?",
+    "main": "Schmetterlinge",
+    "method": "llm",
+    "asked_topic": "Entwicklung vom Raupen- zum Schmetterlingsstadium",
+    "worded": "Entwicklung vom Raupen- zum Schmetterlingsstadium",
+    "named": [
+     "Schmetterlinge",
+     "Puppe (Insekt)"
+    ],
+    "sources": [
+     "Schmetterlinge",
+     "Schmetterlinge",
+     "Puppe (Insekt)"
+    ]
+   },
+   "formuliert": {
+    "topic": "Entwicklung vom Raupen- zum Schmetterlingsstadium",
+    "main": "Metamorphose (Zoologie)",
+    "method": "llm",
+    "asked_topic": "Entwicklung vom Raupen- zum Schmetterlingsstadium",
+    "worded": null,
+    "named": [
+     "Metamorphose (Zoologie)",
+     "Schmetterlinge",
+     "Puppe (Insekt)",
+     "Imago (Zoologie)"
+    ],
+    "sources": [
+     "Metamorphose (Zoologie)",
+     "Schmetterlinge",
+     "Puppe (Insekt)",
+     "Imago (Zoologie)"
+    ]
+   }
+  },
+  {
+   "input": "Was sind Primzahlen und wie findet man sie?",
+   "wie_heute": {
+    "topic": "Was sind Primzahlen und wie findet man sie?",
+    "main": "Primzahl",
+    "method": "llm",
+    "asked_topic": "Primzahlen",
+    "worded": "Primzahlen",
+    "named": [
+     "Primzahl",
+     "Sieb des Eratosthenes",
+     "Probedivision",
+     "Primfaktorzerlegung",
+     "Mersenne-Zahl"
+    ],
+    "sources": [
+     "Primzahl",
+     "Primzahl",
+     "Sieb des Eratosthenes",
+     "Probedivision",
+     "Primfaktorzerlegung",
+     "Mersenne-Zahl"
+    ]
+   },
+   "formuliert": {
+    "topic": "Primzahlen",
+    "main": "Primzahl",
+    "method": "title",
+    "asked_topic": "Primzahlen",
+    "worded": null,
+    "named": [
+     "Primzahl",
+     "Primfaktorzerlegung",
+     "Sieb des Eratosthenes",
+     "Primzahlsatz",
+     "Riemannsche Vermutung",
+     "Mersenne-Zahl",
+     "Primzahlzwilling"
+    ],
+    "sources": [
+     "Primzahl",
+     "Primzahl",
+     "Primfaktorzerlegung",
+     "Sieb des Eratosthenes",
+     "Primzahlsatz",
+     "Riemannsche Vermutung",
+     "Mersenne-Zahl",
+     "Primzahlzwilling"
+    ]
+   }
+  },
+  {
+   "input": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+   "wie_heute": {
+    "topic": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "main": "Romantik",
+    "method": "llm",
+    "asked_topic": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "worded": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "named": [
+     "Romantik",
+     "Lyrik",
+     "Joseph von Eichendorff",
+     "Sehnsucht (Eichendorff)"
+    ],
+    "sources": [
+     "Romantik",
+     "Romantik",
+     "Lyrik",
+     "Joseph von Eichendorff",
+     "Sehnsucht (Eichendorff)"
+    ]
+   },
+   "formuliert": {
+    "topic": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "main": "Romantik",
+    "method": "llm",
+    "asked_topic": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "worded": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "named": [
+     "Romantik",
+     "Lyrik",
+     "Joseph von Eichendorff",
+     "Sehnsucht (Eichendorff)",
+     "In einem kühlen Grunde",
+     "Aus dem Leben eines Taugenichts"
+    ],
+    "sources": [
+     "Romantik",
+     "Romantik",
+     "Lyrik",
+     "Joseph von Eichendorff",
+     "Sehnsucht (Eichendorff)",
+     "In einem kühlen Grunde",
+     "Aus dem Leben eines Taugenichts"
+    ]
+   }
+  },
+  {
+   "input": "Wie funktioniert die Gewaltenteilung in Deutschland?",
+   "wie_heute": {
+    "topic": "Wie funktioniert die Gewaltenteilung in Deutschland?",
+    "main": "Gewaltenteilung",
+    "method": "llm",
+    "asked_topic": "Gewaltenteilung in Deutschland",
+    "worded": "Gewaltenteilung in Deutschland",
+    "named": [
+     "Gewaltenteilung",
+     "Grundgesetz für die Bundesrepublik Deutschland",
+     "Deutscher Bundestag",
+     "Bundesrat (Deutschland)",
+     "Bundesregierung (Deutschland)",
+     "Bundespräsident (Deutschland)",
+     "Bundesverfassungsgericht",
+     "Judikative"
+    ],
+    "sources": [
+     "Gewaltenteilung",
+     "Gewaltenteilung",
+     "Grundgesetz für die Bundesrepublik Deutschland",
+     "Deutscher Bundestag",
+     "Bundesrat (Deutschland)",
+     "Bundesregierung (Deutschland)",
+     "Bundespräsident (Deutschland)",
+     "Bundesverfassungsgericht",
+     "Judikative"
+    ]
+   },
+   "formuliert": {
+    "topic": "Gewaltenteilung in Deutschland",
+    "main": "Gewaltenteilung",
+    "method": "llm",
+    "asked_topic": "Gewaltenteilung in Deutschland",
+    "worded": null,
+    "named": [
+     "Gewaltenteilung",
+     "Grundgesetz für die Bundesrepublik Deutschland",
+     "Deutscher Bundestag",
+     "Bundesrat (Deutschland)",
+     "Bundesregierung (Deutschland)",
+     "Bundesverfassungsgericht",
+     "Bundespräsident (Deutschland)",
+     "Judikative"
+    ],
+    "sources": [
+     "Gewaltenteilung",
+     "Gewaltenteilung",
+     "Grundgesetz für die Bundesrepublik Deutschland",
+     "Deutscher Bundestag",
+     "Bundesrat (Deutschland)",
+     "Bundesregierung (Deutschland)",
+     "Bundesverfassungsgericht",
+     "Bundespräsident (Deutschland)",
+     "Judikative"
+    ]
+   }
+  },
+  {
+   "input": "Was versteht man unter nachhaltiger Landwirtschaft?",
+   "wie_heute": {
+    "topic": "Was versteht man unter nachhaltiger Landwirtschaft?",
+    "main": "Nachhaltige Landwirtschaft",
+    "method": "llm",
+    "asked_topic": "Nachhaltige Landwirtschaft",
+    "worded": "Nachhaltige Landwirtschaft",
+    "named": [
+     "Nachhaltige Landwirtschaft",
+     "Ökologische Landwirtschaft",
+     "Agrarökologie",
+     "Permakultur",
+     "Regenerative Landwirtschaft",
+     "Integrierte Produktion",
+     "Fruchtfolge",
+     "Bodenfruchtbarkeit",
+     "Agroforstwirtschaft"
+    ],
+    "sources": [
+     "Nachhaltige Landwirtschaft",
+     "Ökologische Landwirtschaft",
+     "Agrarökologie",
+     "Permakultur",
+     "Regenerative Landwirtschaft",
+     "Integrierte Produktion",
+     "Fruchtfolge",
+     "Bodenfruchtbarkeit",
+     "Agroforstwirtschaft"
+    ]
+   },
+   "formuliert": {
+    "topic": "Nachhaltige Landwirtschaft",
+    "main": "Nachhaltige Landwirtschaft",
+    "method": "title",
+    "asked_topic": "Nachhaltige Landwirtschaft",
+    "worded": null,
+    "named": [
+     "Nachhaltige Landwirtschaft",
+     "Ökologische Landwirtschaft",
+     "Permakultur",
+     "Agroforstwirtschaft",
+     "Regenerative Landwirtschaft",
+     "Konservierende Bodenbearbeitung",
+     "Precision Farming",
+     "Fruchtfolge",
+     "Integrierte Produktion"
+    ],
+    "sources": [
+     "Nachhaltige Landwirtschaft",
+     "Ökologische Landwirtschaft",
+     "Permakultur",
+     "Agroforstwirtschaft",
+     "Regenerative Landwirtschaft",
+     "Konservierende Bodenbearbeitung",
+     "Precision Farming",
+     "Fruchtfolge",
+     "Integrierte Produktion"
+    ]
+   }
+  },
+  {
+   "input": "Welche Folgen hat der Klimawandel für die Landwirtschaft in Deutschland?",
+   "wie_heute": {
+    "topic": "Welche Folgen hat der Klimawandel für die Landwirtschaft in Deutschland?",
+    "main": "Folgen der globalen Erwärmung in Deutschland",
+    "method": "llm",
+    "asked_topic": "Folgen des Klimawandels für die Landwirtschaft in Deutschland",
+    "worded": "Folgen des Klimawandels für die Landwirtschaft in Deutschland",
+    "named": [
+     "Folgen der globalen Erwärmung in Deutschland",
+     "Klimawandel",
+     "Dürre und Hitze in Europa 2018",
+     "Bodenerosion",
+     "Bewässerung"
+    ],
+    "sources": [
+     "Folgen der globalen Erwärmung in Deutschland",
+     "Klimawandel",
+     "Dürre und Hitze in Europa 2018",
+     "Bodenerosion",
+     "Bewässerung"
+    ]
+   },
+   "formuliert": {
+    "topic": "Folgen des Klimawandels für die Landwirtschaft in Deutschland",
+    "main": "Folgen der globalen Erwärmung in Deutschland",
+    "method": "llm",
+    "asked_topic": "Folgen des Klimawandels für die Landwirtschaft in Deutschland",
+    "worded": "Folgen des Klimawandels für die Landwirtschaft in Deutschland",
+    "named": [
+     "Folgen der globalen Erwärmung in Deutschland",
+     "Klimawandel",
+     "Dürre und Hitze in Europa 2018"
+    ],
+    "sources": [
+     "Folgen der globalen Erwärmung in Deutschland",
+     "Klimawandel",
+     "Dürre und Hitze in Europa 2018"
+    ]
+   }
+  },
+  {
+   "input": "Wie entstehen Erdbeben und wie kann man sich schützen?",
+   "wie_heute": {
+    "topic": "Wie entstehen Erdbeben und wie kann man sich schützen?",
+    "main": "Erdbeben",
+    "method": "llm",
+    "asked_topic": "Entstehung von Erdbeben und Schutzmaßnahmen",
+    "worded": "Entstehung von Erdbeben und Schutzmaßnahmen",
+    "named": [
+     "Erdbeben",
+     "Plattentektonik",
+     "Seismologie",
+     "Seismische Wellen",
+     "Richterskala",
+     "Erdbebenvorhersage",
+     "Erdbebensicheres Bauen"
+    ],
+    "sources": [
+     "Erdbeben",
+     "Erdbeben",
+     "Plattentektonik",
+     "Seismologie",
+     "Seismische Wellen",
+     "Richterskala",
+     "Erdbebenvorhersage",
+     "Erdbebensicheres Bauen"
+    ]
+   },
+   "formuliert": {
+    "topic": "Entstehung von Erdbeben und Schutzmaßnahmen",
+    "main": "Erdbeben",
+    "method": "llm",
+    "asked_topic": "Entstehung von Erdbeben und Schutzmaßnahmen",
+    "worded": null,
+    "named": [
+     "Erdbeben",
+     "Plattentektonik",
+     "Seismologie",
+     "Hypozentrum",
+     "Epizentrum",
+     "Richterskala",
+     "Mercalliskala",
+     "Erdbebensicheres Bauen"
+    ],
+    "sources": [
+     "Erdbeben",
+     "Erdbeben",
+     "Plattentektonik",
+     "Seismologie",
+     "Hypozentrum",
+     "Epizentrum",
+     "Richterskala",
+     "Mercalliskala",
+     "Erdbebensicheres Bauen"
+    ]
+   }
+  }
+ ],
+ "llm-free": [
+  {
+   "input": "Wie funktioniert die Photosynthese bei Pflanzen?",
+   "wie_heute": {
+    "topic": "Wie funktioniert die Photosynthese bei Pflanzen?",
+    "main": "Photosynthese",
+    "method": "search",
+    "asked_topic": "Wie funktioniert die Photosynthese bei Pflanzen?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Photosynthese",
+     "Photosynthese",
+     "Pflanze",
+     "Bakterien",
+     "Licht",
+     "Chlorophylle",
+     "Kohlenstoffdioxid",
+     "Wasser",
+     "Sauerstoff"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Warum gibt es Jahreszeiten auf der Erde?",
+   "wie_heute": {
+    "topic": "Warum gibt es Jahreszeiten auf der Erde?",
+    "main": "Erde",
+    "method": "search",
+    "asked_topic": "Warum gibt es Jahreszeiten auf der Erde?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Erde",
+     "Erde",
+     "Innerer Aufbau der Erde",
+     "Entstehung der Erde",
+     "Sonne",
+     "Sonnensystem",
+     "Erdatmosphäre",
+     "Erdoberfläche",
+     "Mensch",
+     "Idealisiertes Treibhausmodell"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Erkläre den Unterschied zwischen Wetter und Klima",
+   "wie_heute": {
+    "topic": "Erkläre den Unterschied zwischen Wetter und Klima",
+    "main": "Klima",
+    "method": "search",
+    "asked_topic": "Erkläre den Unterschied zwischen Wetter und Klima",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Klima",
+     "Klima",
+     "Klimageschichte",
+     "Klimawandel",
+     "Klimazone",
+     "Klimasensitivität",
+     "Klimamodell",
+     "Klimatologie",
+     "Klimaklassifikation"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Die Ursachen des Ersten Weltkriegs für eine 9. Klasse",
+   "wie_heute": {
+    "topic": "Die Ursachen des Ersten Weltkriegs für eine 9. Klasse",
+    "main": "Reliance (Schiff, 1920)",
+    "method": "search",
+    "asked_topic": "Die Ursachen des Ersten Weltkriegs für eine 9. Klasse",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Reliance (Schiff, 1920)",
+     "Resolute (Schiff, 1920)",
+     "United American Lines"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Wie entsteht ein Regenbogen und warum ist er gekrümmt?",
+   "wie_heute": {
+    "topic": "Wie entsteht ein Regenbogen und warum ist er gekrümmt?",
+    "main": "Mond",
+    "method": "search",
+    "asked_topic": "Wie entsteht ein Regenbogen und warum ist er gekrümmt?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Mond",
+     "Mond",
+     "Mondsichel",
+     "Mondphase",
+     "Mondbahn",
+     "Mondfinsternis",
+     "Mondvorderseite",
+     "Entstehung des Mondes",
+     "Mondsonde",
+     "Präzession",
+     "Roche-Grenze",
+     "Der Mond und seine Bewegung"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Was passiert bei der Verdauung im menschlichen Körper?",
+   "wie_heute": {
+    "topic": "Was passiert bei der Verdauung im menschlichen Körper?",
+    "main": "Antikörper",
+    "method": "search",
+    "asked_topic": "Was passiert bei der Verdauung im menschlichen Körper?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Antikörper",
+     "Monoklonaler Antikörper",
+     "Antigen",
+     "B-Zell-Rezeptor",
+     "Breitneutralisierende Anti-HIV-Antikörper",
+     "Polyklonaler Antikörper",
+     "Autoantikörper",
+     "Rekombinanter Antikörper",
+     "Immunologie",
+     "Biotest"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Welche Rolle spielte Martin Luther bei der Reformation?",
+   "wie_heute": {
+    "topic": "Welche Rolle spielte Martin Luther bei der Reformation?",
+    "main": "Ursula Cotta",
+    "method": "search",
+    "asked_topic": "Welche Rolle spielte Martin Luther bei der Reformation?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Ursula Cotta",
+     "Eisenach"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Bruchrechnung mit ungleichen Nennern für Klasse 6",
+   "wie_heute": {
+    "topic": "Bruchrechnung mit ungleichen Nennern für Klasse 6",
+    "main": "Bruchrechnung",
+    "method": "search",
+    "asked_topic": "Bruchrechnung mit ungleichen Nennern für Klasse 6",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Bruchrechnung",
+     "Bruchrechnung",
+     "Rechnen",
+     "Kürzen",
+     "Rationale Zahl"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Wie funktioniert ein Elektromotor?",
+   "wie_heute": {
+    "topic": "Wie funktioniert ein Elektromotor?",
+    "main": "Elektromotorische Bremse",
+    "method": "search",
+    "asked_topic": "Wie funktioniert ein Elektromotor?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Elektromotorische Bremse",
+     "Widerstandsbremse",
+     "Nutzbremse",
+     "Elektromotor"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+   "wie_heute": {
+    "topic": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "main": "764 (Netzwerk)",
+    "method": "search",
+    "asked_topic": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "764 (Netzwerk)"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Wie arbeiten Lunge und Herz beim Sport zusammen?",
+   "wie_heute": {
+    "topic": "Wie arbeiten Lunge und Herz beim Sport zusammen?",
+    "main": "Herz",
+    "method": "search",
+    "asked_topic": "Wie arbeiten Lunge und Herz beim Sport zusammen?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Herz",
+     "Herz",
+     "Herzfrequenz",
+     "Herzmuskel",
+     "Herzbeutel",
+     "Blut",
+     "Wirbeltiere",
+     "Säugetiere",
+     "Geschlinge",
+     "Vene"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Warum ist der Regenwald wichtig für das Klima der Erde?",
+   "wie_heute": {
+    "topic": "Warum ist der Regenwald wichtig für das Klima der Erde?",
+    "main": "Erde",
+    "method": "search",
+    "asked_topic": "Warum ist der Regenwald wichtig für das Klima der Erde?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Erde",
+     "Erde",
+     "Innerer Aufbau der Erde",
+     "Entstehung der Erde",
+     "Sonne",
+     "Sonnensystem",
+     "Erdatmosphäre",
+     "Erdoberfläche",
+     "Mensch",
+     "Idealisiertes Treibhausmodell"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Die Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+   "wie_heute": {
+    "topic": "Die Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "main": "Haus der Weimarer Republik",
+    "method": "search",
+    "asked_topic": "Die Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Haus der Weimarer Republik",
+     "Weimarer Republik",
+     "Bauhaus-Museum",
+     "Walter Mühlhausen",
+     "Weimar",
+     "Zeughaus (Weimar)",
+     "Weimarer Nationalversammlung"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Wie wird aus einer Raupe ein Schmetterling?",
+   "wie_heute": {
+    "topic": "Wie wird aus einer Raupe ein Schmetterling?",
+    "main": "Raupe (Schmetterling)",
+    "method": "search",
+    "asked_topic": "Wie wird aus einer Raupe ein Schmetterling?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Raupe (Schmetterling)",
+     "Schmetterlinge",
+     "Afterraupe",
+     "Spanner (Schmetterling)",
+     "Schwärmer (Schmetterling)",
+     "Larve",
+     "Insekten",
+     "Bauchfuß",
+     "Nachschieber",
+     "Maria Sibylla Merian"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Was sind Primzahlen und wie findet man sie?",
+   "wie_heute": {
+    "topic": "Was sind Primzahlen und wie findet man sie?",
+    "main": "Primzahl",
+    "method": "search",
+    "asked_topic": "Was sind Primzahlen und wie findet man sie?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Primzahl",
+     "Primzahl",
+     "Primzahltest",
+     "Primzahlsatz",
+     "Primzahllücke",
+     "Primfaktorzerlegung",
+     "Primzahlpalindrom",
+     "Fermatsche Pseudoprimzahl",
+     "Primzahlgenerator",
+     "Dirichletsche L-Funktion",
+     "Satz von Mertens (Zahlentheorie)",
+     "Einsame Zahl"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+   "wie_heute": {
+    "topic": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "main": "Eichendorffs Lyrik",
+    "method": "search",
+    "asked_topic": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Eichendorffs Lyrik",
+     "Mondnacht (Eichendorff)",
+     "Joseph von Eichendorff",
+     "Wald",
+     "Romantik",
+     "Wünschelrute (Eichendorff)",
+     "Zwielicht (Eichendorff)"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Wie funktioniert die Gewaltenteilung in Deutschland?",
+   "wie_heute": {
+    "topic": "Wie funktioniert die Gewaltenteilung in Deutschland?",
+    "main": "Inquisitionsverfahren",
+    "method": "search",
+    "asked_topic": "Wie funktioniert die Gewaltenteilung in Deutschland?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Inquisitionsverfahren",
+     "Inquisition",
+     "Folter",
+     "Discorsi e dimostrazioni matematiche"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Was versteht man unter nachhaltiger Landwirtschaft?",
+   "wie_heute": {
+    "topic": "Was versteht man unter nachhaltiger Landwirtschaft?",
+    "main": "Hofstelle",
+    "method": "search",
+    "asked_topic": "Was versteht man unter nachhaltiger Landwirtschaft?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Hofstelle",
+     "Bauernhof",
+     "Anerbenrecht",
+     "Hufe"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Welche Folgen hat der Klimawandel für die Landwirtschaft in Deutschland?",
+   "wie_heute": {
+    "topic": "Welche Folgen hat der Klimawandel für die Landwirtschaft in Deutschland?",
+    "main": "Folgen der globalen Erwärmung in Deutschland",
+    "method": "search",
+    "asked_topic": "Welche Folgen hat der Klimawandel für die Landwirtschaft in Deutschland?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Folgen der globalen Erwärmung in Deutschland",
+     "Folgen der globalen Erwärmung",
+     "Klima in Deutschland",
+     "Folgen der globalen Erwärmung für die Gesundheit",
+     "Hochwasser",
+     "Globale Erwärmung",
+     "Baden-Württemberg",
+     "Folgen der globalen Erwärmung in Europa",
+     "Treibhausgas"
+    ]
+   },
+   "formuliert": null
+  },
+  {
+   "input": "Wie entstehen Erdbeben und wie kann man sich schützen?",
+   "wie_heute": {
+    "topic": "Wie entstehen Erdbeben und wie kann man sich schützen?",
+    "main": "Das Erdbeben in Chili",
+    "method": "search",
+    "asked_topic": "Wie entstehen Erdbeben und wie kann man sich schützen?",
+    "worded": null,
+    "named": [],
+    "sources": [
+     "Das Erdbeben in Chili",
+     "Santiago de Chile",
+     "Erdbeben von Lissabon 1755",
+     "Novelle",
+     "Heinrich von Kleist",
+     "Voltaire"
+    ]
+   },
+   "formuliert": null
+  }
+ ]
+}

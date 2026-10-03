@@ -2170,6 +2170,22 @@ API.
   Volltexttreffer, je höchstens 10; dabei ging auch `handle_starttag` des Parsers, durch D84 auf 21 gestiegen, auf 18
   zurück. Verhalten gleich: Auflösung, Quellen und Absätze von 200 Themen in `llm-free` und die Zuordnung am Gold sind
   vor und nach dem Umzug byteweise dieselben.
+- **D91 (2026-10-04)** Externes Audit vom 03.10. (Stand 2.11.0) geprüft (Jan: „falls befunde bestätigt werden bitte
+  selbstständig … beheben. bei verbesserungsvorschlägen prüfen und bewerten und dann entscheidungsgrundlage
+  darstellen“); Bericht mit Prüfstand und Entscheidungsgrundlage in `docs/audits/2026-10-03-audit.md`, Abschnitt 14.
+  Behoben: Eine Antwort der Modellwissensprüfung ohne Urteil zählt nicht mehr als Prüfung (F06, `unchecked`); eine
+  am Seitenlimit oder an einer doppelten Seite gekürzte Sammlungsliste und eine nicht lesbare Untersammlung nennt Teil 3
+  mit Grund, auch aus dem Cache (F07); der Filter der Materialtexte erkennt Einwilligungstexte an der Rede der Seite
+  und den Wendungen eines Einwilligungsdialogs statt am Wort „cookie“ (F08, M68: 154 statt 1 Zeile in 151 Texten, kein
+  Fachtext); eine Teilregeneration prüft den Alttext vor jedem anderen Schritt und lässt die Sätze nur für neue
+  Bausteine wählen (F13); die CI prüft mit `ruff check .` wie dokumentiert (F16). Gemessen und nicht gebaut: Regeln für
+  Verneinung und Vorzeichen in der Belegprüfung (F01, M67: 0,3 % der belegten Sätze widersprechen ihrem Beleg, die enge
+  Regel traf nur richtige Sätze, die weite für etwa 9 Widersprüche rund 290 richtige), ein Anteil des Korpusdeckels für
+  Nebenquellen (F02, M69: der Deckel greift bei 8 von 210 Themen und trifft dann Volltexttreffer, nie den
+  Hauptartikel), die Themenformulierung vor der Artikelwahl (F05, M70: in best-quality-generated kein 404, 18 von 20
+  Artikeln gleich). Dokumentiert: Ausfall des Budgetspeichers (F10), Kandidaten der Satzauswahl (F14), Reichweite von
+  `REQUEST_TIMEOUT_S` (F15); F09 und F11 sind Verhalten wie gewollt, F03, F04, F12, F17 und die Vorschläge der
+  Abschnitte 5 bis 9 liegen bei Jan.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

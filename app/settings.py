@@ -189,7 +189,11 @@ class Settings(BaseSettings):
     # --- LLM (optional, via b-api) -------------------------------------------------------------
     llm_enabled: bool = Field(False, description="Enable b-api usage at all")
     llm_extraction_candidates: int = Field(
-        8, ge=1, le=20, description="Paragraphs offered per block with extraction=llm (rule-based choice first)"
+        8,
+        ge=1,
+        le=20,
+        description="Paragraphs offered per block with extraction=llm: all the rules assigned, then the next best "
+        "up to this number",
     )
     llm_fast_sections: str = Field("sc26_1,sc26_11", description="Slots the LLM writes with generation=llm-fast")
     b_api_key: str = Field("", description="b-api key, sent as X-API-KEY header")

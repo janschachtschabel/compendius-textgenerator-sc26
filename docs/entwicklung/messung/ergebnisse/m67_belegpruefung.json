@@ -1,0 +1,4465 @@
+{
+ "note": "M67 (04.10.2026, Audit F01): best-quality-generated zu 40 Themen über OpenAI direkt (gpt-6-luna); jeder Aufruf der Belegprüfung festgehalten. 2.802 Sätze mit Beleg, die die Prüfung stehen ließ; drei Regeln (neg_absatz, neg_satz, vorzeichen) und ein geschichteter Bogen (alle 64 Treffer von neg_absatz, 80 der 235 Treffer allein von neg_satz, 150 der 2.503 übrigen Sätze), blind von zwei Claude-Subagenten bewertet (gedeckt, widerspricht, nicht_gedeckt). Texte und Belege bleiben außerhalb; hier die Sätze und Urteile.",
+ "themen": [
+  {
+   "thema": "Optik",
+   "hauptartikel": "Optik",
+   "sekunden": 86.8,
+   "bausteine": 10,
+   "ohne_deckung": 0
+  },
+  {
+   "thema": "Photosynthese",
+   "hauptartikel": "Photosynthese",
+   "sekunden": 34.7,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Französische Revolution",
+   "hauptartikel": "Französische Revolution",
+   "sekunden": 31.7,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Klimawandel",
+   "hauptartikel": "Globale Erwärmung",
+   "sekunden": 31.0,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Bruchrechnung",
+   "hauptartikel": "Bruchrechnung",
+   "sekunden": 25.3,
+   "bausteine": 10,
+   "ohne_deckung": 1
+  },
+  {
+   "thema": "Ohmsches Gesetz",
+   "hauptartikel": "Ohmsches Gesetz",
+   "sekunden": 26.8,
+   "bausteine": 10,
+   "ohne_deckung": 3
+  },
+  {
+   "thema": "Datenschutz",
+   "hauptartikel": "Datenschutz",
+   "sekunden": 28.9,
+   "bausteine": 10,
+   "ohne_deckung": 4
+  },
+  {
+   "thema": "Demokratie",
+   "hauptartikel": "Demokratie",
+   "sekunden": 30.0,
+   "bausteine": 10,
+   "ohne_deckung": 3
+  },
+  {
+   "thema": "Zellteilung",
+   "hauptartikel": "Zellteilung",
+   "sekunden": 27.4,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Vulkan",
+   "hauptartikel": "Vulkan",
+   "sekunden": 30.5,
+   "bausteine": 10,
+   "ohne_deckung": 3
+  },
+  {
+   "thema": "Mittelalter",
+   "hauptartikel": "Mittelalter",
+   "sekunden": 28.9,
+   "bausteine": 10,
+   "ohne_deckung": 1
+  },
+  {
+   "thema": "Industrialisierung",
+   "hauptartikel": "Industrialisierung",
+   "sekunden": 28.4,
+   "bausteine": 10,
+   "ohne_deckung": 4
+  },
+  {
+   "thema": "Grundgesetz",
+   "hauptartikel": "Grundgesetz für die Bundesrepublik Deutschland",
+   "sekunden": 28.1,
+   "bausteine": 10,
+   "ohne_deckung": 3
+  },
+  {
+   "thema": "Europäische Union",
+   "hauptartikel": "Europäische Union",
+   "sekunden": 30.3,
+   "bausteine": 10,
+   "ohne_deckung": 5
+  },
+  {
+   "thema": "Magnetismus",
+   "hauptartikel": "Magnetismus",
+   "sekunden": 31.2,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "hauptartikel": "Wasserkreislauf",
+   "sekunden": 25.3,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Römisches Reich",
+   "hauptartikel": "Römisches Reich",
+   "sekunden": 31.4,
+   "bausteine": 10,
+   "ohne_deckung": 5
+  },
+  {
+   "thema": "Kalter Krieg",
+   "hauptartikel": "Kalter Krieg",
+   "sekunden": 30.1,
+   "bausteine": 10,
+   "ohne_deckung": 1
+  },
+  {
+   "thema": "Satz des Pythagoras",
+   "hauptartikel": "Satz des Pythagoras",
+   "sekunden": 25.2,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "hauptartikel": "Wahrscheinlichkeitstheorie",
+   "sekunden": 27.3,
+   "bausteine": 10,
+   "ohne_deckung": 7
+  },
+  {
+   "thema": "Evolution",
+   "hauptartikel": "Evolution",
+   "sekunden": 76.1,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Ökosystem",
+   "hauptartikel": "Ökosystem",
+   "sekunden": 28.2,
+   "bausteine": 10,
+   "ohne_deckung": 5
+  },
+  {
+   "thema": "Erneuerbare Energie",
+   "hauptartikel": "Erneuerbare Energien",
+   "sekunden": 27.9,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Weimarer Republik",
+   "hauptartikel": "Weimarer Republik",
+   "sekunden": 32.2,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Reformation",
+   "hauptartikel": "Reformation",
+   "sekunden": 31.5,
+   "bausteine": 10,
+   "ohne_deckung": 5
+  },
+  {
+   "thema": "Atom",
+   "hauptartikel": "Atom",
+   "sekunden": 29.5,
+   "bausteine": 10,
+   "ohne_deckung": 1
+  },
+  {
+   "thema": "Säuren und Basen",
+   "hauptartikel": "Säure-Base-Reaktion",
+   "sekunden": 25.9,
+   "bausteine": 10,
+   "ohne_deckung": 3
+  },
+  {
+   "thema": "Sonnensystem",
+   "hauptartikel": "Sonnensystem",
+   "sekunden": 25.8,
+   "bausteine": 10,
+   "ohne_deckung": 2
+  },
+  {
+   "thema": "Globalisierung",
+   "hauptartikel": "Globalisierung",
+   "sekunden": 30.6,
+   "bausteine": 10,
+   "ohne_deckung": 7
+  },
+  {
+   "thema": "Inflation",
+   "hauptartikel": "Inflation",
+   "sekunden": 30.2,
+   "bausteine": 10,
+   "ohne_deckung": 5
+  },
+  {
+   "thema": "Menschenrechte",
+   "hauptartikel": "Menschenrechte",
+   "sekunden": 25.4,
+   "bausteine": 10,
+   "ohne_deckung": 4
+  },
+  {
+   "thema": "Digitalisierung",
+   "hauptartikel": "Digitalisierung",
+   "sekunden": 34.5,
+   "bausteine": 10,
+   "ohne_deckung": 1
+  },
+  {
+   "thema": "Lyrik",
+   "hauptartikel": "Lyrik",
+   "sekunden": 29.5,
+   "bausteine": 10,
+   "ohne_deckung": 7
+  },
+  {
+   "thema": "Märchen",
+   "hauptartikel": "Märchen",
+   "sekunden": 29.5,
+   "bausteine": 10,
+   "ohne_deckung": 5
+  },
+  {
+   "thema": "Barock",
+   "hauptartikel": "Barock",
+   "sekunden": 27.7,
+   "bausteine": 10,
+   "ohne_deckung": 1
+  },
+  {
+   "thema": "Buddhismus",
+   "hauptartikel": "Buddhismus",
+   "sekunden": 27.9,
+   "bausteine": 10,
+   "ohne_deckung": 1
+  },
+  {
+   "thema": "Islam",
+   "hauptartikel": "Islam",
+   "sekunden": 34.3,
+   "bausteine": 10,
+   "ohne_deckung": 9
+  },
+  {
+   "thema": "Plattentektonik",
+   "hauptartikel": "Plattentektonik",
+   "sekunden": 24.4,
+   "bausteine": 10,
+   "ohne_deckung": 0
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "hauptartikel": "Elektrischer Strom",
+   "sekunden": 27.1,
+   "bausteine": 10,
+   "ohne_deckung": 0
+  },
+  {
+   "thema": "Blutkreislauf",
+   "hauptartikel": "Blutkreislauf",
+   "sekunden": 32.6,
+   "bausteine": 10,
+   "ohne_deckung": 7
+  }
+ ],
+ "saetze_mit_beleg": 2802,
+ "treffer": {
+  "verneinen": 304,
+  "neg_absatz": 64,
+  "neg_satz": 299,
+  "vorzeichen": 0
+ },
+ "bogen": [
+  {
+   "id": 1,
+   "thema": "Mittelalter",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Der scholastische Unterricht verband Vorlesung (lectio) und Disputation .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 2,
+   "thema": "Demokratie",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die drei Gewalten kontrollieren einander, damit keine zu mächtig wird .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 3,
+   "thema": "Digitalisierung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Dazu zählen etwa Retina-Implantate, die mit dem Internet oder einem Navigationssystem verbunden sind .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 4,
+   "thema": "Satz des Pythagoras",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Kontroverse betrifft damit nicht die Gültigkeit des Satzes, sondern die Frage, ob ein Beweis seinen Zusammenhang für Lernende nachvollziehbar macht .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 5,
+   "thema": "Europäische Union",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die gemeinsame Kulturpolitik zielt darauf, die Kulturen der Mitgliedstaaten zu entfalten, ihre nationale und regionale Vielfalt zu wahren und zugleich das gemeinsame kulturelle Erbe hervorzuheben .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 6,
+   "thema": "Römisches Reich",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese Kompetenzen beschreiben Bereiche römischer Provinzialverwaltung, nicht sämtliche Aufgaben einer Provinzverwaltung .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg nennt drei Bereiche römischer Verwaltung, sagt aber nichts darüber, ob es weitere Aufgaben der Provinzverwaltung gab.",
+   "grund_b": "Beleg nennt drei Zuständigkeiten; dass sie nicht alle Aufgaben einer Provinzverwaltung umfassen, steht nicht darin."
+  },
+  {
+   "id": 7,
+   "thema": "Blutkreislauf",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Arterien verzweigen sich in immer kleinere Gefäße und gehen über Arteriolen in Kapillaren über, während der Rückweg über Venolen und Venen verläuft .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 8,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Stochastik ist ein Teilgebiet der Mathematik und umfasst als Oberbegriff die Wahrscheinlichkeitstheorie und die Mathematische Statistik .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 9,
+   "thema": "Europäische Union",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Wegen Streits über die Finanzierung kamen diese Verbände laut Beleg seit ihrer Einführung nicht zum Einsatz .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 10,
+   "thema": "Kalter Krieg",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese Bezeichnung schließt direkte Beteiligung einzelner ausländischer Kräfte nicht aus: Weltkriegserfahrene sowjetische Piloten flogen auf chinesischer Seite MiG-15-Düsenjäger mit nordkoreanischen Hoheitszeichen gegen amerikanische F-86-Jets .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 11,
+   "thema": "Reformation",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese Einteilungen bilden keine durchgehend einheitliche Klassifikation, denn die Täufer grenzten sich auch untereinander ab .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg nennt die gegenseitige Abgrenzung der Täufer, begründet damit aber keine uneinheitliche Klassifikation; Kausalbezug ist Schlussfolgerung.",
+   "grund_b": "Begründung der Uneinheitlichkeit durch die Selbstabgrenzung der Täufer ist eigene Schlussfolgerung, nicht im Beleg."
+  },
+  {
+   "id": 12,
+   "thema": "Mittelalter",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Gegenüberstellung von Vasall und Bauer bezeichnet somit nicht einfach zwei gleichartige Abhängigkeitsverhältnisse, sondern unterschiedliche Positionen innerhalb des Systems .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 13,
+   "thema": "Photosynthese",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die C₃-, C₄- und CAM-Kategorien ordnen verschiedene Strategien der CO₂-Fixierung; sie stehen damit neben, nicht anstelle der Unterscheidung zwischen oxygenischer und anoxygenischer Photosynthese .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg behandelt nur C3/C4/CAM; die Unterscheidung oxygen/anoxygen und ihr Verhältnis dazu kommen nicht vor.",
+   "grund_b": "Beleg erwähnt oxygene/anoxygene Photosynthese nicht; das Verhältnis beider Einteilungen ist eigene Schlussfolgerung."
+  },
+  {
+   "id": 14,
+   "thema": "Lyrik",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Formale und rhetorische Mittel können Wörter, Wortgruppen und Sätze in eine vom Gewohnten abweichende Anordnung bringen und zu vielschichtigen Bedeutungen beitragen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 15,
+   "thema": "Ohmsches Gesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "In der Mess- und Regelungstechnik wird die Temperaturabhängigkeit des elektrischen Widerstands als Messeffekt genutzt, etwa bei Widerstandsthermometern, weiteren Temperatursensoren und thermischen Anemometern .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 16,
+   "thema": "Buddhismus",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Damit wird nicht nur buddhistisches Denken mit westlichen Lehren verglichen; buddhistische Kategorien können zugleich zur Prüfung westlicher Positionen herangezogen werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 17,
+   "thema": "Römisches Reich",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Römische Straßen dienten zugleich dem Handel, der schnellen Verlegung von Soldaten und der Weitergabe wichtiger Nachrichten durch Boten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 18,
+   "thema": "Datenschutz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Maßnahmen sollen Vertraulichkeit, Integrität, Verfügbarkeit und Belastbarkeit dauerhaft sichern sowie die rasche Wiederherstellung von Daten und Zugang nach physischen oder technischen Zwischenfällen ermöglichen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 19,
+   "thema": "Säuren und Basen",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Eine weitere zentrale Ordnung unterscheidet Säuren und Basen nach ihrer Stärke; die dazu verwendeten Bereiche sind grob und unterscheiden sich je nach Literatur .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 20,
+   "thema": "Industrialisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Das Bild einer Arbeiterschaft ohne Ausbildung trifft jedoch nicht auf alle zu: Viele Arbeiter waren Handwerker, gründeten Gewerkschaften und streikten gegen schlechte Behandlung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 21,
+   "thema": "Datenschutz",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Datenschutz und IT-Sicherheit sind daher nicht synonym: Der Datenschutz umfasst auch organisatorische Maßnahmen, während IT-Sicherheit im Beleg auf technische Maßnahmen bezogen wird .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 22,
+   "thema": "Industrialisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Zu den zentralen Tätigkeitsfeldern gehörte die Herstellung von Dampf-, Textil- und Landmaschinen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 23,
+   "thema": "Barock",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "In der Fertigungstechnik wurden Hilfsmittel und Werkzeuge durch empirische und theoretisch-mechanische Erkenntnisse verbessert; die verfügbaren Antriebskräfte entwickelten sich dagegen kaum weiter .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 24,
+   "thema": "Wasserkreislauf",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Flusskraftwerke arbeiten dagegen mit großen Wassermengen und geringerem Gefälle; auch dort treiben Turbinen Generatoren an .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 25,
+   "thema": "Reformation",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Auch ihre Länder, Herrschaften, Rechte und ihr Besitz sollten friedlich belassen werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 26,
+   "thema": "Ohmsches Gesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ein temperaturabhängiger Widerstand kann außerdem als Einschaltstrombegrenzer eingesetzt werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 27,
+   "thema": "Vulkan",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Eine Warnung muss deshalb unter Unsicherheit abwägen: Eine übersehene Gefahr kann Menschenleben kosten, während eine nicht eintretende Prognose erhebliche soziale und wirtschaftliche Folgen haben kann .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg nennt Kosten von Fehlprognosen; Abwägung unter Unsicherheit und Todesopfer durch übersehene Gefahr stehen nicht darin.",
+   "grund_b": "Beleg nennt nur Kosten von Fehlprognosen; Abwägung und Verlust von Menschenleben bei übersehener Gefahr fehlen."
+  },
+  {
+   "id": 28,
+   "thema": "Klimawandel",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Geoengineering wird etwa als vermeintliche Lösung propagiert, die Maßnahmen zur Emissionsminderung verzögern könnte .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 29,
+   "thema": "Globalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Globalisierung bezeichnet die Zunahme weltweiter Verflechtungen in Bereichen wie Wirtschaft, Politik, Kultur, Umwelt und Kommunikation zwischen Individuen, Gesellschaften, Institutionen und Staaten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 30,
+   "thema": "Blutkreislauf",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Arterie ist nicht gleichbedeutend mit sauerstoffreichem Gefäß: Im Körperkreislauf führen Arterien überwiegend sauerstoffreiches Blut, die vom rechten Herzen zur Lunge führenden Lungenarterien dagegen sauerstoffarmes Blut .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 31,
+   "thema": "Islam",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Einteilungen sind nicht immer einheitlich: Klassische Darstellungen ordnen die Schia in unterschiedlich viele Hauptgruppen und Untergruppen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 32,
+   "thema": "Lyrik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die letzten Verse der Sure 26 setzen bestimmte altarabische Dichter kritisch mit Wahrsagern und Umherirrenden gleich, deren Einfluss auf das Stammesleben als missbräuchlich dargestellt wird; zugleich wird einigen Dichtern Rechtgläubigkeit zugestanden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 33,
+   "thema": "Bruchrechnung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Taschenrechner und Computer können umfangreiche Rechnungen übernehmen, ersetzen aber nicht die Prüfung, ob ein Ergebnis zur Aufgabenstellung passt .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg sagt nur, dass Rechner Arbeit ersparen; Prüfung der Passung zur Aufgabenstellung fehlt.",
+   "grund_b": "Beleg sagt nur, dass Rechner Arbeit ersparen; die Prüfung der Passung zur Aufgabe fehlt."
+  },
+  {
+   "id": 34,
+   "thema": "Barock",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Welche zeitlichen Einordnungen und Unterteilungen werden verwendet, und wo bleiben ihre Grenzen unscharf ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 35,
+   "thema": "Optik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "„Licht“ bezeichnet dabei meist den sichtbaren Bereich des elektromagnetischen Spektrums von etwa 380 bis 780 Nanometern; auch angrenzende unsichtbare Bereiche wie Infrarot und Ultraviolett werden teilweise einbezogen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 36,
+   "thema": "Europäische Union",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Beamtenstellen sind nicht mit den befristeten oder anderweitig abgegrenzten Beschäftigungsformen gleichzusetzen, die ebenfalls zum EU-Personal gehören .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 37,
+   "thema": "Photosynthese",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese Einteilung beschreibt unterschiedliche Eigenschaften des Photosyntheseprozesses und bildet keine einzige, durchgehend hierarchische Klassifikation .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Belege nennen zwei Unterscheidungen, sagen aber nichts über deren Verhältnis oder eine fehlende Hierarchie.",
+   "grund_b": "Belege nennen zwei Unterscheidungen, sagen aber nichts darüber, ob sie eine hierarchische Klassifikation bilden."
+  },
+  {
+   "id": 38,
+   "thema": "Märchen",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Märchenerzähler geben Märchen mündlich weiter; eine historische Sonderform war der fahrende Mundwerker oder Bänkelsänger, der zum fahrenden Volk gehörte .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 39,
+   "thema": "Weimarer Republik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Großstadt bot durch ihre Anonymität und das vielfältige Medien- und Warenangebot größere Spielräume für persönliche Lebensformen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 40,
+   "thema": "Ökosystem",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Ein Wald kann beispielsweise wegen seiner Speicherfunktion für Kohlenstoff, seines Beitrags zum Erosionsschutz und zur Grundwasserneubildung oder wegen der Nutzung von Holz und Wild erhalten werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 41,
+   "thema": "Sonnensystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Wie bewegt sich die Sonne ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 42,
+   "thema": "Blutkreislauf",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Einordnung einzelner Messwerte verlangt deshalb Vorsicht: Eine Messung während körperlicher Aktivität oder Aufregung kann höher ausfallen als eine Messung in Ruhe .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 43,
+   "thema": "Photosynthese",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Kultivierung von Algen in Bioreaktoren wird zur industriellen CO₂-Sequestrierung sowie zur Produktion von Nahrungsmitteln und Brennstoffen eingesetzt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 44,
+   "thema": "Industrialisierung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese Aussagen sind Bestandteile einer gesellschaftstheoretischen Erklärung und keine technische Gesetzmäßigkeit der industriellen Produktion .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_b": "Beleg gibt die Theorie wieder; Einordnung als gesellschaftstheoretisch statt technische Gesetzmäßigkeit steht nicht darin."
+  },
+  {
+   "id": 45,
+   "thema": "Satz des Pythagoras",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Gleichung lässt sich auch zur Prüfung von Seitenlängen nutzen: Sind die Seitenlängen eines Dreiecks bekannt und erfüllt die Summe der Quadrate zweier Seiten das Quadrat der dritten Seite, ist das Dreieck rechtwinklig .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 46,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Bei umfangreicheren Datenbeständen können Bayes-Klassifikatoren eingesetzt werden; sie ordnen Fälle nach theoretischen Entscheidungsregeln mit minimaler Fehlerrate ein .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 47,
+   "thema": "Kalter Krieg",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Eine südkoreanische Kommission begann 2005 mit der Aufarbeitung der Massaker und stellte in einem Zwischenbericht schwere Verbrechen und Menschenrechtsverletzungen an Zivilisten fest .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 48,
+   "thema": "Elektrischer Strom",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Entwicklung der Beziehung I = U/R beruhte auf gezielter Arbeit mit den damals verfügbaren Spannungsquellen und Messgeräten, die für genaue Messungen nur eingeschränkt geeignet waren .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 49,
+   "thema": "Demokratie",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Der Grundsatz wurde vom Bundesverfassungsgericht im Volkszählungsurteil entwickelt und wird auch als Abschottungsgebot bezeichnet .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 50,
+   "thema": "Industrialisierung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Zugleich macht die damalige Normalität harter Kinderarbeit auf dem Land deutlich, dass gesellschaftliche Vorstellungen darüber, welche Arbeit Kindern zugemutet werden kann, nicht allein durch den Wechsel in die Fabrik bestimmt wurden .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg nennt harte Kinderarbeit auf dem Bauernhof als normal; Schluss auf gesellschaftliche Vorstellungen ist Interpretation.",
+   "grund_b": "Beleg nennt harte Kinderarbeit auf dem Hof als normal; der Schluss über gesellschaftliche Vorstellungen ist eigene Deutung."
+  },
+  {
+   "id": 51,
+   "thema": "Bruchrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im angeführten Beispiel lautet der Hauptnenner x(2x + 3)(2x − 3) .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 52,
+   "thema": "Globalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im sozialwissenschaftlichen Verständnis richtet sich Global Governance auf die Suche nach globalen Problemlösungen und auf die Frage, wie globale Probleme ohne Weltregierung bearbeitet werden können .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 53,
+   "thema": "Weimarer Republik",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die im Beleg beschriebene Verbindung kurzfristiger Auslandsverbindlichkeiten mit längerfristig vergebenen Krediten erklärt, warum der Abzug kurzfristiger Gelder die Banken rasch in eine akute Zahlungskrise bringen konnte .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 54,
+   "thema": "Ohmsches Gesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Das ohmsche Gesetz beschreibt den Zusammenhang zwischen der elektrischen Spannung U, der Stromstärke I und dem elektrischen Widerstand R eines Leiters .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 55,
+   "thema": "Grundgesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Artikel 3 enthält den Gleichheitssatz und die Gleichberechtigung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 56,
+   "thema": "Sonnensystem",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Ein ungeeignetes Instrument begrenzt den möglichen Einsatz: Ein Herschelprisma funktioniert nur an einem Refraktor , und die Korona lässt sich nicht mit den beschriebenen Weißlichtverfahren beobachten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 57,
+   "thema": "Französische Revolution",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Sie gewannen politischen Einfluss durch ihre Unterstützung der Jakobiner, verfolgten aber nicht alle dieselben politischen Ziele .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 58,
+   "thema": "Buddhismus",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "June Campbell beschreibt die Beziehungen zu Meistern als ungleich und kritisiert sie als religiös verbrämte sexuelle Ausbeutung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 59,
+   "thema": "Optik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Verbindung von Helligkeit mit Klarheit und Wissen ist verbreitet, ebenso die positive Gegenüberstellung von Licht und Dunkelheit .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 60,
+   "thema": "Satz des Pythagoras",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Aussage vergleicht deren Flächen, nicht die Seitenlängen der Quadrate .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 61,
+   "thema": "Französische Revolution",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Als „Sansculotten“ wurden die mit Piken bewaffneten Pariser bezeichnet, die infolge dieser Mobilisierung auf den Straßen und Tribünen sichtbar wurden .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "gedeckt",
+   "grund_a": "Beleg beschreibt bewaffnete Sansculotten im Stadtbild, definiert den Begriff aber nicht über diese Mobilisierung."
+  },
+  {
+   "id": 62,
+   "thema": "Elektrischer Strom",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Neben dem Einphasen-Leiterstrom gibt es verkettete, phasenverschobene Wechselströme .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 63,
+   "thema": "Buddhismus",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Eine verbreitete Einteilung unterscheidet drei Hauptrichtungen: Theravada, Mahayana und Vajrayana; der Theravada gilt dabei als die heute noch bestehende Tradition aus dem Hinayana .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 64,
+   "thema": "Wasserkreislauf",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Wasser ist nicht auf die Erde beschränkt: Einige Wissenschaftler halten sein Vorkommen auf weiteren Himmelskörpern des Sonnensystems für wahrscheinlich .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Erster Teil stellt als Tatsache dar, was der Beleg nur als Vermutung einiger Wissenschaftler nennt.",
+   "grund_b": "Beleg gibt nur die Vermutung einiger Wissenschaftler wieder; „nicht auf die Erde beschränkt“ behauptet Gewissheit."
+  },
+  {
+   "id": 65,
+   "thema": "Industrialisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Arbeit war jedoch häufig schwer und schmutzig und gefährdete die Gesundheit, insbesondere die von Kindern .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 66,
+   "thema": "Kalter Krieg",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Jugoslawien und Albanien lösten sich jedoch von der Sowjetunion, sodass politische Gemeinsamkeiten nicht in jedem Fall eine dauerhafte Zugehörigkeit zum sowjetisch geführten Block bedeuteten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 67,
+   "thema": "Wasserkreislauf",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Verdunstung ist ein Phasenübergang von flüssigem Wasser zu Wasserdampf und unterliegt den Gesetzen der Thermodynamik .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 68,
+   "thema": "Erneuerbare Energie",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Akkumulatoren und Redox-Flow-Zellen speichern Strom elektrochemisch und können in Haushalten oder als großtechnische Speicher eingesetzt werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 69,
+   "thema": "Atom",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Beim Alpha-Zerfall werden zwei Protonen und zwei Neutronen als Helium-Atomkern ausgestoßen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 70,
+   "thema": "Industrialisierung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "In der Theorie führt diese Entwicklung zur Verelendung und zum Zusammenschluss der Proletarier im Kampf gegen ihre Ausbeuter .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 71,
+   "thema": "Barock",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "An Höfen organisierten Kapellmeister die Musik: Zu ihren Aufgaben gehörten Personalangelegenheiten, die Beschaffung des Repertoires, Proben und Aufführungen sowie, bei vorhandener Hofoper, Regie und Inszenierung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 72,
+   "thema": "Bruchrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Wie werden Brüche addiert, subtrahiert, multipliziert und dividiert, und wie lässt sich ein Kehrwert bilden ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 73,
+   "thema": "Reformation",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im selben Jahr kamen im deutschsprachigen Raum etwa 500.000 Schriften und Flugschriften Luthers auf den Markt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 74,
+   "thema": "Evolution",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Der Sozialdarwinismus deutete Selektion als allgemeinen „Kampf ums Überleben“ und erhob ihn zur Maxime politischen Handelns; daraus lässt sich jedoch weder eine politische Pflicht noch eine moralische Rangordnung von Menschen ableiten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 75,
+   "thema": "Evolution",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Umweltbedingte Varianten können zwar den Fortpflanzungserfolg beeinflussen, verändern die Evolution aber nicht unmittelbar, wenn sie nicht erblich sind .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 76,
+   "thema": "Mittelalter",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Hinzu kamen in manchen Städten die Aufhebung der Leibeigenschaft, Zoll- und Münzrechte sowie das Recht, die Stadt einzufrieden und zu verteidigen .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg nennt alle als wesentliche Merkmale des Stadtbegriffs; die Einschränkung auf manche Städte steht nicht darin.",
+   "grund_b": "Beleg nennt diese Rechte als wesentliche Merkmale des Stadtbegriffs; eine Einschränkung auf manche Städte fehlt."
+  },
+  {
+   "id": 77,
+   "thema": "Evolution",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Dabei erhielt der Evolutionsbegriff außerhalb der Biologie unterschiedliche Bedeutungen; seit etwa 1970 geschah dies vermehrt unter Verwendung technizistischer und physikalischer Begriffe .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 78,
+   "thema": "Kalter Krieg",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im August 1968 marschierten Warschauer-Pakt-Staaten in die ČSSR ein; dabei starben 98 Tschechen und Slowaken sowie etwa 50 Soldaten der Interventionstruppen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 79,
+   "thema": "Menschenrechte",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Artikel 25 GG erklärt nur die allgemeinen Regeln des Völkerrechts automatisch zu Bestandteilen des Bundesrechts .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 80,
+   "thema": "Klimawandel",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Welche Veränderungen des Klimas werden mit dem Begriff Klimawandel bezeichnet, und worin unterscheiden sie sich von Wetteränderungen ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 81,
+   "thema": "Ökosystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Aquatische Ökosysteme werden nach dem Salzgehalt weiter in marine Ökosysteme der Meere und limnische Ökosysteme der stehenden und fließenden Süßwasserlebensräume unterteilt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 82,
+   "thema": "Barock",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Dissonanzen wurden zunehmend als unpassender Ton im Akkord statt als Intervall zwischen zwei Stimmen aufgefasst und konnten die Richtung einer harmonischen Entwicklung bestimmen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 83,
+   "thema": "Atom",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Im heutigen wissenschaftlichen Sprachgebrauch bezieht sie sich meist auf die Struktur und Reaktionsweisen der Atomhülle; die Untersuchung des Atomkerns wird als Kernphysik abgegrenzt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 84,
+   "thema": "Vulkan",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Nach der Art des Magmenzufuhrsystems unterscheidet man Zentralvulkane und Spaltenvulkane .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 85,
+   "thema": "Kalter Krieg",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Militärdoktrin war damit nicht bloß auf die Abwehr eines Angriffs ausgerichtet, sondern schloss offensive Kriegsführung ein .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 86,
+   "thema": "Atom",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im 19. Jahrhundert stützten Untersuchungen zur Chemie und zu den Eigenschaften von Gasen die Atomvorstellung empirisch; aus makroskopischen Gaseigenschaften ließ sich damals bereits eine ungefähre Größe und Masse der angenommenen Atome abschätzen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 87,
+   "thema": "Islam",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Sunniten bekennen, Gott habe zwei Hände, zwei Augen und ein Gesicht, fragen dabei aber nicht nach dem Wie (bi-lā kaif) .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 88,
+   "thema": "Digitalisierung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Nach der Umwandlung können digitalisierte Messgrößen von digitaltechnischen Systemen weiterverarbeitet oder gespeichert werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 89,
+   "thema": "Europäische Union",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Pro-Europäer betonen dagegen häufig den Vorteil gemeinschaftlichen Handelns angesichts globaler Herausforderungen und Bedrohungen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 90,
+   "thema": "Barock",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Francesco Gasparini beschrieb Kadenzen im Spätbarock noch anhand eines zweistimmigen Rahmens, wie er auch für die modale Musik der Renaissance verwendet wurde .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 91,
+   "thema": "Märchen",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ihre Varianten gehen auf die mündliche Erzähltradition zurück; sie sind umso zahlreicher, je älter und weiter verbreitet ein Märchen ist .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 92,
+   "thema": "Menschenrechte",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Sie umfassen 17 Oberziele, die durch 169 Unterziele konkretisiert werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 93,
+   "thema": "Römisches Reich",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Welche Bezeichnungen verwendeten die Römer für ihren Herrschaftsbereich und ihren Staat ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 94,
+   "thema": "Märchen",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die schriftliche Fixierung prägte die überlieferten Fassungen: Im 19. Jahrhundert gab es keine festen Regeln zur Sicherung der Authentizität, und die Märchen wurden für ihre Veröffentlichung ausgewählt und bearbeitet .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 95,
+   "thema": "Reformation",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Religiöse Streitfragen sollten durch christliche, freundliche und friedliche Mittel zu einer Einigung gebracht werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 96,
+   "thema": "Industrialisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "In Preußen verbot das Regulativ von 1839 die Fabrikarbeit für Kinder unter zehn Jahren und untersagte Sonn- und Nachtarbeit für 10- bis 16-Jährige .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 97,
+   "thema": "Photosynthese",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Der Gegenstand liegt in der Physiologie und Biochemie ; allgemeine Fragen der Pflanzenkunde, die nicht den photosynthetischen Prozess betreffen, gehören zur Botanik.",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg ordnet Photosynthese Physiologie und Biochemie zu; Abgrenzung zur Botanik fehlt.",
+   "grund_b": "Die Zuordnung allgemeiner Pflanzenkunde zur Botanik steht nicht im Beleg."
+  },
+  {
+   "id": 98,
+   "thema": "Inflation",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Inflation ist in der Volkswirtschaftslehre der Anstieg des allgemeinen Preisniveaus einer Volkswirtschaft innerhalb eines bestimmten Zeitraums, sofern er nicht auf Veränderungen der Mengen oder Qualitäten der Güter und Dienstleistungen zurückgeht .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 99,
+   "thema": "Mittelalter",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Das Spätmittelalter reicht ungefähr von 1250 bis 1500; sein Übergang zur Frühen Neuzeit lässt sich nicht für alle europäischen Regionen einheitlich datieren .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg nennt den Übergang zur Renaissance regional uneinheitlich, nicht den zur Frühen Neuzeit.",
+   "grund_b": "Beleg sagt das über den Übergang zur Renaissance, nicht zur Frühen Neuzeit."
+  },
+  {
+   "id": 100,
+   "thema": "Ohmsches Gesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Für die Experimente im Januar 1826 wurde darin ein Thermoelement aus einem Wismutbügel und Kupferstreifen verwendet; ein Schenkel wurde erwärmt, der andere gekühlt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 101,
+   "thema": "Inflation",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Einzelne Preissteigerungen sind nicht mit Inflation im Sinn eines Anstiegs des allgemeinen Preisniveaus gleichzusetzen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 102,
+   "thema": "Buddhismus",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die begriffliche Ähnlichkeit darf jedoch nicht mit einer Gleichsetzung verwechselt werden: Im Buddhismus ist der von Schopenhauer als „Wille“ bezeichnete Lebensdurst nur einer von mehreren vergänglichen Daseinsfaktoren, während Schopenhauer ihn als das in Raum und Zeit erscheinende „Ding an sich“ versteht .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 103,
+   "thema": "Säuren und Basen",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Säurekonstante Kₛ und die Basenkonstante Kᵦ beschreiben Gleichgewichte von Säuren beziehungsweise Basen in Wasser; Kᵦ ist eine Stoffkonstante und wird vergleichsweise selten verwendet .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 104,
+   "thema": "Vulkan",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Seamount und Guyot werden in diesem Zusammenhang bei den submarinen Vulkanen aufgeführt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 105,
+   "thema": "Mittelalter",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Einordnung bleibt abhängig von Region und Betrachtungsweise: Nord- und Südindien entwickelten sich geschichtlich verschieden, weshalb die Forschung die Bezeichnung „Mittelalter“ nicht überall gleich ansetzt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 106,
+   "thema": "Atom",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Leitfragen sind: Wie unterscheiden sich Atome verschiedener Elemente in Größe, Masse und Reaktionsfähigkeit ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 107,
+   "thema": "Optik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Dabei richtet sie den Blick auf Eigenschaften des Lichts, die durch dessen Teilchennatur erklärt werden, und ergänzt damit die klassische Optik, die geometrische Optik und Wellenoptik umfasst .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 108,
+   "thema": "Ohmsches Gesetz",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Seine Arbeit zielte damit auf eine quantitative Beschreibung, für die zunächst verlässlichere Messmethoden nötig waren .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 109,
+   "thema": "Menschenrechte",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Allgemeine Erklärung wurde mit der Resolution 217 A (III) der UN-Generalversammlung angenommen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 110,
+   "thema": "Ohmsches Gesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Dazu wurde in einer Drehwaage ein kleiner Stabmagnet anstelle des üblichen Probekörpers eingesetzt; die Kraftwirkung eines stromdurchflossenen Drahtes auf den Magneten ließ sich so für verschiedene Drähte untersuchen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 111,
+   "thema": "Reformation",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese Aussage beschreibt keine zeitliche Abfolge, sondern zwei gleichzeitig geltende Perspektiven .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 112,
+   "thema": "Weimarer Republik",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Der Kapp-Putsch im März 1920 scheiterte, nachdem die rechtmäßige Regierung zum Generalstreik aufgerufen hatte und die Ministerialbürokratie den Anordnungen der Putschisten nicht folgte; die Reichswehr hatte sich zuvor als unzuverlässig erwiesen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 113,
+   "thema": "Globalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Aufgrund ihrer hohen Mitgliederzahl ermöglicht die Konvention einen beinahe weltumspannenden Rechtsverkehr .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 114,
+   "thema": "Erneuerbare Energie",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Wasserkraftanlagen sind regelbar und können ihre Stromerzeugung daher an den Bedarf anpassen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 115,
+   "thema": "Zellteilung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Jedes Chromosom besteht in dieser Phase aus einer Chromatide beziehungsweise einer DNA-Helix .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 116,
+   "thema": "Europäische Union",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ob kulturelle Zusammenarbeit tatsächlich ein europäisches Identitätsbewusstsein stärkt, bleibt offen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 117,
+   "thema": "Weimarer Republik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Am 9. November wurden in Berlin sowohl eine parlamentarisch-demokratische als auch eine sozialistische Republik ausgerufen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 118,
+   "thema": "Satz des Pythagoras",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ein Interesse der Babylonier an einem mathematischen Beweis lässt sich aus den Quellen jedoch nicht erkennen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 119,
+   "thema": "Reformation",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Religionsformel schützte die Reichsstände, die sich zur Augsburgischen Konfession bekannten, davor, wegen ihres Glaubens gewaltsam angegriffen oder zur Aufgabe ihrer Religion und Kirchenordnungen gezwungen zu werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 120,
+   "thema": "Islam",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Mohammed gilt im Islam als Gottes Gesandter und Siegel der Propheten; der Koran wird als Gottes Wort verstanden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 121,
+   "thema": "Wasserkreislauf",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Stark vereinfacht wird er durch die Grundgleichung N = A + V beschrieben .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 122,
+   "thema": "Magnetismus",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Steigt das äußere Feld, verschieben sich zunächst die Bloch-Wände zugunsten der bereits feldparallel ausgerichteten Bezirke; bei weiterem Anstieg können Bezirke ihre Polung sprunghaft ändern, was als Barkhausen-Sprung bezeichnet wird .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 123,
+   "thema": "Photosynthese",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im Reaktionszentrum fungieren zwei Chlorophylle als primäre Elektronendonatoren, und die Lichtenergie setzt eine Elektronentransportkette in Gang .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 124,
+   "thema": "Vulkan",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ihre Stärke liegt im Durchschnitt zwischen der einer strombolianischen und der einer plinianischen Eruption .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 125,
+   "thema": "Islam",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Viele Muslime in Ländern wie Indonesien und Mali ordneten sich in einer Pew-Umfrage nicht als sunnitisch oder schiitisch ein, sondern bezeichneten sich als „nur Muslime“ .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 126,
+   "thema": "Erneuerbare Energie",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Windkraft und Photovoltaik werden ausdrücklich als solche Quellen genannt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 127,
+   "thema": "Inflation",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Nach der Sichtbarkeit unterscheidet man offene und verdeckte Inflation; letztere kann sich in geringeren Produktmengen oder sinkender Produkt- beziehungsweise Dienstleistungsqualität bei gleichbleibenden Preisen zeigen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 128,
+   "thema": "Märchen",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die genannten Merkmale sind typische Muster, keine ausnahmslos geltenden Regeln für jedes Märchen: Schon die Beschreibung der Figurenkonstellationen lässt ambivalente Tricksterfiguren und Tiere als Ausnahmen erkennen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 129,
+   "thema": "Buddhismus",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Welche Bedeutung haben Meditation und Erfahrungswissen ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 130,
+   "thema": "Bruchrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Diese Bezeichnungen ordnen Zahlschreibweisen und nicht die dargestellten Zahlen selbst zu; dieselbe Zahl kann daher durch Schreibweisen verschiedener Kategorien ausgedrückt werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 131,
+   "thema": "Optik",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Im 17. Jahrhundert wurde deutlich, dass eine Deutung des Lichts als geradlinig fliegende Teilchen Beugung und Interferenz nicht erklären kann .",
+   "urteil_a": "widerspricht",
+   "urteil_b": "widerspricht",
+   "grund_a": "Beleg: Strahlenmodell galt als unvollständig; Newtons Teilchentheorie wurde damals gerade bevorzugt, nicht widerlegt.",
+   "grund_b": "Beleg: Im 17. Jh. galt die Strahlen-Deutung als unvollständig; Newtons Teilchentheorie wurde damals noch favorisiert.",
+   "belege": [
+    "Bereits im 17. Jahrhundert erkannte man, dass die klassische Deutung von Licht als Bündel geradliniger Strahlen unvollständig sein muss. Beugung und Interferenz lassen sich so nicht erklären. Christiaan Huygens bemerkte um 1650, dass eine Lichtausbreitung analog zu Wasserwellen die Phänomene erklären würde. Er formulierte sein Huygenssches Prinzip, welches besagt, dass von jedem Punkt einer beugenden Fläche kugelförmige Elementarwellen ausgehen, die sich überlagern und so die beobachtbaren Beugungseffekte hervorrufen. Zunächst wurde Huygens nicht ernst genommen, da man die Korpuskeltheorie von Isaac Newton favorisierte. Erst im 19. Jahrhundert wurde die Wellentheorie des Lichts (auch als Undulationstheorie bezeichnet) durch das Doppelspaltexperiment von Thomas Young bestätigt. Die Arbeiten"
+   ]
+  },
+  {
+   "id": 132,
+   "thema": "Demokratie",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Eine offene Bürgerkultur kann unter Druck geraten, wenn Teilkulturen sich stark voneinander abgrenzen und nicht mehr in gemeinsame politische Aushandlungen eingebunden werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 133,
+   "thema": "Evolution",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Da die Veränderungen des Erbmaterials breit gestreut und ungezielt sind, ist die Erfolgsquote meist gering .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 134,
+   "thema": "Sonnensystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Proxima Centauri, der sonnennächste individuelle Stern, ist etwa 4,22 Lichtjahre entfernt und wird von Proxima Centauri b umkreist, einem 2016 entdeckten Planeten mit ungefähr Erdmasse, der sich in der habitablen Zone befindet .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "gedeckt",
+   "grund_a": "Beleg nennt nur die Mindestmasse als etwa erdgleich, nicht die tatsächliche Masse des Planeten."
+  },
+  {
+   "id": 135,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Beim Bewerten einer gesundheitlichen Untersuchung genügt es daher nicht, nur die Trefferquote zu betrachten; auch die Häufigkeit des untersuchten Merkmals in der Bevölkerung muss berücksichtigt werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 136,
+   "thema": "Säuren und Basen",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die heutige pH-Messung ist daher an definierte Verfahren und Referenzlösungen gebunden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 137,
+   "thema": "Evolution",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Vorstellung, der Mensch sei keine eigenständige Schöpfung, sondern ein Evolutionsprodukt unter vielen Arten, wurde als Herausforderung für religiöse und philosophische Überzeugungen wahrgenommen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 138,
+   "thema": "Evolution",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im Laufe der folgenden Jahre nahm die Akzeptanz der Evolutionstheorie zu .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 139,
+   "thema": "Islam",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Muslimische Kaufleute aus dem Maghreb trugen ihn zugleich über den Transsaharahandel nach Westafrika, wo sich Orte wie Walata und Timbuktu zu muslimischen Städten entwickelten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 140,
+   "thema": "Inflation",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Diese Unsicherheit erschwert die Entscheidung, ob Unternehmen ihre Produktion ausweiten sollten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 141,
+   "thema": "Grundgesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im Norddeutschen Bund erhielt die Ländervertretung den Namen Bundesrath und musste Gesetzen gemeinsam mit dem direkt gewählten Reichstag zustimmen; dieses System bestand nach der Gründung des Deutschen Reiches 1871 fort .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 142,
+   "thema": "Industrialisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "In Preußen wurde Kinderarbeit 1839 teilweise verboten; für Fabrik- und Bergwerksarbeit galt danach ein Mindestalter von neun Jahren .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 143,
+   "thema": "Digitalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Auf der Adressatenseite stehen Bürgerinnen und Bürger (Government to Citizen, G2C), Unternehmen (Government to Business, G2B) sowie staatliche Einrichtungen untereinander (Government to Government, G2G) .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 144,
+   "thema": "Europäische Union",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Nach dem Ersten Weltkrieg entstanden verschiedene Vorschläge für eine Union europäischer Staaten, darunter die 1922 gegründete Paneuropa-Union; sie führten jedoch nicht zur Bildung eines solchen Zusammenschlusses .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 145,
+   "thema": "Atom",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Einzelne Atome lassen sich wegen ihrer geringen Größe nicht mit Lichtmikroskopen auflösen; ihre direkte Beobachtung wurde zunächst mit Feldionenmikroskopen und später auch mit Rastertunnel- und Elektronenmikroskopen möglich .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 146,
+   "thema": "Erneuerbare Energie",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Damit stehen Klimaschutz und die Schonung fossiler Ressourcen möglichen Nutzungskonflikten um Nahrungsmittel und Kulturlandschaften gegenüber .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 147,
+   "thema": "Kalter Krieg",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "„Warschauer Pakt“ und „Warschauer Vertrag“ sind daher nicht ohne Weiteres als zwei verschiedene Bündnisse zu verstehen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 148,
+   "thema": "Islam",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Diese Systematik geht auf den Gabriel-Hadith in der auf ʿUmar ibn al-Chattāb zurückgeführten Version zurück und dient als Ordnung der dargestellten sunnitischen Glaubenslehren .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 149,
+   "thema": "Plattentektonik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Zu den Beispielen zählen die Marianen, die Alëuten, die Kurilen, die japanischen Inseln sowie die Kleinen und Großen Antillen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 150,
+   "thema": "Evolution",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Mendels Ergebnisse lassen sich jedoch nicht auf alle Merkmale übertragen: Bei Merkmalen wie der Pflanzenhöhe können mehrere Gene und Umwelteinflüsse zusammenwirken .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 151,
+   "thema": "Inflation",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Zentralbanken gehen dabei nicht einheitlich vor: Einige verfolgen ein symmetrisches Inflationsziel, andere greifen ein, sobald die Inflation einen Schwellenwert überschreitet .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 152,
+   "thema": "Menschenrechte",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Allgemeine Erklärung der Menschenrechte hingegen ist eine Orientierung gebende Erklärung und keine verbindliche völkerrechtliche Rechtsquelle; ihre Bestimmungen sind als solche nicht einklagbar .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 153,
+   "thema": "Wasserkreislauf",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Bei der Kondensation wird Kondensationsenthalpie frei, die auch als latente Wärme bezeichnet wurde und den Wärmehaushalt der Erde mitprägt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 154,
+   "thema": "Märchen",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Als Erklärungsansätze für solche Übereinstimmungen werden sowohl Jungs Lehre vom kollektiven Unbewussten und den Archetypen als auch die Deutung bestimmter Märchen als verfremdete Darstellungen von Initiationsriten herangezogen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 155,
+   "thema": "Satz des Pythagoras",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Welche Beziehung besteht zwischen diesen Flächeninhalten, für welche Dreiecke gilt der Satz, und wie lässt sich seine Aussage geometrisch verstehen ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 156,
+   "thema": "Plattentektonik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Bei der Subduktion ozeanischer Kruste unter ozeanische Kruste entstehen Tiefseerinnen und vulkanische Bögen; deren über den Meeresspiegel ragende Abschnitte heißen Inselbögen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 157,
+   "thema": "Sonnensystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Sonnenfinsternisse lösten vielfach Furcht aus; im alten China sollte großer Lärm einen Drachen vertreiben, der die Sonne verschlungen habe .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 158,
+   "thema": "Vulkan",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Effusive Tätigkeit bezeichnet das ruhige Ausfließen von Lava; besonders heftige explosive Tätigkeit wird als supervulkanisch bezeichnet .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 159,
+   "thema": "Plattentektonik",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "An konservativen Plattengrenzen wird keine Lithosphäre gebildet oder durch Subduktion in den Erdmantel zurückgeführt; die Platten gleiten dort horizontal aneinander vorbei .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg nennt nur horizontales Vorbeigleiten; dass keine Lithosphäre gebildet oder subduziert wird, steht nicht darin.",
+   "grund_b": "Beleg nennt nur horizontales Vorbeigleiten; dass keine Lithosphäre gebildet oder subduziert wird, steht dort nicht."
+  },
+  {
+   "id": 160,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Bei seltenen Krankheiten können falsch positive Ergebnisse gegenüber echten positiven Befunden stark ins Gewicht fallen; eine hohe Sensitivität allein garantiert daher keine hohe Wahrscheinlichkeit, nach einem positiven Test tatsächlich erkrankt zu sein .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 161,
+   "thema": "Französische Revolution",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Robespierre wandte dagegen ein, bewaffnete Intervention könne einem anderen Volk weder Gesetze noch eine Verfassung aufzwingen; die Angegriffenen würden die Eindringlinge als Feinde zurückschlagen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 162,
+   "thema": "Grundgesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Er vertritt den Bund völkerrechtlich und beglaubigt diplomatische Vertreter .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 163,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "In der Spamerkennung werden charakteristische Wörter einer E-Mail verwendet, um die Wahrscheinlichkeit ihrer Zuordnung zu Spam einzuschätzen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 164,
+   "thema": "Menschenrechte",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Sie gab dem völkerrechtlichen Menschenrechtsgedanken erstmals einen konkreten Ausdruck, war jedoch nicht völkerrechtlich verbindlich .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 165,
+   "thema": "Römisches Reich",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Zenturiatskomitien konnten den Gesetzestext annehmen oder ablehnen, aber nicht verändern .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 166,
+   "thema": "Märchen",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Märchen sind kurze Prosatexte beziehungsweise Erzählungen, die von wundersamen Begebenheiten berichten und deren Handlung weder zeitlich noch örtlich festgelegt ist .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 167,
+   "thema": "Optik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Bei Beschwerden sind die Umwelt- und Immissionsschutzbehörden der jeweiligen Bundesländer zuständig .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 168,
+   "thema": "Digitalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Sie macht jedoch nicht alle möglichen künftigen Nutzungen des Originals verfügbar: Eine hochauflösende Fotografie kann etwa das Lesen einer Pergamenthandschrift ermöglichen, aber nicht deren physikalische oder chemische Altersbestimmung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 169,
+   "thema": "Sonnensystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Modellrechnungen zufolge könnte sie noch etwa 500 Millionen Jahre ähnlich wie heute belebt bleiben; danach dürfte ein instabiler Treibhauseffekt die Temperaturen erhöhen und den atmosphärischen Kohlenstoffgehalt stark senken .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 170,
+   "thema": "Ohmsches Gesetz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Bei einem ohmschen Widerstand ist dieser Widerstandswert unabhängig von Spannung, Stromstärke und weiteren Parametern .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 171,
+   "thema": "Globalisierung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Im Alltag zeigt sich Globalisierung etwa darin, dass Waren aus verschiedenen Ländern in Haushalten verwendet werden .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg behandelt Kritik und Chancen der Globalisierung, nicht Waren aus anderen Ländern im Haushalt.",
+   "grund_b": "Beleg behandelt Kritik und Chancen der Globalisierung, nicht ausländische Waren im Haushalt."
+  },
+  {
+   "id": 172,
+   "thema": "Satz des Pythagoras",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Antike Autoren überlieferten unterschiedliche Versionen dieser Erzählung; bei Vitruv stand die Entdeckung des Dreiecks mit den Seitenlängen 3, 4 und 5 im Mittelpunkt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 173,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die mathematische Statistik untersucht solche beobachtungsbasierten Aussagen über das Modell; gemeinsam mit der Wahrscheinlichkeitstheorie gehört sie zur Stochastik .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 174,
+   "thema": "Plattentektonik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Welche Platten bilden die äußere Erdhülle, und wie bewegen sie sich ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 175,
+   "thema": "Atom",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ein Rydberg-Atom besitzt ein Elektron in einem besonders hohen angeregten Energiezustand, in dem es den Kern oder den Atomrumpf in großem Abstand umkreist .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 176,
+   "thema": "Datenschutz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "2019 wurde es um besondere Bedingungen für die Vorbereitung öffentlicher Ehrungen ergänzt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 177,
+   "thema": "Weimarer Republik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Auch in den Parteien blieben sie in den zwanziger Jahren selten und kaum in hohen Ämtern vertreten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 178,
+   "thema": "Mittelalter",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Feudalismus ist ein idealtypisches Beschreibungssystem und keine Aussage, dass jede feudale Gesellschaft alle Merkmale in gleicher Weise aufweist .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_b": "Beleg beschreibt Merkmale einer idealtypischen feudalen Gesellschaft; Aussage über Abweichungen realer Gesellschaften ist eigene Schlussfolgerung."
+  },
+  {
+   "id": 179,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Bei 95 Prozent Sensitivität erkennt der Test 19 Erkrankte, während bei den Gesunden aufgrund einer Spezifität von 99 Prozent ungefähr 1 000 falsch positive Ergebnisse entstehen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 180,
+   "thema": "Demokratie",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese „Essentialisierung“ kann soziale Segmentierung verstärken und politische Konflikte entpolitisieren; Salzborn verbindet sie mit Dynamiken der Entdemokratisierung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 181,
+   "thema": "Blutkreislauf",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Für den Alltag ist außerdem bedeutsam, dass Messwerte nicht allein die gesamte Herz-Kreislauf-Gesundheit abbilden: Das Risiko hängt auch mit weiteren Faktoren wie Rauchen, Diabetes und Fettstoffwechselstörungen zusammen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 182,
+   "thema": "Blutkreislauf",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Gekammerte Herzen könnten sich unter Selektionsdruck entwickelt haben, um Energieverluste durch Rückfluss zu verringern .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 183,
+   "thema": "Kalter Krieg",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Wirtschaftlich waren die Ostblockstaaten seit 1949 im Rat für gegenseitige Wirtschaftshilfe zusammengeschlossen; dieser wirtschaftliche Zusammenschluss war nicht dasselbe wie das Militärbündnis .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 184,
+   "thema": "Digitalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Künstliche Intelligenz und immersive Medien wie Virtual, Augmented und Mixed Reality gelten dabei als Schlüsseltechnologien .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 185,
+   "thema": "Photosynthese",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die beiden Gruppen sind somit durch das Ergebnis ihrer Photosynthese unterschieden, nicht durch eine Einteilung in Pflanzenformen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_b": "Beleg unterscheidet oxygene und anoxygene Photosynthese nach Produkten; Abgrenzung zu Pflanzenformen fehlt."
+  },
+  {
+   "id": 186,
+   "thema": "Evolution",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Das Lehr- und Forschungsgebiet der biologischen Evolution ist die Evolutionsbiologie .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 187,
+   "thema": "Demokratie",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Social Bots können den öffentlichen Meinungsbildungsprozess gefährden und gegebenenfalls die Legitimität demokratischer Wahlen verfälschen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 188,
+   "thema": "Mittelalter",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die jüdische Bevölkerung wurde dabei nicht nur religiös, sondern auch durch politische Maßnahmen und wirtschaftliche Konkurrenz benachteiligt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 189,
+   "thema": "Globalisierung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Dabei müssen nicht nur formelle staatliche Beziehungen, sondern auch die Beiträge zivilgesellschaftlicher und wirtschaftlicher Akteure berücksichtigt werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 190,
+   "thema": "Bruchrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ein ganzzahliger Nenner kann als Bruch mit Nenner 1 aufgefasst werden: (a/b)/c = (a/b)/(c/1) = a/b · 1/c = a/(bc) .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 191,
+   "thema": "Mittelalter",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Bildungswege konnten sich über den Klerus hinaus öffnen, auch wenn Lesen und Schreiben weiterhin nur von einem Teil der Bevölkerung beherrscht wurden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 192,
+   "thema": "Erneuerbare Energie",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Als Kritikpunkte gelten Vollzugsprobleme, insbesondere in Entwicklungsländern, die Unvollständigkeit der Kriterien und mögliche Verlagerungseffekte .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 193,
+   "thema": "Magnetismus",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Ihre relative Permeabilität ist größer als eins und ihre magnetische Suszeptibilität positiv; Materialien mit diesen Eigenschaften und ohne persistierende magnetische Ordnung gelten in der physikalischen Klassifikation als paramagnetisch .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 194,
+   "thema": "Satz des Pythagoras",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Damit ist die Gleichung nicht nur eine Rechenregel für ein bereits als rechtwinklig erkanntes Dreieck, sondern auch ein Kriterium für dessen Rechtwinkligkeit .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 195,
+   "thema": "Barock",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Opernsängerinnen waren als Künstlerinnen anerkannt, galten aber zugleich als außerhalb der Gesellschaft stehend .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 196,
+   "thema": "Plattentektonik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Australien driftet nach Norden und könnte sich unter die Sunda-Inseln schieben, die zu einer neuen Gebirgskette anwachsen könnten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 197,
+   "thema": "Sonnensystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "1802 wurden erstmals dunkle Linien im Sonnenspektrum nachgewiesen; ab 1814 wurden sie systematisch untersucht .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 198,
+   "thema": "Vulkan",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Auf der Venus gibt es nur wenige Hinweise auf gegenwärtigen Vulkanismus und keine Anzeichen für Plattentektonik .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 199,
+   "thema": "Industrialisierung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Watt nutzte die Dampfexpansion, indem er die Ventile vorzeitig schloss: Der eingeschlossene Dampf verrichtete weiter Arbeit, obwohl kein weiterer Dampf in den Zylinder einströmte .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 200,
+   "thema": "Sonnensystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Für eine detaillierte Beobachtung ist auch ein Herschelprisma geeignet; es funktioniert jedoch nur an einem Refraktor .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 201,
+   "thema": "Digitalisierung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Der Begriff wird auch für primär digitale Repräsentationen gebraucht, die etwa mit digitalen Foto-, Video- oder Tonaufzeichnungen erstellt werden; in diesem Fall ist „Digitalisat“ gewöhnlich nicht die Bezeichnung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 202,
+   "thema": "Klimawandel",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Anpassungsfähigkeit ist daher nicht überall gleich; besonders vulnerable Regionen und Gesellschaften haben größere Schwierigkeiten, sich an Folgen des Klimawandels anzupassen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 203,
+   "thema": "Inflation",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "In den meisten Ländern liegt die Aufgabe, den Interbankenzins auf niedrigem Niveau und die Zielinflationsrate bei etwa 2 bis 3 % zu halten, bei der Zentralbank oder einer anderen Währungsbehörde .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 204,
+   "thema": "Wasserkreislauf",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Aussage beschreibt eine wissenschaftliche Einschätzung, keinen gesicherten Nachweis für alle genannten Himmelskörper .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 205,
+   "thema": "Erneuerbare Energie",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Leitfragen sind: Welche Energiequellen erfüllen diese Kriterien, und wodurch unterscheiden sie sich von endlichen fossilen Energiequellen, die sich erst über Millionen Jahre regenerieren ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 206,
+   "thema": "Lyrik",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die lautliche, grafische und syntaktische Gestaltung wirkt damit nicht bloß als äußere Verpackung, sondern kann an der Bedeutungsbildung beteiligt sein .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 207,
+   "thema": "Sonnensystem",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die geringe mittlere Leistungsdichte im Kern im Vergleich zur enormen Gesamtleistung erklärt sich vor allem durch das große Volumen der Sonne .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 208,
+   "thema": "Mittelalter",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Der Grundherr ist gegenüber den Leibeigenen nicht vollkommen souverän darin, Landnutzung zu gewähren oder zu entziehen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 209,
+   "thema": "Klimawandel",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Technische Optionen und Konzepte für eine Energiewende sind grundsätzlich vorhanden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 210,
+   "thema": "Bruchrechnung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Bruchterme, deren Zähler oder Nenner Variablen enthalten können, werden zwar nach sinngemäßen Bruchrechenregeln behandelt, das Rechnen mit ihnen gehört jedoch zur Algebra und nicht zur Bruchrechnung im engeren Sinn .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 211,
+   "thema": "Satz des Pythagoras",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Euklid nahm in den Elementen einen Beweis auf, ohne den Satz namentlich mit Pythagoras zu verbinden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 212,
+   "thema": "Digitalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Big Data könnte individualisierte medizinische Therapien unterstützen; der medizinische Fortschritt wird zudem mit der Aussicht auf längere und gesündere Lebensspannen verbunden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 213,
+   "thema": "Weimarer Republik",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Solange ausländische Gläubiger die kurzfristigen Kredite verlängerten, blieb diese Schwachstelle weniger sichtbar .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Beleg nennt Verlängerung der Kredite und kritische Lage, sagt aber nichts über die Sichtbarkeit der Schwachstelle.",
+   "grund_b": "Beleg nennt Verlängerung bis 1929 und latentes Risiko; dass die Schwachstelle weniger sichtbar blieb, steht nicht da."
+  },
+  {
+   "id": 214,
+   "thema": "Datenschutz",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Als möglicher Mechanismus wird eine vorsorgliche Verhaltensanpassung beschrieben: Wer mit unbekannter Speicherung rechnet, kann aus Vorsicht sein Verhalten ändern .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 215,
+   "thema": "Erneuerbare Energie",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Welche natürlichen Prozesse liefern ihre Energie ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 216,
+   "thema": "Digitalisierung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "In der Textilproduktion können etwa digital erfasste Farbdaten an entfernte Farbmischmaschinen übermittelt werden, sodass physische Proben nicht hin- und hergeschickt werden müssen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 217,
+   "thema": "Globalisierung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Während der Weltwirtschaftskrise ab 1929 fiel der Welthandel auf weniger als die Hälfte seines früheren Niveaus .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 218,
+   "thema": "Vulkan",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Belege unterscheiden Erdbeben des Typs A und B, führen deren Merkmale jedoch nicht weiter aus .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 219,
+   "thema": "Industrialisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Auftraggeber aus der Schwer- und Textilindustrie begünstigten die Ansiedlung von Maschinenbaubetrieben .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 220,
+   "thema": "Sonnensystem",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Sonnenkorona ist mehrere hundertmal heißer als die Photosphäre, obwohl sie nur schwach strahlt und über weite Bereiche des elektromagnetischen Spektrums nahezu durchsichtig ist .",
+   "urteil_a": "widerspricht",
+   "urteil_b": "widerspricht",
+   "grund_a": "Beleg: Korona wird so heiß, weil sie durchsichtig ist und schwach emittiert; Satz macht daraus „obwohl“.",
+   "grund_b": "Beleg: Korona wird nur so heiß, weil sie durchsichtig ist und schwach emittiert; Satz macht daraus ein ‚obwohl‘.",
+   "belege": [
+    "Die Spektrallinien der Korona konnten anfangs nicht identifiziert werden, da sie bei irdischen Bedingungen nicht auftreten. Seit erkannt wurde, dass sie von hochionisiertem Eisen mit nur noch ganz wenigen Elektronen stammen, entsprechend Temperaturen von über 106 K, das Zweihundert- bis Fünfhundertfache der Photosphärentemperatur, wird über den Heizmechanismus der Korona spekuliert. Sie kann überhaupt nur so heiß werden, weil sie in weiten Bereichen des elektromagnetischen Spektrums nahezu durchsichtig ist und nur schwach emittiert; eine Folge nicht nur der geringen Dichte, sondern auch der hohen Temperatur: Die freien Elektronen sind so schnell, dass sie die häufigeren, leichten Elemente, hauptsächlich Wasserstoff und Helium, obwohl vollständig ionisiert, kaum wahrnehmen. Weitere Verlustm"
+   ]
+  },
+  {
+   "id": 221,
+   "thema": "Klimawandel",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Im isotropen Fall wird absorbierte Energie je zur Hälfte in Richtung Erdoberfläche und Weltall abgestrahlt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 222,
+   "thema": "Klimawandel",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Der Strahlungsantrieb beschreibt eine Veränderung der Energiebilanz, durch die das Erdklimasystem aus einem thermisch-radiativen Gleichgewicht in einen neuen Zustand übergeht .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 223,
+   "thema": "Römisches Reich",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Cato der Ältere warnte vor „Überfremdung und Sittenverfall“ und mahnte, die überlieferten Tugenden der Vorfahren zu bewahren .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 224,
+   "thema": "Menschenrechte",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Artikel 4 unterscheidet zwischen dem Verbot, Menschen in Sklaverei oder Leibeigenschaft zu halten, und dem Verbot von Zwangs- oder Pflichtarbeit .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 225,
+   "thema": "Wasserkreislauf",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Einstufung ist damit an gesetzte Kriterien und Messwerte gebunden; sie ist nicht allein eine Beschreibung des natürlichen Wasserkreislaufs .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_b": "Kriterien und Messwerte belegt; Abgrenzung zur Beschreibung des natürlichen Wasserkreislaufs kommt im Beleg nicht vor."
+  },
+  {
+   "id": 226,
+   "thema": "Märchen",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Ebenso ist die dreiteilige Steigerung als häufige, nicht als notwendige Struktur beschrieben .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 227,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Anschließend lassen sich die erwarteten Fallzahlen für Erkrankte und Gesunde sowie für richtig und falsch positive beziehungsweise negative Testergebnisse berechnen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 228,
+   "thema": "Datenschutz",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die öffentliche Sicherheit ist dabei von den primären Interessen des privaten Datenschutzes zu unterscheiden; sie betrifft die entgegenstehenden Interessen des staatlichen Gewaltmonopols .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 229,
+   "thema": "Märchen",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Einordnung eines Märchens kann je nach Typ und Überlieferungszusammenhang unterschiedlich ausfallen; Erzählstoffe lassen sich nicht immer eindeutig einer Epoche zuweisen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 230,
+   "thema": "Inflation",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Disinflation bezeichnet somit eine Abnahme der Inflationsrate und nicht eine sinkende allgemeine Preisentwicklung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_b": "Beleg: Disinflation ist die abnehmende Inflationsphase; Abgrenzung zu sinkender Preisentwicklung steht nicht im Beleg."
+  },
+  {
+   "id": 231,
+   "thema": "Buddhismus",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese Einteilung ordnet buddhistische Traditionen nach Lehrüberlieferung und religiöser Ausprägung, ist aber keine von allen Traditionen gleichermaßen angenommene Selbstklassifikation .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 232,
+   "thema": "Mittelalter",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die zeitliche Abgrenzung des Mittelalters ist nicht einheitlich: Für den Beginn des Frühmittelalters wurden je nach Perspektive Ereignisse zwischen der konstantinischen Wende und der Ausbreitung des Islams vorgeschlagen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 233,
+   "thema": "Optik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Lichtgeschwindigkeit hängt mit der magnetischen Feldkonstante μ₀ und der elektrischen Feldkonstante ε₀ zusammen: c = 1/√(μ₀ε₀) .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 234,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ihr Ordnungsprinzip unterscheidet danach, ob zufällige Vorgänge mathematisch modelliert oder Beobachtungsdaten zur Prüfung und Bestimmung solcher Modelle ausgewertet werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 235,
+   "thema": "Vulkan",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Bei der Entstehung des Vulcão dos Capelinhos auf Faial wurde eine surtseyanische Eruption erstmals während des Geschehens detailliert dokumentiert: Von September 1957 bis Oktober 1958 wuchs der Vulkan aus dem Meer; zunächst ließen phreatomagmatische Eruptionen einen Kegel über die Meeresoberfläche steigen, nach einem heftigen Erdbeben im Mai 1958 folgte eine effusive Eruptionsserie .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 236,
+   "thema": "Digitalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Wer den Wandel durch Digitalisierung, Automatisierung und Vernetzung erkennt, kann ihn nach ihrer Auffassung eher mitgestalten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 237,
+   "thema": "Französische Revolution",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die anfängliche Erwartung eines kurzen Krieges erfüllte sich nicht: Die französischen Truppen leisteten den österreichischen und preußischen Verbündeten nur geringen Widerstand, woraufhin in Paris Verratsverdacht und Mobilisierung zunahmen .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_a": "Erwartung eines kurzen Krieges steht nicht im Beleg; belegt sind nur geringer Widerstand, Verratsverdacht und Mobilisierung.",
+   "grund_b": "Erwartung eines kurzen Krieges steht nicht im Beleg; nur ernüchternde Kriegswirklichkeit, Verratsverdacht, Mobilisierung."
+  },
+  {
+   "id": 238,
+   "thema": "Barock",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Teilbereiche sind nicht nur nach ihrer Form, sondern auch nach ihrer Funktion unterscheidbar: Das Parterre vermittelt zwischen Garten und Schlossfassade, während Boskette Räume für unterschiedliche Nutzungen im Freien bereitstellen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 239,
+   "thema": "Lyrik",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Metrik kann nicht nur nach ihrem Ansatz, sondern auch nach der untersuchten Sprache gegliedert werden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 240,
+   "thema": "Lyrik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Lyrische Texte sind meist textgrafisch und/oder phonisch stark konturiert und unterscheiden sich in der äußeren Form häufig von Prosatexten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 241,
+   "thema": "Sonnensystem",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Der Drehsinn der galaktischen Scheibe ist dem Drehsinn der Planetenbahnen um die Sonne entgegengesetzt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 242,
+   "thema": "Wahrscheinlichkeitsrechnung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Bei einer Screening-Entscheidung werden zunächst die Grundhäufigkeit der Krankheit sowie Sensitivität und Spezifität des Tests berücksichtigt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 243,
+   "thema": "Reformation",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Sein Einwand richtete sich damit gegen eine Ablasslehre, die dem Papst eine solche Vollmacht zuschrieb .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 244,
+   "thema": "Industrialisierung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Durchsetzung gesetzlicher Vorgaben hing nicht allein von ihrem Erlass ab: In England verlieh erst die Einrichtung von Fabrikinspektoren den Factory Acts begrenzte praktische Wirksamkeit .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 245,
+   "thema": "Weimarer Republik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Regierungsweise unterscheidet sich nach den verwendeten Instrumenten: Regierungen konnten mit parlamentarischer Unterstützung Gesetze beschließen, zeitweilig durch Ermächtigungsgesetze selbst Gesetze erlassen oder seit 1930 mit Notverordnungen des Reichspräsidenten regieren .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 246,
+   "thema": "Optik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "1662 beobachtete Francesco Maria Grimaldi die Beugung an einem optischen Spalt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 247,
+   "thema": "Klimawandel",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Dabei lässt sich zwischen einer aus Unkenntnis entstehenden „naiven Leugnung“ und einer „motivierten Leugnung“ durch informierte Personen oder Organisationen unterscheiden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 248,
+   "thema": "Optik",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Für die Beobachtung mit einem Spiegel können Hohlspiegel in Spiegelteleskopen dienen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 249,
+   "thema": "Demokratie",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Initiativverfahren umfassen unter anderem Volksmotionen in einigen Schweizer Kantonen, Volksinitiativen in einigen deutschen Bundesländern und in der Schweiz, Volksbegehren in Österreich sowie die Europäische Bürgerinitiative auf EU-Ebene .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 250,
+   "thema": "Industrialisierung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Dampfautomobile und Dampflastwagen setzten sich dagegen nicht dauerhaft durch; auch Dampftraktoren und Lokomobile verloren vor 1900 ihre frühere Dominanz .",
+   "urteil_a": "widerspricht",
+   "urteil_b": "widerspricht",
+   "grund_a": "Beleg: Dampfantrieb dominierte vor 1900 bei Traktoren und Lokomobilen; Satz verlegt den Verlust der Dominanz vor 1900.",
+   "grund_b": "Beleg: Dampfantrieb dominierte bei Dampftraktoren und Lokomobilen vor 1900; Satz verlegt den Bedeutungsverlust vor 1900.",
+   "belege": [
+    "Die Anwendungen der ersten funktionsfähigen Dampfmaschine von Thomas Newcomen fanden sich ab Anfang des 18. Jahrhunderts im Steinkohlebergbau zur Wasserhaltung, wo sie zunächst ältere mechanische Kraftquellen wie z. B. Wasserräder ergänzten und später auch ersetzten. Nach allmählichen Verbesserungen des Wirkungsgrades lohnte es sich gegen Ende des 18. Jahrhunderts, sie ebenfalls in der wachsenden Textilindustrie zum Antrieb von Textilmaschinen einzusetzen und sie verbreiteten sich schließlich auch in weiteren Industriebranchen, wo sie ebenfalls Wasser- und Windmühlen ergänzten. Eine entscheidende Verbesserung gelang James Watt, der 1769 darauf ein Patent erhielt. Im Laufe des 19. Jahrhunderts erlangten sie eine wichtige Rolle im Verkehrswesen, insbesondere zum Antrieb von Dampfschiffen und"
+   ]
+  },
+  {
+   "id": 251,
+   "thema": "Kalter Krieg",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Abschreckung bedeutete daher nicht, dass auf Kernwaffen verzichtet wurde; die Militärdoktrin des Warschauer Vertrags beanspruchte vielmehr auch für Kernwaffen die Überlegenheit des sozialistischen Lagers .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 252,
+   "thema": "Ökosystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Der heute gebräuchliche Begriff „Ökosystem“ wurde 1935 geprägt und bezog Organismen ebenso wie die physikalischen Umweltfaktoren und ihre Wechselwirkungen ein .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 253,
+   "thema": "Industrialisierung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Das Drei-Sektoren-Modell beschreibt eine idealtypische Entwicklung; es ist daher nicht mit einer für jede Volkswirtschaft zwingend geltenden Abfolge gleichzusetzen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_b": "Idealtypische Entwicklung belegt; dass die Abfolge nicht für jede Volkswirtschaft zwingend gilt, ist eigene Schlussfolgerung."
+  },
+  {
+   "id": 254,
+   "thema": "Zellteilung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Angabe 2 C oder 4 C beschreibt die DNA-Menge, nicht unmittelbar die Zahl der Chromosomen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 255,
+   "thema": "Barock",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Eine moderne Analyse anhand von Akkorden mit Grundtönen und Umkehrungen war im 17. Jahrhundert nicht geläufig .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 256,
+   "thema": "Sonnensystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Für die Beobachtung von Protuberanzen sind besondere Bauteile oder eigens dafür vorgesehene Teleskope erforderlich .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 257,
+   "thema": "Europäische Union",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Zusätzlich gelangte Euro-Bargeld ab dem 1. Januar über Geldautomaten und Bankschalter in Umlauf .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 258,
+   "thema": "Islam",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ausgebildete Koranleser rezitierten täglich aus solchen Kästen an heiligen Stätten in Mekka, Medina und Jerusalem .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 259,
+   "thema": "Optik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Beispiele umfassen sowohl optische Wellenlängen als auch hochfrequente Strahlung .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 260,
+   "thema": "Evolution",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Seit Darwins Veröffentlichung von „Über die Entstehung der Arten“ 1859 wurde die Evolutionstheorie nicht nur wissenschaftlich, sondern auch öffentlich und in religiösen, philosophischen und politischen Zusammenhängen diskutiert .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 261,
+   "thema": "Optik",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Ebene und gekrümmte Spiegel ermöglichen gerichtete Reflexion .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 262,
+   "thema": "Globalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Eine stärkere Exportorientierung wird dagegen als Weg beschrieben, auf dem mehrere asiatische Volkswirtschaften ihre Wirtschaftsleistung steigerten .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 263,
+   "thema": "Barock",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "In der Musik markiert um 1600 die Entstehung der Monodie und der Oper in Italien den Beginn des Barock .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 264,
+   "thema": "Vulkan",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Subaerische Vulkane liegen an Land oder über Wasser, submarine im Meer unter Wasser und subglaziale unter einem Gletscher; extraterrestrische Vulkane befinden sich auf anderen Himmelskörpern .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 265,
+   "thema": "Mittelalter",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Lateinische Texte standen neben Literatur in den Landessprachen, deren Themen über Geistliches und Philosophisches hinausgingen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 266,
+   "thema": "Vulkan",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Vulkanismus ist kein ausschließlich irdischer Prozess: Spuren erloschener Vulkane finden sich etwa auf dem Erdmond und dem Mars, während Io der vulkanisch aktivste Himmelskörper des Sonnensystems ist .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 267,
+   "thema": "Demokratie",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Behörden dürfen personenbezogene Daten demnach nicht ohne gesetzliche Erlaubnis an andere Behörden übermitteln .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 268,
+   "thema": "Erneuerbare Energie",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Weltweit wird Geothermie an geeigneten Standorten außerdem in großem Maßstab zur Stromerzeugung eingesetzt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 269,
+   "thema": "Bruchrechnung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Innerhalb der gemeinen Brüche werden echte und unechte Brüche sowie Stammbrüche und abgeleitete Brüche beziehungsweise Zweigbrüche unterschieden; Scheinbrüche bilden eine weitere Untergruppe der unechten Brüche .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 270,
+   "thema": "Römisches Reich",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Wie entwickelte sich der Machtbereich von der Stadt Rom über die italienische Halbinsel bis zu den Gebieten rund um das Mittelmeer ?",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 271,
+   "thema": "Elektrischer Strom",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Gleichstrom bezeichnet Strom, dessen Richtung und Stärke über die Zeit unverändert sind .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 272,
+   "thema": "Wasserkreislauf",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Vorstellung eines meteorogenen, durch Niederschlag angetriebenen Kreislaufs entspricht am ehesten dem heutigen Verständnis; die Kondensationstheorie blieb bis ins frühe 17. Jahrhundert maßgeblich .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 273,
+   "thema": "Atom",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Moleküle sind keine Atome, sondern entstehen, wenn sich Atome verbinden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 274,
+   "thema": "Römisches Reich",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Auch die Götter galten dabei als an Normen gebunden .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 275,
+   "thema": "Islam",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Bezeichnung „abrahamitische Religionen“ ordnet Judentum, Christentum und Islam einer gemeinsamen religionsgeschichtlichen Vergleichskategorie zu .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 276,
+   "thema": "Globalisierung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Die Globalisierungskritik richtet sich meist nicht gegen internationale Verflechtung an sich, sondern gegen deren als neoliberal bezeichnete Ausprägung und teilweise gegen Kapitalismus oder Marktwirtschaft .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 277,
+   "thema": "Kalter Krieg",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Diese konkrete Verbindung von Abschreckung und Angriffsdoktrin kennzeichnete die im Beleg beschriebene Militärdoktrin des Warschauer Vertrags; sie ist nicht mit einer einheitlichen, für alle Phasen und Akteure des Kalten Krieges geltenden Kriegsplanung gleichzusetzen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "nicht_gedeckt",
+   "grund_b": "Abgrenzung von einer einheitlichen Kriegsplanung für alle Phasen und Akteure des Kalten Krieges fehlt im Beleg."
+  },
+  {
+   "id": 278,
+   "thema": "Evolution",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Ionisierende Strahlung wird gezielt eingesetzt, um Mutationen in Pflanzen auszulösen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 279,
+   "thema": "Plattentektonik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Man unterscheidet Ozean-Kontinent- und Ozean-Ozean-Subduktion .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 280,
+   "thema": "Evolution",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Künstliche Selektion bezeichnet die vom Menschen gesteuerte Zucht, bei der Individuen mit gewünschten Merkmalen bevorzugt zur Fortpflanzung gelangen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 281,
+   "thema": "Märchen",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Märchenerzählen ist in Österreich seit 2010 und in Deutschland seit Dezember 2016 als Immaterielles Kulturerbe anerkannt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 282,
+   "thema": "Bruchrechnung",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Ein Scheinbruch ist stets ein gemeiner Bruch, und jeder Scheinbruch zählt zugleich zu den unechten Brüchen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 283,
+   "thema": "Globalisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Da die Fracht 2014 durchschnittlich 5.100 Kilometer weit transportiert wurde, belief sich das internationale Luftfrachtaufkommen auf 167,3 Milliarden Tonnenkilometer .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 284,
+   "thema": "Barock",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "In barocken Kirchen gehen Architektur, Plastik und Malerei mitunter ineinander über; etwa kann ein gemalter Vorhang als Stuck plastische Gestalt annehmen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 285,
+   "thema": "Industrialisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "In der Stahlindustrie trieben Dampfmaschinen Gebläse, Pumpen und Walzstraßen an .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 286,
+   "thema": "Optik",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Konvexe Spiegel dienen als Außenspiegel an Kraftfahrzeugen .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 287,
+   "thema": "Datenschutz",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Datenschutz-Folgenabschätzung knüpft wiederum an eine konkrete Verarbeitung und deren mögliche Folgen für die Grundrechte des Individuums an .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 288,
+   "thema": "Ökosystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Zugleich wurden durch effizientere Nutzung zwar Ressourcen freigesetzt, diese aber nach der Quelle bisher nicht ausreichend für den Erhalt von Natur und Landschaft als menschlicher Lebensgrundlage eingesetzt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 289,
+   "thema": "Menschenrechte",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Unter bestimmten Bedingungen erlaubt er jedoch tödliche Gewalt, etwa bei Nothilfe, Festnahmen oder der rechtmäßigen Niederschlagung eines Aufstands .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 290,
+   "thema": "Industrialisierung",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Die Bourgeoisie senke demnach zur Verringerung der Produktionskosten und zur Sicherung konkurrenzfähiger Warenpreise fortlaufend die Löhne der Proletarier .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 291,
+   "thema": "Europäische Union",
+   "schicht": "neg_satz_allein",
+   "schicht_groesse": 235,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Der Bologna-Prozess zielt auf die Schaffung eines Europäischen Hochschulraums und ist nicht auf die EU beschränkt .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 292,
+   "thema": "Ökosystem",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "In der Fachsprache wird Biom häufig für empirisch und deskriptiv abgegrenzte Ausschnitte der Erdoberfläche verwendet, die durch eine bestimmte Lebensgemeinschaft, insbesondere ihre Vegetation, charakterisiert sind .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  },
+  {
+   "id": 293,
+   "thema": "Reformation",
+   "schicht": "rest",
+   "schicht_groesse": 2503,
+   "regeln": {
+    "neg_absatz": false,
+    "neg_satz": false,
+    "vorzeichen": false
+   },
+   "satz": "Eine besondere Regelung galt für geistliche Würdenträger, die von der alten Religion zur Augsburgischen Konfession übertraten .",
+   "urteil_a": "nicht_gedeckt",
+   "urteil_b": "gedeckt",
+   "grund_a": "Beleg nennt nur das Abtreten von der alten Religion, nicht den Übertritt zur Augsburgischen Konfession."
+  },
+  {
+   "id": 294,
+   "thema": "Globalisierung",
+   "schicht": "neg_absatz",
+   "schicht_groesse": 64,
+   "regeln": {
+    "neg_absatz": true,
+    "neg_satz": true,
+    "vorzeichen": false
+   },
+   "satz": "Globales Lernen bündelt verschiedene Diskurse über globale Fragen und regt zu einer kritischen Auseinandersetzung mit Globalisierung an; als Forschungsbereich ist es jedoch noch nicht etabliert .",
+   "urteil_a": "gedeckt",
+   "urteil_b": "gedeckt"
+  }
+ ]
+}

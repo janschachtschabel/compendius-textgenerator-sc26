@@ -1,0 +1,2039 @@
+{
+ "note": "M69 (04.10.2026, Audit F02): Korpus von llm-free für die 215 Themen von M63 im Einmal-Container; je Thema die Absätze von Hauptartikel und Zwilling vor dem Deckel (CORPUS_MAX_CHUNKS 400) und, wo der Deckel griff, jede Quelle mit Herkunft, Absätzen und behaltenen Absätzen.",
+ "themen": [
+  {
+   "thema": "Barockliteratur",
+   "hauptartikel": "Barockliteratur",
+   "abgeschnitten": 0,
+   "absaetze": 23,
+   "haupt_und_zwilling": 22
+  },
+  {
+   "thema": "Bruchrechnung",
+   "hauptartikel": "Bruchrechnung",
+   "abgeschnitten": 0,
+   "absaetze": 84,
+   "haupt_und_zwilling": 80
+  },
+  {
+   "thema": "Demokratie",
+   "hauptartikel": "Demokratie",
+   "abgeschnitten": 0,
+   "absaetze": 383,
+   "haupt_und_zwilling": 182
+  },
+  {
+   "thema": "Französische Revolution",
+   "hauptartikel": "Französische Revolution",
+   "abgeschnitten": 0,
+   "absaetze": 185,
+   "haupt_und_zwilling": 137
+  },
+  {
+   "thema": "Klimawandel",
+   "hauptartikel": "Klimawandel",
+   "abgeschnitten": 0,
+   "absaetze": 269,
+   "haupt_und_zwilling": 99
+  },
+  {
+   "thema": "Optik",
+   "hauptartikel": "Optik",
+   "abgeschnitten": 0,
+   "absaetze": 102,
+   "haupt_und_zwilling": 25
+  },
+  {
+   "thema": "Photosynthese",
+   "hauptartikel": "Photosynthese",
+   "abgeschnitten": 0,
+   "absaetze": 172,
+   "haupt_und_zwilling": 150
+  },
+  {
+   "thema": "Programmiersprache",
+   "hauptartikel": "Programmiersprache",
+   "abgeschnitten": 0,
+   "absaetze": 140,
+   "haupt_und_zwilling": 45
+  },
+  {
+   "thema": "Säure-Base-Konzepte",
+   "hauptartikel": "Säure-Base-Konzepte",
+   "abgeschnitten": 0,
+   "absaetze": 49,
+   "haupt_und_zwilling": 45
+  },
+  {
+   "thema": "Sinfonie",
+   "hauptartikel": "Sinfonie",
+   "abgeschnitten": 0,
+   "absaetze": 185,
+   "haupt_und_zwilling": 14
+  },
+  {
+   "thema": "Plattentektonik",
+   "hauptartikel": "Plattentektonik",
+   "abgeschnitten": 0,
+   "absaetze": 94,
+   "haupt_und_zwilling": 80
+  },
+  {
+   "thema": "Ökosystem",
+   "hauptartikel": "Ökosystem",
+   "abgeschnitten": 0,
+   "absaetze": 141,
+   "haupt_und_zwilling": 57
+  },
+  {
+   "thema": "Atommodell",
+   "hauptartikel": "Liste der Atommodelle",
+   "abgeschnitten": 0,
+   "absaetze": 22,
+   "haupt_und_zwilling": 18
+  },
+  {
+   "thema": "Industrielle Revolution",
+   "hauptartikel": "Industrielle Revolution",
+   "abgeschnitten": 0,
+   "absaetze": 160,
+   "haupt_und_zwilling": 116
+  },
+  {
+   "thema": "Elektrischer Strom",
+   "hauptartikel": "Elektrischer Strom",
+   "abgeschnitten": 0,
+   "absaetze": 171,
+   "haupt_und_zwilling": 44
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "hauptartikel": "Wasserkreislauf",
+   "abgeschnitten": 0,
+   "absaetze": 31,
+   "haupt_und_zwilling": 22
+  },
+  {
+   "thema": "Römisches Reich",
+   "hauptartikel": "Römisches Reich",
+   "abgeschnitten": 81,
+   "absaetze": 400,
+   "haupt_und_zwilling": 116,
+   "quellen": [
+    {
+     "titel": "Römisches Reich",
+     "herkunft": "primary",
+     "absaetze": 83,
+     "behalten": 83
+    },
+    {
+     "titel": "Römisches Reich",
+     "herkunft": "same_topic",
+     "absaetze": 33,
+     "behalten": 33
+    },
+    {
+     "titel": "Römische Republik",
+     "herkunft": "linked",
+     "absaetze": 57,
+     "behalten": 57
+    },
+    {
+     "titel": "Römische Königszeit",
+     "herkunft": "linked",
+     "absaetze": 14,
+     "behalten": 14
+    },
+    {
+     "titel": "Wirtschaft im Römischen Reich",
+     "herkunft": "linked",
+     "absaetze": 79,
+     "behalten": 69
+    },
+    {
+     "titel": "Römisches Recht",
+     "herkunft": "linked",
+     "absaetze": 31,
+     "behalten": 31
+    },
+    {
+     "titel": "Römisches Verfassungsrecht",
+     "herkunft": "linked",
+     "absaetze": 134,
+     "behalten": 69
+    },
+    {
+     "titel": "Republik",
+     "herkunft": "linked",
+     "absaetze": 6,
+     "behalten": 6
+    },
+    {
+     "titel": "Kaiser",
+     "herkunft": "linked",
+     "absaetze": 38,
+     "behalten": 38
+    },
+    {
+     "titel": "Ruralisierung",
+     "herkunft": "search",
+     "absaetze": 1,
+     "behalten": 0
+    },
+    {
+     "titel": "Privatrecht",
+     "herkunft": "search",
+     "absaetze": 5,
+     "behalten": 0
+    }
+   ]
+  },
+  {
+   "thema": "Lineare Funktion",
+   "hauptartikel": "Lineare Funktion",
+   "abgeschnitten": 0,
+   "absaetze": 157,
+   "haupt_und_zwilling": 28
+  },
+  {
+   "thema": "Zelle (Biologie)",
+   "hauptartikel": "Zelle (Biologie)",
+   "abgeschnitten": 0,
+   "absaetze": 156,
+   "haupt_und_zwilling": 39
+  },
+  {
+   "thema": "Gedicht",
+   "hauptartikel": "Lyrik",
+   "abgeschnitten": 0,
+   "absaetze": 157,
+   "haupt_und_zwilling": 47
+  },
+  {
+   "thema": "Optik in Klasse 7",
+   "hauptartikel": "Optik",
+   "abgeschnitten": 0,
+   "absaetze": 102,
+   "haupt_und_zwilling": 25
+  },
+  {
+   "thema": "Physik: Optik (Sek I)",
+   "hauptartikel": "Optik",
+   "abgeschnitten": 0,
+   "absaetze": 102,
+   "haupt_und_zwilling": 25
+  },
+  {
+   "thema": "Photosynthese für die Grundschule",
+   "hauptartikel": "Photosynthese",
+   "abgeschnitten": 0,
+   "absaetze": 172,
+   "haupt_und_zwilling": 150
+  },
+  {
+   "thema": "Bruchrechnung Klasse 6",
+   "hauptartikel": "Bruchrechnung",
+   "abgeschnitten": 0,
+   "absaetze": 84,
+   "haupt_und_zwilling": 80
+  },
+  {
+   "thema": "Demokratie in der Sekundarstufe I",
+   "hauptartikel": "Demokratie",
+   "abgeschnitten": 0,
+   "absaetze": 383,
+   "haupt_und_zwilling": 182
+  },
+  {
+   "thema": "Thema: Klimawandel",
+   "hauptartikel": "Klimawandel",
+   "abgeschnitten": 0,
+   "absaetze": 269,
+   "haupt_und_zwilling": 99
+  },
+  {
+   "thema": "Geschichte: Französische Revolution",
+   "hauptartikel": "Französische Revolution",
+   "abgeschnitten": 0,
+   "absaetze": 185,
+   "haupt_und_zwilling": 137
+  },
+  {
+   "thema": "Plattentektonik (Oberstufe)",
+   "hauptartikel": "Plattentektonik",
+   "abgeschnitten": 0,
+   "absaetze": 94,
+   "haupt_und_zwilling": 80
+  },
+  {
+   "thema": "Physik: Welle",
+   "hauptartikel": "Welle",
+   "abgeschnitten": 0,
+   "absaetze": 237,
+   "haupt_und_zwilling": 30
+  },
+  {
+   "thema": "Physik: Leiter",
+   "hauptartikel": "Leiter (Physik)",
+   "abgeschnitten": 23,
+   "absaetze": 400,
+   "haupt_und_zwilling": 39,
+   "quellen": [
+    {
+     "titel": "Leiter (Physik)",
+     "herkunft": "primary",
+     "absaetze": 39,
+     "behalten": 39
+    },
+    {
+     "titel": "Wellenleiter",
+     "herkunft": "linked",
+     "absaetze": 14,
+     "behalten": 14
+    },
+    {
+     "titel": "Halbleiter",
+     "herkunft": "linked",
+     "absaetze": 51,
+     "behalten": 51
+    },
+    {
+     "titel": "Hohlleiter",
+     "herkunft": "linked",
+     "absaetze": 73,
+     "behalten": 73
+    },
+    {
+     "titel": "Lichtwellenleiter",
+     "herkunft": "linked",
+     "absaetze": 118,
+     "behalten": 118
+    },
+    {
+     "titel": "Wärme",
+     "herkunft": "linked",
+     "absaetze": 4,
+     "behalten": 4
+    },
+    {
+     "titel": "Supraleiter",
+     "herkunft": "linked",
+     "absaetze": 73,
+     "behalten": 73
+    },
+    {
+     "titel": "Ionenleiter",
+     "herkunft": "linked",
+     "absaetze": 1,
+     "behalten": 1
+    },
+    {
+     "titel": "Licht",
+     "herkunft": "linked",
+     "absaetze": 4,
+     "behalten": 4
+    },
+    {
+     "titel": "Skin-Effekt",
+     "herkunft": "search",
+     "absaetze": 40,
+     "behalten": 17
+    },
+    {
+     "titel": "Elektrische Ladung",
+     "herkunft": "search",
+     "absaetze": 6,
+     "behalten": 6
+    }
+   ]
+  },
+  {
+   "thema": "Physik: Strom",
+   "hauptartikel": "Strom (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 66,
+   "haupt_und_zwilling": 15
+  },
+  {
+   "thema": "Physik: Leistung",
+   "hauptartikel": "Leistung (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 134,
+   "haupt_und_zwilling": 31
+  },
+  {
+   "thema": "Physik: Arbeit",
+   "hauptartikel": "Arbeit (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 165,
+   "haupt_und_zwilling": 73
+  },
+  {
+   "thema": "Biologie: Zelle",
+   "hauptartikel": "Zelle (Biologie)",
+   "abgeschnitten": 0,
+   "absaetze": 156,
+   "haupt_und_zwilling": 39
+  },
+  {
+   "thema": "Chemie: Bindung",
+   "hauptartikel": "Chemische Bindung",
+   "abgeschnitten": 0,
+   "absaetze": 163,
+   "haupt_und_zwilling": 46
+  },
+  {
+   "thema": "Mathematik: Funktion",
+   "hauptartikel": "Funktion (Mathematik)",
+   "abgeschnitten": 0,
+   "absaetze": 395,
+   "haupt_und_zwilling": 81
+  },
+  {
+   "thema": "Mathematik: Satz",
+   "hauptartikel": "Satz (Mathematik)",
+   "abgeschnitten": 0,
+   "absaetze": 35,
+   "haupt_und_zwilling": 17
+  },
+  {
+   "thema": "Deutsch: Satz",
+   "hauptartikel": "Satz (Grammatik)",
+   "abgeschnitten": 0,
+   "absaetze": 101,
+   "haupt_und_zwilling": 44
+  },
+  {
+   "thema": "Musik: Takt",
+   "hauptartikel": "Takt (Musik)",
+   "abgeschnitten": 0,
+   "absaetze": 44,
+   "haupt_und_zwilling": 29
+  },
+  {
+   "thema": "Informatik: Baum",
+   "hauptartikel": "Baum (Datenstruktur)",
+   "abgeschnitten": 0,
+   "absaetze": 158,
+   "haupt_und_zwilling": 24
+  },
+  {
+   "thema": "Informatik: Maus",
+   "hauptartikel": "Computermaus",
+   "abgeschnitten": 0,
+   "absaetze": 108,
+   "haupt_und_zwilling": 102
+  },
+  {
+   "thema": "Informatik: Virus",
+   "hauptartikel": "Computervirus",
+   "abgeschnitten": 0,
+   "absaetze": 128,
+   "haupt_und_zwilling": 126
+  },
+  {
+   "thema": "Erdkunde: Strom",
+   "hauptartikel": "Strom (Gewässerart)",
+   "abgeschnitten": 0,
+   "absaetze": 61,
+   "haupt_und_zwilling": 12
+  },
+  {
+   "thema": "Geschichte: Wende",
+   "hauptartikel": "Wende (Einheit)",
+   "abgeschnitten": 0,
+   "absaetze": 12,
+   "haupt_und_zwilling": 1
+  },
+  {
+   "thema": "Strom",
+   "hauptartikel": "Elektrischer Strom",
+   "abgeschnitten": 0,
+   "absaetze": 171,
+   "haupt_und_zwilling": 44
+  },
+  {
+   "thema": "Zelle",
+   "hauptartikel": "Zelle (Biologie)",
+   "abgeschnitten": 0,
+   "absaetze": 156,
+   "haupt_und_zwilling": 39
+  },
+  {
+   "thema": "Welle",
+   "hauptartikel": "Welle",
+   "abgeschnitten": 0,
+   "absaetze": 237,
+   "haupt_und_zwilling": 30
+  },
+  {
+   "thema": "Fotosynthese",
+   "hauptartikel": "Photosynthese",
+   "abgeschnitten": 0,
+   "absaetze": 172,
+   "haupt_und_zwilling": 150
+  },
+  {
+   "thema": "photosynthese",
+   "hauptartikel": "Photosynthese",
+   "abgeschnitten": 0,
+   "absaetze": 172,
+   "haupt_und_zwilling": 150
+  },
+  {
+   "thema": "Lichtlehre",
+   "hauptartikel": "Ernst Adalbert Voretzsch",
+   "abgeschnitten": 0,
+   "absaetze": 39,
+   "haupt_und_zwilling": 4
+  },
+  {
+   "thema": "Klimaerwärmung",
+   "hauptartikel": "Globale Erwärmung",
+   "abgeschnitten": 33,
+   "absaetze": 400,
+   "haupt_und_zwilling": 179,
+   "quellen": [
+    {
+     "titel": "Globale Erwärmung",
+     "herkunft": "primary",
+     "absaetze": 153,
+     "behalten": 153
+    },
+    {
+     "titel": "Klimawandel",
+     "herkunft": "same_topic",
+     "absaetze": 26,
+     "behalten": 26
+    },
+    {
+     "titel": "Folgen der globalen Erwärmung",
+     "herkunft": "linked",
+     "absaetze": 156,
+     "behalten": 156
+    },
+    {
+     "titel": "Klimawandel",
+     "herkunft": "linked",
+     "absaetze": 22,
+     "behalten": 22
+    },
+    {
+     "titel": "Anthropogen",
+     "herkunft": "linked",
+     "absaetze": 2,
+     "behalten": 2
+    },
+    {
+     "titel": "Treibhausgas",
+     "herkunft": "linked",
+     "absaetze": 14,
+     "behalten": 14
+    },
+    {
+     "titel": "Landwirtschaft",
+     "herkunft": "linked",
+     "absaetze": 1,
+     "behalten": 1
+    },
+    {
+     "titel": "Klimaschutz",
+     "herkunft": "linked",
+     "absaetze": 26,
+     "behalten": 26
+    },
+    {
+     "titel": "Konsens",
+     "herkunft": "linked",
+     "absaetze": 0,
+     "behalten": 0
+    },
+    {
+     "titel": "Geoengineering",
+     "herkunft": "search",
+     "absaetze": 21,
+     "behalten": 0
+    },
+    {
+     "titel": "Kohlenstoffzyklus",
+     "herkunft": "search",
+     "absaetze": 12,
+     "behalten": 0
+    }
+   ]
+  },
+  {
+   "thema": "DNA",
+   "hauptartikel": "Desoxyribonukleinsäure",
+   "abgeschnitten": 0,
+   "absaetze": 95,
+   "haupt_und_zwilling": 87
+  },
+  {
+   "thema": "EU",
+   "hauptartikel": "Europäische Union",
+   "abgeschnitten": 76,
+   "absaetze": 400,
+   "haupt_und_zwilling": 235,
+   "quellen": [
+    {
+     "titel": "Europäische Union",
+     "herkunft": "primary",
+     "absaetze": 224,
+     "behalten": 224
+    },
+    {
+     "titel": "Europäische Union",
+     "herkunft": "same_topic",
+     "absaetze": 11,
+     "behalten": 11
+    },
+    {
+     "titel": "Rat der Europäischen Union",
+     "herkunft": "linked",
+     "absaetze": 32,
+     "behalten": 32
+    },
+    {
+     "titel": "Europäische Kommission",
+     "herkunft": "linked",
+     "absaetze": 50,
+     "behalten": 35
+    },
+    {
+     "titel": "Zollunion",
+     "herkunft": "linked",
+     "absaetze": 0,
+     "behalten": 0
+    },
+    {
+     "titel": "Unionsbürgerschaft",
+     "herkunft": "linked",
+     "absaetze": 15,
+     "behalten": 15
+    },
+    {
+     "titel": "Europäische Zentralbank",
+     "herkunft": "linked",
+     "absaetze": 88,
+     "behalten": 36
+    },
+    {
+     "titel": "Europäische Identität",
+     "herkunft": "linked",
+     "absaetze": 29,
+     "behalten": 29
+    },
+    {
+     "titel": "Europäische Gemeinschaft",
+     "herkunft": "linked",
+     "absaetze": 18,
+     "behalten": 18
+    },
+    {
+     "titel": "Auenwiesen von Fulda, Rohrbach und Solz",
+     "herkunft": "search",
+     "absaetze": 5,
+     "behalten": 0
+    },
+    {
+     "titel": "Hasenwinkel bei Fretterode",
+     "herkunft": "search",
+     "absaetze": 4,
+     "behalten": 0
+    }
+   ]
+  },
+  {
+   "thema": "Bruchrechnen",
+   "hauptartikel": "Bruchrechnung",
+   "abgeschnitten": 0,
+   "absaetze": 84,
+   "haupt_und_zwilling": 80
+  },
+  {
+   "thema": "Lineare Funktionen",
+   "hauptartikel": "Lineare Funktion",
+   "abgeschnitten": 0,
+   "absaetze": 157,
+   "haupt_und_zwilling": 28
+  },
+  {
+   "thema": "Gewaltenteilung in Deutschland",
+   "hauptartikel": "Gewaltenteilung",
+   "abgeschnitten": 0,
+   "absaetze": 87,
+   "haupt_und_zwilling": 69
+  },
+  {
+   "thema": "Die Französische Revolution",
+   "hauptartikel": "Französische Revolution",
+   "abgeschnitten": 0,
+   "absaetze": 185,
+   "haupt_und_zwilling": 137
+  },
+  {
+   "thema": "Photosynthese bei Pflanzen",
+   "hauptartikel": "Photosynthese",
+   "abgeschnitten": 0,
+   "absaetze": 172,
+   "haupt_und_zwilling": 150
+  },
+  {
+   "thema": "Kreislauf des Wassers",
+   "hauptartikel": "Wasserkreislauf",
+   "abgeschnitten": 0,
+   "absaetze": 31,
+   "haupt_und_zwilling": 22
+  },
+  {
+   "thema": "Physik: Spannung",
+   "hauptartikel": "Elektrische Spannung",
+   "abgeschnitten": 0,
+   "absaetze": 280,
+   "haupt_und_zwilling": 77
+  },
+  {
+   "thema": "Physik: Linse",
+   "hauptartikel": "Linse (Botanik)",
+   "abgeschnitten": 0,
+   "absaetze": 63,
+   "haupt_und_zwilling": 39
+  },
+  {
+   "thema": "Chemie: Element",
+   "hauptartikel": "Chemisches Element",
+   "abgeschnitten": 0,
+   "absaetze": 169,
+   "haupt_und_zwilling": 53
+  },
+  {
+   "thema": "Musik: Intervall",
+   "hauptartikel": "Intervall (Musik)",
+   "abgeschnitten": 0,
+   "absaetze": 131,
+   "haupt_und_zwilling": 27
+  },
+  {
+   "thema": "Deutsch: Artikel",
+   "hauptartikel": "Artikel (Wortart)",
+   "abgeschnitten": 0,
+   "absaetze": 180,
+   "haupt_und_zwilling": 91
+  },
+  {
+   "thema": "Erdkunde: Delta",
+   "hauptartikel": "Delta",
+   "abgeschnitten": 0,
+   "absaetze": 151,
+   "haupt_und_zwilling": 18
+  },
+  {
+   "thema": "Biologie: Stamm",
+   "hauptartikel": "Stamm (Biologie)",
+   "abgeschnitten": 0,
+   "absaetze": 53,
+   "haupt_und_zwilling": 23
+  },
+  {
+   "thema": "Informatik: Netzwerk",
+   "hauptartikel": "Netzwerk",
+   "abgeschnitten": 0,
+   "absaetze": 202,
+   "haupt_und_zwilling": 69
+  },
+  {
+   "thema": "Mathematik: Ableitung",
+   "hauptartikel": "Differentialrechnung",
+   "abgeschnitten": 0,
+   "absaetze": 293,
+   "haupt_und_zwilling": 249
+  },
+  {
+   "thema": "Vulkane",
+   "hauptartikel": "Vulkan",
+   "abgeschnitten": 0,
+   "absaetze": 211,
+   "haupt_und_zwilling": 53
+  },
+  {
+   "thema": "Ursachen des Ersten Weltkriegs",
+   "hauptartikel": "Erster Weltkrieg",
+   "abgeschnitten": 396,
+   "absaetze": 400,
+   "haupt_und_zwilling": 298,
+   "quellen": [
+    {
+     "titel": "Erster Weltkrieg",
+     "herkunft": "primary",
+     "absaetze": 274,
+     "behalten": 274
+    },
+    {
+     "titel": "Erster Weltkrieg",
+     "herkunft": "same_topic",
+     "absaetze": 24,
+     "behalten": 24
+    },
+    {
+     "titel": "Weltkrieg",
+     "herkunft": "linked",
+     "absaetze": 4,
+     "behalten": 4
+    },
+    {
+     "titel": "Grabenkrieg im Ersten Weltkrieg",
+     "herkunft": "linked",
+     "absaetze": 109,
+     "behalten": 18
+    },
+    {
+     "titel": "Gaskrieg während des Ersten Weltkrieges",
+     "herkunft": "linked",
+     "absaetze": 78,
+     "behalten": 18
+    },
+    {
+     "titel": "Luftkrieg im Ersten Weltkrieg",
+     "herkunft": "linked",
+     "absaetze": 75,
+     "behalten": 18
+    },
+    {
+     "titel": "Oberste Heeresleitung",
+     "herkunft": "linked",
+     "absaetze": 9,
+     "behalten": 9
+    },
+    {
+     "titel": "Seekrieg im Ersten Weltkrieg",
+     "herkunft": "linked",
+     "absaetze": 176,
+     "behalten": 18
+    },
+    {
+     "titel": "Propaganda im Ersten Weltkrieg",
+     "herkunft": "linked",
+     "absaetze": 45,
+     "behalten": 17
+    },
+    {
+     "titel": "Normalleistung (REFA)",
+     "herkunft": "search",
+     "absaetze": 2,
+     "behalten": 0
+    }
+   ]
+  },
+  {
+   "thema": "Aufbau der Zelle",
+   "hauptartikel": "Zelle (Biologie)",
+   "abgeschnitten": 0,
+   "absaetze": 156,
+   "haupt_und_zwilling": 39
+  },
+  {
+   "thema": "Physik: Feld",
+   "hauptartikel": "Feld (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 66,
+   "haupt_und_zwilling": 19
+  },
+  {
+   "thema": "Physik: Masse",
+   "hauptartikel": "Masse (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 319,
+   "haupt_und_zwilling": 87
+  },
+  {
+   "thema": "Physik: Druck",
+   "hauptartikel": "Druck (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 321,
+   "haupt_und_zwilling": 67
+  },
+  {
+   "thema": "Chemie: Lösung",
+   "hauptartikel": "Lösung (Chemie)",
+   "abgeschnitten": 0,
+   "absaetze": 115,
+   "haupt_und_zwilling": 26
+  },
+  {
+   "thema": "Chemie: Base",
+   "hauptartikel": "Basen (Chemie)",
+   "abgeschnitten": 0,
+   "absaetze": 120,
+   "haupt_und_zwilling": 28
+  },
+  {
+   "thema": "Mathematik: Menge",
+   "hauptartikel": "Menge (Mathematik)",
+   "abgeschnitten": 0,
+   "absaetze": 287,
+   "haupt_und_zwilling": 71
+  },
+  {
+   "thema": "Informatik: Schleife",
+   "hauptartikel": "Schleife (Programmierung)",
+   "abgeschnitten": 0,
+   "absaetze": 86,
+   "haupt_und_zwilling": 32
+  },
+  {
+   "thema": "Informatik: Bus",
+   "hauptartikel": "Bus (Datenverarbeitung)",
+   "abgeschnitten": 0,
+   "absaetze": 63,
+   "haupt_und_zwilling": 58
+  },
+  {
+   "thema": "Musik: Note",
+   "hauptartikel": "Note (Musik)",
+   "abgeschnitten": 0,
+   "absaetze": 55,
+   "haupt_und_zwilling": 6
+  },
+  {
+   "thema": "Musik: Satz",
+   "hauptartikel": "Satz (Musikstück)",
+   "abgeschnitten": 0,
+   "absaetze": 32,
+   "haupt_und_zwilling": 7
+  },
+  {
+   "thema": "Deutsch: Fall",
+   "hauptartikel": "Schlacht an der Sutjeska",
+   "abgeschnitten": 0,
+   "absaetze": 82,
+   "haupt_und_zwilling": 22
+  },
+  {
+   "thema": "Biologie: Art",
+   "hauptartikel": "Art (Biologie)",
+   "abgeschnitten": 0,
+   "absaetze": 125,
+   "haupt_und_zwilling": 67
+  },
+  {
+   "thema": "Geschichte: Restauration",
+   "hauptartikel": "Restauration (Geschichte)",
+   "abgeschnitten": 0,
+   "absaetze": 101,
+   "haupt_und_zwilling": 11
+  },
+  {
+   "thema": "Treibhauseffekt",
+   "hauptartikel": "Treibhauseffekt",
+   "abgeschnitten": 0,
+   "absaetze": 151,
+   "haupt_und_zwilling": 84
+  },
+  {
+   "thema": "Weimarer Republik",
+   "hauptartikel": "Weimarer Republik",
+   "abgeschnitten": 21,
+   "absaetze": 400,
+   "haupt_und_zwilling": 201,
+   "quellen": [
+    {
+     "titel": "Weimarer Republik",
+     "herkunft": "primary",
+     "absaetze": 178,
+     "behalten": 178
+    },
+    {
+     "titel": "Weimarer Republik",
+     "herkunft": "same_topic",
+     "absaetze": 23,
+     "behalten": 23
+    },
+    {
+     "titel": "Weimarer Verfassung",
+     "herkunft": "linked",
+     "absaetze": 83,
+     "behalten": 83
+    },
+    {
+     "titel": "Republik",
+     "herkunft": "linked",
+     "absaetze": 2,
+     "behalten": 2
+    },
+    {
+     "titel": "Weimarer Koalition",
+     "herkunft": "linked",
+     "absaetze": 12,
+     "behalten": 12
+    },
+    {
+     "titel": "Reichskanzler (Weimarer Republik)",
+     "herkunft": "linked",
+     "absaetze": 20,
+     "behalten": 20
+    },
+    {
+     "titel": "Reichspräsident",
+     "herkunft": "linked",
+     "absaetze": 13,
+     "behalten": 13
+    },
+    {
+     "titel": "Weimar",
+     "herkunft": "linked",
+     "absaetze": 53,
+     "behalten": 53
+    },
+    {
+     "titel": "Weltwirtschaftskrise",
+     "herkunft": "linked",
+     "absaetze": 3,
+     "behalten": 3
+    },
+    {
+     "titel": "Konservative Revolution",
+     "herkunft": "search",
+     "absaetze": 10,
+     "behalten": 4
+    },
+    {
+     "titel": "Fotografie in der Weimarer Republik",
+     "herkunft": "search",
+     "absaetze": 12,
+     "behalten": 4
+    },
+    {
+     "titel": "Goldene Zwanziger",
+     "herkunft": "search",
+     "absaetze": 12,
+     "behalten": 5
+    }
+   ]
+  },
+  {
+   "thema": "Satz des Pythagoras",
+   "hauptartikel": "Satz des Pythagoras",
+   "abgeschnitten": 0,
+   "absaetze": 135,
+   "haupt_und_zwilling": 94
+  },
+  {
+   "thema": "Physik: Energie",
+   "hauptartikel": "Energie",
+   "abgeschnitten": 0,
+   "absaetze": 332,
+   "haupt_und_zwilling": 128
+  },
+  {
+   "thema": "Säure",
+   "hauptartikel": "Säuren",
+   "abgeschnitten": 0,
+   "absaetze": 339,
+   "haupt_und_zwilling": 34
+  },
+  {
+   "thema": "Klimawandels",
+   "hauptartikel": "Klimawandel",
+   "abgeschnitten": 0,
+   "absaetze": 269,
+   "haupt_und_zwilling": 99
+  },
+  {
+   "thema": "Evolutionstheorie",
+   "hauptartikel": "Evolutionstheorie",
+   "abgeschnitten": 0,
+   "absaetze": 212,
+   "haupt_und_zwilling": 10
+  },
+  {
+   "thema": "Aufbau der Atome",
+   "hauptartikel": "Atom",
+   "abgeschnitten": 0,
+   "absaetze": 203,
+   "haupt_und_zwilling": 101
+  },
+  {
+   "thema": "Ursachen der Französischen Revolution",
+   "hauptartikel": "Französische Revolution",
+   "abgeschnitten": 0,
+   "absaetze": 185,
+   "haupt_und_zwilling": 137
+  },
+  {
+   "thema": "Kreislauf des Kohlenstoffs",
+   "hauptartikel": "Kohlenstoffzyklus",
+   "abgeschnitten": 0,
+   "absaetze": 95,
+   "haupt_und_zwilling": 92
+  },
+  {
+   "thema": "deutsche Dichter",
+   "hauptartikel": "Liste deutschsprachiger Lyriker",
+   "abgeschnitten": 0,
+   "absaetze": 98,
+   "haupt_und_zwilling": 72
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "hauptartikel": "Englische Romantik",
+   "abgeschnitten": 0,
+   "absaetze": 72,
+   "haupt_und_zwilling": 58
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "hauptartikel": "Max Richter (Komponist)",
+   "abgeschnitten": 0,
+   "absaetze": 22,
+   "haupt_und_zwilling": 9
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "hauptartikel": "Böse Philosophen",
+   "abgeschnitten": 0,
+   "absaetze": 14,
+   "haupt_und_zwilling": 7
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "hauptartikel": "Liste der Maler des Impressionismus",
+   "abgeschnitten": 0,
+   "absaetze": 44,
+   "haupt_und_zwilling": 25
+  },
+  {
+   "thema": "römische Kaiser",
+   "hauptartikel": "Liste der römischen Kaiser der Antike",
+   "abgeschnitten": 0,
+   "absaetze": 72,
+   "haupt_und_zwilling": 28
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "hauptartikel": "Bundeskanzler (Deutschland)",
+   "abgeschnitten": 0,
+   "absaetze": 194,
+   "haupt_und_zwilling": 130
+  },
+  {
+   "thema": "griechische Götter",
+   "hauptartikel": "Griechische Mythologie",
+   "abgeschnitten": 0,
+   "absaetze": 165,
+   "haupt_und_zwilling": 14
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "hauptartikel": "Liste der Planeten des Sonnensystems",
+   "abgeschnitten": 0,
+   "absaetze": 29,
+   "haupt_und_zwilling": 2
+  },
+  {
+   "thema": "Edelgase",
+   "hauptartikel": "Edelgase",
+   "abgeschnitten": 0,
+   "absaetze": 136,
+   "haupt_und_zwilling": 43
+  },
+  {
+   "thema": "Weltreligionen",
+   "hauptartikel": "Weltreligion",
+   "abgeschnitten": 0,
+   "absaetze": 48,
+   "haupt_und_zwilling": 22
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "hauptartikel": "Erneuerbare Energien",
+   "abgeschnitten": 0,
+   "absaetze": 340,
+   "haupt_und_zwilling": 141
+  },
+  {
+   "thema": "Erfindungen der Industrialisierung",
+   "hauptartikel": "Industrialisierung",
+   "abgeschnitten": 0,
+   "absaetze": 204,
+   "haupt_und_zwilling": 35
+  },
+  {
+   "thema": "Nobelpreisträger für Physik",
+   "hauptartikel": "Liste der Nobelpreisträger für Physik",
+   "abgeschnitten": 0,
+   "absaetze": 111,
+   "haupt_und_zwilling": 18
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "hauptartikel": "Frauen in der Wissenschaft",
+   "abgeschnitten": 0,
+   "absaetze": 279,
+   "haupt_und_zwilling": 98
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "hauptartikel": "Brüder Grimm",
+   "abgeschnitten": 0,
+   "absaetze": 115,
+   "haupt_und_zwilling": 45
+  },
+  {
+   "thema": "deutsche Flüsse",
+   "hauptartikel": "Liste von Flüssen in Deutschland",
+   "abgeschnitten": 0,
+   "absaetze": 63,
+   "haupt_und_zwilling": 10
+  },
+  {
+   "thema": "Säugetiere des Waldes",
+   "hauptartikel": "Nonnenbruchwald",
+   "abgeschnitten": 0,
+   "absaetze": 10,
+   "haupt_und_zwilling": 7
+  },
+  {
+   "thema": "Vulkane Europas",
+   "hauptartikel": "Marsili (Vulkan)",
+   "abgeschnitten": 0,
+   "absaetze": 7,
+   "haupt_und_zwilling": 3
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "hauptartikel": "Entdeckung",
+   "abgeschnitten": 0,
+   "absaetze": 346,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Klimawandel und Landwirtschaft",
+   "hauptartikel": "American Farm Bureau Federation",
+   "abgeschnitten": 0,
+   "absaetze": 15,
+   "haupt_und_zwilling": 5
+  },
+  {
+   "thema": "Mathematik in der Musik",
+   "hauptartikel": "Karlheinz Schüffler",
+   "abgeschnitten": 0,
+   "absaetze": 6,
+   "haupt_und_zwilling": 5
+  },
+  {
+   "thema": "Chemie im Alltag",
+   "hauptartikel": "Chemie in unserer Zeit",
+   "abgeschnitten": 0,
+   "absaetze": 97,
+   "haupt_und_zwilling": 2
+  },
+  {
+   "thema": "Frauen im Mittelalter",
+   "hauptartikel": "Schreibende Frauen im Mittelalter",
+   "abgeschnitten": 0,
+   "absaetze": 26,
+   "haupt_und_zwilling": 25
+  },
+  {
+   "thema": "Musik der Romantik",
+   "hauptartikel": "Musik der Romantik",
+   "abgeschnitten": 0,
+   "absaetze": 293,
+   "haupt_und_zwilling": 40
+  },
+  {
+   "thema": "Dichter aus dem Mittelalter",
+   "hauptartikel": "Sangspruchdichtung",
+   "abgeschnitten": 0,
+   "absaetze": 39,
+   "haupt_und_zwilling": 34
+  },
+  {
+   "thema": "OER-Förderungen",
+   "hauptartikel": "Open Educational Resources",
+   "abgeschnitten": 0,
+   "absaetze": 232,
+   "haupt_und_zwilling": 48
+  },
+  {
+   "thema": "Inklusion im Sportunterricht",
+   "hauptartikel": "Sportdidaktik",
+   "abgeschnitten": 0,
+   "absaetze": 50,
+   "haupt_und_zwilling": 18
+  },
+  {
+   "thema": "Künstliche Intelligenz im Unterricht",
+   "hauptartikel": "Halluzination (Künstliche Intelligenz)",
+   "abgeschnitten": 0,
+   "absaetze": 40,
+   "haupt_und_zwilling": 22
+  },
+  {
+   "thema": "Nachhaltigkeit im Chemieunterricht",
+   "hauptartikel": "Johannes Huwer",
+   "abgeschnitten": 0,
+   "absaetze": 11,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Klimaanpassung in Städten",
+   "hauptartikel": "Katja Aufermann",
+   "abgeschnitten": 0,
+   "absaetze": 6,
+   "haupt_und_zwilling": 5
+  },
+  {
+   "thema": "Fake News erkennen",
+   "hauptartikel": "Fake News",
+   "abgeschnitten": 0,
+   "absaetze": 99,
+   "haupt_und_zwilling": 74
+  },
+  {
+   "thema": "Energiewende in Deutschland",
+   "hauptartikel": "Energiewende in Deutschland",
+   "abgeschnitten": 0,
+   "absaetze": 302,
+   "haupt_und_zwilling": 103
+  },
+  {
+   "thema": "Mikroplastik im Meer",
+   "hauptartikel": "Mikroplastik",
+   "abgeschnitten": 0,
+   "absaetze": 144,
+   "haupt_und_zwilling": 115
+  },
+  {
+   "thema": "Datenschutz für Schüler",
+   "hauptartikel": "Datenschutz",
+   "abgeschnitten": 0,
+   "absaetze": 368,
+   "haupt_und_zwilling": 92
+  },
+  {
+   "thema": "Algorithmen im Alltag",
+   "hauptartikel": "Teile-und-herrsche-Verfahren",
+   "abgeschnitten": 0,
+   "absaetze": 10,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Wasserstoff als Energieträger",
+   "hauptartikel": "Energieträger",
+   "abgeschnitten": 0,
+   "absaetze": 35,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Wie funktioniert die Photosynthese bei Pflanzen?",
+   "hauptartikel": "Photosynthese",
+   "abgeschnitten": 0,
+   "absaetze": 172,
+   "haupt_und_zwilling": 150
+  },
+  {
+   "thema": "Warum ist der Himmel blau?",
+   "hauptartikel": "Hellblau",
+   "abgeschnitten": 0,
+   "absaetze": 15,
+   "haupt_und_zwilling": 11
+  },
+  {
+   "thema": "Ich möchte mit meiner 8. Klasse über die Ursachen des Ersten Weltkriegs sprechen.",
+   "hauptartikel": "Kadettenkorps Trogen",
+   "abgeschnitten": 0,
+   "absaetze": 36,
+   "haupt_und_zwilling": 31
+  },
+  {
+   "thema": "Die Schülerinnen und Schüler sollen verstehen, wie eine repräsentative Demokratie funktioniert und welche Rolle Wahlen spielen.",
+   "hauptartikel": "Bunce Court School",
+   "abgeschnitten": 0,
+   "absaetze": 139,
+   "haupt_und_zwilling": 116
+  },
+  {
+   "thema": "Material zur Lichtbrechung an Linsen für den Physikunterricht der Sekundarstufe I mit Experimenten",
+   "fehler": "TopicNotFoundError: topic not found: Material zur Lichtbrechung an Linsen für den Physikunterricht der Sekundarstufe I mit Experimenten"
+  },
+  {
+   "thema": "Förderprogramme für offene Bildungsmaterialien in Deutschland und Europa seit 2015",
+   "fehler": "TopicNotFoundError: topic not found: Förderprogramme für offene Bildungsmaterialien in Deutschland und Europa seit 2015"
+  },
+  {
+   "thema": "Was müssen Lehrkräfte über Künstliche Intelligenz im Unterricht wissen?",
+   "hauptartikel": "Mathematikunterricht",
+   "abgeschnitten": 0,
+   "absaetze": 32,
+   "haupt_und_zwilling": 18
+  },
+  {
+   "thema": "Inklusion im Sportunterricht: Wie gelingt gemeinsames Bewegen von Kindern mit und ohne Behinderung?",
+   "fehler": "TopicNotFoundError: topic not found: Inklusion im Sportunterricht: Wie gelingt gemeinsames Bewegen von Kindern mit und ohne Behinderung?"
+  },
+  {
+   "thema": "Förderprogramme für offene Bildungsmaterialien in Deutschland",
+   "fehler": "TopicNotFoundError: topic not found: Förderprogramme für offene Bildungsmaterialien in Deutschland"
+  },
+  {
+   "thema": "OER-Förderprogramme",
+   "hauptartikel": "Legden",
+   "abgeschnitten": 0,
+   "absaetze": 71,
+   "haupt_und_zwilling": 41
+  },
+  {
+   "thema": "Escape Room im Unterricht",
+   "hauptartikel": "Pete Trewavas",
+   "abgeschnitten": 0,
+   "absaetze": 17,
+   "haupt_und_zwilling": 14
+  },
+  {
+   "thema": "Lernlandkarte",
+   "hauptartikel": "Inselwissen",
+   "abgeschnitten": 0,
+   "absaetze": 6,
+   "haupt_und_zwilling": 5
+  },
+  {
+   "thema": "Bruchrechnen mit Pizza",
+   "hauptartikel": "Liste von Merksprüchen",
+   "abgeschnitten": 0,
+   "absaetze": 322,
+   "haupt_und_zwilling": 53
+  },
+  {
+   "thema": "Biodiversität im Schulumfeld",
+   "hauptartikel": "Hertzhaimer-Naturgarten",
+   "abgeschnitten": 0,
+   "absaetze": 5,
+   "haupt_und_zwilling": 4
+  },
+  {
+   "thema": "Stationenlernen Elektrizität",
+   "fehler": "TopicNotFoundError: topic not found: Stationenlernen Elektrizität"
+  },
+  {
+   "thema": "Wetter und Klima Grundschule",
+   "hauptartikel": "Grundschule Adelby",
+   "abgeschnitten": 0,
+   "absaetze": 43,
+   "haupt_und_zwilling": 10
+  },
+  {
+   "thema": "Mittelalterliche Burgen",
+   "hauptartikel": "Mittelalterliche Burg und neuzeitliches Wirtshaus",
+   "abgeschnitten": 0,
+   "absaetze": 11,
+   "haupt_und_zwilling": 6
+  },
+  {
+   "thema": "Römer in Germanien",
+   "hauptartikel": "Römisch-Germanische Kriege",
+   "abgeschnitten": 0,
+   "absaetze": 61,
+   "haupt_und_zwilling": 52
+  },
+  {
+   "thema": "Energiesparen in der Schule",
+   "hauptartikel": "Technikerschule Neumarkt i. d. OPf.",
+   "abgeschnitten": 0,
+   "absaetze": 16,
+   "haupt_und_zwilling": 11
+  },
+  {
+   "thema": "Mobbing in der Klasse",
+   "hauptartikel": "Cyber-Mobbing",
+   "abgeschnitten": 0,
+   "absaetze": 84,
+   "haupt_und_zwilling": 80
+  },
+  {
+   "thema": "Gesunde Ernährung",
+   "hauptartikel": "Gesunde Ernährung und Bewegung",
+   "abgeschnitten": 0,
+   "absaetze": 113,
+   "haupt_und_zwilling": 7
+  },
+  {
+   "thema": "Verkehrserziehung",
+   "hauptartikel": "Verkehrserziehung",
+   "abgeschnitten": 0,
+   "absaetze": 53,
+   "haupt_und_zwilling": 36
+  },
+  {
+   "thema": "Prozentrechnung im Alltag",
+   "hauptartikel": "Prozent",
+   "abgeschnitten": 0,
+   "absaetze": 100,
+   "haupt_und_zwilling": 56
+  },
+  {
+   "thema": "Zellatmung",
+   "hauptartikel": "Zellatmung",
+   "abgeschnitten": 0,
+   "absaetze": 24,
+   "haupt_und_zwilling": 22
+  },
+  {
+   "thema": "Industrielle Revolution in England",
+   "hauptartikel": "Industrielle Revolution",
+   "abgeschnitten": 0,
+   "absaetze": 160,
+   "haupt_und_zwilling": 116
+  },
+  {
+   "thema": "Weimarer Republik Krisenjahre",
+   "hauptartikel": "Detlev Peukert",
+   "abgeschnitten": 0,
+   "absaetze": 11,
+   "haupt_und_zwilling": 9
+  },
+  {
+   "thema": "Kalter Krieg",
+   "hauptartikel": "Kalter Krieg",
+   "abgeschnitten": 0,
+   "absaetze": 141,
+   "haupt_und_zwilling": 107
+  },
+  {
+   "thema": "Plastik im Meer",
+   "hauptartikel": "Plastikmüll in den Ozeanen",
+   "abgeschnitten": 0,
+   "absaetze": 107,
+   "haupt_und_zwilling": 87
+  },
+  {
+   "thema": "Programmieren mit Scratch",
+   "hauptartikel": "Scratch (Programmiersprache)",
+   "abgeschnitten": 0,
+   "absaetze": 129,
+   "haupt_und_zwilling": 56
+  },
+  {
+   "thema": "Erneuerbare Energien Windkraft",
+   "hauptartikel": "Erneuerbare Energien Hamburg",
+   "abgeschnitten": 0,
+   "absaetze": 190,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Vulkane und Erdbeben",
+   "hauptartikel": "San Antonio (Vulkan)",
+   "abgeschnitten": 0,
+   "absaetze": 31,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Gedichtanalyse Romantik",
+   "hauptartikel": "Lyrisches Ich",
+   "abgeschnitten": 0,
+   "absaetze": 32,
+   "haupt_und_zwilling": 12
+  },
+  {
+   "thema": "Kurzgeschichten der Nachkriegszeit",
+   "hauptartikel": "Kurzgeschichte",
+   "abgeschnitten": 0,
+   "absaetze": 62,
+   "haupt_und_zwilling": 17
+  },
+  {
+   "thema": "Säuren und Basen im Alltag",
+   "hauptartikel": "Säure-Basen-Haushalt",
+   "abgeschnitten": 0,
+   "absaetze": 39,
+   "haupt_und_zwilling": 33
+  },
+  {
+   "thema": "Ökosystem Wald",
+   "hauptartikel": "Ökosystem",
+   "abgeschnitten": 0,
+   "absaetze": 141,
+   "haupt_und_zwilling": 57
+  },
+  {
+   "thema": "Menschenrechte",
+   "hauptartikel": "Menschenrechte",
+   "abgeschnitten": 0,
+   "absaetze": 190,
+   "haupt_und_zwilling": 110
+  },
+  {
+   "thema": "Europäische Union Institutionen",
+   "hauptartikel": "Europäische Union",
+   "abgeschnitten": 76,
+   "absaetze": 400,
+   "haupt_und_zwilling": 235,
+   "quellen": [
+    {
+     "titel": "Europäische Union",
+     "herkunft": "primary",
+     "absaetze": 224,
+     "behalten": 224
+    },
+    {
+     "titel": "Europäische Union",
+     "herkunft": "same_topic",
+     "absaetze": 11,
+     "behalten": 11
+    },
+    {
+     "titel": "Rat der Europäischen Union",
+     "herkunft": "linked",
+     "absaetze": 32,
+     "behalten": 32
+    },
+    {
+     "titel": "Europäische Kommission",
+     "herkunft": "linked",
+     "absaetze": 50,
+     "behalten": 35
+    },
+    {
+     "titel": "Zollunion",
+     "herkunft": "linked",
+     "absaetze": 0,
+     "behalten": 0
+    },
+    {
+     "titel": "Unionsbürgerschaft",
+     "herkunft": "linked",
+     "absaetze": 15,
+     "behalten": 15
+    },
+    {
+     "titel": "Europäische Zentralbank",
+     "herkunft": "linked",
+     "absaetze": 88,
+     "behalten": 36
+    },
+    {
+     "titel": "Europäische Identität",
+     "herkunft": "linked",
+     "absaetze": 29,
+     "behalten": 29
+    },
+    {
+     "titel": "Europäische Gemeinschaft",
+     "herkunft": "linked",
+     "absaetze": 18,
+     "behalten": 18
+    },
+    {
+     "titel": "Auenwiesen von Fulda, Rohrbach und Solz",
+     "herkunft": "search",
+     "absaetze": 5,
+     "behalten": 0
+    },
+    {
+     "titel": "Hasenwinkel bei Fretterode",
+     "herkunft": "search",
+     "absaetze": 4,
+     "behalten": 0
+    }
+   ]
+  },
+  {
+   "thema": "Bank",
+   "hauptartikel": "Bank",
+   "abgeschnitten": 0,
+   "absaetze": 102,
+   "haupt_und_zwilling": 40
+  },
+  {
+   "thema": "Kiefer",
+   "hauptartikel": "Kiefer (Anatomie)",
+   "abgeschnitten": 0,
+   "absaetze": 165,
+   "haupt_und_zwilling": 3
+  },
+  {
+   "thema": "Leiter",
+   "hauptartikel": "Leiter (Gerät)",
+   "abgeschnitten": 0,
+   "absaetze": 154,
+   "haupt_und_zwilling": 58
+  },
+  {
+   "thema": "Schloss",
+   "hauptartikel": "Schloss (Architektur)",
+   "abgeschnitten": 0,
+   "absaetze": 217,
+   "haupt_und_zwilling": 70
+  },
+  {
+   "thema": "Feder",
+   "hauptartikel": "Feder",
+   "abgeschnitten": 0,
+   "absaetze": 77,
+   "haupt_und_zwilling": 42
+  },
+  {
+   "thema": "Ton",
+   "hauptartikel": "Klang",
+   "abgeschnitten": 0,
+   "absaetze": 104,
+   "haupt_und_zwilling": 14
+  },
+  {
+   "thema": "Netz",
+   "hauptartikel": "Netz (Textilie)",
+   "abgeschnitten": 0,
+   "absaetze": 35,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Bauer",
+   "hauptartikel": "Landwirt",
+   "abgeschnitten": 0,
+   "absaetze": 235,
+   "haupt_und_zwilling": 61
+  },
+  {
+   "thema": "Läufer",
+   "hauptartikel": "Hausschwein",
+   "abgeschnitten": 0,
+   "absaetze": 68,
+   "haupt_und_zwilling": 51
+  },
+  {
+   "thema": "Golf",
+   "hauptartikel": "Golf (Meer)",
+   "abgeschnitten": 0,
+   "absaetze": 66,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Kraft",
+   "hauptartikel": "Kraft",
+   "abgeschnitten": 0,
+   "absaetze": 216,
+   "haupt_und_zwilling": 109
+  },
+  {
+   "thema": "Arbeit",
+   "hauptartikel": "Arbeit (Philosophie)",
+   "abgeschnitten": 0,
+   "absaetze": 146,
+   "haupt_und_zwilling": 52
+  },
+  {
+   "thema": "Masse",
+   "hauptartikel": "Masse (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 319,
+   "haupt_und_zwilling": 87
+  },
+  {
+   "thema": "Spannung",
+   "hauptartikel": "Elektrische Spannung",
+   "abgeschnitten": 0,
+   "absaetze": 280,
+   "haupt_und_zwilling": 77
+  },
+  {
+   "thema": "Ladung",
+   "hauptartikel": "Ladung (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 158,
+   "haupt_und_zwilling": 10
+  },
+  {
+   "thema": "Leistung",
+   "hauptartikel": "Leistung (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 134,
+   "haupt_und_zwilling": 31
+  },
+  {
+   "thema": "Stamm",
+   "hauptartikel": "Stamm (Familienname)",
+   "abgeschnitten": 0,
+   "absaetze": 72,
+   "haupt_und_zwilling": 28
+  },
+  {
+   "thema": "Wurzel",
+   "hauptartikel": "Wurzel (Pflanze)",
+   "abgeschnitten": 0,
+   "absaetze": 113,
+   "haupt_und_zwilling": 67
+  },
+  {
+   "thema": "Gleichung",
+   "hauptartikel": "Gleichung",
+   "abgeschnitten": 0,
+   "absaetze": 260,
+   "haupt_und_zwilling": 58
+  },
+  {
+   "thema": "Funktion",
+   "hauptartikel": "Funktion (Objekt)",
+   "abgeschnitten": 0,
+   "absaetze": 68,
+   "haupt_und_zwilling": 14
+  },
+  {
+   "thema": "Körper",
+   "hauptartikel": "Gegenstand",
+   "abgeschnitten": 0,
+   "absaetze": 45,
+   "haupt_und_zwilling": 14
+  },
+  {
+   "thema": "Atlas",
+   "hauptartikel": "Atlas (Gebirge)",
+   "abgeschnitten": 0,
+   "absaetze": 96,
+   "haupt_und_zwilling": 24
+  },
+  {
+   "thema": "Merkur",
+   "hauptartikel": "Mercurius",
+   "abgeschnitten": 0,
+   "absaetze": 28,
+   "haupt_und_zwilling": 21
+  },
+  {
+   "thema": "Pupille",
+   "hauptartikel": "Pupille",
+   "abgeschnitten": 0,
+   "absaetze": 53,
+   "haupt_und_zwilling": 40
+  },
+  {
+   "thema": "Kreuzung",
+   "hauptartikel": "Kreuzung (Verkehr)",
+   "abgeschnitten": 0,
+   "absaetze": 42,
+   "haupt_und_zwilling": 11
+  },
+  {
+   "thema": "Reformation",
+   "hauptartikel": "Reformation",
+   "abgeschnitten": 0,
+   "absaetze": 253,
+   "haupt_und_zwilling": 130
+  },
+  {
+   "thema": "Revolution",
+   "hauptartikel": "Revolution",
+   "abgeschnitten": 0,
+   "absaetze": 358,
+   "haupt_und_zwilling": 29
+  },
+  {
+   "thema": "Kiefer",
+   "hauptartikel": "Kiefer (Anatomie)",
+   "abgeschnitten": 0,
+   "absaetze": 165,
+   "haupt_und_zwilling": 3
+  },
+  {
+   "thema": "Leiter",
+   "hauptartikel": "Leiter (Physik)",
+   "abgeschnitten": 23,
+   "absaetze": 400,
+   "haupt_und_zwilling": 39,
+   "quellen": [
+    {
+     "titel": "Leiter (Physik)",
+     "herkunft": "primary",
+     "absaetze": 39,
+     "behalten": 39
+    },
+    {
+     "titel": "Wellenleiter",
+     "herkunft": "linked",
+     "absaetze": 14,
+     "behalten": 14
+    },
+    {
+     "titel": "Halbleiter",
+     "herkunft": "linked",
+     "absaetze": 51,
+     "behalten": 51
+    },
+    {
+     "titel": "Hohlleiter",
+     "herkunft": "linked",
+     "absaetze": 73,
+     "behalten": 73
+    },
+    {
+     "titel": "Lichtwellenleiter",
+     "herkunft": "linked",
+     "absaetze": 118,
+     "behalten": 118
+    },
+    {
+     "titel": "Wärme",
+     "herkunft": "linked",
+     "absaetze": 4,
+     "behalten": 4
+    },
+    {
+     "titel": "Supraleiter",
+     "herkunft": "linked",
+     "absaetze": 73,
+     "behalten": 73
+    },
+    {
+     "titel": "Ionenleiter",
+     "herkunft": "linked",
+     "absaetze": 1,
+     "behalten": 1
+    },
+    {
+     "titel": "Licht",
+     "herkunft": "linked",
+     "absaetze": 4,
+     "behalten": 4
+    },
+    {
+     "titel": "Skin-Effekt",
+     "herkunft": "search",
+     "absaetze": 40,
+     "behalten": 17
+    },
+    {
+     "titel": "Elektrische Ladung",
+     "herkunft": "search",
+     "absaetze": 6,
+     "behalten": 6
+    }
+   ]
+  },
+  {
+   "thema": "Feder",
+   "hauptartikel": "Feder",
+   "abgeschnitten": 0,
+   "absaetze": 77,
+   "haupt_und_zwilling": 42
+  },
+  {
+   "thema": "Ton",
+   "hauptartikel": "Ton (Musik)",
+   "abgeschnitten": 0,
+   "absaetze": 44,
+   "haupt_und_zwilling": 8
+  },
+  {
+   "thema": "Zelle",
+   "hauptartikel": "Zelle (Biologie)",
+   "abgeschnitten": 0,
+   "absaetze": 156,
+   "haupt_und_zwilling": 39
+  },
+  {
+   "thema": "Netz",
+   "hauptartikel": "Funknetz",
+   "abgeschnitten": 0,
+   "absaetze": 36,
+   "haupt_und_zwilling": 6
+  },
+  {
+   "thema": "Wurzel",
+   "hauptartikel": "Wurzel (Mathematik)",
+   "abgeschnitten": 0,
+   "absaetze": 208,
+   "haupt_und_zwilling": 62
+  },
+  {
+   "thema": "Körper",
+   "hauptartikel": "Körper (Geometrie)",
+   "abgeschnitten": 0,
+   "absaetze": 80,
+   "haupt_und_zwilling": 21
+  },
+  {
+   "thema": "Bank",
+   "hauptartikel": "Bank",
+   "abgeschnitten": 0,
+   "absaetze": 102,
+   "haupt_und_zwilling": 40
+  },
+  {
+   "thema": "Schloss",
+   "hauptartikel": "Schloss (Waffe)",
+   "abgeschnitten": 0,
+   "absaetze": 53,
+   "haupt_und_zwilling": 10
+  },
+  {
+   "thema": "Welle",
+   "hauptartikel": "Welle",
+   "abgeschnitten": 0,
+   "absaetze": 237,
+   "haupt_und_zwilling": 30
+  },
+  {
+   "thema": "Stamm",
+   "hauptartikel": "Stamm (Biologie)",
+   "abgeschnitten": 0,
+   "absaetze": 53,
+   "haupt_und_zwilling": 23
+  },
+  {
+   "thema": "Bauer",
+   "hauptartikel": "Kölner Bauer",
+   "abgeschnitten": 0,
+   "absaetze": 250,
+   "haupt_und_zwilling": 13
+  },
+  {
+   "thema": "Merkur",
+   "hauptartikel": "Mercurius",
+   "abgeschnitten": 0,
+   "absaetze": 28,
+   "haupt_und_zwilling": 21
+  },
+  {
+   "thema": "Atlas",
+   "hauptartikel": "Mount Atlas",
+   "abgeschnitten": 0,
+   "absaetze": 6,
+   "haupt_und_zwilling": 1
+  },
+  {
+   "thema": "Kreuzung",
+   "hauptartikel": "Kreuzung (Genetik)",
+   "abgeschnitten": 0,
+   "absaetze": 54,
+   "haupt_und_zwilling": 10
+  },
+  {
+   "thema": "Masse",
+   "hauptartikel": "Masse (Physik)",
+   "abgeschnitten": 0,
+   "absaetze": 319,
+   "haupt_und_zwilling": 87
+  },
+  {
+   "thema": "Golf",
+   "hauptartikel": "Persischer Golf",
+   "abgeschnitten": 0,
+   "absaetze": 143,
+   "haupt_und_zwilling": 26
+  },
+  {
+   "thema": "Strom",
+   "hauptartikel": "Strom (Gewässerart)",
+   "abgeschnitten": 0,
+   "absaetze": 61,
+   "haupt_und_zwilling": 12
+  },
+  {
+   "thema": "Läufer",
+   "hauptartikel": "Laufsport",
+   "abgeschnitten": 0,
+   "absaetze": 31,
+   "haupt_und_zwilling": 29
+  }
+ ]
+}

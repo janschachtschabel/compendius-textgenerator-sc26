@@ -101,7 +101,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | wie Vorgabe | Tokens je Anfrage in den drei Profilen ab `best-quality` |
 | `LLM_DAILY_TOKEN_BUDGET` | `0` | wie Vorgabe | Tokens je Tag für alle Worker; `0` setzt keine Grenze (D67), gezählt wird trotzdem. Eine Zahl kappt den Tag: 2.000.000 reichen für 25 bis 40 Kompendien mit `best-quality` oder rund 3.500 mit `balanced`. Ohne Grenze gehören `API_KEYS` gesetzt. Bis Release 2.5.0 hieß `0` ein leeres Budget: kein LLM-Aufruf, jeder Schritt fällt auf die Regeln zurück |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | wie Vorgabe | Sätze ohne deckenden Beleg: `drop` verwirft, `mark` kennzeichnet sie |
-| `LLM_EXTRACTION_CANDIDATES` | `8` | wie Vorgabe | Absätze je Baustein, die `extraction=llm` angeboten bekommt |
+| `LLM_EXTRACTION_CANDIDATES` | `8` | wie Vorgabe | Absätze je Baustein, die `extraction=llm` angeboten bekommt: die der Policy und bis zu dieser Zahl die nächstbesten |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | wie Vorgabe | Bausteine, die `generation=llm-fast` schreibt |
 
 ### Profile und Text
