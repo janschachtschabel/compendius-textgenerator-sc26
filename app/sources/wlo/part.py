@@ -155,14 +155,14 @@ class CollectionBuilder:
         self._remember(key, dataclasses.asdict(info))
         return info
 
-    def node(self, node_id: str) -> NodeInfo:
+    def node(self, node_id: str, *, remaining: Remaining | None = None) -> NodeInfo:
         """The metadata of a material or a collection, cached like a collection's; read without the account (A02),
         so the key names the repository without it."""
         key = self._key("node", node_id, public=True)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, dict):
             return _hydrate(NodeInfo, cached)
-        info = self.client.node(node_id)
+        info = self.client.node(node_id, remaining=remaining)
         self._remember(key, dataclasses.asdict(info))
         return info
 

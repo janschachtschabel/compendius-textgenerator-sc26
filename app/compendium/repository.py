@@ -19,7 +19,7 @@ from app.domain.models import CollectionPart, NodeInput, Source
 from app.domain.requests import GenerateRequest
 from app.llm.deadline import Deadline
 from app.settings import Settings
-from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError
+from app.sources.wlo.client import CollectionNotFoundError, EduSharingClient, EduSharingError, Remaining
 from app.sources.wlo.models import CollectionInfo, NodeInfo
 from app.sources.wlo.overview import PART_HEADING as COLLECTION_HEADING
 from app.sources.wlo.part import CollectionBuilder, CollectionOptions, node_input
@@ -35,8 +35,9 @@ class RepositoryReading:
     _foreign: dict[str, CollectionBuilder]
     _foreign_lock: threading.Lock
 
-    def _collection_info(self, request: GenerateRequest) -> CollectionInfo | None:
-        """The collection behind the request; unreachable repositories only matter when the topic depends on it."""
+    def _collection_info(self, request: GenerateRequest, remaining: Remaining | None = None) -> CollectionInfo | None:
+        """The collection behind the request; unreachable repositories only matter when the topic depends on it.
+        ``remaining`` bounds the read as every read of the request (audit 2026-10-02, A08)."""
         if not request.collection_id:
             return None
         if self.collections is None:
@@ -44,7 +45,7 @@ class RepositoryReading:
                 return None
             raise RepositoryUnavailableError(NO_REPOSITORY)
         try:
-            return self.collections.info(request.collection_id)
+            return self.collections.info(request.collection_id, remaining=remaining)
         except CollectionNotFoundError:
             raise
         except EduSharingError as exc:
@@ -53,17 +54,20 @@ class RepositoryReading:
                 return None
             raise
 
-    def read_node(self, node_id: str, repository: str | None = None) -> tuple[NodeInfo, NodeInput]:
-        """The metadata of a material or a collection (D45), from the configured repository or another allowed one.
+    def read_node(
+        self, node_id: str, repository: str | None = None, *, remaining: Remaining | None = None
+    ) -> tuple[NodeInfo, NodeInput]:
+        """The metadata of a material or a collection (D45), from the configured repository or another allowed one,
+        within ``remaining`` where a request's time budget bounds it.
 
         Raises ``RepositoryNotAllowedError`` for an address outside the allowlist, ``NodeNotFoundError`` for an
         unknown node, ``EduSharingError`` when the repository fails, ``RepositoryUnavailableError`` without one.
         """
         root, builder = self._node_repository(repository)
-        info = builder.node(node_id)
+        info = builder.node(node_id, remaining=remaining)
         return info, node_input(info, root)
 
-    def collection_from_node(self, request: GenerateRequest) -> GenerateRequest:
+    def collection_from_node(self, request: GenerateRequest, remaining: Remaining | None = None) -> GenerateRequest:
         """The request with a collection named as node_id standing for collection_id as well, so it gets part 3 (D77;
         Jan, 2026-10-02: one id for a collection, whichever field carries it). Only where part 3 is asked for and
         collection_id is empty, and only for a node of the configured repository, the one part 3 reads: a material,
@@ -72,7 +76,7 @@ class RepositoryReading:
         if not node_id or request.collection_id or "collection" not in request.parts or self.collections is None:
             return request
         _, builder = self._node_repository(request.repository)
-        if builder is not self.collections or builder.node(node_id).kind != "collection":
+        if builder is not self.collections or builder.node(node_id, remaining=remaining).kind != "collection":
             return request
         return request.model_copy(update={"collection_id": node_id})
 
@@ -114,7 +118,7 @@ class RepositoryReading:
             raise RuntimeError("collections are not configured (EDU_SHARING_BASE_URL)")
         return self.collections
 
-    def _probe_knowledge(self, collection_id: str | None) -> dict[str, Any] | None:
+    def _probe_knowledge(self, collection_id: str | None, remaining: Remaining | None = None) -> dict[str, Any] | None:
         """Refuse an unknown knowledge collection before the article choice and the corpus spend LLM calls.
 
         Reads the collection's metadata only (cached); an unknown one is a 404 as for ``collection_id``. A repository
@@ -123,7 +127,7 @@ class RepositoryReading:
         if not collection_id or self.collections is None:
             return None
         try:
-            self.collections.info(collection_id)
+            self.collections.info(collection_id, remaining=remaining)
         except CollectionNotFoundError:
             raise
         except EduSharingError as exc:

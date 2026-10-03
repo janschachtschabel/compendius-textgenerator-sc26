@@ -198,14 +198,15 @@ class EduSharingClient:
         log.warning("collection %s: listing cut after %d pages", collection_id, MAX_PAGES)
         return refs
 
-    def node(self, node_id: str) -> NodeInfo:
+    def node(self, node_id: str, *, remaining: Remaining | None = None) -> NodeInfo:
         """Title, description, keywords, subject and level of a material or a collection (D45).
 
         Read without credentials, whatever the client carries: the endpoints that take a node have no login, so they
         pass on only what the repository shows the public. A node the public may not see counts as not found.
+        ``remaining`` bounds the read as in ``_get``.
         """
         path = f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/metadata"
-        payload = self._get(path, {"propertyFilter": "-all-"}, anonymous=True, missing=(403, 404))
+        payload = self._get(path, {"propertyFilter": "-all-"}, anonymous=True, missing=(403, 404), remaining=remaining)
         if payload is None:
             raise NodeNotFoundError(f"Knoten {node_id} nicht gefunden oder nicht öffentlich in {self.base_url}")
         if not isinstance(payload.get("node"), dict):

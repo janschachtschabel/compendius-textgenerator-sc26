@@ -11,6 +11,7 @@ from pydantic import ValidationError
 
 from app.compendium.errors import PartsUnavailableError
 from app.domain.requests import GenerateRequest
+from app.llm.deadline import Deadline
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
@@ -164,6 +165,33 @@ def test_the_request_deadline_stops_material_fetches(
     assert result.audit.knowledge == {"collection_id": OPTIK, "error": error, "sources": 0}
 
 
+def test_the_first_reads_of_the_repository_keep_to_the_time_budget(
+    service: CompendiumService, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The collection behind the topic, the knowledge collection and a node were read with the full client timeout
+    whatever the budget had left; a repository answering after 30 s held a request of 5 s (audit 2026-10-02, A08).
+    Now the first read waits at most the 5 s, and once they are spent no read starts."""
+    clock = [0.0]
+    waits: list[float] = []
+    repository = FakeRepository()
+
+    def slow(request: httpx.Request) -> httpx.Response:
+        waits.append(request.extensions["timeout"]["read"])
+        clock[0] += 30.0
+        return repository(request)
+
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(slow), page_size=10)
+    monkeypatch.setattr(service, "collections", CollectionBuilder(client=client, cache=None))
+    request = GenerateRequest(
+        topic="Optik", collection_id=OPTIK, knowledge_collection_id=OPTIK, parts=["world", "collection"]
+    )
+
+    result = service.generate(request, deadline=Deadline(5.0, clock=lambda: clock[0]))
+
+    assert waits == [5.0]
+    assert result.collection is not None and result.collection.error == "Zeitbudget der Anfrage erschöpft"
+
+
 def test_the_knowledge_collection_needs_part_one() -> None:
     """Its materials only feed part 1; without it they were quietly not read (review of 2026-09-25, D49)."""
     with pytest.raises(ValidationError, match="knowledge_collection_id"):
@@ -239,14 +267,15 @@ def test_part_three_keeps_to_the_time_budget_of_the_request(
 ) -> None:
     """Spent before part 3 starts, the budget asks the repository nothing more: part 3 still read a page of the
     materials and the sub-collections, each with the full client timeout (audit 2026-09-29, A06). It says why it
-    is missing, and the compendium stands."""
+    is missing, and the compendium stands. Since the first reads keep to the budget as well (audit 2026-10-02, A08),
+    a spent one reads nothing at all; the topic comes with the request."""
     repo = FakeRepository()
     client = EduSharingClient(BASE, transport=httpx.MockTransport(repo), page_size=10)
     builder = CollectionBuilder(client=client, cache=TtlCache(tmp_path / "wlo_cache.db"))
     monkeypatch.setattr(service, "collections", builder)
     monkeypatch.setattr(service.settings, "request_timeout_s", 0)  # spent before part 3 starts
-    result = service.generate(GenerateRequest(collection_id=OPTIK, parts=["collection"]))
-    assert [request.url.path.rsplit("/", 1)[-1] for request in repo.requests] == [OPTIK], "the topic's collection"
+    result = service.generate(GenerateRequest(topic="Optik", collection_id=OPTIK, parts=["collection"]))
+    assert repo.requests == []
     assert result.collection is not None and not result.collection.available
     assert result.collection.error == "Zeitbudget der Anfrage erschöpft"
 

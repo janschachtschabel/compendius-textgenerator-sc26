@@ -108,8 +108,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         """Resolve the topic, build the corpus and segment it: everything that precedes matching.
 
         Part 3 alone needs the collection only: its topic is resolved where possible, and no corpus is built.
-        ``deadline`` bounds the repository reads of the knowledge collection; material texts not fetched in
-        time are left out and counted in the audit. With ``choice`` the LLM decides an unsure article (D35).
+        ``deadline`` bounds the repository reads, from the first (audit 2026-10-02, A08); material texts not
+        fetched in time are left out and counted in the audit. With ``choice`` the LLM decides an unsure article (D35).
         ``registry`` narrows the archives (/knowledge asks some of them); ``segment=False`` keeps the articles whole,
         as /knowledge returns them - the one way to a topic's corpus for a compendium, the curriculum search and
         /knowledge (audit 2026-09-27, AR-02). With ``wording`` - a writing profile - the model words the topic of a
@@ -129,9 +129,12 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             template = template.model_copy(update={"empty_slot_policy": request.empty_slot_policy})
         lexicon = self.lexicon.with_template(template)
 
-        collection = self._collection_info(request)
-        knowledge_failure = self._probe_knowledge(request.knowledge_collection_id)
-        node_info, node = self.read_node(request.node_id, request.repository) if request.node_id else (None, None)
+        remaining = deadline.remaining if deadline is not None else None
+        collection = self._collection_info(request, remaining)
+        knowledge_failure = self._probe_knowledge(request.knowledge_collection_id, remaining)
+        node_info, node = None, None
+        if request.node_id:
+            node_info, node = self.read_node(request.node_id, request.repository, remaining=remaining)
         derived: list[CollectionTopic] = []
         if node_info is not None:
             derived.append(node_topic(node_info))
@@ -272,7 +275,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own."""
         if deadline is None:  # bounds the LLM work; the rule-based path needs none
             deadline = Deadline(self.settings.request_timeout_s)
-        request, profile = self._admit(request)
+        request, profile = self._admit(request, deadline)
         # The request's one budget, the profile's size (D59), unless the caller brought one to share over more than
         # the compendium (/qa); article_choice=llm (D35) spends from it first
         if budget is None:
@@ -312,12 +315,12 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         archives = prepared.registry or self.registry
         return assemble(request, made, lap, llm=self.llm, facets=self.facets, zim_snapshot=archives.snapshot())
 
-    def _admit(self, request: GenerateRequest) -> tuple[GenerateRequest, str]:
+    def _admit(self, request: GenerateRequest, deadline: Deadline) -> tuple[GenerateRequest, str]:
         """The request with the switches of its profile (D41) and the profile; refuses before any work what this
         server cannot make: an unknown strategy, a switch that needs an LLM it lacks (D53), no makeable part."""
         defaulted = request.preset is None
         profile = request.preset or self.default_preset
-        request = self.collection_from_node(with_profile(request, profile))
+        request = self.collection_from_node(with_profile(request, profile), deadline.remaining)
         if request.matcher:
             ensure_strategy(request.matcher)
         self.refuse_without_llm(llm_switches(request, corpus=self._needs_corpus(request)), profile, defaulted)
