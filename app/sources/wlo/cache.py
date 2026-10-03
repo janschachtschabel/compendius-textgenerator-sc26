@@ -46,7 +46,11 @@ class TtlCache:
             return None
         if row is None or row[1] <= self._clock():
             return None
-        return json.loads(row[0])
+        try:
+            return json.loads(row[0])
+        except ValueError as exc:  # an entry damaged or edited by hand: the next write replaces it (audit 2026-10-02)
+            log.warning("repository cache entry %s not readable, reading from the repository: %s", key, exc)
+            return None
 
     def set(self, key: str, value: Any, *, ttl_s: float) -> None:
         now = self._clock()

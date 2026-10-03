@@ -58,6 +58,26 @@ def test_an_unusable_cache_file_degrades_to_misses(
     assert "database is locked" in caplog.text
 
 
+def test_an_entry_that_is_no_json_is_a_miss_until_it_is_written_again(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    # Audit 2026-10-02, A11: the value of one entry, damaged or edited by hand, raised JSONDecodeError and failed the
+    # read the repository could still have answered
+    path = tmp_path / "wlo_cache.db"
+    cache = TtlCache(path)
+    cache.set("collection:1", {"title": "Optik"}, ttl_s=3600)
+    with closing(sqlite3.connect(path)) as connection:
+        connection.execute("UPDATE cache SET value = ? WHERE key = ?", ("{kein json", "collection:1"))
+        connection.commit()
+
+    with caplog.at_level("WARNING"):
+        assert cache.get("collection:1") is None
+    assert "collection:1" in caplog.text
+
+    cache.set("collection:1", {"title": "Optik"}, ttl_s=3600)
+    assert cache.get("collection:1") == {"title": "Optik"}
+
+
 def test_a_corrupt_cache_file_does_not_stop_the_start(
     sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
 ) -> None:
