@@ -3409,6 +3409,43 @@ Wörter heißt das: „Funktion“ und „Bank“ bekommen einen passenden Artik
 unpassenden, „Leiter“, „Spannung“ und „Schloss“ einen vertretbaren; mit Fach wählen die Regeln dort wie bisher.
 Rohdaten: `m63_kein_kandidat.json`.
 
+## M64 Teil 2 mit weiteren Suchwörtern, enge Runde (03.10.2026)
+
+Jan: „suchbegriffe und themen für teil 2 testen“. M58 zeigte, dass bis zu sechs Suchbegriffe der Frage N Teil 2
+verschlechtern (Wortteile wie „Widerstand“ in *Widerstandskämpferin*, Fachbegriffe anderer Fächer) und nur Aspekt-Themen
+mit LLM-Prüfung gewinnen. Die enge Runde (`mc_lehrplan_enge_runde.py`) prüft vier Varianten von Teil 2 je Thema mit
+derselben Antwort von N, an den 57 Themen von M57, in `balanced` und `best-quality`, mit D80 (nur Note 2 einzeln,
+Häufigkeitsfilter), `gpt-6-luna` über OpenAI direkt: heute; dazu die Schreibweise der Schule für den Titel, wenn sie
+abweicht (Frage N nennt sie, „Brüche“ für *Bruchrechnung*); dazu die Suchbegriffe von N, auf ihre Fächer begrenzt; dazu
+das angefragte Thema, wenn es nicht der Titel ist. Ein zusätzliches Suchwort zählt nur als ganzes Wort (höchstens zwei
+Buchstaben Endung). Je Thema, Profil und Variante zog die Stichprobe bis zu sechs einzeln gezeigte und zwei gebündelte
+Elemente (Saat 64); 378 der 1.506 Paare hatten Noten aus M57 und M58, 1.128 benotete ein Claude-Subagent blind auf der
+Skala von M22, zum Thema wie angefragt, ein zweiter 450 davon (gleiche Note bei 92 %, gleich „passend“ bei 97 %).
+Gepoolt mit M57 und M58 (Hajek, `mc_lehrplan_enge_runde_auswertung.py`); eine Variante gilt, wo sie lief, und ist sonst
+„heute“:
+
+| einzeln gezeigt: passend / unpassend | gewöhnlich (20) | Gruppe (26) | Aspekt (11) |
+|---|---|---|---|
+| `balanced` heute | 68 / 7 % | 30 / 38 % | 23 / 33 % |
+| `balanced` + Begriffe | 62 / 18 % | 32 / 32 % | 20 / 48 % |
+| `balanced` + angefragtes Thema | 68 / 7 % | 31 / 37 % | 27 / 32 % |
+| `best-quality` heute | 84 / 0 % | 55 / 13 % | 31 / 30 % |
+| `best-quality` + Begriffe | 80 / 1 % | 43 / 14 % | 37 / 22 % |
+| `best-quality` + angefragtes Thema | 84 / 0 % | 54 / 13 % | 41 / 20 % |
+
+- Schreibweise der Schule: N nannte eine abweichende nur für *Bruchrechnung* („Brüche“) und in `balanced` für zwei
+  Aspekt-Themen; die Varianten ändern gepoolt nichts. „Brüche“ bringt neben den Bruchrechnungen auch die Brüche einer
+  Kunstgeschichte und die Bruchzahlen einer Fremdsprache.
+- Begriffe: wie in M58 schlechter bei gewöhnlichen Themen (`balanced` unpassend +11 Punkte, Intervall 0 bis +23) und
+  Gruppen (`best-quality` passend −12, Intervall −28 bis +2), besser nur bei Aspekten in `best-quality` (+6, Intervall
+  −10 bis +24; acht statt fünf Themen mit passendem Element).
+- Angefragtes Thema: gleich bei gewöhnlichen Themen und Gruppen, bei Aspekten +3 (`balanced`, Intervall 0 bis +13) und
+  +9 (`best-quality`, Intervall 0 bis +25); in `best-quality` prüft das LLM jede Variante neu, und seine Noten streuen von
+  Lauf zu Lauf (bei *Nachhaltigkeit im Chemieunterricht* 74 einzeln gezeigte Elemente in der einen, 43 in der anderen).
+
+**Ergebnis:** nicht gebaut (D89). Keine Variante verbessert Teil 2 sicher; was bei Aspekten gewinnt, bleibt im Rauschen
+von elf Themen. Rohdaten: `m64_lehrplan_enge_runde.json`.
+
 ## M65 Drei Faktoren der Zuordnungsregeln an 81 Themen (Audit WA-02, 03.10.2026)
 
 M44 maß die sechs Faktoren von `_score_candidate` an den zehn Goldthemen: `SUBAREA_BOOST` und `PREFERRED_SOURCE_BOOST`

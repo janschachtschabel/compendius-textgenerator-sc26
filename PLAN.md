@@ -2151,6 +2151,13 @@ API.
   besser und 17 mit ihm besser zugeordnet fanden. Mit ihnen gehen die Ausschlusswörter (`exclusion_terms`); das
   LLM liest „gehört nicht hinein“ weiter in seinem Prompt (D34). Am Gold steigt macro-F1 vor dem Budget von 0,460 auf
   0,467, im gedruckten Text von 0,288 auf 0,299.
+- **D89 (2026-10-03)** Teil 2 sucht weiter mit Titel, Aliassen und Untertiteln des Hauptartikels (Jan: „suchbegriffe
+  und themen für teil 2 testen“). Gemessen (M64) an den 57 Themen von M57, gepoolt mit M57 und M58: Die Schreibweise der
+  Schule für den Titel nennt N fast nie anders; die Suchbegriffe von N, als ganze Wörter und auf ihre Fächer begrenzt,
+  verschlechtern gewöhnliche Themen und Gruppen (`best-quality`, Gruppen: passend −12 Punkte) und helfen Aspekten nur
+  im Rauschen; das angefragte Thema als weiteres Suchwort ändert gewöhnliche Themen und Gruppen nicht und hebt Aspekte
+  um 3 bis 9 Punkte, mit Intervallen bis 0. Nichts davon ist gebaut; der Engpass der Aspekt-Themen bleibt der
+  Oberbegriff als Hauptartikel.
 - **D90 (2026-10-03)** Themenauflösung und Korpusbau liegen in `app/knowledge` (Audit AR-03 und WA-01; Jan:
   „restliche todo aus den audits mit abarbeiten“). `ZimRegistry` hält nur noch die Archive; `resolve_topic` steht in
   `app/knowledge/resolution.py`, `build_corpus` in `app/knowledge/corpus_sources.py`, beide als Funktionen, die die
