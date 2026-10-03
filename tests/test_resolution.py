@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from app.domain.requests import GenerateRequest
+from app.knowledge.resolution import resolve_topic
 from app.service import CompendiumService
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.zim.topic_rules import (
@@ -115,7 +116,7 @@ def test_a_genitive_topic_yields_its_compound_or_its_head() -> None:
 
 
 def test_an_aspect_of_a_topic_resolves_to_the_topic_as_a_guess(service: CompendiumService) -> None:
-    resolution = service.registry.resolve_topic("Grundlagen der Optik")
+    resolution = resolve_topic(service.registry, "Grundlagen der Optik")
     assert resolution.title == "Optik" and resolution.method == "variant" and not resolution.confident
     assert resolution.query == resolution.normalized == "Grundlagen der Optik"
 
@@ -124,12 +125,12 @@ def test_the_resolution_says_how_it_found_the_article(service: CompendiumService
     exact = service.prepare(GenerateRequest(topic="Optik", parts=["world"])).resolution
     assert exact.method == "title" and exact.confident
     # Found only through the title suggestions: right here, but the editor should look at it
-    suggested = service.registry.resolve_topic("Geometrische")
+    suggested = resolve_topic(service.registry, "Geometrische")
     assert suggested.title == "Geometrische Optik" and suggested.method == "suggestion" and not suggested.confident
 
 
 def test_an_exact_title_that_says_nothing_of_the_subject_is_a_guess(service: CompendiumService) -> None:
     # "Erdkunde: Delta" took the article on the Greek letter as a sure hit
-    resolution = service.registry.resolve_topic("Optik", terms=["Musik"])
+    resolution = resolve_topic(service.registry, "Optik", terms=["Musik"])
     assert resolution.title == "Optik" and resolution.method == "title" and not resolution.confident
-    assert service.registry.resolve_topic("Optik", terms=["Physik"]).confident
+    assert resolve_topic(service.registry, "Optik", terms=["Physik"]).confident

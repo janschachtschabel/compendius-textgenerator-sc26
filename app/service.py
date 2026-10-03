@@ -35,6 +35,7 @@ from app.knowledge.article_choice import (
     ArticleChoiceJob,
     check_hits,
 )
+from app.knowledge.corpus_sources import NODE_ORIGIN, build_corpus
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.topic import topic_as_asked
@@ -54,7 +55,7 @@ from app.sources.wlo.part import (
     collection_topic,
     node_topic,
 )
-from app.sources.zim.registry import NODE_ORIGIN, ZimRegistry
+from app.sources.zim.registry import ZimRegistry
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.writer import SectionWriter
 from app.templates.manager import TemplateManager
@@ -224,7 +225,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         joins when it links with the main article (D47).
         """
         lap = Stopwatch(prepared.timings).lap
-        sources = registry.build_corpus(
+        sources = build_corpus(
+            registry,
             prepared.resolution,
             slots=prepared.template.content_slots(),
             max_articles=request.max_articles or self.settings.corpus_max_articles,

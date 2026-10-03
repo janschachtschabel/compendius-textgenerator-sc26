@@ -6,7 +6,7 @@ from typing import Any
 
 from app.domain.models import Resolution
 from app.knowledge.node_article import NodeArticleReport, node_block
-from app.sources.zim.registry import CHOSEN_BY_LLM
+from app.knowledge.resolution import CHOSEN_BY_LLM
 
 
 class PartsUnavailableError(RuntimeError):

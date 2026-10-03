@@ -14,6 +14,7 @@ from pathlib import Path
 import pytest
 from libzim.writer import Creator
 
+from app.knowledge.resolution import resolve_topic
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import HtmlItem
@@ -49,8 +50,8 @@ def zim(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 def test_a_topic_that_redirects_to_a_section_resolves_to_its_article(zim: Path) -> None:
     registry = ZimRegistry([zim])
-    assert registry.resolve_topic("Nenner").title == "Bruchrechnung"
-    leiter = registry.resolve_topic("Elektrischer Leiter", terms=["physik", "strom"])
+    assert resolve_topic(registry, "Nenner").title == "Bruchrechnung"
+    leiter = resolve_topic(registry, "Elektrischer Leiter", terms=["physik", "strom"])
     assert (leiter.title, leiter.confident) == ("Leiter (Physik)", True)
 
 

@@ -16,6 +16,7 @@ import pytest
 from libzim.writer import Creator
 
 from app.domain.requests import GenerateRequest
+from app.knowledge.resolution import resolve_topic
 from app.service import CompendiumService
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import HtmlItem
@@ -71,27 +72,27 @@ def refuse(candidates: Candidates) -> tuple[int | None, str | None]:
 
 def test_a_sure_exact_title_with_a_disambiguation_page_is_checked(ambiguous: ZimRegistry) -> None:
     chooser = Recording(pick=1)
-    resolution = ambiguous.resolve_topic("Strom", chooser=chooser, thorough=True)
+    resolution = resolve_topic(ambiguous, "Strom", chooser=chooser, thorough=True)
     assert chooser.offered == [["Strom", "Elektrischer Strom"]], "the rules' article first, then the meanings"
     assert resolution.title == "Elektrischer Strom" and resolution.method == "llm" and not resolution.confident
     assert resolution.alternatives[0] == "Strom", "the rules' article stays visible"
 
 
 def test_without_thorough_the_sure_title_is_not_shown(ambiguous: ZimRegistry) -> None:
-    resolution = ambiguous.resolve_topic("Strom", chooser=refuse)
+    resolution = resolve_topic(ambiguous, "Strom", chooser=refuse)
     assert resolution.title == "Strom" and resolution.method == "title" and resolution.confident
 
 
 def test_a_meaning_the_rules_took_surely_from_a_disambiguation_page_is_checked(ambiguous: ZimRegistry) -> None:
-    assert ambiguous.resolve_topic("Baum", terms=["informatik", "daten"]).confident  # the rules alone are sure
+    assert resolve_topic(ambiguous, "Baum", terms=["informatik", "daten"]).confident  # the rules alone are sure
     chooser = Recording(pick=0)
-    resolution = ambiguous.resolve_topic("Baum", terms=["informatik", "daten"], chooser=chooser, thorough=True)
+    resolution = resolve_topic(ambiguous, "Baum", terms=["informatik", "daten"], chooser=chooser, thorough=True)
     assert chooser.offered == [["Baum", "Baum (Datenstruktur)"]], "the meanings in the order of their page"
     assert resolution.title == "Baum" and resolution.method == "llm"
 
 
 def test_a_title_without_meanings_is_not_checked_even_thoroughly(ambiguous: ZimRegistry) -> None:
-    resolution = ambiguous.resolve_topic("Elektrischer Strom", chooser=refuse, thorough=True)
+    resolution = resolve_topic(ambiguous, "Elektrischer Strom", chooser=refuse, thorough=True)
     assert resolution.title == "Elektrischer Strom" and resolution.method == "title" and resolution.confident
 
 

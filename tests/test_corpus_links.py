@@ -13,9 +13,11 @@ from pathlib import Path
 
 import pytest
 
+from app.knowledge.corpus_sources import LinkedTo, build_corpus
+from app.knowledge.resolution import resolve_topic
 from app.service import CompendiumService
 from app.sources.zim.archive import ZimArchive
-from app.sources.zim.registry import LinkedTo, ZimRegistry
+from app.sources.zim.registry import ZimRegistry
 
 
 def _source(registry: ZimRegistry, title: str):  # type: ignore[no-untyped-def]
@@ -102,7 +104,7 @@ def test_a_full_text_hit_without_a_link_either_way_stays_out_of_the_corpus(
     assert archive is not None
     monkeypatch.setattr(archive, "search", lambda query, limit=10: ["Schutz vor optischer Strahlung", "Lichtmikroskop"])
     slots = service.templates.get(service.settings.template_default).content_slots()
-    corpus = registry.build_corpus(registry.resolve_topic("Optik"), slots=slots, max_articles=30)
+    corpus = build_corpus(registry, resolve_topic(registry, "Optik"), slots=slots, max_articles=30)
     origins = {source.title: source.origin for source in corpus}
     assert origins["Lichtmikroskop"] == "search", "it links to Optik"
     assert "Schutz vor optischer Strahlung" not in origins, "neither it nor Optik links to the other"
@@ -112,9 +114,9 @@ def test_the_article_of_a_material_joins_only_when_it_links_with_the_main_articl
     """D47: the material's own article beside a topic sent along; unlinked it stays out, like an unlinked hit."""
     registry = service.registry
     slots = service.templates.get(service.settings.template_default).content_slots()
-    unlinked = registry.build_corpus(registry.resolve_topic("Programmiersprache"), slots, 30, material="Optik")
+    unlinked = build_corpus(registry, resolve_topic(registry, "Programmiersprache"), slots, 30, material="Optik")
     assert [source.title for source in unlinked] == ["Programmiersprache"]
-    linked = registry.build_corpus(registry.resolve_topic("Geometrische Optik"), slots, 30, material="Optik")
+    linked = build_corpus(registry, resolve_topic(registry, "Geometrische Optik"), slots, 30, material="Optik")
     assert {source.title: source.origin for source in linked}["Optik"] == "node"
 
 
@@ -122,7 +124,7 @@ def test_a_material_article_already_linked_in_the_corpus_becomes_the_node_articl
     """It keeps its place and loses the topic filter of linked articles: the request asked for it."""
     registry = service.registry
     slots = service.templates.get(service.settings.template_default).content_slots()
-    corpus = registry.build_corpus(registry.resolve_topic("Optik"), slots, 30, material="Geometrische Optik")
+    corpus = build_corpus(registry, resolve_topic(registry, "Optik"), slots, 30, material="Geometrische Optik")
     assert ("Geometrische Optik", "node") in [(source.title, source.origin) for source in corpus]
     keys = [(source.project, source.title) for source in corpus]
     assert len(keys) == len(set(keys)), "it is not added a second time"
@@ -141,6 +143,6 @@ def test_the_article_of_a_material_joins_even_when_the_search_read_it_first(
     assert archive is not None
     monkeypatch.setattr(archive, "search", lambda query, limit=10: ["Brechung (Physik)"])
     slots = service.templates.get(service.settings.template_default).content_slots()
-    resolution = registry.resolve_topic("Geometrische Optik")
-    corpus = registry.build_corpus(resolution, slots, 30, material="Brechung (Physik)")
+    resolution = resolve_topic(registry, "Geometrische Optik")
+    corpus = build_corpus(registry, resolution, slots, 30, material="Brechung (Physik)")
     assert {source.title: source.origin for source in corpus}.get("Brechung (Physik)") == "node"

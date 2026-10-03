@@ -23,14 +23,16 @@ from libzim.writer import Creator, Hint
 from app.domain.models import Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob
+from app.knowledge.corpus_sources import NAMED_ORIGIN, build_corpus
 from app.knowledge.main_article import choose_main_article
+from app.knowledge.resolution import misses_topic, resolve_topic
 from app.knowledge.topic_articles import NO_PARTS, NONE_FOUND, ask_topic_articles
 from app.llm.prompts import get_prompt
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.wlo.part import node_topic
-from app.sources.zim.registry import NAMED_ORIGIN, ZimRegistry, misses_topic
+from app.sources.zim.registry import ZimRegistry
 from tests.conftest import HtmlItem
 from tests.test_article_choice import by_prompt
 from tests.test_article_choice_thorough import LIST, refuse
@@ -106,15 +108,15 @@ def test_the_rules_miss_a_topic_with_a_guess_a_list_page_or_nothing(
 
 
 def test_the_overview_replaces_a_list_page_the_rules_reached(sets: ZimRegistry) -> None:
-    rules = sets.resolve_topic("Deutsche Dichter")
+    rules = resolve_topic(sets, "Deutsche Dichter")
     assert rules.title == "Liste deutschsprachiger Lyriker" and rules.confident, "a redirect to a list, as in dewiki"
-    resolution = sets.resolve_topic("Deutsche Dichter", chooser=refuse, overview="Deutschsprachige Literatur")
+    resolution = resolve_topic(sets, "Deutsche Dichter", chooser=refuse, overview="Deutschsprachige Literatur")
     assert resolution.title == "Deutschsprachige Literatur" and resolution.method == "llm" and not resolution.confident
     assert resolution.alternatives[0] == "Liste deutschsprachiger Lyriker", "the rules' article stays visible"
 
 
 def test_the_overview_leaves_an_article_the_rules_hit(sets: ZimRegistry) -> None:
-    resolution = sets.resolve_topic("Deutschsprachige Literatur", chooser=refuse, overview="Goethe")
+    resolution = resolve_topic(sets, "Deutschsprachige Literatur", chooser=refuse, overview="Goethe")
     assert resolution.title == "Deutschsprachige Literatur" and resolution.method == "title"
 
 
@@ -185,7 +187,7 @@ def test_a_budget_too_small_for_n_is_a_fallback_without_a_call(sets: ZimRegistry
 
 def test_the_named_articles_replace_linked_sub_articles_and_full_text_hits(registry: ZimRegistry) -> None:
     named = ["Optik", "Technische Optik", "Lichtmikroskop"]
-    sources = registry.build_corpus(registry.resolve_topic("Optik"), slots=[], max_articles=8, named=named)
+    sources = build_corpus(registry, resolve_topic(registry, "Optik"), slots=[], max_articles=8, named=named)
     assert [(s.title, s.origin) for s in sources] == [
         ("Optik", "primary"),
         ("Optik", "same_topic"),  # the Klexikon twin stays: it is the topic itself
@@ -196,7 +198,7 @@ def test_the_named_articles_replace_linked_sub_articles_and_full_text_hits(regis
 
 def test_max_articles_caps_the_named_articles(registry: ZimRegistry) -> None:
     named = ["Technische Optik", "Lichtmikroskop"]
-    sources = registry.build_corpus(registry.resolve_topic("Optik"), slots=[], max_articles=3, named=named)
+    sources = build_corpus(registry, resolve_topic(registry, "Optik"), slots=[], max_articles=3, named=named)
     assert [s.title for s in sources] == ["Optik", "Optik", "Technische Optik"]
 
 
@@ -229,7 +231,7 @@ def test_balanced_builds_the_corpus_from_the_articles_n_names(
 def test_n_replaces_the_main_article_where_the_rules_only_guess(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    rules = service.registry.resolve_topic("Geometrische")
+    rules = resolve_topic(service.registry, "Geometrische")
     assert rules.method in {"suggestion", "search"}, "the sample archive has no article of that name"
     fake = FakeBApi(asking({"uebersicht": "Optik", "artikel": ["Geometrische Optik", "Technische Optik"]}))
     monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=100_000))
@@ -355,7 +357,7 @@ def test_n_without_a_part_of_the_archive_leaves_the_side_articles_of_before(
 
 
 def test_the_corpus_keeps_its_side_articles_when_no_named_article_is_new(registry: ZimRegistry) -> None:
-    sources = registry.build_corpus(registry.resolve_topic("Optik"), slots=[], max_articles=8, named=["Optik"])
+    sources = build_corpus(registry, resolve_topic(registry, "Optik"), slots=[], max_articles=8, named=["Optik"])
     origins = {s.origin for s in sources}
     assert "linked" in origins and NAMED_ORIGIN not in origins
 

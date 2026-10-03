@@ -25,12 +25,12 @@ from app.knowledge.article_choice import (
     choice_block,
     rate_articles,
 )
+from app.knowledge.resolution import NONE_FITS, resolve_topic
 from app.knowledge.topic_articles import NONE_FOUND
 from app.llm.prompts import get_prompt
 from app.service import CompendiumService
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
-from app.sources.zim.registry import NONE_FITS
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 from tests.test_wlo_client import BASE, MATERIAL, FakeRepository
@@ -210,16 +210,16 @@ def test_an_unsure_resolution_is_decided_by_the_chooser(service: CompendiumServi
         offered.append(titles)
         return titles.index("Technische Optik"), None
 
-    resolution = service.registry.resolve_topic("Geometrische", chooser=pick_technical)
+    resolution = resolve_topic(service.registry, "Geometrische", chooser=pick_technical)
     assert resolution.title == "Technische Optik" and resolution.method == "llm" and not resolution.confident
     assert offered == [["Geometrische Optik", "Optik", "Technische Optik", "Brechung (Physik)"]]
     assert resolution.alternatives[0] == "Geometrische Optik"  # the rules' article stays visible
 
 
 def test_a_title_the_chooser_names_counts_when_the_archive_has_it(service: CompendiumService) -> None:
-    named = service.registry.resolve_topic("Geometrische", chooser=lambda candidates: (None, "Lichtlehre"))
+    named = resolve_topic(service.registry, "Geometrische", chooser=lambda candidates: (None, "Lichtlehre"))
     assert named.title == "Optik" and named.method == "llm"  # the redirect is followed
-    unknown = service.registry.resolve_topic("Geometrische", chooser=lambda candidates: (None, "Gibt es nicht"))
+    unknown = resolve_topic(service.registry, "Geometrische", chooser=lambda candidates: (None, "Gibt es nicht"))
     assert unknown.title == "Geometrische Optik" and unknown.method == "suggestion"
 
 
@@ -233,11 +233,11 @@ def test_when_no_candidate_fits_the_overview_of_question_n_or_nothing_takes_the_
         return NONE_FITS, None
 
     # "Optik" is sure, but the thorough choice weighs its meanings (D61), so the chooser is asked
-    overview = service.registry.resolve_topic("Optik", chooser=reject, thorough=True, overview="Geometrische Optik")
+    overview = resolve_topic(service.registry, "Optik", chooser=reject, thorough=True, overview="Geometrische Optik")
     assert overview.title == "Geometrische Optik" and overview.method == "llm" and not overview.confident
     assert overview.alternatives[0] == "Optik"  # the rejected article stays visible
     for named in (None, "Gibt es nicht", "Optik (Begriffsklärung)"):  # none, missing, a disambiguation page
-        nothing = service.registry.resolve_topic("Optik", chooser=reject, thorough=True, overview=named)
+        nothing = resolve_topic(service.registry, "Optik", chooser=reject, thorough=True, overview=named)
         assert not nothing.resolved and nothing.method == "llm" and nothing.alternatives[0] == "Optik", named
 
 
@@ -257,7 +257,7 @@ def test_a_sure_resolution_never_asks_the_chooser(service: CompendiumService) ->
     def refuse(candidates: Sequence[tuple[str, str]]) -> tuple[int | None, str | None]:
         raise AssertionError("a sure resolution asked the chooser")
 
-    assert service.registry.resolve_topic("Optik", chooser=refuse).method == "title"
+    assert resolve_topic(service.registry, "Optik", chooser=refuse).method == "title"
 
 
 def test_article_choice_llm_lets_the_model_decide_an_unsure_topic(

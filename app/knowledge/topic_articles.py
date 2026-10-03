@@ -22,11 +22,11 @@ from dataclasses import dataclass, field
 
 from app.domain.models import Source
 from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob, read_object
+from app.knowledge.corpus_sources import NAMED_ORIGIN
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.prompts import get_prompt
 from app.llm.usage import Usage
 from app.sources.zim.archive import ZimArchive
-from app.sources.zim.registry import NAMED_ORIGIN
 
 MAX_NAMED = 8  # articles on the parts, besides the overview (M37)
 OUTPUT_TOKENS = 600  # as measured; the reasoning room of the model comes on top (budgeted_chat)

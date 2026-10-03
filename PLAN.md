@@ -2144,6 +2144,14 @@ API.
   Stamm im Kompositum zählt, *Mondfinsternis* für „Mond“), die Prüfung im Absatz das erste Titelwort mit der Regel für
   kurze Wörter (KO-29), das Glossar den Themenstamm ab vier Buchstaben. Gemessen (M66): An 81 Themen änderte sich ein
   Korpus (*Zelle (Biologie)*: *Zellteilung* statt *Membran*), am Gold nichts (macro-F1 0,460, micro-F1 0,672).
+- **D90 (2026-10-03)** Themenauflösung und Korpusbau liegen in `app/knowledge` (Audit AR-03 und WA-01; Jan:
+  „restliche todo aus den audits mit abarbeiten“). `ZimRegistry` hält nur noch die Archive; `resolve_topic` steht in
+  `app/knowledge/resolution.py`, `build_corpus` in `app/knowledge/corpus_sources.py`, beide als Funktionen, die die
+  Registry bekommen. `app/sources/zim` importiert `app/knowledge` nicht mehr, die Richtung ist eine. `build_corpus`
+  (Komplexität 26, die einzige über 20) ist in Schritte geteilt: Hauptartikel, Zwilling, verlinkte Nebenartikel,
+  Volltexttreffer, je höchstens 10; dabei ging auch `handle_starttag` des Parsers, durch D84 auf 21 gestiegen, auf 18
+  zurück. Verhalten gleich: Auflösung, Quellen und Absätze von 200 Themen in `llm-free` und die Zuordnung am Gold sind
+  vor und nach dem Umzug byteweise dieselben.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

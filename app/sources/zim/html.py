@@ -208,6 +208,22 @@ class _ArticleParser(HTMLParser):
         if self._bold_depth:
             self._bold_text.append(data)
 
+    def _skipped_start(self, tag: str, attrs: dict[str, str | None]) -> None:
+        """A start tag inside a skipped part: it is skipped too, and a formula's alttext is kept (D84)."""
+        if self._formula == "" and tag in ("math", "img"):
+            self._formula = attrs.get("alttext" if tag == "math" else "alt") or ""
+        if tag not in _VOID:
+            self._skip.append(tag)
+
+    def _start_formula(self, tag: str, attrs: dict[str, str | None]) -> None:
+        """D84: MathML is not prose, but its LaTeX alttext reads as text (M61); the element is skipped, and its end
+        writes the formula. An image of a formula stands alone, by its alt text."""
+        if tag == "img":
+            self._emit_formula(attrs.get("alt") or "")
+            return
+        self._formula = attrs.get("alttext") or ""
+        self._skip.append(tag)
+
     def _emit_formula(self, latex: str) -> None:
         """A formula as text; one the converter does not know stays out, as every formula did before D84."""
         text = plain_latex(latex) if latex else None
@@ -234,19 +250,10 @@ class _ArticleParser(HTMLParser):
     def handle_starttag(self, tag: str, attrs_list: list[tuple[str, str | None]]) -> None:
         attrs = dict(attrs_list)
         if self._skip:
-            if self._formula == "" and tag in ("math", "img"):  # the alttext of the formula being read
-                self._formula = attrs.get("alttext" if tag == "math" else "alt") or ""
-            if tag not in _VOID:
-                self._skip.append(tag)
+            self._skipped_start(tag, attrs)
             return
         if _is_formula(tag, attrs):
-            # D84: MathML is not prose, but its LaTeX alttext reads as text (M61); the element is skipped, and its
-            # end writes the formula. An image of a formula stands alone, by its alt text.
-            if tag == "img":
-                self._emit_formula(attrs.get("alt") or "")
-                return
-            self._formula = attrs.get("alttext") or ""
-            self._skip.append(tag)
+            self._start_formula(tag, attrs)
             return
         if self._should_skip(tag, attrs):
             if tag not in _VOID:

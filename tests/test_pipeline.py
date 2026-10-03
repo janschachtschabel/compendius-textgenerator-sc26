@@ -9,6 +9,7 @@ import pytest
 from app.compendium.errors import TopicNotFoundError
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
+from app.knowledge.resolution import resolve_topic
 from app.service import CompendiumService
 from app.sources.zim import archive as archive_module
 from app.sources.zim.archive import ZimArchive
@@ -25,14 +26,14 @@ def test_registry_loads_both_archives(registry: ZimRegistry) -> None:
 
 
 def test_resolution_follows_redirects_and_normalises(registry: ZimRegistry) -> None:
-    resolution = registry.resolve_topic("Lichtlehre")
+    resolution = resolve_topic(registry, "Lichtlehre")
     assert resolution.title == "Optik"
-    resolution = registry.resolve_topic("optik")
+    resolution = resolve_topic(registry, "optik")
     assert resolution.title == "Optik"
 
 
 def test_disambiguation_picks_first_real_article(registry: ZimRegistry) -> None:
-    resolution = registry.resolve_topic("Optik (Begriffsklärung)")
+    resolution = resolve_topic(registry, "Optik (Begriffsklärung)")
     assert resolution.disambiguation
     assert resolution.title == "Optik"
 

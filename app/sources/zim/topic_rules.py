@@ -2,7 +2,7 @@
 
 Pure functions over strings: which words of a subject decide between meanings, which meaning of a disambiguation
 page to take, which forms of a topic to try as titles, and what a candidate shows of itself. The registry applies
-them to the archives (app/sources/zim/registry.py).
+them to the archives (app/knowledge/resolution.py).
 """
 
 from __future__ import annotations

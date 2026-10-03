@@ -14,6 +14,8 @@ from typing import Any
 import pytest
 from libzim.writer import Creator
 
+from app.knowledge.corpus_sources import build_corpus
+from app.knowledge.resolution import resolve_topic
 from app.sources.zim import archive as archive_module
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.registry import ZimRegistry
@@ -64,19 +66,19 @@ def without_fulltext(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 
 def test_an_inflected_topic_resolves_to_its_base_title(registry: ZimRegistry) -> None:
-    resolution = registry.resolve_topic("Linsen")
+    resolution = resolve_topic(registry, "Linsen")
 
     assert (resolution.title, resolution.method, resolution.confident) == ("Linse", "variant", True)
 
 
 def test_a_genitive_phrase_resolves_to_its_compound(registry: ZimRegistry) -> None:
-    resolution = registry.resolve_topic("Mikroskop des Lichts")
+    resolution = resolve_topic(registry, "Mikroskop des Lichts")
 
     assert (resolution.title, resolution.method, resolution.confident) == ("Lichtmikroskop", "variant", False)
 
 
 def test_a_work_that_carries_the_article_of_the_topic_gives_way_to_the_topic(without_fulltext: Path) -> None:
-    resolution = ZimRegistry([without_fulltext]).resolve_topic("Die Brille")
+    resolution = resolve_topic(ZimRegistry([without_fulltext]), "Die Brille")
 
     assert (resolution.title, resolution.method, resolution.confident) == ("Brille", "title", True)
     assert resolution.alternatives[0] == "Die Brille"  # the film stays on offer
@@ -86,8 +88,8 @@ def test_an_archive_without_a_full_text_index_resolves_and_builds_by_titles(with
     registry = ZimRegistry([without_fulltext])
     assert not ZimArchive(without_fulltext).has_fulltext and ZimArchive(without_fulltext).search("Brille") == []
 
-    guessed = registry.resolve_topic("Brillenglä")  # no title, no variant, no hits: the title suggestions decide
-    corpus = registry.build_corpus(registry.resolve_topic("Brille"), TemplateManager().get("sc26").slots, 10)
+    guessed = resolve_topic(registry, "Brillenglä")  # no title, no variant, no hits: the title suggestions decide
+    corpus = build_corpus(registry, resolve_topic(registry, "Brille"), TemplateManager().get("sc26").slots, 10)
 
     assert (guessed.title, guessed.method, guessed.confident) == ("Brillenglas", "suggestion", False)
     assert [(source.title, source.origin) for source in corpus] == [("Brille", "primary"), ("Brillenglas", "linked")]

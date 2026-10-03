@@ -26,12 +26,13 @@ from app.knowledge.article_choice import (
     LlmArticleChooser,
 )
 from app.knowledge.node_article import NodeArticleReport, ask_topic, ranked_entities, rule_article
+from app.knowledge.resolution import CHOSEN_BY_LLM, GUESSED, resolve_topic
 from app.knowledge.topic import NormalizedTopic, normalize_topic
 from app.knowledge.topic_articles import TopicArticlesReport, ask_topic_articles
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.models import NodeInfo
 from app.sources.wlo.part import CollectionTopic, DerivedTopic, derive_topic
-from app.sources.zim.registry import CHOSEN_BY_LLM, GUESSED, ZimRegistry
+from app.sources.zim.registry import ZimRegistry
 
 
 @dataclass
@@ -65,12 +66,12 @@ def choose_main_article(
     def by_rules(title: str) -> Resolution:
         normalized = normalize_topic(title, is_subject=catalog.knows)
         context = [*normalized.context, *around]
-        return registry.resolve_topic(normalized.topic, context=context, query=found.normalized.query, terms=terms)
+        return resolve_topic(registry, normalized.topic, context=context, query=found.normalized.query, terms=terms)
 
     def by_name(title: str) -> Resolution | None:
         """The article the model named, as the archive has it (D35): its title or a redirect, a disambiguation page
         decided by the subject. A name that only title suggestions or full-text hits reach counts as missing (M25)."""
-        named = registry.resolve_topic(title, query=found.normalized.query)
+        named = resolve_topic(registry, title, query=found.normalized.query)
         if named.method == "disambiguation":
             named = by_rules(title)
         return named if named.resolved and named.method not in GUESSED else None
@@ -102,7 +103,8 @@ def choose_main_article(
         chooser = LlmArticleChooser(job, found.normalized.topic, catalog.labels_of(found.subjects)) if job else None
         articles = the_articles()
         overview = articles.found[0] if articles is not None and articles.found else None
-        resolution = registry.resolve_topic(
+        resolution = resolve_topic(
+            registry,
             found.normalized.topic,
             context=found.context,
             query=found.normalized.query,

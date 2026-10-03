@@ -37,13 +37,13 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 from app.domain.models import Source
+from app.knowledge.resolution import NONE_FITS
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.llm.usage import Usage
-from app.sources.zim.registry import NONE_FITS
 
 if TYPE_CHECKING:  # node_article and topic_articles build on this module
     from app.knowledge.node_article import NodeArticleReport

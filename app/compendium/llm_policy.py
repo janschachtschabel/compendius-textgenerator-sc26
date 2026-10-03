@@ -15,13 +15,13 @@ from app.compendium.prepared import PreparedTopic
 from app.domain.requests import BEST_QUALITY_PRESETS, LLM_ARTICLE_CHOICES, GenerateRequest, Preset, default_preset
 from app.knowledge.article_choice import ArticleChoiceJob, ChoiceAudit, choice_used
 from app.knowledge.curriculum_check import CurriculumCheckJob, CurriculumCheckReport, check_curriculum
+from app.knowledge.resolution import CHOSEN_BY_LLM
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
 from app.matching.registry import LLM_MATCHER
 from app.settings import Settings
 from app.sources.lehrplan.matcher import CurriculumMatch
 from app.sources.lehrplan.subjects import SubjectCatalog
-from app.sources.zim.registry import CHOSEN_BY_LLM
 
 
 class LlmPolicy:

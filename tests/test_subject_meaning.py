@@ -12,6 +12,7 @@ from __future__ import annotations
 import pytest
 from libzim.writer import Creator
 
+from app.knowledge.resolution import resolve_topic
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import HtmlItem
 
@@ -44,11 +45,11 @@ def registry(tmp_path_factory: pytest.TempPathFactory) -> ZimRegistry:
 
 
 def test_a_meaning_that_names_the_subject_in_its_title_overrides_the_exact_title(registry: ZimRegistry) -> None:
-    resolution = registry.resolve_topic("Baum", terms=["informatik", "daten"])
+    resolution = resolve_topic(registry, "Baum", terms=["informatik", "daten"])
     assert resolution.title == "Baum (Datenstruktur)" and resolution.method == "disambiguation"
 
 
 def test_a_meaning_that_names_the_subject_only_in_its_text_does_not(registry: ZimRegistry) -> None:
-    resolution = registry.resolve_topic("Kreis", terms=["mathematik", "mathematisch"])
+    resolution = resolve_topic(registry, "Kreis", terms=["mathematik", "mathematisch"])
     assert resolution.title == "Kreis" and resolution.method == "title"
     assert not resolution.confident, "the exact title still says nothing of the subject: a guess"
