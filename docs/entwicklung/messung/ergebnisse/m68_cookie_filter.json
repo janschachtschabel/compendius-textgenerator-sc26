@@ -1,0 +1,1630 @@
+{
+ "note": "M68 (04.10.2026, Audit F08): Materialtexte (textContent) des WLO-Staging-Repositorys zu fünf Suchwörtern der öffentlichen Suche, ohne Anmeldung gelesen; je Material die Zeilen ab 40 Zeichen, die der alte Filter (jede Zeile mit cookie/consent) und der neue (is_consent_notice) verwerfen. Texte bleiben außerhalb.",
+ "materialien": 201,
+ "mit_text": 151,
+ "alt": {
+  "zeilen": 1,
+  "materialien": 1,
+  "zeilen_im_wortlaut": {
+   "Wir nutzen Cookies und ähnliche Technologien, um Ihnen ein optimales Nutzererlebnis zu bieten: CMS Funktionen, Technisch notwendig, Statistiken, Barrierefreiheit & Externe Medien.": 1
+  }
+ },
+ "neu": {
+  "zeilen": 154,
+  "materialien": 52,
+  "zeilen_im_wortlaut": {
+   "Ein Teil der von diesem Anbieter erhobenen Daten dient der Personalisierung sowie der Messung der Werbewirksamkeit. Der Anbieter kann IP-Adressen für die Erfolgsmessung und Personalisierung von Werbun": 153,
+   "Wir nutzen Cookies und ähnliche Technologien, um Ihnen ein optimales Nutzererlebnis zu bieten: CMS Funktionen, Technisch notwendig, Statistiken, Barrierefreiheit & Externe Medien.": 1
+  }
+ },
+ "je_material": [
+  {
+   "node": "1f71f84a-a67d-4b93-b55f-3ba4f39571d8",
+   "suchwort": "Cookies",
+   "titel": "Feuerspuren im Satellitenbild - Dynamik von Ökosystemen",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "9cb2bb68-090d-400f-9470-9a071a5e6a00",
+   "suchwort": "Cookies",
+   "titel": "Hautschutz: Bestens gewappnet",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ca58c519-ddc0-4756-a0fb-e1a9ab97f2e2",
+   "suchwort": "Cookies",
+   "titel": "Ein Evolutionspfad durch das Schulgebäude",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ba9a261d-7574-4a04-b1a8-bdb97042b3a3",
+   "suchwort": "Cookies",
+   "titel": "Wie lange reichen die Erdölreserven?",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "5a195fc5-3501-45eb-9eb1-53016049088f",
+   "suchwort": "Cookies",
+   "titel": "Meine Ferienbilder – einfache Fotobearbeitung",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "80ef04ea-e4d7-459c-b777-4b77d184c399",
+   "suchwort": "Cookies",
+   "titel": "Gehört dem Wasserstoffauto die Zukunft?",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a78e0bca-6fdc-4717-b06c-d4cf8b4c71f6",
+   "suchwort": "Cookies",
+   "titel": "Martin Luther und der Reformationstag",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "38464a4e-41cf-421d-80d1-fff011b6b61d",
+   "suchwort": "Cookies",
+   "titel": "Windenergie",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "b0466e25-0faf-42a7-991a-46efa3fd0e4b",
+   "suchwort": "Cookies",
+   "titel": "Zukunft der Stromversorgung",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "98345c70-1fb6-482b-8bab-1be42eaf1a28",
+   "suchwort": "Cookies",
+   "titel": "Stress - Mehr als nur Nervkram",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "25842ab1-79d2-4f0f-a08f-b3a29190a85e",
+   "suchwort": "Cookies",
+   "titel": "Feuerspuren im Satellitenbild - Eingriffe in Landschaften",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "2090e0e1-e589-4c75-a8dc-c086ff2f7600",
+   "suchwort": "Cookies",
+   "titel": "Blitze und Verhalten bei Gewitter – virtuelle Experimente",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "b875a4f8-2ccc-498f-b3b1-54379f815e92",
+   "suchwort": "Cookies",
+   "titel": "Desertec - Strom aus der Wüste",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "c92ef26f-e601-4118-9457-8ed45b34ff31",
+   "suchwort": "Cookies",
+   "titel": "Galvanische Zellen - Ermittlung einer Spannungsreihe",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "4fcff396-0043-407f-8d24-ea31c93ff335",
+   "suchwort": "Cookies",
+   "titel": "Lärm – Nur eine Frage der Wahrnehmung?",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "0f3f3725-210e-4a89-b618-fcc55d2836d0",
+   "suchwort": "Cookies",
+   "titel": "Ergonomie am Arbeitsplatz - Luxus oder Notwendigkeit?",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "4e5f52f4-f912-4db5-893c-0883b9aae214",
+   "suchwort": "Cookies",
+   "titel": "SMART Trick: Kreative Kurzfilme erstellen",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "51e9dcad-9868-4801-9a99-a5b28dec8dc5",
+   "suchwort": "Cookies",
+   "titel": "Wann \"zündet\" die Idee der Kernfusionstechnologie?",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "732e1624-1ab8-44dc-990f-9a20a01ccd8e",
+   "suchwort": "Cookies",
+   "titel": "Die Lichtreaktion der Fotosynthese",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "5e1521dc-67f3-4555-9560-01089db93d1c",
+   "suchwort": "Cookies",
+   "titel": "Repowering - mehr Strom aus weniger Anlagen",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "0bfd0cb7-9fc4-4ab3-b53d-f739a40e2940",
+   "suchwort": "Cookies",
+   "titel": "Haiti – Katastrophenhilfe aus dem All",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "b1a6bd3d-2dd7-4bb1-95c4-bb020a281d7d",
+   "suchwort": "Cookies",
+   "titel": "Gibt es \"die\" erneuerbare Energie?",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "1329b0da-7ac6-49e4-9279-18d010154f9f",
+   "suchwort": "Cookies",
+   "titel": "Unterrichtsmaterial Schulstart Grundschule",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a8721220-acb9-45e2-a268-ab3e11152eb8",
+   "suchwort": "Cookies",
+   "titel": "Blick in den Körper: Röntgen, MRT und Co.: Computertomographie (CT)",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "e63d613c-fb28-413e-b549-9b804dd7c9c1",
+   "suchwort": "Cookies",
+   "titel": "Flucht aus der DDR in den 1970er und 1980er Jahren",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "1d4932b6-4a81-4639-bcd9-5fbac99d8bf8",
+   "suchwort": "Cookies",
+   "titel": "Die Begründung des Mauerbaus in der DDR-Propaganda",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "0d8a2622-0d6f-41d5-acd4-f8b5cc217b69",
+   "suchwort": "Cookies",
+   "titel": "Acoustic Remote Sensing and Sea Floor Mapping",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "f28f4d6e-7ab7-43f7-83b1-0d87f1636b98",
+   "suchwort": "Cookies",
+   "titel": "Direkte Demokratie: Vom Antrag zum Volksentscheid",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "03455357-dd30-4888-be93-e6e34ed955d5",
+   "suchwort": "Cookies",
+   "titel": "Direkte Demokratie: Volksentscheide auf Bundesebene",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "22f5ba6c-904a-4671-b15d-ab64a496f1e9",
+   "suchwort": "Cookies",
+   "titel": "Sachaufgaben: Ratenkauf",
+   "zeichen": 5521,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "64f1a3c9-b1c9-45a4-8446-b11f80f956a0",
+   "suchwort": "Cookies",
+   "titel": "Multiplikation mit Vielfachen von 10 und 100",
+   "zeichen": 5210,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "76f48f63-db0e-42eb-9dfc-1db8469bc0d5",
+   "suchwort": "Cookies",
+   "titel": "Stundenplan",
+   "zeichen": 4563,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "35a08654-f5b1-46b6-b6cd-e03ce909f56a",
+   "suchwort": "Cookies",
+   "titel": "Monaco",
+   "zeichen": 4747,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "90e24db8-7684-4322-ba1f-18dfeef669a8",
+   "suchwort": "Cookies",
+   "titel": "Rechts oder links?",
+   "zeichen": 5288,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "0eabaa49-590a-4317-a908-9d4eb71142ce",
+   "suchwort": "Cookies",
+   "titel": "Zahlen und Rechnen",
+   "zeichen": 4700,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "68cceefd-f4f2-4ee1-a0eb-9682ba5d4988",
+   "suchwort": "Cookies",
+   "titel": "Monate - Months",
+   "zeichen": 5198,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "61b72a40-f7e7-4cdf-b758-8d9a80c94b80",
+   "suchwort": "Cookies",
+   "titel": "Erste Buchstaben",
+   "zeichen": 4715,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "1184421b-45f1-42f0-b1f1-227077522229",
+   "suchwort": "Cookies",
+   "titel": "Kalender",
+   "zeichen": 5220,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "a7b67adf-2543-4294-9683-99d2bfba74ac",
+   "suchwort": "Cookies",
+   "titel": "Teilbarkeitsregeln und Teilbarkeit",
+   "zeichen": 6379,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "01b1a79e-66ef-4368-8375-808aa27551c3",
+   "suchwort": "Cookies",
+   "titel": "Easter",
+   "zeichen": 6152,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "43a1f983-366b-4e52-9f1d-7235c4d1800f",
+   "suchwort": "Cookies",
+   "titel": "Wochenplan",
+   "zeichen": 4587,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "8da7e7f5-9e01-4474-a00a-18c74a3c3172",
+   "suchwort": "Cookies",
+   "titel": "Gemischte Aufgaben",
+   "zeichen": 8049,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "6e6a1f89-f7a2-4425-99ce-4d00c8714082",
+   "suchwort": "Cookies",
+   "titel": "Punkt vor Strich",
+   "zeichen": 5134,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "03a1a6e6-7d32-4a7c-83bd-4184e4324776",
+   "suchwort": "Cookies",
+   "titel": "Reihen",
+   "zeichen": 4923,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "c61f19e6-87ec-4db4-ab78-5742385f04e2",
+   "suchwort": "Cookies",
+   "titel": "Präsens",
+   "zeichen": 6040,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "416ec4ac-3722-4a67-b56c-774cc1d1d9c7",
+   "suchwort": "Cookies",
+   "titel": "wörtliche Rede / Redebegleitsatz",
+   "zeichen": 8787,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "1e519257-6979-4a5f-8ac6-e61cf3a538c8",
+   "suchwort": "Cookies",
+   "titel": "ABC / Alphabet lernen",
+   "zeichen": 7734,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "f55ce867-ab73-4f94-b9c8-d3ad25428fcd",
+   "suchwort": "Cookies",
+   "titel": "Die Jahreszeiten",
+   "zeichen": 3575,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "09e47356-d704-4263-9f1a-81ffdcb5387d",
+   "suchwort": "Cookies",
+   "titel": "Das bin ich",
+   "zeichen": 7802,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "bd1d53f8-8bc4-4f87-b415-f0a528a20c07",
+   "suchwort": "Cookies",
+   "titel": "Bayern",
+   "zeichen": 5698,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "67767423-efeb-432b-adb1-f218ecba5c63",
+   "suchwort": "Cookies",
+   "titel": "Vorsilben",
+   "zeichen": 5036,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "f13c0c37-c8ce-4aa0-b051-e0ffb03b5386",
+   "suchwort": "Cookies",
+   "titel": "Stellenwerttabelle und Zahlenstrahl im Zahlenraum 100 000",
+   "zeichen": 6491,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "eefc5c7c-75fe-477b-acae-eac1d4fadde8",
+   "suchwort": "Cookies",
+   "titel": "Personalformen der Verben",
+   "zeichen": 5915,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "05d28ee3-4b91-480a-8aab-2f40364a3b1c",
+   "suchwort": "Cookies",
+   "titel": "1x1",
+   "zeichen": 5794,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "7b6b5f43-5770-4aaf-b8df-a6f32f5e7b78",
+   "suchwort": "Cookies",
+   "titel": "Kinderrechte",
+   "zeichen": 5512,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "ce3a6449-19a8-4643-8c72-7b9021f691f5",
+   "suchwort": "Cookies",
+   "titel": "Zahlenraum 10",
+   "zeichen": 4381,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "78cb8078-80e6-46cc-97a9-1937c762c62e",
+   "suchwort": "Cookies",
+   "titel": "Rechenhäuser",
+   "zeichen": 5271,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "620c133f-1f6f-4260-b7fd-bd4126768bd6",
+   "suchwort": "Cookies",
+   "titel": "Umfang und Fläche",
+   "zeichen": 5460,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "5eeadecd-26b0-4c38-83f9-5826cd9211ee",
+   "suchwort": "Cookies",
+   "titel": "Time",
+   "zeichen": 6061,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "cfd6bcc7-e56f-4746-8803-fa304e6768b1",
+   "suchwort": "Cookies",
+   "titel": "Motivation",
+   "zeichen": 2404,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "d3b520ee-b0e0-42b5-90f4-8362ca2b1a36",
+   "suchwort": "Cookies",
+   "titel": "Zeitformen der Verben",
+   "zeichen": 8049,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "f0727bbe-9089-4435-ab78-4ad1570fe173",
+   "suchwort": "Cookies",
+   "titel": "Reizwortgeschichte",
+   "zeichen": 5186,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "d553b5dd-0ff8-42b8-b998-86b2648c9bce",
+   "suchwort": "Cookies",
+   "titel": "Quadernetze und Kantenmodell",
+   "zeichen": 5516,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "4ee26e9a-df6b-4b8d-8e38-8c7fcf7f6430",
+   "suchwort": "Cookies",
+   "titel": "Gemischte Aufgaben",
+   "zeichen": 5657,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "5f2cba50-1800-4d7f-8bff-381eb1b1619b",
+   "suchwort": "Cookies",
+   "titel": "Kernaufgaben zum 1x1",
+   "zeichen": 5678,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "ecf724f8-00ca-4d7d-9826-47fa101fe135",
+   "suchwort": "Cookies",
+   "titel": "Subtraktion -",
+   "zeichen": 5423,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "da69d3d5-3509-4701-8ac8-f0ebf1eaac3f",
+   "suchwort": "Cookies",
+   "titel": "Symmetrie",
+   "zeichen": 5214,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "22f6e36a-13ea-48b3-938b-4272d473f666",
+   "suchwort": "Cookies",
+   "titel": "Paracord",
+   "zeichen": 2336,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "ca33c84f-d3b1-4138-afa3-32af9ea16728",
+   "suchwort": "Cookies",
+   "titel": "Grimms Märchen",
+   "zeichen": 3444,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "b4f74f2c-278b-48c4-80fa-90de575fb6b4",
+   "suchwort": "Cookies",
+   "titel": "Stadt, Land, Fluss",
+   "zeichen": 7050,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "46482cca-e054-4b7c-941d-3031f3cc3236",
+   "suchwort": "Cookies",
+   "titel": "Satzglieder",
+   "zeichen": 8166,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "1ce1f573-e711-439f-a42c-6aa6b4dc4e9c",
+   "suchwort": "Cookies",
+   "titel": "Ergänzen bis 100",
+   "zeichen": 5798,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "01b7a7c8-beab-4d83-bfee-77225b02ad39",
+   "suchwort": "Cookies",
+   "titel": "Zahlenraum 1 000 000",
+   "zeichen": 4343,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "c796870e-db35-44a8-b9c7-7d0e00e45557",
+   "suchwort": "Cookies",
+   "titel": "Kleine Rätsel",
+   "zeichen": 4196,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "133fddf6-f4d2-4d88-ac16-26515002a2ce",
+   "suchwort": "Cookies",
+   "titel": "Wasser / Wasserkreislauf",
+   "zeichen": 5115,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "8a947ad6-7b01-4737-a41a-39e870218716",
+   "suchwort": "Cookies",
+   "titel": "Größer / Kleiner",
+   "zeichen": 5652,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "f7b69be8-6291-4ec1-86ae-4d9d3a55b135",
+   "suchwort": "Cookies",
+   "titel": "Frau Holle",
+   "zeichen": 3279,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "b6daeeab-23b1-49ae-ab85-4419e928b90c",
+   "suchwort": "Cookies",
+   "titel": "Zahlenrätsel / Gleichungen",
+   "zeichen": 5620,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "53d7d56d-cf71-49b0-8dda-4833f31e482d",
+   "suchwort": "Cookies",
+   "titel": "Konjunktionen / Bindewörter",
+   "zeichen": 6095,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "a5f3bfee-7bbd-4a9b-8e7a-b052b9c63060",
+   "suchwort": "Cookies",
+   "titel": "2er- bis 10er-Einmaleins",
+   "zeichen": 3831,
+   "zeilen_alt": 0,
+   "zeilen_neu": 3
+  },
+  {
+   "node": "a43deb9f-9819-4652-ad1e-812544ba3408",
+   "suchwort": "Datenschutz",
+   "titel": "Kuwait",
+   "zeichen": 281,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "c544a253-fc50-4f9e-a0e4-9c0598c91fd7",
+   "suchwort": "Datenschutz",
+   "titel": "Ontologie",
+   "zeichen": 147,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "e2a2028a-b03c-40d9-a209-a017160e28f5",
+   "suchwort": "Datenschutz",
+   "titel": "Niederlande",
+   "zeichen": 240,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "34ad6644-311b-47b4-91a5-472e9f0e175d",
+   "suchwort": "Datenschutz",
+   "titel": "Die Psychologie als Wissenschaft (Kapitel 1)",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "581a3b2b-872b-422b-b460-6e7282b30508",
+   "suchwort": "Datenschutz",
+   "titel": "Grundlagen Konjunktur und Wirtschaftswachstum",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "41d9f974-1e89-44c7-8e5f-50cff91cf37d",
+   "suchwort": "Datenschutz",
+   "titel": "Europäische Zentralbank (EZB)",
+   "zeichen": 444,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a59d305f-92ce-4fb0-a765-239c488d9520",
+   "suchwort": "Datenschutz",
+   "titel": "Lesotho",
+   "zeichen": 573,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "873262b8-da6d-4486-9fe8-292964fa13cd",
+   "suchwort": "Datenschutz",
+   "titel": "Österreich",
+   "zeichen": 189,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a81f0ac4-303b-4328-b6b0-c2f4eff3baf3",
+   "suchwort": "Datenschutz",
+   "titel": "Dramatik",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ade65a45-507d-46ed-a40c-c0400d51818a",
+   "suchwort": "Datenschutz",
+   "titel": "Computerspiel",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "0f1be81f-b6d8-4fbd-b2af-8ed5a295d6b2",
+   "suchwort": "Datenschutz",
+   "titel": "OpenID",
+   "zeichen": 390,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "3af52388-5ce4-4333-bf28-331db272a0cf",
+   "suchwort": "Datenschutz",
+   "titel": "Meere und Ozeane",
+   "zeichen": 563,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ca5bf235-6721-41a3-80dc-813da2b3f970",
+   "suchwort": "Datenschutz",
+   "titel": "Flüsse Amerikas",
+   "zeichen": 181,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "6442e282-d1f0-4616-9de0-b71ca39478e1",
+   "suchwort": "Datenschutz",
+   "titel": "NoSql",
+   "zeichen": 412,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "9f7fd1ec-ed8c-4f45-afdf-cf71c1052fae",
+   "suchwort": "Datenschutz",
+   "titel": "\"Entwicklungsländer\" (Studium)",
+   "zeichen": 506,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ff78960e-2938-4319-9da3-0850c07ec6d9",
+   "suchwort": "Datenschutz",
+   "titel": "Schulwesen",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "d9b1dfc0-e38a-4bab-8f39-643903d9d94d",
+   "suchwort": "Datenschutz",
+   "titel": "Nordkorea",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "59d26c80-c027-401f-a98b-40b8384d58b3",
+   "suchwort": "Datenschutz",
+   "titel": "Allgemeine Chemie (Schule)",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "5cf6f1df-5df6-4d5d-93d6-90b9b5adba85",
+   "suchwort": "Datenschutz",
+   "titel": "GFK III Nr. 5 - Möglichkeiten der Gefahrenabwehr haifisch3711",
+   "zeichen": 158,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "b405666d-9fe2-426d-b690-88635488abf2",
+   "suchwort": "Datenschutz",
+   "titel": "Musikinstrument",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a7aae455-fbdd-408f-ba29-9e61b0b55135",
+   "suchwort": "Datenschutz",
+   "titel": "Mexiko",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ed9f1b39-9b63-4d6e-a7f8-6ce663c5dac0",
+   "suchwort": "Datenschutz",
+   "titel": "Nepal",
+   "zeichen": 493,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "16b9bfe9-ccaf-4ac8-b7af-d9d69bb2bb2e",
+   "suchwort": "Datenschutz",
+   "titel": "Ägypten",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "bb156a15-950d-40e5-a941-857ff7e71844",
+   "suchwort": "Datenschutz",
+   "titel": "Ozeanien",
+   "zeichen": 464,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "562fb64e-3caa-402b-bffd-84508c9bf367",
+   "suchwort": "Datenschutz",
+   "titel": "Mazedonien",
+   "zeichen": 668,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "2023cb01-5200-479b-ab29-4cb60e348e5b",
+   "suchwort": "Datenschutz",
+   "titel": "Costa Rica",
+   "zeichen": 562,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "4e28d037-2789-4571-a503-700e218cf2a2",
+   "suchwort": "Datenschutz",
+   "titel": "Hannahs Wiki",
+   "zeichen": 223,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "59d70005-ee4e-4735-a5f5-b181376c75d6",
+   "suchwort": "Datenschutz",
+   "titel": "Italienisch A1/A2",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "76a1e760-d44b-4f0f-8e8f-2a67b40bcb57",
+   "suchwort": "Datenschutz",
+   "titel": "US-Präsident",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "d4edf2b3-90e4-48d4-83bd-5e2800244ca1",
+   "suchwort": "Datenschutz",
+   "titel": "Fotografie",
+   "zeichen": 612,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "05924792-e882-447f-9b1e-4fbc49eb95da",
+   "suchwort": "Datenschutz",
+   "titel": "Intendanten der öffentlich rechtlichen Rundfunkanstalten",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ece04ece-31f7-411e-90d8-362cd3a77b10",
+   "suchwort": "Datenschutz",
+   "titel": "Suriname",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "d9ff6d2a-5c6f-4090-85db-1c131912e5f5",
+   "suchwort": "Medienkompetenz",
+   "titel": "Medienkompetenz",
+   "zeichen": 182,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "050fc4ab-944b-42ac-9b0e-a9a6851ad234",
+   "suchwort": "Medienkompetenz",
+   "titel": "Im Informationsdschungel",
+   "zeichen": 536,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "1df996a5-a465-4bba-b3ea-2a9e5268418c",
+   "suchwort": "Medienkompetenz",
+   "titel": "Ich als Urheber",
+   "zeichen": 536,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "741f0fee-dce8-432e-ba8d-e01399d9bbca",
+   "suchwort": "Medienkompetenz",
+   "titel": "Generation Games",
+   "zeichen": 536,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "6760d763-0523-4174-8e65-cc49a0bfd1fc",
+   "suchwort": "Medienkompetenz",
+   "titel": "Strategie der Kultusministerkonferenz Digitale Bildung",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "3c5263fd-5943-4bf0-94f3-ab7c663b37b6",
+   "suchwort": "Medienkompetenz",
+   "titel": "OER erstellen – Ein Leitfaden für die Hochschule",
+   "zeichen": 44758,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "de2e3162-b781-4426-996c-d9c5fdf5d4e4",
+   "suchwort": "Medienkompetenz",
+   "titel": "Rezension der Broschüre „Offene Bildungsressourcen (OER) in der  Praxis“ von John H. Weitzmann für die mabb (2. Auflage) ",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ed5a5c28-9967-49d3-9958-d6a570159974",
+   "suchwort": "Medienkompetenz",
+   "titel": "Online-Meeting zum OERWorkshop Modul 2 Schule",
+   "zeichen": 11572,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "010260f7-0104-45cd-8779-2ed190bceb6a",
+   "suchwort": "Medienkompetenz",
+   "titel": "OER an der Hochschule - Überlegungen zu Qualifikation, Veränderung und Prozessbegleitung",
+   "zeichen": 10325,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "f90322dd-eccc-467c-a502-1848a4ff4bd9",
+   "suchwort": "Medienkompetenz",
+   "titel": "OERup! - Train the Trainer Leitfaden",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "7de182c7-9ba1-4bf7-8cd1-dce65c71d4ed",
+   "suchwort": "Medienkompetenz",
+   "titel": "Offene Bildungsmaterialien in der Hochschullehre. Leitfaden zu rechtlichen Fragestellungen.",
+   "zeichen": 58359,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "134e6187-87bd-4109-ae2e-053b23cbc659",
+   "suchwort": "Medienkompetenz",
+   "titel": "Open Educational Resources (OER) unter besonderer Berücksichtigung von Erwachsenen- und Weiterbildung",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "c7d3cf9e-ee29-44c4-a71e-4d78e5bca7a5",
+   "suchwort": "Optik",
+   "titel": "Physik",
+   "zeichen": 591,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "9807ee3f-7c44-4cb3-9079-35d1ac729d1d",
+   "suchwort": "Optik",
+   "titel": "Physik (Schule)",
+   "zeichen": 427,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "4f29d716-cdd8-4bbf-b653-aa9ccb1bbfc4",
+   "suchwort": "Optik",
+   "titel": "Die Optik in der Physik",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "5c342090-e09f-4268-9980-3e02f398d185",
+   "suchwort": "Optik",
+   "titel": "M 04.03 Aktionsformen",
+   "zeichen": 4156,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "312c25bf-611d-43fa-a3e8-e70d79b6b1fc",
+   "suchwort": "Optik",
+   "titel": "Ist die Scharia eine Brücke?",
+   "zeichen": 18454,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a6eb6245-22b7-47b3-a8dc-6dfefef57470",
+   "suchwort": "Optik",
+   "titel": "Ist die Scharia eine Brücke?",
+   "zeichen": 18454,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "2c7e752b-d4ed-4819-b77a-325bae36b08a",
+   "suchwort": "Optik",
+   "titel": "Muslime in Europa",
+   "zeichen": 20589,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "122b8d01-f1ed-4549-9909-4fa48c10d9e4",
+   "suchwort": "Optik",
+   "titel": "Fachportal Physik - Lehrerfortbildung Baden-Württemberg",
+   "zeichen": 849,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "264e7250-9618-4129-a974-92838a081a25",
+   "suchwort": "Optik",
+   "titel": "Experimente, Übungsaufgaben und Lösungen — Grundwissen Physik",
+   "zeichen": 149,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "60f48b98-9d20-42bb-94f2-2ae2d3644bf3",
+   "suchwort": "Optik",
+   "titel": "Optische Geräte | LEIFIphysik",
+   "zeichen": 1040,
+   "zeilen_alt": 1,
+   "zeilen_neu": 1
+  },
+  {
+   "node": "2d35a626-1d0f-4542-95cf-ca2dec8eb9ca",
+   "suchwort": "Optik",
+   "titel": "Lichtbrechung — Grundwissen Physik",
+   "zeichen": 11134,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "cde0f74d-5f46-4411-90fc-0a718a0040ae",
+   "suchwort": "Optik",
+   "titel": "Ausbreitung des Lichts — Grundwissen Physik",
+   "zeichen": 7019,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "859ebba7-77fe-45ce-8e88-dcd267b3ea79",
+   "suchwort": "Optik",
+   "titel": "Beugung und Interferenz am Einzelspalt - YouTube",
+   "zeichen": 475,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "2b1f0777-a15f-4bb2-83df-8eba0eda7104",
+   "suchwort": "Optik",
+   "titel": "Lupe",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "8b72e9ee-b933-44fb-868f-72fc3378da93",
+   "suchwort": "Optik",
+   "titel": "Hermann von Helmholtz",
+   "zeichen": 1319,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "60d59c55-cdeb-423b-9933-7f0188c21e9a",
+   "suchwort": "Optik",
+   "titel": "Kanaltrailer I musstewissen Physik",
+   "zeichen": 792,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "00cc7574-02c7-435d-b604-7c9a4963ef99",
+   "suchwort": "Optik",
+   "titel": "Fata Morgana: Wie funktioniert die magische optische Täuschung?",
+   "zeichen": 726,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "14a5bd01-6045-4a0c-82b4-332fdaa183a0",
+   "suchwort": "Optik",
+   "titel": "Sterne aus Antimaterie: Erklärung für Asymmetrie des Universums?",
+   "zeichen": 726,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "3696028b-9f25-4d29-a859-da76be68aef1",
+   "suchwort": "Optik",
+   "titel": "Das hellste Licht der Welt - Röntgenlaser",
+   "zeichen": 726,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "b8bfdf6a-f022-4869-945d-658915a145c3",
+   "suchwort": "Optik",
+   "titel": "Refraktion und Reflexion mit Laserlicht im Wasser",
+   "zeichen": 463,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "036c4f64-39ef-43a3-bead-2ce9b57ddf9e",
+   "suchwort": "Optik",
+   "titel": "Lichtbrechung beim Übergang von Luft zu Wasser",
+   "zeichen": 460,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "ec7c9971-f819-4d90-a263-350daac45c8f",
+   "suchwort": "Optik",
+   "titel": "DURCHBRUCH in der PHYSIK: Sie haben so eben die ZEIT selbst reflektiert!",
+   "zeichen": 1005,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "d2e59dff-deba-4368-80a3-474758306eae",
+   "suchwort": "Optik",
+   "titel": "Lichtquelle  | Physik - Optik | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "d53851bb-6231-4b5b-a3b6-2fd57d9b5283",
+   "suchwort": "Optik",
+   "titel": "Modell Lichtstrahl und Lichtbündel | Optik - Physik | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "cd38dbc3-8fef-4a1c-a26e-18769ac91499",
+   "suchwort": "Optik",
+   "titel": "Kernschatten und Halbschatten | Physik - Optik | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "c7eb9c96-a070-42c3-a9cb-cf2796250f3e",
+   "suchwort": "Optik",
+   "titel": "Sonnenfinsternis | Physik - Optik | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "156968b7-5fc2-49ae-bcd9-bf949bcbe255",
+   "suchwort": "Optik",
+   "titel": "Lichtstreuung auf unterschiedlichen Oberflächen - Experiment",
+   "zeichen": 358,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "2526de52-7c81-4f9f-9976-72eaa103662f",
+   "suchwort": "Optik",
+   "titel": "Brennversuche mit einer Lupe - NICHT zu Hause nachmachen! (Physik) | Lehrerschmidt",
+   "zeichen": 475,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "3ce1b2a0-2909-4d6e-b153-51b20599d39b",
+   "suchwort": "Optik",
+   "titel": "Mondfinsternis und Blutmond | tolle Aufnahmen vom 27.07.2018 | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "fa5d7f12-c9ab-418d-b4f7-7b803f8c8d4a",
+   "suchwort": "Optik",
+   "titel": "Streuung und Reflexion | Optik | Physik | Lehrerschmidt",
+   "zeichen": 475,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "cfb5c4a8-5ccb-4d61-9937-0b3e7ac9ad62",
+   "suchwort": "Optik",
+   "titel": "Zerstreuungslinse - Konkavlinse | Optik | Physik | Lehrerschmidt | Lehrerschmidt",
+   "zeichen": 358,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "b0e89470-b709-42f6-9d97-8475db99e14d",
+   "suchwort": "Optik",
+   "titel": "Sammellinse - Konvexlinse | Optik | Physik | Lehrerschmidt",
+   "zeichen": 358,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "50b47458-1fd2-4c26-a302-e6e955454434",
+   "suchwort": "Optik",
+   "titel": "Vollmond - Halbmond - Neumond | Optik | Physik | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "2c9a9ff2-2879-4135-bef8-0c3c0c66f899",
+   "suchwort": "Optik",
+   "titel": "Spiegelbild - Spiegelung | Optik | Physik | Lehrerschmidt",
+   "zeichen": 358,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "40a32472-7592-45cf-87d5-b07298cfcf8c",
+   "suchwort": "Optik",
+   "titel": "Reflexionsgesetz | Optik - Physik | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "d8f3efeb-3545-4c08-85dc-946f98d25197",
+   "suchwort": "Optik",
+   "titel": "Selbst leuchtende Körper und beleuchtete Körper | Physik - Optik | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "7c46e1be-5c58-40c9-bd40-2e4ad7968ce0",
+   "suchwort": "Optik",
+   "titel": "natürliche und künstliche Lichtquellen | Physik - Optik | Lehrerschmidt",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "761ece7e-25f6-47e0-8277-bebcb179036b",
+   "suchwort": "Optik",
+   "titel": "#01 Video-Tutorial #5: Zubehör fürs Smartphone",
+   "zeichen": 336,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "56bd0457-b989-450b-97d6-c7b4d7134c18",
+   "suchwort": "Optik",
+   "titel": "Das Geheimnis des Spiegels",
+   "zeichen": 329,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "f7d88bc3-6f77-4469-b4c6-d4771396d1be",
+   "suchwort": "Photosynthese",
+   "titel": "Photosynthese",
+   "zeichen": 4138,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "047534a4-c42a-4102-829e-79e5d02f4f03",
+   "suchwort": "Photosynthese",
+   "titel": "Haie – Wechselbeziehungen im Ökosystem",
+   "zeichen": 295,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "1e26159a-0c65-462b-87cc-baa6c5c05b9f",
+   "suchwort": "Photosynthese",
+   "titel": "Stockwerkbau des Regenwaldes",
+   "zeichen": 1378,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "544edad3-8d18-4aba-9a65-50bc3b73b40d",
+   "suchwort": "Photosynthese",
+   "titel": "Photosynthese und Klimawandel",
+   "zeichen": 2469,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "988513fa-5f24-4c41-94c0-cdf64e239945",
+   "suchwort": "Photosynthese",
+   "titel": "Kohlenstoffkreislauf",
+   "zeichen": 4752,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "2c6a19ad-9723-4b16-a0e1-ad9a5a5cc79e",
+   "suchwort": "Photosynthese",
+   "titel": "Pflanzliche Zelle",
+   "zeichen": 490,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a5f92154-91f0-428d-8d7d-793cb2578a97",
+   "suchwort": "Photosynthese",
+   "titel": "Keimung und Wachstumsbedingungen",
+   "zeichen": 2466,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "e6ad01f7-58e6-4e5f-82b5-d42e1011f709",
+   "suchwort": "Photosynthese",
+   "titel": "Polare Zone",
+   "zeichen": 2976,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "bd68987c-9d77-45d6-8024-4483ecd4736a",
+   "suchwort": "Photosynthese",
+   "titel": "ChatGPT in der Schule",
+   "zeichen": 1311,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "bf5bc6d0-46a6-4de9-95b3-5a9bd8923de5",
+   "suchwort": "Photosynthese",
+   "titel": "Aufbau von Pflanzen",
+   "zeichen": 1036,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "c82629fd-c2ae-42c8-ac2e-7a06f1b432da",
+   "suchwort": "Photosynthese",
+   "titel": "Lichtreaktion – 1. Schritt der Photosynthese",
+   "zeichen": 1726,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "24876cc7-b48c-4a56-b28f-2df6716dce29",
+   "suchwort": "Photosynthese",
+   "titel": "Subpolare Zone",
+   "zeichen": 5592,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "df3116fb-76ad-47dd-a6e6-287e1dd89040",
+   "suchwort": "Photosynthese",
+   "titel": "Photosyntheserate und Absorptionsspektrum",
+   "zeichen": 1503,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "25e70e93-2dc6-4f37-a268-d2fe5846ee62",
+   "suchwort": "Photosynthese",
+   "titel": "Dunkelreaktion – 2. Schritt der Photosynthese",
+   "zeichen": 960,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "503b2d17-3993-4ec9-b01a-45e3b3177226",
+   "suchwort": "Photosynthese",
+   "titel": "Sekundarstufe II: Die Fotosynthese",
+   "zeichen": 351,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "02a66ab2-b8f5-4c12-bf06-0c41d44c7909",
+   "suchwort": "Photosynthese",
+   "titel": "Erklärfilm zum Thema PHOTOSYNTESE",
+   "zeichen": 132,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "96f9af60-bd3b-4569-92e8-fe489052b0b2",
+   "suchwort": "Photosynthese",
+   "titel": "Scratchquiz programmieren zum Thema Frühblüher",
+   "zeichen": 132,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a570dda5-0fbd-4467-b0dd-a50fbdb4675c",
+   "suchwort": "Photosynthese",
+   "titel": "Seegras: Die Wunderplanze!",
+   "zeichen": 13387,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "2ee9d235-41ba-4b9d-a1b1-031a20410d92",
+   "suchwort": "Photosynthese",
+   "titel": "Experimentieranleitung: Metallpulver verglühen lassen",
+   "zeichen": 138,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "e8a8101a-713d-42d9-84c3-983d5bbd23df",
+   "suchwort": "Photosynthese",
+   "titel": "Abbildung - Erhitzen von Kupfersulfat",
+   "zeichen": 138,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "17bace46-63ce-4d2e-bace-4663ce9d2eaa",
+   "suchwort": "Photosynthese",
+   "titel": "OER-Recherche in WirLernenOnline",
+   "zeichen": 0,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "4e30f5b8-9d1a-4a4b-b0f5-b89d1aaa4b53",
+   "suchwort": "Photosynthese",
+   "titel": "Moleküle untersuchen: Explosive Bildgebung",
+   "zeichen": 11437,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "170b795e-8407-4979-ba13-1f9dff07b818",
+   "suchwort": "Photosynthese",
+   "titel": "Brennstoffe im Blickpunkt: Experimente zum Klimawandel",
+   "zeichen": 19489,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "9fd3dec9-7d6a-48cd-b84a-58079a75e128",
+   "suchwort": "Photosynthese",
+   "titel": "Phylogenetisch tief verwurzelte Signal-Wahrnehmungs und Übertragungs Mechanismen – Zyklische Dinukleotid Moleküle auf dem Weg zu Behandlungserfolgen in der Gesundheitsfürsorge?",
+   "zeichen": 10624,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "332130f3-db86-4f7f-95b4-13123d4ea194",
+   "suchwort": "Photosynthese",
+   "titel": "Zehn Dinge, die unser Klima verändern",
+   "zeichen": 15149,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "0484a5de-0426-4410-a16d-6fc8d7f680c3",
+   "suchwort": "Photosynthese",
+   "titel": "Fragen rund um die Begriffe Energie, Arbeit und Leistung",
+   "zeichen": 138,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "5aafa986-9be2-4a86-8f5e-fe2e5a519151",
+   "suchwort": "Photosynthese",
+   "titel": "fachliche Korrektheit von KI-Texten",
+   "zeichen": 341,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "02b763b0-462f-4f91-974c-c2a73809b0ca",
+   "suchwort": "Photosynthese",
+   "titel": "Photosynthese - Ein Fall für Zwei (Teil 2 von 2) - Chemie mit Licht - BERGISCHE UNIVERSITÄT WUPPERTAL",
+   "zeichen": 994,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "18e7f279-f5fa-4ac6-b717-434856f4c30d",
+   "suchwort": "Photosynthese",
+   "titel": "Untersuchung der Photosynthese mit phyphox",
+   "zeichen": 280,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "30f649ee-806b-49a9-b649-ee806be9a970",
+   "suchwort": "Photosynthese",
+   "titel": "Vergleich C3- und C4-Pflanzen",
+   "zeichen": 62,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "d8083170-1b27-4312-8831-701b27231236",
+   "suchwort": "Photosynthese",
+   "titel": "Summenformel der Fotosynthese ",
+   "zeichen": 62,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "c50b8bac-3cbe-407c-8b8b-ac3cbe107c55",
+   "suchwort": "Photosynthese",
+   "titel": "Lichtreaktion",
+   "zeichen": 62,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "b81d1ad7-67fe-4889-9d1a-d767fe288973",
+   "suchwort": "Photosynthese",
+   "titel": "Wachstum von Stromatolithen",
+   "zeichen": 62,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "e9bbba4e-6977-4d53-bbba-4e69778d5335",
+   "suchwort": "Photosynthese",
+   "titel": "Calvinzyklus Stöchiometrie",
+   "zeichen": 62,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "4a35f445-c0ae-4fac-b5f4-45c0ae5faca6",
+   "suchwort": "Photosynthese",
+   "titel": "Anregungszustände von Chlorophyll",
+   "zeichen": 62,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "5a091a0e-afe7-4c6f-891a-0eafe72c6fda",
+   "suchwort": "Photosynthese",
+   "titel": "Fotosynthese der C4-Pflanzen",
+   "zeichen": 62,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "a4d01160-332e-49c8-b98b-b52ce07db057",
+   "suchwort": "Photosynthese",
+   "titel": "Meeresplankton - Radiolarien (Strahlentierchen)",
+   "zeichen": 2695,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  },
+  {
+   "node": "1a0e812a-9438-4a10-8e81-2a9438ea1035",
+   "suchwort": "Photosynthese",
+   "titel": "Chlorophyll a und b",
+   "zeichen": 62,
+   "zeilen_alt": 0,
+   "zeilen_neu": 0
+  }
+ ]
+}

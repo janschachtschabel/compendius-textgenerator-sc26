@@ -104,6 +104,44 @@ def test_a_text_in_one_line_ends_at_the_characters_of_a_material() -> None:
     assert paragraphs and sum(map(len, paragraphs)) <= 500
 
 
+CONTENT_ABOUT_COOKIES = [
+    "Cookies sind kleine Textdateien, die Websites zur Speicherung von Informationen auf dem Rechner verwenden.",
+    "Ein Tracking-Cookie speichert, welche Seiten jemand besucht hat, und kann so ein Profil der Nutzung erstellen.",
+    "Für die Einwilligung in Cookies gilt seit 2021 das TTDSG; eine Website muss vorher um Zustimmung bitten.",
+    "Informed consent bedeutet, dass Versuchspersonen nach einer Aufklärung freiwillig in eine Studie einwilligen.",
+]
+CONSENT_NOTICES = [
+    # LEIFIphysik, 2026-10-04, from the text the repository extracted
+    "Wir nutzen Cookies und ähnliche Technologien, um Ihnen ein optimales Nutzererlebnis zu bieten: CMS Funktionen, "
+    "Technisch notwendig, Statistiken, Barrierefreiheit & Externe Medien.",
+    # the consent dialog of a publisher in 51 of 151 material texts (M68), without the word "cookie"
+    "Ein Teil der von diesem Anbieter erhobenen Daten dient der Personalisierung sowie der Messung der "
+    "Werbewirksamkeit. Der Anbieter kann IP-Adressen für die Erfolgsmessung und Personalisierung von Werbung nutzen.",
+    "Diese Website verwendet Cookies. Mit der weiteren Nutzung erklären Sie sich damit einverstanden.",
+    "Alle Cookies akzeptieren oder nur die technisch notwendigen zulassen? Ihre Auswahl können Sie jederzeit ändern.",
+    "Wir und unsere Partner speichern und/oder greifen auf Informationen auf einem Gerät zu, etwa auf Cookies.",
+    "We and our partners store and/or access information on a device, such as cookies and unique identifiers.",
+    "This website uses cookies to ensure you get the best experience on our website. Learn more about consent.",
+    "Datenschutzeinstellungen: Hier können Sie festlegen, welche Dienste Daten über Sie sammeln dürfen.",
+]
+
+
+def test_text_about_cookies_is_knowledge_a_consent_notice_is_not() -> None:
+    """Audit 2026-10-03, F08: every line naming "cookie" or "consent" went, "Cookies sind kleine Textdateien …" with
+    it; and the consent dialog that stood in 51 of 151 material texts (M68) passed, since it names no cookie."""
+    assert paragraphs_from_text("\n".join(CONTENT_ABOUT_COOKIES), 10_000) == CONTENT_ABOUT_COOKIES
+    assert paragraphs_from_text("\n".join(CONSENT_NOTICES), 10_000) == []
+
+
+def test_a_consent_notice_in_a_text_of_one_line_takes_its_piece_not_the_text() -> None:
+    """A text may come as one line (A07): a notice in it cost the whole text."""
+    lesson = " ".join(["Trifft Licht schräg auf eine Grenzfläche, ändert es seine Richtung."] * 40)
+    paragraphs = paragraphs_from_text(f"{lesson} {CONSENT_NOTICES[0]} {lesson}", 100_000)
+
+    assert sum(len(p) for p in paragraphs) >= 2 * len(lesson) - 2_000
+    assert not any("Wir nutzen Cookies" in p for p in paragraphs)
+
+
 def test_a_long_line_becomes_paragraphs_at_its_sentence_ends() -> None:
     sentence = "Trifft Licht schräg auf eine Grenzfläche, ändert es an ihr seine Richtung zum Lot hin oder davon weg. "
     line = (sentence * 60).strip()  # 6,000 characters in one line, as some extracted texts come

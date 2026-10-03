@@ -37,8 +37,27 @@ MIN_PARAGRAPH_CHARS = 40
 # 2026-10-03). An extracted text may come as one line of any length (audit 2026-10-02, A07).
 PARAGRAPH_MAX_CHARS = 2_000
 TIME_UP = "Zeitbudget der Anfrage erschöpft"  # compared by identity in material_sources
-# Consent banners and cookie notices crawled from the material's page are not knowledge
-_CONSENT = re.compile(r"cookie|consent|store and/or access information|datenschutzeinstellungen", re.IGNORECASE)
+# Consent dialogs and cookie notices crawled from the material's page are not knowledge, a text about cookies is: a
+# notice speaks for the site ("wir", "diese Website") or to its reader ("Ihre Auswahl"), or it uses a dialog's words.
+# Every line naming "cookie" or "consent" went before, "Cookies sind kleine Textdateien …" with it, while the consent
+# dialog that stood in 51 of 151 material texts passed: it names no cookie (audit 2026-10-03, F08; M68)
+_CONSENT_PHRASES = (
+    "store and/or access information",
+    "datenschutzeinstellungen",
+    "privatsphäre-einstellungen",
+    "cookie-einstellungen",
+    "cookie-richtlinie",
+    "cookie settings",
+    "cookie policy",
+    "manage consent",
+    "von diesem anbieter erhobenen daten",
+    "der anbieter kann ip-adressen",
+)
+_DEVICE_ACCESS = re.compile(r"informationen auf einem (?:end)?gerät", re.IGNORECASE)
+_SITE_SPEAKS = re.compile(
+    r"\b(?:wir|uns|unser\w*|we|our|diese (?:web)?seite|diese website|this (?:web)?site)\b", re.IGNORECASE
+)
+_READER_ADDRESSED = re.compile(r"\b(?:Ihnen|Ihre[mnrs]?)\b")  # the polite form, so case matters
 
 
 class TextClient(Protocol):
@@ -78,9 +97,11 @@ def paragraphs_from_text(text: str, max_chars: int) -> list[str]:
     room = max_chars
     for raw in text.splitlines():
         line = readable(" ".join(raw.split()))
-        if len(line) < MIN_PARAGRAPH_CHARS or _CONSENT.search(line):
+        if len(line) < MIN_PARAGRAPH_CHARS:
             continue
         for piece in _pieces(line, PARAGRAPH_MAX_CHARS):
+            if is_consent_notice(piece):  # a whole line, or the piece of a line as long as a text (A07)
+                continue
             if len(piece) > room:
                 head = _pieces(piece, room)[0] if room >= MIN_PARAGRAPH_CHARS else ""
                 if len(head) >= MIN_PARAGRAPH_CHARS:
@@ -90,6 +111,15 @@ def paragraphs_from_text(text: str, max_chars: int) -> list[str]:
                 paragraphs.append(piece)
                 room -= len(piece)
     return paragraphs
+
+
+def is_consent_notice(text: str) -> bool:
+    """Whether ``text`` comes from a consent dialog or a cookie notice, not from a text about cookies (see
+    ``_CONSENT_PHRASES``)."""
+    lower = text.lower()
+    if any(phrase in lower for phrase in _CONSENT_PHRASES) or _DEVICE_ACCESS.search(text):
+        return True
+    return "cookie" in lower and bool(_SITE_SPEAKS.search(text) or _READER_ADDRESSED.search(text))
 
 
 def _pieces(line: str, limit: int) -> list[str]:
