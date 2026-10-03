@@ -92,15 +92,15 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <body>
 <main>
 <header class="page-head">
-<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.11.0 · Stand 02.10.2026</p>
+<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.12.0 · Stand 02.10.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
 Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens, welches der fünf Profile welche
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>7230053</code> · Zahlen:
-<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M60</p>
+<code>compendius-textgenerator-sc26</code>, Commit <code>a201ae9</code> · Zahlen:
+<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M66</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
 <div class="toc-group"><p class="toc-head"><a href="#seite-09"><span class="num">09</span>Methoden, Messwerte und Profile</a></p><ol><li><a href="#die-fuenf-profile-und-ihre-methoden">Die fünf Profile und ihre Methoden</a></li><li><a href="#1-artikelwahl-den-hauptartikel-finden">1. Artikelwahl: den Hauptartikel finden</a></li><li><a href="#2-korpusbau-welche-artikel-neben-den-hauptartikel-kommen">2. Korpusbau: welche Artikel neben den Hauptartikel kommen</a></li><li><a href="#3-zuordnung-die-absaetze-auf-die-bausteine-verteilen">3. Zuordnung: die Absätze auf die Bausteine verteilen</a></li><li><a href="#4-text-von-teil-1-woertlich-oder-geschrieben">4. Text von Teil 1: wörtlich oder geschrieben</a></li><li><a href="#5-lehrplanschnipsel-auswaehlen-teil-2">5. Lehrplanschnipsel auswählen (Teil 2)</a></li><li><a href="#6-qa-paare-erzeugen">6. QA-Paare erzeugen</a></li><li><a href="#7-entitaeten-ermitteln">7. Entitäten ermitteln</a></li><li><a href="#messbedingungen-und-grenzen">Messbedingungen und Grenzen</a></li></ol></div>
@@ -2020,6 +2020,9 @@ aber bei 64 statt 18 Anfragen. Das lohnt, wo Güte vor Zeit geht, also in den <c
 (D42); der alte Weg über Begriffe vom LLM nennt keinen Hauptartikel und kostet bei jeder Anfrage einen Aufruf (M17).</li>
 <li>Seit D63 kann in <code>balanced</code> die vom LLM genannte Übersicht den Hauptartikel ersetzen, wo die Regeln das Thema
 verfehlen; am Gold bleibt es bei 91 und 93 (M39).</li>
+<li>Sagt das LLM, dass keiner der Kandidaten der Regeln passt, geht auch deren Artikel (D85): Das traf in M63 nur
+mehrdeutige Einzelwörter ohne Fach, bei denen die Regeln eine zufällige Bedeutung hielten („Stamm (Familienname)“).
+Die Übersicht der Frage N nimmt dann den Platz, wo das Archiv sie hat; sonst rät die Antwort zu einem Fach.</li>
 <li>Material als Eingang (D47): Titel nennen oft ein Format statt eines Themas. Die Regeln finden den Artikel über Titel
 und Beschreibung mit einem F1 von 0,56 und 0,63 an zwei Stichproben, das LLM mit 0,98 und 0,88 (M25).</li>
 </ul>
@@ -5696,7 +5699,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>7230053</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>a201ae9</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>

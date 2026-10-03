@@ -109,6 +109,14 @@ Abschnittsmarker von Teil 1.
 - Standardprofil und Formeln (D82, D83, Release 2.11.0): Ohne Profil läuft eine Anfrage mit `best-quality-generated`
   (ohne LLM weiter `llm-free`). Formeln, die das LLM in LaTeX schreibt, stehen als lesbarer Text mit Unicode im
   Kompendium („n₁ sin θ₁ = n₂ sin θ₂“) statt als Rohtext mit Backslashes.
+- Formeln aus Wikipedia, Artikelwahl und Audit-Reste (D84 bis D90, Release 2.12.0): Formeln der Wikipedia-Artikel
+  stehen als Text im Korpus, die auf eigener Zeile am Absatz davor („Das Gesetz lautet: …“); bisher verwarf der
+  Parser sie (M61: 99,6 % von 10.006 Formeln werden Text). Sagt die KI-Artikelwahl, dass keiner der Kandidaten
+  passt, fällt auch der Artikel der Regeln weg; die Übersicht der Frage N nimmt seinen Platz oder die Anfrage
+  antwortet 404 mit dem Rat, ein Fach anzugeben (M63). Gemessen und nicht gebaut: der KI-Zuordner ohne Denken (M62)
+  und weitere Lehrplan-Suchwörter (M64). Aus den Audits: eine Regel für Themenstämme (KO-11), drei Faktoren der
+  Zuordnungsregeln gestrichen (WA-02), Themenauflösung und Korpusbau in `app/knowledge` (AR-03, WA-01). Die
+  Beispiele der Prüfansicht setzen nur, was ihr Titel nennt (U11).
 
 ## Installation
 
