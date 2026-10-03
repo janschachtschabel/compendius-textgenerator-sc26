@@ -10,12 +10,14 @@ from __future__ import annotations
 
 import logging
 import re
+import textwrap
 from dataclasses import dataclass, field
 from typing import Protocol
 
 from app.concurrency import map_in_threads
 from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
 from app.domain.spelling import readable
+from app.knowledge.segmentation import split_sentences
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError, Remaining, spent
 from app.sources.wlo.errors import TimeUpError
@@ -30,6 +32,10 @@ PROJECT = "wlo_material"
 # the lexicon, the facets or the slot exclusions.
 TEXT_HEADING = "Materialtext"
 MIN_PARAGRAPH_CHARS = 40
+# A longer line of a material text becomes several paragraphs: about the 97th percentile of the archive paragraphs
+# matching and writing are measured on (median 622, p95 1,678, p99 2,417 characters over 1,944 chunks of nine topics,
+# 2026-10-03). An extracted text may come as one line of any length (audit 2026-10-02, A07).
+PARAGRAPH_MAX_CHARS = 2_000
 TIME_UP = "Zeitbudget der Anfrage erschöpft"  # compared by identity in material_sources
 # Consent banners and cookie notices crawled from the material's page are not knowledge
 _CONSENT = re.compile(r"cookie|consent|store and/or access information|datenschutzeinstellungen", re.IGNORECASE)
@@ -61,18 +67,48 @@ class KnowledgeResult:
 
 def paragraphs_from_text(text: str, max_chars: int) -> list[str]:
     """Paragraphs worth citing: one per line, long enough to be a sentence, no consent boilerplate; in one spelling,
-    as the archives write theirs (app/domain/spelling.py)."""
+    as the archives write theirs (app/domain/spelling.py).
+
+    A line longer than ``PARAGRAPH_MAX_CHARS`` becomes several paragraphs at its sentence ends, and ``max_chars``
+    bounds them all, the first one too: the paragraph that would cross it keeps the whole sentences that fit, and the
+    text ends there. Before, the first line stayed whole, 220,001 characters against a cap of 500 (audit 2026-10-02,
+    A07).
+    """
     paragraphs: list[str] = []
-    total = 0
+    room = max_chars
     for raw in text.splitlines():
         line = readable(" ".join(raw.split()))
         if len(line) < MIN_PARAGRAPH_CHARS or _CONSENT.search(line):
             continue
-        if paragraphs and total + len(line) > max_chars:
-            break
-        paragraphs.append(line)
-        total += len(line)
+        for piece in _pieces(line, PARAGRAPH_MAX_CHARS):
+            if len(piece) > room:
+                head = _pieces(piece, room)[0] if room >= MIN_PARAGRAPH_CHARS else ""
+                if len(head) >= MIN_PARAGRAPH_CHARS:
+                    paragraphs.append(head)
+                return paragraphs
+            if len(piece) >= MIN_PARAGRAPH_CHARS:  # the end of a sentence cut at its spaces may be short
+                paragraphs.append(piece)
+                room -= len(piece)
     return paragraphs
+
+
+def _pieces(line: str, limit: int) -> list[str]:
+    """``line`` in pieces of at most ``limit`` characters, cut at its sentence ends; a sentence longer than that, text
+    without any end such as an extracted table, at its spaces."""
+    if len(line) <= limit:
+        return [line]
+    pieces: list[str] = []
+    current = ""
+    for sentence in split_sentences(line):
+        for part in textwrap.wrap(sentence, limit) if len(sentence) > limit else [sentence]:
+            if current and len(current) + 1 + len(part) > limit:
+                pieces.append(current)
+                current = part
+            else:
+                current = f"{current} {part}" if current else part
+    if current:
+        pieces.append(current)
+    return pieces
 
 
 def _source(ref: MaterialRef, paragraphs: list[str]) -> Source:

@@ -10,7 +10,7 @@ from app.matching.lexicon import HeadingLexicon
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError
 from app.sources.wlo.errors import TimeUpError
-from app.sources.wlo.knowledge import KnowledgeOptions, material_sources
+from app.sources.wlo.knowledge import PARAGRAPH_MAX_CHARS, KnowledgeOptions, material_sources, paragraphs_from_text
 from app.sources.wlo.models import MaterialRef
 from app.templates.manager import TemplateManager
 from tests.conftest import ROOT
@@ -97,6 +97,39 @@ def test_without_the_full_text_a_material_brings_its_description_and_nothing_is_
     assert [p.text[:15] for section in source.sections for p in section.paragraphs] == ["Ein Arbeitsblat"]
 
 
+def test_a_text_in_one_line_ends_at_the_characters_of_a_material() -> None:
+    # Audit 2026-10-02, A07: the first line was kept whatever its length, 220,001 characters against a cap of 500
+    paragraphs = paragraphs_from_text("Fachwissen " * 20_000 + ".", max_chars=500)
+
+    assert paragraphs and sum(map(len, paragraphs)) <= 500
+
+
+def test_a_long_line_becomes_paragraphs_at_its_sentence_ends() -> None:
+    sentence = "Trifft Licht schräg auf eine Grenzfläche, ändert es an ihr seine Richtung zum Lot hin oder davon weg. "
+    line = (sentence * 60).strip()  # 6,000 characters in one line, as some extracted texts come
+
+    paragraphs = paragraphs_from_text(line, max_chars=20_000)
+
+    assert len(paragraphs) > 1 and all(len(p) <= PARAGRAPH_MAX_CHARS for p in paragraphs)
+    assert all(p.endswith("weg.") for p in paragraphs)  # whole sentences
+    assert " ".join(paragraphs) == line  # nothing lost below the cap
+
+
+def test_the_last_paragraph_keeps_the_whole_sentences_that_fit() -> None:
+    first = "Die Linse bündelt das Licht in einem Brennpunkt hinter dem Glas. " * 3
+    second = "Ein Hohlspiegel sammelt das Licht vor seiner Fläche. " * 4
+    text = f"{first.strip()}\n{second.strip()}"
+
+    paragraphs = paragraphs_from_text(text, max_chars=len(first) + 110)
+
+    assert paragraphs[0] == first.strip()
+    assert (
+        paragraphs[1]
+        == "Ein Hohlspiegel sammelt das Licht vor seiner Fläche. Ein Hohlspiegel sammelt das Licht vor seiner Fläche."
+    )
+    assert sum(map(len, paragraphs)) <= len(first) + 110
+
+
 def test_budget_failures_and_cache(tmp_path: Path) -> None:
     refs = [_ref(f"n{i}", "CC_BY") for i in range(5)]
     client = FakeTexts({f"n{i}": TEXT for i in range(5)}, fail={"n1"})
@@ -105,7 +138,10 @@ def test_budget_failures_and_cache(tmp_path: Path) -> None:
         client, cache, refs, options=KnowledgeOptions(max_materials=3, max_chars=120), fulltext=True
     )
     assert result.considered == 3 and result.failed == ["n1"] and len(result.sources) == 2
-    assert all(sum(len(p.text) for s in src.sections for p in s.paragraphs) <= 120 + 200 for src in result.sources)
+    # the text within max_chars, the first paragraph too (A07); the description comes on top
+    assert all(
+        sum(len(p.text) for s in src.sections if s.heading for p in s.paragraphs) <= 120 for src in result.sources
+    )
     again = material_sources(client, cache, refs[:1], options=KnowledgeOptions(), fulltext=True)
     assert len(again.sources) == 1 and client.calls.count("n0") == 1  # second run served from the cache
 
