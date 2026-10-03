@@ -3242,3 +3242,67 @@ rückten ungeprüfte Elemente hinter der Grenze von 200 nach. Mit der Schwelle 5
 
 **Ergebnis:** Nichts gebaut, Vorschläge an Jan. Rohdaten: `m58_lehrplan_suchbegriffe.json`, gepoolt
 `m57_m58_gepoolt.json`, Wortzählung `m58_wortfrequenzen.json`.
+
+## M59 Die KI ohne Denken: reasoning_effort none statt low (03.10.2026)
+
+Jan: „Wahrscheinlich brauchen wir das reasoning an der stelle auch nicht - prüfe wo man das reasoning überall abschalten
+kann um zeit und kosten zu sparen … wenn der qualitätsverfall gering ist könnten wir reasoning deaktivieren“, dazu die
+Absatzauswahl im Korpusbau („beim prüfen immer das kategorien schemata zeigen und frage ob es in einer dieser kategorien
+passt oder in keine davon … für mehrere absätze gleichzeitig“). `gpt-6-luna` denkt mit `reasoning_effort` `low` (D44)
+vor jeder Antwort; das Denken zahlt man als Ausgabe-Tokens, und es kostet Zeit. `minimal` lehnt das Modell ab (M58),
+`none` nimmt es. Jede KI-Frage des Dienstes lief mit `low` und mit `none`, in seinem Ablauf und mit seinen Prompts, über
+OpenAI direkt mit frischen Antworten (`mc_reasoning.py`, Einmal-Container).
+
+**Absatzauswahl:** Der KI-Zuordner der `best-quality`-Profile (`matcher=llm`, D34) arbeitet schon so, wie Jan es
+vorschlägt: Die Systemnachricht zeigt alle Bausteine mit Aufgabe, „gehört hinein“, „gehört nicht hinein“ und den Regeln
+der Vorlage, und jeder Aufruf ordnet 50 Absätze einem Baustein oder „keiner“ zu, vier Aufrufe gleichzeitig. Die
+Satzauswahl je Baustein (`extraction=llm`) nutzt kein Profil. Gemessen wurden am Gold (583 Absätze, 10 Themen, je drei
+Läufe) Stapel und Länge:
+
+| Zuordnung | macro-F1 (Spanne) | micro-F1 | Tokens | Sekunden |
+|---|---|---|---|---|
+| `low`, 50 Absätze à 400 Zeichen (bis D81) | 0,687 (0,677–0,703) | 0,794 | 107.000 | 107 |
+| `low`, 100 à 400 | 0,702 (0,692–0,710) | 0,770 | 92.000 | 111 |
+| `low`, 50 à 250 (zwei Läufe) | 0,675 (0,658–0,693) | 0,796 | 92.000 | 95 |
+| `none`, 50 à 400 | 0,609 (0,592–0,628) | 0,735 | 103.000 | 49 |
+| `none`, 100 à 400 | 0,657 (0,640–0,684) | 0,733 | 86.000 | 49 |
+| `none`, 50 à 250 | 0,676 (0,647–0,696) | 0,756 | 88.000 | 48 |
+| Regeln (`hybrid_light`) | 0,447 | 0,653 | 0 | 32 |
+
+250 Zeichen halten mit `low` die Güte von 400 bei 13 % weniger Tokens. Ohne Denken halbiert sich die Zeit; mit 250
+Zeichen erreicht macro-F1 dann das Niveau von `low`, micro-F1 bleibt 4 Punkte darunter, und Antworten mit einem
+unbekannten Baustein häufen sich.
+
+**Die übrigen Fragen**, `low` → `none`:
+
+| KI-Frage (Profil, Messung) | Güte | Zeit | Tokens |
+|---|---|---|---|
+| Frage N und Artikelwahl (`balanced`, 94 Gold-Anfragen von eval/artikelwahl) | 91 → 91 richtig, dieselben Titel | 4,4 → 2,4 s je Anfrage | 609 → 320 |
+| genannte Teile von N (M58, 45 Themen) | passend 92 → 86 %, unpassend 0 → 0 % | 5,1 → 1,9 s | |
+| gründliche Artikelwahl (`best-quality`, 94) | 93 → 93 richtig, dieselben Titel | 5,2 → 2,9 s | 1.076 → 742 |
+| Lehrplanprüfung (`best-quality`, 57 Themen von M57; 48 mit demselben Artikel) | Note 2 passt bei gewöhnlichen Themen 82 und 86 → 81 %, bei Gruppen 62 → 61 %, bei Aspekten 20 und 22 → 19 %; gleiche Note 80 % (zwei `low`-Läufe untereinander 83 %); von den passenden behält sie 100 → 99 % und zeigt 94 → 92 % einzeln | 10 → 4,6 s je Anfrage | −14 % |
+| Themenformulierung (die 8 Eingaben von M51) | 5 gleich, 3 gleichwertig (zweimal näher an der Eingabe) | 1,3 → 1,0 s | 352 → 352 |
+| QA-Paare (`best-quality`, 6 Themen à 5, zwei Gutachter) | Note 1,50 → 1,47 und 1,50 → 1,50, keine falsche Antwort; besser 4:2 und 3:3 | gleich | gleich |
+| Artikel eines Materials ohne Thema (`balanced`, 40 Materialien von eval/materialwahl) | 34 → 32 richtig, klar 30 → 27 von 31; nur die Frage je zweimal: 34 und 35 → 29 und 25 („23. März“ statt Horst Köhler, „Scratch“ statt *Scratch (Programmiersprache)*) | 1,5 → 0,9 s | 419 → 265 |
+| `/entities` (`balanced`, die 40 Materialien, Noten von M36) | 279 → 218 Verknüpfungen; passend 73 → 75 %, von den passenden gefunden 84 → 63 % | 5,2 → 2,1 s | |
+
+**Schreiben:** `best-quality-generated` und `best-coverage-generated` an den neun Themen von M48, beide Aufwände, zwei
+blinde Gutachter je Art wie dort (gleiche Note bei Passung 33, Vollständigkeit 34 von 36 Texten, nie mehr als eine Stufe
+auseinander):
+
+| Profil | Passung | Nutzen | Vollständigkeit | Lesbarkeit | leichte Fehler je Text | Zeit | Tokens | Zeichen |
+|---|---|---|---|---|---|---|---|---|
+| `best-quality-generated` `low` | 4,28 | 3,94 | 3,56 | 3,67 | 1,17 | 37 s | 77.000 | 26.800 |
+| `best-quality-generated` `none` | 3,39 | 2,72 | 2,50 | 3,11 | 1,17 | 22 s | 70.000 | 19.100 |
+| `best-coverage-generated` `low` | 5,00 | 4,83 | 5,00 | 4,11 | 0,56 | 37 s | 106.000 | 55.800 |
+| `best-coverage-generated` `none` | 4,50 | 4,44 | 4,39 | 4,11 | 1,11 | 24 s | 81.000 | 45.100 |
+
+Ohne Denken schreibt das Modell kürzer und dünner; bei Aspekt-Themen fiel die Vollständigkeit von
+`best-quality-generated` von 3,67 auf 1,50. In diesen Läufen ordnete auch der Zuordner ohne Denken zu.
+
+**Eine ganze `best-quality`-Anfrage** (Teil 1 und 2, sechs Themen, Code mit 250 Zeichen): mit `low` 26 bis 32 s
+(Artikelwahl 5,6, Zuordnung 11,9, Lehrplanprüfung 8,1 s im Median), mit `none` 11 bis 15 s (3,2, 5,7 und 3,0 s).
+
+**Ergebnis:** Generell abschalten verliert Güte: beim Schreiben, bei der Zuordnung, bei `/entities` und beim Artikel eines
+Materials. Ohne Denken laufen die fünf Fragen, die gleich gut antworteten: N, Artikelwahl, Lehrplanprüfung,
+Themenformulierung und QA-Paare (D81); die Zuordnung nimmt 250 Zeichen je Absatz. Rohdaten: `m59_reasoning.json`.
