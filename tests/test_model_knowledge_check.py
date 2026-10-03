@@ -114,6 +114,32 @@ def test_an_answer_without_a_verdict_checked_nothing_and_says_so(answer: Any) ->
     assert outcome.fallback == NO_VERDICT
 
 
+@pytest.mark.parametrize(
+    "verdict",
+    [
+        "unklar",
+        "nicht prüfbar",
+        "falsch",
+        "Stimmt nicht.",
+        "Gründete Ernst Abbe die Firma Carl Zeiss im Jahr 1902?",
+        KNOWN[1] + " " + " ".join(["Dazu kommt noch vieles mehr über die Firma."] * 6),
+    ],
+)
+def test_a_verdict_the_check_cannot_use_leaves_the_sentence_unchecked(verdict: str) -> None:
+    """Review of F06: any text counted as a verdict - "unklar", "falsch", a question, a rewrite too long to take."""
+    checked, outcome, _ = run({"1": "ok", "2": verdict, "3": "ok"}, section(*KNOWN))
+
+    assert marked_texts(checked.text) == KNOWN
+    assert (outcome.checked, outcome.unchecked, outcome.fallback) == (2, 1, None)
+
+
+def test_a_skipped_or_unreadable_check_counts_every_sentence_unchecked() -> None:
+    _, unreadable, _ = run("Kann ich nicht prüfen.", section(*KNOWN))
+    _, skipped, _ = run({"1": "ok"}, section(*KNOWN), per_request=10)
+
+    assert (unreadable.checked, unreadable.unchecked) == (skipped.checked, skipped.unchecked) == (0, 3)
+
+
 def test_a_partial_answer_counts_the_sentences_it_left_unchecked() -> None:
     checked, outcome, _ = run({"1": "ok", "3": "streichen"}, section(*KNOWN))
 
@@ -171,6 +197,7 @@ def test_a_verdict_in_other_words_keeps_the_sentence(verdict: str) -> None:
     """Review 2026-10-02: only "ok" kept a sentence; "ok, stimmt" went into the text as its corrected wording."""
     checked, outcome, _ = run({"1": "ok", "2": verdict, "3": "ok"}, section(*KNOWN))
     assert marked_texts(checked.text) == KNOWN and outcome.corrected == outcome.struck == 0
+    assert (outcome.checked, outcome.unchecked) == (3, 0)  # a keep in other words is a verdict
 
 
 @pytest.mark.parametrize("verdict", ["Streichen: falsch", "streichen - das Jahr ist erfunden", "STREICHEN"])
@@ -206,7 +233,7 @@ def test_a_correction_far_longer_than_its_sentence_is_no_correction() -> None:
 
 def test_a_correction_that_repeats_its_sentence_is_no_correction() -> None:
     _, outcome, _ = run({"1": KNOWN[0], "2": "ok", "3": "ok"}, section(*KNOWN))
-    assert outcome.corrected == 0
+    assert outcome.corrected == 0 and (outcome.checked, outcome.unchecked) == (3, 0)  # the sentence again keeps it
 
 
 def test_a_block_of_model_knowledge_alone_can_lose_every_sentence() -> None:

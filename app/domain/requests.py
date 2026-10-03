@@ -159,7 +159,8 @@ MODEL_KNOWLEDGE_CHECK_HELP = (
     "errors of best-coverage-generated (prompt model_knowledge_check). A corrected sentence keeps its mark; a block "
     "of model knowledge alone that loses every sentence falls back to the rules: verbatim paragraphs where it has "
     "evidence, else it stays empty. audit.llm.model_knowledge_check "
-    "counts the sentences the check gave a verdict (checked), those its answer left without one (unchecked), and "
+    "counts the sentences the check kept, struck or corrected (checked), those without a usable verdict "
+    '(unchecked: none, "unklar", a question, a rewrite too long to take, or no answer), and '
     "what it struck and corrected. One call per block with model knowledge, in parallel. "
     "Measured in best-coverage-generated on nine topics, the same runs before and after the check, two blind judges "
     "(M53): light errors per text 1.1 instead of 1.6, fit, use and completeness unchanged, readability 3.9 instead "

@@ -37,6 +37,10 @@ from app.synthesis.safe_markdown import unescape
 # A verdict is a word of its own: "ok, stimmt" keeps, "Streichen: falsch" strikes, "Oktober 1889 …" is a sentence
 _KEEP_RE = re.compile(r"^ok\b", re.IGNORECASE)
 _STRIKE_RE = re.compile(r"^streichen\b", re.IGNORECASE)
+# a keep in other words ("korrekt", "Der Satz stimmt."), not one turned by a negation ("Stimmt nicht.")
+_KEEP_WORDS_RE = re.compile(r"\b(?:korrekt|richtig|stimmt|zutreffend)\b", re.IGNORECASE)
+_NEGATION_RE = re.compile(r"\b(?:nicht|kein\w*|falsch|unklar)\b", re.IGNORECASE)
+KEEP_WORDS_MAX = 6  # a verdict of a few words; more is a sentence of its own
 ALL_STRUCK = "die Prüfung des Modellwissens strich jeden Satz"
 NO_VERDICT = "die Antwort nannte zu keinem Satz ein Urteil"
 MIN_OUTPUT_TOKENS = 200
@@ -53,8 +57,8 @@ _SPAN_RE = re.compile(re.escape(MODEL_KNOWLEDGE_OPEN) + r"(.*?)" + re.escape(END
 class CheckOutcome(Usage):
     """What the check did to one block, with the cost of its call; ``fallback`` says why it stayed unchecked."""
 
-    checked: int = 0  # sentences the answer gave a verdict
-    unchecked: int = 0  # offered, but without one
+    checked: int = 0  # sentences the answer kept, struck or corrected
+    unchecked: int = 0  # offered, but without a verdict the check could use, or without an answer at all
     struck: int = 0
     corrected: int = 0
     fallback: str | None = None
@@ -114,11 +118,12 @@ def check_section(
     )
     outcome.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):
-        outcome.fallback = answer.reason
+        outcome.fallback, outcome.unchecked = answer.reason, len(spans)
         return section, outcome
     verdicts = read_object(answer.text)
     if verdicts is None:
         outcome.fallback = f"{UNREADABLE} (finish_reason={answer.finish_reason or 'unbekannt'})"
+        outcome.unchecked = len(spans)
         return section, outcome
     pieces: list[str] = []
     position = 0
@@ -126,19 +131,24 @@ def check_section(
         pieces.append(section.text[position : span.start()])
         position = span.end()
         verdict = verdicts.get(str(number))
-        # A sentence the answer gives no verdict stays unchecked: "{}" counted every sentence as checked (audit
-        # 2026-10-03, F06)
-        if not isinstance(verdict, str) or not verdict.strip():
-            outcome.unchecked += 1
-            pieces.append(span.group(0))
-            continue
-        outcome.checked += 1
-        if _STRIKE_RE.match(verdict.strip()):
+        # A sentence counts as checked once the answer keeps, strikes or corrects it; no verdict, or one the check
+        # cannot use ("unklar", a question, a rewrite too long to take), leaves it unchecked: "{}" counted every
+        # sentence as checked (audit 2026-10-03, F06)
+        if isinstance(verdict, str) and _STRIKE_RE.match(verdict.strip()):
+            outcome.checked += 1
             outcome.struck += 1
             continue
         corrected = _correction(verdict, sentence)
-        outcome.corrected += corrected is not None
-        pieces.append(span.group(0) if corrected is None else marked_sentence(corrected))
+        if corrected is not None:
+            outcome.checked += 1
+            outcome.corrected += 1
+            pieces.append(marked_sentence(corrected))
+            continue
+        if _keeps(verdict, sentence):
+            outcome.checked += 1
+        else:
+            outcome.unchecked += 1
+        pieces.append(span.group(0))
     pieces.append(section.text[position:])
     if not outcome.checked:
         outcome.fallback = NO_VERDICT
@@ -161,6 +171,20 @@ def _correction(verdict: object, sentence: str) -> str | None:
     if len(corrected) > LONGER * len(sentence) + LONGER_CHARS:
         return None
     return corrected if difflib.SequenceMatcher(None, sentence, corrected).ratio() >= MIN_SIMILARITY else None
+
+
+def _keeps(verdict: object, sentence: str) -> bool:
+    """Whether ``verdict`` keeps the sentence: "ok", the sentence again, or a keep in other words of a few words."""
+    if not isinstance(verdict, str):
+        return False
+    stripped = verdict.strip()
+    if _KEEP_RE.match(stripped) or neutralize(stripped) == sentence:
+        return True
+    return (
+        len(stripped.split()) <= KEEP_WORDS_MAX
+        and bool(_KEEP_WORDS_RE.search(stripped))
+        and not _NEGATION_RE.search(stripped)
+    )
 
 
 def _plain(marked: str) -> str:
