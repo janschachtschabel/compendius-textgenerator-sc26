@@ -751,7 +751,8 @@ die Artikelwahl, die Lehrplanprüfung, die Themenformulierung und die QA-Paare. 
 (91 und 93 von 94 Gold-Anfragen), bewerteten die Lehrplanelemente gleich und formulierten gleichwertig, in etwa der
 halben Zeit; eine `best-quality`-Anfrage braucht für Artikelwahl und Lehrplanprüfung zusammen rund 6 statt 14 s,
 `balanced` für die Frage N 2,4 statt 4,4 s. Das Schreiben, die KI-Zuordnung, `/entities` und die Artikelwahl eines
-Materials verloren ohne Denken an Güte und denken weiter. Ein Wechsel
+Materials verloren ohne Denken an Güte und denken weiter; die Zuordnung ohne Denken machte eine
+`best-quality-generated`-Anfrage 5 s schneller und ihre Texte messbar weniger passend (M62, D86). Ein Wechsel
 auf `academiccloud` braucht nur `B_API_PROVIDER` und `B_API_MODEL`. Als Denkmodell mit Raum zum Denken erkennt der
 Dienst ein Modell nur am Namen (`gpt-5`, `gpt-6`, `o1`, `o3`, `o4`). Schreibt ein Modell nur in sein Denkfeld
 (`reasoning`, `reasoning_content`), gilt das als Antwort, außer es brach an der Grenze der Ausgabe ab

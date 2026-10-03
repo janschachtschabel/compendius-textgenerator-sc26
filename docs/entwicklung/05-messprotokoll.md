@@ -3349,6 +3349,42 @@ Image vor D84, und wertet mit dem neuen Code aus:
 
 **Ergebnis:** gebaut (D84). Rohdaten: `m61_formeln_archiv.json` (ohne das HTML der Artikel).
 
+## M62 Der KI-Zuordner ohne Denken, genauer (03.10.2026)
+
+Jan: „ki zuordner wäre ein großer zeitgewinn - aber wir sollten den qualitätsverlust nochmal genauer prüfen“. M59 maß
+am Gold drei Läufe je Aufwand und nur Summen: micro-F1 vier Punkte unter `low`. Zwei Fragen blieben: ist das Rauschen,
+und merkt man es im Text?
+
+**Am Gold** (`mc_zuordnung_none.py`): 585 Absätze der zehn Goldthemen, je Aufwand vier Läufe im Wechsel, damit die
+Tageszeit beide trifft, `gpt-6-luna` über OpenAI direkt, 50 Absätze à 250 Zeichen je Aufruf wie ausgeliefert.
+
+| Zuordnung | macro-F1 (Spanne) | micro-F1 (Spanne) | richtige Absätze je Lauf | Sekunden | Tokens (davon Ausgabe) |
+|---|---|---|---|---|---|
+| `low` | 0,669 (0,647–0,701) | 0,788 (0,779–0,805) | 403 | 98 | 93.400 (15.200) |
+| `none` | 0,643 (0,634–0,654) | 0,745 (0,739–0,747) | 373 | 39 | 85.400 (6.600) |
+
+Jeder Lauf ohne Denken liegt unter jedem mit; micro-F1 −4,3 Punkte (95-%-Intervall über die Themen −7,8 bis −1,5),
+schlechter bei neun von zehn Themen (nur *Bruchrechnung* besser). Ohne Denken legt das Modell mehr Absätze als „keiner“
+ab (48 statt 26 je Lauf, die das Gold einem Baustein gibt) und verwechselt *Entwicklung & Ausblick* mit *Fachinhalte*
+(F1 0,70 statt 0,83; *Praxis* 0,30 statt 0,51). Unbekannte Bausteine sind selten (1 bis 6 je Lauf, Tippfehler wie
+„themandefinition“) und erklären den Abstand nicht.
+
+**Im Text:** `best-quality-generated` an den neun Themen von M48, je zweimal mit dem Zuordner mit und ohne Denken, das
+Schreiben beide Male mit `low`; zwei blinde Gutachter je Bogen nach der Anleitung von M48 (gleiche Note bei 113 von 144,
+nie mehr als eine Stufe auseinander):
+
+| Zuordnung | Passung | Nutzen | Vollständigkeit | Lesbarkeit | Fehler (schwer/leicht) je Text | Sekunden | Tokens |
+|---|---|---|---|---|---|---|---|
+| `low` | 3,92 | 3,86 | 3,53 | 3,58 | 0,06 / 0,94 | 28,1 | 62.700 |
+| `none` | 3,64 | 3,69 | 3,39 | 3,47 | 0,06 / 0,92 | 22,7 | 61.300 |
+
+Die Passung sinkt um 0,28 (Intervall über die Themen −0,47 bis −0,06), Nutzen, Vollständigkeit und Lesbarkeit um 0,11
+bis 0,17 (Intervalle schließen 0 ein); am meisten verlieren Aspekt-Themen (Passung 3,17 → 2,92, Nutzen 3,17 → 2,83,
+Vollständigkeit 3,08 → 2,75). Eine Anfrage wird 5,4 s schneller (19 %).
+
+**Ergebnis:** Der Zuordner denkt weiter (D86): Der Verlust ist klein, aber echt, am Gold wie im Text. Wer Tempo vorzieht,
+setzt `paragraph_assignment=none` in `LLM_REASONING_EFFORTS`. Rohdaten: `m62_zuordnung_none.json` (ohne Texte).
+
 ## M63 „Kein Kandidat passt“ in der Artikelwahl (Audit A01, 03.10.2026)
 
 A01: Antwortet die KI-Artikelwahl (D35) mit „wahl“: 0 und ohne Titel, blieb der Artikel der Regeln stehen. Jan: „wenn

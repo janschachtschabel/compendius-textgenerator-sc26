@@ -1,0 +1,2569 @@
+{
+"note": "M62 (03.10.2026): der KI-Zuordner (matcher=llm) mit reasoning_effort low und none. gold: je Lauf am Gold (585 Absätze, 10 Themen, je Aufwand vier Läufe im Wechsel, mc_zuordnung_none.py) macro- und micro-F1, Tokens, Sekunden, Rückfälle, unbekannte Bausteine und die Absätze nach Ausgang. texte: best-quality-generated an den neun Themen von M48, je zweimal mit dem Zuordner mit und ohne Denken (geschrieben mit low), ohne Text; die Noten zweier blinder Gutachter je Bogen nach der Anleitung von M48, ohne die Zitate der Fehler; der Schlüssel der Buchstaben.",
+"gold": [
+{
+"run": 1,
+"effort": "low",
+"macro_f1": 0.6756,
+"micro_f1": 0.7805,
+"assigned": 515,
+"misassigned": 115,
+"missed": 27,
+"tokens": 91997,
+"completion": 14629,
+"calls": 17,
+"fallback": 0,
+"unknown_keys": 0,
+"fallbacks": {},
+"seconds": 104.9,
+"seconds_per_topic": {
+"Barockliteratur": 24.05,
+"Bruchrechnung": 7.15,
+"Demokratie": 10.41,
+"Französische Revolution": 6.83,
+"Klimawandel": 10.51,
+"Optik": 10.72,
+"Photosynthese": 8.91,
+"Programmiersprache": 10.18,
+"Säure-Base-Konzepte": 6.68,
+"Sinfonie": 9.5
+},
+"slots": {
+"themendefinition": {
+"tp": 19,
+"fp": 3,
+"fn": 3,
+"support": 22
+},
+"systematik": {
+"tp": 42,
+"fp": 17,
+"fn": 13,
+"support": 55
+},
+"fachinhalte": {
+"tp": 213,
+"fp": 35,
+"fn": 62,
+"support": 275
+},
+"gesellschaftlicher_kontext": {
+"tp": 30,
+"fp": 20,
+"fn": 4,
+"support": 34
+},
+"entwicklung_ausblick": {
+"tp": 71,
+"fp": 16,
+"fn": 12,
+"support": 83
+},
+"beruf_wirtschaft": {
+"tp": 6,
+"fp": 0,
+"fn": 5,
+"support": 11
+},
+"bildung": {
+"tp": 6,
+"fp": 3,
+"fn": 2,
+"support": 8
+},
+"regularien": {
+"tp": 2,
+"fp": 2,
+"fn": 0,
+"support": 2
+},
+"praxis": {
+"tp": 10,
+"fp": 7,
+"fn": 7,
+"support": 17
+},
+"querschnitt": {
+"tp": 1,
+"fp": 12,
+"fn": 2,
+"support": 3
+}
+},
+"unknown": {},
+"absaetze": {
+"richtig": 400,
+"zu viel": 32,
+"richtig leer": 43,
+"verpasst": 27,
+"falscher Baustein": 83
+}
+},
+{
+"run": 2,
+"effort": "none",
+"macro_f1": 0.6497,
+"micro_f1": 0.747,
+"assigned": 486,
+"misassigned": 114,
+"missed": 51,
+"tokens": 83882,
+"completion": 6514,
+"calls": 17,
+"fallback": 6,
+"unknown_keys": 6,
+"fallbacks": {
+"unbekannter Baustein in der Antwort": 6
+},
+"seconds": 35.7,
+"seconds_per_topic": {
+"Barockliteratur": 2.3,
+"Bruchrechnung": 3.37,
+"Demokratie": 4.17,
+"Französische Revolution": 4.12,
+"Klimawandel": 4.12,
+"Optik": 3.8,
+"Photosynthese": 3.99,
+"Programmiersprache": 3.9,
+"Säure-Base-Konzepte": 2.73,
+"Sinfonie": 3.23
+},
+"slots": {
+"themendefinition": {
+"tp": 18,
+"fp": 3,
+"fn": 4,
+"support": 22
+},
+"systematik": {
+"tp": 37,
+"fp": 2,
+"fn": 18,
+"support": 55
+},
+"fachinhalte": {
+"tp": 218,
+"fp": 58,
+"fn": 57,
+"support": 275
+},
+"gesellschaftlicher_kontext": {
+"tp": 29,
+"fp": 20,
+"fn": 5,
+"support": 34
+},
+"entwicklung_ausblick": {
+"tp": 51,
+"fp": 16,
+"fn": 32,
+"support": 83
+},
+"beruf_wirtschaft": {
+"tp": 6,
+"fp": 1,
+"fn": 5,
+"support": 11
+},
+"bildung": {
+"tp": 6,
+"fp": 3,
+"fn": 2,
+"support": 8
+},
+"regularien": {
+"tp": 2,
+"fp": 1,
+"fn": 0,
+"support": 2
+},
+"praxis": {
+"tp": 4,
+"fp": 5,
+"fn": 13,
+"support": 17
+},
+"querschnitt": {
+"tp": 1,
+"fp": 5,
+"fn": 2,
+"support": 3
+}
+},
+"unknown": {
+"themandefinition": 1,
+"themenвdefinition": 1,
+"the themendefinition": 1,
+"the mendefinition": 3
+},
+"absaetze": {
+"richtig": 372,
+"falscher Baustein": 87,
+"zu viel": 27,
+"richtig leer": 48,
+"verpasst": 51
+}
+},
+{
+"run": 3,
+"effort": "low",
+"macro_f1": 0.7007,
+"micro_f1": 0.8055,
+"assigned": 508,
+"misassigned": 98,
+"missed": 24,
+"tokens": 96752,
+"completion": 16220,
+"calls": 18,
+"fallback": 0,
+"unknown_keys": 0,
+"fallbacks": {},
+"seconds": 95.9,
+"seconds_per_topic": {
+"Barockliteratur": 5.29,
+"Bruchrechnung": 7.87,
+"Demokratie": 11.67,
+"Französische Revolution": 8.63,
+"Klimawandel": 8.75,
+"Optik": 10.26,
+"Photosynthese": 9.62,
+"Programmiersprache": 15.97,
+"Säure-Base-Konzepte": 6.52,
+"Sinfonie": 11.3
+},
+"slots": {
+"themendefinition": {
+"tp": 18,
+"fp": 6,
+"fn": 4,
+"support": 22
+},
+"systematik": {
+"tp": 42,
+"fp": 18,
+"fn": 13,
+"support": 55
+},
+"fachinhalte": {
+"tp": 223,
+"fp": 29,
+"fn": 52,
+"support": 275
+},
+"gesellschaftlicher_kontext": {
+"tp": 30,
+"fp": 16,
+"fn": 4,
+"support": 34
+},
+"entwicklung_ausblick": {
+"tp": 70,
+"fp": 12,
+"fn": 13,
+"support": 83
+},
+"beruf_wirtschaft": {
+"tp": 7,
+"fp": 1,
+"fn": 4,
+"support": 11
+},
+"bildung": {
+"tp": 5,
+"fp": 3,
+"fn": 3,
+"support": 8
+},
+"regularien": {
+"tp": 2,
+"fp": 2,
+"fn": 0,
+"support": 2
+},
+"praxis": {
+"tp": 11,
+"fp": 4,
+"fn": 6,
+"support": 17
+},
+"querschnitt": {
+"tp": 2,
+"fp": 7,
+"fn": 1,
+"support": 3
+}
+},
+"unknown": {},
+"absaetze": {
+"richtig": 410,
+"falscher Baustein": 76,
+"zu viel": 22,
+"richtig leer": 53,
+"verpasst": 24
+}
+},
+{
+"run": 4,
+"effort": "none",
+"macro_f1": 0.6543,
+"micro_f1": 0.7465,
+"assigned": 492,
+"misassigned": 118,
+"missed": 50,
+"tokens": 83876,
+"completion": 6508,
+"calls": 17,
+"fallback": 1,
+"unknown_keys": 1,
+"fallbacks": {
+"unbekannter Baustein in der Antwort": 1
+},
+"seconds": 38.3,
+"seconds_per_topic": {
+"Barockliteratur": 2.28,
+"Bruchrechnung": 3.36,
+"Demokratie": 4.31,
+"Französische Revolution": 4.2,
+"Klimawandel": 4.45,
+"Optik": 4.03,
+"Photosynthese": 4.32,
+"Programmiersprache": 4.31,
+"Säure-Base-Konzepte": 2.93,
+"Sinfonie": 4.12
+},
+"slots": {
+"themendefinition": {
+"tp": 19,
+"fp": 3,
+"fn": 3,
+"support": 22
+},
+"systematik": {
+"tp": 38,
+"fp": 8,
+"fn": 17,
+"support": 55
+},
+"fachinhalte": {
+"tp": 218,
+"fp": 60,
+"fn": 57,
+"support": 275
+},
+"gesellschaftlicher_kontext": {
+"tp": 26,
+"fp": 16,
+"fn": 8,
+"support": 34
+},
+"entwicklung_ausblick": {
+"tp": 55,
+"fp": 20,
+"fn": 28,
+"support": 83
+},
+"beruf_wirtschaft": {
+"tp": 5,
+"fp": 0,
+"fn": 6,
+"support": 11
+},
+"bildung": {
+"tp": 6,
+"fp": 1,
+"fn": 2,
+"support": 8
+},
+"regularien": {
+"tp": 2,
+"fp": 1,
+"fn": 0,
+"support": 2
+},
+"praxis": {
+"tp": 4,
+"fp": 3,
+"fn": 13,
+"support": 17
+},
+"querschnitt": {
+"tp": 1,
+"fp": 6,
+"fn": 2,
+"support": 3
+}
+},
+"unknown": {
+"themenfindung": 1
+},
+"absaetze": {
+"richtig": 374,
+"falscher Baustein": 86,
+"zu viel": 32,
+"richtig leer": 43,
+"verpasst": 50
+}
+},
+{
+"run": 5,
+"effort": "low",
+"macro_f1": 0.6475,
+"micro_f1": 0.7852,
+"assigned": 514,
+"misassigned": 112,
+"missed": 25,
+"tokens": 93120,
+"completion": 15752,
+"calls": 17,
+"fallback": 0,
+"unknown_keys": 0,
+"fallbacks": {},
+"seconds": 95.1,
+"seconds_per_topic": {
+"Barockliteratur": 6.98,
+"Bruchrechnung": 8.9,
+"Demokratie": 11.04,
+"Französische Revolution": 8.76,
+"Klimawandel": 9.08,
+"Optik": 11.19,
+"Photosynthese": 10.69,
+"Programmiersprache": 9.89,
+"Säure-Base-Konzepte": 7.15,
+"Sinfonie": 11.37
+},
+"slots": {
+"themendefinition": {
+"tp": 17,
+"fp": 3,
+"fn": 5,
+"support": 22
+},
+"systematik": {
+"tp": 43,
+"fp": 18,
+"fn": 12,
+"support": 55
+},
+"fachinhalte": {
+"tp": 223,
+"fp": 32,
+"fn": 52,
+"support": 275
+},
+"gesellschaftlicher_kontext": {
+"tp": 28,
+"fp": 15,
+"fn": 6,
+"support": 34
+},
+"entwicklung_ausblick": {
+"tp": 69,
+"fp": 17,
+"fn": 14,
+"support": 83
+},
+"beruf_wirtschaft": {
+"tp": 7,
+"fp": 1,
+"fn": 4,
+"support": 11
+},
+"bildung": {
+"tp": 6,
+"fp": 3,
+"fn": 2,
+"support": 8
+},
+"regularien": {
+"tp": 2,
+"fp": 3,
+"fn": 0,
+"support": 2
+},
+"praxis": {
+"tp": 6,
+"fp": 6,
+"fn": 11,
+"support": 17
+},
+"querschnitt": {
+"tp": 1,
+"fp": 14,
+"fn": 2,
+"support": 3
+}
+},
+"unknown": {},
+"absaetze": {
+"richtig": 402,
+"zu viel": 29,
+"richtig leer": 46,
+"verpasst": 25,
+"falscher Baustein": 83
+}
+},
+{
+"run": 6,
+"effort": "none",
+"macro_f1": 0.6346,
+"micro_f1": 0.746,
+"assigned": 490,
+"misassigned": 117,
+"missed": 48,
+"tokens": 89759,
+"completion": 7005,
+"calls": 18,
+"fallback": 4,
+"unknown_keys": 4,
+"fallbacks": {
+"unbekannter Baustein in der Antwort": 4
+},
+"seconds": 41.6,
+"seconds_per_topic": {
+"Barockliteratur": 2.35,
+"Bruchrechnung": 3.55,
+"Demokratie": 4.65,
+"Französische Revolution": 4.16,
+"Klimawandel": 3.92,
+"Optik": 7.19,
+"Photosynthese": 4.21,
+"Programmiersprache": 4.34,
+"Säure-Base-Konzepte": 3.11,
+"Sinfonie": 4.09
+},
+"slots": {
+"themendefinition": {
+"tp": 17,
+"fp": 5,
+"fn": 5,
+"support": 22
+},
+"systematik": {
+"tp": 37,
+"fp": 8,
+"fn": 18,
+"support": 55
+},
+"fachinhalte": {
+"tp": 217,
+"fp": 50,
+"fn": 58,
+"support": 275
+},
+"gesellschaftlicher_kontext": {
+"tp": 29,
+"fp": 20,
+"fn": 5,
+"support": 34
+},
+"entwicklung_ausblick": {
+"tp": 55,
+"fp": 18,
+"fn": 28,
+"support": 83
+},
+"beruf_wirtschaft": {
+"tp": 6,
+"fp": 0,
+"fn": 5,
+"support": 11
+},
+"bildung": {
+"tp": 6,
+"fp": 3,
+"fn": 2,
+"support": 8
+},
+"regularien": {
+"tp": 2,
+"fp": 1,
+"fn": 0,
+"support": 2
+},
+"praxis": {
+"tp": 3,
+"fp": 4,
+"fn": 14,
+"support": 17
+},
+"querschnitt": {
+"tp": 1,
+"fp": 8,
+"fn": 2,
+"support": 3
+}
+},
+"unknown": {
+"themen_definition": 1,
+"the onendefinition": 1,
+"theмendefinition": 2
+},
+"absaetze": {
+"richtig": 373,
+"falscher Baustein": 89,
+"zu viel": 28,
+"richtig leer": 47,
+"verpasst": 48
+}
+},
+{
+"run": 7,
+"effort": "low",
+"macro_f1": 0.6503,
+"micro_f1": 0.7793,
+"assigned": 514,
+"misassigned": 115,
+"missed": 26,
+"tokens": 91577,
+"completion": 14209,
+"calls": 17,
+"fallback": 2,
+"unknown_keys": 2,
+"fallbacks": {
+"unbekannter Baustein in der Antwort": 2
+},
+"seconds": 95.7,
+"seconds_per_topic": {
+"Barockliteratur": 6.28,
+"Bruchrechnung": 7.48,
+"Demokratie": 11.48,
+"Französische Revolution": 9.29,
+"Klimawandel": 10.94,
+"Optik": 11.24,
+"Photosynthese": 10.67,
+"Programmiersprache": 9.47,
+"Säure-Base-Konzepte": 7.04,
+"Sinfonie": 11.82
+},
+"slots": {
+"themendefinition": {
+"tp": 18,
+"fp": 6,
+"fn": 4,
+"support": 22
+},
+"systematik": {
+"tp": 40,
+"fp": 14,
+"fn": 15,
+"support": 55
+},
+"fachinhalte": {
+"tp": 225,
+"fp": 33,
+"fn": 50,
+"support": 275
+},
+"gesellschaftlicher_kontext": {
+"tp": 30,
+"fp": 17,
+"fn": 4,
+"support": 34
+},
+"entwicklung_ausblick": {
+"tp": 64,
+"fp": 12,
+"fn": 19,
+"support": 83
+},
+"beruf_wirtschaft": {
+"tp": 7,
+"fp": 2,
+"fn": 4,
+"support": 11
+},
+"bildung": {
+"tp": 6,
+"fp": 3,
+"fn": 2,
+"support": 8
+},
+"regularien": {
+"tp": 2,
+"fp": 2,
+"fn": 0,
+"support": 2
+},
+"praxis": {
+"tp": 5,
+"fp": 5,
+"fn": 12,
+"support": 17
+},
+"querschnitt": {
+"tp": 2,
+"fp": 21,
+"fn": 1,
+"support": 3
+}
+},
+"unknown": {
+"themedefinition": 2
+},
+"absaetze": {
+"richtig": 399,
+"falscher Baustein": 85,
+"zu viel": 30,
+"richtig leer": 45,
+"verpasst": 26
+}
+},
+{
+"run": 8,
+"effort": "none",
+"macro_f1": 0.6338,
+"micro_f1": 0.7388,
+"assigned": 497,
+"misassigned": 125,
+"missed": 45,
+"tokens": 83887,
+"completion": 6519,
+"calls": 17,
+"fallback": 2,
+"unknown_keys": 2,
+"fallbacks": {
+"unbekannter Baustein in der Antwort": 2
+},
+"seconds": 39.3,
+"seconds_per_topic": {
+"Barockliteratur": 2.3,
+"Bruchrechnung": 4.09,
+"Demokratie": 4.25,
+"Französische Revolution": 4.38,
+"Klimawandel": 4.68,
+"Optik": 4.04,
+"Photosynthese": 3.95,
+"Programmiersprache": 4.14,
+"Säure-Base-Konzepte": 2.96,
+"Sinfonie": 4.46
+},
+"slots": {
+"themendefinition": {
+"tp": 16,
+"fp": 3,
+"fn": 6,
+"support": 22
+},
+"systematik": {
+"tp": 37,
+"fp": 9,
+"fn": 18,
+"support": 55
+},
+"fachinhalte": {
+"tp": 218,
+"fp": 61,
+"fn": 57,
+"support": 275
+},
+"gesellschaftlicher_kontext": {
+"tp": 27,
+"fp": 21,
+"fn": 7,
+"support": 34
+},
+"entwicklung_ausblick": {
+"tp": 57,
+"fp": 18,
+"fn": 26,
+"support": 83
+},
+"beruf_wirtschaft": {
+"tp": 5,
+"fp": 0,
+"fn": 6,
+"support": 11
+},
+"bildung": {
+"tp": 5,
+"fp": 1,
+"fn": 3,
+"support": 8
+},
+"regularien": {
+"tp": 2,
+"fp": 1,
+"fn": 0,
+"support": 2
+},
+"praxis": {
+"tp": 4,
+"fp": 6,
+"fn": 13,
+"support": 17
+},
+"querschnitt": {
+"tp": 1,
+"fp": 5,
+"fn": 2,
+"support": 3
+}
+},
+"unknown": {
+"themen­definition": 2
+},
+"absaetze": {
+"richtig": 372,
+"falscher Baustein": 93,
+"zu viel": 32,
+"richtig leer": 43,
+"verpasst": 45
+}
+}
+],
+"texte": {
+"laeufe": [
+{
+"topic": "Optik",
+"variant": "low1",
+"s": 37.3,
+"timings": {
+"resolve": 3844,
+"corpus": 58,
+"segment": 13,
+"match": 20481,
+"synthesize": 12906,
+"assemble": 9
+},
+"heading": "Optik",
+"main": "Optik",
+"tokens": {
+"prompt": 39510,
+"completion": 13340,
+"total": 52850,
+"calls": 17,
+"cached": 9708
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 23520,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Optik",
+"variant": "low2",
+"s": 29.4,
+"timings": {
+"resolve": 5379,
+"corpus": 19,
+"segment": 7,
+"match": 10142,
+"synthesize": 13840,
+"assemble": 8
+},
+"heading": "Optik",
+"main": "Optik",
+"tokens": {
+"prompt": 28789,
+"completion": 11328,
+"total": 40117,
+"calls": 15,
+"cached": 10077
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 24358,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Photosynthese",
+"variant": "low1",
+"s": 27.2,
+"timings": {
+"resolve": 1687,
+"corpus": 20,
+"segment": 19,
+"match": 12109,
+"synthesize": 13388,
+"assemble": 10
+},
+"heading": "Photosynthese",
+"main": "Photosynthese",
+"tokens": {
+"prompt": 60755,
+"completion": 14915,
+"total": 75670,
+"calls": 19,
+"cached": 16042
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 20859,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Photosynthese",
+"variant": "low2",
+"s": 25.2,
+"timings": {
+"resolve": 1494,
+"corpus": 21,
+"segment": 22,
+"match": 12622,
+"synthesize": 10992,
+"assemble": 6
+},
+"heading": "Photosynthese",
+"main": "Photosynthese",
+"tokens": {
+"prompt": 61414,
+"completion": 15725,
+"total": 77139,
+"calls": 19,
+"cached": 25055
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 23771,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Französische Revolution",
+"variant": "low1",
+"s": 28.0,
+"timings": {
+"resolve": 2963,
+"corpus": 24,
+"segment": 9,
+"match": 10764,
+"synthesize": 14251,
+"assemble": 6
+},
+"heading": "Französische Revolution",
+"main": "Französische Revolution",
+"tokens": {
+"prompt": 39103,
+"completion": 13597,
+"total": 52700,
+"calls": 17,
+"cached": 10642
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 26812,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Französische Revolution",
+"variant": "low2",
+"s": 26.5,
+"timings": {
+"resolve": 3226,
+"corpus": 21,
+"segment": 12,
+"match": 11179,
+"synthesize": 12050,
+"assemble": 6
+},
+"heading": "Französische Revolution",
+"main": "Französische Revolution",
+"tokens": {
+"prompt": 44574,
+"completion": 13705,
+"total": 58279,
+"calls": 18,
+"cached": 25237
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 23911,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Dichter aus dem Mittelalter",
+"variant": "low1",
+"s": 24.6,
+"timings": {
+"resolve": 2471,
+"corpus": 15,
+"segment": 11,
+"match": 10373,
+"synthesize": 11699,
+"assemble": 6
+},
+"heading": "Dichter aus dem Mittelalter",
+"main": "Deutsche Literatur im Mittelalter",
+"tokens": {
+"prompt": 40026,
+"completion": 12191,
+"total": 52217,
+"calls": 16,
+"cached": 8635
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 17565,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Dichter aus dem Mittelalter",
+"variant": "low2",
+"s": 26.0,
+"timings": {
+"resolve": 2612,
+"corpus": 19,
+"segment": 16,
+"match": 11619,
+"synthesize": 11718,
+"assemble": 6
+},
+"heading": "Dichter aus dem Mittelalter",
+"main": "Deutsche Literatur im Mittelalter",
+"tokens": {
+"prompt": 48715,
+"completion": 14350,
+"total": 63065,
+"calls": 18,
+"cached": 16643
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 19390,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Komponisten der Klassik",
+"variant": "low1",
+"s": 27.3,
+"timings": {
+"resolve": 2786,
+"corpus": 33,
+"segment": 33,
+"match": 11083,
+"synthesize": 13396,
+"assemble": 8
+},
+"heading": "Komponisten der Klassik",
+"main": "Wiener Klassik",
+"tokens": {
+"prompt": 61043,
+"completion": 16055,
+"total": 77098,
+"calls": 19,
+"cached": 13816
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 24686,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Komponisten der Klassik",
+"variant": "low2",
+"s": 28.8,
+"timings": {
+"resolve": 1819,
+"corpus": 19,
+"segment": 26,
+"match": 11054,
+"synthesize": 15920,
+"assemble": 6
+},
+"heading": "Komponisten der Klassik",
+"main": "Wiener Klassik",
+"tokens": {
+"prompt": 62260,
+"completion": 16465,
+"total": 78725,
+"calls": 19,
+"cached": 27881
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 23881,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Philosophen der Aufklärung",
+"variant": "low1",
+"s": 30.4,
+"timings": {
+"resolve": 2243,
+"corpus": 36,
+"segment": 61,
+"match": 13683,
+"synthesize": 14402,
+"assemble": 7
+},
+"heading": "Philosophen der Aufklärung",
+"main": "Aufklärung",
+"tokens": {
+"prompt": 59167,
+"completion": 17964,
+"total": 77131,
+"calls": 19,
+"cached": 13816
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 23771,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Philosophen der Aufklärung",
+"variant": "low2",
+"s": 28.9,
+"timings": {
+"resolve": 1981,
+"corpus": 32,
+"segment": 54,
+"match": 13098,
+"synthesize": 13686,
+"assemble": 9
+},
+"heading": "Philosophen der Aufklärung",
+"main": "Aufklärung",
+"tokens": {
+"prompt": 58567,
+"completion": 16492,
+"total": 75059,
+"calls": 19,
+"cached": 39632
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 23156,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "OER-Förderungen",
+"variant": "low1",
+"s": 25.6,
+"timings": {
+"resolve": 1657,
+"corpus": 15,
+"segment": 26,
+"match": 11713,
+"synthesize": 12162,
+"assemble": 10
+},
+"heading": "OER-Förderungen",
+"main": "Open Educational Resources",
+"tokens": {
+"prompt": 40031,
+"completion": 12156,
+"total": 52187,
+"calls": 16,
+"cached": 11282
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 18825,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "OER-Förderungen",
+"variant": "low2",
+"s": 31.1,
+"timings": {
+"resolve": 7162,
+"corpus": 8,
+"segment": 8,
+"match": 11750,
+"synthesize": 12167,
+"assemble": 7
+},
+"heading": "OER-Förderungen",
+"main": "Open Educational Resources",
+"tokens": {
+"prompt": 22444,
+"completion": 9303,
+"total": 31747,
+"calls": 13,
+"cached": 3454
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 20122,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Inklusion im Sportunterricht",
+"variant": "low1",
+"s": 28.5,
+"timings": {
+"resolve": 1790,
+"corpus": 8,
+"segment": 15,
+"match": 11138,
+"synthesize": 15495,
+"assemble": 14
+},
+"heading": "Inklusion im Sportunterricht",
+"main": "Inklusive Pädagogik",
+"tokens": {
+"prompt": 45336,
+"completion": 13134,
+"total": 58470,
+"calls": 17,
+"cached": 13388
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 21370,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Inklusion im Sportunterricht",
+"variant": "low2",
+"s": 25.9,
+"timings": {
+"resolve": 1380,
+"corpus": 9,
+"segment": 17,
+"match": 13595,
+"synthesize": 10897,
+"assemble": 7
+},
+"heading": "Inklusion im Sportunterricht",
+"main": "Inklusive Pädagogik",
+"tokens": {
+"prompt": 46064,
+"completion": 14205,
+"total": 60269,
+"calls": 17,
+"cached": 28257
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 23023,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Künstliche Intelligenz im Unterricht",
+"variant": "low1",
+"s": 28.2,
+"timings": {
+"resolve": 1923,
+"corpus": 26,
+"segment": 27,
+"match": 13358,
+"synthesize": 12837,
+"assemble": 10
+},
+"heading": "Künstliche Intelligenz im Unterricht",
+"main": "Künstliche Intelligenz",
+"tokens": {
+"prompt": 57672,
+"completion": 17424,
+"total": 75096,
+"calls": 19,
+"cached": 15525
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 26204,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Künstliche Intelligenz im Unterricht",
+"variant": "low2",
+"s": 26.3,
+"timings": {
+"resolve": 1758,
+"corpus": 19,
+"segment": 31,
+"match": 12471,
+"synthesize": 11998,
+"assemble": 7
+},
+"heading": "Künstliche Intelligenz im Unterricht",
+"main": "Künstliche Intelligenz",
+"tokens": {
+"prompt": 54972,
+"completion": 16597,
+"total": 71569,
+"calls": 19,
+"cached": 27426
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 24888,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "low"
+},
+{
+"topic": "Optik",
+"variant": "none1",
+"s": 32.1,
+"timings": {
+"resolve": 3987,
+"corpus": 32,
+"segment": 13,
+"match": 12651,
+"synthesize": 15384,
+"assemble": 6
+},
+"heading": "Optik",
+"main": "Optik",
+"tokens": {
+"prompt": 44139,
+"completion": 10566,
+"total": 54705,
+"calls": 18,
+"cached": 10362
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 22607,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "none"
+},
+{
+"topic": "Optik",
+"variant": "none2",
+"s": 21.1,
+"timings": {
+"resolve": 3519,
+"corpus": 25,
+"segment": 11,
+"match": 6088,
+"synthesize": 11407,
+"assemble": 8
+},
+"heading": "Optik",
+"main": "Optik",
+"tokens": {
+"prompt": 35139,
+"completion": 10033,
+"total": 45172,
+"calls": 16,
+"cached": 6908
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 25529,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 2
+},
+"assignment": "none"
+},
+{
+"topic": "Photosynthese",
+"variant": "none1",
+"s": 19.7,
+"timings": {
+"resolve": 1673,
+"corpus": 45,
+"segment": 16,
+"match": 4777,
+"synthesize": 13130,
+"assemble": 7
+},
+"heading": "Photosynthese",
+"main": "Photosynthese",
+"tokens": {
+"prompt": 61144,
+"completion": 12532,
+"total": 73676,
+"calls": 19,
+"cached": 13816
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 23973,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 2
+},
+"assignment": "none"
+},
+{
+"topic": "Photosynthese",
+"variant": "none2",
+"s": 19.3,
+"timings": {
+"resolve": 1625,
+"corpus": 18,
+"segment": 18,
+"match": 5056,
+"synthesize": 12545,
+"assemble": 8
+},
+"heading": "Photosynthese",
+"main": "Photosynthese",
+"tokens": {
+"prompt": 60780,
+"completion": 13144,
+"total": 73924,
+"calls": 19,
+"cached": 52112
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 24316,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 2
+},
+"assignment": "none"
+},
+{
+"topic": "Französische Revolution",
+"variant": "none1",
+"s": 26.2,
+"timings": {
+"resolve": 3841,
+"corpus": 75,
+"segment": 14,
+"match": 8015,
+"synthesize": 14226,
+"assemble": 7
+},
+"heading": "Französische Revolution",
+"main": "Französische Revolution",
+"tokens": {
+"prompt": 42406,
+"completion": 10980,
+"total": 53386,
+"calls": 17,
+"cached": 8635
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 24239,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "none"
+},
+{
+"topic": "Französische Revolution",
+"variant": "none2",
+"s": 22.2,
+"timings": {
+"resolve": 3667,
+"corpus": 17,
+"segment": 13,
+"match": 4566,
+"synthesize": 13901,
+"assemble": 7
+},
+"heading": "Französische Revolution",
+"main": "Französische Revolution",
+"tokens": {
+"prompt": 43152,
+"completion": 10444,
+"total": 53596,
+"calls": 17,
+"cached": 19951
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 25309,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 2
+},
+"assignment": "none"
+},
+{
+"topic": "Dichter aus dem Mittelalter",
+"variant": "none1",
+"s": 20.7,
+"timings": {
+"resolve": 2838,
+"corpus": 23,
+"segment": 12,
+"match": 5083,
+"synthesize": 12708,
+"assemble": 6
+},
+"heading": "Dichter aus dem Mittelalter",
+"main": "Deutsche Literatur im Mittelalter",
+"tokens": {
+"prompt": 41149,
+"completion": 10244,
+"total": 51393,
+"calls": 16,
+"cached": 8635
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 20428,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "none"
+},
+{
+"topic": "Dichter aus dem Mittelalter",
+"variant": "none2",
+"s": 21.8,
+"timings": {
+"resolve": 2457,
+"corpus": 11,
+"segment": 13,
+"match": 4002,
+"synthesize": 15316,
+"assemble": 7
+},
+"heading": "Dichter aus dem Mittelalter",
+"main": "Deutsche Literatur im Mittelalter",
+"tokens": {
+"prompt": 40560,
+"completion": 10281,
+"total": 50841,
+"calls": 16,
+"cached": 13189
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 20699,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "none"
+},
+{
+"topic": "Komponisten der Klassik",
+"variant": "none1",
+"s": 21.6,
+"timings": {
+"resolve": 2439,
+"corpus": 42,
+"segment": 31,
+"match": 4859,
+"synthesize": 14219,
+"assemble": 7
+},
+"heading": "Komponisten der Klassik",
+"main": "Wiener Klassik",
+"tokens": {
+"prompt": 62612,
+"completion": 12127,
+"total": 74739,
+"calls": 19,
+"cached": 13816
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 22688,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 1
+},
+"assignment": "none"
+},
+{
+"topic": "Komponisten der Klassik",
+"variant": "none2",
+"s": 20.2,
+"timings": {
+"resolve": 1689,
+"corpus": 20,
+"segment": 27,
+"match": 5869,
+"synthesize": 12579,
+"assemble": 6
+},
+"heading": "Komponisten der Klassik",
+"main": "Wiener Klassik",
+"tokens": {
+"prompt": 63740,
+"completion": 12609,
+"total": 76349,
+"calls": 19,
+"cached": 31724
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 22602,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 1
+},
+"assignment": "none"
+},
+{
+"topic": "Philosophen der Aufklärung",
+"variant": "none1",
+"s": 24.6,
+"timings": {
+"resolve": 2524,
+"corpus": 60,
+"segment": 52,
+"match": 6036,
+"synthesize": 15935,
+"assemble": 8
+},
+"heading": "Philosophen der Aufklärung",
+"main": "Aufklärung",
+"tokens": {
+"prompt": 58883,
+"completion": 11297,
+"total": 70180,
+"calls": 19,
+"cached": 13816
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 19379,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 1
+},
+"assignment": "none"
+},
+{
+"topic": "Philosophen der Aufklärung",
+"variant": "none2",
+"s": 17.4,
+"timings": {
+"resolve": 1987,
+"corpus": 39,
+"segment": 53,
+"match": 5043,
+"synthesize": 10301,
+"assemble": 6
+},
+"heading": "Philosophen der Aufklärung",
+"main": "Aufklärung",
+"tokens": {
+"prompt": 59441,
+"completion": 11793,
+"total": 71234,
+"calls": 19,
+"cached": 39304
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 20275,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "none"
+},
+{
+"topic": "OER-Förderungen",
+"variant": "none1",
+"s": 19.2,
+"timings": {
+"resolve": 1534,
+"corpus": 5,
+"segment": 6,
+"match": 4341,
+"synthesize": 13257,
+"assemble": 6
+},
+"heading": "OER-Förderungen",
+"main": "Open Educational Resources",
+"tokens": {
+"prompt": 23495,
+"completion": 8583,
+"total": 32078,
+"calls": 13,
+"cached": 3454
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 19403,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 2
+},
+"assignment": "none"
+},
+{
+"topic": "OER-Förderungen",
+"variant": "none2",
+"s": 23.2,
+"timings": {
+"resolve": 1425,
+"corpus": 1262,
+"hit_check": 3385,
+"segment": 14,
+"match": 4450,
+"synthesize": 12645,
+"assemble": 9
+},
+"heading": "OER-Förderungen",
+"main": "Open Educational Resources",
+"tokens": {
+"prompt": 36756,
+"completion": 10309,
+"total": 47065,
+"calls": 17,
+"cached": 8635
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 20152,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 2
+},
+"assignment": "none"
+},
+{
+"topic": "Inklusion im Sportunterricht",
+"variant": "none1",
+"s": 23.6,
+"timings": {
+"resolve": 1694,
+"corpus": 10,
+"segment": 19,
+"match": 8428,
+"synthesize": 13442,
+"assemble": 6
+},
+"heading": "Inklusion im Sportunterricht",
+"main": "Inklusive Pädagogik",
+"tokens": {
+"prompt": 52646,
+"completion": 12503,
+"total": 65149,
+"calls": 18,
+"cached": 16541
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 27325,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 7
+},
+"assignment": "none"
+},
+{
+"topic": "Inklusion im Sportunterricht",
+"variant": "none2",
+"s": 21.9,
+"timings": {
+"resolve": 1718,
+"corpus": 9,
+"segment": 15,
+"match": 8710,
+"synthesize": 11457,
+"assemble": 10
+},
+"heading": "Inklusion im Sportunterricht",
+"main": "Inklusive Pädagogik",
+"tokens": {
+"prompt": 55557,
+"completion": 12425,
+"total": 67982,
+"calls": 18,
+"cached": 28845
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 26326,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {},
+"assignment": "none"
+},
+{
+"topic": "Künstliche Intelligenz im Unterricht",
+"variant": "none1",
+"s": 27.9,
+"timings": {
+"resolve": 2010,
+"corpus": 70,
+"segment": 27,
+"match": 5748,
+"synthesize": 20063,
+"assemble": 12
+},
+"heading": "Künstliche Intelligenz im Unterricht",
+"main": "Künstliche Intelligenz",
+"tokens": {
+"prompt": 58399,
+"completion": 12834,
+"total": 71233,
+"calls": 19,
+"cached": 13816
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 24543,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 3
+},
+"assignment": "none"
+},
+{
+"topic": "Künstliche Intelligenz im Unterricht",
+"variant": "none2",
+"s": 26.5,
+"timings": {
+"resolve": 7076,
+"corpus": 25,
+"segment": 25,
+"match": 6109,
+"synthesize": 13227,
+"assemble": 10
+},
+"heading": "Künstliche Intelligenz im Unterricht",
+"main": "Künstliche Intelligenz",
+"tokens": {
+"prompt": 58098,
+"completion": 13357,
+"total": 71455,
+"calls": 19,
+"cached": 26958
+},
+"blocks": 10,
+"llm_blocks": 10,
+"chars": 26080,
+"fallbacks": {},
+"note": null,
+"matching_fallbacks": {
+"unbekannter Baustein in der Antwort": 5
+},
+"assignment": "none"
+}
+],
+"schluessel": {
+"Optik": {
+"A": "none2",
+"B": "none1",
+"C": "low1",
+"D": "low2"
+},
+"Photosynthese": {
+"A": "low1",
+"B": "none1",
+"C": "low2",
+"D": "none2"
+},
+"Französische Revolution": {
+"A": "none2",
+"B": "low1",
+"C": "none1",
+"D": "low2"
+},
+"Dichter aus dem Mittelalter": {
+"A": "none1",
+"B": "none2",
+"C": "low1",
+"D": "low2"
+},
+"Komponisten der Klassik": {
+"A": "none2",
+"B": "none1",
+"C": "low1",
+"D": "low2"
+},
+"Philosophen der Aufklärung": {
+"A": "none1",
+"B": "low1",
+"C": "low2",
+"D": "none2"
+},
+"OER-Förderungen": {
+"A": "low2",
+"B": "low1",
+"C": "none2",
+"D": "none1"
+},
+"Inklusion im Sportunterricht": {
+"A": "none2",
+"B": "low1",
+"C": "none1",
+"D": "low2"
+},
+"Künstliche Intelligenz im Unterricht": {
+"A": "low1",
+"B": "low2",
+"C": "none2",
+"D": "none1"
+}
+},
+"noten": {
+"urteil_1_r1": {
+"Optik": {
+"A": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"C": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 5,
+"nutzen": 5,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+}
+},
+"Photosynthese": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 3
+},
+"B": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"D": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+}
+},
+"Französische Revolution": {
+"A": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 1,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 3
+},
+"C": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 1,
+"fehler_leicht": 1
+}
+}
+},
+"urteil_1_r2": {
+"Optik": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"C": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+}
+},
+"Photosynthese": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"B": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"D": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+}
+},
+"Französische Revolution": {
+"A": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"B": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 3
+},
+"C": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"D": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 3
+}
+}
+},
+"urteil_2_r1": {
+"Dichter aus dem Mittelalter": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 3,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+}
+},
+"Komponisten der Klassik": {
+"A": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 5,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"C": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+}
+},
+"Philosophen der Aufklärung": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"B": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"C": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"D": {
+"passung": 3,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+}
+}
+},
+"urteil_2_r2": {
+"Dichter aus dem Mittelalter": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+}
+},
+"Komponisten der Klassik": {
+"A": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 5,
+"nutzen": 5,
+"vollstaendigkeit": 5,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+}
+},
+"Philosophen der Aufklärung": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 1,
+"fehler_leicht": 1
+},
+"B": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 5,
+"lesbarkeit": 4,
+"fehler_schwer": 1,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 4,
+"nutzen": 5,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"D": {
+"passung": 3,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+}
+}
+},
+"urteil_3_r1": {
+"OER-Förderungen": {
+"A": {
+"passung": 3,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"B": {
+"passung": 2,
+"nutzen": 2,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 2,
+"nutzen": 3,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"D": {
+"passung": 2,
+"nutzen": 2,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+}
+},
+"Inklusion im Sportunterricht": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"C": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+}
+},
+"Künstliche Intelligenz im Unterricht": {
+"A": {
+"passung": 3,
+"nutzen": 4,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"B": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 3,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"D": {
+"passung": 2,
+"nutzen": 2,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 3
+}
+}
+},
+"urteil_3_r2": {
+"OER-Förderungen": {
+"A": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"B": {
+"passung": 2,
+"nutzen": 2,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+},
+"C": {
+"passung": 3,
+"nutzen": 2,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"D": {
+"passung": 1,
+"nutzen": 1,
+"vollstaendigkeit": 1,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 1
+}
+},
+"Inklusion im Sportunterricht": {
+"A": {
+"passung": 4,
+"nutzen": 4,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 4,
+"nutzen": 3,
+"vollstaendigkeit": 4,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"C": {
+"passung": 5,
+"nutzen": 4,
+"vollstaendigkeit": 5,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"D": {
+"passung": 4,
+"nutzen": 3,
+"vollstaendigkeit": 4,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+}
+},
+"Künstliche Intelligenz im Unterricht": {
+"A": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 3,
+"lesbarkeit": 4,
+"fehler_schwer": 0,
+"fehler_leicht": 0
+},
+"B": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"C": {
+"passung": 3,
+"nutzen": 3,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 2
+},
+"D": {
+"passung": 2,
+"nutzen": 2,
+"vollstaendigkeit": 2,
+"lesbarkeit": 3,
+"fehler_schwer": 0,
+"fehler_leicht": 3
+}
+}
+}
+}
+}
+}

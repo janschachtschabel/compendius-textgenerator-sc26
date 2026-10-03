@@ -2128,6 +2128,13 @@ API.
   „Kreditinstitut“); sonst hat das Thema keinen Artikel, und die 404 sagt, dass nach dem LLM keiner passt, rät zu einem
   Fach oder einem genaueren Thema und nennt die verworfenen Artikel unter `resolution.alternatives`. Der Bericht der
   Artikelwahl hat dafür `rejected`. Keine Gold-Anfrage bekam das Urteil (91 und 92 von 94 richtig wie zuvor).
+- **D86 (2026-10-03)** Der KI-Zuordner denkt weiter (Jan: „ki zuordner wäre ein großer zeitgewinn - aber wir sollten
+  den qualitätsverlust nochmal genauer prüfen“). Ohne Denken liegt er am Gold in jedem von vier Läufen unter jedem mit
+  (micro-F1 0,745 statt 0,788, Intervall der Differenz −7,8 bis −1,5 Punkte), legt mehr Absätze als „keiner“ ab und
+  verwechselt *Entwicklung & Ausblick* mit *Fachinhalte*; in den Texten von `best-quality-generated` sinkt die Passung
+  um 0,28 (Intervall −0,47 bis −0,06), bei Aspekt-Themen auch Nutzen und Vollständigkeit um 0,3 (M62). Eine Anfrage
+  wäre 5,4 s schneller (28 → 23 s). `paragraph_assignment` bleibt in `LLM_REASONING_EFFORTS` auf `low`; wer Tempo
+  vorzieht, setzt es dort auf `none`.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
