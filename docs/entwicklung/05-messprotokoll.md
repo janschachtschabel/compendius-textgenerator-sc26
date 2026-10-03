@@ -3157,3 +3157,43 @@ entscheidet: Im Cache stehen *Fotosynthese* 111-mal und *Photosynthese* 36-mal, 
 **Ergebnis:** Für gewöhnliche Themen passt Teil 2 in allen Profilen (rund 70 % passend, höchstens 4 % unpassend). Für
 Gruppen findet er oft nichts, für Aspekte fast nie das Angefragte, meist nur den Oberbegriff. Vorschläge in der Antwort
 an Jan, nichts gebaut. Rohdaten: `m57_lehrplan_profile.json`.
+
+## M58 Laufzeit der Frage N und Lehrplan-Suchbegriffe von N (03.10.2026)
+
+Jan, nach einem Test der Prüfansicht: balanced brauchte für Teil 1 und 2 rund 20 statt 5 bis 6 s, „Thema auflösen“
+11,3 s; dazu sein Vorschlag, das Thema ab `balanced` vom LLM in Suchanfragen zerlegen zu lassen, auch mit der
+Schreibweise der Schule. Gemessen mit `gpt-6-luna`, Prototyp im Messskript `mc_lehrplan_suchbegriffe.py`.
+
+**Laufzeit:** Funktional hatte sich nichts geändert. Die Anfrage stellt ein LLM-Aufruf, die Frage N (D63); er braucht
+über die b-api 4,0 bis 5,4 s, direkt bei OpenAI 3,6 bis 5,4 s, im Median 5,1 s mit `reasoning_effort` `low`. Den Rest
+machte der Kaltstart nach einem Neustart des Containers: „Französische Revolution“ kalt 14,0 s (Zuordnen 2,8, Text
+6,3 s), warm 4,6 s (0,8 und 0,3 s). Mit `none` antwortet N im Median in 1,9 s (45 Themen von M54; `minimal` lehnt das
+Modell mit 400 ab): gleiche Übersicht bei 40 von 45 Themen, gleiches `deckt_ab` bei 38; von den genannten Artikeln passen
+86 statt 92 %, die übrigen sind verwandt, keiner unpassend (44 neue Paare, zwei Gutachter).
+
+**Suchbegriffe von N:** N nennt zusätzlich bis zu sechs kurze Suchbegriffe in der Sprache der Lehrpläne (Schreibweise
+der Schule, Vertreter mit Nachnamen, den Aspekt selbst, keine allgemeinen Wörter) und die Schulfächer; Teil 2 sucht mit
+dem Titel und den Begriffen, wahlweise auf die Fächer begrenzt. 57 Themen von M57, Stichprobe wie dort (Saat 58),
+Gutachter 1 alle, Gutachter 2 30 % (gleiche Note bei 91 % von 1.175 Paaren). Einzeln gezeigt, passend / unpassend:
+
+| | gewöhnlich | Gruppe | Aspekt |
+|---|---|---|---|
+| `balanced` heute (M57) | 69 / 3 % | 42 / 21 % | 23 / 26 % |
+| `balanced`, Titel und Begriffe | 46 / 30 % | 15 / 53 % | 5 / 48 % |
+| `balanced`, dazu die Fächer | 60 / 16 % | 31 / 25 % | 20 / 38 % |
+| `best-quality` heute (M57) | 73 / 2 % | 49 / 8 % | 10 / 10 % |
+| `best-quality`, Begriffe und Fächer | 59 / 9 % | 28 / 22 % | 21 / 27 % |
+| dasselbe, nur Note 2 der LLM-Prüfung einzeln | 78 / 1 % | 46 / 8 % | 33 / 9 % |
+
+Die Begriffe bringen viel mehr Elemente (gewöhnlich im Median 183 statt 95) und kein Thema mehr ohne Element, aber
+mehr Fremdes: Über einen Wortteil getroffen passen kurze Begriffe zu 12 % (81 % unpassend), längere zu 19 %
+(„Widerstand“ in *Widerstandskämpferin*, „Kondensation“ in *Polykondensation*); als ganzes Wort passen sie zu 34 %, weil
+Fachbegriffe in anderen Fächern anderes bedeuten („Widerstand“ in Geschichte, „Spannung“ in Deutsch). Der Titel des
+Hauptartikels ist spezifischer. Nur bei Aspekten mit LLM-Prüfung bringen die Begriffe mehr: fünf statt einem Thema mit
+einem passenden Element.
+
+**Nur Note 2 einzeln (an den Läufen von M57):** Zeigt `best-quality` nur die Elemente einzeln, die die LLM-Prüfung mit 2
+bewertet, und bündelt die mit 1, passen 72 bis 75 % statt 55 % der einzeln gezeigten, unpassend 0 bis 1 % statt 4 bis
+5 %; 5 bis 8 % der passenden stehen dann nur in der Bündelzeile.
+
+**Ergebnis:** Nichts gebaut, Vorschläge an Jan. Rohdaten: `m58_lehrplan_suchbegriffe.json`.
