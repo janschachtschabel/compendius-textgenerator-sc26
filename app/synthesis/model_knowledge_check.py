@@ -105,6 +105,7 @@ def check_section(
         max_output_tokens=min(MAX_OUTPUT_TOKENS, MIN_OUTPUT_TOKENS + OUTPUT_TOKENS_PER_SENTENCE * len(spans)),
         budget=budget,
         what=f"Prüfung des Modellwissens in {title}",
+        prompt=prompt.id,
         deadline=deadline,
     )
     outcome.count(answer, prompt.tag)

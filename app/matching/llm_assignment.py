@@ -5,6 +5,9 @@ hybrid_light with Model2Vec on the same 603 paragraphs, at about 240 tokens per 
 50 paragraphs cut to 400 characters gave 0.72 and 0.69 in two runs on the same 597 paragraphs, 25 and 700 gave 0.66
 and 0.73: as good within the spread of the model, at about 177 instead of 241 tokens per paragraph (D36,
 docs/entwicklung/messung/mc_llm_sparvarianten.py); sending only the paragraphs the policy is unsure about gave 0.54.
+On 2026-10-03 (M59, 583 paragraphs, three runs each) 250 characters held the quality of 400 at 13 % fewer tokens -
+macro-F1 0.675 against 0.687, micro-F1 0.796 against 0.794 - and without the model's thinking (reasoning_effort
+none) they kept macro-F1 at 0.676 where 400 characters fell to 0.609.
 
 The model sees what a labeller sees: the content blocks with their description, what belongs in them and what does
 not, the template's rules for the assignment, and per paragraph the article, its role, the heading path and the text
@@ -39,7 +42,7 @@ from app.matching.policy import LEAD_SCORE, MIN_SCORE, AssignmentResult, cut_to_
 from app.templates.schema import Template, block_key
 
 BATCH_SIZE = 50  # paragraphs per call; 50 and 400 characters match 25 and 700 on the gold at 27 % fewer tokens
-TEXT_CHARS = 400  # per paragraph, as in the measurement of 2026-09-24
+TEXT_CHARS = 250  # per paragraph: as good as 400 at 13 % fewer tokens, and steadier without thinking (M59)
 OUTPUT_TOKENS_PER_PARAGRAPH = 40
 NONE_KEY = "keiner"
 MATCHER = "llm"
@@ -152,6 +155,7 @@ def assign_with_llm(
             max_output_tokens=OUTPUT_TOKENS_PER_PARAGRAPH * len(batch),
             budget=job.budget,
             what="Zuordnung",
+            prompt="paragraph_assignment",
             deadline=job.deadline,
         )
 

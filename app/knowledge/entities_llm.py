@@ -99,6 +99,7 @@ def named_mentions(
         max_output_tokens=max(EXTRACTION_OUTPUT_TOKENS, EXTRACTION_TOKENS_PER_ENTITY * max_entities),
         budget=job.budget,
         what="Entitäten",
+        prompt=prompt.id,
         deadline=job.deadline,
         caller_text=text,
     )
@@ -232,6 +233,7 @@ def grade_links(
         what="Prüfung der Entitäten",
         deadline=job.deadline,
         caller_text=text,
+        prompt=prompt.id,
     )
     report.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):

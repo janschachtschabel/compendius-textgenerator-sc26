@@ -73,6 +73,7 @@ def check_curriculum(
             max_output_tokens=OUTPUT_TOKENS_PER_ELEMENT * len(batch),
             budget=job.budget,
             what="Lehrplanprüfung",
+            prompt=prompt.id,
             deadline=job.deadline,
         )
 

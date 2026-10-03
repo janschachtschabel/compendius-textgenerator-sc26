@@ -38,6 +38,12 @@ MIN_SECRET_CHARS = 16
 
 # The model the service asks when B_API_MODEL names none (D44)
 DEFAULT_B_API_MODEL = "gpt-6-luna"
+# The questions that think otherwise than LLM_REASONING_EFFORT (M59): without the model's thinking these chose the same
+# articles, rated the curriculum elements alike and wrote equal topics and question pairs, in about half the time; the
+# writing, the paragraph assignment, the entities and the article of a material lost without it and keep thinking
+DEFAULT_REASONING_EFFORTS = (
+    "topic_articles=none,article_choice=none,curriculum_check=none,topic_wording=none,qa_pairs=none"
+)
 # The settings whose empty value is documented as a choice of its own: no collections, only the configured repository,
 # no embeddings, no spaCy model. Every other setting left empty is its default (BE-13). The image sets the two models;
 # an entry emptied in a panel overrides that and switches them off, which the start says (audit 2026-09-29, S5).
@@ -50,6 +56,19 @@ def _split_csv(value: str) -> list[str]:
 
 def _blank(value: Any) -> bool:
     return isinstance(value, str) and not value.strip()
+
+
+def parse_reasoning_efforts(value: str) -> tuple[dict[str, str], list[str]]:
+    """LLM_REASONING_EFFORTS as prompt id -> effort, and the entries that are not prompt=effort."""
+    efforts: dict[str, str] = {}
+    malformed: list[str] = []
+    for entry in _split_csv(value):
+        name, sep, effort = (part.strip() for part in entry.partition("="))
+        if sep and name and effort:
+            efforts[name] = effort
+        else:
+            malformed.append(entry)
+    return efforts, malformed
 
 
 class Settings(BaseSettings):
@@ -191,7 +210,16 @@ class Settings(BaseSettings):
     llm_attempts: int = Field(
         3, ge=1, le=6, description="Attempts per LLM request (429/502/503/504, connection errors)"
     )
-    llm_reasoning_effort: str = Field("low", description="Reasoning models (GPT-5, GPT-6, o-series): reasoning_effort")
+    llm_reasoning_effort: str = Field(
+        "low",
+        description="Reasoning models (GPT-5, GPT-6, o-series): reasoning_effort of every question "
+        "LLM_REASONING_EFFORTS does not name",
+    )
+    llm_reasoning_efforts: str = Field(
+        DEFAULT_REASONING_EFFORTS,
+        description="Reasoning models: the questions with a reasoning_effort of their own, as prompt=effort, comma "
+        "separated; the shipped ones answered as well without thinking (M59)",
+    )
     llm_verbosity: str = Field("low", description="Reasoning models (GPT-5, GPT-6, o-series): verbosity (D25)")
     llm_temperature: float = Field(0.2, ge=0.0, le=2.0, description="Classic models only (reasoning models reject it)")
     llm_max_tokens_per_request: int = Field(
@@ -338,6 +366,12 @@ class Settings(BaseSettings):
     @property
     def llm_fast_section_ids(self) -> list[str]:
         return _split_csv(self.llm_fast_sections)
+
+    @property
+    def llm_reasoning_effort_by_prompt(self) -> dict[str, str]:
+        """LLM_REASONING_EFFORTS as prompt id -> effort; an entry that is not prompt=effort is left out, the start
+        names it."""
+        return parse_reasoning_efforts(self.llm_reasoning_efforts)[0]
 
 
 @lru_cache(maxsize=1)

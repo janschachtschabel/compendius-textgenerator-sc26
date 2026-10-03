@@ -131,7 +131,13 @@ class LlmSelector:
         prompt = get_prompt("passage_selection")
         messages = prompt.render(topic=topic, passages=passages, **slot_prompt_fields(slot))
         answer = budgeted_chat(
-            self.client, messages, max_output_tokens=MAX_OUTPUT_TOKENS, budget=budget, what=slot.id, deadline=deadline
+            self.client,
+            messages,
+            max_output_tokens=MAX_OUTPUT_TOKENS,
+            budget=budget,
+            what=slot.id,
+            deadline=deadline,
+            prompt=prompt.id,
         )
         if isinstance(answer, LlmSkipped):
             return answer

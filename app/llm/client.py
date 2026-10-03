@@ -131,6 +131,7 @@ class BApiClient:
         attempts: int = 3,
         backoff_s: float = 1.5,
         reasoning_effort: str = "low",
+        reasoning_efforts: Mapping[str, str] | None = None,
         verbosity: str = "low",
         temperature: float = 0.2,
         response_cache: bool = False,
@@ -159,6 +160,8 @@ class BApiClient:
         self.attempts = max(1, attempts)
         self.backoff_s = backoff_s
         self.reasoning_effort = reasoning_effort
+        # LLM_REASONING_EFFORTS: the questions that think otherwise, by prompt id (M59)
+        self.reasoning_efforts = dict(reasoning_efforts or {})
         self.verbosity = verbosity
         self.temperature = temperature
         self.response_cache = response_cache  # B_API_RESPONSE_CACHE (D70)
@@ -195,14 +198,16 @@ class BApiClient:
         max_output_tokens: int,
         timeout_s: float | None = None,
         before_retry: Callable[[], str | None] | None = None,
+        prompt: str | None = None,
     ) -> ChatResult:
         """One chat completion; raises ``LlmError`` when the API fails or answers in an unexpected format.
 
         ``timeout_s`` shortens the configured timeout, e.g. to what is left of the request deadline. ``before_retry`` is
         asked before each retry after an attempt that may have reached the model; a reason instead of ``None`` ends
         the call with the attempts made (the budget has no room for another prompt, audit 2026-09-29, L1).
+        ``prompt`` names the question, whose reasoning effort ``reasoning_efforts`` may set (M59).
         """
-        body = self._body(messages, max_output_tokens)
+        body = self._body(messages, max_output_tokens, prompt)
         data, reached = self._request(
             "POST", self.chat_url, json_body=body, timeout_s=timeout_s, before_retry=before_retry
         )
@@ -257,11 +262,11 @@ class BApiClient:
         """The API's output limit for an answer of ``answer_tokens``: reasoning models also spend it on thinking."""
         return answer_tokens + REASONING_ALLOWANCE if is_reasoning_model(self.model) else answer_tokens
 
-    def _body(self, messages: Sequence[Message], max_output_tokens: int) -> dict[str, Any]:
+    def _body(self, messages: Sequence[Message], max_output_tokens: int, prompt: str | None = None) -> dict[str, Any]:
         body: dict[str, Any] = {"model": self.model, "messages": [dict(m) for m in messages]}
         if is_reasoning_model(self.model):
             body["max_completion_tokens"] = max_output_tokens
-            body["reasoning_effort"] = self.reasoning_effort
+            body["reasoning_effort"] = self.reasoning_efforts.get(prompt or "", self.reasoning_effort)
             body["verbosity"] = self.verbosity
         else:
             body["max_tokens"] = max_output_tokens

@@ -47,12 +47,13 @@ from app.llm.budget_store import SqliteDailyStore
 from app.llm.call import listen_to_calls
 from app.llm.client import BApiClient, is_reasoning_model
 from app.llm.deadline import MIN_CALL_S
+from app.llm.prompts import PROMPTS
 from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
 from app.matching.lexicon import HeadingLexicon
 from app.matching.registry import LOCAL_MATCHER, active_components
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request, record_llm_call
 from app.service import CompendiumService
-from app.settings import Settings, b_api_for, get_settings
+from app.settings import Settings, b_api_for, get_settings, parse_reasoning_efforts
 from app.sources.gnd.index import GndIndex
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.render import RenderOptions
@@ -190,6 +191,21 @@ def warn_about_llm_settings(settings: Settings) -> None:
                 ", ".join(known),
                 settings.b_api_model,
             )
+    efforts, malformed = parse_reasoning_efforts(settings.llm_reasoning_efforts)
+    problems = [f"{entry!r} is not prompt=effort" for entry in malformed]
+    problems += [f"{name} is no question of the service" for name in efforts if name not in PROMPTS]
+    problems += [
+        f"{effort!r} for {name} is not one of {', '.join(REASONING_EFFORTS)}"
+        for name, effort in efforts.items()
+        if name in PROMPTS and effort not in REASONING_EFFORTS
+    ]
+    if problems:
+        log.warning(
+            "LLM_REASONING_EFFORTS: %s - a question the service does not ask never gets its effort, and %s may refuse "
+            "an effort it does not know with a 400 (M59)",
+            "; ".join(problems),
+            settings.b_api_model,
+        )
 
 
 def build_llm(settings: Settings) -> LlmGateway | None:
@@ -213,6 +229,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
         max_concurrency=settings.llm_max_concurrency,
         attempts=settings.llm_attempts,
         reasoning_effort=settings.llm_reasoning_effort,
+        reasoning_efforts=settings.llm_reasoning_effort_by_prompt,
         verbosity=settings.llm_verbosity,
         temperature=settings.llm_temperature,
         response_cache=settings.b_api_response_cache,

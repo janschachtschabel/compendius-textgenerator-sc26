@@ -140,6 +140,7 @@ def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
     assert gateway.options.fast_sections == ("sc26_1",) and gateway.options.extraction_candidates == 5
     assert gateway.synthesizer.mark_unsupported is True
     assert (gateway.client.reasoning_effort, gateway.client.verbosity) == ("low", "low")
+    assert gateway.client.reasoning_efforts == settings.llm_reasoning_effort_by_prompt
     assert gateway.budget.per_request == 60_000 and gateway.budget.daily == 0  # no daily cap unless set (D67)
     assert (tmp_path / "llm_budget.db").exists(), "the daily counter is shared through STATE_DIR"
     assert fake.requests[0].url.path.endswith("/api/v1/llm/openai/models")
@@ -210,6 +211,42 @@ def test_a_reasoning_setting_the_models_do_not_know_is_named_at_start(
         build_llm(settings)
 
     assert (setting.upper() in caplog.text) is warned
+
+
+def test_the_efforts_per_question_come_from_the_settings(tmp_path: Path, offline_b_api: FakeBApi) -> None:
+    """M59: LLM_REASONING_EFFORTS names the questions that think otherwise than LLM_REASONING_EFFORT - shipped: the
+    five that answered as well without thinking; empty keeps that list, as every setting does without an entry."""
+    named = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", llm_reasoning_efforts="topic_articles = low,")
+    shipped = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", llm_reasoning_efforts="")
+
+    gateway = build_llm(named)
+
+    assert gateway is not None and gateway.client.reasoning_efforts == {"topic_articles": "low"}
+    assert shipped.llm_reasoning_effort_by_prompt == make_settings([], tmp_path).llm_reasoning_effort_by_prompt
+    assert shipped.llm_reasoning_effort_by_prompt == {
+        "topic_articles": "none",
+        "article_choice": "none",
+        "curriculum_check": "none",
+        "topic_wording": "none",
+        "qa_pairs": "none",
+    }
+
+
+@pytest.mark.parametrize(
+    ("value", "warned"),
+    [("section_coverage=low", False), ("section_coverag=low", True), ("section_coverage=lwo", True), ("low", True)],
+)
+def test_an_effort_per_question_the_service_does_not_know_is_named_at_start(
+    tmp_path: Path, offline_b_api: FakeBApi, caplog: pytest.LogCaptureFixture, value: str, warned: bool
+) -> None:
+    """A question the service does not ask would never get its effort, and a typo of the effort would fail its calls
+    with a 400: both are named at start."""
+    settings = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", llm_reasoning_efforts=value)
+
+    with caplog.at_level(logging.WARNING):
+        build_llm(settings)
+
+    assert ("LLM_REASONING_EFFORTS" in caplog.text) is warned
 
 
 @pytest.mark.parametrize(("daily", "keys", "warned"), [(0, "", True), (0, "k" * 32, False), (2_000_000, "", False)])

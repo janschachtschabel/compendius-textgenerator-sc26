@@ -160,7 +160,13 @@ class LlmSynthesizer:
             messages = prompt.render(topic=topic, evidence=evidence or "(keine)", **slot_prompt_fields(slot))
             max_output = min(MAX_OUTPUT_TOKENS, max(MIN_OUTPUT_TOKENS, slot.budget.target_chars // 2))
         result = budgeted_chat(
-            self.client, messages, max_output_tokens=max_output, budget=budget, what=slot.id, deadline=deadline
+            self.client,
+            messages,
+            max_output_tokens=max_output,
+            budget=budget,
+            what=slot.id,
+            deadline=deadline,
+            prompt=prompt.id,
         )
         if isinstance(result, LlmSkipped):
             return result

@@ -118,6 +118,7 @@ class LlmArticleChooser:
             max_output_tokens=OUTPUT_TOKENS,
             budget=self.job.budget,
             what="Artikelwahl",
+            prompt=self.prompt.id,
             deadline=self.job.deadline,
         )
         report.count(answer, self.prompt.tag)
@@ -180,6 +181,7 @@ def rate_articles(
         max_output_tokens=HIT_OUTPUT_TOKENS_PER_ARTICLE * len(alias),
         budget=job.budget,
         what="Trefferprüfung",
+        prompt=prompt.id,
         deadline=job.deadline,
     )
     report.count(answer, prompt.tag)

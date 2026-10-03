@@ -125,6 +125,7 @@ def word_topic(job: ArticleChoiceJob, text: str, report: TopicWordingReport) -> 
         max_output_tokens=OUTPUT_TOKENS,
         budget=job.budget,
         what="Thema der Anfrage",
+        prompt=prompt.id,
         deadline=job.deadline,
         caller_text=text,
     )

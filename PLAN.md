@@ -2072,6 +2072,22 @@ API.
   Lehrplan-Suche im Themenmodus nennen solche Wörter unter `generic_keywords`; Wörter, die ein Aufrufer im Modus
   `keyword` schickt, sucht sie wie gesendet. Kosten im echten Cache: im Median 7 ms je Anfrage (eine Zählung je
   Nebenwort); ein allgemeines Wort 0,1 bis 0,4 s, die die eigentliche Suche danach nicht mehr für es ausgibt.
+- **D81 (2026-10-03)** Der Denkaufwand gilt je KI-Frage (Jan: „prüfe wo man das reasoning überall abschalten kann um
+  zeit und kosten zu sparen … wenn der qualitätsverfall gering ist könnten wir reasoning deaktivieren“). Gemessen in M59:
+  Ohne das Denken des Modells (`reasoning_effort=none`) wählten die Frage N und die Artikelwahl dieselben Artikel (91 und
+  93 von 94 Gold-Anfragen), die Lehrplanprüfung bewertete gleich (Note 2 passt 81 statt 82 bis 86 %), Themenformulierung
+  und QA-Paare blieben gleichwertig, in etwa der halben Zeit (N 2,4 statt 4,4 s, Lehrplanprüfung 4,6 statt 10 s je
+  Anfrage). Das Schreiben verlor deutlich (`best-quality-generated`: Vollständigkeit 2,50 statt 3,56, bei Aspekten 1,50
+  statt 3,67; `best-coverage-generated` 4,39 statt 5,00), die Zuordnung 4 bis 8 Punkte F1, `/entities` ein Viertel der
+  passenden Verknüpfungen (gefunden 63 statt 84 %), die Artikelwahl eines Materials drei bis acht von 31 klaren
+  Fällen. Deshalb kein generelles Abschalten: `LLM_REASONING_EFFORT` bleibt `low` für jede Frage, die
+  `LLM_REASONING_EFFORTS` nicht nennt; ausgeliefert nennt sie die fünf gleich guten mit `none`
+  (`topic_articles`, `article_choice`, `curriculum_check`, `topic_wording`, `qa_pairs`). Jeder Aufruf nennt dafür seinen
+  Prompt; eine neue oder ungemessene Frage denkt also weiter. Der Start warnt bei einer Frage, die der Dienst nicht
+  stellt, und bei einem unbekannten Aufwand. Die Absatzauswahl (Jans Vorschlag: Kategorienschema zeigen, mehrere Absätze
+  je Aufruf) ist der KI-Zuordner von D34 schon; er bekommt 250 statt 400 Zeichen je Absatz: gleiche Güte mit `low`
+  (micro-F1 0,796 statt 0,794) bei 13 % weniger Tokens, und ohne Denken stabiler (macro-F1 0,676 statt 0,609).
+  `paragraph_assignment=none` in `LLM_REASONING_EFFORTS` halbiert seine Zeit für 4 Punkte micro-F1.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

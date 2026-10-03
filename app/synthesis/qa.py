@@ -174,6 +174,7 @@ class LlmQaWriter:
             what="qa",
             deadline=deadline,
             caller_text=text,
+            prompt=prompt.id,
         )
         if usage is not None:
             usage.count(answer, prompt.tag)

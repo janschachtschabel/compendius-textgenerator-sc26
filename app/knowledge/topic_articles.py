@@ -72,6 +72,7 @@ def ask_topic_articles(
         max_output_tokens=OUTPUT_TOKENS,
         budget=job.budget,
         what="Artikel des Themas",
+        prompt=prompt.id,
         deadline=job.deadline,
     )
     report.count(answer, prompt.tag)

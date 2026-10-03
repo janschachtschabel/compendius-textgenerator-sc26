@@ -738,7 +738,13 @@ eines Kompendiums aus dem Cache; die übrigen fielen im Mittel von 53.000 auf 36
 gleich gut (macro-F1 0,64 und 0,72 mit, 0,68 und 0,70 ohne den Umbau, M46). `GET /health` zeigt unter `components.llm`
 Verfügbarkeit, Modellprüfung und Tagesverbrauch. Standard ist `gpt-6-luna` beim Provider `openai`
 mit `reasoning_effort=low` und `verbosity=low` (D44: gleiche Güte wie `gpt-5.6-luna` zum halben Preis je Token,
-aber je Aufruf ein Viertel bis drei Viertel langsamer; `B_API_MODEL=gpt-5.6-luna` holt das alte zurück); ein Wechsel
+aber je Aufruf ein Viertel bis drei Viertel langsamer; `B_API_MODEL=gpt-5.6-luna` holt das alte zurück). Fünf Fragen
+stellt der Dienst ohne das Denken des Modells (`reasoning_effort=none`, `LLM_REASONING_EFFORTS`, D81): die Frage N,
+die Artikelwahl, die Lehrplanprüfung, die Themenformulierung und die QA-Paare. Sie wählten in M59 dieselben Artikel
+(91 und 93 von 94 Gold-Anfragen), bewerteten die Lehrplanelemente gleich und formulierten gleichwertig, in etwa der
+halben Zeit; eine `best-quality`-Anfrage braucht für Artikelwahl und Lehrplanprüfung zusammen rund 6 statt 14 s,
+`balanced` für die Frage N 2,4 statt 4,4 s. Das Schreiben, die KI-Zuordnung, `/entities` und die Artikelwahl eines
+Materials verloren ohne Denken an Güte und denken weiter. Ein Wechsel
 auf `academiccloud` braucht nur `B_API_PROVIDER` und `B_API_MODEL`. Als Denkmodell mit Raum zum Denken erkennt der
 Dienst ein Modell nur am Namen (`gpt-5`, `gpt-6`, `o1`, `o3`, `o4`). Schreibt ein Modell nur in sein Denkfeld
 (`reasoning`, `reasoning_content`), gilt das als Antwort, außer es brach an der Grenze der Ausgabe ab
@@ -987,7 +993,8 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api |
 | `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`). Ohne Eintrag, auch bei leerem Wert, gilt `gpt-6-luna`. Gemessen an der Staging-b-api; ob eine andere b-api es führt, zeigt `/health` unter `components.llm` |
 | `B_API_RESPONSE_CACHE` | `false` | Ob die b-api eine wortgleiche Anfrage aus ihrem Speicher beantworten darf (D70). Sie tut es, ohne dass ein Schalter es abstellt: gleiche Antwort-ID, gleicher Text, 0,4 statt 3,8 s, auch nach einer unbrauchbaren Antwort und in jeder Wiederholung einer Messung. Aus: Jeder Aufruf trägt einen eigenen `safety_identifier` und wird neu beantwortet; das Prompt-Caching des Anbieters (gleicher Anfang des Prompts, `cached` im Audit) bleibt dabei erhalten, anders als mit `user` (gemessen am 01.10.2026) |
-| `LLM_REASONING_EFFORT` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Bekannt sind `none`, `minimal`, `low`, `medium`, `high` und `xhigh`; einen anderen Wert schickt der Dienst trotzdem, und der Start warnt: ein Tippfehler lässt vermutlich jeden Aufruf mit 400 scheitern |
+| `LLM_REASONING_EFFORT` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Denkaufwand jeder Frage, die `LLM_REASONING_EFFORTS` nicht nennt. Bekannt sind `none`, `minimal`, `low`, `medium`, `high` und `xhigh`; einen anderen Wert schickt der Dienst trotzdem, und der Start warnt: ein Tippfehler lässt vermutlich jeden Aufruf mit 400 scheitern |
+| `LLM_REASONING_EFFORTS` | `topic_articles=none,article_choice=none,curriculum_check=none,topic_wording=none,qa_pairs=none` | Fragen mit eigenem Denkaufwand, als Prompt=Aufwand mit Komma getrennt (D81). Die ausgelieferten antworteten ohne Denken gleich gut, in etwa der halben Zeit (M59). Der Start warnt bei einer Frage, die der Dienst nicht stellt, und bei einem unbekannten Aufwand |
 | `LLM_VERBOSITY` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Bekannt sind `low`, `medium` und `high`; bei einem anderen Wert warnt der Start |
 | `LLM_TEMPERATURE` | `0.2` | Nur klassische Modelle; Reasoning-Modelle nutzen stattdessen die beiden Zeilen darüber |
 | `LLM_TIMEOUT_S` | `120` | Frist je einzelnem LLM-Aufruf |

@@ -137,6 +137,7 @@ def ask_topic(
         max_output_tokens=OUTPUT_TOKENS,
         budget=job.budget,
         what="Thema des Materials",
+        prompt=prompt.id,
         deadline=job.deadline,
         caller_text=node_text,
     )

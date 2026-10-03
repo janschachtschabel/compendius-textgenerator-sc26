@@ -155,6 +155,21 @@ def test_gpt6_models_get_the_same_reasoning_request_as_gpt5() -> None:
     assert client.completion_limit(100) > 100, "its thinking counts in the same limit"
 
 
+def test_a_question_named_in_the_efforts_gets_its_own_reasoning_effort() -> None:
+    """M59: the writing keeps the model's thinking, most other questions answer as well without it; a call names its
+    prompt, and the client sends the effort the settings give that prompt, else its own."""
+    fake = FakeBApi()
+    client, _ = make_client(
+        fake, model="gpt-6-luna", reasoning_effort="none", reasoning_efforts={"section_coverage": "low"}
+    )
+
+    client.chat(MESSAGES, max_output_tokens=50, prompt="section_coverage")
+    client.chat(MESSAGES, max_output_tokens=50, prompt="topic_articles")
+    client.chat(MESSAGES, max_output_tokens=50)
+
+    assert [body["reasoning_effort"] for body in fake.bodies] == ["low", "none", "none"]
+
+
 def test_every_call_names_itself_anew_so_the_b_api_answers_it_anew() -> None:
     """D70: the b-api answers a request it has seen word for word from a store - the same id, the same text, 0.4
     instead of 3.8 s (measured 2026-10-01). A safety_identifier of its own makes every call new; ``user`` would do so

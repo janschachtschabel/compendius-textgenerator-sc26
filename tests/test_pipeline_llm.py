@@ -17,7 +17,7 @@ from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
 from app.llm.budget import TokenBudget
 from app.llm.client import BApiClient, LlmError
-from app.llm.prompts import get_prompt
+from app.llm.prompts import PROMPTS, get_prompt
 from app.service import CompendiumService
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL
 from app.templates.manager import TemplateManager
@@ -175,6 +175,29 @@ def test_generation_follows_the_profile(with_llm: CompendiumService) -> None:
     assert result.generation == "llm-fast"
     result = with_llm.generate(GenerateRequest(topic="Optik", generation="rule-based", parts=["world"]))
     assert result.generation == "rule-based" and result.audit.llm is None
+
+
+def test_every_question_sends_the_reasoning_effort_the_settings_give_it(
+    service: CompendiumService, fake: FakeBApi, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """M59: each call names its prompt, and the client sends the effort LLM_REASONING_EFFORTS gives it; a call that
+    named none would think like every other."""
+    efforts = {"topic_articles": "none", "paragraph_assignment": "high", "section_enrichment": "medium"}
+    client = BApiClient(
+        BASE, KEY, provider="openai", model="gpt-6-luna", transport=httpx.MockTransport(fake), reasoning_efforts=efforts
+    )
+    options = LlmOptions(fast_sections=("sc26_1", "sc26_11"), concurrency=2)
+    monkeypatch.setattr(service, "llm", LlmGateway(client, TokenBudget(per_request=20_000, daily=2_000_000), options))
+
+    service.generate(GenerateRequest(topic="Optik", parts=["world"], preset="best-quality-generated"))
+
+    sent: dict[str, set[str]] = {}
+    for body in fake.bodies:
+        system = body["messages"][0]["content"]
+        prompt = next(prompt for prompt in PROMPTS.values() if system.startswith(prompt.system))
+        sent.setdefault(prompt.id, set()).add(body["reasoning_effort"])
+    assert {name: sent.get(name) for name in efforts} == {name: {effort} for name, effort in efforts.items()}
+    assert all(values == {"low"} for name, values in sent.items() if name not in efforts)
 
 
 def test_gateway_status_for_health(fake: FakeBApi) -> None:

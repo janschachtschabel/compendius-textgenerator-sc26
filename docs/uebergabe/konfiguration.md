@@ -90,7 +90,8 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `B_API_PROVIDER` | `openai` | wie Vorgabe | Anbieterprofil der b-api |
 | `B_API_MODEL` | `gpt-6-luna` | wie Vorgabe | Modell; `/health` meldet, ob die b-api es führt |
 | `B_API_RESPONSE_CACHE` | `false` | wie Vorgabe | aus: jeder LLM-Aufruf wird neu beantwortet, statt dass die b-api eine wortgleiche Anfrage aus ihrem Speicher wiederholt (D70); das Prompt-Caching des Anbieters bleibt |
-| `LLM_REASONING_EFFORT` | `low` | wie Vorgabe | Denkaufwand von Reasoning-Modellen |
+| `LLM_REASONING_EFFORT` | `low` | wie Vorgabe | Denkaufwand von Reasoning-Modellen für jede Frage, die `LLM_REASONING_EFFORTS` nicht nennt |
+| `LLM_REASONING_EFFORTS` | `topic_articles=none,article_choice=none,curriculum_check=none,topic_wording=none,qa_pairs=none` | wie Vorgabe | Fragen mit eigenem Denkaufwand; die fünf ausgelieferten antworteten ohne Denken gleich gut in der halben Zeit (D81) |
 | `LLM_VERBOSITY` | `low` | wie Vorgabe | Ausführlichkeit von Reasoning-Modellen |
 | `LLM_TEMPERATURE` | `0.2` | wie Vorgabe | nur klassische Modelle |
 | `LLM_TIMEOUT_S` | `120` | wie Vorgabe | Frist je LLM-Aufruf |
