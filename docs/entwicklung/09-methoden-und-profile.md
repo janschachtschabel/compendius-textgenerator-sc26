@@ -194,6 +194,9 @@ das auf dem Server dieselbe b-api anspricht.
   (D42); der alte Weg über Begriffe vom LLM nennt keinen Hauptartikel und kostet bei jeder Anfrage einen Aufruf (M17).
 - Seit D63 kann in `balanced` die vom LLM genannte Übersicht den Hauptartikel ersetzen, wo die Regeln das Thema
   verfehlen; am Gold bleibt es bei 91 und 93 (M39).
+- Sagt das LLM, dass keiner der Kandidaten der Regeln passt, geht auch deren Artikel (D85): Das traf in M63 nur
+  mehrdeutige Einzelwörter ohne Fach, bei denen die Regeln eine zufällige Bedeutung hielten („Stamm (Familienname)“).
+  Die Übersicht der Frage N nimmt dann den Platz, wo das Archiv sie hat; sonst rät die Antwort zu einem Fach.
 - Material als Eingang (D47): Titel nennen oft ein Format statt eines Themas. Die Regeln finden den Artikel über Titel
   und Beschreibung mit einem F1 von 0,56 und 0,63 an zwei Stichproben, das LLM mit 0,98 und 0,88 (M25).
 
