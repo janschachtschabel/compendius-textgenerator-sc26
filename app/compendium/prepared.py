@@ -6,6 +6,7 @@ import time
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
+from app.compose.regeneration import PreservedSection
 from app.domain.models import Chunk, CollectionPart, CurriculaPart, NodeInput, Resolution, Source, primary_of
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport
@@ -53,6 +54,8 @@ class PreparedTopic:
     registry: ZimRegistry | None = None
     asked_topic: str = ""  # the topic every prompt hears (D72), set by CompendiumService.prepare
     wording: TopicWordingReport | None = None  # a writing profile: the model worded the topic of a text (D72)
+    # the blocks of an earlier compendium that stay word for word (PLAN.md 4.6), read and placed before any other step
+    preserved: dict[str, PreservedSection] = field(default_factory=dict)
 
     @property
     def sources_by_id(self) -> dict[str, Source]:

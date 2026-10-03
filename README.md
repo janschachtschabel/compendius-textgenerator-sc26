@@ -1104,7 +1104,9 @@ auch unter `sources`, und ihre Belege tragen wieder eine `source_id`. Fehlt dies
 bleiben also in ihm; Zeilenenden mit CR (Windows, Textfelder) liest der Dienst wie LF. Eine Markierung, die er nicht
 lesen kann, ein Baustein, der zweimal vorkommt, ein Status, den er nicht kennt, und ein zu behaltender Baustein, für
 den das Template keinen Platz hat (ein anderes `template_id`), sind ein 422: Sonst würde der Baustein still neu
-erzeugt oder ein Baustein in Prüfung als geprüft ausgegeben. Die KI-Kennzeichnung des Vorspanns (`ai_disclosure`,
+erzeugt oder ein Baustein in Prüfung als geprüft ausgegeben. Diese Prüfung kommt vor jedem anderen Schritt, eine
+abgelehnte Anfrage kostet also keine LLM-Aufrufe; die Zuordnung der Absätze läuft weiter über alle Bausteine, die
+Satzauswahl von `extraction: llm` nur für die neu erzeugten. Die KI-Kennzeichnung des Vorspanns (`ai_disclosure`,
 `review.status`) folgt allen Bausteinen des Dokuments: Ein behaltener Baustein `ki-generiert` oder `ki-ausgewählt`
 und sein Modellwissen zählen mit, ein `redaktionell-geprüfter` steht unter redaktioneller Verantwortung (Art. 50
 Abs. 4 EU AI Act). `kept_sections` nennt die behaltenen Bausteine mit ihrem Status; `extraction`, `generation` und

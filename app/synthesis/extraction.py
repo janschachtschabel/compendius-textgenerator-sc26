@@ -11,7 +11,7 @@ order afterwards: a sentence an earlier block prints is dropped from the later o
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Collection, Mapping, Sequence
 from dataclasses import dataclass, field, replace
 
 from app.concurrency import map_in_threads
@@ -82,11 +82,14 @@ def extract_with_llm(
     chunks: Sequence[Chunk],
     sources: Mapping[str, Source],
     job: ExtractionJob,
+    keep: Collection[str] = (),
 ) -> Extracted:
-    """Let the LLM choose the sentences of every content block that has candidates; see the module docstring."""
+    """Let the LLM choose the sentences of every content block that has candidates, but those in ``keep``: an earlier
+    text keeps them word for word (audit 2026-10-03, F13); see the module docstring."""
     by_id = {chunk.chunk_id: chunk for chunk in chunks}
-    offers = {slot.id: candidates_for(slot.id, assignment, by_id, job.candidates) for slot in template.content_slots()}
-    work = [slot for slot in template.content_slots() if offers[slot.id]]
+    slots = [slot for slot in template.content_slots() if slot.id not in keep]
+    offers = {slot.id: candidates_for(slot.id, assignment, by_id, job.candidates) for slot in slots}
+    work = [slot for slot in slots if offers[slot.id]]
     assigned = {slot_id: list(items) for slot_id, items in assignment.assigned.items()}
     report = ExtractionReport()
     extracted = Extracted(assigned=assigned, selected=set(), report=report)

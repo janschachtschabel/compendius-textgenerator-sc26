@@ -42,6 +42,30 @@ def _content(result: Any) -> list[Any]:
     return [s for s in result.sections if s.slot_key not in {"akteure", "quellen", "glossar"}]
 
 
+def test_a_regeneration_lets_the_model_choose_sentences_only_for_the_blocks_it_renews(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Audit 2026-10-03, F13: extraction=llm chose sentences for every block, also for those the earlier text keeps
+    word for word - calls for nothing, and their sentences counted as printed when a renewed block was deduplicated."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    fake = FakeBApi(first_sentences)
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    result = service.generate(
+        GenerateRequest(
+            topic="Optik",
+            extraction="llm",
+            parts=["world"],
+            existing_markdown=first.markdown,
+            regenerate_sections=["sc26_3"],
+        )
+    )
+
+    extraction = result.audit.llm["extraction"] if result.audit.llm else {}
+    asked = [body for body in fake.bodies if is_selection(body)]
+    assert "sc26_3" in extraction["sections"] and set(extraction["sections"]) <= set(result.audit.regenerated)
+    assert len(asked) == len(extraction["sections"]) + len(extraction["fallbacks"])
+
+
 @pytest.fixture
 def chunks(service: CompendiumService) -> dict[str, str]:
     prepared = service.prepare(GenerateRequest(topic="Optik", parts=["world"]))

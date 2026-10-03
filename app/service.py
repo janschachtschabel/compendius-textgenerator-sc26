@@ -126,6 +126,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             else self.templates.default(self.settings.template_default)
         )
         check_names(request.regenerate_sections, template)
+        # before any reading or model call: an earlier text that cannot be read or placed is refused for free (F13)
+        preserved = self._preserved(request, template)
         if request.empty_slot_policy:
             template = template.model_copy(update={"empty_slot_policy": request.empty_slot_policy})
         lexicon = self.lexicon.with_template(template)
@@ -175,6 +177,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             material=chosen.material,
             knowledge=knowledge_failure,  # a repository that failed on the probe is not asked again
             registry=registry,
+            preserved=preserved,
         )
         self._ask_topic(prepared, request, node_info or collection, wording)
         if needs_corpus:

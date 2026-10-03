@@ -18,6 +18,8 @@ from app.domain.requests import GenerateRequest
 from app.service import CompendiumService
 from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN, marker_numbers
 from tests.markdown_safety import render, unsafe
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import answer_from_evidence, make_gateway
 
 SECTION_RE = re.compile(
     r"### (?P<title>[^\n]+)\n<!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ ]+)(?P<rest>[^>]*)-->\n\n"
@@ -310,6 +312,30 @@ def test_a_kept_block_the_template_has_no_place_for_is_refused(service: Compendi
         )
 
     assert "sc26_3" in str(refused.value) and "standard" in str(refused.value)
+
+
+def test_a_kept_block_without_a_place_is_refused_before_the_model_is_asked(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Audit 2026-10-03, F13: the refusal came after the article choice and the matching, which an LLM profile had
+    paid for already."""
+    first = service.generate(GenerateRequest(topic="Optik", parts=["world"], target_length=8000))
+    reviewed = mark_reviewed(first.markdown, "sc26_3")
+    fake = FakeBApi(answer_from_evidence)
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=200_000))
+
+    with pytest.raises(UnplacedSectionsError):
+        service.generate(
+            GenerateRequest(
+                topic="Optik",
+                parts=["world"],
+                preset="best-quality",
+                template_id="standard",
+                existing_markdown=reviewed,
+            )
+        )
+
+    assert fake.bodies == []
 
 
 def test_a_kept_block_passes_the_net_of_every_writer(service: CompendiumService) -> None:

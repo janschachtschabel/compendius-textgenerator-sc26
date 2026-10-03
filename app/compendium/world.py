@@ -8,7 +8,7 @@ A mixin of CompendiumService (app/service.py) on top of LlmPolicy: it reads the 
 from __future__ import annotations
 
 import time
-from collections.abc import Mapping, Sequence
+from collections.abc import Collection, Mapping, Sequence
 
 from app.compendium.llm_policy import LlmPolicy
 from app.compendium.prepared import Matched, PreparedTopic, Requested, Stopwatch, WorldPart
@@ -135,8 +135,11 @@ class WorldBuilding(LlmPolicy):
         assigned: Mapping[str, Sequence[ScoredChunk]] = matched.assignment.assigned
         selected: set[str] = set()
         extracted: ExtractionReport | None = None
+        preserved = prepared.preserved
         if extraction == "llm" and budget is not None:
-            result = self.extract(prepared, matched, request.target_length, budget=budget, deadline=deadline)
+            result = self.extract(
+                prepared, matched, request.target_length, budget=budget, deadline=deadline, keep=set(preserved)
+            )
             if result is not None:
                 assigned, selected, extracted = result.assigned, result.selected, result.report
             lap("extract")
@@ -156,7 +159,6 @@ class WorldBuilding(LlmPolicy):
                 article=prepared.title,
                 check=requested.model_knowledge_check == "llm",
             )
-        preserved = self._preserved(request, template)
         attribution = attribute(preserved, request.existing_markdown or "", sources)
         ai_assigned = {  # blocks holding paragraphs the model assigned: marked as chosen by an AI
             slot_id
@@ -208,10 +210,12 @@ class WorldBuilding(LlmPolicy):
         *,
         budget: RequestBudget | None = None,
         deadline: Deadline | None = None,
+        keep: Collection[str] = (),
     ) -> Extracted | None:
         """extraction=llm on matched chunks (D33): the LLM's choice per block; ``None`` without a configured LLM.
 
         The caller checks ``llm_unavailable`` first; a budget of its own is opened when none is given (evaluation).
+        ``keep`` names the blocks an earlier text keeps word for word: the model is not asked for them.
         """
         if self.llm is None:
             return None
@@ -224,7 +228,7 @@ class WorldBuilding(LlmPolicy):
             deadline=deadline,
         )
         template = scale_budgets(prepared.template, target_length)  # the prompts name the target length
-        return extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job)
+        return extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job, keep=keep)
 
     def _preserved(self, request: GenerateRequest, template: Template) -> dict[str, PreservedSection]:
         """Blocks of an earlier compendium that stay word for word (PLAN.md 4.6); generated blocks never do."""
