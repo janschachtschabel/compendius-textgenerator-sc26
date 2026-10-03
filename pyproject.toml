@@ -78,6 +78,9 @@ ignore = ["RUF001", "RUF002", "RUF003"]  # deutsche Anführungszeichen und Gedan
 "tests/*" = ["S101", "E501", "S106"]
 "scripts/*" = ["T201"]
 "app/cli*.py" = ["T201"]
+# The handover scripts print their results, start docker and ask the local service; CI lints the whole tree as
+# README.md and CLAUDE.md say, so these four rules stay off for them alone (audit 2026-10-03, F16)
+"docs/uebergabe/*.py" = ["T201", "S310", "S603", "S607"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["app"]

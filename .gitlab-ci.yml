@@ -116,8 +116,8 @@ docker build:
 ruff:
   extends: .checks
   script:
-    - uv run ruff check app tests scripts
-    - uv run ruff format --check app tests scripts
+    - uv run ruff check .
+    - uv run ruff format --check .
 
 mypy:
   extends: .checks
