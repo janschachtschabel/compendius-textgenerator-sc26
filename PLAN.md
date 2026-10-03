@@ -2094,6 +2094,16 @@ API.
   LLM läuft eine Anfrage ohne Profil weiter mit `llm-free`. Eine Anfrage ohne Profil schreibt damit jeden Baustein mit
   dem LLM und braucht in M59 rund 37 s und 77.000 Tokens statt 4 s und 600 Tokens (`balanced`); wer das nicht will,
   setzt `PRESET_DEFAULT=balanced`. Die Profilbeschreibungen der API markieren `best-quality-generated` als Vorgabe.
+- **D83 (2026-10-03)** Formeln, die das LLM in LaTeX schreibt, stehen als Text im Kompendium (Jan, mit einem
+  Bildschirmfoto der Prüfansicht: „prüfe im ui auch die darstellung von formeln“; dort stand
+  `\(n_1\sin\theta_1=n_2\sin\theta_2\)`). Das Modell schreibt Formeln zwischen `\(` `\)`, und das Escapen
+  für Markdown zeigte jeden Backslash. `app/synthesis/formulas.py` macht daraus vor der Belegprüfung lesbaren Text mit
+  Unicode: Indizes und Exponenten als Tief- und Hochzeichen, wo Unicode sie hat, griechische Buchstaben, Operatoren
+  mit Abständen, Funktionen, Brüche, Wurzeln, `\,` als schmales geschütztes Leerzeichen - „n₁ sin θ₁ = n₂ sin θ₂“,
+  „6 CO₂ + 6 H₂O + Lichtenergie → C₆H₁₂O₆ + 6 O₂“. So liest es sich in der Prüfansicht, im Markdown für Endkunden und
+  im JSON ohne Formelsatz. Geprüft an den 36 Texten von M59 (M60): 48 Formeln in vier Texten zu Optik und
+  Photosynthese, alle ohne LaTeX-Rest. Eckige Klammern um Text („[ababbcbc]“) bleiben Text; Dollarzeichen werden nicht
+  als Formel gelesen. Formeln aus Wikipedia nimmt der Dienst weiter nicht in den Korpus (MathML wird verworfen).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

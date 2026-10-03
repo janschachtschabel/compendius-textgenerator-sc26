@@ -106,6 +106,9 @@ Abschnittsmarker von Teil 1.
   ohne das Denken des Modells (`LLM_REASONING_EFFORTS`): Frage N, Artikelwahl, Lehrplanprüfung, Themenformulierung
   und QA-Paare antworteten so gleich gut in etwa der halben Zeit; Schreiben, Zuordnung, `/entities` und die
   Artikelwahl eines Materials denken weiter (M59). Die KI-Zuordnung liest 250 statt 400 Zeichen je Absatz.
+- Standardprofil und Formeln (D82, D83, Release 2.11.0): Ohne Profil läuft eine Anfrage mit `best-quality-generated`
+  (ohne LLM weiter `llm-free`). Formeln, die das LLM in LaTeX schreibt, stehen als lesbarer Text mit Unicode im
+  Kompendium („n₁ sin θ₁ = n₂ sin θ₂“) statt als Rohtext mit Backslashes.
 
 ## Installation
 

@@ -3306,3 +3306,20 @@ Ohne Denken schreibt das Modell kürzer und dünner; bei Aspekt-Themen fiel die 
 **Ergebnis:** Generell abschalten verliert Güte: beim Schreiben, bei der Zuordnung, bei `/entities` und beim Artikel eines
 Materials. Ohne Denken laufen die fünf Fragen, die gleich gut antworteten: N, Artikelwahl, Lehrplanprüfung,
 Themenformulierung und QA-Paare (D81); die Zuordnung nimmt 250 Zeichen je Absatz. Rohdaten: `m59_reasoning.json`.
+
+## M60 Formeln in den Texten des LLM (03.10.2026)
+
+Jan, mit einem Bildschirmfoto der Prüfansicht (Modellwissen in Baustein 3 zur Optik): „prüfe im ui auch die
+darstellung von formeln“. Das LLM schreibt Formeln als LaTeX zwischen `\(` `\)`; das Escapen für Markdown verdoppelt
+jeden Backslash, und die Prüfansicht zeigte den Rohtext. Formeln aus Wikipedia kommen nicht vor: Der Parser verwirft
+MathML samt LaTeX-Alternativtext. `mc_formeln.py` liest die 36 Schreibläufe von M59 (`best-quality-generated` und
+`best-coverage-generated` an den neun Themen von M48, je mit `low` und `none`):
+
+- 48 Formeln in vier Texten (dreimal Optik, einmal Photosynthese), 37 verschiedene; benutzt werden Indizes,
+  Exponenten, griechische Buchstaben, `\sin`, `\cos`, `\mathrm`, `\text`, `\sqrt`, `\partial`, `\nabla`,
+  `\rightarrow`, `\,` und `{,}`. Anzeigeformeln zwischen `\[` `\]` schrieb das Modell keine; was dort im Escapen der
+  Ausgabe so aussah, waren Klammern um Text und Verweise.
+- `plain_formulas` (D83) zeigt alle 37 ohne LaTeX-Rest, etwa „n₁ sin θ₁ = n₂ sin θ₂“, „I = I₁ + I₂ + 2√(I₁I₂) cos δ“,
+  „∇²u − (1/v²)∂²u/∂t² = 0“, „6 CO₂ + 6 H₂O + Lichtenergie → C₆H₁₂O₆ + 6 O₂“, „1,22λ/D“.
+
+**Ergebnis:** gebaut (D83). Rohdaten: `m60_formeln.json`.

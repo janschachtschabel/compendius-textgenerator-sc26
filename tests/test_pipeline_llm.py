@@ -200,6 +200,20 @@ def test_every_question_sends_the_reasoning_effort_the_settings_give_it(
     assert all(values == {"low"} for name, values in sent.items() if name not in efforts)
 
 
+def test_a_formula_the_model_writes_in_latex_comes_out_as_text(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D83: the model wrote formulas as LaTeX, and escaped for markdown the review page showed every backslash."""
+    snell = "\\(n_1\\sin\\theta_1=n_2\\sin\\theta_2\\)"
+    fake = FakeBApi(lambda body: f"{answer_from_evidence(body)} Für die Brechung gilt {snell}.")
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+
+    result = service.generate(GenerateRequest(topic="Optik", parts=["world"], preset="best-quality-generated"))
+
+    assert "Für die Brechung gilt n₁ sin θ₁ = n₂ sin θ₂" in result.markdown
+    assert "theta" not in result.markdown
+
+
 def test_gateway_status_for_health(fake: FakeBApi) -> None:
     gateway = make_gateway(fake)
     before = gateway.status()

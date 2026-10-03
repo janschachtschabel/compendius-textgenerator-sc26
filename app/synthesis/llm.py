@@ -28,6 +28,7 @@ from app.synthesis.citations import (
     renumber,
     verify_citations,
 )
+from app.synthesis.formulas import plain_formulas
 from app.templates.schema import Template, TemplateSlot
 
 MAX_EVIDENCE_CHARS = 1500  # per chunk in the evidence block
@@ -175,7 +176,8 @@ class LlmSynthesizer:
             reason = f"leere Antwort des Modells (finish_reason={result.finish_reason or 'unbekannt'})"
             return LlmSkipped.after(reason, result)
         mark = MODEL_KNOWLEDGE if enrich or full else (CONCLUSION if self.mark_unsupported else "")
-        text, dropped = verify_citations(result.text, set(range(1, len(items) + 1)), mark=mark)
+        # formulas the model wrote in LaTeX, as text: escaped for markdown every backslash showed (D83)
+        text, dropped = verify_citations(plain_formulas(result.text), set(range(1, len(items) + 1)), mark=mark)
         evidence_texts = {n: chunk.text for n, (chunk, _) in enumerate(items, start=1)}
         text, unsupported = drop_unsupported(text, evidence_texts, mark=mark)
         # conclusion blocks alone are no evidence-based section; marked model knowledge is a block wherever the request
