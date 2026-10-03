@@ -109,6 +109,14 @@ CONTENT_ABOUT_COOKIES = [
     "Ein Tracking-Cookie speichert, welche Seiten jemand besucht hat, und kann so ein Profil der Nutzung erstellen.",
     "Für die Einwilligung in Cookies gilt seit 2021 das TTDSG; eine Website muss vorher um Zustimmung bitten.",
     "Informed consent bedeutet, dass Versuchspersonen nach einer Aufklärung freiwillig in eine Studie einwilligen.",
+    # a lesson speaks with "wir" and to teachers with "Ihre": no consent dialog (review of F08)
+    "Wir untersuchen in dieser Stunde, wie Cookies funktionieren und welche Daten sie speichern.",
+    "Was wir über Cookies wissen sollten: Sie sind kleine Textdateien im Browser des Rechners.",
+    "Wenn wir eine Website besuchen, legt sie oft Cookies auf unserem Rechner ab, ohne zu fragen.",
+    "Unsere Klasse hat gesammelt, welche Websites Cookies setzen und wofür sie sie brauchen.",
+    "Wir lernen, wie man Cookies im Browser löscht und das Tracking durch Werbefirmen verhindert.",
+    "Ihre Schülerinnen und Schüler erkunden, wie Cookies das Surfverhalten aufzeichnen können.",
+    "Man sollte nicht einfach alle Cookies akzeptieren, nur damit das Fenster verschwindet.",
 ]
 CONSENT_NOTICES = [
     # LEIFIphysik, 2026-10-04, from the text the repository extracted
@@ -123,6 +131,9 @@ CONSENT_NOTICES = [
     "We and our partners store and/or access information on a device, such as cookies and unique identifiers.",
     "This website uses cookies to ensure you get the best experience on our website. Learn more about consent.",
     "Datenschutzeinstellungen: Hier können Sie festlegen, welche Dienste Daten über Sie sammeln dürfen.",
+    "Wir verwenden Cookies, um unsere Website für Sie optimal zu gestalten und fortlaufend zu verbessern.",
+    "Unsere Website setzt Cookies ein, um die Nutzung zu analysieren und Inhalte anzupassen.",
+    "Auf dieser Website werden Cookies verwendet, die für den Betrieb technisch notwendig sind.",
 ]
 
 

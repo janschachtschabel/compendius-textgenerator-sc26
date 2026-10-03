@@ -3535,10 +3535,14 @@ dem KUG). Weitere Reste fremder Seiten kommen vor, sind aber keine Einwilligung:
 Videoplayers in 17 der 37 Optik-Texte („Videos, die du dir ansiehst, werden möglicherweise zum TV-Wiedergabeverlauf
 hinzugefügt …“), Fehlermeldungen beim Teilen, die Browserwarnung von PeerTube.
 
-**Ergebnis:** gebaut (D91). Ein Hinweis gilt als Einwilligungstext, wenn die Seite selbst spricht („wir“, „unsere“,
-„diese Website“) oder ihren Leser siezt („Ihnen“, „Ihre Auswahl“) und dabei Cookies nennt, oder wenn er Wendungen eines
-Einwilligungsdialogs trägt (Datenschutzeinstellungen, „Informationen auf einem Gerät“, die des Verlags oben); geprüft
-wird je Stück eines Textes ohne Zeilenumbruch statt je ganzer Zeile. Rohdaten: `m68_cookie_filter.json`.
+**Ergebnis:** gebaut (D91). Ein Hinweis gilt als Einwilligungstext, wenn die Seite Cookies einsetzt („Wir nutzen
+Cookies“, „Diese Website verwendet Cookies“) oder wie ein Dialog spricht („Ihre Auswahl“, „um Ihnen“) und dabei Cookies
+nennt, oder wenn er Wendungen eines Einwilligungsdialogs trägt (Datenschutzeinstellungen, „Informationen auf einem
+Gerät“, die des Verlags oben); geprüft wird je Stück eines Textes ohne Zeilenumbruch statt je ganzer Zeile. Ein
+„wir“ oder „Ihre Schülerinnen“ eines Lehrtexts allein genügt nicht: Eine erste Fassung, die schon die Rede der Seite
+genügen ließ, verwarf sechs von sieben Lehrtext-Sätzen eines Tests („Wir untersuchen, wie Cookies funktionieren“); die
+gebaute lässt sie stehen und verwirft in den 151 Texten dieselben 154 Zeilen. Als Hinweis gilt weiter ein Lehrtext, der
+wie die Seite spricht („Wir nutzen im Alltag ständig Cookies“). Rohdaten: `m68_cookie_filter.json`.
 
 ## M69 Wie oft der Hauptartikel den Korpusdeckel füllt (Audit F02, 04.10.2026)
 

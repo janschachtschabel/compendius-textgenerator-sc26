@@ -38,9 +38,10 @@ MIN_PARAGRAPH_CHARS = 40
 PARAGRAPH_MAX_CHARS = 2_000
 TIME_UP = "Zeitbudget der Anfrage erschöpft"  # compared by identity in material_sources
 # Consent dialogs and cookie notices crawled from the material's page are not knowledge, a text about cookies is: a
-# notice speaks for the site ("wir", "diese Website") or to its reader ("Ihre Auswahl"), or it uses a dialog's words.
-# Every line naming "cookie" or "consent" went before, "Cookies sind kleine Textdateien …" with it, while the consent
-# dialog that stood in 51 of 151 material texts passed: it names no cookie (audit 2026-10-03, F08; M68)
+# notice has the site use the cookies ("Wir nutzen Cookies", "Diese Website verwendet Cookies") or talks like a dialog
+# ("Ihre Auswahl", "um Ihnen"), or it uses a dialog's words. Every line naming "cookie" or "consent" went before,
+# "Cookies sind kleine Textdateien …" with it, while the consent dialog that stood in 51 of 151 material texts passed:
+# it names no cookie (audit 2026-10-03, F08; M68). A lesson's "wir" or "Ihre Schülerinnen" alone makes no notice.
 _CONSENT_PHRASES = (
     "store and/or access information",
     "datenschutzeinstellungen",
@@ -54,10 +55,14 @@ _CONSENT_PHRASES = (
     "der anbieter kann ip-adressen",
 )
 _DEVICE_ACCESS = re.compile(r"informationen auf einem (?:end)?gerät", re.IGNORECASE)
-_SITE_SPEAKS = re.compile(
-    r"\b(?:wir|uns|unser\w*|we|our|diese (?:web)?seite|diese website|this (?:web)?site)\b", re.IGNORECASE
+_SITE = r"(?:wir|we|(?:diese|unsere)[nrs]? (?:web)?(?:seite|site)|this (?:web)?site)"  # Webseite, Website, Seite
+_SITE_USES_COOKIES = re.compile(
+    rf"\b{_SITE}\b[^.!?]{{0,40}}?\b(?:nutz|verwend|setz|einsetz|benutz|use|using)\w*[^.!?]{{0,60}}?\bcookie"
+    rf"|\b{_SITE}\b[^.!?]{{0,40}}?\bcookies\b[^.!?]{{0,40}}?\b(?:verwendet|genutzt|gesetzt|eingesetzt|benutzt|used)\b",
+    re.IGNORECASE,
 )
-_READER_ADDRESSED = re.compile(r"\b(?:Ihnen|Ihre[mnrs]?)\b")  # the polite form, so case matters
+# the polite form of a dialog, so case matters: "Ihre Auswahl", not "Ihre Schülerinnen"
+_READER_DIALOG = re.compile(r"\b(?:Ihre (?:Einwilligung|Zustimmung|Auswahl|Einstellungen|Privatsphäre)|um Ihnen)\b")
 
 
 class TextClient(Protocol):
@@ -119,7 +124,7 @@ def is_consent_notice(text: str) -> bool:
     lower = text.lower()
     if any(phrase in lower for phrase in _CONSENT_PHRASES) or _DEVICE_ACCESS.search(text):
         return True
-    return "cookie" in lower and bool(_SITE_SPEAKS.search(text) or _READER_ADDRESSED.search(text))
+    return "cookie" in lower and bool(_SITE_USES_COOKIES.search(text) or _READER_DIALOG.search(text))
 
 
 def _pieces(line: str, limit: int) -> list[str]:
