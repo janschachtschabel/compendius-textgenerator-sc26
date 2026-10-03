@@ -22,7 +22,12 @@ from app.service import CompendiumService
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL, MODEL_KNOWLEDGE_OPEN, escape_model_text, marked_sentence
 from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import LlmSection
-from app.synthesis.model_knowledge_check import ALL_STRUCK, check_section
+from app.synthesis.model_knowledge_check import (
+    ALL_STRUCK,
+    NO_VERDICT,
+    ModelKnowledgeCheckReport,
+    check_section,
+)
 from tests.markdown_safety import tags, unsafe
 from tests.test_llm_client import FakeBApi
 from tests.test_llm_synthesis import _client
@@ -96,6 +101,33 @@ def test_an_answer_that_decides_nothing_leaves_the_block_as_written(answer: Any)
 
     assert checked.text == written.text and checked.marked_sentences == 3
     assert outcome.struck == outcome.corrected == 0
+
+
+@pytest.mark.parametrize("answer", [{}, {"1": 5, "2": None, "3": ["ok"]}, {"1": "", "2": "  "}, {"4": "ok"}])
+def test_an_answer_without_a_verdict_checked_nothing_and_says_so(answer: Any) -> None:
+    """Audit 2026-10-03, F06: ``{}`` counted all three sentences as checked, and the block went into the report as
+    checked; a sentence counts once the answer gives it a verdict."""
+    checked, outcome, _ = run(answer, section(*KNOWN))
+
+    assert checked.text == section(*KNOWN).text
+    assert (outcome.checked, outcome.unchecked) == (0, 3)
+    assert outcome.fallback == NO_VERDICT
+
+
+def test_a_partial_answer_counts_the_sentences_it_left_unchecked() -> None:
+    checked, outcome, _ = run({"1": "ok", "3": "streichen"}, section(*KNOWN))
+
+    assert marked_texts(checked.text) == KNOWN[:2]
+    assert (outcome.checked, outcome.unchecked, outcome.struck, outcome.fallback) == (2, 1, 1, None)
+
+
+def test_the_report_lists_a_block_without_verdicts_among_the_fallbacks() -> None:
+    report = ModelKnowledgeCheckReport()
+    report.take("sc26_1", run({}, section(*KNOWN))[1])
+    report.take("sc26_2", run({"1": "ok"}, section(*KNOWN))[1])
+
+    assert report.sections == ["sc26_2"] and report.fallbacks == {"sc26_1": NO_VERDICT}
+    assert (report.checked, report.unchecked) == (1, 5)
 
 
 def test_an_unreadable_answer_says_why_and_counts_its_tokens() -> None:
@@ -219,12 +251,37 @@ def test_the_switch_checks_every_block_with_model_knowledge_and_the_audit_says_w
     assert result.audit.llm is not None
     audit = result.audit.llm["model_knowledge_check"]
     assert audit["requested"] == "llm" and audit["used"] == "llm"
-    assert audit["checked"] == audit["struck"] >= len(checks) > 0 and audit["corrected"] == 0
+    assert audit["checked"] == audit["struck"] >= len(checks) > 0 and audit["corrected"] == audit["unchecked"] == 0
     assert result.audit.llm["generation"]["marked_sentences"] == 0
     assert "Fachleute ordnen das Thema" not in result.markdown
     assert CHECK.tag in result.frontmatter["llm"]["prompts"]
     tokens = result.audit.llm_tokens
     assert tokens is not None and tokens["calls"] == len(fake.bodies)
+
+
+def test_answers_without_verdicts_leave_the_check_unused_and_the_audit_says_why(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """F06: the audit called such a check used, every sentence checked."""
+    fake = FakeBApi(
+        lambda body: "{}" if body["messages"][0]["content"] == CHECK.system else answer_with_model_knowledge(body)
+    )
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=200_000))
+    result = service.generate(
+        GenerateRequest(
+            topic="Optik",
+            generation="llm",
+            enrichment="model-knowledge",
+            model_knowledge_check="llm",
+            parts=["world"],
+        )
+    )
+
+    assert result.audit.llm is not None
+    audit = result.audit.llm["model_knowledge_check"]
+    assert audit["used"] == "rule-based" and audit["sections"] == [] and audit["checked"] == 0
+    assert audit["unchecked"] > 0 and set(audit["fallbacks"].values()) == {NO_VERDICT}
+    assert result.frontmatter["llm"]["model_knowledge_check"]["unchecked"] == audit["unchecked"]
 
 
 def test_a_block_that_loses_every_sentence_falls_back_to_the_rules(

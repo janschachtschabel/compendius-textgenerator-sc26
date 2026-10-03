@@ -5,8 +5,8 @@ In M48 six of the eight light errors of best-coverage-generated - dates, bodies,
 model knowledge, and only the cited rest of a text is checked against its sources. The check reads the block as context
 and answers per sentence: "ok", "streichen", or the sentence corrected. A corrected sentence is model knowledge still
 and keeps its mark; one far longer than before is no correction - the check does not write the block anew. Whatever
-keeps the model from answering - b-api, budget, time, an unreadable answer - leaves the block as written, and the
-reason goes to the audit.
+keeps the model from answering - b-api, budget, time, an unreadable answer, one without a verdict - leaves the block
+as written, and the reason goes to the audit; a sentence the answer leaves out counts as unchecked.
 """
 
 from __future__ import annotations
@@ -38,6 +38,7 @@ from app.synthesis.safe_markdown import unescape
 _KEEP_RE = re.compile(r"^ok\b", re.IGNORECASE)
 _STRIKE_RE = re.compile(r"^streichen\b", re.IGNORECASE)
 ALL_STRUCK = "die Prüfung des Modellwissens strich jeden Satz"
+NO_VERDICT = "die Antwort nannte zu keinem Satz ein Urteil"
 MIN_OUTPUT_TOKENS = 200
 OUTPUT_TOKENS_PER_SENTENCE = 80  # room for a corrected sentence; "ok" takes a few
 MAX_OUTPUT_TOKENS = 4000
@@ -52,7 +53,8 @@ _SPAN_RE = re.compile(re.escape(MODEL_KNOWLEDGE_OPEN) + r"(.*?)" + re.escape(END
 class CheckOutcome(Usage):
     """What the check did to one block, with the cost of its call; ``fallback`` says why it stayed unchecked."""
 
-    checked: int = 0
+    checked: int = 0  # sentences the answer gave a verdict
+    unchecked: int = 0  # offered, but without one
     struck: int = 0
     corrected: int = 0
     fallback: str | None = None
@@ -64,6 +66,7 @@ class ModelKnowledgeCheckReport(Usage):
 
     sections: list[str] = field(default_factory=list)  # blocks whose sentences the model checked
     checked: int = 0
+    unchecked: int = 0
     struck: int = 0
     corrected: int = 0
     fallbacks: dict[str, str] = field(default_factory=dict)  # slot id -> why its sentences stayed unchecked
@@ -73,6 +76,7 @@ class ModelKnowledgeCheckReport(Usage):
         self.model = outcome.model or self.model
         self.prompts = sorted({*self.prompts, *outcome.prompts})
         self.checked += outcome.checked
+        self.unchecked += outcome.unchecked
         self.struck += outcome.struck
         self.corrected += outcome.corrected
         if outcome.fallback is not None:
@@ -116,20 +120,29 @@ def check_section(
     if verdicts is None:
         outcome.fallback = f"{UNREADABLE} (finish_reason={answer.finish_reason or 'unbekannt'})"
         return section, outcome
-    outcome.checked = len(spans)
     pieces: list[str] = []
     position = 0
     for number, (span, sentence) in enumerate(zip(spans, sentences, strict=True), start=1):
         pieces.append(section.text[position : span.start()])
         position = span.end()
         verdict = verdicts.get(str(number))
-        if isinstance(verdict, str) and _STRIKE_RE.match(verdict.strip()):
+        # A sentence the answer gives no verdict stays unchecked: "{}" counted every sentence as checked (audit
+        # 2026-10-03, F06)
+        if not isinstance(verdict, str) or not verdict.strip():
+            outcome.unchecked += 1
+            pieces.append(span.group(0))
+            continue
+        outcome.checked += 1
+        if _STRIKE_RE.match(verdict.strip()):
             outcome.struck += 1
             continue
         corrected = _correction(verdict, sentence)
         outcome.corrected += corrected is not None
         pieces.append(span.group(0) if corrected is None else marked_sentence(corrected))
     pieces.append(section.text[position:])
+    if not outcome.checked:
+        outcome.fallback = NO_VERDICT
+        return section, outcome
     if not (outcome.struck or outcome.corrected):
         return section, outcome
     text = _tidy("".join(pieces))

@@ -167,6 +167,19 @@ test('a check of the model knowledge says what it read, struck and corrected', (
   assert.deepEqual([row.used, row.fellBack, row.note], ['llm', false, '40 Sätze geprüft, 3 gestrichen, 2 berichtigt']);
 });
 
+test('a check of the model knowledge says how many sentences got no verdict', () => {
+  const row = knowledgeRow({ requested: 'llm', used: 'llm', sections: ['sc26_1'], checked: 38, unchecked: 2, struck: 3, corrected: 2, fallbacks: {} });
+
+  assert.equal(row.note, '38 Sätze geprüft, 2 ohne Urteil, 3 gestrichen, 2 berichtigt');
+});
+
+test('a check of the model knowledge whose answers gave no verdict fell back and says why (audit 2026-10-03, F06)', () => {
+  const reason = 'die Antwort nannte zu keinem Satz ein Urteil';
+  const row = knowledgeRow({ requested: 'llm', used: 'rule-based', sections: [], checked: 0, unchecked: 7, struck: 0, corrected: 0, fallbacks: { sc26_3: reason } });
+
+  assert.deepEqual([row.used, row.fellBack, row.note], ['rule-based', true, reason]);
+});
+
 test('a check of the model knowledge with no such sentence had nothing to check, which is no fallback', () => {
   const row = knowledgeRow({ requested: 'llm', used: 'rule-based', sections: [], checked: 0, struck: 0, corrected: 0, fallbacks: {} });
 

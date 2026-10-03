@@ -96,7 +96,8 @@ export function knowledgeCheck(check) {
   if (check?.requested !== 'llm') return { fellBack: false, note: null };
   const reasons = [...new Set(Object.values(check.fallbacks ?? {}))];
   if (!check.checked && !reasons.length) return { fellBack: false, note: 'nichts zu prüfen: kein Satz aus Modellwissen' };
-  const counts = check.checked ? `${formatCount(check.checked, 'Satz', 'Sätze')} geprüft, ${formatNumber(check.struck ?? 0)} gestrichen, ${formatNumber(check.corrected ?? 0)} berichtigt` : null;
+  const open = check.unchecked ? `, ${formatNumber(check.unchecked)} ohne Urteil` : '';
+  const counts = check.checked ? `${formatCount(check.checked, 'Satz', 'Sätze')} geprüft${open}, ${formatNumber(check.struck ?? 0)} gestrichen, ${formatNumber(check.corrected ?? 0)} berichtigt` : null;
   return { fellBack: check.used !== 'llm' && reasons.length > 0, note: [counts, ...reasons].filter(Boolean).join('; ') };
 }
 

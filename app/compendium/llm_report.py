@@ -171,6 +171,7 @@ def build_llm_report(
             "used": "llm" if check is not None and check.sections else "rule-based",
             "sections": list(check.sections) if check else [],
             "checked": check.checked if check else 0,
+            "unchecked": check.unchecked if check else 0,  # sentences the answers gave no verdict
             "struck": check.struck if check else 0,
             "corrected": check.corrected if check else 0,
             "fallbacks": dict(check.fallbacks) if check else {},
@@ -205,7 +206,7 @@ def build_llm_report(
         front["curriculum_check"] = {key: curriculum_block[key] for key in ("rated", "dropped", "fallback")}
     if work.check_requested == "llm":
         checked = audit["model_knowledge_check"]
-        front["model_knowledge_check"] = {key: checked[key] for key in ("checked", "struck", "corrected")}
+        front["model_knowledge_check"] = {key: checked[key] for key in ("checked", "unchecked", "struck", "corrected")}
     if article_choice["asked"] or article_choice["hits_checked"] or article_choice["articles_asked"]:
         keys = (
             "offered",
