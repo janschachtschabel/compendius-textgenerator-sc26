@@ -66,8 +66,8 @@ packages = ["app"]
 [tool.ruff]
 line-length = 120
 target-version = "py313"
-# The measurement scripts are evidence, kept as they ran, not production code; CI checks app, tests and scripts,
-# and without this line the commands of CLAUDE.md failed on them alone (audit 2026-09-27, DO-01)
+# The measurement scripts are evidence, kept as they ran, not production code; without this line the commands of
+# CLAUDE.md, which CI runs as well, failed on them alone (audit 2026-09-27, DO-01)
 extend-exclude = ["alterCode", "docs/entwicklung/messung"]
 
 [tool.ruff.lint]
