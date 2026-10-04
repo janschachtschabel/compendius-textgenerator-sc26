@@ -42,27 +42,41 @@ TIME_UP = "Zeitbudget der Anfrage erschöpft"  # compared by identity in materia
 # ("Ihre Auswahl", "um Ihnen"), or it uses a dialog's words. Every line naming "cookie" or "consent" went before,
 # "Cookies sind kleine Textdateien …" with it, while the consent dialog that stood in 51 of 151 material texts passed:
 # it names no cookie (audit 2026-10-03, F08; M68). A lesson's "wir" or "Ihre Schülerinnen" alone makes no notice.
+# the wording of consent dialogs alone; words a lesson about the browser uses too ("Cookie-Einstellungen",
+# "Datenschutzeinstellungen") are no sign (review of F08)
 _CONSENT_PHRASES = (
     "store and/or access information",
-    "datenschutzeinstellungen",
-    "privatsphäre-einstellungen",
-    "cookie-einstellungen",
-    "cookie-richtlinie",
-    "cookie settings",
-    "cookie policy",
     "manage consent",
     "von diesem anbieter erhobenen daten",
     "der anbieter kann ip-adressen",
 )
-_DEVICE_ACCESS = re.compile(r"informationen auf einem (?:end)?gerät", re.IGNORECASE)
+# the German wording of the same purpose of the TCF dialogs: "Informationen auf einem Gerät speichern und/oder abrufen"
+_DEVICE_ACCESS = re.compile(
+    r"informationen auf einem (?:end)?gerät[^.!?]{0,40}?und/oder"
+    r"|und/oder[^.!?]{0,60}?informationen auf einem (?:end)?gerät",
+    re.IGNORECASE,
+)
+# the name of a dialog's settings counts with its polite address ("Datenschutzeinstellungen: Hier können Sie …"),
+# not in a lesson about the browser's ("Öffne die Cookie-Einstellungen deines Browsers")
+_SETTINGS = re.compile(
+    r"datenschutzeinstellungen|privatsphäre-einstellungen|cookie-?einstellungen|cookie-richtlinie"
+    r"|cookie (?:settings|policy)",
+    re.IGNORECASE,
+)
 _SITE = r"(?:wir|we|(?:diese|unsere)[nrs]? (?:web)?(?:seite|site)|this (?:web)?site)"  # Webseite, Website, Seite
 _SITE_USES_COOKIES = re.compile(
     rf"\b{_SITE}\b[^.!?]{{0,40}}?\b(?:nutz|verwend|setz|einsetz|benutz|use|using)\w*[^.!?]{{0,60}}?\bcookie"
     rf"|\b{_SITE}\b[^.!?]{{0,40}}?\bcookies\b[^.!?]{{0,40}}?\b(?:verwendet|genutzt|gesetzt|eingesetzt|benutzt|used)\b",
     re.IGNORECASE,
 )
-# the polite form of a dialog, so case matters: "Ihre Auswahl", not "Ihre Schülerinnen"
+# the polite form of a dialog, so case matters: "Ihre Auswahl", not "Ihre Schülerinnen" or "Ihre Aufgabe"
 _READER_DIALOG = re.compile(r"\b(?:Ihre (?:Einwilligung|Zustimmung|Auswahl|Einstellungen|Privatsphäre)|um Ihnen)\b")
+# a request to agree in the polite form ("Klicken Sie auf „Alle akzeptieren“, um … Cookies zuzustimmen"), within one
+# sentence; "Sie" opening a sentence is the plural ("Sie werden gespeichert …"), so it needs a word before it
+_AGREE = re.compile(
+    r"\b(?:akzeptier|zustimm|zuzustimm|einverstanden|ablehn|zulass|zuzulass|accept|agree)\w*", re.IGNORECASE
+)
+_POLITE = re.compile(r"(?<=\S )(?:Sie|Ihnen|Ihre[mnrs]?)\b")
 
 
 class TextClient(Protocol):
@@ -104,9 +118,12 @@ def paragraphs_from_text(text: str, max_chars: int) -> list[str]:
         line = readable(" ".join(raw.split()))
         if len(line) < MIN_PARAGRAPH_CHARS:
             continue
+        if len(line) <= PARAGRAPH_MAX_CHARS and is_consent_notice(line):  # a notice of its own line goes whole
+            continue
+        if len(line) > PARAGRAPH_MAX_CHARS:  # a text of one line (A07) loses the sentences of a notice, no more;
+            head = line[: 2 * room + PARAGRAPH_MAX_CHARS]  # read only what may still be kept
+            line = " ".join(sentence for sentence in split_sentences(head) if not is_consent_notice(sentence))
         for piece in _pieces(line, PARAGRAPH_MAX_CHARS):
-            if is_consent_notice(piece):  # a whole line, or the piece of a line as long as a text (A07)
-                continue
             if len(piece) > room:
                 head = _pieces(piece, room)[0] if room >= MIN_PARAGRAPH_CHARS else ""
                 if len(head) >= MIN_PARAGRAPH_CHARS:
@@ -124,7 +141,16 @@ def is_consent_notice(text: str) -> bool:
     lower = text.lower()
     if any(phrase in lower for phrase in _CONSENT_PHRASES) or _DEVICE_ACCESS.search(text):
         return True
-    return "cookie" in lower and bool(_SITE_USES_COOKIES.search(text) or _READER_DIALOG.search(text))
+    if _SETTINGS.search(text) and _POLITE.search(text):
+        return True
+    if "cookie" not in lower:
+        return False
+    if _SITE_USES_COOKIES.search(text) or _READER_DIALOG.search(text):
+        return True
+    return any(
+        "cookie" in sentence.lower() and _AGREE.search(sentence) and _POLITE.search(sentence)
+        for sentence in split_sentences(text)
+    )
 
 
 def _pieces(line: str, limit: int) -> list[str]:

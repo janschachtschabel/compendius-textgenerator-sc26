@@ -117,6 +117,11 @@ CONTENT_ABOUT_COOKIES = [
     "Wir lernen, wie man Cookies im Browser löscht und das Tracking durch Werbefirmen verhindert.",
     "Ihre Schülerinnen und Schüler erkunden, wie Cookies das Surfverhalten aufzeichnen können.",
     "Man sollte nicht einfach alle Cookies akzeptieren, nur damit das Fenster verschwindet.",
+    # the words of a dialog in a lesson about the browser (review of F08)
+    "Öffne die Cookie-Einstellungen deines Browsers und lösche dort alle Cookies der letzten Woche.",
+    "In den Datenschutzeinstellungen des Browsers kann man Cookies von Drittanbietern blockieren.",
+    "Cookies speichern Informationen auf einem Endgerät, etwa die gewählte Sprache einer Seite.",
+    "Cookies sind kleine Textdateien. Ihre Aufgabe ist es, Einstellungen einer Seite zu speichern.",
 ]
 CONSENT_NOTICES = [
     # LEIFIphysik, 2026-10-04, from the text the repository extracted
@@ -134,6 +139,7 @@ CONSENT_NOTICES = [
     "Wir verwenden Cookies, um unsere Website für Sie optimal zu gestalten und fortlaufend zu verbessern.",
     "Unsere Website setzt Cookies ein, um die Nutzung zu analysieren und Inhalte anzupassen.",
     "Auf dieser Website werden Cookies verwendet, die für den Betrieb technisch notwendig sind.",
+    "Klicken Sie auf „Alle akzeptieren“, um der Verwendung von Cookies auf dieser Seite zuzustimmen.",
 ]
 
 
@@ -149,7 +155,8 @@ def test_a_consent_notice_in_a_text_of_one_line_takes_its_piece_not_the_text() -
     lesson = " ".join(["Trifft Licht schräg auf eine Grenzfläche, ändert es seine Richtung."] * 40)
     paragraphs = paragraphs_from_text(f"{lesson} {CONSENT_NOTICES[0]} {lesson}", 100_000)
 
-    assert sum(len(p) for p in paragraphs) >= 2 * len(lesson) - 2_000
+    # the notice goes alone: a piece of up to PARAGRAPH_MAX_CHARS went with it (review of F08)
+    assert sum(len(p) for p in paragraphs) >= 2 * len(lesson) - 2
     assert not any("Wir nutzen Cookies" in p for p in paragraphs)
 
 
