@@ -164,6 +164,11 @@ def test_a_repository_that_ignores_the_offset_is_not_paged_to_the_cap() -> None:
 def test_a_listing_says_why_it_ended_before_the_last_page(monkeypatch: pytest.MonkeyPatch) -> None:
     """Audit 2026-10-03, F07: cut at MAX_PAGES or at a repeated page, the listing came back as a whole one."""
 
+    def sliding(request: httpx.Request) -> httpx.Response:  # every page repeats one id of the page before
+        start = int(request.url.params["skipCount"]) // 2
+        nodes = [{"ref": {"id": f"00000000-0000-4000-8000-{start + i:012d}"}, "properties": {}} for i in range(2)]
+        return httpx.Response(200, json={"references": nodes})
+
     def endless(request: httpx.Request) -> httpx.Response:
         skip = int(request.url.params["skipCount"])
         nodes = [{"ref": {"id": f"00000000-0000-4000-8000-{skip + i:012d}"}, "properties": {}} for i in range(2)]
@@ -175,10 +180,13 @@ def test_a_listing_says_why_it_ended_before_the_last_page(monkeypatch: pytest.Mo
 
     monkeypatch.setattr("app.sources.wlo.client.MAX_PAGES", 3)
     capped = EduSharingClient(BASE, transport=httpx.MockTransport(endless), page_size=2).listing(OPTIK)
+    overlapping = EduSharingClient(BASE, transport=httpx.MockTransport(sliding), page_size=2).listing(OPTIK)
     repeated = EduSharingClient(BASE, transport=httpx.MockTransport(same_page), page_size=2).listing(OPTIK)
     whole = _client(FakeRepository()).listing(OPTIK)
 
     assert len(capped.refs) == 6 and capped.cut == CUT_PAGES.format(count=6)
+    # the reason names the service's cap, not the new ids the pages held: two capped lists give one reason
+    assert len(overlapping.refs) == 4 and overlapping.cut == CUT_PAGES.format(count=6)
     assert len(repeated.refs) == 2 and repeated.cut == CUT_REPEATED
     assert len(whole.refs) == 16 and whole.cut is None
 

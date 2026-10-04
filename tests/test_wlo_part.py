@@ -10,7 +10,14 @@ import httpx
 import pytest
 
 from app.sources.wlo.cache import TtlCache
-from app.sources.wlo.client import CUT_PAGES, CollectionNotFoundError, EduSharingClient, Remaining
+from app.sources.wlo.client import (
+    CUT_PAGES,
+    CUT_TIME,
+    CollectionNotFoundError,
+    EduSharingClient,
+    ReferenceListing,
+    Remaining,
+)
 from app.sources.wlo.errors import TimeUpError
 from app.sources.wlo.knowledge import KnowledgeOptions
 from app.sources.wlo.models import MaterialRef, SubCollection
@@ -175,6 +182,7 @@ def test_an_overview_cut_at_the_page_cap_says_so_from_the_cache_as_well(
     for part in (first, again):
         assert part.summary["incomplete"] is True and part.summary["materials"] == 10
         assert CUT_PAGES.format(count=10) in part.markdown and "Zeitbudget" not in part.markdown
+        assert part.summary["incomplete_reasons"] == [CUT_PAGES.format(count=10)]  # for the JSON reader as well
 
 
 class _BrokenSub(FakeRepository):
@@ -193,6 +201,27 @@ def test_a_sub_collection_that_cannot_be_listed_leaves_the_overview_incomplete(t
 
     assert part.available and part.summary["incomplete"] is True
     assert SUB_UNREADABLE in part.markdown and "möglicherweise unvollständig" in part.markdown
+
+
+class _LateSub(CollectionBuilder):
+    """The time budget runs out on the first page of one sub-collection."""
+
+    late = False
+
+    def listing(self, collection_id: str, *, remaining: Remaining | None = None) -> ReferenceListing:
+        if collection_id == BROKEN_SUB:
+            self.late = True
+            raise TimeUpError()
+        return super().listing(collection_id, remaining=remaining)
+
+
+def test_a_sub_collection_the_time_budget_ends_on_counts_as_time_not_as_unreadable(tmp_path: Path) -> None:
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()), page_size=10)
+    builder = _LateSub(client=client, cache=TtlCache(tmp_path / "wlo_cache.db"), options=CollectionOptions())
+
+    part = builder.overview(OPTIK, remaining=lambda: 0.0 if builder.late else 60.0)
+
+    assert part.summary["incomplete_reasons"] == [CUT_TIME] and SUB_UNREADABLE not in part.markdown
 
 
 def _spent() -> float:

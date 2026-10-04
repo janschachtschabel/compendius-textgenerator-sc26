@@ -205,6 +205,7 @@ def render_collection_overview(
     summary.update(
         {
             "incomplete": bool(incomplete),
+            "incomplete_reasons": list(incomplete),  # why, as the hint says it
             "collection_id": info.id,
             "title": info.title,
             "materials": len(refs),

@@ -215,7 +215,8 @@ class EduSharingClient:
                 )
                 return ReferenceListing(refs, CUT_REPEATED)
         log.warning("collection %s: listing cut after %d pages", collection_id, MAX_PAGES)
-        return ReferenceListing(refs, CUT_PAGES.format(count=len(refs)))
+        cap = f"{MAX_PAGES * self._page_size:,}".replace(",", ".")  # the service's cap, as the hint reads it
+        return ReferenceListing(refs, CUT_PAGES.format(count=cap))
 
     def node(self, node_id: str, *, remaining: Remaining | None = None) -> NodeInfo:
         """Title, description, keywords, subject and level of a material or a collection (D45).
