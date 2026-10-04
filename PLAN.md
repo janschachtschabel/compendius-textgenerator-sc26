@@ -2173,19 +2173,22 @@ API.
 - **D91 (2026-10-04)** Externes Audit vom 03.10. (Stand 2.11.0) geprüft (Jan: „falls befunde bestätigt werden bitte
   selbstständig … beheben. bei verbesserungsvorschlägen prüfen und bewerten und dann entscheidungsgrundlage
   darstellen“); Bericht mit Prüfstand und Entscheidungsgrundlage in `docs/audits/2026-10-03-audit.md`, Abschnitt 14.
-  Behoben: Eine Antwort der Modellwissensprüfung ohne Urteil zählt nicht mehr als Prüfung (F06, `unchecked`); eine am
-  Seitenlimit oder an einer doppelten Seite gekürzte Sammlungsliste und eine nicht lesbare Untersammlung nennt Teil 3
-  mit Grund, auch aus dem Cache (F07); der Filter der Materialtexte erkennt Einwilligungstexte daran, dass die Seite
-  Cookies einsetzt, und an den Wendungen eines Einwilligungsdialogs statt am Wort „cookie“ (F08, M68: 154 statt 1 Zeile
-  in 151 Texten, kein Fachtext); eine Teilregeneration prüft den Alttext vor jedem anderen Schritt und lässt die Sätze
-  nur für neue Bausteine wählen (F13); die CI prüft mit `ruff check .` wie dokumentiert (F16). Gemessen und nicht
-  gebaut: Regeln für Verneinung und Vorzeichen in der Belegprüfung (F01, M67: 0,3 % der belegten Sätze widersprechen
-  ihrem Beleg, die enge Regel traf nur richtige Sätze, die weite für etwa 9 Widersprüche rund 290 richtige), ein Anteil
-  des Korpusdeckels für Nebenquellen (F02, M69: der Deckel greift bei 8 von 210 Themen und trifft dann Volltexttreffer,
-  nie den Hauptartikel), die Themenformulierung vor der Artikelwahl (F05, M70: in best-quality-generated kein 404, 18
-  von 20 Artikeln gleich). Dokumentiert: Ausfall des Budgetspeichers (F10), Kandidaten der Satzauswahl (F14), Reichweite
-  von `REQUEST_TIMEOUT_S` (F15); F09 und F11 sind Verhalten wie gewollt, F03, F04, F12, F17 und die Vorschläge der
-  Abschnitte 5 bis 9 liegen bei Jan.
+  Behoben: Ein Satz der Modellwissensprüfung zählt nur noch als geprüft, wenn die Antwort ihn behält, streicht oder
+  berichtigt, sonst als `unchecked` (F06); eine am Seitenlimit oder an einer doppelten Seite gekürzte Sammlungsliste und
+  eine nicht lesbare Untersammlung nennt Teil 3 mit Grund, auch aus dem Cache und in `summary.incomplete_reasons` (F07);
+  der Filter der Materialtexte erkennt Einwilligungstexte daran, dass die Seite Cookies einsetzt oder wie ein Dialog
+  spricht, und an den Formeln eines Einwilligungsdialogs statt am Wort „cookie“; ein Einzeiler verliert nur die Sätze
+  des Hinweises (F08, M68: 154 statt 1 Zeile in 151 Texten, kein Fachtext); eine Teilregeneration prüft den Alttext vor
+  den Archiven und jedem LLM-Aufruf, lässt die Sätze nur für neue Bausteine wählen und zählt, was behaltene Bausteine
+  drucken, als gedruckt (F13); die CI prüft mit `ruff check .` wie dokumentiert (F16). Gemessen und nicht gebaut: Regeln
+  für Verneinung und Vorzeichen in der Belegprüfung (F01, M67: 0,3 % der belegten Sätze widersprechen ihrem Beleg, die
+  enge Regel traf nur richtige Sätze, die weite für etwa 9 Widersprüche rund 290 richtige), ein Anteil des Korpusdeckels
+  für Nebenquellen (F02, M69: der Deckel greift bei 8 von 210 Themen und trifft dann Volltexttreffer, nie den
+  Hauptartikel), die Themenformulierung vor der Artikelwahl (F05, M70: in best-quality-generated kein 404, 18 von 20
+  Artikeln gleich). Dokumentiert: Ausfall des Budgetspeichers (F10), Kandidaten der Satzauswahl (F14), Reichweite von
+  `REQUEST_TIMEOUT_S` (F15); F09 und F11 sind Verhalten wie gewollt, F03, F04, F12, F17 und die Vorschläge der
+  Abschnitte 5 bis 9 liegen bei Jan. Ein unabhängiger Review der Korrekturen fand drei Mängel der ersten Fassungen (F06,
+  F08, F13), alle behoben; Bericht, Abschnitt 14.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
