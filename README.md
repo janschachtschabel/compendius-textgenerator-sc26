@@ -119,6 +119,13 @@ Abschnittsmarker von Teil 1.
   Beispiele der Prüfansicht setzen nur, was ihr Titel nennt (U11).
 - Nachtrag Artikelwahl (D85, Release 2.12.1): Nennt die KI statt eines Kandidaten einen Titel, den das Archiv nicht
   als Artikel hat, gelten die Kandidaten ebenso als verworfen (live bei „Funktion“).
+- Externes Audit vom 03.10. geprüft (D91, Release 2.12.2): Ein Satz der Modellwissensprüfung ohne verwertbares Urteil
+  zählt nicht mehr als geprüft (`unchecked`). Teil 3 nennt den Grund, wenn eine Sammlungsliste am Seitenlimit, an einer
+  doppelten Seite oder an einer nicht lesbaren Untersammlung endet. Materialtexte verlieren Einwilligungstexte statt
+  jeder Zeile mit „Cookie“ (M68). Eine Teilregeneration prüft den Alttext, bevor sie Archive oder LLM fragt, und lässt
+  die KI Sätze nur für neue Bausteine wählen. Gemessen und nicht gebaut: Verneinungsregeln der Belegprüfung (M67),
+  Anteile im Korpusdeckel (M69), die Themenformulierung vor der Artikelwahl (M70); Bericht und Entscheidungsgrundlage in
+  `docs/audits/2026-10-03-audit.md`.
 
 ## Installation
 
