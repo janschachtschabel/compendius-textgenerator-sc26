@@ -16,6 +16,7 @@ from app.synthesis.citations import collapse
 from app.synthesis.safe_markdown import unescape
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import EVIDENCE_RE, answer_from_evidence, make_gateway
+from tests.test_regeneration import blocks
 
 OFFER_RE = re.compile(r"^(\d+)\.1 (.+)$", re.MULTILINE)
 SELECTION_PROMPT = "passage_selection@v1"
@@ -64,6 +65,30 @@ def test_a_regeneration_lets_the_model_choose_sentences_only_for_the_blocks_it_r
     asked = [body for body in fake.bodies if is_selection(body)]
     assert "sc26_3" in extraction["sections"] and set(extraction["sections"]) <= set(result.audit.regenerated)
     assert len(asked) == len(extraction["sections"]) + len(extraction["fallbacks"])
+
+
+def test_a_renewed_block_prints_no_sentence_a_kept_block_prints(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Review of F13: without the kept blocks in the sentence choice, a renewed block printed a sentence a kept block
+    prints already - one the earlier text took from a neighbour of the kept block, now the renewed block's own."""
+    fake = FakeBApi(first_sentences)
+    monkeypatch.setattr(service, "llm", make_gateway(fake))
+    first = service.generate(GenerateRequest(topic="Optik", extraction="llm", parts=["world"], target_length=8000))
+    renewed = service.generate(
+        GenerateRequest(
+            topic="Optik",
+            extraction="llm",
+            parts=["world"],
+            existing_markdown=first.markdown,
+            regenerate_sections=["sc26_4"],
+        )
+    )
+
+    kept = blocks(renewed.markdown)["sc26_3"]
+    printed = [_start(p.rsplit(" [", 1)[0]) for p in blocks(renewed.markdown)["sc26_4"].split("\n\n") if p]
+    kept_words = " ".join(kept.replace("; ", " ").split())
+    assert printed and not [start for start in printed if start in kept_words]
 
 
 @pytest.fixture

@@ -8,7 +8,7 @@ A mixin of CompendiumService (app/service.py) on top of LlmPolicy: it reads the 
 from __future__ import annotations
 
 import time
-from collections.abc import Collection, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 
 from app.compendium.llm_policy import LlmPolicy
 from app.compendium.prepared import Matched, PreparedTopic, Requested, Stopwatch, WorldPart
@@ -137,9 +137,8 @@ class WorldBuilding(LlmPolicy):
         extracted: ExtractionReport | None = None
         preserved = prepared.preserved
         if extraction == "llm" and budget is not None:
-            result = self.extract(
-                prepared, matched, request.target_length, budget=budget, deadline=deadline, keep=set(preserved)
-            )
+            kept = {slot_id: section.text for slot_id, section in preserved.items()}
+            result = self.extract(prepared, matched, request.target_length, budget=budget, deadline=deadline, kept=kept)
             if result is not None:
                 assigned, selected, extracted = result.assigned, result.selected, result.report
             lap("extract")
@@ -210,12 +209,13 @@ class WorldBuilding(LlmPolicy):
         *,
         budget: RequestBudget | None = None,
         deadline: Deadline | None = None,
-        keep: Collection[str] = (),
+        kept: Mapping[str, str] | None = None,
     ) -> Extracted | None:
         """extraction=llm on matched chunks (D33): the LLM's choice per block; ``None`` without a configured LLM.
 
         The caller checks ``llm_unavailable`` first; a budget of its own is opened when none is given (evaluation).
-        ``keep`` names the blocks an earlier text keeps word for word: the model is not asked for them.
+        ``kept`` maps the blocks an earlier text keeps word for word to their text: the model is not asked for them,
+        and no block made anew prints what they print.
         """
         if self.llm is None:
             return None
@@ -228,7 +228,7 @@ class WorldBuilding(LlmPolicy):
             deadline=deadline,
         )
         template = scale_budgets(prepared.template, target_length)  # the prompts name the target length
-        return extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job, keep=keep)
+        return extract_with_llm(template, matched.assignment, prepared.chunks, prepared.sources_by_id, job, kept=kept)
 
     def _preserved(self, request: GenerateRequest, template: Template) -> dict[str, PreservedSection]:
         """Blocks of an earlier compendium that stay word for word (PLAN.md 4.6); generated blocks never do."""

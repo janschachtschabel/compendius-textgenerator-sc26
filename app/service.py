@@ -126,8 +126,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             else self.templates.default(self.settings.template_default)
         )
         check_names(request.regenerate_sections, template)
-        # before any reading or model call: an earlier text that cannot be read or placed is refused for free (F13);
-        # its blocks are part 1's, so a request without part 1 leaves it unread as before
+        # before the archives and any model call: an earlier text that cannot be read or placed is refused for free
+        # (F13); its blocks are part 1's, so a request without part 1 leaves it unread as before
         preserved = self._preserved(request, template) if "world" in request.parts else {}
         if request.empty_slot_policy:
             template = template.model_copy(update={"empty_slot_policy": request.empty_slot_policy})

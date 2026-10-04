@@ -11,20 +11,23 @@ order afterwards: a sentence an earlier block prints is dropped from the later o
 
 from __future__ import annotations
 
-from collections.abc import Collection, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
 
 from app.concurrency import map_in_threads
-from app.domain.models import Chunk, ScoredChunk, Source
+from app.domain.models import Chunk, ChunkKind, ScoredChunk, Source
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, skipped_on_error
 from app.llm.deadline import Deadline
 from app.llm.usage import Tokens
 from app.matching.policy import AssignmentResult
-from app.synthesis.selection import LENGTH_FACTOR, LlmSelector, Selection, build_excerpts
+from app.synthesis.citations import without_markers
+from app.synthesis.safe_markdown import unescape
+from app.synthesis.selection import LENGTH_FACTOR, LlmSelector, Selection, build_excerpts, numbered_sentences
 from app.templates.schema import Template, TemplateSlot
 
 RUNNER_UP_REASON = "Kandidat nach Policy-Score"
+MIN_SAME_CHARS = 30  # a sentence shorter than this ("Optik.") may stand in a kept block by chance
 
 
 @dataclass
@@ -82,12 +85,14 @@ def extract_with_llm(
     chunks: Sequence[Chunk],
     sources: Mapping[str, Source],
     job: ExtractionJob,
-    keep: Collection[str] = (),
+    kept: Mapping[str, str] | None = None,
 ) -> Extracted:
-    """Let the LLM choose the sentences of every content block that has candidates, but those in ``keep``: an earlier
-    text keeps them word for word (audit 2026-10-03, F13); see the module docstring."""
+    """Let the LLM choose the sentences of every content block that has candidates, but those in ``kept`` (slot id to
+    the text it keeps): an earlier text keeps them word for word, and what they print counts as printed, so no block
+    made anew prints it a second time (audit 2026-10-03, F13); see the module docstring."""
+    kept = kept or {}
     by_id = {chunk.chunk_id: chunk for chunk in chunks}
-    slots = [slot for slot in template.content_slots() if slot.id not in keep]
+    slots = [slot for slot in template.content_slots() if slot.id not in kept]
     offers = {slot.id: candidates_for(slot.id, assignment, by_id, job.candidates) for slot in slots}
     work = [slot for slot in slots if offers[slot.id]]
     assigned = {slot_id: list(items) for slot_id, items in assignment.assigned.items()}
@@ -105,9 +110,10 @@ def extract_with_llm(
     guarded = skipped_on_error(choose, lambda slot: f"LLM passage selection for {slot.id}")
     results = map_in_threads(guarded, work, job.concurrency)
     used: set[tuple[str, int]] = set()  # (chunk id, sentence) already printed by an earlier block
+    printed = _plain(" ".join(kept.values()))  # what the kept blocks print, in plain words
     for slot, result in zip(work, results, strict=True):
         if isinstance(result, Selection):
-            selection = _without_duplicates(result, offers[slot.id], slot, used)
+            selection = _without_duplicates(result, offers[slot.id], slot, used, printed)
             assigned[slot.id] = selection.excerpts
             extracted.selected.add(slot.id)
             _account(report, slot.id, selection)
@@ -118,10 +124,19 @@ def extract_with_llm(
 
 
 def _without_duplicates(
-    selection: Selection, candidates: Sequence[ScoredChunk], slot: TemplateSlot, used: set[tuple[str, int]]
+    selection: Selection,
+    candidates: Sequence[ScoredChunk],
+    slot: TemplateSlot,
+    used: set[tuple[str, int]],
+    printed: str = "",
 ) -> Selection:
-    """Drop sentences an earlier block already prints and rebuild the excerpts; ``used`` grows with the rest."""
-    keep = [(index, position) for index, position in selection.picked if _key(candidates, index, position) not in used]
+    """Drop sentences an earlier block already prints, or a kept block (``printed``, in plain words), and rebuild the
+    excerpts; ``used`` grows with the rest."""
+    keep = [
+        (index, position)
+        for index, position in selection.picked
+        if _key(candidates, index, position) not in used and not _kept_prints(candidates[index], position, printed)
+    ]
     used.update(_key(candidates, index, position) for index, position in keep)
     if len(keep) == len(selection.picked):
         return selection
@@ -134,6 +149,21 @@ def _without_duplicates(
         cut=selection.cut + cut,
         deduped=len(selection.picked) - len(keep),
     )
+
+
+def _kept_prints(item: ScoredChunk, position: int, printed: str) -> bool:
+    """Whether a kept block prints this sentence already; one too short to tell (``MIN_SAME_CHARS``) counts as not."""
+    if not printed:
+        return False
+    chunk = item.chunk
+    sentence = numbered_sentences(chunk)[position] if chunk.kind is ChunkKind.TEXT else chunk.text
+    words = _plain(sentence)
+    return len(words) >= MIN_SAME_CHARS and words in printed
+
+
+def _plain(text: str) -> str:
+    """Text as words alone: without evidence numbers, markdown escapes and the separators of lists and tables."""
+    return " ".join(unescape(without_markers(text)).replace("|", " ").replace("; ", " ").split())
 
 
 def _key(candidates: Sequence[ScoredChunk], index: int, position: int) -> tuple[str, int]:
