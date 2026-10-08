@@ -299,7 +299,7 @@ class EduSharingClient:
                 raise EduSharingError(f"edu-sharing antwortete mit HTTP {status}")
             try:
                 data = json.loads(body)
-            except ValueError as exc:
+            except (ValueError, RecursionError) as exc:  # also a nesting too deep to read, as the b-api client has it
                 log.warning("answer of %s%s is not JSON", self.base_url, path)
                 raise EduSharingError("edu-sharing antwortete nicht mit JSON") from exc
             # ``null`` was taken for a missing node and a list failed at ``.get`` (audit 2026-09-29, A09)

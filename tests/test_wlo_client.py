@@ -481,3 +481,13 @@ def test_a_compressed_answer_past_the_bound_is_an_error_not_unpacked_whole(monke
 
     with pytest.raises(EduSharingError, match=re.escape("mehr als 1.000.000 Byte")):
         client.collection(OPTIK)
+
+
+def test_an_answer_nested_too_deep_to_read_is_an_error_of_the_repository() -> None:
+    """json.loads raises RecursionError, no ValueError, for a deep enough nesting: it escaped the client, and one
+    material's text failed the whole knowledge request (review of 2026-10-08, pre-existing)."""
+    deep = b"[" * 100_000 + b"]" * 100_000
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(lambda request: httpx.Response(200, content=deep)))
+
+    with pytest.raises(EduSharingError, match="nicht mit JSON"):
+        client.collection(OPTIK)
