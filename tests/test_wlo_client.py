@@ -2,6 +2,7 @@
 
 import base64
 import json
+import re
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -420,3 +421,13 @@ def test_an_entry_whose_id_is_no_node_id_is_left_out() -> None:
 
     assert [ref.id for ref in refs] == [VALID] and refs[0].node_id == VALID
     assert [sub.id for sub in subs] == [VALID]
+
+
+def test_an_answer_past_the_bound_is_an_error_not_a_full_read(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Audit 2026-10-03, F12: answers were read whole; a faulty repository could fill a worker's memory."""
+    monkeypatch.setattr("app.sources.wlo.client.MAX_ANSWER_BYTES", 1_000)
+
+    with pytest.raises(EduSharingError, match=re.escape("mehr als 1.000 Byte")):
+        _client(FakeRepository()).listing(OPTIK)  # a page of the fixture is larger
+    monkeypatch.setattr("app.sources.wlo.client.MAX_ANSWER_BYTES", 1_000_000)
+    assert len(_client(FakeRepository()).listing(OPTIK).refs) == 16

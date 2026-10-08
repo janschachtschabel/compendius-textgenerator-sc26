@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Callable
 from typing import Any
 
@@ -413,3 +414,16 @@ def test_models_url_and_chat_url_follow_the_provider() -> None:
     client, _ = make_client(FakeBApi(), provider="academiccloud", model="x")
     assert client.chat_url == f"{BASE}/api/v1/llm/academiccloud/chat/completions"
     assert client.models_url == f"{BASE}/api/v1/llm/academiccloud/models"
+
+
+def test_an_answer_past_the_bound_ends_the_call_unread(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Audit 2026-10-03, F12: every answer was read whole, so a faulty gateway could fill a worker's memory. One past
+    MAX_ANSWER_BYTES is an error that counts the attempt as one that reached the model."""
+    monkeypatch.setattr("app.llm.client.MAX_ANSWER_BYTES", 2_000)
+    client, _ = make_client(FakeBApi(lambda body: "x" * 5_000))
+
+    with pytest.raises(LlmError, match=re.escape("mehr als 2.000 Byte")) as failure:
+        client.chat(MESSAGES, max_output_tokens=50)
+
+    assert failure.value.reached == 1
+    assert make_client(FakeBApi())[0].chat(MESSAGES, max_output_tokens=50).text == "OK"  # an answer in bounds passes

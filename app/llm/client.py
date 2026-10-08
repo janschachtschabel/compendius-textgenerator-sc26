@@ -22,6 +22,7 @@ from typing import Any
 
 import httpx
 
+from app.http_body import AnswerTooLargeError, read_bounded
 from app.llm.budget import estimate_tokens
 from app.llm.deadline import MIN_CALL_S
 
@@ -54,6 +55,10 @@ REASONING_ALLOWANCE = 1000
 # No call spends more: the largest windows hold about a million tokens. A broken or hostile gateway's usage of 2^63
 # raised out of the budget store and stood in the day's counter until midnight (audit 2026-09-28, KO-26)
 MAX_USAGE = 10_000_000
+# An answer is read up to this many bytes (audit 2026-10-03, F12); a completion of the longest output this service
+# asks for stays far below it
+MAX_ANSWER_BYTES = 16 * 1024 * 1024
+_KEPT_HEADERS = frozenset({"content-type", "retry-after"})  # what the attempts read of an answer's headers
 
 Message = Mapping[str, str]
 
@@ -319,6 +324,9 @@ class BApiClient:
             limit = ends - self._clock()
             try:
                 response = self._send(method, url, json_body, limit)
+            except AnswerTooLargeError as exc:
+                # the model answered, so the attempt may have cost its prompt (A05)
+                raise LlmError(f"b-api antwortete mit {exc}", reached=reached + 1) from exc
             except LlmError as exc:
                 # No free call slot in time: a full queue on our side, no outage, but the attempts before it may have
                 # reached the model and cost their prompts (audit 2026-09-29, A05)
@@ -388,13 +396,23 @@ class BApiClient:
         self._trip(AUTH_SUSPEND_S, reason)
 
     def _send(self, method: str, url: str, json_body: Mapping[str, Any] | None, limit: float) -> httpx.Response:
-        """One HTTP attempt; waiting for a free call slot counts against ``limit`` like the request itself."""
+        """One HTTP attempt; waiting for a free call slot counts against ``limit`` like the request itself. The answer
+        is read up to ``MAX_ANSWER_BYTES`` (``AnswerTooLargeError`` past it) and comes back read, with the headers a
+        caller looks at."""
         began = self._clock()  # the client's one clock: the real one mixed in drifted from an injected one
         if not self._semaphore.acquire(timeout=limit):
             raise LlmError("kein freier Platz für einen b-api-Aufruf innerhalb des Zeitlimits")
         try:
             remaining = max(1.0, limit - (self._clock() - began))
-            return self._client.request(method, url, json=json_body, timeout=remaining)
+            request = self._client.build_request(method, url, json=json_body, timeout=remaining)
+            streamed = self._client.send(request, stream=True)
+            try:
+                body = read_bounded(streamed, MAX_ANSWER_BYTES)
+            finally:
+                streamed.close()
+            # decoded already: without the headers of the transfer, which would have it decoded a second time
+            kept = {name: value for name, value in streamed.headers.items() if name.lower() in _KEPT_HEADERS}
+            return httpx.Response(streamed.status_code, headers=kept, content=body, request=request)
         finally:
             self._semaphore.release()
 

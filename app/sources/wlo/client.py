@@ -11,12 +11,15 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 import http.cookiejar
+import json
 import logging
 from collections.abc import Callable, Collection
 from typing import Any
 from urllib.parse import urlsplit
 
 import httpx
+
+from app.http_body import AnswerTooLargeError, read_bounded
 
 # The errors live apart so that the parsers raise them too; the service imports them from here
 from app.sources.wlo.errors import CollectionNotFoundError as CollectionNotFoundError
@@ -47,6 +50,9 @@ CUT_TIME = "das Zeitbudget der Anfrage war erschöpft"
 CUT_PAGES = "eine Liste endet nach {count} Materialien, der Obergrenze des Dienstes"
 CUT_REPEATED = "das Repository lieferte eine Seite einer Liste ein zweites Mal"
 ATTEMPTS = 2  # the repository occasionally drops a connection; the same request a moment later works
+# An answer is read up to this many bytes (audit 2026-10-03, F12): a page of 100 references with all their properties
+# and the text of a long material stay far below it
+MAX_ANSWER_BYTES = 32 * 1024 * 1024
 _BODY_EXCERPT = 200
 _DEFAULT_PORTS = {"http": 80, "https": 443}
 
@@ -267,19 +273,23 @@ class EduSharingClient:
                     raise TimeUpError()
                 timeout = min(timeout, left)
             try:
-                response = client.get(path, params=params, timeout=timeout)
+                with client.stream("GET", path, params=params, timeout=timeout) as response:
+                    status = response.status_code
+                    if status in missing:
+                        return None
+                    body = read_bounded(response, MAX_ANSWER_BYTES)
             except httpx.TransportError as exc:
                 last_error = exc
                 continue
-            if response.status_code in missing:
-                return None
-            if response.status_code >= 400:
-                log.warning(
-                    "HTTP %s from %s%s: %s", response.status_code, self.base_url, path, response.text[:_BODY_EXCERPT]
-                )
-                raise EduSharingError(f"edu-sharing antwortete mit HTTP {response.status_code}")
+            except AnswerTooLargeError as exc:
+                log.warning("answer of %s%s: %s", self.base_url, path, exc)
+                raise EduSharingError(f"edu-sharing antwortete mit {exc}") from exc
+            if status >= 400:
+                excerpt = body[:_BODY_EXCERPT].decode("utf-8", "replace")
+                log.warning("HTTP %s from %s%s: %s", status, self.base_url, path, excerpt)
+                raise EduSharingError(f"edu-sharing antwortete mit HTTP {status}")
             try:
-                data = response.json()
+                data = json.loads(body)
             except ValueError as exc:
                 log.warning("answer of %s%s is not JSON", self.base_url, path)
                 raise EduSharingError("edu-sharing antwortete nicht mit JSON") from exc
