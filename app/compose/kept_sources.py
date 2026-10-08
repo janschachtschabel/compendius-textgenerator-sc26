@@ -15,10 +15,10 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
 from app.compose.regeneration import PreservedSection
+from app.domain.licences import PROJECT_LABELS
 from app.domain.models import Citation, Source
-from app.synthesis.citations import marker_numbers
-from app.synthesis.safe_markdown import unescape
-from app.synthesis.sources_section import PROJECT_LABELS
+from app.markup.citations import marker_numbers
+from app.markup.safe_markdown import unescape
 
 ENTRY = "- **"
 TULLU = "  - TULLU: "

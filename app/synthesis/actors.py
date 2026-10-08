@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from app.domain.models import Source
 from app.knowledge.entities import classify_entity
 from app.knowledge.segmentation import split_sentences
-from app.synthesis.safe_markdown import plain_label, web_link
+from app.markup.safe_markdown import plain_label, web_link
 
 Lookup = Callable[[str], Source | None]
 

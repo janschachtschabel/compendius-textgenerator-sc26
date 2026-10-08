@@ -9,9 +9,9 @@ from __future__ import annotations
 
 from app.compose.assembler import EMPTY_SECTION_TEXT
 from app.domain.requests import GenerateRequest
+from app.markup.facets import END_MARKER
 from app.service import CompendiumService
 from app.synthesis.citations import CONCLUSION_OPEN, MODEL_KNOWLEDGE_LABEL, MODEL_KNOWLEDGE_OPEN
-from app.synthesis.facets import END_MARKER
 from app.synthesis.qa_knowledge import knowledge_of_compendium, knowledge_of_text
 from tests.qa_texts import GLOSSARY_ROW, PROSE, block, compendium_markdown
 

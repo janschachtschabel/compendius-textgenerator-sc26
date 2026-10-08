@@ -30,14 +30,15 @@ os.environ["LLM_ENABLED"] = "true"
 os.environ["B_API_BASE_URL"] = "https://b-api.staging.openeduhub.net"
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
 
+from mc_kompendium_profil import CONTENT, MARK, ZIMS, model_chars  # noqa: E402
+from mc_profilvergleich_boegen import KINDS  # noqa: E402
+
 import app.synthesis.writer as writer  # noqa: E402
 from app.cli_common import cli_service  # noqa: E402
 from app.domain.requests import GenerateRequest  # noqa: E402
+from app.markup.facets import END_MARKER
+from app.markup.safe_markdown import unescape
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL, MODEL_KNOWLEDGE_OPEN  # noqa: E402
-from app.synthesis.facets import END_MARKER  # noqa: E402
-from app.synthesis.safe_markdown import unescape  # noqa: E402
-from mc_kompendium_profil import CONTENT, MARK, ZIMS, model_chars  # noqa: E402
-from mc_profilvergleich_boegen import KINDS  # noqa: E402
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")

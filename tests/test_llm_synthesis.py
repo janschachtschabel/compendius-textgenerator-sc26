@@ -13,6 +13,7 @@ from app.llm.budget import TokenBudget
 from app.llm.call import LlmSkipped
 from app.llm.client import REASONING_ALLOWANCE, BApiClient
 from app.llm.prompts import PROMPTS, get_prompt
+from app.markup.facets import END_MARKER
 from app.synthesis.citations import (
     CONCLUSION,
     CONCLUSION_OPEN,
@@ -26,7 +27,6 @@ from app.synthesis.citations import (
     without_markers,
     without_model_knowledge_label,
 )
-from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import (
     MAX_EVIDENCE_CHARS,
     Coverage,

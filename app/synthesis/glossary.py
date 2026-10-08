@@ -8,7 +8,7 @@ from collections.abc import Sequence
 from app.domain.models import Source
 from app.knowledge.segmentation import split_sentences
 from app.knowledge.topic import topic_stem
-from app.synthesis.safe_markdown import cell_link, plain_label, table_cell
+from app.markup.safe_markdown import cell_link, plain_label, table_cell
 
 MAX_ENTRIES = 20
 

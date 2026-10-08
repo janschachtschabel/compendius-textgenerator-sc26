@@ -17,7 +17,7 @@ from html.parser import HTMLParser
 from urllib.parse import unquote
 
 from app.domain.models import ArticleSection, ChunkKind, Paragraph
-from app.synthesis.formulas import plain_latex
+from app.markup.formulas import plain_latex
 
 # Every HTML5 element without an end tag (keygen, param obsolete); one missing stayed on the stack of skipped tags
 # inside a skipped video or figure, and the rest of the article was lost (audit 2026-09-27, KO-15)

@@ -8,6 +8,7 @@ from typing import Any
 
 import pytest
 
+from app.markup.safe_markdown import one_line
 from app.sources.wlo.client import validate_node_id
 from app.sources.wlo.models import parse_collection, parse_reference, parse_subcollection
 from app.sources.wlo.overview import (
@@ -15,7 +16,6 @@ from app.sources.wlo.overview import (
     SubCollectionContents,
     render_collection_overview,
 )
-from app.synthesis.safe_markdown import one_line
 
 FIX = Path(__file__).parent / "fixtures" / "wlo"
 

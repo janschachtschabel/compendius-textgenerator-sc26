@@ -22,6 +22,8 @@ from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.llm.usage import Usage
+from app.markup.facets import END_MARKER
+from app.markup.safe_markdown import unescape
 from app.synthesis.citations import (
     MODEL_KNOWLEDGE_LABEL,
     MODEL_KNOWLEDGE_OPEN,
@@ -30,9 +32,7 @@ from app.synthesis.citations import (
     neutralize,
     without_markers,
 )
-from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import LlmSection
-from app.synthesis.safe_markdown import unescape
 
 # A verdict is a word of its own: "ok, stimmt" keeps, "Streichen: falsch" strikes, "Oktober 1889 …" is a sentence
 _KEEP_RE = re.compile(r"^ok\b", re.IGNORECASE)

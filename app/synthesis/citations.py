@@ -12,9 +12,10 @@ from collections.abc import Collection, Mapping
 from decimal import Decimal
 
 from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
+from app.markup.citations import CITATION_MARKER_RE as _MARKER_RE
+from app.markup.facets import END_MARKER
+from app.markup.safe_markdown import escape_text
 from app.matching.base import tokenize
-from app.synthesis.facets import END_MARKER
-from app.synthesis.safe_markdown import escape_text
 
 # Support check: share of a sentence's content stems that occur in the chunks it cites. Measured with
 # gpt-5.6-luna on 2026-09-18 (175 sentences): median 0.73; inference sentences that only carry a marker
@@ -44,7 +45,6 @@ _GROUP_RE = re.compile(r"[. \u00a0\u2009\u202f](?=\d{3})")
 # a number in brackets refers, it claims no quantity: a forged marker such as [1234] beside a checked one
 _REFERENCE_RE = re.compile(r"\\?\[\d+\\?\]")
 
-_MARKER_RE = re.compile(r"\[(\d{1,3})\]")
 # "[1, 2]", "[1; 2]", "[1 und 2]", "[1-3]": forms the model uses although the prompt asks for single markers
 _MULTI_MARKER_RE = re.compile(r"\[(\d{1,3}(?:\s*(?:[,;]|und|-|–)\s*\d{1,3})+)\]")
 MAX_MARKER_RANGE = 20
@@ -132,11 +132,6 @@ def without_model_knowledge_label(text: str) -> str:
     model added. The label stands where _as_marked puts it, right before the closing comment; a plain replacement
     stays linear on any text, a block kept from existing_markdown included."""
     return text.replace(f" {MODEL_KNOWLEDGE_LABEL}{END_MARKER}", END_MARKER)
-
-
-def marker_numbers(text: str) -> list[int]:
-    """Evidence numbers in order of first appearance."""
-    return list(dict.fromkeys(int(m) for m in _MARKER_RE.findall(text)))
 
 
 def verify_citations(text: str, valid: set[int], *, mark: str = "") -> tuple[str, int]:

@@ -18,9 +18,9 @@ from app.domain.requests import PRESETS, GenerateRequest
 from app.knowledge.article_choice import UNREADABLE
 from app.llm.budget import TokenBudget
 from app.llm.prompts import get_prompt
+from app.markup.facets import END_MARKER
 from app.service import CompendiumService
 from app.synthesis.citations import MODEL_KNOWLEDGE_LABEL, MODEL_KNOWLEDGE_OPEN, escape_model_text, marked_sentence
-from app.synthesis.facets import END_MARKER
 from app.synthesis.llm import LlmSection
 from app.synthesis.model_knowledge_check import (
     ALL_STRUCK,

@@ -17,9 +17,9 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any
 
+from app.markup.facets import END_MARKER, bildungsstufe_facet, format_marker
+from app.markup.safe_markdown import defuse, escape_text, one_line, plain_label, web_link
 from app.sources.wlo.models import CollectionInfo, MaterialRef, SubCollection
-from app.synthesis.facets import END_MARKER, bildungsstufe_facet, format_marker
-from app.synthesis.safe_markdown import defuse, escape_text, one_line, plain_label, web_link
 
 PART_HEADING = "## Teil 3 · Die Sammlung im Überblick"
 NO_DESCRIPTION = "*Für diese Sammlung ist keine Beschreibung hinterlegt.*"

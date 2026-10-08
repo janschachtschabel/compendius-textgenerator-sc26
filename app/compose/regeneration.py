@@ -17,9 +17,9 @@ from typing import TYPE_CHECKING
 
 from app.domain.caller_values import listed
 from app.domain.models import Citation, SectionStatus
-from app.synthesis.citations import marker_numbers
-from app.synthesis.facets import parse_marker
-from app.synthesis.safe_markdown import ESCAPED_PIPE, unescape
+from app.markup.citations import marker_numbers
+from app.markup.facets import parse_marker
+from app.markup.safe_markdown import ESCAPED_PIPE, unescape
 
 if TYPE_CHECKING:
     from app.templates.schema import Template

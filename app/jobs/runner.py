@@ -11,7 +11,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from app.sources.zim.active import atomic_write_text
+from app.files import atomic_write_text
 
 log = logging.getLogger(__name__)
 

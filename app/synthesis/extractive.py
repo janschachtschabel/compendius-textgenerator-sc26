@@ -12,7 +12,7 @@ from collections.abc import Mapping, Sequence
 
 from app.domain.models import Chunk, ChunkKind, Citation, ScoredChunk, Source
 from app.knowledge.segmentation import split_sentences
-from app.synthesis.safe_markdown import escape_text, unescape
+from app.markup.safe_markdown import escape_text, unescape
 
 SENTENCES_PER_CHUNK = 3
 MIN_SENTENCE_CHARS = 25

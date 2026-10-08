@@ -3,9 +3,10 @@ follows the licences of the sources (audit 2026-10-02, A09)."""
 
 import pytest
 
+from app.domain.licences import freely_accessible
 from app.domain.models import Source
 from app.sources.wlo.models import LICENSE_LABELS, license_label
-from app.synthesis.sources_section import build_sources_section, freely_accessible
+from app.synthesis.sources_section import build_sources_section
 
 OPTIK = Source(
     source_id="wikipedia:Optik", project="wikipedia", title="Optik", url="https://de.wikipedia.org/wiki/Optik"

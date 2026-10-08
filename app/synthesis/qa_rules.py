@@ -21,10 +21,10 @@ from dataclasses import dataclass
 from typing import Any
 
 from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
+from app.markup.safe_markdown import unescape
 from app.synthesis.qa import MIN_SENTENCE_CHARS, QaPair, cut
 from app.synthesis.qa_questions import Question, clause_questions
 from app.synthesis.qa_words import parse_ready, unclear, words
-from app.synthesis.safe_markdown import unescape
 
 # The order in which the kinds take turns; a definition of the topic is the natural first question
 KINDS = (

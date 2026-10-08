@@ -16,6 +16,7 @@ from typing import Any
 
 from app.domain.models import CollectionPart, NodeInput
 from app.knowledge.topic import NormalizedTopic, normalize_topic
+from app.markup.safe_markdown import plain_label
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import (
     CUT_TIME,
@@ -35,7 +36,6 @@ from app.sources.wlo.overview import (
     SubCollectionContents,
     render_collection_overview,
 )
-from app.synthesis.safe_markdown import plain_label
 
 log = logging.getLogger(__name__)
 

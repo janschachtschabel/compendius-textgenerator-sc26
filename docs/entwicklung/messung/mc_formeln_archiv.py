@@ -59,7 +59,7 @@ def auswerten(source, target):
     sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
     from app.knowledge.segmentation import MIN_TEXT_CHARS, _is_fragment
     from app.sources.zim.html import parse_article
-    from app.synthesis import formulas
+    from app.markup import formulas
 
     def in_corpus(paragraph):
         text = paragraph.strip()

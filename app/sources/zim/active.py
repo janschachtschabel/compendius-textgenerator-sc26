@@ -6,14 +6,13 @@ file signature and reopen archives lazily. Retired files stay listed until the j
 
 from __future__ import annotations
 
-import os
-import time
 from pathlib import Path
 
 from pydantic import BaseModel, Field, ValidationError
 
+from app.files import atomic_write_text
+
 ACTIVE_FILE = "active.json"
-_REPLACE_ATTEMPTS = 5  # Windows refuses to replace a file another process has open for a moment
 
 
 class ActiveArchive(BaseModel):
@@ -54,23 +53,6 @@ def read_active(zim_dir: Path) -> ActiveState | None:
         return ActiveState.model_validate_json(path.read_text(encoding="utf-8"))
     except ValidationError as exc:
         raise ValueError(f"{path} is not a valid active.json: {exc}") from exc
-
-
-def atomic_write_text(target: Path, text: str) -> Path:
-    """Write ``text`` to a temporary file next to ``target`` and move it into place atomically."""
-    target = Path(target)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_name(f".{target.name}.tmp")
-    temporary.write_text(text, encoding="utf-8")
-    for attempt in range(_REPLACE_ATTEMPTS):
-        try:
-            os.replace(temporary, target)
-            break
-        except PermissionError:
-            if attempt == _REPLACE_ATTEMPTS - 1:
-                raise
-            time.sleep(0.05 * (attempt + 1))
-    return target
 
 
 def write_active(zim_dir: Path, state: ActiveState) -> Path:

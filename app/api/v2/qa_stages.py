@@ -21,7 +21,7 @@ from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped
 from app.llm.deadline import Deadline
 from app.llm.usage import Usage
-from app.synthesis.facets import bildungsstufe_facet
+from app.markup.facets import bildungsstufe_facet
 from app.synthesis.qa import QaPair
 
 

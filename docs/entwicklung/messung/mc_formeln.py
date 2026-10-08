@@ -16,7 +16,7 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
-from app.synthesis.formulas import _FORMULA, plain_formulas  # noqa: E402
+from app.markup.formulas import _FORMULA, plain_formulas
 
 BACKSLASH = chr(92)
 

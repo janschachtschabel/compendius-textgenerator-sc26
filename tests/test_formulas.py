@@ -6,7 +6,7 @@ import time
 
 import pytest
 
-from app.synthesis.formulas import plain_formulas, plain_latex
+from app.markup.formulas import plain_formulas, plain_latex
 
 NNBSP = chr(0x202F)  # the narrow no-break space of \, - in digit groups and between a number and its unit
 BACKSLASH = chr(92)

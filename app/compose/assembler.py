@@ -10,10 +10,10 @@ from typing import Any
 
 import yaml
 
+from app.domain.licences import is_free
 from app.domain.models import Section, SectionStatus, SourceRef
-from app.synthesis.facets import format_marker, format_visible
-from app.synthesis.safe_markdown import plain_label
-from app.synthesis.sources_section import is_free
+from app.markup.facets import format_marker, format_visible
+from app.markup.safe_markdown import plain_label
 from app.templates.schema import Template
 
 AI_DISCLOSURE = {  # by the generation switch actually used

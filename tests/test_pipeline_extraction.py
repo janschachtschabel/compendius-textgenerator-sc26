@@ -11,9 +11,9 @@ import pytest
 from app.compendium.errors import LlmNotConfiguredError
 from app.domain.models import SectionStatus
 from app.domain.requests import GenerateRequest
+from app.markup.safe_markdown import unescape
 from app.service import CompendiumService
 from app.synthesis.citations import collapse
-from app.synthesis.safe_markdown import unescape
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import EVIDENCE_RE, answer_from_evidence, make_gateway
 from tests.test_regeneration import blocks

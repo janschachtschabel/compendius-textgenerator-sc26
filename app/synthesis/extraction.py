@@ -20,9 +20,9 @@ from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, skipped_on_error
 from app.llm.deadline import Deadline
 from app.llm.usage import Tokens
+from app.markup.safe_markdown import unescape
 from app.matching.policy import AssignmentResult
 from app.synthesis.citations import without_markers
-from app.synthesis.safe_markdown import unescape
 from app.synthesis.selection import LENGTH_FACTOR, LlmSelector, Selection, build_excerpts, numbered_sentences
 from app.templates.schema import Template, TemplateSlot
 

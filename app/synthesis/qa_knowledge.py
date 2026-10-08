@@ -13,10 +13,10 @@ from dataclasses import dataclass
 
 from app.compose.regeneration import parse_document
 from app.domain.models import Compendium, SectionStatus
+from app.markup.facets import END_MARKER
+from app.markup.safe_markdown import unescape
 from app.synthesis.citations import CONCLUSION_OPEN, MODEL_KNOWLEDGE_OPEN, without_markers
-from app.synthesis.facets import END_MARKER
 from app.synthesis.qa_rules import is_actor_block, is_glossary_block
-from app.synthesis.safe_markdown import unescape
 
 _TITLE = re.compile(r"^# Kompendium: (?P<topic>.+)$", re.MULTILINE)
 _NO_PROSE = frozenset({SectionStatus.GENERATED, SectionStatus.EMPTY})

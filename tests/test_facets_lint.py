@@ -1,12 +1,6 @@
 from app.domain.models import Chunk, Section, SectionStatus, Source, SourceRole
-from app.synthesis.facets import (
-    FacetCatalog,
-    annotate,
-    bildungsstufe_facet,
-    format_marker,
-    format_visible,
-    parse_marker,
-)
+from app.markup.facets import bildungsstufe_facet, format_marker, format_visible, parse_marker
+from app.synthesis.facets import FacetCatalog, annotate
 from app.synthesis.lint import lint_sections
 from app.templates.manager import TemplateManager
 from tests.conftest import ROOT

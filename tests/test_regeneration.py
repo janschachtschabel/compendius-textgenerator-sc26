@@ -15,8 +15,9 @@ from app.compose.regeneration import (
     parse_document,
 )
 from app.domain.requests import GenerateRequest
+from app.markup.citations import marker_numbers
 from app.service import CompendiumService
-from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN, marker_numbers
+from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN
 from tests.markdown_safety import render, unsafe
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import answer_from_evidence, make_gateway

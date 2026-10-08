@@ -14,11 +14,11 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
+from app.markup.facets import END_MARKER, format_marker, format_visible
+from app.markup.safe_markdown import defuse, plain_label, table_cell, web_target
 from app.sources.lehrplan.matcher import CurriculumMatch, MatchResult
 from app.sources.lehrplan.stufen import OHNE_KLASSE, OHNE_STUFE, PRIMAR, SEK_I, SEK_II, STUFEN_ORDER, grades_in
 from app.sources.lehrplan.vocab import ROLE_INHALT, ROLE_KOMPETENZ, ROLE_THEMENBEREICH, bundesland_by_code
-from app.synthesis.facets import END_MARKER, format_marker, format_visible
-from app.synthesis.safe_markdown import defuse, plain_label, table_cell, web_target
 
 PART_HEADING = "## Teil 2 · Lehrplanbezüge"
 FACET_STUFE = {PRIMAR: "Primar", SEK_I: "Sek I", SEK_II: "Sek II"}

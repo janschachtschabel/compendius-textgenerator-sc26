@@ -18,22 +18,24 @@ from dataclasses import dataclass, field
 
 from app.compose.regeneration import PreservedSection
 from app.concurrency import map_in_threads
+from app.domain.licences import freely_accessible
 from app.domain.models import Citation, ScoredChunk, Section, SectionStatus, Source
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, skipped_on_error
 from app.llm.deadline import Deadline
 from app.llm.usage import Tokens
+from app.markup.citations import marker_numbers
+from app.markup.safe_markdown import defuse, no_definitions
 from app.matching.lexicon import HeadingLexicon
 from app.synthesis import facets as facet_rules
 from app.synthesis.actors import build_actors_section, collect_actors
-from app.synthesis.citations import CONCLUSION, MODEL_KNOWLEDGE, marker_numbers
+from app.synthesis.citations import CONCLUSION, MODEL_KNOWLEDGE
 from app.synthesis.extractive import synthesize
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.glossary import build_glossary
 from app.synthesis.llm import Coverage, LlmSection, LlmSynthesizer, blocks_overview, shift_citations
 from app.synthesis.model_knowledge_check import ALL_STRUCK, CheckOutcome, ModelKnowledgeCheckReport, check_section
-from app.synthesis.safe_markdown import defuse, no_definitions
-from app.synthesis.sources_section import build_sources_section, freely_accessible
+from app.synthesis.sources_section import build_sources_section
 from app.templates.schema import ACTORS_KEY, Template, TemplateSlot
 
 Lookup = Callable[[str], Source | None]

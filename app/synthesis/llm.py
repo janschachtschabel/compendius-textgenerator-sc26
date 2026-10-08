@@ -20,18 +20,18 @@ from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
+from app.markup.citations import marker_numbers
+from app.markup.formulas import plain_formulas
 from app.synthesis.citations import (
     CONCLUSION,
     MODEL_KNOWLEDGE,
     collapse,
     drop_unsupported,
     escape_model_text,
-    marker_numbers,
     opening_marker,
     renumber,
     verify_citations,
 )
-from app.synthesis.formulas import plain_formulas
 from app.templates.schema import Template, TemplateSlot
 
 MAX_EVIDENCE_CHARS = 1500  # per chunk in the evidence block

@@ -13,9 +13,9 @@ import pytest
 
 from app.domain.models import Chunk, ChunkKind, ScoredChunk, SectionStatus, Source
 from app.domain.requests import GenerateRequest
+from app.markup.safe_markdown import unescape
 from app.service import CompendiumService
 from app.synthesis.extractive import TABLE_ROWS_MAX, _render_table, synthesize, usable_sentences
-from app.synthesis.safe_markdown import unescape
 from tests.markdown_safety import render
 
 # The topics of the sample archives (tests/fixtures/zim_html)
