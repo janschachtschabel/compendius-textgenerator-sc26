@@ -474,6 +474,19 @@ def _retry_after(response: httpx.Response) -> float | None:
     return float(value) if _RETRY_AFTER_RE.fullmatch(value) else None
 
 
+# Signs str.strip() keeps: a byte order mark and a zero-width space around an answer of nothing else made a written
+# block, and before "p1 praxis 8" they hid the paragraph (review of 2026-10-08)
+_INVISIBLE = chr(0xFEFF) + chr(0x200B)
+
+
+def _trimmed(text: str) -> str:
+    """``text`` without white space and invisible signs around it."""
+    previous = None
+    while previous != text:
+        previous, text = text, text.strip().strip(_INVISIBLE)
+    return text
+
+
 def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:
     try:
         choice = data["choices"][0]
@@ -483,7 +496,7 @@ def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:
             content = "".join(str(part.get("text", "")) for part in content if isinstance(part, dict))
         if content is not None and not isinstance(content, str):
             raise TypeError("content is neither text nor a list of parts")
-        text = (content or "").strip()
+        text = _trimmed(content or "")
         ended_line = (content or "").rstrip(" \t").endswith("\n")
         finish_reason = str(choice.get("finish_reason") or "")
         # Some academiccloud models answer in the reasoning field only. Cut off at the output limit it holds a thought,
@@ -491,7 +504,7 @@ def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:
         # knowledge (audit 2026-09-29, L2); the call then answered nothing, and its caller says so
         if not text and finish_reason != "length":
             reasoning = message.get("reasoning") or message.get("reasoning_content")
-            text = reasoning.strip() if isinstance(reasoning, str) else ""
+            text = _trimmed(reasoning) if isinstance(reasoning, str) else ""
         answered_by = str(data.get("model") or model)
         usage = data.get("usage")
     except (KeyError, IndexError, TypeError, AttributeError) as exc:

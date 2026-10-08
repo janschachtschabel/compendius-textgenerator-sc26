@@ -497,6 +497,15 @@ def test_json_instead_of_text_is_no_block(answer: str) -> None:
     assert isinstance(result, LlmSkipped) and "kein Text" in result.reason
 
 
+@pytest.mark.parametrize("invisible", [chr(0xFEFF), chr(0x200B), chr(0xFEFF) + " " + chr(0x200B)])
+def test_an_answer_of_invisible_signs_is_empty(invisible: str) -> None:
+    """Only the JSON check knew the byte order mark: an answer of nothing else was written as a block of model
+    knowledge (review of 2026-10-08)."""
+    result = written(invisible)
+
+    assert isinstance(result, LlmSkipped) and "leere Antwort" in result.reason
+
+
 def test_a_text_that_opens_with_a_marker_is_text() -> None:
     assert isinstance(written("[1] Das Thema ist ein Gebiet der Physik und handelt vom Licht."), LlmSection)
 
