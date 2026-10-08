@@ -304,3 +304,62 @@ def test_a_control_character_in_the_words_is_no_broken_cache(
     assert body["available"] is True and body["keywords"] == ["Linsen"]
     assert [match["label"] for match in body["matches"]] == ["Lichtbrechung an Linsen"]
     assert not [record for record in caplog.records if record.levelno >= logging.ERROR]
+
+
+def _outcome_lines(caplog: pytest.LogCaptureFixture) -> list[logging.LogRecord]:
+    return [record for record in caplog.records if record.name == "app.observability.outcome"]
+
+
+def test_a_search_the_llm_judged_leaves_one_line_and_the_rules_none(
+    sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Logging review of 2026-10-08 (H2): what the LLM check did stood only in the answer."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        client.app.state.service.llm = make_gateway(FakeBApi(lambda body: json.dumps({"e1": 2})))  # type: ignore[attr-defined]
+        with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+            client.get(SEARCH, params={"q": "Optik", "preset": "llm-free"})
+            assert _outcome_lines(caplog) == []
+            client.get(SEARCH, params={"q": "Optik", "preset": "best-quality"})
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.INFO
+    assert record.getMessage().startswith("curriculum search 'Optik': best-quality, LLM curriculum_check, 1 calls, ")
+    assert record.getMessage().endswith(" tokens, fallbacks none")
+
+
+def test_a_search_whose_check_the_budget_cut_is_a_warning(
+    sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path, llm_max_tokens_curriculum_check=100) as client:
+        client.app.state.service.llm = make_gateway(FakeBApi(lambda body: json.dumps({"e1": 0})))  # type: ignore[attr-defined]
+        with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+            client.get(SEARCH, params={"q": "Optik", "preset": "best-quality"})
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.WARNING
+    assert record.getMessage() == (
+        "curriculum search 'Optik': best-quality, LLM none, 0 calls, 0 tokens, fallbacks curriculum_check budget=1"
+    )
+
+
+def test_a_search_whose_llm_was_away_names_the_reason(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """The words alone choose no article, so the reason stood only in the check's fallback, and the note said that
+    the LLM had contributed nothing."""
+    reason = "LLM nicht verfügbar (b-api nach wiederholten Fehlern vorübergehend ausgesetzt); Regelmodus verwendet"
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path) as client:
+        client.app.state.service.llm = make_gateway(FakeBApi(lambda body: json.dumps({"e1": 2})))  # type: ignore[attr-defined]
+        monkeypatch.setattr(client.app.state.service, "llm_unavailable", lambda: reason)  # type: ignore[attr-defined]
+        with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+            client.get(SEARCH, params={"q": "Optik", "preset": "best-quality"})
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.WARNING
+    assert record.getMessage() == (
+        "curriculum search 'Optik': best-quality, LLM none, 0 calls, 0 tokens, fallbacks curriculum_check "
+        f"unavailable=1; {reason}"
+    )

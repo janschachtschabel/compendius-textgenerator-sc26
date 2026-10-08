@@ -7,6 +7,7 @@ be limited to single archives.
 
 from __future__ import annotations
 
+import logging
 import re
 
 import pytest
@@ -14,6 +15,7 @@ from fastapi.testclient import TestClient
 
 from app.api.v2.knowledge import KnowledgeRequest
 from app.domain.requests import PRESETS
+from app.knowledge.topic_articles import NONE_FOUND
 from app.main import create_app
 from app.settings import Settings
 from tests.test_article_choice import rating
@@ -132,3 +134,43 @@ def test_the_help_of_preset_names_every_article_choice_a_profile_takes() -> None
 
     named = set(re.findall(r"(?<![\w-])(rule-based|llm-thorough|llm)(?![\w-])", help_text))
     assert {switches["article_choice"] for switches in PRESETS.values()} <= named
+
+
+def _outcome_lines(caplog: pytest.LogCaptureFixture) -> list[logging.LogRecord]:
+    return [record for record in caplog.records if record.name == "app.observability.outcome"]
+
+
+def test_an_article_choice_of_the_llm_leaves_one_line_and_the_rules_none(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Logging review of 2026-10-08 (H2): what the LLM did for the articles stood only in the answer. Here the check of
+    the full-text hits decided, and the question for the articles of the topic named none the archive has: a
+    fallback of the LLM's work, but neither time nor budget cut it."""
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        client.post("/api/v2/knowledge", json={"topic": "Optik"})
+        assert _outcome_lines(caplog) == []
+        fake = FakeBApi(rating({"Augenoptiker": 0}))
+        monkeypatch.setattr(client.app.state.service, "llm", make_gateway(fake, per_request=100_000))  # type: ignore[attr-defined]
+        body = client.post("/api/v2/knowledge", json={"topic": "Optik", "article_choice": "llm"}).json()
+
+    [record] = _outcome_lines(caplog)
+    assert body["article_choice"]["articles_fallback"] == NONE_FOUND
+    assert record.levelno == logging.INFO
+    assert record.getMessage().startswith("knowledge 'Optik': ")
+    assert record.getMessage().endswith(", LLM article_choice, 2 calls, 48 tokens, fallbacks article_choice other=1")
+
+
+def test_an_article_choice_the_budget_cut_is_a_warning(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """The check of the full-text hits found no room; the line read only the reason of the choice itself."""
+    fake = FakeBApi(rating({"Augenoptiker": 0}))
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(fake, per_request=100))  # type: ignore[attr-defined]
+
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        client.post("/api/v2/knowledge", json={"topic": "Optik", "preset": "balanced"})
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.WARNING
+    assert record.getMessage().startswith("knowledge 'Optik': balanced, LLM none, ")
+    assert "fallbacks article_choice budget=" in record.getMessage()

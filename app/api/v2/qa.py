@@ -19,8 +19,7 @@ says. The wire contract lives in qa_schemas.py, the stages that can refuse in qa
 
 from __future__ import annotations
 
-import logging
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
@@ -36,12 +35,12 @@ from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest, Preset,
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
 from app.llm.usage import Tokens, Usage
+from app.observability.outcome import log_answer
 from app.service import CompendiumService
 from app.synthesis.qa import QaPair, rule_based_pairs
 from app.synthesis.qa_knowledge import Knowledge, knowledge_of_compendium, knowledge_of_text
 from app.synthesis.qa_rules import rule_pairs
 
-log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 
 NO_TAGGER_NOTE = (
@@ -320,6 +319,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     resolution: Resolution | None = None
     node = None
     part_one_tokens: dict[str, int] | None = None
+    stages: dict[str, Any] = {}  # what the LLM did for part 1 and for the pairs, as audit.llm of a compendium
     usage = Usage()
     allowance = _allowance(request, payload, profile)
     if payload.topic or payload.node_id:
@@ -327,6 +327,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         compendium = _part_one(service, payload, allowance, article_choice)
         topic, resolution, node = compendium.topic, compendium.resolution, compendium.node
         part_one_tokens = compendium.audit.llm_tokens
+        stages.update(compendium.audit.llm or {})
         knowledge = knowledge_of_compendium(compendium)
     else:
         knowledge = knowledge_of_text(payload.text or "")
@@ -350,10 +351,11 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     if payload.method == "llm":
         pairs, reason = from_llm(request, text, payload, node, allowance, usage)
         if pairs is None:
-            log.info("QA fell back to the rules: %s", reason)
             notes.append(reason)
+            stages["pairs"] = {"used": "rule-based", "fallback": reason}
         else:
             method = "llm"
+            stages["pairs"] = {"used": "llm"}
     if pairs is None:
         pairs, missing = _rule_stage(request, knowledge, payload)
         if missing:
@@ -368,6 +370,9 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     shortfall = _shortfall(len(pairs), payload.count, method)
     if shortfall:
         notes.append(shortfall)
+    llm_tokens = _llm_tokens(part_one_tokens, usage, _cached(part_one_tokens, allowance))
+    if needed:  # the compendium's line for what the LLM did (logging review, H2)
+        log_answer("qa", topic, profile, stages, llm_tokens)
     return QaResponse(
         method=method,
         topic=topic,
@@ -376,7 +381,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
         chars=len(text),
         pairs=[Pair(question=pair.question, answer=pair.answer, level=pair.level_value) for pair in pairs],
         note="; ".join(notes) or None,
-        llm_tokens=_llm_tokens(part_one_tokens, usage, _cached(part_one_tokens, allowance)),
+        llm_tokens=llm_tokens,
     )
 
 

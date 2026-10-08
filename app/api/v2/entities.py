@@ -29,7 +29,7 @@ GND beyond the block, a German DBpedia URI.
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
@@ -59,6 +59,7 @@ from app.knowledge.identifiers import identifiers
 from app.knowledge.linking import article_of
 from app.knowledge.recognise import Mention, find_titles, load_spacy, mentions_from_ner, merge
 from app.llm.deadline import Deadline
+from app.observability.outcome import log_answer
 from app.service import CompendiumService
 from app.sources.gnd.index import GndIndex
 from app.sources.wikidata.index import WikidataIndex
@@ -305,10 +306,12 @@ def entities(
     report = EntitiesLlmReport() if needed else None
     job = _llm_job(service, profile, report, deadline) if report is not None else None
     notes: list[str | None] = []
+    stages: dict[str, Any] = {}  # what the LLM did, as audit.llm of a compendium, for the log line
     named: list[Mention] | None = None
     if "llm" in methods and report is not None:
         named, fallback = _named(job, text, registry, report, payload.max_entities)
         notes.append(fallback)
+        stages["naming"] = {"used": "rule-based" if named is None else "llm", "fallback": fallback}
     rules = [method for method in RULE_METHODS if method in methods or ("llm" in methods and named is None)]
     ran, mentions, cut = _recognise(text, rules, registry, settings.spacy_model)
     notes.append(cut)
@@ -351,7 +354,10 @@ def entities(
     if check and report is not None:
         entities, fallback = _checked(job, text, entities, report)
         notes.append(fallback)
+        stages["link_check"] = {"used": "llm" if report.checked else "rule-based", "fallback": fallback}
     notes.insert(0, None if payload.link else _unchecked(ran))
+    if report is not None:  # the compendium's line for what the LLM did (logging review, H2)
+        log_answer("entities", None, profile, stages, {"calls": report.calls, "total": report.total_tokens})
     return EntitiesResponse(
         methods=ran,
         archives=[archive.id for archive in registry.archives],

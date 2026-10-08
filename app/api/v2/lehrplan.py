@@ -35,6 +35,7 @@ from app.knowledge.article_choice import ChoiceAudit
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
+from app.observability.outcome import log_answer
 from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.lehrplan.harvest import TRIGGER_FILE, read_status
@@ -319,6 +320,8 @@ def lehrplan_search(
                 matches = check(matches)
     cached = sum(spent.cached_tokens for spent in (budget, check_budget) if spent is not None)
     llm, tokens = _llm_answer(service, asked, search, reports, fallback, cached)
+    if llm is not None:  # the compendium's line for what the LLM did (logging review, H2)
+        log_answer("curriculum search", search.topic or q, profile, llm, tokens)
     if result is None:
         return {
             "available": False,

@@ -40,6 +40,7 @@ from app.knowledge.article_choice import choice_block
 from app.knowledge.collection_context import tree_block
 from app.knowledge.node_article import node_block
 from app.llm.deadline import Deadline
+from app.observability.outcome import log_answer
 
 router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 
@@ -347,6 +348,11 @@ def knowledge(
         articles.append(_article(source, by_file.get(source.zim_file or "", ""), kept))
         if truncated:
             break
+    choice = _choice(prepared, requested, note)
+    if needed:  # the compendium's line for what the LLM did (logging review, H2)
+        log_answer(
+            "knowledge", prepared.normalized.topic, profile, {"note": note, "article_choice": choice}, _spent(prepared)
+        )
     return KnowledgeResponse(
         topic=prepared.normalized.topic,
         resolution=prepared.resolution,
@@ -354,7 +360,7 @@ def knowledge(
         articles=articles,
         chars=total,
         truncated=truncated,
-        article_choice=_choice(prepared, requested, note),
+        article_choice=choice,
         node=prepared.node,
         node_article=node_block(prepared.node_article) if prepared.node_article is not None else None,
         topic_tree=tree_block(prepared.tree, prepared.stand_in) if prepared.tree is not None else None,
@@ -367,7 +373,13 @@ def _choice(prepared: PreparedTopic, requested: str, note: str | None) -> dict[s
     if requested == "rule-based":
         return None
     info = choice_block(choice_audit(prepared, requested))
-    reports = (prepared.article_choice, prepared.hit_check, prepared.node_article, prepared.articles)
-    info["tokens"] = sum(report.total_tokens for report in reports if report is not None)
+    info["tokens"] = _spent(prepared)["total"]
     info["note"] = note
     return info
+
+
+def _spent(prepared: PreparedTopic) -> dict[str, int]:
+    """The calls and tokens of the article choice, as audit.llm_tokens of a compendium counts them."""
+    asked = (prepared.article_choice, prepared.hit_check, prepared.node_article, prepared.articles)
+    reports = [report for report in asked if report is not None]
+    return {"calls": sum(report.calls for report in reports), "total": sum(report.total_tokens for report in reports)}

@@ -10,6 +10,7 @@ LLM what needs one is a 503, and while the b-api is away the rules take over and
 from __future__ import annotations
 
 import json
+import logging
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
@@ -216,3 +217,58 @@ def test_the_room_for_the_names_follows_max_entities(with_llm: tuple[TestClient,
     client, fake = with_llm
     post(client, preset="balanced", max_entities=200)
     assert fake.bodies[0]["max_completion_tokens"] == 5800
+
+
+def _outcome_lines(caplog: pytest.LogCaptureFixture) -> list[logging.LogRecord]:
+    return [record for record in caplog.records if record.name == "app.observability.outcome"]
+
+
+def test_entities_the_llm_named_leave_one_line_and_the_rules_none(
+    with_llm: tuple[TestClient, FakeBApi], caplog: pytest.LogCaptureFixture
+) -> None:
+    """Logging review of 2026-10-08 (H2): what the LLM did for the entities stood only in the answer."""
+    client, _ = with_llm
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        post(client, preset="llm-free")
+        assert _outcome_lines(caplog) == []
+        post(client, preset="balanced")
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.INFO
+    assert record.getMessage().startswith("entities: balanced, LLM naming, 1 calls, ")
+    assert record.getMessage().endswith(" tokens, fallbacks none")
+
+
+def test_entities_the_llm_was_away_for_are_a_warning_that_names_the_reason(
+    with_llm: tuple[TestClient, FakeBApi], monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """The breaker logs its change once; this line ties the request to it."""
+    client, _ = with_llm
+    reason = "LLM nicht verfügbar (Modell fehlt); Regelmodus verwendet"
+    monkeypatch.setattr(client.app.state.service, "llm_unavailable", lambda: reason)  # type: ignore[attr-defined]
+
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        post(client, preset="best-quality", link_check="llm")
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.WARNING
+    assert record.getMessage() == (
+        "entities: best-quality, LLM none, 0 calls, 0 tokens, fallbacks naming unavailable=1, "
+        f"link_check unavailable=1; {reason}"
+    )
+
+
+def test_names_and_a_check_the_budget_left_no_room_for_are_a_warning(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Time or budget cut LLM work: the rules found the entities, every link stayed."""
+    monkeypatch.setattr(client.app.state.service, "llm", make_gateway(FakeBApi(model), per_request=10))  # type: ignore[attr-defined]
+
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        post(client, preset="balanced", link_check="llm")
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.WARNING
+    assert record.getMessage() == (
+        "entities: balanced, LLM none, 0 calls, 0 tokens, fallbacks naming budget=1, link_check budget=1"
+    )

@@ -7,6 +7,7 @@ a model was involved.
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterator
 from typing import Any
 
@@ -645,3 +646,53 @@ def test_the_pairs_say_how_much_of_their_prompt_came_from_the_cache(
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: PAIRS, cached_tokens=12)))
     body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm", "count": 2}).json()
     assert body["llm_tokens"] == {"prompt": 20, "completion": 4, "total": 24, "calls": 1, "cached": 12}
+
+
+def _outcome_lines(caplog: pytest.LogCaptureFixture) -> list[logging.LogRecord]:
+    return [record for record in caplog.records if record.name == "app.observability.outcome"]
+
+
+def test_pairs_the_llm_wrote_leave_one_line_with_what_they_cost(
+    with_llm: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Logging review of 2026-10-08 (H2): /qa said what its LLM did only in the answer; now in the compendium's line."""
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        with_llm.post("/api/v2/qa", json={"text": TEXT, "preset": "best-quality", "count": 2})
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.INFO
+    assert record.getMessage() == "qa: best-quality, LLM pairs, 1 calls, 24 tokens, fallbacks none"
+
+
+def test_pairs_the_budget_left_to_the_rules_are_a_warning_in_one_line(
+    with_llm: TestClient, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """The line takes the place of "QA fell back to the rules", an INFO that named the reason and not the cost."""
+    gateway = with_llm.app.state.service.llm  # type: ignore[attr-defined]
+    monkeypatch.setattr(gateway, "open_budget", lambda limit=None: RequestBudget(gateway.budget, 10))
+
+    with caplog.at_level(logging.INFO):
+        with_llm.post("/api/v2/qa", json={"text": TEXT, "preset": "best-quality"})
+
+    [record] = _outcome_lines(caplog)
+    assert record.levelno == logging.WARNING and "LLM none" in record.getMessage()
+    assert "fallbacks pairs budget=1" in record.getMessage()
+    assert not [record for record in caplog.records if "fell back" in record.getMessage()]
+
+
+def test_the_topic_of_part_1_names_the_line(with_llm: TestClient, caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        with_llm.post("/api/v2/qa", json={"topic": "Optik", "preset": "best-quality"})
+
+    [record] = _outcome_lines(caplog)
+    assert record.getMessage().startswith("qa 'Optik': best-quality, LLM pairs, 1 calls, ")
+
+
+def test_pairs_of_the_rules_alone_write_no_line_of_their_own(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Without an LLM the line of the request says all there is."""
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        assert client.post("/api/v2/qa", json={"text": TEXT, "preset": "llm-free"}).status_code == 200
+
+    assert _outcome_lines(caplog) == []
