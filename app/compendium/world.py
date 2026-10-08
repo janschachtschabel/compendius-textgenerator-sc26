@@ -27,6 +27,9 @@ from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport,
 from app.synthesis.writer import LlmJob, SectionWriter
 from app.templates.schema import Template, TemplateSlot
 
+# The share of no content block is set below this many characters, however short the requested length
+MIN_BLOCK_CHARS = 300
+
 
 class WorldBuilding(LlmPolicy):
     writer: SectionWriter
@@ -253,6 +256,6 @@ def scale_budgets(template: Template, target_length: int) -> Template:
             scaled.append(slot)
             continue
         share = int(target_length * slot.budget.weight / total_weight)
-        budget = slot.budget.model_copy(update={"target_chars": max(300, share)})
+        budget = slot.budget.model_copy(update={"target_chars": max(MIN_BLOCK_CHARS, share)})
         scaled.append(slot.model_copy(update={"budget": budget}))
     return template.model_copy(update={"slots": scaled})

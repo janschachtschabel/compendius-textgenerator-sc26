@@ -20,6 +20,8 @@ from app.prose import tokenize
 from app.templates.schema import TemplateSlot
 
 CANDIDATES_PER_SLOT = 15
+# A paragraph at or below this character n-gram similarity to a block is no candidate for it
+MIN_CHAR_SIMILARITY = 0.02
 
 Candidates = dict[str, list[tuple[float, Chunk, str]]]
 
@@ -102,6 +104,6 @@ class CharTfidfMatcher:
         for row, slot in zip(sims, content_slots, strict=True):
             for value, chunk in zip(row, chunks, strict=True):
                 similarity = float(value)
-                if similarity > 0.02:
+                if similarity > MIN_CHAR_SIMILARITY:
                     raw[slot.id].append((similarity, chunk, f"Char-TF-IDF: {similarity:.2f}"))
         return normalise_candidates(raw, self.name, self.candidates)

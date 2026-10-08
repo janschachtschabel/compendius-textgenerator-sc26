@@ -16,6 +16,9 @@ from app.templates.schema import TemplateSlot
 
 log = logging.getLogger(__name__)
 
+# A paragraph at or below this cosine similarity to a block is no candidate for it
+MIN_SIMILARITY = 0.1
+
 
 def _load_model(model_path: str) -> Any:
     from model2vec import StaticModel
@@ -64,6 +67,6 @@ class Model2VecMatcher:
         for row, slot in zip(sims, content_slots, strict=True):
             for value, chunk in zip(row, chunks, strict=True):
                 similarity = float(value)
-                if similarity > 0.1:
+                if similarity > MIN_SIMILARITY:
                     raw[slot.id].append((similarity, chunk, f"Model2Vec: {similarity:.2f}"))
         return normalise_candidates(raw, self.name, self.candidates)

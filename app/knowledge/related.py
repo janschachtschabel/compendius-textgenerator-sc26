@@ -7,6 +7,16 @@ import re
 from app.domain.models import Source
 from app.knowledge.topic import title_stems, title_words
 
+# What brings a link of the main article forward (rank_related_candidates): its title holds a stem of the topic,
+# else a word of it; it names a heading of the main article; the main article mentions it, counted up to
+# MAX_MENTIONS times; its title is of an ordinary length
+STEM_IN_TITLE = 12.0
+TOPIC_WORD_IN_TITLE = 8.0
+NAMES_A_HEADING = 7.0
+PER_MENTION = 1.5
+MAX_MENTIONS = 8
+ORDINARY_LENGTH = 1.0
+
 _BLACKLIST: list[re.Pattern[str]] = [
     re.compile(p, re.IGNORECASE)
     for p in (
@@ -58,18 +68,18 @@ def rank_related_candidates(main: Source, candidates: list[str]) -> list[str]:
             continue
         score = 0.0
         if any(stem in key for stem in stems):
-            score += 12.0
+            score += STEM_IN_TITLE
         elif any(w in key for w in topic_words):
-            score += 8.0
+            score += TOPIC_WORD_IN_TITLE
         if any(key == h or key in h or h in key for h in headings):
-            score += 7.0
+            score += NAMES_A_HEADING
         if len(link) >= 3:
             # str.count counts the non-overlapping matches re.findall found, without a pattern per link: 8,000 links
             # compiled 8,000 patterns, past re's cache of 512, and took 2 s (audit 2026-09-28, PE-06)
             mentions = content_lower.count(key)
-            score += min(mentions, 8) * 1.5
+            score += min(mentions, MAX_MENTIONS) * PER_MENTION
         if 4 <= len(link) <= 40:
-            score += 1.0
+            score += ORDINARY_LENGTH
         if score > 0:
             scored.append((score, link))
     scored.sort(key=lambda item: item[0], reverse=True)

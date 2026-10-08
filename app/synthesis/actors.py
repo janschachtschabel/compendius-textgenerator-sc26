@@ -34,6 +34,8 @@ _FUNCTION_RULES: list[tuple[re.Pattern[str], str]] = [
 ]
 
 TYPE_ORDER = ["Person", "Organisation", "Vorhaben", "Netzwerk"]
+# Linked articles of the primary article looked up for the actor directory, at most
+MAX_LOOKUPS = 40
 
 
 @dataclass
@@ -90,7 +92,7 @@ def collect_actors(
     primary: Source | None,
     sources: Sequence[Source],
     lookup: Lookup | None,
-    max_lookups: int = 40,
+    max_lookups: int = MAX_LOOKUPS,
     preferred_headings: set[str] | None = None,
 ) -> list[Actor]:
     """Actors among corpus sources plus linked articles of the primary article."""
