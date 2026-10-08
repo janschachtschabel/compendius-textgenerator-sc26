@@ -92,15 +92,15 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <body>
 <main>
 <header class="page-head">
-<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.13.0 · Stand 08.10.2026</p>
+<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.14.0 · Stand 08.10.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
 Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens, welches der fünf Profile welche
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>d156194</code> · Zahlen:
-<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M75</p>
+<code>compendius-textgenerator-sc26</code>, Commit <code>d59a4b8</code> · Zahlen:
+<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M78</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
 <div class="toc-group"><p class="toc-head"><a href="#seite-09"><span class="num">09</span>Methoden, Messwerte und Profile</a></p><ol><li><a href="#die-fuenf-profile-und-ihre-methoden">Die fünf Profile und ihre Methoden</a></li><li><a href="#1-artikelwahl-den-hauptartikel-finden">1. Artikelwahl: den Hauptartikel finden</a></li><li><a href="#2-korpusbau-welche-artikel-neben-den-hauptartikel-kommen">2. Korpusbau: welche Artikel neben den Hauptartikel kommen</a></li><li><a href="#3-zuordnung-die-absaetze-auf-die-bausteine-verteilen">3. Zuordnung: die Absätze auf die Bausteine verteilen</a></li><li><a href="#4-text-von-teil-1-woertlich-oder-geschrieben">4. Text von Teil 1: wörtlich oder geschrieben</a></li><li><a href="#5-lehrplanschnipsel-auswaehlen-teil-2">5. Lehrplanschnipsel auswählen (Teil 2)</a></li><li><a href="#6-qa-paare-erzeugen">6. QA-Paare erzeugen</a></li><li><a href="#7-entitaeten-ermitteln">7. Entitäten ermitteln</a></li><li><a href="#messbedingungen-und-grenzen">Messbedingungen und Grenzen</a></li></ol></div>
@@ -4866,9 +4866,10 @@ Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in <cod
 <code>best-quality-generated</code> (M33). Eine Anfrage dieser Profile darf bis 180.000 Tokens ausgeben (D59), die der anderen
 60.000; die Grenze schützt vor Ausreißern, die meisten Anfragen bleiben weit darunter. Das Tagesbudget gilt für alle
 Anfragen und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück.</p>
-<p>Stand M75 (08.10.2026, Teil 1 und 2, die neun Themen von M52, Median): <code>balanced</code> 320 Tokens und 5,1 s,
-<code>best-quality</code> 48.500 und 20,4 s, <code>best-quality-generated</code> 75.600 und 33,9 s, <code>best-coverage-generated</code> 90.100 und
-37,3 s. Wohin Zeit und Tokens gehen und was sich daran sparen ließe: Punkt 15.</p>
+<p>Stand M78 (08.10.2026, nach D93, Teil 1 und 2, die neun Themen von M52, Median): <code>balanced</code> 313 Tokens und 4,4 s,
+<code>best-quality</code> 56.700 und 15,1 s, <code>best-quality-generated</code> 67.900 und 29,8 s, <code>best-coverage-generated</code> 91.800 und
+36,7 s; die Tokens folgen der Größe des Korpus, die von Lauf zu Lauf streut. Vor D93 (M75): 320 und 5,1 s, 48.500 und
+20,4 s, 75.600 und 33,9 s, 90.100 und 37,3 s. Wohin Zeit und Tokens gehen und was sich daran sparen ließ: Punkt 15.</p>
 <h3 id="die-empfehlungen-im-einzelnen">Die Empfehlungen im Einzelnen</h3>
 <h4><code>llm-free</code>: das Optimum ohne Sprachmodell</h4>
 <p>Anfrage: <code>{&quot;topic&quot;: &quot;Optik&quot;, &quot;preset&quot;: &quot;llm-free&quot;}</code>; ein Dienst ohne LLM stellt es als Vorgabe ein:</p>
@@ -5641,7 +5642,7 @@ kostet Ausgabe üblicherweise ein Mehrfaches der Eingabe, Eingabe aus dem Cache 
 <td>allein nichts, da kein Schritt mehr als 10 Aufrufe stellt; nötig für b und c und wenn sich Anfragen einen Worker teilen</td>
 <td>–</td>
 <td>–</td>
-<td>bauen</td>
+<td>gebaut (D93)</td>
 </tr>
 <tr>
 <td>b</td>
@@ -5649,7 +5650,7 @@ kostet Ausgabe üblicherweise ein Mehrfaches der Eingabe, Eingabe aus dem Cache 
 <td>−1,4 bis −2,2 s in <code>best-quality</code>, <code>best-quality-generated</code>, <code>best-coverage-generated</code></td>
 <td>–</td>
 <td>gleich: dieselben Prompts, gemessen ohne Rückfall</td>
-<td>bauen</td>
+<td>gebaut (D93)</td>
 </tr>
 <tr>
 <td>c</td>
@@ -5657,7 +5658,7 @@ kostet Ausgabe üblicherweise ein Mehrfaches der Eingabe, Eingabe aus dem Cache 
 <td>−0,8 bis −5,9 s, wenn eine Sammlung ohne Cache gelesen wird, in jedem Profil</td>
 <td>–</td>
 <td>gleich</td>
-<td>bauen</td>
+<td>gebaut (D93)</td>
 </tr>
 <tr>
 <td>d</td>
@@ -5678,10 +5679,10 @@ kostet Ausgabe üblicherweise ein Mehrfaches der Eingabe, Eingabe aus dem Cache 
 <tr>
 <td>f</td>
 <td>Teil-2-Prüfung auf die ersten N Elemente begrenzen (etwa 600)</td>
-<td>bei breiten Themen bis −14 s</td>
-<td>54 % der Prüftokens stecken in 6 von 57 Themen (<em>Edelgase</em> 176.000); dort bis −135.000</td>
-<td>breite Themen zeigen weniger Elemente</td>
-<td>erst messen, was gedruckt würde, dann entscheiden</td>
+<td>wenig: Teil 2 läuft jetzt neben Teil 1</td>
+<td>M76, zwölf Themen: ein Deckel von 600 spart 11 % der Prüftokens, einer von 360 39 %</td>
+<td>jedes Element, das er streicht, hatte die Note „passt“: bei 600 fallen 310 von 2.235 gedruckten weg, bei 360 920</td>
+<td>nicht bauen (M76)</td>
 </tr>
 <tr>
 <td>g</td>
@@ -5689,7 +5690,7 @@ kostet Ausgabe üblicherweise ein Mehrfaches der Eingabe, Eingabe aus dem Cache 
 <td>rund −14 s</td>
 <td>rund −38.000 (40 %)</td>
 <td>Passung 4,56 statt 4,81, Nutzen 4,31 statt 4,81 (M47)</td>
-<td>Jans Entscheidung, bisher nein</td>
+<td>nein (Jan, 08.10.2026: „würde die qualität senken“)</td>
 </tr>
 <tr>
 <td>h</td>
@@ -5712,8 +5713,8 @@ kostet Ausgabe üblicherweise ein Mehrfaches der Eingabe, Eingabe aus dem Cache 
 <td>academiccloud mit 2 Plätzen</td>
 <td><code>best-quality-generated</code> 100 s, <code>best-coverage-generated</code> 119 s schon mit der Geschwindigkeit von <code>gpt-6-luna</code></td>
 <td>–</td>
-<td>bei <code>REQUEST_TIMEOUT_S</code> 120 s Rückfälle</td>
-<td>dann <code>REQUEST_TIMEOUT_S</code> anheben oder <code>balanced</code>/<code>best-quality</code></td>
+<td>bei 120 s Frist Rückfälle</td>
+<td>gebaut (D93): Frist je Anbieter, academiccloud 600 s, openai 300 s</td>
 </tr>
 <tr>
 <td>k</td>
@@ -5723,11 +5724,40 @@ kostet Ausgabe üblicherweise ein Mehrfaches der Eingabe, Eingabe aus dem Cache 
 <td>gleich</td>
 <td>erst messen</td>
 </tr>
+<tr>
+<td>l</td>
+<td>Zuordnung antwortet in Zeilen (<code>p12 fachinhalte 8</code>) statt in einem JSON-Objekt (M77)</td>
+<td>ein Fünftel bis knapp ein Drittel der Zuordnung</td>
+<td>−2,8 % der Zuordnung, davon Ausgabe −16 %</td>
+<td>gleich: macro-F1 0,682 statt 0,676, micro-F1 0,791 wie zuvor; kein ausgelassener Absatz (JSON: 8)</td>
+<td>gebaut (D93)</td>
+</tr>
 </tbody>
 </table></div>
-<p>Kurz: Ohne Abstriche an der Güte lassen sich die LLM-Profile um rund 2 s und mit Sammlung um bis zu 8 s
-beschleunigen (a bis c); das ist wenig, weil Zuordnung und Schreiben auf das Modell warten, nicht auf den Dienst.
-Mehr Tempo und spürbar weniger Tokens gibt es nur gegen Güte (d, g) oder mit anderer Ausgabe (f).</p>
+<p><strong>Nach dem Bau</strong> (M78, dieselben neun Themen und Profile wie M75, 20 Plätze): <code>best-quality</code> 15,1 statt 20,4 s,
+<code>best-quality-generated</code> 29,8 statt 33,9 s, <code>best-coverage-generated</code> 36,7 statt 37,3 s. Die Zuordnung schreibt je
+Absatz 17 bis 20 % weniger und war in allen drei Profilen kürzer (11,6 bis 12,4 statt 13,8 bis 15,1 s); Teil 2
+endete 4,7 bis 5,7 s nach Beginn neben ihr statt mit 2,3 s am Ende; kein Absatz fiel an die Regeln zurück. In
+<code>best-coverage-generated</code> schrieb der Anbieter in diesem Lauf langsamer (84 statt 92 Tokens je Sekunde, längster
+Baustein 21,4 statt 17,8 s) und hob die gewonnenen rund 6 s fast auf. Schneller als ihr längster Aufruf wird keine
+Stufe: Die Stapel der Zuordnung und die Bausteine des Schreibens laufen schon alle zugleich (Jans Frage nach mehr
+Workern); mehr Worker-Prozesse helfen, wenn mehrere Anfragen zugleich kommen, nicht der einzelnen.</p>
+<p><strong>Kaputte Antworten</strong> (Jan: „eventuell müßte man auch fälle einplanen bei denen eine llm rückmeldung fehlschlägt
+oder nicht sauber geparst werden kann“): Jeder Schritt mit LLM fällt bei einem Fehler des Aufrufs, erschöpftem
+Budget, abgelaufener Frist oder unlesbarer Antwort auf seine Regeln zurück und nennt den Grund im Audit; der Client
+wiederholt Aufrufe bei 429 und den Gateway-Fehlern 500 und 502 bis 504, die Zuordnung fragt bei unlesbarer Antwort
+einmal nach (V4). Ein neuer Test beantwortet jede Frage mit acht Arten kaputter Antworten (leer, Prosa, leeres
+Objekt, Liste, <code>null</code>, abgeschnittenes JSON, falsche Typen, unbekannte Schlüssel), in jedem Profil mit LLM und an
+jedem Endpunkt, der fragt: nie ein Fehler, jeder Rückfall mit Grund. Eine Lücke fand er beim Schreiben in den
+Profilen mit Modellwissen: Dort stand jede nicht leere Antwort als gekennzeichneter Text im Kompendium, auch JSON und
+eine Antwort, die das Ausgabelimit mitten im Satz abschnitt. Jetzt gilt JSON nicht als Text (Rückfall mit Grund),
+und von einer abgeschnittenen Antwort fällt der unvollendete Satz weg (<code>cut_off</code> im Audit). Nicht gebaut: Absagen
+des Modells („dazu kann ich nichts sagen“) an Wörtern zu erkennen wäre unzuverlässig; in den gespeicherten
+Messtexten kam keine vor.</p>
+<p>Kurz: Gebaut sind a bis c, j und l (D93): <code>best-quality</code> rund 5 s und <code>best-quality-generated</code> rund 4 s schneller,
+<code>best-coverage-generated</code> in Zuordnung und Teil 2 rund 6 s, mit Sammlung bis zu 6 s mehr, wenn Teil 3 ohne Cache
+liest. Zuordnung und Schreiben warten auf das Modell; mehr Tempo und spürbar weniger Tokens gäbe es nur gegen Güte
+(d, g) oder mit weniger bestätigten Lehrplanbezügen (f).</p>
 </li>
 </ol>
 <p>Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
@@ -5833,7 +5863,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>d156194</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>d59a4b8</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
