@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 from collections.abc import Callable
 from typing import Any
@@ -10,7 +11,7 @@ from typing import Any
 import httpx
 import pytest
 
-from app.llm.client import BApiClient, LlmError
+from app.llm.client import BApiClient, LlmError, LlmHeldBackError
 
 BASE = "https://b-api.test"
 KEY = "secret-key-0123456789"
@@ -437,3 +438,55 @@ def test_an_answer_past_the_bound_ends_the_call_unread(monkeypatch: pytest.Monke
 
     assert failure.value.reached == 1
     assert make_client(FakeBApi())[0].chat(MESSAGES, max_output_tokens=50).text == "OK"  # an answer in bounds passes
+
+
+def client_lines(caplog: pytest.LogCaptureFixture) -> list[str]:
+    return [record.getMessage() for record in caplog.records if record.name == "app.llm.client"]
+
+
+def test_the_breaker_says_once_that_it_opens_and_when_calls_resume(caplog: pytest.LogCaptureFixture) -> None:
+    """The breaker never logged a change: while it was open every compendium fell back to the rules without a line,
+    each call that met it logged a WARNING, and nothing said when calls resumed (logging review of 2026-10-08)."""
+    now = [1000.0]
+    client, _ = make_client(FakeBApi(transport_failures=3), clock=lambda: now[0])
+
+    with caplog.at_level(logging.INFO, logger="app.llm.client"):
+        with pytest.raises(LlmError):
+            client.chat(MESSAGES, max_output_tokens=10)
+        for _ in range(2):
+            with pytest.raises(LlmHeldBackError):
+                client.chat(MESSAGES, max_output_tokens=10)
+        now[0] += 61
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    lines = client_lines(caplog)
+    [opened] = [line for line in lines if "held back" in line]
+    assert "60 s" in opened and "ConnectError" in opened
+    assert [line for line in lines if "probe" in line] and [line for line in lines if "answers again" in line]
+
+
+def test_a_refused_key_holds_the_calls_back_for_ten_minutes_and_says_why(caplog: pytest.LogCaptureFixture) -> None:
+    client, _ = make_client(FakeBApi(statuses=[401]))
+
+    with caplog.at_level(logging.INFO, logger="app.llm.client"):
+        with pytest.raises(LlmError):
+            client.chat(MESSAGES, max_output_tokens=10)
+        with pytest.raises(LlmHeldBackError, match="Schlüssel"):
+            client.chat(MESSAGES, max_output_tokens=10)
+
+    [opened] = [line for line in client_lines(caplog) if "held back" in line]
+    assert "600 s" in opened and "HTTP 401" in opened
+
+
+def test_a_retry_names_its_cause_and_its_wait(caplog: pytest.LogCaptureFixture) -> None:
+    """A 429 and a 503 retried into an answer left no trace, the seconds slept among it (logging review of
+    2026-10-08)."""
+    client, _ = make_client(FakeBApi(statuses=[429, 503, 200]))
+
+    with caplog.at_level(logging.INFO, logger="app.llm.client"):
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    assert client_lines(caplog) == [
+        "b-api HTTP 429 on attempt 1 of 3, retrying in 1.5 s",
+        "b-api HTTP 503 on attempt 2 of 3, retrying in 3.0 s",
+    ]

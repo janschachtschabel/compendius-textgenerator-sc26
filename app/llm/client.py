@@ -80,6 +80,12 @@ class LlmError(RuntimeError):
         self.usage = usage
 
 
+class LlmHeldBackError(LlmError):
+    """The call never went out: the breaker holds the calls back, or the request's time ran out while the call waited
+    for a free slot. No failure of the b-api of its own: the breaker logs its change once, and the line of the request
+    counts the fallback (logging review of 2026-10-08)."""
+
+
 @dataclass(frozen=True)
 class ChatResult:
     text: str
@@ -356,15 +362,17 @@ class BApiClient:
             except LlmError as exc:
                 # No free call slot in time: a full queue on our side, no outage, but the attempts before it may have
                 # reached the model and cost their prompts (audit 2026-09-29, A05)
-                raise LlmError(str(exc), reached=reached) from exc
+                raise type(exc)(str(exc), reached=reached) from exc
             except httpx.TimeoutException as exc:
                 # A request that timed out once will not answer in time on a retry within a synchronous request.
                 reached += isinstance(exc, httpx.ReadTimeout | httpx.WriteTimeout)
                 # Silence is an outage only where the attempt had the time: a wait in the queue that left a call 20 of
                 # its 120 s is none (D93)
                 if had >= min(self.timeout_s, TRIP_TIMEOUT_S):
-                    self._trip()
-                raise LlmError(f"b-api antwortete nicht rechtzeitig ({type(exc).__name__})", reached=reached) from exc
+                    self._trip(cause=f"no answer within {had:.0f} s ({type(exc).__name__})")
+                # The seconds the attempt had: a call the deadline left 6 s read like an outage (logging review)
+                message = f"b-api antwortete nicht rechtzeitig ({type(exc).__name__} nach {had:.0f} s)"
+                raise LlmError(message, reached=reached) from exc
             except httpx.HTTPError as exc:
                 # httpx quotes illegal header values (the key) in its messages: redact before the text travels on.
                 last_error, status = self._redact(f"{type(exc).__name__}: {exc}"), None
@@ -392,16 +400,21 @@ class BApiClient:
                 wait = _retry_after(response) or self._backoff(attempt)
             with self._state:
                 self._failures += 1
-            if attempt + 1 >= attempts or ends - self._clock() - wait < MIN_CALL_S:
+            if attempt + 1 >= attempts:
+                break
+            if ends - self._clock() - wait < MIN_CALL_S:
+                last_error = f"{last_error}, keine Wiederholung: keine Zeit für {wait:.0f} s Wartezeit"
                 break
             if before_retry is not None and status in REACHED_STATUSES:
                 refusal = before_retry()
                 if refusal is not None:
                     last_error = f"{last_error}, keine Wiederholung: {refusal}"
                     break
+            # A 429 or 5xx retried into an answer left no trace, the seconds slept among it (logging review)
+            log.info("b-api %s on attempt %d of %d, retrying in %.1f s", last_error, attempt + 1, attempts, wait)
             self._sleep(wait)
         if self._failures >= self.attempts:
-            self._trip()
+            self._trip(cause=f"{self._failures} failed attempts in a row, the last {last_error}")
         raise LlmError(f"b-api nach {attempt + 1} Versuchen nicht erreichbar ({last_error})", status, reached=reached)
 
     def _backoff(self, attempt: int) -> float:
@@ -412,16 +425,17 @@ class BApiClient:
         """Raise while the breaker is open; ``True`` when this call is the one probe after a break."""
         with self._state:
             if self._clock() < self._open_until or self._probing:
-                raise LlmError(self._suspension)
-            if self._open_until:
-                self._probing = True
-                return True
-            return False
+                raise LlmHeldBackError(self._suspension)
+            if not self._open_until:
+                return False
+            self._probing = True
+        log.info("b-api probe after the break: this call decides whether the calls resume")
+        return True
 
     def _refused(self, status: int) -> None:
         minutes = round(AUTH_SUSPEND_S / 60)
         reason = f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, Schlüssel, Berechtigung oder Modell prüfen"
-        self._trip(AUTH_SUSPEND_S, reason)
+        self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}")
 
     @contextmanager
     def _slot(
@@ -437,12 +451,12 @@ class BApiClient:
         began = self._clock()  # the client's one clock: the real one mixed in drifted from an injected one
         patience = limit if hard_end is None else hard_end - began - MIN_CALL_S
         if not self._semaphore.acquire(timeout=max(0.0, patience)):
-            raise LlmError("kein freier Platz für einen b-api-Aufruf innerhalb des Zeitlimits")
+            raise LlmHeldBackError("kein freier Platz für einen b-api-Aufruf innerhalb des Zeitlimits")
         try:
             # The request's time can end while the call waits: part 1 failed, and the parts beside it stop
             # (Deadline.expire). Its call goes out no more (review of 2026-10-08)
             if request is not None and request.remaining() < MIN_CALL_S:
-                raise LlmError(QUEUE_TIME_UP)
+                raise LlmHeldBackError(QUEUE_TIME_UP)
             waited = self._clock() - began
             time_left = limit - waited if hard_end is None else min(limit, hard_end - began - waited)
             yield max(1.0, time_left), waited
@@ -463,18 +477,26 @@ class BApiClient:
         kept = {name: value for name, value in streamed.headers.items() if name.lower() in _KEPT_HEADERS}
         return httpx.Response(streamed.status_code, headers=kept, content=body, request=request)
 
-    def _trip(self, seconds: float = BREAKER_S, reason: str = SUSPENDED_MESSAGE) -> None:
+    def _trip(self, seconds: float = BREAKER_S, reason: str = SUSPENDED_MESSAGE, *, cause: str) -> None:
+        """Hold the calls back for ``seconds``. The change is logged once, with what caused it: the breaker wrote no
+        line, while every call that met it logged a WARNING (logging review of 2026-10-08)."""
         with self._state:
+            opening = self._clock() >= self._open_until  # closed, or waiting for its probe
             self._open_until = self._clock() + seconds
             self._suspension = reason
             self._probing = False
+        if opening:
+            log.warning("b-api calls held back for %.0f s: %s (%s)", seconds, reason, cause)
 
     def _close(self) -> None:
         """The b-api answered: the breaker closes and the failures in a row start again at zero."""
         with self._state:
+            resumed = self._open_until != 0.0
             self._open_until = 0.0
             self._probing = False
             self._failures = 0
+        if resumed:
+            log.info("b-api answers again; the calls resume")
 
     def _redact(self, text: str) -> str:
         return text.replace(self._key, "***")

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import threading
 import time
 from collections.abc import Callable
@@ -233,3 +234,18 @@ def test_the_longest_text_a_caller_may_send_still_fits_the_cap_of_balanced() -> 
     )
 
     assert isinstance(answer, ChatResult)
+
+
+def test_a_call_the_breaker_held_back_writes_no_warning_of_its_own(caplog: pytest.LogCaptureFixture) -> None:
+    """While the breaker was open each call that met it logged a WARNING; the breaker says once that it opened, and
+    the line of the request counts the fallback (logging review of 2026-10-08)."""
+    client, _ = make_client(FakeBApi(statuses=[401]))
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budgeted_chat(client, MESSAGES, max_output_tokens=10, budget=budget, what="Baustein a")  # trips the breaker
+
+    with caplog.at_level(logging.DEBUG, logger="app.llm.call"):
+        skipped = budgeted_chat(client, MESSAGES, max_output_tokens=10, budget=budget, what="Baustein b")
+
+    assert isinstance(skipped, LlmSkipped) and "ausgesetzt" in skipped.reason
+    [record] = [record for record in caplog.records if "Baustein b" in record.getMessage()]
+    assert record.levelno == logging.DEBUG
