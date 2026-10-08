@@ -20,7 +20,7 @@ export function compendiumInfo(answer, run, options) {
     topic(answer, run),
     origins(answer),
     methods(answer, run, options),
-    time(audit.timings_ms ?? {}, run.elapsedMs),
+    time(audit, run.elapsedMs),
     cost(audit.llm_tokens, answer.frontmatter?.llm),
     sources(answer.sources ?? []),
     findings(audit.lint ?? [], answer.parts_status ?? {}),
@@ -108,18 +108,22 @@ function methods(answer, run, options) {
   );
 }
 
-function time(timings, elapsedMs) {
-  const stages = Object.entries(timings).filter(([, ms]) => ms > 0);
+function time(audit, elapsedMs) {
+  const stages = Object.entries(audit.timings_ms ?? {}).filter(([, ms]) => ms > 0);
   const longest = Math.max(1, ...stages.map(([, ms]) => ms));
   const rows = stages.map(([stage, ms]) => {
     const bar = h('span', { class: 'bar' });
     bar.style.setProperty('--part', String(ms / longest));
     return h('li', {}, h('span', { class: 'stage' }, label(STAGES, stage)), bar, h('span', { class: 'ms' }, formatDuration(ms)));
   });
-  const server = stages.reduce((sum, [, ms]) => sum + ms, 0);
+  const sum = stages.reduce((total, [, ms]) => total + ms, 0);
+  // Parts 2 and 3 are made beside part 1: the request took its own time, not the sum of the stages (answers saved
+  // before duration_ms have only the stages)
+  const server = audit.duration_ms ?? sum;
   return infoPart(
     'Zeit je Schritt',
     h('p', {}, `Dauer im Browser ${formatDuration(elapsedMs)}, davon im Dienst ${formatDuration(server)}.`),
+    sum > server ? h('p', { class: 'note' }, 'Teil 2 und Teil 3 entstehen neben Teil 1: ihre Schritte laufen gleichzeitig und dauern zusammen länger als die Anfrage.') : null,
     rows.length ? h('ul', { class: 'stages' }, rows) : null,
   );
 }

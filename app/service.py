@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import logging
 import threading
+import time
 
 import httpx
 
@@ -20,10 +21,11 @@ from app.compendium.errors import (
 )
 from app.compendium.gateway import LlmGateway
 from app.compendium.llm_policy import llm_switches
-from app.compendium.prepared import CurriculaResult, Made, PreparedTopic, Requested, Stopwatch, WorldPart
+from app.compendium.prepared import CurriculaResult, Made, PreparedTopic, Requested, Stopwatch, WorldPart, timed
 from app.compendium.repository import RepositoryReading
 from app.compendium.world import WorldBuilding
 from app.compose.regeneration import check_names
+from app.concurrency import Beside
 from app.domain.models import (
     CollectionPart,
     Compendium,
@@ -291,7 +293,11 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         self, request: GenerateRequest, *, deadline: Deadline | None = None, budget: RequestBudget | None = None
     ) -> Compendium:
         """The compendium of a request. ``deadline`` and ``budget`` let a caller spend one time and one token budget
-        over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own."""
+        over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own.
+
+        Parts 2 and 3 are made beside part 1, which waits on the model longest (M75): part 3 needs nothing of the
+        topic and starts at once, part 2 once the topic is prepared. A request that fails does not wait for them."""
+        started = time.perf_counter()
         if deadline is None:  # bounds the LLM work; the rule-based path needs none
             deadline = Deadline(self.settings.request_time_limit_s)
         request, profile = self._admit(request, deadline)
@@ -299,26 +305,30 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         # the compendium (/qa); article_choice=llm (D35) spends from it first
         if budget is None:
             budget = self.open_budget(profile)
-        choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline, budget)
-        budget = choice.budget if choice is not None else budget
-        # the topic a writing profile words is the one of part 1; without it nothing is written about it (D72)
-        writing = request.generation if "world" in request.parts else None
-        wording = self.wording_job(writing, choice, deadline, budget)
-        prepared = self.prepare(request, deadline, choice, wording=wording)
-        requested = Requested.of(request)
-        timings = dict(prepared.timings)
-        if "world" in request.parts:
-            world = self._world_part(prepared, request, requested, deadline, timings, budget)
-        else:  # no matching, no synthesis, no LLM work
-            world = WorldPart.skipped()
-        lap = Stopwatch(timings).lap
-        curricula = self._curricula_part(prepared, request, budget, deadline)
-        if curricula.part is not None:
-            lap("curricula")
-        collection: CollectionPart | None = None
-        if "collection" in request.parts and request.collection_id and self.collections is not None:
-            collection = self._collection_part(request.collection_id, deadline)
-            lap("collection")
+        with Beside(workers=2) as beside:
+            collection_job = None
+            if "collection" in request.parts and request.collection_id and self.collections is not None:
+                collection_job = beside.start(timed(self._collection_part), request.collection_id, deadline)
+            choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline, budget)
+            budget = choice.budget if choice is not None else budget
+            # the topic a writing profile words is the one of part 1; without it nothing is written about it (D72)
+            writing = request.generation if "world" in request.parts else None
+            wording = self.wording_job(writing, choice, deadline, budget)
+            prepared = self.prepare(request, deadline, choice, wording=wording)
+            curricula_job = beside.start(timed(self._curricula_part), prepared, request, budget, deadline)
+            requested = Requested.of(request)
+            timings = dict(prepared.timings)
+            if "world" in request.parts:
+                world = self._world_part(prepared, request, requested, deadline, timings, budget)
+            else:  # no matching, no synthesis, no LLM work
+                world = WorldPart.skipped()
+            # each part's own time; the request's whole time is the audit's duration_ms
+            curricula, curricula_ms = curricula_job.result()
+            if curricula.part is not None:
+                timings["curricula"] = curricula_ms
+            collection: CollectionPart | None = None
+            if collection_job is not None:
+                collection, timings["collection"] = collection_job.result()
         made = Made(
             prepared=prepared,
             world=world,
@@ -332,7 +342,10 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             cached_tokens=budget.cached_tokens if budget is not None else 0,
         )
         archives = prepared.registry or self.registry
-        return assemble(request, made, lap, llm=self.llm, facets=self.facets, zim_snapshot=archives.snapshot())
+        lap = Stopwatch(timings).lap  # the assembly's own time
+        compendium = assemble(request, made, lap, llm=self.llm, facets=self.facets, zim_snapshot=archives.snapshot())
+        compendium.audit.duration_ms = int((time.perf_counter() - started) * 1000)
+        return compendium
 
     def _admit(self, request: GenerateRequest, deadline: Deadline) -> tuple[GenerateRequest, str]:
         """The request with the switches of its profile (D41) and the profile; refuses before any work what this

@@ -15,6 +15,30 @@ function info(name, change = () => {}) {
   return compendiumInfo(answer, { ...run, data: answer }, OPTIONS);
 }
 
+/** The text of the part of the info section whose title starts so. */
+const partText = (section, title) => section.descendants().find((node) => node.tagName === 'DETAILS' && node.children[0]?.textContent.startsWith(title)).textContent;
+
+test('the time in the service is the whole request, not the sum of its stages, which overlap beside part 1', () => {
+  const section = info('compendium_topic', (answer) => Object.assign(answer.audit, { timings_ms: { resolve: 800, match: 3000, curricula: 2500 }, duration_ms: 3400 }));
+
+  const text = partText(section, 'Zeit je Schritt');
+
+  assert.match(text, /Dauer im Browser 1,2 s, davon im Dienst 3,4 s\./);
+  assert.match(text, /Teil 2 und Teil 3 entstehen neben Teil 1/);
+});
+
+test('without the whole time, as in answers saved before it, the time in the service is the sum of its stages', () => {
+  const section = info('compendium_topic', (answer) => {
+    answer.audit.timings_ms = { resolve: 800, corpus: 1200 };
+    delete answer.audit.duration_ms;
+  });
+
+  const text = partText(section, 'Zeit je Schritt');
+
+  assert.match(text, /davon im Dienst 2,0 s\./);
+  assert.doesNotMatch(text, /neben Teil 1/);
+});
+
 test('a compendium of a material names the article the model found for it', () => {
   const section = info('compendium_material');
 

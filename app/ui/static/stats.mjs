@@ -106,9 +106,10 @@ const MEASURES = {
   },
 };
 
-// The server's own account of its time, where it gives one: the stages of a compendium
+// The server's own account of its time, where it gives one: the whole request of a compendium, whose stages overlap
+// (parts 2 and 3 beside part 1); answers saved before duration_ms have only the stages
 const TIMES = {
-  compendium: (a) => [time('server', 'davon im Dienst', Object.values(a.audit?.timings_ms ?? {}).reduce((sum, ms) => sum + ms, 0), false)],
+  compendium: (a) => [time('server', 'davon im Dienst', a.audit?.duration_ms ?? Object.values(a.audit?.timings_ms ?? {}).reduce((sum, ms) => sum + ms, 0), false)],
 };
 
 const COSTS = {

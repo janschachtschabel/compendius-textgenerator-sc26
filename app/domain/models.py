@@ -231,7 +231,13 @@ class LintFinding(BaseModel):
 class AuditReport(BaseModel):
     preset: str | None = Field(None, description="The preset the request named (llm-free, balanced, best-quality)")
     matcher: str | None = Field(None, description="Matching strategy of part 1; null without part 1")
-    timings_ms: dict[str, int] = Field(default_factory=dict)
+    timings_ms: dict[str, int] = Field(
+        default_factory=dict,
+        description="Milliseconds per stage; parts 2 and 3 are made beside part 1, so their stages overlap",
+    )
+    duration_ms: int | None = Field(
+        None, description="Milliseconds the service took for the whole request, from its admission to the assembly"
+    )
     lint: list[LintFinding] = Field(default_factory=list)
     chunks_total: int = 0
     chunks_truncated: int = Field(0, description="Paragraphs left out by the CORPUS_MAX_CHUNKS cap")

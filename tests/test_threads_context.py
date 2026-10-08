@@ -8,12 +8,14 @@ from __future__ import annotations
 
 import contextvars
 import logging
+import threading
+import time
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
-from app.concurrency import map_in_threads
+from app.concurrency import Beside, map_in_threads
 from app.llm.call import LlmSkipped, skipped_on_error
 from app.logging import _RequestIdFilter, configure_logging, current_request_id, set_request_id
 
@@ -45,6 +47,27 @@ def test_the_threads_of_the_service_keep_the_request_id() -> None:
 def test_results_come_in_the_order_of_the_items() -> None:
     assert map_in_threads(lambda n: n * n, [3, 1, 2], workers=3) == [9, 1, 4]
     assert map_in_threads(lambda n: n, [], workers=3) == []
+
+
+def test_a_job_beside_keeps_the_request_id() -> None:
+    def started() -> str:
+        with Beside(workers=1) as beside:
+            return beside.start(current_request_id).result()
+
+    assert in_a_request("rid-11", started) == "rid-11"
+
+
+def test_leaving_does_not_wait_for_a_job_still_running() -> None:
+    """Parts 2 and 3 run beside part 1; a request that fails in part 1 answers without waiting for them."""
+    release = threading.Event()
+    started = time.monotonic()
+
+    with pytest.raises(LookupError), Beside(workers=1) as beside:
+        beside.start(release.wait, 3.0)
+        raise LookupError("Thema nicht gefunden")
+
+    assert time.monotonic() - started < 1.0
+    release.set()
 
 
 def test_an_unexpected_error_is_a_fallback_and_a_log_line_that_names_the_request(

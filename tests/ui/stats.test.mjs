@@ -79,6 +79,12 @@ test('a compendium counts its quality, its time and its cost', () => {
   );
 });
 
+test('the time of a compendium in the service is the whole request where the service names it: its stages overlap', () => {
+  const found = byKey(metrics('compendium', { ...compendium, audit: { ...compendium.audit, duration_ms: 1500 } }, 15246));
+
+  assert.deepEqual([found.server.value, found.server.display], [1500, '1,5 s']);
+});
+
 test('a compendium counts the tokens its model read from the prompt cache, where there were any (D69)', () => {
   const tokens = { prompt: 90000, completion: 11150, total: 101150, calls: 24, cached: 50936 };
   const found = byKey(metrics('compendium', { ...compendium, audit: { ...compendium.audit, llm_tokens: tokens } }, 37000));

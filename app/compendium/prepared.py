@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
@@ -187,3 +188,14 @@ class Stopwatch:
         now = time.perf_counter()
         self._timings[name] = int((now - self._started) * 1000)
         self._started = now
+
+
+def timed[**P, R](fn: Callable[P, R]) -> Callable[P, tuple[R, int]]:
+    """``fn``, returning its result and the milliseconds it took: a part made beside the others times itself."""
+
+    def run(*args: P.args, **kwargs: P.kwargs) -> tuple[R, int]:
+        started = time.perf_counter()
+        result = fn(*args, **kwargs)
+        return result, int((time.perf_counter() - started) * 1000)
+
+    return run
