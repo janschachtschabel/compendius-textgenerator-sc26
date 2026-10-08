@@ -25,7 +25,7 @@ import httpx
 
 from app.http_body import ACCEPT_ENCODING, UnreadableAnswerError, read_bounded
 from app.llm.budget import estimate_tokens
-from app.llm.deadline import MIN_CALL_S
+from app.llm.deadline import MIN_CALL_S, Deadline
 
 log = logging.getLogger(__name__)
 
@@ -46,6 +46,7 @@ TRIP_TIMEOUT_S = 30.0  # a call cut short by the request deadline is no outage; 
 # all calls), calls fail fast instead of queueing on the next failure; then a single call probes (audit KO-05)
 BREAKER_S = 60.0
 SUSPENDED_MESSAGE = "b-api nach wiederholten Fehlern vorübergehend ausgesetzt"
+QUEUE_TIME_UP = "Zeitbudget der Anfrage erschöpft, während der Aufruf auf einen freien Platz wartete"
 _RETRY_AFTER_RE = re.compile("[0-9]{1,5}")  # Retry-After in seconds; a date is ignored and the backoff applies
 _KEY_RE = re.compile(r"^[!-~]+$")  # printable ASCII without spaces; anything else breaks the header
 # gpt-6-luna answers max_tokens with HTTP 400 and asks for max_completion_tokens (2026-09-24, D44)
@@ -211,13 +212,14 @@ class BApiClient:
         timeout_s: float | None = None,
         before_retry: Callable[[], str | None] | None = None,
         prompt: str | None = None,
-        request_s: float | None = None,
+        request: Deadline | None = None,
     ) -> ChatResult:
         """One chat completion; raises ``LlmError`` when the API fails or answers in an unexpected format.
 
-        ``timeout_s`` shortens the configured timeout, e.g. to what is left of the request deadline. ``request_s`` is
-        the time the request of the call has left: the call may wait that long for a free call slot, less
-        ``MIN_CALL_S``, and its own time starts once it has one (D93); without it the wait counts against
+        ``timeout_s`` shortens the configured timeout, e.g. to what is left of the request deadline. ``request`` is
+        the deadline of the request the call belongs to: the call may wait as long as it has left for a free call
+        slot, less ``MIN_CALL_S``, and its own time starts once it has one (D93); a request whose time ended while
+        the call waited, as the parts beside a failed part 1 do, sends nothing. Without it the wait counts against
         ``timeout_s``. ``before_retry`` is
         asked before each retry after an attempt that may have reached the model; a reason instead of ``None`` ends
         the call with the attempts made (the budget has no room for another prompt, audit 2026-09-29, L1).
@@ -225,7 +227,7 @@ class BApiClient:
         """
         body = self._body(messages, max_output_tokens, prompt)
         data, reached = self._request(
-            "POST", self.chat_url, json_body=body, timeout_s=timeout_s, before_retry=before_retry, request_s=request_s
+            "POST", self.chat_url, json_body=body, timeout_s=timeout_s, before_retry=before_retry, request=request
         )
         try:
             result = _parse_completion(data, self.model, "".join(str(m.get("content", "")) for m in messages))
@@ -305,19 +307,19 @@ class BApiClient:
         attempts: int | None = None,
         timeout_s: float | None = None,
         before_retry: Callable[[], str | None] | None = None,
-        request_s: float | None = None,
+        request: Deadline | None = None,
     ) -> tuple[Any, int]:
         """One call: attempts until an answer, all of them within one deadline; with the answer, how many attempts
         before it may have reached the model. Every retry used to get the whole
         limit again, so a call outlived the deadline of its request (audit 2026-09-27, KO-04)."""
         now = self._clock()
         ends = now + (timeout_s if timeout_s is not None else self.timeout_s)
-        hard_end = now + request_s if request_s is not None else None
+        hard_end = now + request.remaining() if request is not None else None
         probe = self._admit()
         try:
             # After a break a single attempt decides whether the b-api is back
             tries = 1 if probe else attempts or self.attempts
-            return self._attempts(method, url, json_body, tries, (ends, hard_end), before_retry)
+            return self._attempts(method, url, json_body, tries, (ends, hard_end), before_retry, request)
         finally:
             if probe:
                 with self._state:
@@ -331,6 +333,7 @@ class BApiClient:
         attempts: int,
         window: tuple[float, float | None],
         before_retry: Callable[[], str | None] | None,
+        request: Deadline | None = None,
     ) -> tuple[Any, int]:
         """The attempts of one call until ``ends``; the wait for a call slot moves ``ends`` up to ``hard_end``, the end
         of the call's request, where the caller named it (D93)."""
@@ -342,7 +345,7 @@ class BApiClient:
             limit = ends - self._clock()
             had = limit  # the time the attempt had for itself once it held a call slot
             try:
-                with self._slot(limit, hard_end) as (had, waited):
+                with self._slot(limit, hard_end, request) as (had, waited):
                     if hard_end is not None:
                         ends = min(ends + waited, hard_end)  # the wait was the request's time, not the call's
                     response = self._send(method, url, json_body, had)
@@ -420,7 +423,9 @@ class BApiClient:
         self._trip(AUTH_SUSPEND_S, reason)
 
     @contextmanager
-    def _slot(self, limit: float, hard_end: float | None) -> Iterator[tuple[float, float]]:
+    def _slot(
+        self, limit: float, hard_end: float | None, request: Deadline | None = None
+    ) -> Iterator[tuple[float, float]]:
         """A free call slot for one attempt; yields the time the attempt has and how long it waited for the slot.
 
         Without ``hard_end`` the wait counts against ``limit`` like the request itself. With it, the end of the
@@ -433,6 +438,10 @@ class BApiClient:
         if not self._semaphore.acquire(timeout=max(0.0, patience)):
             raise LlmError("kein freier Platz für einen b-api-Aufruf innerhalb des Zeitlimits")
         try:
+            # The request's time can end while the call waits: part 1 failed, and the parts beside it stop
+            # (Deadline.expire). Its call goes out no more (review of 2026-10-08)
+            if request is not None and request.remaining() < MIN_CALL_S:
+                raise LlmError(QUEUE_TIME_UP)
             waited = self._clock() - began
             time_left = limit - waited if hard_end is None else min(limit, hard_end - began - waited)
             yield max(1.0, time_left), waited

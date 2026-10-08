@@ -124,7 +124,7 @@ def budgeted_chat(
             timeout_s=timeout_s,
             before_retry=reserve_retry,
             prompt=prompt,
-            request_s=deadline.remaining() if deadline is not None else None,  # how long it may queue for a slot
+            request=deadline,  # how long it may queue for a slot, and whether it ended meanwhile
         )
         if answer.reached_before:
             # an attempt that reached the model before this answer may have cost its prompt too; only a call that

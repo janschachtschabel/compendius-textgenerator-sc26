@@ -155,9 +155,9 @@ def queued_client(fake: FakeBApi, busy: float, monkeypatch: pytest.MonkeyPatch) 
 def test_a_call_waits_for_a_slot_as_long_as_its_request_has_time(monkeypatch: pytest.MonkeyPatch) -> None:
     """D93: on academiccloud's two slots the wait for one ate the call's own 120 s; it is the request's time now."""
     fake = FakeBApi()
-    client, _ = queued_client(fake, 150.0, monkeypatch)
+    client, clock = queued_client(fake, 150.0, monkeypatch)
 
-    answer = client.chat(MESSAGES, max_output_tokens=10, timeout_s=120.0, request_s=300.0)
+    answer = client.chat(MESSAGES, max_output_tokens=10, timeout_s=120.0, request=Deadline(300.0, clock))
 
     assert answer.text == "OK"
     assert fake.requests[0].extensions["timeout"]["read"] == pytest.approx(120.0, abs=0.5)
@@ -165,11 +165,41 @@ def test_a_call_waits_for_a_slot_as_long_as_its_request_has_time(monkeypatch: py
 
 def test_after_a_long_wait_a_call_keeps_what_its_request_has_left(monkeypatch: pytest.MonkeyPatch) -> None:
     fake = FakeBApi()
-    client, _ = queued_client(fake, 150.0, monkeypatch)
+    client, clock = queued_client(fake, 150.0, monkeypatch)
 
-    client.chat(MESSAGES, max_output_tokens=10, timeout_s=120.0, request_s=170.0)
+    client.chat(MESSAGES, max_output_tokens=10, timeout_s=120.0, request=Deadline(170.0, clock))
 
     assert fake.requests[0].extensions["timeout"]["read"] == pytest.approx(20.0, abs=0.5)
+
+
+class EndingSlots(Slots):
+    """A slot that frees up after the request's time ended meanwhile: part 1 failed and the parts beside it stop
+    (Deadline.expire, D93)."""
+
+    def __init__(self, clock: Clock, busy: float, request: Deadline) -> None:
+        super().__init__(clock, busy)
+        self.request = request
+
+    def acquire(self, timeout: float | None = None) -> bool:
+        granted = super().acquire(timeout)
+        self.request.expire()
+        return granted
+
+
+def test_a_call_whose_request_ended_while_it_queued_is_not_sent(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The call took its request's time as a number: a check of part 2 still queued for one of academiccloud's two
+    slots went out after part 1 had failed, spending tokens and a slot for a request that had answered (review of
+    2026-10-08)."""
+    fake = FakeBApi()
+    clock = Clock()
+    client = _client(fake, clock=clock)
+    request = Deadline(300.0, clock)
+    monkeypatch.setattr(client, "_semaphore", EndingSlots(clock, 10.0, request))
+
+    with pytest.raises(LlmError, match="Zeitbudget"):
+        client.chat(MESSAGES, max_output_tokens=10, timeout_s=120.0, request=request)
+
+    assert fake.requests == []
 
 
 def test_a_timeout_after_a_wait_in_the_queue_does_not_trip_the_breaker(monkeypatch: pytest.MonkeyPatch) -> None:
