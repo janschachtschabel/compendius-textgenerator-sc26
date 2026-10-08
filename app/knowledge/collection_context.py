@@ -112,6 +112,8 @@ def describe(tree: TreeContext, subjects: Sequence[str] = ()) -> str:
     path = [_short(title) for title in tree.path]
     if path:
         parts = [f"Sammlung im Themenbaum unter: {' › '.join(path)}"]
+    elif "path" in tree.missing:  # nothing above it was read: no claim where it stands (review of 2026-10-08)
+        parts = [f"Sammlung zum Fach {subjects[0]}" if subjects else "Sammlung"]
     else:
         parts = [f"Sammlung im Fachportal {subjects[0]}" if subjects else "Sammlung"]
     if tree.children:

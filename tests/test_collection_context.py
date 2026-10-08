@@ -188,6 +188,13 @@ def test_the_context_names_the_path_what_is_inside_and_the_neighbours_as_not_mea
     )
 
 
+def test_a_path_the_repository_did_not_give_is_no_place_at_the_top() -> None:
+    """With the read above it failed, the collection was said to stand right under its subject portal, which pushed
+    the article to the whole subject, the failure M71 fixed (review of 2026-10-08)."""
+    assert describe(TreeContext(missing=("path",)), ("Physik",)) == "Sammlung zum Fach Physik"
+    assert describe(TreeContext(missing=("path",))) == "Sammlung"
+
+
 # -- reading the tree -------------------------------------------------------------------------------------------------
 
 
