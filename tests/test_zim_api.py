@@ -96,6 +96,20 @@ def test_sync_trigger_writes_request_file(zim_dir: Path, tmp_path: Path) -> None
         assert (zim_dir / TRIGGER_FILE).exists()
 
 
+def test_a_sync_requested_through_the_api_is_logged(
+    zim_dir: Path, tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """A sync can download tens of GB and swap archives; asked for through the API it left only the access line, and
+    the updater's "run requested via sync.request" had no link to the request (logging review of 2026-10-08)."""
+    with (
+        _client(zim_dir, tmp_path, admin_token=ADMIN_TOKEN) as client,
+        caplog.at_level("INFO", logger="app.api.v2.zim"),
+    ):
+        client.post("/api/v2/zim/sync", headers=AUTH)
+
+    assert "ZIM sync requested via API" in caplog.text
+
+
 def test_delete_refuses_active_and_removes_stray_files(
     zim_dir: Path, tmp_path: Path, sample_zims: dict[str, Path]
 ) -> None:

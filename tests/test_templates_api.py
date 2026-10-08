@@ -199,6 +199,17 @@ def test_a_write_from_a_version_read_before_another_write_is_refused(client: Tes
     assert client.get("/api/v2/templates/mein").json()["name"] == "Neuer"
 
 
+def test_a_refused_write_is_logged_with_its_reason(client: TestClient, caplog: pytest.LogCaptureFixture) -> None:
+    """A write refused for a newer version (412) or a built-in template (409) left only the access line; an editor
+    asking why their change is gone gets the reason from the log (logging review of 2026-10-08)."""
+    client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
+    with caplog.at_level("INFO", logger="app.api.v2.routes"):
+        client.put("/api/v2/templates/mein", json=TEMPLATE, headers={**AUTH, "If-Match": '"99"'})
+        client.delete("/api/v2/templates/sc26", headers=AUTH)
+
+    assert "template mein not saved (412)" in caplog.text and "template sc26 not deleted (409)" in caplog.text
+
+
 def test_if_match_star_writes_only_over_a_template_there_is(client: TestClient) -> None:
     first = client.put("/api/v2/templates/mein", json=TEMPLATE, headers={**AUTH, "If-Match": "*"})
     client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)

@@ -129,6 +129,7 @@ def zim_sync_now(request: Request) -> dict[str, Any]:
     zim_dir = Path(request.app.state.settings.zim_dir)
     zim_dir.mkdir(parents=True, exist_ok=True)
     (zim_dir / TRIGGER_FILE).write_text("requested via API\n", encoding="utf-8")
+    log.info("ZIM sync requested via API; the updater runs it at its next poll")
     return {
         "requested": True,
         "note": "Der Updater (compendium zim sync --loop) führt den Abgleich beim nächsten Poll aus.",

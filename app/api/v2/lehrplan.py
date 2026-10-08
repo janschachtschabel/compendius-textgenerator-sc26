@@ -355,6 +355,7 @@ def lehrplan_harvest_now(request: Request) -> dict[str, Any]:
     state_dir = Path(request.app.state.settings.state_dir)
     state_dir.mkdir(parents=True, exist_ok=True)
     (state_dir / TRIGGER_FILE).write_text("requested via API\n", encoding="utf-8")
+    log.info("curriculum harvest requested via API; the updater checks MEM at its next poll")
     return {
         "requested": True,
         "note": "Der Harvest-Job (compendium lehrplan harvest --loop) prüft beim nächsten Poll gegen MEM und "

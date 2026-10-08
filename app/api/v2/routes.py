@@ -180,6 +180,13 @@ def _expected(if_match: list[str] | None) -> Expected | None:
     return Expected(versions=frozenset(int(found[1]) for tag in tags if (found := _STRONG_TAG.fullmatch(tag))))
 
 
+def _refused_write(template_id: str, what: str, status: int, exc: Exception) -> HTTPException:
+    """The refusal of a write, logged with its reason: an editor asking why a change is gone finds it there (logging
+    review of 2026-10-08)."""
+    log.info("template %s not %s (%d): %s", template_id, what, status, exc)
+    return HTTPException(status_code=status, detail=str(exc))
+
+
 @admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409, 412))
 def delete_template(
     template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)],
@@ -195,9 +202,9 @@ def delete_template(
     try:
         removed = request.app.state.templates.delete(template_id, _expected(if_match))
     except VersionConflictError as exc:
-        raise HTTPException(status_code=412, detail=str(exc)) from exc
+        raise _refused_write(template_id, "deleted", 412, exc) from exc
     except ValueError as exc:
-        raise HTTPException(status_code=409, detail=str(exc)) from exc
+        raise _refused_write(template_id, "deleted", 409, exc) from exc
     if not removed:
         raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {template_id}")
     log.info("template %s deleted", template_id)
@@ -274,9 +281,9 @@ def put_template(
     try:
         stored = request.app.state.templates.save(payload, _expected(if_match))
     except VersionConflictError as exc:
-        raise HTTPException(status_code=412, detail=str(exc)) from exc
+        raise _refused_write(template_id, "saved", 412, exc) from exc
     except ValueError as exc:  # a built-in id; the message names it and says what to do instead
-        raise HTTPException(status_code=409, detail=str(exc)) from exc
+        raise _refused_write(template_id, "saved", 409, exc) from exc
     log.info("template %s saved as version %d", stored.id, stored.version)
     response.headers["ETag"] = _etag(stored.version)
     data: dict[str, Any] = stored.model_dump()

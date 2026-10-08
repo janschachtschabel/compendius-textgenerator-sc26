@@ -247,6 +247,17 @@ def test_harvest_request_is_admin_only_and_writes_the_trigger_file(
         assert (tmp_path / "state" / TRIGGER_FILE).exists()
 
 
+def test_a_harvest_requested_through_the_api_is_logged(
+    sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Logging review of 2026-10-08: the request left only the access line."""
+    with _client(sample_zims, tmp_path, admin_token=ADMIN_TOKEN) as client:
+        with caplog.at_level("INFO", logger="app.api.v2.lehrplan"):
+            client.post("/api/v2/lehrplan/harvest", headers=AUTH)
+
+    assert "curriculum harvest requested via API" in caplog.text
+
+
 def test_broken_cache_is_reported_as_unavailable_not_as_a_server_error(
     sample_zims: dict[str, Path], tmp_path: Path
 ) -> None:
