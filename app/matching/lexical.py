@@ -20,7 +20,9 @@ from app.prose import tokenize
 from app.templates.schema import TemplateSlot
 
 CANDIDATES_PER_SLOT = 15
-# A paragraph at or below this character n-gram similarity to a block is no candidate for it
+# A paragraph at or below this character n-gram similarity to a block is no candidate for it. M80: 0 and 0.01 change
+# nothing, 0.05 moves 3 paragraphs; 0.1 moves 95 in 50 of 81 topics and lifts the gold from 0.467 to 0.489 macro-F1
+# (printed 0.299 to 0.316) - to be judged blind on the other topics before it is built (Jan decides)
 MIN_CHAR_SIMILARITY = 0.02
 
 Candidates = dict[str, list[tuple[float, Chunk, str]]]

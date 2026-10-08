@@ -34,7 +34,9 @@ _FUNCTION_RULES: list[tuple[re.Pattern[str], str]] = [
 ]
 
 TYPE_ORDER = ["Person", "Organisation", "Vorhaben", "Netzwerk"]
-# Linked articles of the primary article looked up for the actor directory, at most
+# Linked articles of the primary article looked up for the actor directory, at most. M80: 69 of 81 topics use all
+# 40, for 6.1 actors on average (median 3) and 2.1 s cold in the median; 80 would find 11.8 (8) for about 2 s more,
+# 66 ms per article, the names added mixed
 MAX_LOOKUPS = 40
 
 

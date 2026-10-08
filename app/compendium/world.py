@@ -27,7 +27,9 @@ from app.synthesis.extraction import Extracted, ExtractionJob, ExtractionReport,
 from app.synthesis.writer import LlmJob, SectionWriter
 from app.templates.schema import Template, TemplateSlot
 
-# The share of no content block is set below this many characters, however short the requested length
+# The share of no content block is set below this many characters, however short the requested length. M80: it acts
+# below 3,600 characters only (sc26, ten blocks of equal weight; the profiles ask 30,000): at 2,000 it prints 6 % more
+# than none, at the gold 0.230 instead of 0.228 printed macro-F1; 600 printed 35 % more than asked
 MIN_BLOCK_CHARS = 300
 
 

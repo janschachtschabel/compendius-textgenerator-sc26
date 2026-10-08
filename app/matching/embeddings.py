@@ -16,7 +16,9 @@ from app.templates.schema import TemplateSlot
 
 log = logging.getLogger(__name__)
 
-# A paragraph at or below this cosine similarity to a block is no candidate for it
+# A paragraph at or below this cosine similarity to a block is no candidate for it. M80: from 0 to 0.2 not one of the
+# 12,182 paragraphs of 81 topics changes its block - the scores are normalised over the run, and so weak a candidate
+# wins nowhere; 0.3 moves 3
 MIN_SIMILARITY = 0.1
 
 

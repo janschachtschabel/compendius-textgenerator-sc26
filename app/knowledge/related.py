@@ -9,7 +9,10 @@ from app.knowledge.topic import title_stems, title_words
 
 # What brings a link of the main article forward (rank_related_candidates): its title holds a stem of the topic,
 # else a word of it; it names a heading of the main article; the main article mentions it, counted up to
-# MAX_MENTIONS times; its title is of an ordinary length
+# MAX_MENTIONS times; its title is of an ordinary length. M80, each set to 0 and doubled on 81 topics: the mentions
+# carry (without them 72 corpora change and the printed gold falls from 0.299 to 0.225); TOPIC_WORD_IN_TITLE never
+# acts, as the stem of a title word comes along and counts first; the others change many corpora and move the gold
+# both ways by less than 0.02; MAX_MENTIONS 16 lifts it by 0.013, to be judged blind before it is built
 STEM_IN_TITLE = 12.0
 TOPIC_WORD_IN_TITLE = 8.0
 NAMES_A_HEADING = 7.0

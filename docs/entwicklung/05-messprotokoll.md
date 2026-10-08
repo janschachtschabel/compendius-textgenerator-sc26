@@ -3950,3 +3950,88 @@ ihre ersten erst nach 22,7 s.
 
 **Ergebnis:** Das Budget trägt auch beim breitesten Thema beide Teile nebeneinander; eine Rangfolge der Teile im Budget
 braucht es nicht. Rohdaten: `m79_breitestes_thema.json`.
+
+## M80 Die letzten Zahlen ohne Messung (Audit WA-02, 08.10.2026)
+
+Das Audit vom 27.09. (WA-02) fand Zahlen, die keine Messung trug; M44 und M65 maßen die Faktoren der Zuordnungsregeln
+(D88). Offen blieben fünf, seit `bb0ef74` benannte Konstanten: die Ähnlichkeitsschwellen von Model2Vec
+(`MIN_SIMILARITY` 0,1) und der Zeichen-n-Gramme (`MIN_CHAR_SIMILARITY` 0,02), die Untergrenze des Anteils eines
+Bausteins (`MIN_BLOCK_CHARS` 300), die Gewichte der Rangfolge verlinkter Artikel und die Zahl der verlinkten Artikel,
+die das Akteursverzeichnis nachschlägt (`MAX_LOOKUPS` 40). `mc_schwellen.py` misst sie im Ablauf des Dienstes wie M65
+und M66: Korpus von `llm-free`, Zuordnung `hybrid_light` samt Model2Vec, `target_length` 12.000, die 81 Themen von M65
+mit 12.182 Absätzen und darunter die zehn Goldthemen; im Einmal-Container des Images mit dem Code von `bb0ef74`,
+55 Minuten. Ausgeliefert: macro-F1 0,467, micro-F1 0,674, gedruckt 0,299.
+
+| Schwelle | Absätze mit anderem Baustein (gedruckt) | Themen | macro-F1 | micro-F1 | gedruckt |
+|---|---|---|---|---|---|
+| `MIN_SIMILARITY` 0 bis 0,2 | 0 (0) | 0 | 0,467 | 0,674 | 0,299 |
+| `MIN_SIMILARITY` 0,3 | 3 (5) | 2 | 0,469 | 0,674 | 0,298 |
+| `MIN_CHAR_SIMILARITY` 0 und 0,01 | 0 (0) | 0 | 0,467 | 0,674 | 0,299 |
+| `MIN_CHAR_SIMILARITY` 0,05 | 3 (3) | 2 | 0,468 | 0,674 | 0,298 |
+| `MIN_CHAR_SIMILARITY` 0,1 | 95 (86) | 50 | 0,489 | 0,683 | 0,316 |
+
+Die Schwelle von Model2Vec wirkt zwischen 0 und 0,2 nicht: Die Werte werden über den ganzen Lauf normiert, und ein so
+schwacher Kandidat gewinnt nirgends. Die der Zeichen-n-Gramme wirkt erst ab 0,05; bei 0,1 wechseln 95 Absätze in
+50 Themen den Baustein, und am Gold steigt die Zuordnung um 0,022 (gedruckt 0,017). Ob die 86 gedruckten Wechsel an den
+übrigen Themen besser sind, sagt das Gold mit seinen zehn Themen nicht.
+
+Die Untergrenze greift nur unter 3.600 Zeichen (sc26: zehn Bausteine gleichen Gewichts); die Profile fragen 30.000 an,
+die kleinste erlaubte Länge ist 2.000:
+
+| Länge | Untergrenze | gedruckt anders als mit 300 | gedruckte Zeichen der 81 Themen | gedruckt am Gold |
+|---|---|---|---|---|
+| 2.000 | 0 oder 150 | 50 | 407.437 | 0,228 |
+| 2.000 | 300 | – | 431.968 | 0,230 |
+| 2.000 | 600 | 235 | 585.277 | 0,267 |
+| 3.000 | 0 oder 150 | 8 | 448.507 | 0,227 |
+| 3.000 | 300 | – | 450.677 | 0,230 |
+| 3.000 | 600 | 208 | 585.277 | 0,267 |
+
+300 druckt bei der kleinsten Länge 6 % mehr als keine Untergrenze, am Gold ein wenig besser; 600 druckt 35 % mehr, als
+angefragt war, und trifft mehr, weil mehr gedruckt wird.
+
+Die Gewichte der Rangfolge wählen den Korpus, also wurde jedes Thema je Einstellung neu vorbereitet (ein Kontrolllauf
+mit den ausgelieferten Werten gab dieselben Korpora):
+
+| Gewicht (ausgeliefert) | Wert | Korpora anders (von 81) | Nebenartikel heraus | macro-F1 | gedruckt |
+|---|---|---|---|---|---|
+| `STEM_IN_TITLE` (12) | 0 | 56 | 170 | 0,489 | 0,271 |
+| | 24 | 37 | 52 | 0,473 | 0,299 |
+| `TOPIC_WORD_IN_TITLE` (8) | 0 und 16 | 0 | 0 | 0,467 | 0,299 |
+| `NAMES_A_HEADING` (7) | 0 | 53 | 96 | 0,478 | 0,300 |
+| | 14 | 27 | 39 | 0,472 | 0,304 |
+| `PER_MENTION` (1,5) | 0 | 72 | 143 | 0,444 | 0,225 |
+| | 3 | 42 | 104 | 0,475 | 0,263 |
+| `MAX_MENTIONS` (8) | 4 | 39 | 53 | 0,474 | 0,301 |
+| | 16 | 49 | 113 | 0,480 | 0,316 |
+| `ORDINARY_LENGTH` (1) | 0 und 2 | 3 und 5 | 2 und 6 | 0,467 | 0,299 |
+
+Die Erwähnungen tragen: Ohne sie ändert sich der Korpus von 72 Themen, und der gedruckte Text am Gold fällt von 0,299
+auf 0,225. `TOPIC_WORD_IN_TITLE` wirkt nie: Ein Titelwort im Link bringt seinen Stamm mit, und der Stamm zählt zuerst.
+Die übrigen ändern die Korpora vieler Themen, das Gold aber in beide Richtungen und meist um weniger als 0,02; ohne
+Stammgewicht steigt die Klassifikation, und der gedruckte Text fällt. Doppelt so viele gezählte Erwähnungen (16) heben
+das Gold um 0,013, den gedruckten Text um 0,017, bei 49 geänderten Korpora.
+
+Das Akteursverzeichnis wurde je Thema in einem Lauf von `generate` mit jeder Grenze gebaut, aus denselben Quellen wie
+im Dienst; die ausgelieferten 40 zuerst und so kalt wie in einer Anfrage, die übrigen warm:
+
+| Nachgeschlagen höchstens | Akteure je Thema, Mittel (Median) | nachgeschlagen im Mittel | Zeit |
+|---|---|---|---|
+| 10 | 1,9 (1) | 9,9 | warm 69 ms |
+| 20 | 3,4 (2) | 19,6 | warm 83 ms |
+| 40, ausgeliefert | 6,1 (3) | 37,3 | kalt 2,1 s im Median, höchstens 8,1 s |
+| 80 | 11,8 (8) | 67,9 | kalt rund 2 s mehr |
+| 160 | 20,8 (11) | 116,4 | kalt rund 5 s mehr |
+
+69 der 81 Themen schöpfen die 40 aus. Jeder weitere Artikel kostet kalt 66 ms im Median. 80 brächte in 53 Themen mehr
+Akteure, im Mittel doppelt so viele. Was dazukommt, ist gemischt: bei *Barockliteratur* weitere Dichter (Abraham a Sancta
+Clara, Christian Reuter) und Forschende (Elisabeth Frenzel), bei *Demokratie* Politikwissenschaftler und mit
+*Unterdrückung* ein Begriff, den die Kaskade als Akteur nahm. Die Zeiten liefen neben anderen Prozessen des Rechners und
+streuen; die Zahl der Nachschläge ist genau.
+
+**Ergebnis:** Keine der Zahlen ändert sich ohne Jan. Die Schwelle von Model2Vec und die Untergrenze sind begründet:
+Die eine wirkt zwischen 0 und 0,2 nicht, die andere druckt bei der kleinsten Länge etwas mehr bei gleicher Güte.
+`TOPIC_WORD_IN_TITLE` wirkt nie und kann gestrichen werden. Zwei Werte heben das Gold und verdienen eine Messung mit
+blinden Urteilen an den übrigen Themen, bevor einer gebaut wird: `MIN_CHAR_SIMILARITY` 0,1 (macro-F1 +0,022, 86
+gedruckte Wechsel in 50 Themen) und `MAX_MENTIONS` 16 (+0,013, 49 Korpora anders). `MAX_LOOKUPS` 80 verdoppelte das
+Akteursverzeichnis für rund 2 s je Anfrage, mit gemischten Namen. Rohdaten: `m80_schwellen.json`.
