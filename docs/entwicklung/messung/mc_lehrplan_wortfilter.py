@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 def zaehlen(words):
-    from app.main import build_registry, build_service
+    from app.wiring import build_registry, build_service
     from app.settings import get_settings
     from app.sources.lehrplan.matcher import LehrplanMatcher
     from app.templates.manager import TemplateManager

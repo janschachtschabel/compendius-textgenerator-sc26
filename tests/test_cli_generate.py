@@ -68,7 +68,7 @@ def test_generate_reports_a_repository_failure_once(
 ) -> None:
     client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository(fail=True)))
     builder = CollectionBuilder(client=client, cache=None)
-    monkeypatch.setattr("app.main.build_collections", lambda settings: builder)  # imported when the command runs
+    monkeypatch.setattr("app.wiring.build_collections", lambda settings: builder)  # build_service calls it
     zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
     assert main(["generate", "--collection-id", OPTIK, *zim_args]) == 1
     err = capsys.readouterr().err
@@ -81,7 +81,7 @@ def test_generate_takes_a_node_as_the_api_does(
     """The CLI knew no node (review of 2026-09-25); --node-id and --repository work as node_id and repository."""
     client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()))
     builder = CollectionBuilder(client=client, cache=None)
-    monkeypatch.setattr("app.main.build_collections", lambda settings: builder)
+    monkeypatch.setattr("app.wiring.build_collections", lambda settings: builder)
     zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
     out_file = cli_env / "knoten.md"
     assert main(["generate", "--node-id", OPTIK, "--out", str(out_file), *zim_args]) == 0
@@ -179,7 +179,7 @@ def test_generate_reads_the_knowledge_collection_as_deep_and_as_full_as_asked(
     """D70: --knowledge-depth and --knowledge-fulltext work as knowledge_depth and knowledge_fulltext of the API."""
     client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()))
     builder = CollectionBuilder(client=client, cache=None)
-    monkeypatch.setattr("app.main.build_collections", lambda settings: builder)
+    monkeypatch.setattr("app.wiring.build_collections", lambda settings: builder)
     zim_args = [arg for path in sample_zims.values() for arg in ("--zim", str(path))]
     out_file, json_file = cli_env / "optik.md", cli_env / "optik.json"
     deep = ["--knowledge-collection-id", OPTIK, "--knowledge-depth", "1", "--knowledge-fulltext"]

@@ -35,7 +35,7 @@ from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import ArticleChoiceJob
 from app.knowledge.topic_articles import ask_topic_articles
 from app.llm.deadline import Deadline
-from app.main import build_registry, build_service
+from app.wiring import build_registry, build_service
 from app.settings import get_settings
 from app.templates.manager import TemplateManager
 

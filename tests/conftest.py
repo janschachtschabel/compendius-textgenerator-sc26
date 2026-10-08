@@ -11,11 +11,11 @@ from typing import Any
 import pytest
 from libzim.writer import Creator, Hint, Item, StringProvider
 
-from app.main import build_service
 from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.zim.registry import ZimRegistry
 from app.templates.manager import TemplateManager
+from app.wiring import build_service
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).parent / "fixtures" / "zim_html"

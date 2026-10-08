@@ -36,7 +36,7 @@ HOLE = re.compile("[ " + chr(0xA0) + "][.,;:](?![0-9])|[(][ " + chr(0xA0) + "]*[
 
 
 def sammeln(titles):
-    from app.main import build_registry
+    from app.wiring import build_registry
     from app.settings import get_settings
 
     wiki = build_registry(get_settings()).primary_archive

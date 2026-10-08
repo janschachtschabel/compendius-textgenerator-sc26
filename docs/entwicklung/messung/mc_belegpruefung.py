@@ -23,7 +23,7 @@ import time
 install()
 import app.synthesis.llm as synthesis_llm
 from app.domain.requests import GenerateRequest
-from app.main import build_registry, build_service
+from app.wiring import build_registry, build_service
 from app.settings import get_settings
 from app.templates.manager import TemplateManager
 

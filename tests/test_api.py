@@ -15,10 +15,11 @@ from fastapi.testclient import TestClient
 
 import app.api.health as health_module
 from app.llm.client import BApiClient
-from app.main import build_llm, create_app
+from app.main import create_app
 from app.settings import Settings
 from app.sources.gnd.index import build_gnd_index
 from app.sources.wikidata.index import build_index
+from app.wiring import build_llm
 from tests.conftest import make_settings
 from tests.test_gnd_index import write_dumps as write_gnd_dumps
 from tests.test_lehrplan_api import write_cache
@@ -125,7 +126,7 @@ def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
     def offline_client(*args: Any, **kwargs: Any) -> BApiClient:
         return BApiClient(*args, transport=httpx.MockTransport(fake), **kwargs)
 
-    monkeypatch.setattr("app.main.BApiClient", offline_client)
+    monkeypatch.setattr("app.wiring.BApiClient", offline_client)
     settings = make_settings(
         [],
         tmp_path,
@@ -154,7 +155,7 @@ def offline_b_api(monkeypatch: pytest.MonkeyPatch) -> FakeBApi:
     def offline_client(*args: Any, **kwargs: Any) -> BApiClient:
         return BApiClient(*args, transport=httpx.MockTransport(fake), **kwargs)
 
-    monkeypatch.setattr("app.main.BApiClient", offline_client)
+    monkeypatch.setattr("app.wiring.BApiClient", offline_client)
     return fake
 
 

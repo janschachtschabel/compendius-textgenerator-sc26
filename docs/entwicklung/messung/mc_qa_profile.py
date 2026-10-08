@@ -62,7 +62,7 @@ def llm_step(source: Path, out: Path) -> None:
     os.environ["LLM_ENABLED"] = "true"
     os.environ["B_API_BASE_URL"] = "https://b-api.staging.openeduhub.net"
     from app.llm.deadline import Deadline
-    from app.main import build_llm
+    from app.wiring import build_llm
     from app.settings import get_settings
 
     llm = build_llm(get_settings())

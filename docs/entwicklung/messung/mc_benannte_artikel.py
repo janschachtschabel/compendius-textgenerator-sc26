@@ -23,7 +23,7 @@ install()
 from app.domain.requests import GenerateRequest
 from app.knowledge.corpus_sources import NAMED_ORIGIN
 from app.llm.deadline import Deadline
-from app.main import build_registry, build_service
+from app.wiring import build_registry, build_service
 from app.settings import get_settings
 from app.templates.manager import TemplateManager
 

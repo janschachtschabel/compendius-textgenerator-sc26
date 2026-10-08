@@ -8,11 +8,11 @@ import pytest
 
 from app.compendium.errors import LlmNotConfiguredError
 from app.domain.requests import GenerateRequest
-from app.main import build_service
 from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.zim.registry import ZimRegistry
 from app.templates.manager import TemplateManager
+from app.wiring import build_service
 from tests.conftest import make_settings
 from tests.test_lehrplan_api import write_broken_cache, write_cache
 from tests.test_llm_client import FakeBApi

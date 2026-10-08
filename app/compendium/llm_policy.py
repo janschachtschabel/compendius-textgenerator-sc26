@@ -41,7 +41,7 @@ class LlmPolicy:
 
         ``needed`` names the switches as name=value, ``profile`` the one in effect, ``defaulted`` whether the request
         named none. Then it runs llm-free whatever PRESET_DEFAULT says (D68), and only its own switches can need the
-        LLM. The message names the setting that keeps the LLM away, as app.main.build_llm checks them.
+        LLM. The message names the setting that keeps the LLM away, as app.wiring.build_llm checks them.
         """
         if self.llm is not None or not needed:
             return

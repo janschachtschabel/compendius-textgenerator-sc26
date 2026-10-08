@@ -36,7 +36,7 @@ class OpenAiDirect(httpx.BaseTransport):
 
 def install() -> None:
     """Every BApiClient the app builds from now on sends to OpenAI."""
-    import app.main as main_module
+    import app.wiring as wiring_module
     from app.llm.client import BApiClient
 
     class DirectClient(BApiClient):
@@ -44,4 +44,4 @@ def install() -> None:
             kwargs["transport"] = OpenAiDirect()
             super().__init__(*args, **kwargs)
 
-    main_module.BApiClient = DirectClient
+    wiring_module.BApiClient = DirectClient

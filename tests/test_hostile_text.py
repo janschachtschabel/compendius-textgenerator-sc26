@@ -23,7 +23,6 @@ from app.compose.assembler import render_markdown
 from app.compose.regeneration import _citation_rows
 from app.domain.models import ArticleSection, Chunk, ChunkKind, Citation, Paragraph, ScoredChunk, Source
 from app.domain.requests import GenerateRequest
-from app.main import build_service
 from app.sources.lehrplan.matcher import CurriculumMatch, MatchResult
 from app.sources.lehrplan.render import RenderOptions, render_curricula
 from app.sources.lehrplan.store import LehrplanRecord, NodeHit
@@ -37,6 +36,7 @@ from app.synthesis.glossary import build_glossary
 from app.synthesis.safe_markdown import defuse, escape_text, unescape
 from app.synthesis.sources_section import build_sources_section
 from app.templates.manager import TemplateManager
+from app.wiring import build_service
 from tests.conftest import FIXTURES, SAMPLE_META, HtmlItem, make_settings
 from tests.markdown_safety import render, tags, unsafe
 

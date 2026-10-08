@@ -24,7 +24,7 @@ from pathlib import Path
 install()
 import app.matching.llm_assignment as llm_assignment
 from app.domain.requests import GenerateRequest
-from app.main import build_registry, build_service
+from app.wiring import build_registry, build_service
 from app.matching.eval import aggregate, align, evaluate, predictions_from_classification
 from app.matching.gold import load_gold
 from app.settings import get_settings

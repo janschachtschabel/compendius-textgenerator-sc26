@@ -29,7 +29,7 @@ import app.compendium.llm_policy as llm_policy
 import app.sources.lehrplan.part as part_module
 import app.sources.lehrplan.render as render_module
 from app.domain.requests import GenerateRequest
-from app.main import build_registry, build_service
+from app.wiring import build_registry, build_service
 from app.settings import get_settings
 from app.templates.manager import TemplateManager
 

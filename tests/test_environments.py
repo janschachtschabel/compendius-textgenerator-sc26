@@ -13,8 +13,8 @@ from typing import Any
 
 import pytest
 
-from app.main import resolve_b_api
 from app.settings import Settings, b_api_for
+from app.wiring import resolve_b_api
 
 STAGING_REPO = "https://repository.staging.openeduhub.net/edu-sharing/rest"
 PROD_REPO = "https://redaktion.openeduhub.net/edu-sharing/rest"

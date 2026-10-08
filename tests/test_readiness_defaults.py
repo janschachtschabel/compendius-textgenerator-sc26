@@ -10,9 +10,10 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from app.main import create_app, resolve_required_ids
+from app.main import create_app
 from app.sources.zim.active import ACTIVE_FILE
 from app.sources.zim.subscriptions import load_manifest
+from app.wiring import resolve_required_ids
 from tests.conftest import make_settings
 
 

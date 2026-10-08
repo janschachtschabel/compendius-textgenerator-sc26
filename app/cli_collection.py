@@ -8,6 +8,7 @@ from pathlib import Path
 
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingError, validate_node_id
+from app.wiring import build_collections
 
 
 def cmd_overview(args: argparse.Namespace) -> int:
@@ -16,8 +17,6 @@ def cmd_overview(args: argparse.Namespace) -> int:
     except ValueError as exc:
         print(str(exc), file=sys.stderr)
         return 1
-    from app.main import build_collections  # not at import time: see cli_common.cli_service
-
     builder = build_collections(get_settings())
     if builder is None:
         print("kein edu-sharing-Repository konfiguriert (EDU_SHARING_BASE_URL)", file=sys.stderr)

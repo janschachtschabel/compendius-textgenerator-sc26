@@ -7,12 +7,13 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.domain.requests import GenerateRequest
-from app.main import build_service, create_app
+from app.main import create_app
 from app.sources.zim import refresh as refresh_module
 from app.sources.zim.active import ACTIVE_FILE, ActiveArchive, ActiveState, ActiveWatcher, read_active, write_active
 from app.sources.zim.refresh import RegistryRefresher
 from app.sources.zim.registry import ZimRegistry
 from app.templates.manager import TemplateManager
+from app.wiring import build_service
 from tests.conftest import make_settings
 
 

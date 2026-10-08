@@ -35,12 +35,13 @@ from pathlib import Path
 import httpx
 
 import app.main as main_module
+import app.wiring as wiring_module
 from app.compendium.assembly import assemble
 from app.compendium.prepared import Made, Requested, Stopwatch, WorldPart
 from app.domain.requests import GenerateRequest
 from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
-from app.main import build_registry, build_service
+from app.wiring import build_registry, build_service
 from app.service import CompendiumService
 from app.settings import get_settings
 from app.sources.wlo.part import CollectionBuilder
@@ -106,7 +107,7 @@ class RecordingClient(BApiClient):
                 CALLS.append(record)
 
 
-main_module.BApiClient = RecordingClient
+wiring_module.BApiClient = RecordingClient
 
 
 def generate_parallel(self, request, *, deadline=None, budget=None):

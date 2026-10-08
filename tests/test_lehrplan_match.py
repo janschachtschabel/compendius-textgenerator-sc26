@@ -214,7 +214,7 @@ def test_part_2_of_a_topic_leaves_out_the_side_words_its_builder_finds_too_gener
 
 
 def test_the_service_takes_the_limit_from_the_settings(tmp_path: Path) -> None:
-    from app.main import build_curricula
+    from app.wiring import build_curricula
     from tests.conftest import make_settings
 
     assert build_curricula(make_settings([], tmp_path / "state")).generic_hits == 1000

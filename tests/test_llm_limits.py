@@ -15,9 +15,9 @@ import httpx
 import pytest
 
 from app.llm.client import BApiClient
-from app.main import build_llm
 from app.observability.metrics import DURATION_BUCKETS
 from app.settings import PROVIDER_REQUEST_TIMEOUT_S, Settings
+from app.wiring import build_llm
 from tests.conftest import make_settings
 from tests.test_llm_client import FakeBApi
 
@@ -48,7 +48,7 @@ def test_the_gateway_sends_as_many_calls_at_once_as_the_provider_takes(
     def offline_client(*args: Any, **kwargs: Any) -> BApiClient:
         return BApiClient(*args, transport=httpx.MockTransport(FakeBApi()), **kwargs)
 
-    monkeypatch.setattr("app.main.BApiClient", offline_client)
+    monkeypatch.setattr("app.wiring.BApiClient", offline_client)
     settings = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", b_api_provider="academiccloud")
 
     gateway = build_llm(settings)
