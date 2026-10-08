@@ -3595,3 +3595,139 @@ Thema, das die KI dabei formulierte, als Eingabe - so, als käme die Formulierun
 Reihenfolge änderte 2 von 20 Artikeln, einen davon zum besseren. Die Schwäche liegt bei den Regeln ohne KI, wo es keine
 Formulierung gibt; was dort hilft (die Frage auf ihre Stichwörter kürzen, oder ein Hinweis, ein Stichwort anzugeben),
 steht in der Entscheidungsgrundlage des Audits. Rohdaten: `m70_lange_eingaben.json`.
+
+## M71 Sammlungen mit inhaltsneutralem Titel: der Ort im Themenbaum (08.10.2026)
+
+Jan: Eine Sammlung als `node_id` gibt ihren Titel als Thema, und mancher Titel im Themenbaum sagt nichts über den
+Inhalt („Grundlagen“); Fach, Bildungsstufe und über- oder untergeordnete Sammlungen könnten helfen, „es darf dabei
+aber nicht verloren gehen, das es trennscharf bleiben muss und nicht zuviel reingebracht wird, was eher bei anderen
+sammlungen im baum liegt“. `mc_sammlungskontext.py` suchte im WLO-Staging-Repository Sammlungen zu 22 Wörtern, die oft
+allein als Titel stehen, und las je Sammlung den Pfad der Sammlungen darüber bis unter das Fachportal
+(`virtual:primaryparent_nodeid`), die eigenen Untersammlungen und die Titel der ersten Materialien. Die Stichprobe:
+22 Sammlungen mit neutralem Titel („Grundlagen“, „Einführung“, „Methoden“, „Anwendungen“ …) und 10 Kontrollen mit
+sprechendem Titel („Grundlagen der Bruchrechnung“). `mc_sammlungskontext_messung.py` lief sechs Varianten über OpenAI
+direkt:
+
+- R0: `llm-free` wie bisher, der Titel ist das Thema;
+- R1: `llm-free` mit dem Titel der nächsten Sammlung darüber als Thema (ohne Pfad das Fach);
+- N0: `balanced` wie bisher, die Frage N (D63) hört Titel und Fach;
+- N1 bis N3: die Frage N hört dazu den Pfad (N1), die eigenen Untersammlungen und Materialtitel (N2) und die
+  Nachbarsammlungen, ausdrücklich als nicht gemeint (N3).
+
+Zwei Claude-Subagenten bewerteten je Sammlung Hauptartikel und genannte Artikel der sechs Varianten blind (passt, zu
+breit, zu eng, Nachbar, daneben; Gesamtnote 1 bis 5; gleiches Urteil zum Hauptartikel bei 152 von 192):
+
+| Variante | neutral: Note | neutral: Hauptartikel passt | Kontrolle: Note | Kontrolle: passt |
+|---|---|---|---|---|
+| R0 Titel, Regeln | 1,2 | 2 von 44 | 2,6 bis 2,7 | 11 von 20 |
+| R1 Sammlung darüber, Regeln | 1,5 bis 1,6 | 3 von 44 | 1,9 bis 2,0 | 5 von 20 |
+| N0 Titel und Fach | 1,9 | 3 von 44 | 2,8 bis 2,9 | 11 von 20 |
+| N1 + Pfad | 2,7 bis 3,0 | 15 von 44 | 2,4 bis 2,6 | 11 von 20 |
+| N2 + Untersammlungen, Materialien | 3,6 bis 3,8 | 22 von 44 | 3,4 bis 3,8 | 9 von 20 |
+| N3 + Nachbarn als nicht gemeint | 3,5 bis 4,0 | 25 von 44 | 3,9 bis 4,3 | 11 von 20 |
+
+(je Gutachter gezählt, also 44 Urteile für 22 Sammlungen.) Die Regeln lösten „Grundlagen“ zu *Sprachbau des
+Esperanto* auf (ein Volltexttreffer), N nannte das ganze Fach. Mit dem Ort im Baum nennt N die Sammlung selbst: *Isotop*
+für „Grundlagen“ unter Kernphysik, *Quantenmechanik* unter Quantenphysik, *Weimarer Republik* für „1 - Einführung“ im
+Warenkorb der Galeriemethode zur Weimarer Republik. Die Nachbarn machen die Wahl trennschärfer, nicht breiter: Bei N3
+ist der Hauptartikel öfter als bei N2 passend und seltener zu breit. Der Titel der Sammlung darüber hilft den Regeln nur
+bei neutralem Titel; bei sprechendem Titel schadet er („Grundlagen der Prozentrechnung“ unter „Prozente & Zinsen“ wird
+*Zinsbescheinigung*). Formate von Material sind kein neutraler Titel: Für „Experimente“ und „Übungen und Spiele“ passte
+der eigene Artikel besser als die Sammlung darüber. Rohdaten: `m71_sammlungskontext.json`.
+
+**Gebaut (D92)** und nachgemessen mit `mc_sammlungskontext_bau.py` (eingehängter Arbeitsstand, dieselben 32
+Sammlungen):
+
+Ohne KI gleicht das Ergebnis bei den Kontrollen dem bisherigen (10 von 10), bei neutralen Titeln lösen die Regeln die
+Sammlung darüber auf. Anders als R1 nehmen sie deren Titel ohne Zusätze in Klammern, überspringen neutrale Sammlungen
+darüber und lassen Formate wie „Experimente“ beim eigenen Titel. Wo das Ergebnis deshalb von R1 abweicht (13
+Sammlungen), bewerteten zwei neue blinde Gutachter den gebauten Artikel mit 3,3 statt 1,2 von 5: besser in 22 von 26
+Urteilen (*Nachhaltigkeit* statt *Carl von Ossietzky Universität Oldenburg* für „Grundlagen“ unter „Nachhaltigkeit
+(LTP)“, *Mediendidaktik* statt *Bildpädagogik*), gleich in 3, schlechter in einem. Mit KI führt bei neutralem Titel
+die Übersicht von N: 31 der 32 Hauptartikel sind ihre erste Nennung, die Ausnahme „Medien“ gilt nicht als neutral.
+25 von 32 Hauptartikeln gleichen N3; die übrigen 7 bewerteten die Gutachter mit 2,8 gegen 3,0, die Streuung zweier
+Läufe.
+
+Dazu das Thema, wie Überschrift und Prompts es nennen (gleiches Urteil bei 121 von 128):
+
+| Thema | neutral: Note | neutral: passt | Kontrolle: Note |
+|---|---|---|---|
+| Titel der Sammlung | 1,1 | 0 von 44 | 4,3 |
+| Titel mit Ersatz, „Grundlagen (Kernphysik)“ | 2,4 | 24 von 44 | 4,4 |
+| von der KI formuliert wie bisher (D72) | 3,4 bis 3,5 | 27 von 44 | 4,4 |
+| von der KI formuliert, mit dem Ort im Baum | 3,8 | 32 von 44 | 4,7 |
+
+Die schreibenden Profile formulieren das Thema seitdem mit dem Ort im Baum, die anderen zeigen den Titel mit Ersatz.
+Einmal gab die Formulierung den neutralen Titel selbst zurück („Anwendungen“, Note 1); eine solche Antwort verwirft der
+Dienst jetzt, und die Überschrift mit Ersatz bleibt (Note 2 bis 3). Ohne KI endet „Einführung“ unter „Pädagogische
+Themenseite - Galeriemethode“ in einem 404, weil das Archiv zur Sammlung darüber keinen Artikel hat; bisher kam *Intro*.
+
+Rohdaten Teil 3: `m71_sammlungskontext_bau.json`.
+
+## M72 Passen die Artikel, die N zu einem Thema nennt? (Audit F04, 08.10.2026)
+
+F04 des externen Audits: Die Artikel, die die Frage N (D63) zu den Teilen eines Themas nennt, prüft der Dienst nur
+darauf, ob es sie gibt und ob sie keine Begriffsklärung sind. Die Entscheidungsgrundlage riet, erst zu messen, wie
+viele davon nicht passen. `mc_benannte_artikel.py` lief `balanced` bis zum Korpus über OpenAI direkt für 20 gewöhnliche
+Themen, 15 Sammelthemen aus M37 und die 8 Aspektthemen aus M47 (damit misst dieselbe Messung auch Zeile 1 der
+Entscheidungsgrundlage, die Aspekte). Im Korpus landeten 277 benannte Artikel; zwei Claude-Subagenten bewerteten je
+Artikel mit dem Anfang seiner Einleitung blind, ob er zum Thema passt, wie es gefragt ist (gleiches Urteil bei 262):
+
+| Art der Themen | Artikel | passt | Randthema | passt nicht |
+|---|---|---|---|---|
+| gewöhnlich | 133 | 126 | 7 | 0 |
+| Sammelthema | 106 | 102 bis 104 | 0 bis 2 | 2 |
+| Aspektthema | 38 | 4 bis 14 | 21 bis 32 | 2 bis 3 |
+
+Nicht passend fanden beide: *Marco Polo* zu „Entdecker der Neuzeit“, *Hadrian* zu „römische Kaiser“ (der Artikel zum
+Vornamen, nicht zum Kaiser), *Massive Open Online Course* zu „Digitale Bildung in der Grundschule“ und *Schulpflicht* zu
+„Datenschutz an Schulen“. Bei Aspektthemen nennt N fast nur Artikel zum Oberbegriff oder zu benachbarten Themen
+(*UNESCO*, *Creative Commons* zu „OER-Förderungen“): Für den Aspekt gibt es meist keinen Artikel.
+
+**Ergebnis:** nicht gebaut (D92). Eine Prüfung der benannten Artikel mit einem LLM-Aufruf mehr je Anfrage träfe etwa 5
+von 277 Artikeln. Bei Aspektthemen fehlt nicht die Prüfung, sondern das Material; dort bleibt
+`best-coverage-generated` mit Modellwissen der Weg (M47). Rohdaten: `m72_benannte_artikel.json`.
+
+## M73 Fragen ohne KI: Stichwörter statt Volltextsuche (08.10.2026)
+
+M70 zeigte: `llm-free` findet zu Fragen einer Lehrkraft oft einen sachfremden Artikel, denn die Regeln suchen mit der
+ganzen Frage im Volltext („Mond“ für den Regenbogen). `mc_fragen_regeln.py` kürzt die Frage auf ihre Stichwörter und löst
+sie in der Reihenfolge auf, in der die Frage sie nennt; an jedem Wort zuerst die längste Form: ein Paar mit „und“, ein
+Adjektiv mit Nomen in der Grundform („nachhaltiger Landwirtschaft“ wird „Nachhaltige Landwirtschaft“), eine Folge
+großgeschriebener Wörter samt Grundform ihres Adjektivs („Ersten Weltkriegs“ wird „Erster Weltkrieg“), dann das Nomen
+allein. Fragewörter, Wörter der Fragart („Unterschied“, „Ursachen“) und Klassenwörter („Tiere“, „Aufgaben“) zählen
+nicht. Es gilt das erste Stichwort, das einen Artikel genau trifft (Titel oder Schreibvariante). Die erste Fassung
+lief an 40 Fragen der Entwicklung, die zweite dazu an 20 neuen; die dritte ordnet nach der Stellung in der Frage und
+bildet auch großgeschriebene Adjektive in die Grundform - sie behob unter anderem einen Fehler, den eine der neuen
+Fragen zeigte („Dreißigjährige Krieg“ wurde *Krieg*), die 20 sind also nicht ganz unberührt. Zwei Gutachter
+bewerteten je Frage den Artikel von heute und den der dritten Fassung blind (gleiches Urteil bei 113 von 120):
+
+| | heute: passt | heute: passt nicht | Stichwort: passt | Stichwort: passt nicht |
+|---|---|---|---|---|
+| 40 Fragen der Entwicklung | 14 bis 15 | 18 bis 19 | 29 bis 31 | 2 |
+| 20 neue Fragen | 8 bis 9 | 6 | 14 | 0 |
+
+Besser war das Heutige bei 5 Fragen, wo die Volltextsuche zufällig einen guten Artikel fand (*Gezeiten* statt *Ebbe*,
+*Säure-Base-Konzepte* statt *Säuren*). Eine Probe an den 195 verschiedenen Themen von M63 zeigte, dass die Regel nicht
+für kurze Themen taugt: Wo die Regeln heute raten, wechselten 41 Themen, so oft zum Schlechteren („Plastik im Meer“ wird
+*Meer* statt *Plastikmüll in den Ozeanen*, „Erfindungen der Industrialisierung“ wird *Erfindung*) wie zum Besseren.
+
+**Ergebnis:** gebaut (D92), nur ohne LLM, nur wo die Eingabe wie ein Text aussieht (Satz, Frage, mehr als sechs Wörter
+oder 60 Zeichen, D72) und die Regeln geraten oder nichts gefunden haben; findet kein Stichwort einen Artikel, bleibt es
+beim Ergebnis der Regeln. Der eingebaute Code (`app/knowledge/question.py`) gibt an den 60 Fragen 59-mal denselben Artikel
+wie die Messung; die eine Abweichung ist die Sperre („Photosynthese einfach erklärt für die Grundschule“ hat sechs
+Wörter). Rohdaten: `m73_fragen_regeln.json`.
+
+## M74 Reste fremder Seiten in Materialtexten (08.10.2026)
+
+M68 fand in Materialtexten neben Einwilligungstext Hinweise eines eingebetteten Videoplayers, Fehlermeldungen beim
+Teilen und Browserwarnungen; die Entscheidungsgrundlage riet, erst zu messen, ob sie gedruckt werden. `mc_seitenreste.py`
+erzeugte Teil 1 mit drei Wissens-Sammlungen samt Volltexten (`knowledge_fulltext`) in `llm-free` und `best-quality` und
+zählte die Absätze aus Materialien, die als Seitenrest gelten (in mindestens drei Materialtexten gleich, oder ein
+bekannter Hinweis). In der Optik-Sammlung trugen 24 Materialien 187 Absätze, 4 davon Seitenreste; gedruckt wurde in
+keinem der beiden Profile einer. Die beiden anderen Sammlungen hatten fast keine Volltexte. Zwei der vier Reste waren
+Cookie-Hinweise, die der Filter von D91 nicht erkannte, einer davon mit umgestellter Wortfolge („Derzeit verwenden wir
+auf unserer Website keine Cookies …“).
+
+**Ergebnis:** kein Filter nach Wiederholung gebaut (D92): Die Zuordnung lässt solche Absätze schon liegen. Der
+Cookie-Filter erkennt die umgestellte Wortfolge jetzt mit (`ec0e72a`). Rohdaten: `m74_seitenreste.json`.

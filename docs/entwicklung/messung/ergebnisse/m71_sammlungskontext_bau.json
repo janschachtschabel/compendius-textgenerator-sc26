@@ -1,0 +1,6057 @@
+{
+ "note": "M71 Teil 3 (08.10.2026): der eingebaute Sammlungskontext an den 32 Sammlungen von Teil 2, im Einmal-Container mit eingehängtem Arbeitsstand über OpenAI direkt: BR llm-free, BN balanced, W0 die Themenformulierung der schreibenden Profile aus den Angaben der Sammlung, W1 dieselbe mit dem Ort im Baum. Bogen: je Sammlung die Themen T (Titel), S (Titel mit Ersatz), W0, W1 und die Hauptartikel, wo der Bau von R1 oder N3 abweicht, blind von zwei Claude-Subagenten bewertet (urteil, note 1-5); der Schlüssel ordnet die Buchstaben zu.",
+ "sammlungen": [
+  {
+   "id": "259ced32-2121-4468-baf1-0edf17004f43",
+   "title": "Grundlagen",
+   "subjects": [],
+   "levels": [
+    "Hochschule",
+    "Berufliche Bildung",
+    "Fortbildung",
+    "Erwachsenenbildung"
+   ],
+   "description": "Für die Interpretation von Evidenz benötigen Anwendende der Evidenzbasierten Medizin Grundlagen zur Interpretation epidemiologischer und statistischer Kennzahlen und sollen mit den Grundprinzipien des wissenschaftlichen Arbeitens und der guten wissenschaftlichen Praxis vertraut sein.",
+   "keywords": [
+    "Deskriptive Statistik",
+    "Hypothesentestung",
+    "Stichprobenumfang",
+    "Fallzahlberechnug",
+    "Power",
+    "Regression",
+    "Kaplan-Meyer Kurven",
+    "Konfidenzintervalle",
+    "Signifikanz",
+    "p-Wert",
+    "Univariate Analyse",
+    "Multivariate Analyse",
+    "Statistische Signifikanz",
+    "Konfidenzintervall",
+    "Statistikprogramme"
+   ],
+   "path": [
+    "Evidenzbasierte Medizin - EbM"
+   ],
+   "children": [
+    "Statistik",
+    "Epidemiologie ",
+    "Wissenschaftliches Arbeiten",
+    "Gute wissenschaftliche Praxis "
+   ],
+   "materials": [],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Evidenzbasierte Medizin - EbM"
+    ],
+    "place": "Sammlung im Themenbaum unter: Evidenzbasierte Medizin - EbM; ihre Untersammlungen: Statistik, Epidemiologie, Wissenschaftliches Arbeiten, Gute wissenschaftliche Praxis; nicht gemeint sind die Nachbarsammlungen: Einführung in die Evidenzbasierte Medizin, Literaturrecherche, Kritische Bewertung, Anwendung EbM"
+   },
+   "bau": {
+    "BR": {
+     "main": "Evidenzbasierte Medizin",
+     "method": "search",
+     "rules_topic": "Evidenzbasierte Medizin - EbM",
+     "named": [],
+     "asked": "Grundlagen (Evidenzbasierte Medizin - EbM)"
+    },
+    "BN": {
+     "main": "Evidenzbasierte Medizin",
+     "method": "llm",
+     "rules_topic": "Evidenzbasierte Medizin - EbM",
+     "named": [
+      "Evidenzbasierte Medizin",
+      "Statistik",
+      "Epidemiologie",
+      "Wissenschaftliche Arbeit",
+      "Gute wissenschaftliche Praxis"
+     ],
+     "asked": "Grundlagen (Evidenzbasierte Medizin - EbM)"
+    },
+    "W0": {
+     "topic": "Statistik und wissenschaftliches Arbeiten in der Evidenzbasierten Medizin",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Statistik, Epidemiologie und wissenschaftliches Arbeiten in der evidenzbasierten Medizin",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "8402f24f-81ae-458a-a696-b809e6e1eb69",
+   "title": "Grundlagen",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "In dieser Untersammlung finden sich grundlegende, biologische Fakten, die im Anfangsunterricht der Primarstufe unterrichtet und den Schüler*innen nahegebracht werden sollen.",
+   "keywords": [
+    "Grundlagen Biologie",
+    "Biologiedidaktik",
+    "Anfangsunterricht"
+   ],
+   "path": [
+    "Fachdidaktik"
+   ],
+   "children": [],
+   "materials": [
+    "Immunsystem",
+    "Warum muss man sich überhaupt waschen?",
+    "Was ist der Unterschied zwischen Viren und Bakterien? ",
+    "Vitamin",
+    "Von der Keimzelle zum Kind (Arbeitsblätter)",
+    "Von der Keimzelle zum Kind (Erklärvideos)",
+    "Die Anatomie der Biene",
+    "#bienenlive — Basiswissen Bienen",
+    "Was gutes Brot ist und wie es gut bleibt",
+    "Sauerteigbrot",
+    "Arbeitsmaterialien Ernährung",
+    "Verdauung - alpha Lernen",
+    "Ernährung - alpha Lernen",
+    "Vitamine - alpha Lernen",
+    "Das menschliche Skelett -Übungsblatt"
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Fachdidaktik"
+    ],
+    "place": "Sammlung im Themenbaum unter: Fachdidaktik; Materialien darin: Immunsystem, Warum muss man sich überhaupt waschen?, Was ist der Unterschied zwischen Viren und Bakterien?, Vitamin, Von der Keimzelle zum Kind (Arbeitsblätter), Von der Keimzelle zum Kind (Erklärvideos), Die Anatomie der Biene, #bienenlive — Basiswissen Bienen; nicht gemeint sind die Nachbarsammlungen: Bewertungsstrategien, Methoden"
+   },
+   "bau": {
+    "BR": {
+     "main": "Fachdidaktik",
+     "method": "title",
+     "rules_topic": "Fachdidaktik",
+     "named": [],
+     "asked": "Grundlagen (Fachdidaktik)"
+    },
+    "BN": {
+     "main": "Biologie",
+     "method": "llm",
+     "rules_topic": "Fachdidaktik",
+     "named": [
+      "Biologie",
+      "Immunsystem",
+      "Hygiene",
+      "Bakterien",
+      "Vitamin",
+      "Mensch",
+      "Bienen"
+     ],
+     "asked": "Grundlagen (Fachdidaktik)"
+    },
+    "W0": {
+     "topic": "Biologische Grundlagen im Anfangsunterricht",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Biologische Grundlagen im Anfangsunterricht",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "0bf4bdbb-73cd-49f3-bccb-152dfef66790",
+   "title": "Grundlagen (erwachsende Lernende)",
+   "subjects": [
+    "Nachhaltigkeit"
+   ],
+   "levels": [],
+   "description": "",
+   "keywords": [
+    "ökologische Nachhaltigkeit"
+   ],
+   "path": [
+    "Nachhaltigkeit (LTP)",
+    "Ökologie (erwachsene Lernende)"
+   ],
+   "children": [],
+   "materials": [
+    "Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales"
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Nachhaltigkeit (LTP)",
+     "Ökologie (erwachsene Lernende)"
+    ],
+    "place": "Sammlung im Themenbaum unter: Nachhaltigkeit (LTP) › Ökologie (erwachsene Lernende); Materialien darin: Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales; nicht gemeint sind die Nachbarsammlungen: Wichtige Persönlichkeiten - ökologische Nachhaltigkeit, Wasser (erwachsene Lernenden), Gesundheit (erwachsene Lernende), Ökosysteme (erwachsene Lernende), Wasser (erwachsene Lernende), Flora und Fauna - Der Wald (Kinder 8-12 Jahre)"
+   },
+   "bau": {
+    "BR": {
+     "main": "Ökologie",
+     "method": "title",
+     "rules_topic": "Ökologie",
+     "named": [],
+     "asked": "Grundlagen (erwachsende Lernende) (Ökologie)"
+    },
+    "BN": {
+     "main": "Nachhaltigkeit",
+     "method": "llm",
+     "rules_topic": "Ökologie",
+     "named": [
+      "Nachhaltigkeit",
+      "Drei-Säulen-Modell (Nachhaltigkeit)",
+      "Ökonomische Nachhaltigkeit",
+      "Soziale Nachhaltigkeit",
+      "Nachhaltige Entwicklung"
+     ],
+     "asked": "Grundlagen (erwachsende Lernende) (Ökologie)"
+    },
+    "W0": {
+     "topic": "Ökologische Nachhaltigkeit",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Ökologische Nachhaltigkeit",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "775d6268-e7fe-4918-9dc6-6870532318f6",
+   "title": "Grundlagen (Fachportalstartseite)",
+   "subjects": [
+    "Nachhaltigkeit"
+   ],
+   "levels": [],
+   "description": "",
+   "keywords": [
+    "Ökologische Grundlagen",
+    "Nachhaltigkeitsziele",
+    "Nachhaltigkeit"
+   ],
+   "path": [
+    "Nachhaltigkeit (LTP)"
+   ],
+   "children": [],
+   "materials": [
+    "Die Ziele für nachhaltige Entwicklung im Unterricht | Portal Globales Lernen",
+    "Lernen zu handeln! Was bedeutet Bildung für nachhaltige Entwicklung (BNE)? - YouTube",
+    "Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales"
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Nachhaltigkeit (LTP)"
+    ],
+    "place": "Sammlung im Themenbaum unter: Nachhaltigkeit (LTP); Materialien darin: Die Ziele für nachhaltige Entwicklung im Unterricht | Portal Globales Lernen, Lernen zu handeln! Was bedeutet Bildung für nachhaltige Entwicklung (BNE)? - YouTube, Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales; nicht gemeint sind die Nachbarsammlungen: Ökonomie, Energie und Strom, Ökologie für Lehrende, Soziales, Grundbegriffe (Fachportalstartseite), historischer Kontext (Fachportalseite), BNE Didaktik und Methodik (Fachportalseite), Nachhaltigkeit im Alltag, Ökologie (erwachsene Lernende), Pädagogische Themenseite - Galeriemethode"
+   },
+   "bau": {
+    "BR": {
+     "main": "Nachhaltigkeit",
+     "method": "title",
+     "rules_topic": "Nachhaltigkeit",
+     "named": [],
+     "asked": "Grundlagen (Fachportalstartseite) (Nachhaltigkeit)"
+    },
+    "BN": {
+     "main": "Nachhaltigkeit",
+     "method": "llm",
+     "rules_topic": "Nachhaltigkeit",
+     "named": [
+      "Nachhaltigkeit",
+      "Nachhaltige Entwicklung",
+      "Bildung für nachhaltige Entwicklung",
+      "Ziele für nachhaltige Entwicklung",
+      "Drei-Säulen-Modell (Nachhaltigkeit)"
+     ],
+     "asked": "Grundlagen (Fachportalstartseite) (Nachhaltigkeit)"
+    },
+    "W0": {
+     "topic": "Nachhaltigkeit",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Nachhaltigkeit",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "f9ea98a6-2840-433d-99ca-b6ca06d3ca95",
+   "title": "Grundlagen",
+   "subjects": [
+    "Informatik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Informatik - Grundlagen ist der Schlüssel zur digitalen Welt! Hier lernst du, wie Computer funktionieren, wie man Programme schreibt und wie man Daten sicher speichert. Entdecke die faszinierende Welt der Informatik und werde zum digitalen Experten!",
+   "keywords": [
+    "ChatGPT: Beschreibung"
+   ],
+   "path": [],
+   "children": [
+    "Zahlensysteme",
+    "Anwendungen",
+    "Peripherie",
+    "Grafik / Bildbearbeitung",
+    "Audiobearbeitung"
+   ],
+   "materials": [
+    "1.1 - IKT",
+    "inf-schule | Information und ihre Darstellung",
+    "Ideenwolke Lerntheke",
+    "Informatik ohne Strom (PDF)",
+    "Sicherheitsregeln im digitalen Zeitalter",
+    "Digitale Kompetenzen",
+    "Passwörter - Schlüssel fürs Online-Leben",
+    "Sichere Passwörter"
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [],
+    "place": "Sammlung im Fachportal Informatik; ihre Untersammlungen: Zahlensysteme, Anwendungen, Peripherie, Grafik / Bildbearbeitung, Audiobearbeitung; Materialien darin: 1.1 - IKT, inf-schule | Information und ihre Darstellung, Ideenwolke Lerntheke, Informatik ohne Strom (PDF), Sicherheitsregeln im digitalen Zeitalter, Digitale Kompetenzen, Passwörter - Schlüssel fürs Online-Leben, Sichere Passwörter; nicht gemeint sind die Nachbarsammlungen: Angewandte Informatik, Informatik & Gesellschaft, Praktische Informatik, Technische Informatik, Theoretische Informatik, WP_Fachportal_Informatik"
+   },
+   "bau": {
+    "BR": {
+     "main": "Informatik",
+     "method": "title",
+     "rules_topic": "Informatik",
+     "named": [],
+     "asked": "Grundlagen (Informatik)"
+    },
+    "BN": {
+     "main": "Zahlensystem",
+     "method": "llm",
+     "rules_topic": "Informatik",
+     "named": [
+      "Zahlensystem",
+      "Information",
+      "Informations- und Kommunikationstechnik",
+      "Digitale Kompetenz",
+      "Passwort",
+      "Peripheriegerät",
+      "Computergrafik"
+     ],
+     "asked": "Grundlagen (Informatik)"
+    },
+    "W0": {
+     "topic": "Grundlagen der Informatik",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Informatik-Grundlagen",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "a79a644c-ecfc-4b65-8cf2-bb9b0c13dac4",
+   "title": "Anfangsunterricht",
+   "subjects": [
+    "Chemie"
+   ],
+   "levels": [],
+   "description": "Zu Beginn der Chemieunterrichts geht es zunächst meist um eine Klärung des Stoffbegriffs sowie die Eigenschaften chemischer Reaktionen. Denn diese sind mit einer Vernichtung von Ausgangsstoffen und einer Bildung neuer Stoffe verbunden - genauso wie mit einem Energieumsatz.  Der Anfangsunterricht versucht, diese Grundlagen zu vermitteln.",
+   "keywords": [
+    "Anfangsunterricht",
+    "Reaktion",
+    "Stoff",
+    "Stoffeigenschaften",
+    "Teilchen",
+    "Atommodell",
+    "Atombau",
+    "Einführung",
+    "Grundlagen",
+    "Chemie",
+    "Sek 1",
+    "PSE",
+    "chemisches Rechnen",
+    "Metallgewinnung"
+   ],
+   "path": [],
+   "children": [
+    "Stoffe und Stoffeigenschaften",
+    "Die chemische Reaktion",
+    "Metalle und die Gewinnung aus Erzen"
+   ],
+   "materials": [
+    "Freies Lehrbuch der anorganischen Chemie - Für Schüler und Studenten",
+    "Lösungsvorgang von Feststoffen in Wasser - Simulation"
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [],
+    "place": "Sammlung im Fachportal Chemie; ihre Untersammlungen: Stoffe und Stoffeigenschaften, Die chemische Reaktion, Metalle und die Gewinnung aus Erzen; Materialien darin: Freies Lehrbuch der anorganischen Chemie - Für Schüler und Studenten, Lösungsvorgang von Feststoffen in Wasser - Simulation; nicht gemeint sind die Nachbarsammlungen: Säuren und Basen, Die Elektrochemie, Organische Chemie, Chemie und Umwelt 123, Fachportalseite Chemie, Fachmethoden und Reflexion, Energie & Kinetik, Atombau und PSE, Bindung & Struktur, Fachdidaktik"
+   },
+   "bau": {
+    "BR": {
+     "main": "Chemie",
+     "method": "title",
+     "rules_topic": "Chemie",
+     "named": [],
+     "asked": "Anfangsunterricht (Chemie)"
+    },
+    "BN": {
+     "main": "Chemie",
+     "method": "llm",
+     "rules_topic": "Chemie",
+     "named": [
+      "Chemie",
+      "Stoffeigenschaft",
+      "Chemische Reaktion",
+      "Metalle",
+      "Erz",
+      "Lösung (Chemie)",
+      "Anorganische Chemie"
+     ],
+     "asked": "Anfangsunterricht (Chemie)"
+    },
+    "W0": {
+     "topic": "Stoffe und chemische Reaktionen",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Chemie",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "6481eff0-eb1d-45b7-b099-ddc9f670db0a",
+   "title": "Einführung / Grundlagen",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Die Astronomie untersucht unglaublich viele, unglaublich unterschiedliche Phänomene. Astronomen nutzen hierzu oft Begriffe und Ideen aus der Physik, Mathematik und Chemie. Eine “Einführung” in die Astronomie versucht, grundlegende Phänomene zu klären, Techniken und Arbeitsweisen der Astronomie zu beschreiben und die geschichtliche Entwicklung des astronomischen Wissens deutlich zu machen.",
+   "keywords": [
+    "Sonne",
+    "Mond",
+    "Sterne",
+    "Himmelskörper",
+    "Bewegung der Himmelskörper",
+    "Die Himmelskörper ruhen nicht",
+    "sondern sie befinden sich in einer oder mehreren Drehbewegungen",
+    "Mondfinsternis",
+    "Sonnenfinsternis",
+    "Mondphasen",
+    "Monat",
+    "Jahreszeiten",
+    "Himmel"
+   ],
+   "path": [
+    "Astronomie"
+   ],
+   "children": [],
+   "materials": [
+    "Paxi und unser Mond: Phasen und Finsternisse - YouTube",
+    "Totale Sonnenfinsternis - Sachgeschichten mit Armin Maiwald - YouTube",
+    "Wie entstehen Ebbe und Flut? - YouTube"
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Astronomie"
+    ],
+    "place": "Sammlung im Themenbaum unter: Astronomie; Materialien darin: Paxi und unser Mond: Phasen und Finsternisse - YouTube, Totale Sonnenfinsternis - Sachgeschichten mit Armin Maiwald - YouTube, Wie entstehen Ebbe und Flut? - YouTube; nicht gemeint sind die Nachbarsammlungen: Sternbeobachtung, Planetensystem, Sonne / Fixsterne, Kosmologie"
+   },
+   "bau": {
+    "BR": {
+     "main": "Astronomie",
+     "method": "title",
+     "rules_topic": "Astronomie",
+     "named": [],
+     "asked": "Einführung / Grundlagen (Astronomie)"
+    },
+    "BN": {
+     "main": "Mond",
+     "method": "llm",
+     "rules_topic": "Astronomie",
+     "named": [
+      "Mond",
+      "Mondphase",
+      "Mondfinsternis",
+      "Sonnenfinsternis",
+      "Gezeiten"
+     ],
+     "asked": "Einführung / Grundlagen (Astronomie)"
+    },
+    "W0": {
+     "topic": "Grundlagen der Astronomie",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Astronomie",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "47e6b1d9-8bb6-411c-be11-ece5736c739a",
+   "title": "Grundlagen",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Die Kernphysik befasst sich mit dem Aufbau und den möglichen Umwandlungsprozessen von Atomkernen. Die Kernphysik baut hierbei einerseits auf grundlegenden experimentellen Befunden auf, andererseits auf immer komplexer werdenden Modellen. Zur Beschreibung sind zudem einige Grundbegriffe notwendig: Nuklide, Isotope und Kernreaktionsgleichung sind einige davon.",
+   "keywords": [
+    "Isotope",
+    "Nuklide",
+    "Streuexperiment"
+   ],
+   "path": [
+    "Kernphysik"
+   ],
+   "children": [],
+   "materials": [
+    "Der Nulleffekt | Radioaktivität überall",
+    "Isotope und die Radiocarbonmethode",
+    "Übung zum Verständnis der Isotopenschreibweise",
+    "Was sind Isotope? I musstewissen Chemie",
+    "Die Masse von Atomen I musstewissen Chemie",
+    "Isotope und Atommasse",
+    "Leseübungen zur Isotopenschreibweise",
+    "Verständnisfragen zum Begriff Nuklide und deren Schreibweise",
+    "Nuklide und deren Schreibweise",
+    "Lückentext zur Radioaktivität allgemein",
+    "Allgemeine Verständnisfragen zur Radioaktivität",
+    "Virtuelle Experimente zur Radioaktivität",
+    "Ordnungszahl und Massenzahl - YouTube",
+    "Was ist ein Atom? - YouTube",
+    "Abschirmung elektromagnetischer Strahlung - YouTube"
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Kernphysik"
+    ],
+    "place": "Sammlung im Themenbaum unter: Kernphysik; Materialien darin: Der Nulleffekt | Radioaktivität überall, Isotope und die Radiocarbonmethode, Übung zum Verständnis der Isotopenschreibweise, Was sind Isotope? I musstewissen Chemie, Die Masse von Atomen I musstewissen Chemie, Isotope und Atommasse, Leseübungen zur Isotopenschreibweise, Verständnisfragen zum Begriff Nuklide und deren Schreibweise; nicht gemeint sind die Nachbarsammlungen: Kernmodelle, Kernreaktionen, Kernfusion, Kernspaltung, Radioaktivität"
+   },
+   "bau": {
+    "BR": {
+     "main": "Kernphysik",
+     "method": "title",
+     "rules_topic": "Kernphysik",
+     "named": [],
+     "asked": "Grundlagen (Kernphysik)"
+    },
+    "BN": {
+     "main": "Isotop",
+     "method": "llm",
+     "rules_topic": "Kernphysik",
+     "named": [
+      "Isotop",
+      "Nuklid",
+      "Atommasse",
+      "Massenzahl",
+      "Ordnungszahl",
+      "Kohlenstoff",
+      "Radiokarbonmethode",
+      "Radioaktivität"
+     ],
+     "asked": "Grundlagen (Kernphysik)"
+    },
+    "W0": {
+     "topic": "Grundbegriffe der Kernphysik",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundbegriffe der Kernphysik",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "1894ea88-9e13-4fc2-b568-18f67575f85b",
+   "title": "Grundlagen",
+   "subjects": [
+    "Medienbildung"
+   ],
+   "levels": [],
+   "description": "Lernen und Medien, Lerninhalte Medien; Lernziele Medien, Medienkompetenz; Medienkompetenzrahmen; Grundlagen Mediendidaktik; elearning; e-learning; Medienkompetenzerwerb; Förderung Medienkompetenz; Vermittlung Medienkompetenz; Lernen neue Medien; Theorie Mediendidaktik; theoretische Grundlagen Mediendidaktik;",
+   "keywords": [
+    "Grundlagen Mediendidaktik; elearning; e-learning; Medienkompetenzerwerb; Förderung Medienkompetenz; Vermittlung Medienkompetenz Lernen neue Medien; Theorie Mediendidaktik; theoretische Grundlagen Mediendidaktik;"
+   ],
+   "path": [
+    "(Unsichtbar) Mediendidaktik"
+   ],
+   "children": [],
+   "materials": [
+    "Was ist digitale Didaktik?",
+    "Führt die Digitalisierung ins pädagogische Paradies? Kontrollverlust vs. Empowerment ",
+    "Mediendidaktik | E-Learning, Digitalisierung & Bildung",
+    "Mediendidaktik - SchuleDigital.jetzt",
+    "Was ist Mediendidaktik?",
+    "Digitale Medienkompetenz ‒ Was ist das wirklich? | Digitale Bildung³ ",
+    "Medienkompetenz nach Baacke "
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "(Unsichtbar) Mediendidaktik"
+    ],
+    "place": "Sammlung im Themenbaum unter: (Unsichtbar) Mediendidaktik; Materialien darin: Was ist digitale Didaktik?, Führt die Digitalisierung ins pädagogische Paradies? Kontrollverlust vs. Empowerment, Mediendidaktik | E-Learning, Digitalisierung & Bildung, Mediendidaktik - SchuleDigital.jetzt, Was ist Mediendidaktik?, Digitale Medienkompetenz ‒ Was ist das wirklich? | Digitale Bildung³, Medienkompetenz nach Baacke; nicht gemeint sind die Nachbarsammlungen: Didaktische Methoden, Lernorganisation & technische Umsetzung"
+   },
+   "bau": {
+    "BR": {
+     "main": "Mediendidaktik",
+     "method": "title",
+     "rules_topic": "Mediendidaktik",
+     "named": [],
+     "asked": "Grundlagen (Mediendidaktik)"
+    },
+    "BN": {
+     "main": "Mediendidaktik",
+     "method": "llm",
+     "rules_topic": "Mediendidaktik",
+     "named": [
+      "Mediendidaktik",
+      "E-Learning",
+      "Medienkompetenz",
+      "Medienpädagogik",
+      "Didaktik"
+     ],
+     "asked": "Grundlagen (Mediendidaktik)"
+    },
+    "W0": {
+     "topic": "Grundlagen der Mediendidaktik",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Mediendidaktik und Medienkompetenz",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "6f5c9f2e-f187-4a4b-9252-9d63521b3ccc",
+   "title": "Grundlagen",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Sekundarstufe II"
+   ],
+   "description": "Die Quantenphysik stellt viele Grundlagen der klassischen Physik in Frage. Liefert die klassische Physik eindeutige Vorhersagen, so sind in der Quantenmechanik nur statistische Aussagen zum Beispiel über den Aufenthaltsort eines Teilchens möglich. Trotz dieser Eigenschaft liefern physikalische Messungen an Quantenobjekten eindeutige Ergebnisse. Quantenobjekte sind zudem zur Interferenz fähig, oft ",
+   "keywords": [
+    "Statistische Vorhersagbarkeit",
+    "Quantenobjekten",
+    "Fähigkeit zur Interferenz",
+    "Komplementarität"
+   ],
+   "path": [
+    "Quantenphysik"
+   ],
+   "children": [],
+   "materials": [
+    "Wesenszug 1: Statistische Vorhersagbarkeit",
+    "Wesenszug 2: Fähigkeit zur Interferenz",
+    "Wesenszug 4: Komplementarität",
+    "Wesenszug 3: Eindeutige Messergebnisse",
+    "Die Kopenhagener Deutung",
+    "Schrödingers Katze",
+    "Quantenphysik: Potentialtöpfe und Elektronenwellen",
+    "Das Geheimnis der Quanten - Doppelspaltexperiment",
+    "Der Quanten Tunneleffekt",
+    "Quantenphysik einfach erklärt mit einer Kaffeetasse! Stehende Wellen+Knotenpunkte | Phil's Physics",
+    "SCHRÖDINGER Gleichung schnell und kurz erklärt! - Quantenphysik - Das Reich der Quanten.",
+    "Quantencomputer + Spin einfach erklärt! Quantenphysik, Qubits, Stern-Gerlach & Co | Phil's Physics",
+    "Quantenphysik einfach erklärt! Atom, Orbital, Spektrum, Elektronen | Phil's Physics",
+    "Dr  Quantum    erklärt das Doppel Spalt Experiment - YouTube",
+    "Quantenmechanik - Doppelspalt, Verschränkung und Nichtlokalität | Doku - YouTube"
+   ],
+   "word": "Grundlagen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Quantenphysik"
+    ],
+    "place": "Sammlung im Themenbaum unter: Quantenphysik; Materialien darin: Wesenszug 1: Statistische Vorhersagbarkeit, Wesenszug 2: Fähigkeit zur Interferenz, Wesenszug 4: Komplementarität, Wesenszug 3: Eindeutige Messergebnisse, Die Kopenhagener Deutung, Schrödingers Katze, Quantenphysik: Potentialtöpfe und Elektronenwellen, Das Geheimnis der Quanten - Doppelspaltexperiment; nicht gemeint sind die Nachbarsammlungen: Photonen, Elektronen"
+   },
+   "bau": {
+    "BR": {
+     "main": "Quantenphysik",
+     "method": "title",
+     "rules_topic": "Quantenphysik",
+     "named": [],
+     "asked": "Grundlagen (Quantenphysik)"
+    },
+    "BN": {
+     "main": "Quantenmechanik",
+     "method": "llm",
+     "rules_topic": "Quantenphysik",
+     "named": [
+      "Quantenmechanik",
+      "Kopenhagener Deutung der Quantenmechanik",
+      "Schrödingers Katze",
+      "Doppelspaltexperiment",
+      "Welle-Teilchen-Dualismus",
+      "Potentialtopf"
+     ],
+     "asked": "Grundlagen (Quantenphysik)"
+    },
+    "W0": {
+     "topic": "Grundlagen der Quantenphysik",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Quantenphysik",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "cf885787-5125-4bc6-adca-e7f99b16a443",
+   "title": "Einführung",
+   "subjects": [
+    "Zeitgemäße Bildung"
+   ],
+   "levels": [],
+   "description": "",
+   "keywords": [
+    "Medizin"
+   ],
+   "path": [
+    "Communities",
+    "EbM / EbX"
+   ],
+   "children": [
+    "Begriffsbestimmung EbM/EbX",
+    "Historie zur EbM/EbX",
+    "Säulen der EbM/EbX",
+    "Relevanz der EbM/EbX",
+    "Geschichte der EbM"
+   ],
+   "materials": [],
+   "word": "Einführung",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Communities",
+     "EbM / EbX"
+    ],
+    "place": "Sammlung im Themenbaum unter: Communities › EbM / EbX; ihre Untersammlungen: Begriffsbestimmung EbM/EbX, Historie zur EbM/EbX, Säulen der EbM/EbX, Relevanz der EbM/EbX, Geschichte der EbM; nicht gemeint sind die Nachbarsammlungen: Ask, Aquire, Appraise, Apply, Evaluate"
+   },
+   "bau": {
+    "BR": {
+     "main": "Schramm (Band)",
+     "method": "search",
+     "rules_topic": "EbM / EbX",
+     "named": [],
+     "asked": "Einführung (EbM / EbX)"
+    },
+    "BN": {
+     "main": "Evidenzbasierte Medizin",
+     "method": "llm",
+     "rules_topic": "EbM / EbX",
+     "named": [
+      "Evidenzbasierte Medizin"
+     ],
+     "asked": "Einführung (EbM / EbX)"
+    },
+    "W0": {
+     "topic": "Medizin",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Einführung in EbM und EbX",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "ec9531cf-04ef-467e-baa6-d1e40a386148",
+   "title": "1 - Einführung",
+   "subjects": [
+    "Geschichte",
+    "Zeitgemäße Bildung"
+   ],
+   "levels": [],
+   "description": "Die Lernenden werden in das Thema eingeführt, indem der Kontext und die Relevanz des zu behandelnden Stoffes erläutert wird. Diese Einführung dient dazu, das Interesse zu wecken und eine gemeinsame Wissensbasis für alle Lernenden zu schaffen.",
+   "keywords": [
+    "Weimarer Republik",
+    "Lernpfad Weimarer Republik",
+    "Weimar Republic",
+    "Weimarer Verfassung"
+   ],
+   "path": [
+    "Pädagogischer Warenkorb",
+    "Galeriemethode (Weimarer Republik)"
+   ],
+   "children": [],
+   "materials": [
+    "Die Dolchstoßlegende: Darum war sie so verheerend",
+    "Die Weimarer Republik | Die Weltwirtschaftskrise 1929 | musstewissen Geschichte",
+    "Adolf Hitlers Herrschaft: Von 1933 bis zum Untergang",
+    "Der 9. November - Ein Schicksalstag für Deutschland",
+    "Worthless Paper Money - German Hyper-Inflation Starts After WW1 I THE GREAT WAR 1921",
+    "Bavarian Soviet Republic - 1919 Economy and Reconstruction I BEYOND THE GREAT WAR",
+    "Hitlers Machtübernahme | musstewissen Geschichte",
+    "Wie schließt man Frieden? 5 Antworten",
+    "Frauen in den 1920er-Jahren ",
+    "Die Weimarer Republik | Die Goldenen Zwanziger | musstewissen Geschichte",
+    "The Bloody Origin of the Weimar Republic (Documentary)",
+    "Novemberrevolution I musstewissen Geschichte",
+    "Wie die Nazis so viele Deutsche überzeugten",
+    "Außenpolitik der Weimarer Republik I musstewissen Geschichte",
+    "Das Grundgesetz erklärt"
+   ],
+   "word": "Einführung",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Pädagogischer Warenkorb",
+     "Galeriemethode (Weimarer Republik)"
+    ],
+    "place": "Sammlung im Themenbaum unter: Pädagogischer Warenkorb › Galeriemethode (Weimarer Republik); Materialien darin: Die Dolchstoßlegende: Darum war sie so verheerend, Die Weimarer Republik | Die Weltwirtschaftskrise 1929 | musstewissen Geschichte, Adolf Hitlers Herrschaft: Von 1933 bis zum Untergang, Der 9. November - Ein Schicksalstag für Deutschland, Worthless Paper Money - German Hyper-Inflation Starts After WW1 I THE GREAT WAR 1921, Bavarian Soviet Republic - 1919 Economy and Reconstruction I BEYOND THE GREAT WAR, Hitlers Machtübernahme | musstewissen Geschichte, Wie schließt man Frieden? 5 Antworten; nicht gemeint sind die Nachbarsammlungen: 2 - Gruppeneinteilung, 3 - Aufgabenstellung, 4 - Bearbeitung und Visualisierung, 5 - Präsentation und Feedback"
+   },
+   "bau": {
+    "BR": {
+     "main": "Galeriemethode",
+     "method": "title",
+     "rules_topic": "Galeriemethode",
+     "named": [],
+     "asked": "1 - Einführung (Galeriemethode)"
+    },
+    "BN": {
+     "main": "Weimarer Republik",
+     "method": "llm",
+     "rules_topic": "Galeriemethode",
+     "named": [
+      "Weimarer Republik",
+      "Dolchstoßlegende",
+      "Weltwirtschaftskrise",
+      "Münchner Räterepublik",
+      "Machtergreifung",
+      "Novemberrevolution",
+      "Friedensvertrag von Versailles"
+     ],
+     "asked": "1 - Einführung (Galeriemethode)"
+    },
+    "W0": {
+     "topic": "Weimarer Republik",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Weimarer Republik",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "c07bbe8d-dc50-49f4-816e-84ba06d6d799",
+   "title": "Einführung",
+   "subjects": [
+    "Nachhaltigkeit"
+   ],
+   "levels": [],
+   "description": "",
+   "keywords": [],
+   "path": [
+    "Nachhaltigkeit (LTP)",
+    "Pädagogische Themenseite - Galeriemethode"
+   ],
+   "children": [],
+   "materials": [
+    "SDG 6 — Sauberes Wasser",
+    "Virtuelles Wasser"
+   ],
+   "word": "Einführung",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Nachhaltigkeit (LTP)",
+     "Pädagogische Themenseite - Galeriemethode"
+    ],
+    "place": "Sammlung im Themenbaum unter: Nachhaltigkeit (LTP) › Pädagogische Themenseite - Galeriemethode; Materialien darin: SDG 6 — Sauberes Wasser, Virtuelles Wasser; nicht gemeint sind die Nachbarsammlungen: Gruppeneinteilung, Aufgabenstellung, Bearbeitung und Visalisierung, Präsentation und Feedback"
+   },
+   "bau": {
+    "BR": {
+     "main": null,
+     "named": [],
+     "error": "404"
+    },
+    "BN": {
+     "main": "Nachhaltigkeit",
+     "method": "llm",
+     "rules_topic": "Pädagogische Themenseite - Galeriemethode",
+     "named": [
+      "Nachhaltigkeit",
+      "Nachhaltige Entwicklung",
+      "Ziele für nachhaltige Entwicklung",
+      "Virtuelles Wasser",
+      "Wasserknappheit",
+      "Wasserversorgung"
+     ],
+     "asked": "Einführung (Pädagogische Themenseite - Galeriemethode)"
+    },
+    "W0": {
+     "topic": "Einführung in die Nachhaltigkeit",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Nachhaltigkeit",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "6437ffff-3f32-4fca-90f6-4a002cb70524",
+   "title": "Einstieg",
+   "subjects": [
+    "Allgemein"
+   ],
+   "levels": [],
+   "description": "Entdecke die Welt der Open Educational Resources (OER) und lerne, wie du sie in deinem Unterricht einsetzen kannst. Tauche ein in die Details von OER und erfahre, wie du offene Bildung in der Praxis umsetzen kannst. Starte jetzt deinen Einstieg in die Welt der OER und revolutioniere deine Unterrichtsmethoden!",
+   "keywords": [
+    "ChatGPT: Beschreibung"
+   ],
+   "path": [
+    "Open Educational Resources (OER)",
+    "OER im Detail",
+    "Offene Bildung in der Praxis"
+   ],
+   "children": [],
+   "materials": [
+    "OER in der Schule - Digitale Öffnung und Schließung",
+    "OER in der schulischen Praxis (Powerpoint)",
+    "Handlungsanleitung: OER in die Praxis integrieren",
+    "Zeitgemäße Bildung | Wir lernen online",
+    "mwk.baden-wuerttemberg.de/fileadmin/redaktion/m-mwk/intern/dateien/publikationen/Open_Educational_Resources__OER_.pdf"
+   ],
+   "word": "Einstieg",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Open Educational Resources (OER)",
+     "OER im Detail",
+     "Offene Bildung in der Praxis"
+    ],
+    "place": "Sammlung im Themenbaum unter: Open Educational Resources (OER) › OER im Detail › Offene Bildung in der Praxis; Materialien darin: OER in der Schule - Digitale Öffnung und Schließung, OER in der schulischen Praxis (Powerpoint), Handlungsanleitung: OER in die Praxis integrieren, Zeitgemäße Bildung | Wir lernen online, mwk.baden-wuerttemberg.de/fileadmin/redaktion/m-mwk/intern/dateien/publikationen/Open_Educational_Resources__OER_.pdf; nicht gemeint sind die Nachbarsammlungen: Weiterführendes, Berufliche Bildung / Erwachsenenbildung"
+   },
+   "bau": {
+    "BR": {
+     "main": "Offene Ganztagsschule",
+     "method": "search",
+     "rules_topic": "Offene Bildung in der Praxis",
+     "named": [],
+     "asked": "Einstieg (Offene Bildung in der Praxis)"
+    },
+    "BN": {
+     "main": "Open Educational Resources",
+     "method": "llm",
+     "rules_topic": "Offene Bildung in der Praxis",
+     "named": [
+      "Open Educational Resources",
+      "Freie Inhalte",
+      "Open Access",
+      "Freie Software",
+      "Medienkompetenz",
+      "Bildung für nachhaltige Entwicklung"
+     ],
+     "asked": "Einstieg (Offene Bildung in der Praxis)"
+    },
+    "W0": {
+     "topic": "Open Educational Resources (OER)",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Offene Bildung in der Praxis",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "59fccc7a-8b87-41eb-9432-669ca0afa560",
+   "title": "Übungen und Spiele",
+   "subjects": [
+    "Darstellendes Spiel"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Sie gehören zum Theaterunterricht oder Darstellenden Spiel dazu. Auf- und Abwärmspiele, Vertrauens- und Gruppenübungen bereiten spielerisch auf die Bühnenarbeit vor und nehmen die Angst vor der Präsentation vor Publikum. Hier findest du Beschreibungen und auch Filme vieler Übungen und Spiele, die zur Gruppendynamik beitragen können.",
+   "keywords": [
+    "Aufwärmübungen",
+    "Abwärmübungen",
+    "Vertrauensübungen",
+    "Gruppenübungen",
+    "Aufwärmspiele",
+    "Theaterspiele"
+   ],
+   "path": [
+    "Spielen und Gestalten"
+   ],
+   "children": [],
+   "materials": [
+    "Spiele für drinnen und draußen",
+    "Theater: Auf der Bühne - Zzzebra, das Web-Magazin für Kinder | Labbé Verlag",
+    "Atem- und Sprechtechnik - Landesmedienzentrum Baden-Württemberg",
+    "Theatre Game #5 - Energy Circle. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #28 - 10 Seconds To Make. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #14 - Frog In The Pond. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #52 - Character Bus. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #11 - Alan Sells Apples In Albania from Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #3 - Splat! From DRAMA MENU - drama games & ideas for drama.",
+    "Theatre Game #42 – Walking IT. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #26 – HANDS OF POWER. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #48 - Picture Knockout. From Drama Menu - Theatre Games In Three Courses.",
+    "Theatre Game #37 - Blind Homing Actors. From Drama Menu - Theatre Games In Three Courses.",
+    "Theatre Game #15 - Alphabet Race. From Drama Menu - Theatre Games In Three Courses.",
+    "Theatre Game #63 - Speed Hate. From Drama Menu - Theatre Games In Three Courses."
+   ],
+   "word": "Übungen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Spielen und Gestalten"
+    ],
+    "place": "Sammlung im Themenbaum unter: Spielen und Gestalten; Materialien darin: Spiele für drinnen und draußen, Theater: Auf der Bühne - Zzzebra, das Web-Magazin für Kinder | Labbé Verlag, Atem- und Sprechtechnik - Landesmedienzentrum Baden-Württemberg, Theatre Game #5 - Energy Circle. From Drama Menu - drama games & ideas for drama., Theatre Game #28 - 10 Seconds To Make. From Drama Menu - drama games & ideas for drama., Theatre Game #14 - Frog In The Pond. From Drama Menu - drama games & ideas for drama., Theatre Game #52 - Character Bus. From Drama Menu - drama games & ideas for drama., Theatre Game #11 - Alan Sells Apples In Albania from Drama Menu - drama games & ideas for drama.; nicht gemeint sind die Nachbarsammlungen: Gestalten von Szenen und Stücken, Feedbackkultur"
+   },
+   "bau": {
+    "BR": {
+     "main": "Szenisches Spiel",
+     "method": "search",
+     "rules_topic": "Übungen und Spiele",
+     "named": [],
+     "asked": "Übungen und Spiele"
+    },
+    "BN": {
+     "main": "Spiel",
+     "method": "llm",
+     "rules_topic": "Übungen und Spiele",
+     "named": [
+      "Spiel",
+      "Theaterpädagogik",
+      "Improvisationstheater",
+      "Bewegungsspiel",
+      "Sprechbildung"
+     ],
+     "asked": "Übungen und Spiele"
+    },
+    "W0": {
+     "topic": "Theaterübungen und -spiele",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Übungen und Spiele im Darstellenden Spiel",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "381dc9bf-8ae1-4682-b821-9f6d05f4aa53",
+   "title": "Medien ",
+   "subjects": [
+    "Politik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "In der heutigen digitalen Welt ist politische Bildung wichtiger denn je! Wir lernen, wie wir uns in der digitalen Welt zurechtfinden und wie wir uns vor Falschinformationen schützen können. Wir werden zu kritischen Medienkonsumenten und lernen, wie wir unsere Meinungen und Ideen online effektiv kommunizieren können.",
+   "keywords": [
+    "Nachrichten",
+    "Mediennutzung",
+    "Aufgaben von Medien",
+    "Datenschutz",
+    "Sicherheit im Internet",
+    "Cybermobbing",
+    "Gewalt in Medien",
+    "Pressefreiheit",
+    "ChatGPT: Beschreibung"
+   ],
+   "path": [
+    "Politische Bildung",
+    "Digitalisierung"
+   ],
+   "children": [
+    "Meinungsbildung und Massenmedien ",
+    "Plattformen",
+    "Informationen, Nachrichten & Kommunikation"
+   ],
+   "materials": [
+    "Medien - Die \"vierte Gewalt\"?",
+    "Filterblasen",
+    "Struktur und Organisation der Medien",
+    "Medien – Klexikon",
+    "Digitale Öffentlichkeit, Social Media und ich - Themenblätter",
+    "Medien – die \"vierte Gewalt\"? - Themenblätter",
+    "Medien und Politik - Themenblätter",
+    "Mein Klick! Meine Verantwortung?",
+    "E-Sports - Unterrichtsmaterial",
+    "Leben in Filterblasen - Unterrichtsmaterial",
+    "Digitale Welt: Smartphone und andere Computer - einfachPOLITIK",
+    "Handysucht - LearningApps",
+    "Check das Netz!",
+    "Lösch dich nicht - Hate Speech im Netz begegnen"
+   ],
+   "word": "Aufgaben",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Politische Bildung",
+     "Digitalisierung"
+    ],
+    "place": "Sammlung im Themenbaum unter: Politische Bildung › Digitalisierung; ihre Untersammlungen: Meinungsbildung und Massenmedien, Plattformen, Informationen, Nachrichten & Kommunikation; Materialien darin: Medien - Die \"vierte Gewalt\"?, Filterblasen, Struktur und Organisation der Medien, Medien – Klexikon, Digitale Öffentlichkeit, Social Media und ich - Themenblätter, Medien – die \"vierte Gewalt\"? - Themenblätter, Medien und Politik - Themenblätter, Mein Klick! Meine Verantwortung?; nicht gemeint sind die Nachbarsammlungen: Überwachung, Recht, Künstliche Intelligenz, Bildung und Kultur, Arbeitswelt"
+   },
+   "bau": {
+    "BR": {
+     "main": "Presse (Medien)",
+     "method": "disambiguation",
+     "rules_topic": "Medien",
+     "named": [],
+     "asked": "Medien"
+    },
+    "BN": {
+     "main": "Presse (Medien)",
+     "method": "disambiguation",
+     "rules_topic": "Medien",
+     "named": [
+      "Massenmedien",
+      "Massenkommunikation",
+      "Öffentlichkeit",
+      "Medienwissenschaft",
+      "Medienkompetenz",
+      "Soziale Medien",
+      "Filterblase",
+      "Vierte Gewalt"
+     ],
+     "asked": "Medien"
+    },
+    "W0": {
+     "topic": "Medien",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Medien und politische Bildung",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "fb7d5747-a5bd-437f-bb16-7c2b8ea89af0",
+   "title": "Methoden",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Es gibt einige grundlegende Methoden der Physik. Am wichtigsten zu Nennen ist hier vermutlich das Experiment, neben den oft mathematischen Überlegungen in der theoretischen Physik. Neben diesen “Makro-Methoden” gibt es aber auch eine Vielzahl kleinerer Methodenwerkzeuge: Videoanalysen, digitale Messwerterfassungssysteme, Regressionsanalysen und vieles mehr.",
+   "keywords": [
+    "Methoden und Werkzeuge der Physik"
+   ],
+   "path": [],
+   "children": [
+    "Modellieren",
+    "Mathematik",
+    "Experimentieren",
+    "Dokumentieren",
+    "SI-Einheiten",
+    "Physikalische Konstanten"
+   ],
+   "materials": [
+    "SPARKvue",
+    "Digitale Tools für den Physikunterricht - Schule digital begreifen",
+    "Diagramm Generator - Meine Forscherwelt",
+    "Experimentieren",
+    "The Feynman Lectures on Physics"
+   ],
+   "word": "Methoden",
+   "art": "neutral",
+   "baum": {
+    "path": [],
+    "place": "Sammlung im Fachportal Physik; ihre Untersammlungen: Modellieren, Mathematik, Experimentieren, Dokumentieren, SI-Einheiten, Physikalische Konstanten; Materialien darin: SPARKvue, Digitale Tools für den Physikunterricht - Schule digital begreifen, Diagramm Generator - Meine Forscherwelt, Experimentieren, The Feynman Lectures on Physics; nicht gemeint sind die Nachbarsammlungen: Astronomie, Relativitätstheorie, Akustik, Optik, Mechanik, Energie, Kernphysik, Quantenphysik, Teilchenphysik, Atomphysik"
+   },
+   "bau": {
+    "BR": {
+     "main": "Physik",
+     "method": "title",
+     "rules_topic": "Physik",
+     "named": [],
+     "asked": "Methoden (Physik)"
+    },
+    "BN": {
+     "main": "Physik",
+     "method": "llm",
+     "rules_topic": "Physik",
+     "named": [
+      "Physik",
+      "Mathematik",
+      "Internationales Einheitensystem",
+      "Physikalische Konstante"
+     ],
+     "asked": "Methoden (Physik)"
+    },
+    "W0": {
+     "topic": "Methoden und Werkzeuge der Physik",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Methoden und Werkzeuge der Physik",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "26d59a4b-d9fc-45fc-841f-a0cf86db2361",
+   "title": "Methoden",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Hier finden sich verschiedene Methoden, die  Schüler*innen sämtlicher Jahrgangsstufen im Biologieunterricht erlernen sollen.",
+   "keywords": [
+    "Biologie",
+    "Biologische Methodenkompetenz",
+    "Methoden in der Biologie"
+   ],
+   "path": [
+    "Fachdidaktik"
+   ],
+   "children": [],
+   "materials": [
+    "Mikroben im Einsatz - das virtuelle Labor",
+    "Viel-Falter: Tagfalter-Monitoring",
+    "Bienen und Ökologie",
+    "Wasserhärte",
+    "Stoffe erforschen, Naturwissenschaften entdecken | FCI",
+    "Wie mikroskopiere ich richtig?",
+    "DNA-Isolation ",
+    "Chromatographie - Wie es funktioniert"
+   ],
+   "word": "Methoden",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Fachdidaktik"
+    ],
+    "place": "Sammlung im Themenbaum unter: Fachdidaktik; Materialien darin: Mikroben im Einsatz - das virtuelle Labor, Viel-Falter: Tagfalter-Monitoring, Bienen und Ökologie, Wasserhärte, Stoffe erforschen, Naturwissenschaften entdecken | FCI, Wie mikroskopiere ich richtig?, DNA-Isolation, Chromatographie - Wie es funktioniert; nicht gemeint sind die Nachbarsammlungen: Grundlagen, Bewertungsstrategien"
+   },
+   "bau": {
+    "BR": {
+     "main": "Fachdidaktik",
+     "method": "title",
+     "rules_topic": "Fachdidaktik",
+     "named": [],
+     "asked": "Methoden (Fachdidaktik)"
+    },
+    "BN": {
+     "main": "Experiment",
+     "method": "llm",
+     "rules_topic": "Fachdidaktik",
+     "named": [
+      "Experiment",
+      "Wissenschaftstheorie",
+      "Naturwissenschaftlicher Unterricht",
+      "Biologiedidaktik",
+      "Mikroskop",
+      "DNA-Reinigung",
+      "Chromatographie",
+      "Wasserhärte",
+      "Monitoring"
+     ],
+     "asked": "Methoden (Fachdidaktik)"
+    },
+    "W0": {
+     "topic": "Biologische Methodenkompetenz",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Biologische Methodenkompetenz",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "27fea0bf-1888-4db0-866f-3d0305ea57f0",
+   "title": "Methoden",
+   "subjects": [
+    "Politik"
+   ],
+   "levels": [],
+   "description": "Ihr habt ein spannendes Thema oder interessante Inhalte, aber euch fehlt eine Idee zur methodischen Umsetzung?\nHier könnt ihr euch Anregungen genau dafür holen oder auch Einschätzungen finden, was von den jeweiligen Methoden zu halten ist. Methodisches Feuerwerk oder multimedialer Firlefanz? Die Einschätzungen gehen auseinander – wie so oft – und die Orientierung fehlt. In dieser Sammlung finden s",
+   "keywords": [
+    "Planspiel",
+    "Methoden",
+    "Simulation ",
+    "Debatte"
+   ],
+   "path": [
+    "Politische Bildung"
+   ],
+   "children": [],
+   "materials": [
+    "VR/AR in der historisch-politischen Bildung – Chancen und Risiken",
+    "Virtual und Augmented Reality im Klassenraum? Ein Überblick bildungsrelevanter Angebote ",
+    "Schülerwettbewerb zur politischen Bildung | bpb",
+    "Urheberrecht und Blogs erstellen",
+    "Rhetorik/Debatte",
+    "SimpleMind",
+    "WiseMapping",
+    "Urheberrecht für Lernende: Häufige Fragen und Antworten",
+    "Karikaturenrallye",
+    "GrafStat",
+    "Kanzlersimulator",
+    "Politik-Lernen mit digitalen Spielen",
+    "Politische Bildung: Links und Literatur",
+    "Besser lernen mit Trick 17 - Prüfungssimulation",
+    "Methoden"
+   ],
+   "word": "Methoden",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Politische Bildung"
+    ],
+    "place": "Sammlung im Themenbaum unter: Politische Bildung; Materialien darin: VR/AR in der historisch-politischen Bildung – Chancen und Risiken, Virtual und Augmented Reality im Klassenraum? Ein Überblick bildungsrelevanter Angebote, Schülerwettbewerb zur politischen Bildung | bpb, Urheberrecht und Blogs erstellen, Rhetorik/Debatte, SimpleMind, WiseMapping, Urheberrecht für Lernende: Häufige Fragen und Antworten; nicht gemeint sind die Nachbarsammlungen: Grundfragen, Umwelt, Globalisierung und internationale Politik, Digitalisierung, Wahlen, Sozialer Wandel, Soziale Gerechtigkeit, Erinnerungsarbeit, Fachportalseite Politische Bildung, Berufliche und ökonomische Bildung"
+   },
+   "bau": {
+    "BR": {
+     "main": "Politische Bildung",
+     "method": "title",
+     "rules_topic": "Politische Bildung",
+     "named": [],
+     "asked": "Methoden (Politische Bildung)"
+    },
+    "BN": {
+     "main": "Lehrmethode",
+     "method": "llm",
+     "rules_topic": "Politische Bildung",
+     "named": [
+      "Lehrmethode",
+      "Projektunterricht",
+      "Debatte",
+      "Rhetorik",
+      "Mindmap",
+      "Virtuelle Realität",
+      "Erweiterte Realität",
+      "Urheberrecht"
+     ],
+     "asked": "Methoden (Politische Bildung)"
+    },
+    "W0": {
+     "topic": "Methoden der politischen Bildung",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Methoden der politischen Bildung",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "ac93e9f8-01c1-4908-93e9-f801c1490801",
+   "title": "Allgemeines",
+   "subjects": [
+    "Geschichte",
+    "Gesellschaftskunde",
+    "Deutsch",
+    "Ethik",
+    "Religion",
+    "Kunst",
+    "Geschichte",
+    "Gesellschaftskunde",
+    "Deutsch",
+    "Ethik",
+    "Religion",
+    "Kunst"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II",
+    "Hochschule",
+    "Sekundarstufe I",
+    "Sekundarstufe II",
+    "Hochschule"
+   ],
+   "description": "Der Begriff Hexen umfasst vielfältige Konzepte, die von Vorurteilen bis zu literarischen Darstellungen reichen. In der Geschichte wurden Frauen oft als Hexen gebrandmarkt, was zu Verfolgungen und sozialen Spannungen führte. Die Darstellung von Hexen in der Kunst und Literatur zeigt sowohl die negative Konnotation als auch die Faszination, die von diesem Thema ausgeht. In der heutigen Zeit wird das",
+   "keywords": [
+    "Hexen",
+    "Mythos",
+    "Verfolgung",
+    "Kulturgeschichte",
+    "Feminismus"
+   ],
+   "path": [
+    "Communities",
+    "WLO-Chatbot Themenbaum",
+    "Hexen"
+   ],
+   "children": [
+    "Mythologische Darstellungen"
+   ],
+   "materials": [],
+   "word": "Allgemeines",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Communities",
+     "WLO-Chatbot Themenbaum",
+     "Hexen"
+    ],
+    "place": "Sammlung im Themenbaum unter: Communities › WLO-Chatbot Themenbaum › Hexen; ihre Untersammlungen: Mythologische Darstellungen; nicht gemeint sind die Nachbarsammlungen: Historische Aspekte, Feuer machen für Anfänger"
+   },
+   "bau": {
+    "BR": {
+     "main": "Hexe",
+     "method": "disambiguation",
+     "rules_topic": "Hexen",
+     "named": [],
+     "asked": "Allgemeines (Hexen)"
+    },
+    "BN": {
+     "main": "Hexe",
+     "method": "llm",
+     "rules_topic": "Hexen",
+     "named": [
+      "Hexe",
+      "Hexenverfolgung",
+      "Totenbeschwörerin von Endor",
+      "Baba Jaga",
+      "Kirke",
+      "Medea",
+      "Morgan le Fay"
+     ],
+     "asked": "Allgemeines (Hexen)"
+    },
+    "W0": {
+     "topic": "Hexen in Kulturgeschichte und Gegenwart",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Hexen in Mythos, Kulturgeschichte und Feminismus",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "b468ec0a-aaf8-4b3b-96f1-b9443e577fdb",
+   "title": "Experimente",
+   "subjects": [
+    "Geografie"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Hier gibt es eine Übersicht an Materialien zu bestimmten geographischen Experimenten.",
+   "keywords": [
+    "Bodenbestimmung",
+    "Gesteinsbestimmung"
+   ],
+   "path": [
+    "Geographie",
+    "Methodik & Didaktik"
+   ],
+   "children": [],
+   "materials": [
+    "Bodenerosion: Offenes Experimentieren"
+   ],
+   "word": "Experimente",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Geographie",
+     "Methodik & Didaktik"
+    ],
+    "place": "Sammlung im Themenbaum unter: Geographie › Methodik & Didaktik; Materialien darin: Bodenerosion: Offenes Experimentieren; nicht gemeint sind die Nachbarsammlungen: Kartenarbeit und Atlas, Auswertung von Diagrammen, Information gewinnen und auswerten, Messungen durchführen, Tabellen anlegen, Orientieren und messen, Arbeiten mit geographischen Informationssystemen (GIS)"
+   },
+   "bau": {
+    "BR": {
+     "main": "Experiment",
+     "method": "variant",
+     "rules_topic": "Experimente",
+     "named": [],
+     "asked": "Experimente"
+    },
+    "BN": {
+     "main": "Experiment",
+     "method": "llm",
+     "rules_topic": "Experimente",
+     "named": [
+      "Experiment",
+      "Bodenerosion"
+     ],
+     "asked": "Experimente"
+    },
+    "W0": {
+     "topic": "Boden- und Gesteinsbestimmung",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Boden- und Gesteinsbestimmung",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "4c44d4f8-22c5-4dbd-9b3c-94063f3ed852",
+   "title": "Anwendungen",
+   "subjects": [
+    "Informatik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Informatik ist die Zukunft! Lerne die Grundlagen und Anwendungen kennen, die dir helfen werden, die digitale Welt zu verstehen und zu beherrschen. Entdecke, wie du mit Programmierung, Datenanalyse und künstlicher Intelligenz die Welt verändern kannst. Werde Teil einer neuen Generation von Innovatoren und gestalte die Zukunft mit Informatik!",
+   "keywords": [
+    "ChatGPT: Beschreibung"
+   ],
+   "path": [
+    "Grundlagen"
+   ],
+   "children": [
+    "Browser",
+    "E-Mail",
+    "Office"
+   ],
+   "materials": [
+    "Videokonferenz mit iServ in 200 Sekunden - für Lehrer / Moderatoren ( Übersicht Kurzanleitung ) - YouTube",
+    "Kurzanleitung Videokonferenz mit iServ für Schüler(innen) # Die Videochat Funktionen im Überblick - YouTube",
+    "Aufgaben in iServ bearbeiten, abgeben und hochladen  - Kurzanleitung für Schüler - YouTube"
+   ],
+   "word": "Anwendungen",
+   "art": "neutral",
+   "baum": {
+    "path": [
+     "Grundlagen"
+    ],
+    "place": "Sammlung im Themenbaum unter: Grundlagen; ihre Untersammlungen: Browser, E-Mail, Office; Materialien darin: Videokonferenz mit iServ in 200 Sekunden - für Lehrer / Moderatoren ( Übersicht Kurzanleitung ) - YouTube, Kurzanleitung Videokonferenz mit iServ für Schüler(innen) # Die Videochat Funktionen im Überblick - YouTube, Aufgaben in iServ bearbeiten, abgeben und hochladen - Kurzanleitung für Schüler - YouTube; nicht gemeint sind die Nachbarsammlungen: Zahlensysteme, Peripherie, Grafik / Bildbearbeitung, Audiobearbeitung"
+   },
+   "bau": {
+    "BR": {
+     "main": "Informatik",
+     "method": "title",
+     "rules_topic": "Informatik",
+     "named": [],
+     "asked": "Anwendungen (Informatik)"
+    },
+    "BN": {
+     "main": "Anwendungssoftware",
+     "method": "llm",
+     "rules_topic": "Informatik",
+     "named": [
+      "Anwendungssoftware",
+      "Webbrowser",
+      "E-Mail-Programm",
+      "Office-Paket",
+      "Videokonferenz"
+     ],
+     "asked": "Anwendungen (Informatik)"
+    },
+    "W0": {
+     "topic": "Informatik: Grundlagen und Anwendungen",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Anwendungen",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "a53348c1-0233-4a40-bf2a-4fe4baab449d",
+   "title": "Grundlagen der Prozentrechnung",
+   "subjects": [
+    "Mathematik"
+   ],
+   "levels": [
+    "Sekundarstufe I"
+   ],
+   "description": "In diesem Lehrplanthema geht es um die faszinierende Welt der Prozente und Zinsen! Wir werden lernen, wie man Prozentrechnungen durchführt und wie man Zinsen berechnet. Mit diesem Wissen können wir in Zukunft besser verstehen, wie Banken arbeiten und wie wir unser Geld am besten anlegen können. Also, auf geht's in die Welt der Mathematik und der Finanzen!",
+   "keywords": [
+    "ChatGPT: Beschreibung"
+   ],
+   "path": [
+    "Algebra53",
+    "Prozente & Zinsen"
+   ],
+   "children": [],
+   "materials": [
+    "Einführung in das Prozentrechnen — Landesbildungsserver Baden-Württemberg",
+    "Stationenlernen Prozentrechnung",
+    "Prozentrechnung durch Dreisatz",
+    "Anleitung Prozentrechnen mit Dreisatz",
+    "Die Bedeutung von Prozent (Video) | Khan Academy",
+    "Erklärvideo Prozentrechnen Einführung - YouTube",
+    "BRÜCHE in PROZENT umwandeln – rationale Zahlen, Beispiele auch über 100 - YouTube"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Algebra53",
+     "Prozente & Zinsen"
+    ],
+    "place": "Sammlung im Themenbaum unter: Algebra53 › Prozente & Zinsen; Materialien darin: Einführung in das Prozentrechnen — Landesbildungsserver Baden-Württemberg, Stationenlernen Prozentrechnung, Prozentrechnung durch Dreisatz, Anleitung Prozentrechnen mit Dreisatz, Die Bedeutung von Prozent (Video) | Khan Academy, Erklärvideo Prozentrechnen Einführung - YouTube, BRÜCHE in PROZENT umwandeln – rationale Zahlen, Beispiele auch über 100 - YouTube; nicht gemeint sind die Nachbarsammlungen: Prozentwert, Prozentsatz, Grundwert, Formel umstellen, Zinsen, Zinssatz, Kapital, Berechnung des Zeitraums, Sachaufgaben Prozente & Zinsen, Zinseszinsen"
+   },
+   "bau": {
+    "BR": {
+     "main": "Prozent",
+     "method": "variant",
+     "rules_topic": "Grundlagen der Prozentrechnung",
+     "named": [],
+     "asked": "Grundlagen der Prozentrechnung"
+    },
+    "BN": {
+     "main": "Prozent",
+     "method": "llm",
+     "rules_topic": "Grundlagen der Prozentrechnung",
+     "named": [
+      "Prozent",
+      "Bruchrechnung",
+      "Dreisatz",
+      "Quotient",
+      "Proportionalität"
+     ],
+     "asked": "Grundlagen der Prozentrechnung"
+    },
+    "W0": {
+     "topic": "Prozentrechnung und Zinsen",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Prozentrechnung",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "f9245f29-7b51-491f-9bbf-c913b0b4b62e",
+   "title": "Grundlagen und Begriffe in der  Verhaltensbiologie",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "In dieser Untersammlung werden Materialien zu den wichtigsten Grundlagen und Begriffen der Verhaltensbiologie, die im Unterricht erlernt werden, zusammengestellt.",
+   "keywords": [
+    "Verhaltensbiologie",
+    "Verhaltensökologie",
+    "Verhaltensphysiologie",
+    "Verhaltensontogenie",
+    "Soziobiologie"
+   ],
+   "path": [
+    "Verhaltensbiologie"
+   ],
+   "children": [],
+   "materials": [
+    "k- und r-Strategen"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Verhaltensbiologie"
+    ],
+    "place": "Sammlung im Themenbaum unter: Verhaltensbiologie; Materialien darin: k- und r-Strategen; nicht gemeint sind die Nachbarsammlungen: Angeborenes Verhalten, Erworbenes und erlerntes Verhalten, Soziobiologie & Verhaltensökologie"
+   },
+   "bau": {
+    "BR": {
+     "main": "Verhaltensbiologie",
+     "method": "search",
+     "rules_topic": "Grundlagen und Begriffe in der Verhaltensbiologie",
+     "named": [],
+     "asked": "Grundlagen und Begriffe in der Verhaltensbiologie"
+    },
+    "BN": {
+     "main": "Verhaltensbiologie",
+     "method": "llm",
+     "rules_topic": "Grundlagen und Begriffe in der Verhaltensbiologie",
+     "named": [
+      "Verhaltensbiologie",
+      "Ethologie",
+      "Instinkt",
+      "Prägung (Verhalten)",
+      "Lernen",
+      "Habituation",
+      "Konditionierung",
+      "Motivation"
+     ],
+     "asked": "Grundlagen und Begriffe in der Verhaltensbiologie"
+    },
+    "W0": {
+     "topic": "Grundlagen und Begriffe der Verhaltensbiologie",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen und Begriffe der Verhaltensbiologie",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "ca80189b-94f5-44d9-8e39-20a9a7063921",
+   "title": "Grundlagen des betrieblichen Rechnungswesens",
+   "subjects": [
+    "Wirtschaftskunde"
+   ],
+   "levels": [
+    "Sekundarstufe II",
+    "Berufliche Bildung"
+   ],
+   "description": "hier sind die Grundlagen des betrieblichen Rechnungswesens mit Erklärvideo und Advance Organiser aufgeführt",
+   "keywords": [
+    "Grundlagen des betrieblichen Rechnungswesens",
+    "Erklärvideo",
+    "Advance Organiser"
+   ],
+   "path": [
+    "Wirtschaft",
+    "Rechnungswesen"
+   ],
+   "children": [],
+   "materials": [
+    "Advance Organizer Buchführung",
+    "Grundlagen Rechnungswesen -  YouTube"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Wirtschaft",
+     "Rechnungswesen"
+    ],
+    "place": "Sammlung im Themenbaum unter: Wirtschaft › Rechnungswesen; Materialien darin: Advance Organizer Buchführung, Grundlagen Rechnungswesen - YouTube; nicht gemeint sind die Nachbarsammlungen: Jahresabschluss, Kostenrechnung"
+   },
+   "bau": {
+    "BR": {
+     "main": "Rechnungswesen",
+     "method": "search",
+     "rules_topic": "Grundlagen des betrieblichen Rechnungswesens",
+     "named": [],
+     "asked": "Grundlagen des betrieblichen Rechnungswesens"
+    },
+    "BN": {
+     "main": "Rechnungswesen",
+     "method": "llm",
+     "rules_topic": "Grundlagen des betrieblichen Rechnungswesens",
+     "named": [
+      "Rechnungswesen",
+      "Buchführung",
+      "Bilanz",
+      "Inventur",
+      "Inventar",
+      "Geschäftsvorfall",
+      "Kontenrahmen",
+      "Kontenplan"
+     ],
+     "asked": "Grundlagen des betrieblichen Rechnungswesens"
+    },
+    "W0": {
+     "topic": "Grundlagen des betrieblichen Rechnungswesens",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen des betrieblichen Rechnungswesens",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "17c43ae5-8560-4b5b-8eb4-a649339fe4fd",
+   "title": "Grundlagen für chemische Bindungen",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [],
+   "description": "In dieser Untersammlungen finden sich Materialien rund um die Grundlagen, anhand derer es zu chemischen Bindungen kommt: Es wird dabei näher eingegangen auf chemische Reaktionen, verschiedene Teilchenmodelle und was es mit der Elektronenbesetzung auf sich hat.",
+   "keywords": [
+    "Chemische Bindungen",
+    "chemische Reaktionen",
+    "Teilchenmodell",
+    "Atommodell",
+    "Elektronenbesetzung"
+   ],
+   "path": [
+    "Chemische Grundlagen",
+    "Chemische Begriffe in der Biologie",
+    "Atombau und chemische Bindungen"
+   ],
+   "children": [],
+   "materials": [
+    "Aufbau der Atome",
+    "Orbitalmodell - Grundlagen",
+    "Oktettregel und Edelgase I musstewissen Chemie",
+    "Elektronenbesetzung",
+    "Aufbau der Materie: Atome / Schalenmodell",
+    "Besetzung der Orbitale mit Elektronen",
+    "Aufbau des Kugelwolkenmodells",
+    "Atommodell nach Niels Bohr I musstewissen Chemie",
+    "Periodensystem mit Farben für Schalen",
+    "Das Schalenmodell nach Niels Bohr"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Chemische Grundlagen",
+     "Chemische Begriffe in der Biologie",
+     "Atombau und chemische Bindungen"
+    ],
+    "place": "Sammlung im Themenbaum unter: Chemische Grundlagen › Chemische Begriffe in der Biologie › Atombau und chemische Bindungen; Materialien darin: Aufbau der Atome, Orbitalmodell - Grundlagen, Oktettregel und Edelgase I musstewissen Chemie, Elektronenbesetzung, Aufbau der Materie: Atome / Schalenmodell, Besetzung der Orbitale mit Elektronen, Aufbau des Kugelwolkenmodells, Atommodell nach Niels Bohr I musstewissen Chemie; nicht gemeint sind die Nachbarsammlungen: Bindungstypen und -kräfte"
+   },
+   "bau": {
+    "BR": {
+     "main": "Chemische Bindung",
+     "method": "search",
+     "rules_topic": "Grundlagen für chemische Bindungen",
+     "named": [],
+     "asked": "Grundlagen für chemische Bindungen"
+    },
+    "BN": {
+     "main": "Chemische Bindung",
+     "method": "llm",
+     "rules_topic": "Grundlagen für chemische Bindungen",
+     "named": [
+      "Chemische Bindung",
+      "Atom",
+      "Liste der Atommodelle",
+      "Bohrsches Atommodell",
+      "Elektronenkonfiguration",
+      "Oktettregel",
+      "Edelgase"
+     ],
+     "asked": "Grundlagen für chemische Bindungen"
+    },
+    "W0": {
+     "topic": "Grundlagen chemischer Bindungen",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen chemischer Bindungen",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "059c5a7a-3983-4a11-a9a2-89b7a5e18d98",
+   "title": "Grundbegriffe der Ökologie",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [],
+   "description": "In dieser Untersammlung finden sich Lehrmaterialien zu den gängigsten Grundbegriffen, die für den Unterricht in Ökologie gebraucht werden.",
+   "keywords": [
+    "Ökologie",
+    "Grundlagen Ökologie"
+   ],
+   "path": [
+    "Ökologie"
+   ],
+   "children": [],
+   "materials": [
+    "Aha! | Naturräume in Deutschland",
+    "Lebensraum Wasser: Anpassungsleistungen",
+    "Stickstoffkreislauf"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Ökologie"
+    ],
+    "place": "Sammlung im Themenbaum unter: Ökologie; Materialien darin: Aha! | Naturräume in Deutschland, Lebensraum Wasser: Anpassungsleistungen, Stickstoffkreislauf; nicht gemeint sind die Nachbarsammlungen: Populationsökologie, Ökosysteme, Naturschutz und Nachhaltigkeit, Wechselwirkungen und Lebensgemeinschaften"
+   },
+   "bau": {
+    "BR": {
+     "main": "Ökologie",
+     "method": "search",
+     "rules_topic": "Grundbegriffe der Ökologie",
+     "named": [],
+     "asked": "Grundbegriffe der Ökologie"
+    },
+    "BN": {
+     "main": "Ökologie",
+     "method": "llm",
+     "rules_topic": "Grundbegriffe der Ökologie",
+     "named": [
+      "Ökologie",
+      "Biotop",
+      "Habitat",
+      "Ökologische Nische",
+      "Abiotische Umweltfaktoren",
+      "Biotische Umweltfaktoren",
+      "Stickstoffkreislauf"
+     ],
+     "asked": "Grundbegriffe der Ökologie"
+    },
+    "W0": {
+     "topic": "Grundbegriffe der Ökologie",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundbegriffe der Ökologie",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "a95ff036-16d3-46ef-a1d2-ad5b2768e376",
+   "title": "psychologische Grundlagen des Lernens, Lerntheorien",
+   "subjects": [
+    "Pädagogik"
+   ],
+   "levels": [
+    "Sekundarstufe II"
+   ],
+   "description": "In diesem Lehrplanthema geht es um die faszinierende Welt des Lernens, der Bildung und Erziehung. Wir werden uns mit den psychologischen Grundlagen des Lernens auseinandersetzen und verschiedene Lerntheorien kennenlernen, die uns helfen, das Lernen besser zu verstehen. Dabei werden wir spannende Einblicke in die menschliche Psyche gewinnen und erfahren, wie wir unser Wissen und unsere Fähigkeiten ",
+   "keywords": [
+    "ChatGPT: Beschreibung"
+   ],
+   "path": [
+    "Lernen, Bildung und Erziehung"
+   ],
+   "children": [
+    "Behavioristische Lerntheorie",
+    "Konstruktivistische Lerntheorien",
+    "Die kognitive Wende und kognitive Lerntheorien",
+    "Modelllernen und Vorbilder",
+    "sonstige"
+   ],
+   "materials": [
+    "Lernen und Pädagogik Hamburger Bildungsserver",
+    "Lerntheorien: Zusammenfassung der klassischen Ansätze",
+    "Kognitives Lernen: Ein pädagogischer Leitfaden - CogniFit"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Lernen, Bildung und Erziehung"
+    ],
+    "place": "Sammlung im Themenbaum unter: Lernen, Bildung und Erziehung; ihre Untersammlungen: Behavioristische Lerntheorie, Konstruktivistische Lerntheorien, Die kognitive Wende und kognitive Lerntheorien, Modelllernen und Vorbilder, sonstige; Materialien darin: Lernen und Pädagogik Hamburger Bildungsserver, Lerntheorien: Zusammenfassung der klassischen Ansätze, Kognitives Lernen: Ein pädagogischer Leitfaden - CogniFit; nicht gemeint sind die Nachbarsammlungen: Der pädagogische Blick auf Lernen und Erziehen, Lernen und Erziehen in der digitalen Welt, Bildungs- und Erziehungsziele, Erziehungstile, Pädagogischer Umgang mit neuen Medien"
+   },
+   "bau": {
+    "BR": {
+     "main": "Lerntheorie",
+     "method": "search",
+     "rules_topic": "psychologische Grundlagen des Lernens, Lerntheorien",
+     "named": [],
+     "asked": "psychologische Grundlagen des Lernens, Lerntheorien"
+    },
+    "BN": {
+     "main": "Lernen",
+     "method": "llm",
+     "rules_topic": "psychologische Grundlagen des Lernens, Lerntheorien",
+     "named": [
+      "Lernen",
+      "Lerntheorie",
+      "Behaviorismus",
+      "Kognitivismus",
+      "Konstruktivismus (Lernpsychologie)",
+      "Sozialkognitive Lerntheorie",
+      "Klassische Konditionierung"
+     ],
+     "asked": "psychologische Grundlagen des Lernens, Lerntheorien"
+    },
+    "W0": {
+     "topic": "Psychologische Grundlagen des Lernens und Lerntheorien",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Psychologische Grundlagen des Lernens und Lerntheorien",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "5e12bea8-8985-443e-96b7-ee0fb59f2e36",
+   "title": "Grundlagen der Wirtschaftsordnung",
+   "subjects": [
+    "Wirtschaftskunde"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "hier findet ihr Materialien zu den Grundlagen der Wirtschaftsordnung und zum Wirtschaftskreislauf als Grundlage der Wirtschftstheorie mit einem Quiz",
+   "keywords": [
+    "Ökonomisches Prinzip, Wirtschaftlichkeitsprinzip"
+   ],
+   "path": [
+    "Wirtschaft",
+    "Wirtschaftsordnung"
+   ],
+   "children": [
+    "Bedürfnisse",
+    "Ressourcen"
+   ],
+   "materials": [
+    "Grundlagen einer Wirtschaftsordnung - Homo Oeconomicus, Leistung, Steuerungsverfahren, Eigenschaften",
+    "Wirtschaftskreislauf",
+    "Leitfaden für Unterrichtende",
+    "Youtube-Quizshow zu Wirtschaftsthemen - Joachim Herz Stiftung",
+    "Ina Praetorius: Ökonomie kommt von Oikonomia",
+    "Chrematistik - die Kunst Reichtum zu erlangen",
+    "Wirtschaft ist Care | Heinrich-Böll-Stiftung"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Wirtschaft",
+     "Wirtschaftsordnung"
+    ],
+    "place": "Sammlung im Themenbaum unter: Wirtschaft › Wirtschaftsordnung; ihre Untersammlungen: Bedürfnisse, Ressourcen; Materialien darin: Grundlagen einer Wirtschaftsordnung - Homo Oeconomicus, Leistung, Steuerungsverfahren, Eigenschaften, Wirtschaftskreislauf, Leitfaden für Unterrichtende, Youtube-Quizshow zu Wirtschaftsthemen - Joachim Herz Stiftung, Ina Praetorius: Ökonomie kommt von Oikonomia, Chrematistik - die Kunst Reichtum zu erlangen, Wirtschaft ist Care | Heinrich-Böll-Stiftung; nicht gemeint sind die Nachbarsammlungen: Güter, Wirtschaftsakteure, Wirtschaftssysteme, Sozialversicherungssystem"
+   },
+   "bau": {
+    "BR": {
+     "main": "Wirtschaftsordnung",
+     "method": "variant",
+     "rules_topic": "Grundlagen der Wirtschaftsordnung",
+     "named": [],
+     "asked": "Grundlagen der Wirtschaftsordnung"
+    },
+    "BN": {
+     "main": "Wirtschaftsordnung",
+     "method": "llm",
+     "rules_topic": "Grundlagen der Wirtschaftsordnung",
+     "named": [
+      "Wirtschaftsordnung",
+      "Bedürfnis",
+      "Ressource",
+      "Homo oeconomicus",
+      "Wirtschaftskreislauf"
+     ],
+     "asked": "Grundlagen der Wirtschaftsordnung"
+    },
+    "W0": {
+     "topic": "Grundlagen der Wirtschaftsordnung",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Wirtschaftsordnung",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "33ce727a-9dca-418d-ae11-624f71dcb05d",
+   "title": "Grundlagen E-Lehre",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Die Elektrizitätslehre ist ein für den Alltag hochrelevantes Teilgebiet der Physik. Einige grundlegende Aspekte der Elektrizitätslehre gehören mittlerweile zum Allgemeinwissen: Welche Wirkungen hat elektrischer Strom? Wie sind Stromkreis grundlegend aufgebaut? Mit Hilfe welcher physikalischer Größen kann ich elektrische Ströme messen? Verbunden mit all diesen technisch bedeutsamen Fragestellungen ",
+   "keywords": [],
+   "path": [
+    "Elektrizitätslehre / Magnetismus"
+   ],
+   "children": [
+    "Stromwirkung",
+    "Einfache Stromkreise",
+    "Elektrostatik",
+    "Elektrische Grundgrößen"
+   ],
+   "materials": [
+    "E-Lehre mit Potential (Schulbuch)",
+    "Steinphysik - Physik-Geschichten aus Bad Einstein",
+    "Lehrvideo mit Auftrag:   Analogien zwischen elektrischem und Wasserstromkreis - YouTube"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Elektrizitätslehre / Magnetismus"
+    ],
+    "place": "Sammlung im Themenbaum unter: Elektrizitätslehre / Magnetismus; ihre Untersammlungen: Stromwirkung, Einfache Stromkreise, Elektrostatik, Elektrische Grundgrößen; Materialien darin: E-Lehre mit Potential (Schulbuch), Steinphysik - Physik-Geschichten aus Bad Einstein, Lehrvideo mit Auftrag: Analogien zwischen elektrischem und Wasserstromkreis - YouTube; nicht gemeint sind die Nachbarsammlungen: Grundlagen Magnetismus, Bewegte Ladungen / Felder, Vertiefung E-Lehre"
+   },
+   "bau": {
+    "BR": {
+     "main": "Benno Schulz",
+     "method": "search",
+     "rules_topic": "Grundlagen E-Lehre",
+     "named": [],
+     "asked": "Grundlagen E-Lehre"
+    },
+    "BN": {
+     "main": "Elektrodynamik",
+     "method": "llm",
+     "rules_topic": "Grundlagen E-Lehre",
+     "named": [
+      "Elektrodynamik",
+      "Elektrischer Strom",
+      "Elektrische Spannung",
+      "Elektrischer Widerstand",
+      "Elektrische Ladung",
+      "Elektrisches Potential",
+      "Elektrostatik",
+      "Stromkreis",
+      "Ohmsches Gesetz"
+     ],
+     "asked": "Grundlagen E-Lehre"
+    },
+    "W0": {
+     "topic": "Grundlagen der Elektrizitätslehre",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Elektrizitätslehre",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "c5d62d48-fbd3-4454-a9fe-bc37d141f548",
+   "title": "Grundlagen Magnetismus",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "description": "Magnete sind nicht nur ein beliebtes Spielzeug für Kinder und praktische Helfer zur Befestigung von Zetteln am Kühlschrank. Solch einfache Permanentmagnete sind auch für den Betrieb von Elektromotoren und zur Stromerzeugung unverzichtbar. Das Phänomen des Elektromagnetismus zeigt darüber hinaus: Es besteht ein enger Zusammenhang elektrischer und magnetischer Phänomene. Elektromagnete lassen sich g",
+   "keywords": [],
+   "path": [
+    "Elektrizitätslehre / Magnetismus"
+   ],
+   "children": [
+    "Permanentmagnetismus",
+    "Elektromagnetismus"
+   ],
+   "materials": [],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Elektrizitätslehre / Magnetismus"
+    ],
+    "place": "Sammlung im Themenbaum unter: Elektrizitätslehre / Magnetismus; ihre Untersammlungen: Permanentmagnetismus, Elektromagnetismus; nicht gemeint sind die Nachbarsammlungen: Bewegte Ladungen / Felder, Grundlagen E-Lehre, Vertiefung E-Lehre"
+   },
+   "bau": {
+    "BR": {
+     "main": "Magnetismus",
+     "method": "search",
+     "rules_topic": "Grundlagen Magnetismus",
+     "named": [],
+     "asked": "Grundlagen Magnetismus"
+    },
+    "BN": {
+     "main": "Magnetismus",
+     "method": "llm",
+     "rules_topic": "Grundlagen Magnetismus",
+     "named": [
+      "Magnetismus",
+      "Dauermagnet",
+      "Elektromagnet",
+      "Ferromagnetismus",
+      "Paramagnetismus",
+      "Diamagnetismus",
+      "Weiss-Bezirk",
+      "Magnetische Suszeptibilität"
+     ],
+     "asked": "Grundlagen Magnetismus"
+    },
+    "W0": {
+     "topic": "Grundlagen des Magnetismus",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen des Magnetismus",
+     "fallback": null
+    }
+   }
+  },
+  {
+   "id": "ac18e9bf-3209-4606-a598-e8e290c9b999",
+   "title": "Grundlagen der Bruchrechnung",
+   "subjects": [
+    "Mathematik"
+   ],
+   "levels": [
+    "Sekundarstufe I"
+   ],
+   "description": "In der Welt der Mathematik gibt es ein faszinierendes Thema namens Algebra53, das sich mit der Bruchrechnung beschäftigt. Hierbei geht es um die Grundlagen der Bruchrechnung, die uns helfen, komplexe mathematische Probleme zu lösen. Mit diesem Wissen können wir die Welt der Zahlen besser verstehen und uns auf spannende mathematische Abenteuer begeben!",
+   "keywords": [
+    "Zähler",
+    "Nenner",
+    "Bruchstrich",
+    "Teile",
+    "Zahlenstrahl",
+    "Vergleich",
+    "Brüche vergleichen",
+    "ChatGPT: Beschreibung"
+   ],
+   "path": [
+    "Algebra53",
+    "Bruchrechnung"
+   ],
+   "children": [],
+   "materials": [
+    "Bruchrechnung in der Pizzeria",
+    "Brüche",
+    "Bruchrechnen - ganz einfach erklärt - wirklich ganz einfach! | Mathematik | Lehrerschmidt - YouTube",
+    "Bruchrechnen - Medienportal der Siemens Stiftung",
+    "Brüche, Bruchrechnung, Beispiele | Mathe by Daniel Jung",
+    "Mathematik an Stationen",
+    "Brüche am ZahlenstrahlZahlenstrahl",
+    "Übungsmaterial zur Bruchrechnung: Darstellung von Brüchen",
+    "Brüche am Zahlenstrahl darstellen | Fundamente der Mathematik | Erklärvideo - YouTube",
+    "Brüche vergleichen Aufgaben / Übungen",
+    "Brüche, größer kleiner oder gleich einsetzen - Individuelle Mathe-Arbeitsblätter bei dw-Aufgaben",
+    "Größenvergleich von Brüchen ",
+    "Brüche verstehen und vergleichen",
+    "Brüche vergleichen | größer oder kleiner | Bruchrechnung einfach erklärt | Lehrerschmidt - YouTube",
+    "Interaktives Video: Einführung in die Bruchrechnung"
+   ],
+   "word": "Grundlagen",
+   "art": "kontrolle",
+   "baum": {
+    "path": [
+     "Algebra53",
+     "Bruchrechnung"
+    ],
+    "place": "Sammlung im Themenbaum unter: Algebra53 › Bruchrechnung; Materialien darin: Bruchrechnung in der Pizzeria, Brüche, Bruchrechnen - ganz einfach erklärt - wirklich ganz einfach! | Mathematik | Lehrerschmidt - YouTube, Bruchrechnen - Medienportal der Siemens Stiftung, Brüche, Bruchrechnung, Beispiele | Mathe by Daniel Jung, Mathematik an Stationen, Brüche am ZahlenstrahlZahlenstrahl, Übungsmaterial zur Bruchrechnung: Darstellung von Brüchen; nicht gemeint sind die Nachbarsammlungen: Erweitern & Kürzen, Addition & Subtraktion von Brüchen, Multiplikation & Division von Brüchen, Besondere Brüche"
+   },
+   "bau": {
+    "BR": {
+     "main": "Bruchrechnung",
+     "method": "variant",
+     "rules_topic": "Grundlagen der Bruchrechnung",
+     "named": [],
+     "asked": "Grundlagen der Bruchrechnung"
+    },
+    "BN": {
+     "main": "Bruchrechnung",
+     "method": "llm",
+     "rules_topic": "Grundlagen der Bruchrechnung",
+     "named": [
+      "Bruchrechnung",
+      "Rationale Zahl",
+      "Zahlengerade"
+     ],
+     "asked": "Grundlagen der Bruchrechnung"
+    },
+    "W0": {
+     "topic": "Grundlagen der Bruchrechnung",
+     "fallback": null
+    },
+    "W1": {
+     "topic": "Grundlagen der Bruchrechnung",
+     "fallback": null
+    }
+   }
+  }
+ ],
+ "bogen": [
+  {
+   "id": 1,
+   "sammlung": {
+    "titel": "Grundlagen",
+    "pfad_darueber": [
+     "Evidenzbasierte Medizin - EbM"
+    ],
+    "faecher": [],
+    "bildungsstufen": [
+     "Hochschule",
+     "Berufliche Bildung",
+     "Fortbildung",
+     "Erwachsenenbildung"
+    ],
+    "beschreibung": "Für die Interpretation von Evidenz benötigen Anwendende der Evidenzbasierten Medizin Grundlagen zur Interpretation epidemiologischer und statistischer Kennzahlen und sollen mit den Grundprinzipien des wissenschaftlichen Arbeitens und der guten wissenschaftlichen Praxis vertraut sein.",
+    "untersammlungen": [
+     "Statistik",
+     "Epidemiologie ",
+     "Wissenschaftliches Arbeiten",
+     "Gute wissenschaftliche Praxis "
+    ],
+    "materialien_darin": [],
+    "nachbarsammlungen": [
+     "Einführung in die Evidenzbasierte Medizin",
+     "Literaturrecherche",
+     "Kritische Bewertung",
+     "Anwendung EbM"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen (Evidenzbasierte Medizin - EbM)",
+    "B": "Grundlagen",
+    "C": "Statistik, Epidemiologie und wissenschaftliches Arbeiten in der evidenzbasierten Medizin",
+    "D": "Statistik und wissenschaftliches Arbeiten in der Evidenzbasierten Medizin"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 2,
+   "sammlung": {
+    "titel": "Grundlagen",
+    "pfad_darueber": [
+     "Fachdidaktik"
+    ],
+    "faecher": [
+     "Biologie"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "In dieser Untersammlung finden sich grundlegende, biologische Fakten, die im Anfangsunterricht der Primarstufe unterrichtet und den Schüler*innen nahegebracht werden sollen.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Immunsystem",
+     "Warum muss man sich überhaupt waschen?",
+     "Was ist der Unterschied zwischen Viren und Bakterien? ",
+     "Vitamin",
+     "Von der Keimzelle zum Kind (Arbeitsblätter)",
+     "Von der Keimzelle zum Kind (Erklärvideos)",
+     "Die Anatomie der Biene",
+     "#bienenlive — Basiswissen Bienen"
+    ],
+    "nachbarsammlungen": [
+     "Bewertungsstrategien",
+     "Methoden"
+    ]
+   },
+   "themen": {
+    "A": "Biologische Grundlagen im Anfangsunterricht",
+    "B": "Grundlagen",
+    "D": "Grundlagen (Fachdidaktik)"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 3,
+   "sammlung": {
+    "titel": "Grundlagen (erwachsende Lernende)",
+    "pfad_darueber": [
+     "Nachhaltigkeit (LTP)",
+     "Ökologie (erwachsene Lernende)"
+    ],
+    "faecher": [
+     "Nachhaltigkeit"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales"
+    ],
+    "nachbarsammlungen": [
+     "Wichtige Persönlichkeiten - ökologische Nachhaltigkeit",
+     "Wasser (erwachsene Lernenden)",
+     "Gesundheit (erwachsene Lernende)",
+     "Ökosysteme (erwachsene Lernende)",
+     "Wasser (erwachsene Lernende)",
+     "Flora und Fauna - Der Wald (Kinder 8-12 Jahre)"
+    ]
+   },
+   "themen": {
+    "A": "Ökologische Nachhaltigkeit",
+    "B": "Grundlagen (erwachsende Lernende)",
+    "D": "Grundlagen (erwachsende Lernende) (Ökologie)"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Adasiyyah",
+     "Y": "Ökologie"
+    },
+    "P2": {
+     "X": "Ökologie",
+     "Y": "Nachhaltigkeit"
+    }
+   }
+  },
+  {
+   "id": 4,
+   "sammlung": {
+    "titel": "Grundlagen (Fachportalstartseite)",
+    "pfad_darueber": [
+     "Nachhaltigkeit (LTP)"
+    ],
+    "faecher": [
+     "Nachhaltigkeit"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Die Ziele für nachhaltige Entwicklung im Unterricht | Portal Globales Lernen",
+     "Lernen zu handeln! Was bedeutet Bildung für nachhaltige Entwicklung (BNE)? - YouTube",
+     "Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales"
+    ],
+    "nachbarsammlungen": [
+     "Ökonomie",
+     "Energie und Strom",
+     "Ökologie für Lehrende",
+     "Soziales",
+     "Grundbegriffe (Fachportalstartseite)",
+     "historischer Kontext (Fachportalseite)",
+     "BNE Didaktik und Methodik (Fachportalseite)",
+     "Nachhaltigkeit im Alltag",
+     "Ökologie (erwachsene Lernende)",
+     "Pädagogische Themenseite - Galeriemethode"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen der Nachhaltigkeit",
+    "B": "Grundlagen (Fachportalstartseite) (Nachhaltigkeit)",
+    "C": "Nachhaltigkeit",
+    "D": "Grundlagen (Fachportalstartseite)"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Nachhaltigkeit",
+     "Y": "Carl von Ossietzky Universität Oldenburg"
+    }
+   }
+  },
+  {
+   "id": 5,
+   "sammlung": {
+    "titel": "Grundlagen",
+    "pfad_darueber": [],
+    "faecher": [
+     "Informatik"
+    ],
+    "bildungsstufen": [
+     "Primarstufe",
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Informatik - Grundlagen ist der Schlüssel zur digitalen Welt! Hier lernst du, wie Computer funktionieren, wie man Programme schreibt und wie man Daten sicher speichert. Entdecke die faszinierende Welt der Informatik und werde zum digitalen Experten!",
+    "untersammlungen": [
+     "Zahlensysteme",
+     "Anwendungen",
+     "Peripherie",
+     "Grafik / Bildbearbeitung",
+     "Audiobearbeitung"
+    ],
+    "materialien_darin": [
+     "1.1 - IKT",
+     "inf-schule | Information und ihre Darstellung",
+     "Ideenwolke Lerntheke",
+     "Informatik ohne Strom (PDF)",
+     "Sicherheitsregeln im digitalen Zeitalter",
+     "Digitale Kompetenzen",
+     "Passwörter - Schlüssel fürs Online-Leben",
+     "Sichere Passwörter"
+    ],
+    "nachbarsammlungen": [
+     "Angewandte Informatik",
+     "Informatik & Gesellschaft",
+     "Praktische Informatik",
+     "Technische Informatik",
+     "Theoretische Informatik",
+     "WP_Fachportal_Informatik"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen (Informatik)",
+    "B": "Informatik-Grundlagen",
+    "C": "Grundlagen",
+    "D": "Grundlagen der Informatik"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Information",
+     "Y": "Zahlensystem"
+    }
+   }
+  },
+  {
+   "id": 6,
+   "sammlung": {
+    "titel": "Anfangsunterricht",
+    "pfad_darueber": [],
+    "faecher": [
+     "Chemie"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "Zu Beginn der Chemieunterrichts geht es zunächst meist um eine Klärung des Stoffbegriffs sowie die Eigenschaften chemischer Reaktionen. Denn diese sind mit einer Vernichtung von Ausgangsstoffen und einer Bildung neuer Stoffe verbunden - genauso wie mit einem Energieumsatz.  Der Anfangsunterricht versucht, diese Grundlagen zu vermitteln.",
+    "untersammlungen": [
+     "Stoffe und Stoffeigenschaften",
+     "Die chemische Reaktion",
+     "Metalle und die Gewinnung aus Erzen"
+    ],
+    "materialien_darin": [
+     "Freies Lehrbuch der anorganischen Chemie - Für Schüler und Studenten",
+     "Lösungsvorgang von Feststoffen in Wasser - Simulation"
+    ],
+    "nachbarsammlungen": [
+     "Säuren und Basen",
+     "Die Elektrochemie",
+     "Organische Chemie",
+     "Chemie und Umwelt 123",
+     "Fachportalseite Chemie",
+     "Fachmethoden und Reflexion",
+     "Energie & Kinetik",
+     "Atombau und PSE",
+     "Bindung & Struktur",
+     "Fachdidaktik"
+    ]
+   },
+   "themen": {
+    "A": "Anfangsunterricht (Chemie)",
+    "B": "Anfangsunterricht",
+    "C": "Grundlagen der Chemie",
+    "D": "Stoffe und chemische Reaktionen"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 7,
+   "sammlung": {
+    "titel": "Einführung / Grundlagen",
+    "pfad_darueber": [
+     "Astronomie"
+    ],
+    "faecher": [
+     "Physik"
+    ],
+    "bildungsstufen": [
+     "Primarstufe",
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Die Astronomie untersucht unglaublich viele, unglaublich unterschiedliche Phänomene. Astronomen nutzen hierzu oft Begriffe und Ideen aus der Physik, Mathematik und Chemie. Eine “Einführung” in die Astronomie versucht, grundlegende Phänomene zu klären, Techniken und Arbeitsweisen der Astronomie zu beschreiben und die geschichtliche Entwicklung des astronomischen Wissens deutlich zu machen.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Paxi und unser Mond: Phasen und Finsternisse - YouTube",
+     "Totale Sonnenfinsternis - Sachgeschichten mit Armin Maiwald - YouTube",
+     "Wie entstehen Ebbe und Flut? - YouTube"
+    ],
+    "nachbarsammlungen": [
+     "Sternbeobachtung",
+     "Planetensystem",
+     "Sonne / Fixsterne",
+     "Kosmologie"
+    ]
+   },
+   "themen": {
+    "A": "Einführung / Grundlagen (Astronomie)",
+    "B": "Einführung / Grundlagen",
+    "C": "Grundlagen der Astronomie"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 8,
+   "sammlung": {
+    "titel": "Grundlagen",
+    "pfad_darueber": [
+     "Kernphysik"
+    ],
+    "faecher": [
+     "Physik"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Die Kernphysik befasst sich mit dem Aufbau und den möglichen Umwandlungsprozessen von Atomkernen. Die Kernphysik baut hierbei einerseits auf grundlegenden experimentellen Befunden auf, andererseits auf immer komplexer werdenden Modellen. Zur Beschreibung sind zudem einige Grundbegriffe notwendig: Nuklide, Isotope und Kernreaktionsgleichung sind einige davon.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Der Nulleffekt | Radioaktivität überall",
+     "Isotope und die Radiocarbonmethode",
+     "Übung zum Verständnis der Isotopenschreibweise",
+     "Was sind Isotope? I musstewissen Chemie",
+     "Die Masse von Atomen I musstewissen Chemie",
+     "Isotope und Atommasse",
+     "Leseübungen zur Isotopenschreibweise",
+     "Verständnisfragen zum Begriff Nuklide und deren Schreibweise"
+    ],
+    "nachbarsammlungen": [
+     "Kernmodelle",
+     "Kernreaktionen",
+     "Kernfusion",
+     "Kernspaltung",
+     "Radioaktivität"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen",
+    "C": "Grundlagen (Kernphysik)",
+    "D": "Grundbegriffe der Kernphysik"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 9,
+   "sammlung": {
+    "titel": "Grundlagen",
+    "pfad_darueber": [
+     "(Unsichtbar) Mediendidaktik"
+    ],
+    "faecher": [
+     "Medienbildung"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "Lernen und Medien, Lerninhalte Medien; Lernziele Medien, Medienkompetenz; Medienkompetenzrahmen; Grundlagen Mediendidaktik; elearning; e-learning; Medienkompetenzerwerb; Förderung Medienkompetenz; Vermittlung Medienkompetenz; Lernen neue Medien; Theorie Mediendidaktik; theoretische Grundlagen Mediendidaktik;",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Was ist digitale Didaktik?",
+     "Führt die Digitalisierung ins pädagogische Paradies? Kontrollverlust vs. Empowerment ",
+     "Mediendidaktik | E-Learning, Digitalisierung & Bildung",
+     "Mediendidaktik - SchuleDigital.jetzt",
+     "Was ist Mediendidaktik?",
+     "Digitale Medienkompetenz ‒ Was ist das wirklich? | Digitale Bildung³ ",
+     "Medienkompetenz nach Baacke "
+    ],
+    "nachbarsammlungen": [
+     "Didaktische Methoden",
+     "Lernorganisation & technische Umsetzung"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen der Mediendidaktik",
+    "B": "Grundlagen",
+    "C": "Grundlagen (Mediendidaktik)",
+    "D": "Grundlagen der Mediendidaktik und Medienkompetenz"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Bildpädagogik",
+     "Y": "Mediendidaktik"
+    }
+   }
+  },
+  {
+   "id": 10,
+   "sammlung": {
+    "titel": "Grundlagen",
+    "pfad_darueber": [
+     "Quantenphysik"
+    ],
+    "faecher": [
+     "Physik"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Die Quantenphysik stellt viele Grundlagen der klassischen Physik in Frage. Liefert die klassische Physik eindeutige Vorhersagen, so sind in der Quantenmechanik nur statistische Aussagen zum Beispiel über den Aufenthaltsort eines Teilchens möglich. Trotz dieser Eigenschaft liefern physikalische Messungen an Quantenobjekten eindeutige Ergebnisse. Quantenobjekte sind zudem zur Interferenz fähig, oft ",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Wesenszug 1: Statistische Vorhersagbarkeit",
+     "Wesenszug 2: Fähigkeit zur Interferenz",
+     "Wesenszug 4: Komplementarität",
+     "Wesenszug 3: Eindeutige Messergebnisse",
+     "Die Kopenhagener Deutung",
+     "Schrödingers Katze",
+     "Quantenphysik: Potentialtöpfe und Elektronenwellen",
+     "Das Geheimnis der Quanten - Doppelspaltexperiment"
+    ],
+    "nachbarsammlungen": [
+     "Photonen",
+     "Elektronen"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen der Quantenphysik",
+    "C": "Grundlagen (Quantenphysik)",
+    "D": "Grundlagen"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 11,
+   "sammlung": {
+    "titel": "Einführung",
+    "pfad_darueber": [
+     "Communities",
+     "EbM / EbX"
+    ],
+    "faecher": [
+     "Zeitgemäße Bildung"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "",
+    "untersammlungen": [
+     "Begriffsbestimmung EbM/EbX",
+     "Historie zur EbM/EbX",
+     "Säulen der EbM/EbX",
+     "Relevanz der EbM/EbX",
+     "Geschichte der EbM"
+    ],
+    "materialien_darin": [],
+    "nachbarsammlungen": [
+     "Ask",
+     "Aquire",
+     "Appraise",
+     "Apply",
+     "Evaluate"
+    ]
+   },
+   "themen": {
+    "A": "Einführung (EbM / EbX)",
+    "B": "Medizin",
+    "C": "Einführung in EbM und EbX",
+    "D": "Einführung"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 12,
+   "sammlung": {
+    "titel": "1 - Einführung",
+    "pfad_darueber": [
+     "Pädagogischer Warenkorb",
+     "Galeriemethode (Weimarer Republik)"
+    ],
+    "faecher": [
+     "Geschichte",
+     "Zeitgemäße Bildung"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "Die Lernenden werden in das Thema eingeführt, indem der Kontext und die Relevanz des zu behandelnden Stoffes erläutert wird. Diese Einführung dient dazu, das Interesse zu wecken und eine gemeinsame Wissensbasis für alle Lernenden zu schaffen.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Die Dolchstoßlegende: Darum war sie so verheerend",
+     "Die Weimarer Republik | Die Weltwirtschaftskrise 1929 | musstewissen Geschichte",
+     "Adolf Hitlers Herrschaft: Von 1933 bis zum Untergang",
+     "Der 9. November - Ein Schicksalstag für Deutschland",
+     "Worthless Paper Money - German Hyper-Inflation Starts After WW1 I THE GREAT WAR 1921",
+     "Bavarian Soviet Republic - 1919 Economy and Reconstruction I BEYOND THE GREAT WAR",
+     "Hitlers Machtübernahme | musstewissen Geschichte",
+     "Wie schließt man Frieden? 5 Antworten"
+    ],
+    "nachbarsammlungen": [
+     "2 - Gruppeneinteilung",
+     "3 - Aufgabenstellung",
+     "4 - Bearbeitung und Visualisierung",
+     "5 - Präsentation und Feedback"
+    ]
+   },
+   "themen": {
+    "A": "1 - Einführung (Galeriemethode)",
+    "B": "Weimarer Republik",
+    "D": "1 - Einführung"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Galeriemethode",
+     "Y": "(keiner)"
+    }
+   }
+  },
+  {
+   "id": 13,
+   "sammlung": {
+    "titel": "Einführung",
+    "pfad_darueber": [
+     "Nachhaltigkeit (LTP)",
+     "Pädagogische Themenseite - Galeriemethode"
+    ],
+    "faecher": [
+     "Nachhaltigkeit"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "SDG 6 — Sauberes Wasser",
+     "Virtuelles Wasser"
+    ],
+    "nachbarsammlungen": [
+     "Gruppeneinteilung",
+     "Aufgabenstellung",
+     "Bearbeitung und Visalisierung",
+     "Präsentation und Feedback"
+    ]
+   },
+   "themen": {
+    "B": "Einführung",
+    "C": "Einführung in die Nachhaltigkeit",
+    "D": "Nachhaltigkeit"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Wasser",
+     "Y": "Nachhaltigkeit"
+    }
+   }
+  },
+  {
+   "id": 14,
+   "sammlung": {
+    "titel": "Einstieg",
+    "pfad_darueber": [
+     "Open Educational Resources (OER)",
+     "OER im Detail",
+     "Offene Bildung in der Praxis"
+    ],
+    "faecher": [
+     "Allgemein"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "Entdecke die Welt der Open Educational Resources (OER) und lerne, wie du sie in deinem Unterricht einsetzen kannst. Tauche ein in die Details von OER und erfahre, wie du offene Bildung in der Praxis umsetzen kannst. Starte jetzt deinen Einstieg in die Welt der OER und revolutioniere deine Unterrichtsmethoden!",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "OER in der Schule - Digitale Öffnung und Schließung",
+     "OER in der schulischen Praxis (Powerpoint)",
+     "Handlungsanleitung: OER in die Praxis integrieren",
+     "Zeitgemäße Bildung | Wir lernen online",
+     "mwk.baden-wuerttemberg.de/fileadmin/redaktion/m-mwk/intern/dateien/publikationen/Open_Educational_Resources__OER_.pdf"
+    ],
+    "nachbarsammlungen": [
+     "Weiterführendes",
+     "Berufliche Bildung / Erwachsenenbildung"
+    ]
+   },
+   "themen": {
+    "A": "Offene Bildung in der Praxis",
+    "B": "Open Educational Resources (OER)",
+    "C": "Einstieg",
+    "D": "Einstieg (Offene Bildung in der Praxis)"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 15,
+   "sammlung": {
+    "titel": "Übungen und Spiele",
+    "pfad_darueber": [
+     "Spielen und Gestalten"
+    ],
+    "faecher": [
+     "Darstellendes Spiel"
+    ],
+    "bildungsstufen": [
+     "Primarstufe",
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Sie gehören zum Theaterunterricht oder Darstellenden Spiel dazu. Auf- und Abwärmspiele, Vertrauens- und Gruppenübungen bereiten spielerisch auf die Bühnenarbeit vor und nehmen die Angst vor der Präsentation vor Publikum. Hier findest du Beschreibungen und auch Filme vieler Übungen und Spiele, die zur Gruppendynamik beitragen können.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Spiele für drinnen und draußen",
+     "Theater: Auf der Bühne - Zzzebra, das Web-Magazin für Kinder | Labbé Verlag",
+     "Atem- und Sprechtechnik - Landesmedienzentrum Baden-Württemberg",
+     "Theatre Game #5 - Energy Circle. From Drama Menu - drama games & ideas for drama.",
+     "Theatre Game #28 - 10 Seconds To Make. From Drama Menu - drama games & ideas for drama.",
+     "Theatre Game #14 - Frog In The Pond. From Drama Menu - drama games & ideas for drama.",
+     "Theatre Game #52 - Character Bus. From Drama Menu - drama games & ideas for drama.",
+     "Theatre Game #11 - Alan Sells Apples In Albania from Drama Menu - drama games & ideas for drama."
+    ],
+    "nachbarsammlungen": [
+     "Gestalten von Szenen und Stücken",
+     "Feedbackkultur"
+    ]
+   },
+   "themen": {
+    "A": "Übungen und Spiele",
+    "B": "Übungen und Spiele im Darstellenden Spiel",
+    "C": "Theaterübungen und -spiele"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Szenisches Spiel",
+     "Y": "Das Spiel (Roman)"
+    }
+   }
+  },
+  {
+   "id": 16,
+   "sammlung": {
+    "titel": "Medien",
+    "pfad_darueber": [
+     "Politische Bildung",
+     "Digitalisierung"
+    ],
+    "faecher": [
+     "Politik"
+    ],
+    "bildungsstufen": [
+     "Primarstufe",
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "In der heutigen digitalen Welt ist politische Bildung wichtiger denn je! Wir lernen, wie wir uns in der digitalen Welt zurechtfinden und wie wir uns vor Falschinformationen schützen können. Wir werden zu kritischen Medienkonsumenten und lernen, wie wir unsere Meinungen und Ideen online effektiv kommunizieren können.",
+    "untersammlungen": [
+     "Meinungsbildung und Massenmedien ",
+     "Plattformen",
+     "Informationen, Nachrichten & Kommunikation"
+    ],
+    "materialien_darin": [
+     "Medien - Die \"vierte Gewalt\"?",
+     "Filterblasen",
+     "Struktur und Organisation der Medien",
+     "Medien – Klexikon",
+     "Digitale Öffentlichkeit, Social Media und ich - Themenblätter",
+     "Medien – die \"vierte Gewalt\"? - Themenblätter",
+     "Medien und Politik - Themenblätter",
+     "Mein Klick! Meine Verantwortung?"
+    ],
+    "nachbarsammlungen": [
+     "Überwachung",
+     "Recht",
+     "Künstliche Intelligenz",
+     "Bildung und Kultur ",
+     "Arbeitswelt"
+    ]
+   },
+   "themen": {
+    "B": "Medien",
+    "D": "Medien und politische Bildung"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Presse (Medien)",
+     "Y": "Digitalisierung"
+    },
+    "P2": {
+     "X": "Massenmedien",
+     "Y": "Presse (Medien)"
+    }
+   }
+  },
+  {
+   "id": 17,
+   "sammlung": {
+    "titel": "Methoden",
+    "pfad_darueber": [],
+    "faecher": [
+     "Physik"
+    ],
+    "bildungsstufen": [
+     "Primarstufe",
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Es gibt einige grundlegende Methoden der Physik. Am wichtigsten zu Nennen ist hier vermutlich das Experiment, neben den oft mathematischen Überlegungen in der theoretischen Physik. Neben diesen “Makro-Methoden” gibt es aber auch eine Vielzahl kleinerer Methodenwerkzeuge: Videoanalysen, digitale Messwerterfassungssysteme, Regressionsanalysen und vieles mehr.",
+    "untersammlungen": [
+     "Modellieren",
+     "Mathematik",
+     "Experimentieren",
+     "Dokumentieren",
+     "SI-Einheiten",
+     "Physikalische Konstanten"
+    ],
+    "materialien_darin": [
+     "SPARKvue",
+     "Digitale Tools für den Physikunterricht - Schule digital begreifen",
+     "Diagramm Generator - Meine Forscherwelt",
+     "Experimentieren",
+     "The Feynman Lectures on Physics"
+    ],
+    "nachbarsammlungen": [
+     "Astronomie",
+     "Relativitätstheorie",
+     "Akustik",
+     "Optik",
+     "Mechanik",
+     "Energie",
+     "Kernphysik",
+     "Quantenphysik",
+     "Teilchenphysik",
+     "Atomphysik"
+    ]
+   },
+   "themen": {
+    "A": "Methoden",
+    "C": "Methoden und Werkzeuge der Physik",
+    "D": "Methoden (Physik)"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 18,
+   "sammlung": {
+    "titel": "Methoden",
+    "pfad_darueber": [
+     "Fachdidaktik"
+    ],
+    "faecher": [
+     "Biologie"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Hier finden sich verschiedene Methoden, die  Schüler*innen sämtlicher Jahrgangsstufen im Biologieunterricht erlernen sollen.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Mikroben im Einsatz - das virtuelle Labor",
+     "Viel-Falter: Tagfalter-Monitoring",
+     "Bienen und Ökologie",
+     "Wasserhärte",
+     "Stoffe erforschen, Naturwissenschaften entdecken | FCI",
+     "Wie mikroskopiere ich richtig?",
+     "DNA-Isolation ",
+     "Chromatographie - Wie es funktioniert"
+    ],
+    "nachbarsammlungen": [
+     "Grundlagen",
+     "Bewertungsstrategien"
+    ]
+   },
+   "themen": {
+    "A": "Methoden",
+    "B": "Methoden (Fachdidaktik)",
+    "C": "Biologische Methodenkompetenz"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Experiment",
+     "Y": "Naturwissenschaftlicher Unterricht"
+    }
+   }
+  },
+  {
+   "id": 19,
+   "sammlung": {
+    "titel": "Methoden",
+    "pfad_darueber": [
+     "Politische Bildung"
+    ],
+    "faecher": [
+     "Politik"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "Ihr habt ein spannendes Thema oder interessante Inhalte, aber euch fehlt eine Idee zur methodischen Umsetzung?\nHier könnt ihr euch Anregungen genau dafür holen oder auch Einschätzungen finden, was von den jeweiligen Methoden zu halten ist. Methodisches Feuerwerk oder multimedialer Firlefanz? Die Einschätzungen gehen auseinander – wie so oft – und die Orientierung fehlt. In dieser Sammlung finden s",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "VR/AR in der historisch-politischen Bildung – Chancen und Risiken",
+     "Virtual und Augmented Reality im Klassenraum? Ein Überblick bildungsrelevanter Angebote ",
+     "Schülerwettbewerb zur politischen Bildung | bpb",
+     "Urheberrecht und Blogs erstellen",
+     "Rhetorik/Debatte",
+     "SimpleMind",
+     "WiseMapping",
+     "Urheberrecht für Lernende: Häufige Fragen und Antworten"
+    ],
+    "nachbarsammlungen": [
+     "Grundfragen",
+     "Umwelt",
+     "Globalisierung und internationale Politik",
+     "Digitalisierung",
+     "Wahlen",
+     "Sozialer Wandel",
+     "Soziale Gerechtigkeit",
+     "Erinnerungsarbeit",
+     "Fachportalseite Politische Bildung",
+     "Berufliche und ökonomische Bildung"
+    ]
+   },
+   "themen": {
+    "B": "Methoden (Politische Bildung)",
+    "C": "Methoden der politischen Bildung",
+    "D": "Methoden"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Didaktik",
+     "Y": "Lehrmethode"
+    }
+   }
+  },
+  {
+   "id": 20,
+   "sammlung": {
+    "titel": "Allgemeines",
+    "pfad_darueber": [
+     "Communities",
+     "WLO-Chatbot Themenbaum",
+     "Hexen"
+    ],
+    "faecher": [
+     "Geschichte",
+     "Gesellschaftskunde",
+     "Deutsch",
+     "Ethik",
+     "Religion",
+     "Kunst",
+     "Geschichte",
+     "Gesellschaftskunde",
+     "Deutsch",
+     "Ethik",
+     "Religion",
+     "Kunst"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I",
+     "Sekundarstufe II",
+     "Hochschule",
+     "Sekundarstufe I",
+     "Sekundarstufe II",
+     "Hochschule"
+    ],
+    "beschreibung": "Der Begriff Hexen umfasst vielfältige Konzepte, die von Vorurteilen bis zu literarischen Darstellungen reichen. In der Geschichte wurden Frauen oft als Hexen gebrandmarkt, was zu Verfolgungen und sozialen Spannungen führte. Die Darstellung von Hexen in der Kunst und Literatur zeigt sowohl die negative Konnotation als auch die Faszination, die von diesem Thema ausgeht. In der heutigen Zeit wird das",
+    "untersammlungen": [
+     "Mythologische Darstellungen"
+    ],
+    "materialien_darin": [],
+    "nachbarsammlungen": [
+     "Historische Aspekte",
+     "Feuer machen für Anfänger"
+    ]
+   },
+   "themen": {
+    "A": "Hexen in Mythos, Kulturgeschichte und Feminismus",
+    "B": "Allgemeines",
+    "C": "Allgemeines (Hexen)",
+    "D": "Hexen in Kulturgeschichte und Gegenwart"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 21,
+   "sammlung": {
+    "titel": "Experimente",
+    "pfad_darueber": [
+     "Geographie",
+     "Methodik & Didaktik"
+    ],
+    "faecher": [
+     "Geografie"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Hier gibt es eine Übersicht an Materialien zu bestimmten geographischen Experimenten.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Bodenerosion: Offenes Experimentieren"
+    ],
+    "nachbarsammlungen": [
+     "Kartenarbeit und Atlas",
+     "Auswertung von Diagrammen",
+     "Information gewinnen und auswerten",
+     "Messungen durchführen",
+     "Tabellen anlegen",
+     "Orientieren und messen",
+     "Arbeiten mit geographischen Informationssystemen (GIS)"
+    ]
+   },
+   "themen": {
+    "A": "Experimente",
+    "C": "Boden- und Gesteinsbestimmung"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Didaktik",
+     "Y": "Experiment"
+    }
+   }
+  },
+  {
+   "id": 22,
+   "sammlung": {
+    "titel": "Anwendungen",
+    "pfad_darueber": [
+     "Grundlagen"
+    ],
+    "faecher": [
+     "Informatik"
+    ],
+    "bildungsstufen": [
+     "Primarstufe",
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Informatik ist die Zukunft! Lerne die Grundlagen und Anwendungen kennen, die dir helfen werden, die digitale Welt zu verstehen und zu beherrschen. Entdecke, wie du mit Programmierung, Datenanalyse und künstlicher Intelligenz die Welt verändern kannst. Werde Teil einer neuen Generation von Innovatoren und gestalte die Zukunft mit Informatik!",
+    "untersammlungen": [
+     "Browser",
+     "E-Mail",
+     "Office"
+    ],
+    "materialien_darin": [
+     "Videokonferenz mit iServ in 200 Sekunden - für Lehrer / Moderatoren ( Übersicht Kurzanleitung ) - YouTube",
+     "Kurzanleitung Videokonferenz mit iServ für Schüler(innen) # Die Videochat Funktionen im Überblick - YouTube",
+     "Aufgaben in iServ bearbeiten, abgeben und hochladen  - Kurzanleitung für Schüler - YouTube"
+    ],
+    "nachbarsammlungen": [
+     "Zahlensysteme",
+     "Peripherie",
+     "Grafik / Bildbearbeitung",
+     "Audiobearbeitung"
+    ]
+   },
+   "themen": {
+    "A": "Informatik: Grundlagen und Anwendungen",
+    "B": "Anwendungen",
+    "D": "Anwendungen (Informatik)"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Informatik",
+     "Y": "Sprachbau des Esperanto"
+    }
+   }
+  },
+  {
+   "id": 23,
+   "sammlung": {
+    "titel": "Grundlagen der Prozentrechnung",
+    "pfad_darueber": [
+     "Algebra53",
+     "Prozente & Zinsen"
+    ],
+    "faecher": [
+     "Mathematik"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I"
+    ],
+    "beschreibung": "In diesem Lehrplanthema geht es um die faszinierende Welt der Prozente und Zinsen! Wir werden lernen, wie man Prozentrechnungen durchführt und wie man Zinsen berechnet. Mit diesem Wissen können wir in Zukunft besser verstehen, wie Banken arbeiten und wie wir unser Geld am besten anlegen können. Also, auf geht's in die Welt der Mathematik und der Finanzen!",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Einführung in das Prozentrechnen — Landesbildungsserver Baden-Württemberg",
+     "Stationenlernen Prozentrechnung",
+     "Prozentrechnung durch Dreisatz",
+     "Anleitung Prozentrechnen mit Dreisatz",
+     "Die Bedeutung von Prozent (Video) | Khan Academy",
+     "Erklärvideo Prozentrechnen Einführung - YouTube",
+     "BRÜCHE in PROZENT umwandeln – rationale Zahlen, Beispiele auch über 100 - YouTube"
+    ],
+    "nachbarsammlungen": [
+     "Prozentwert",
+     "Prozentsatz",
+     "Grundwert",
+     "Formel umstellen",
+     "Zinsen",
+     "Zinssatz",
+     "Kapital",
+     "Berechnung des Zeitraums",
+     "Sachaufgaben Prozente & Zinsen",
+     "Zinseszinsen"
+    ]
+   },
+   "themen": {
+    "B": "Grundlagen der Prozentrechnung",
+    "C": "Prozentrechnung und Zinsen"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Zinsbescheinigung",
+     "Y": "Prozent"
+    }
+   }
+  },
+  {
+   "id": 24,
+   "sammlung": {
+    "titel": "Grundlagen und Begriffe in der  Verhaltensbiologie",
+    "pfad_darueber": [
+     "Verhaltensbiologie"
+    ],
+    "faecher": [
+     "Biologie"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "In dieser Untersammlung werden Materialien zu den wichtigsten Grundlagen und Begriffen der Verhaltensbiologie, die im Unterricht erlernt werden, zusammengestellt.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "k- und r-Strategen"
+    ],
+    "nachbarsammlungen": [
+     "Angeborenes Verhalten",
+     "Erworbenes und erlerntes Verhalten",
+     "Soziobiologie & Verhaltensökologie"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen und Begriffe in der  Verhaltensbiologie",
+    "C": "Grundlagen und Begriffe der Verhaltensbiologie",
+    "D": "Grundlagen und Begriffe in der Verhaltensbiologie"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 25,
+   "sammlung": {
+    "titel": "Grundlagen des betrieblichen Rechnungswesens",
+    "pfad_darueber": [
+     "Wirtschaft",
+     "Rechnungswesen"
+    ],
+    "faecher": [
+     "Wirtschaftskunde"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe II",
+     "Berufliche Bildung"
+    ],
+    "beschreibung": "hier sind die Grundlagen des betrieblichen Rechnungswesens mit Erklärvideo und Advance Organiser aufgeführt",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Advance Organizer Buchführung",
+     "Grundlagen Rechnungswesen -  YouTube"
+    ],
+    "nachbarsammlungen": [
+     "Jahresabschluss",
+     "Kostenrechnung"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen des betrieblichen Rechnungswesens"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 26,
+   "sammlung": {
+    "titel": "Grundlagen für chemische Bindungen",
+    "pfad_darueber": [
+     "Chemische Grundlagen",
+     "Chemische Begriffe in der Biologie",
+     "Atombau und chemische Bindungen"
+    ],
+    "faecher": [
+     "Biologie"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "In dieser Untersammlungen finden sich Materialien rund um die Grundlagen, anhand derer es zu chemischen Bindungen kommt: Es wird dabei näher eingegangen auf chemische Reaktionen, verschiedene Teilchenmodelle und was es mit der Elektronenbesetzung auf sich hat.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Aufbau der Atome",
+     "Orbitalmodell - Grundlagen",
+     "Oktettregel und Edelgase I musstewissen Chemie",
+     "Elektronenbesetzung",
+     "Aufbau der Materie: Atome / Schalenmodell",
+     "Besetzung der Orbitale mit Elektronen",
+     "Aufbau des Kugelwolkenmodells",
+     "Atommodell nach Niels Bohr I musstewissen Chemie"
+    ],
+    "nachbarsammlungen": [
+     "Bindungstypen und -kräfte"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen für chemische Bindungen",
+    "D": "Grundlagen chemischer Bindungen"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Chemische Bindung",
+     "Y": "Hans G. Grimm"
+    }
+   }
+  },
+  {
+   "id": 27,
+   "sammlung": {
+    "titel": "Grundbegriffe der Ökologie",
+    "pfad_darueber": [
+     "Ökologie"
+    ],
+    "faecher": [
+     "Biologie"
+    ],
+    "bildungsstufen": [],
+    "beschreibung": "In dieser Untersammlung finden sich Lehrmaterialien zu den gängigsten Grundbegriffen, die für den Unterricht in Ökologie gebraucht werden.",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Aha! | Naturräume in Deutschland",
+     "Lebensraum Wasser: Anpassungsleistungen",
+     "Stickstoffkreislauf"
+    ],
+    "nachbarsammlungen": [
+     "Populationsökologie",
+     "Ökosysteme",
+     "Naturschutz und Nachhaltigkeit",
+     "Wechselwirkungen und Lebensgemeinschaften"
+    ]
+   },
+   "themen": {
+    "A": "Grundbegriffe der Ökologie"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 28,
+   "sammlung": {
+    "titel": "psychologische Grundlagen des Lernens, Lerntheorien",
+    "pfad_darueber": [
+     "Lernen, Bildung und Erziehung"
+    ],
+    "faecher": [
+     "Pädagogik"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "In diesem Lehrplanthema geht es um die faszinierende Welt des Lernens, der Bildung und Erziehung. Wir werden uns mit den psychologischen Grundlagen des Lernens auseinandersetzen und verschiedene Lerntheorien kennenlernen, die uns helfen, das Lernen besser zu verstehen. Dabei werden wir spannende Einblicke in die menschliche Psyche gewinnen und erfahren, wie wir unser Wissen und unsere Fähigkeiten ",
+    "untersammlungen": [
+     "Behavioristische Lerntheorie",
+     "Konstruktivistische Lerntheorien",
+     "Die kognitive Wende und kognitive Lerntheorien",
+     "Modelllernen und Vorbilder",
+     "sonstige"
+    ],
+    "materialien_darin": [
+     "Lernen und Pädagogik Hamburger Bildungsserver",
+     "Lerntheorien: Zusammenfassung der klassischen Ansätze",
+     "Kognitives Lernen: Ein pädagogischer Leitfaden - CogniFit"
+    ],
+    "nachbarsammlungen": [
+     "Der pädagogische Blick auf Lernen und Erziehen",
+     "Lernen und Erziehen in der digitalen Welt",
+     "Bildungs- und Erziehungsziele",
+     "Erziehungstile",
+     "Pädagogischer Umgang mit neuen Medien"
+    ]
+   },
+   "themen": {
+    "C": "psychologische Grundlagen des Lernens, Lerntheorien",
+    "D": "Psychologische Grundlagen des Lernens und Lerntheorien"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Lerntheorie",
+     "Y": "Demokratiebildung"
+    },
+    "P2": {
+     "X": "Lernen",
+     "Y": "Lerntheorie"
+    }
+   }
+  },
+  {
+   "id": 29,
+   "sammlung": {
+    "titel": "Grundlagen der Wirtschaftsordnung",
+    "pfad_darueber": [
+     "Wirtschaft",
+     "Wirtschaftsordnung"
+    ],
+    "faecher": [
+     "Wirtschaftskunde"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "hier findet ihr Materialien zu den Grundlagen der Wirtschaftsordnung und zum Wirtschaftskreislauf als Grundlage der Wirtschftstheorie mit einem Quiz",
+    "untersammlungen": [
+     "Bedürfnisse",
+     "Ressourcen"
+    ],
+    "materialien_darin": [
+     "Grundlagen einer Wirtschaftsordnung - Homo Oeconomicus, Leistung, Steuerungsverfahren, Eigenschaften",
+     "Wirtschaftskreislauf",
+     "Leitfaden für Unterrichtende",
+     "Youtube-Quizshow zu Wirtschaftsthemen - Joachim Herz Stiftung",
+     "Ina Praetorius: Ökonomie kommt von Oikonomia",
+     "Chrematistik - die Kunst Reichtum zu erlangen",
+     "Wirtschaft ist Care | Heinrich-Böll-Stiftung"
+    ],
+    "nachbarsammlungen": [
+     "Güter",
+     "Wirtschaftsakteure",
+     "Wirtschaftssysteme",
+     "Sozialversicherungssystem"
+    ]
+   },
+   "themen": {
+    "B": "Grundlagen der Wirtschaftsordnung"
+   },
+   "hauptartikel_paare": {}
+  },
+  {
+   "id": 30,
+   "sammlung": {
+    "titel": "Grundlagen E-Lehre",
+    "pfad_darueber": [
+     "Elektrizitätslehre / Magnetismus"
+    ],
+    "faecher": [
+     "Physik"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Die Elektrizitätslehre ist ein für den Alltag hochrelevantes Teilgebiet der Physik. Einige grundlegende Aspekte der Elektrizitätslehre gehören mittlerweile zum Allgemeinwissen: Welche Wirkungen hat elektrischer Strom? Wie sind Stromkreis grundlegend aufgebaut? Mit Hilfe welcher physikalischer Größen kann ich elektrische Ströme messen? Verbunden mit all diesen technisch bedeutsamen Fragestellungen ",
+    "untersammlungen": [
+     "Stromwirkung",
+     "Einfache Stromkreise",
+     "Elektrostatik",
+     "Elektrische Grundgrößen"
+    ],
+    "materialien_darin": [
+     "E-Lehre mit Potential (Schulbuch)",
+     "Steinphysik - Physik-Geschichten aus Bad Einstein",
+     "Lehrvideo mit Auftrag:   Analogien zwischen elektrischem und Wasserstromkreis - YouTube"
+    ],
+    "nachbarsammlungen": [
+     "Grundlagen Magnetismus",
+     "Bewegte Ladungen / Felder",
+     "Vertiefung E-Lehre"
+    ]
+   },
+   "themen": {
+    "C": "Grundlagen der Elektrizitätslehre",
+    "D": "Grundlagen E-Lehre"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Carl Fromme (Physiker)",
+     "Y": "Benno Schulz"
+    }
+   }
+  },
+  {
+   "id": 31,
+   "sammlung": {
+    "titel": "Grundlagen Magnetismus",
+    "pfad_darueber": [
+     "Elektrizitätslehre / Magnetismus"
+    ],
+    "faecher": [
+     "Physik"
+    ],
+    "bildungsstufen": [
+     "Primarstufe",
+     "Sekundarstufe I",
+     "Sekundarstufe II"
+    ],
+    "beschreibung": "Magnete sind nicht nur ein beliebtes Spielzeug für Kinder und praktische Helfer zur Befestigung von Zetteln am Kühlschrank. Solch einfache Permanentmagnete sind auch für den Betrieb von Elektromotoren und zur Stromerzeugung unverzichtbar. Das Phänomen des Elektromagnetismus zeigt darüber hinaus: Es besteht ein enger Zusammenhang elektrischer und magnetischer Phänomene. Elektromagnete lassen sich g",
+    "untersammlungen": [
+     "Permanentmagnetismus",
+     "Elektromagnetismus"
+    ],
+    "materialien_darin": [],
+    "nachbarsammlungen": [
+     "Bewegte Ladungen / Felder",
+     "Grundlagen E-Lehre",
+     "Vertiefung E-Lehre"
+    ]
+   },
+   "themen": {
+    "B": "Grundlagen des Magnetismus",
+    "D": "Grundlagen Magnetismus"
+   },
+   "hauptartikel_paare": {
+    "P1": {
+     "X": "Carl Fromme (Physiker)",
+     "Y": "Magnetismus"
+    }
+   }
+  },
+  {
+   "id": 32,
+   "sammlung": {
+    "titel": "Grundlagen der Bruchrechnung",
+    "pfad_darueber": [
+     "Algebra53",
+     "Bruchrechnung"
+    ],
+    "faecher": [
+     "Mathematik"
+    ],
+    "bildungsstufen": [
+     "Sekundarstufe I"
+    ],
+    "beschreibung": "In der Welt der Mathematik gibt es ein faszinierendes Thema namens Algebra53, das sich mit der Bruchrechnung beschäftigt. Hierbei geht es um die Grundlagen der Bruchrechnung, die uns helfen, komplexe mathematische Probleme zu lösen. Mit diesem Wissen können wir die Welt der Zahlen besser verstehen und uns auf spannende mathematische Abenteuer begeben!",
+    "untersammlungen": [],
+    "materialien_darin": [
+     "Bruchrechnung in der Pizzeria",
+     "Brüche",
+     "Bruchrechnen - ganz einfach erklärt - wirklich ganz einfach! | Mathematik | Lehrerschmidt - YouTube",
+     "Bruchrechnen - Medienportal der Siemens Stiftung",
+     "Brüche, Bruchrechnung, Beispiele | Mathe by Daniel Jung",
+     "Mathematik an Stationen",
+     "Brüche am ZahlenstrahlZahlenstrahl",
+     "Übungsmaterial zur Bruchrechnung: Darstellung von Brüchen"
+    ],
+    "nachbarsammlungen": [
+     "Erweitern & Kürzen",
+     "Addition & Subtraktion von Brüchen",
+     "Multiplikation & Division von Brüchen",
+     "Besondere Brüche"
+    ]
+   },
+   "themen": {
+    "A": "Grundlagen der Bruchrechnung"
+   },
+   "hauptartikel_paare": {}
+  }
+ ],
+ "schluessel": [
+  {
+   "id": 1,
+   "art": "neutral",
+   "titel": "Grundlagen",
+   "zuordnung": {
+    "T": "B",
+    "S": "A",
+    "W0": "D",
+    "W1": "C"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 2,
+   "art": "neutral",
+   "titel": "Grundlagen",
+   "zuordnung": {
+    "T": "B",
+    "S": "D",
+    "W0": "A",
+    "W1": "A"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 3,
+   "art": "neutral",
+   "titel": "Grundlagen (erwachsende Lernende)",
+   "zuordnung": {
+    "T": "B",
+    "S": "D",
+    "W0": "A",
+    "W1": "A"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Ökologie",
+     "gemessen": "Adasiyyah",
+     "gemessen_als": "R1"
+    },
+    "BN": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Nachhaltigkeit",
+     "gemessen": "Ökologie",
+     "gemessen_als": "N3"
+    }
+   },
+   "paare": {
+    "P1": "BR",
+    "P2": "BN"
+   }
+  },
+  {
+   "id": 4,
+   "art": "neutral",
+   "titel": "Grundlagen (Fachportalstartseite)",
+   "zuordnung": {
+    "T": "D",
+    "S": "B",
+    "W0": "C",
+    "W1": "A"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Nachhaltigkeit",
+     "gemessen": "Carl von Ossietzky Universität Oldenburg",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 5,
+   "art": "neutral",
+   "titel": "Grundlagen",
+   "zuordnung": {
+    "T": "C",
+    "S": "A",
+    "W0": "D",
+    "W1": "B"
+   },
+   "artikel": {
+    "BN": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Zahlensystem",
+     "gemessen": "Information",
+     "gemessen_als": "N3"
+    }
+   },
+   "paare": {
+    "P1": "BN"
+   }
+  },
+  {
+   "id": 6,
+   "art": "neutral",
+   "titel": "Anfangsunterricht",
+   "zuordnung": {
+    "T": "B",
+    "S": "A",
+    "W0": "D",
+    "W1": "C"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 7,
+   "art": "neutral",
+   "titel": "Einführung / Grundlagen",
+   "zuordnung": {
+    "T": "B",
+    "S": "A",
+    "W0": "C",
+    "W1": "C"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 8,
+   "art": "neutral",
+   "titel": "Grundlagen",
+   "zuordnung": {
+    "T": "A",
+    "S": "C",
+    "W0": "D",
+    "W1": "D"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 9,
+   "art": "neutral",
+   "titel": "Grundlagen",
+   "zuordnung": {
+    "T": "B",
+    "S": "C",
+    "W0": "A",
+    "W1": "D"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Mediendidaktik",
+     "gemessen": "Bildpädagogik",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 10,
+   "art": "neutral",
+   "titel": "Grundlagen",
+   "zuordnung": {
+    "T": "D",
+    "S": "C",
+    "W0": "A",
+    "W1": "A"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 11,
+   "art": "neutral",
+   "titel": "Einführung",
+   "zuordnung": {
+    "T": "D",
+    "S": "A",
+    "W0": "B",
+    "W1": "C"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 12,
+   "art": "neutral",
+   "titel": "1 - Einführung",
+   "zuordnung": {
+    "T": "D",
+    "S": "A",
+    "W0": "B",
+    "W1": "B"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Galeriemethode",
+     "gemessen": null,
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 13,
+   "art": "neutral",
+   "titel": "Einführung",
+   "zuordnung": {
+    "T": "B",
+    "S": "B",
+    "W0": "C",
+    "W1": "D"
+   },
+   "artikel": {
+    "BN": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Nachhaltigkeit",
+     "gemessen": "Wasser",
+     "gemessen_als": "N3"
+    }
+   },
+   "paare": {
+    "P1": "BN"
+   }
+  },
+  {
+   "id": 14,
+   "art": "neutral",
+   "titel": "Einstieg",
+   "zuordnung": {
+    "T": "C",
+    "S": "D",
+    "W0": "B",
+    "W1": "A"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 15,
+   "art": "neutral",
+   "titel": "Übungen und Spiele",
+   "zuordnung": {
+    "T": "A",
+    "S": "A",
+    "W0": "C",
+    "W1": "B"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Szenisches Spiel",
+     "gemessen": "Das Spiel (Roman)",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 16,
+   "art": "neutral",
+   "titel": "Medien",
+   "zuordnung": {
+    "T": "B",
+    "S": "B",
+    "W0": "B",
+    "W1": "D"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Presse (Medien)",
+     "gemessen": "Digitalisierung",
+     "gemessen_als": "R1"
+    },
+    "BN": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Presse (Medien)",
+     "gemessen": "Massenmedien",
+     "gemessen_als": "N3"
+    }
+   },
+   "paare": {
+    "P1": "BR",
+    "P2": "BN"
+   }
+  },
+  {
+   "id": 17,
+   "art": "neutral",
+   "titel": "Methoden",
+   "zuordnung": {
+    "T": "A",
+    "S": "D",
+    "W0": "C",
+    "W1": "C"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 18,
+   "art": "neutral",
+   "titel": "Methoden",
+   "zuordnung": {
+    "T": "A",
+    "S": "B",
+    "W0": "C",
+    "W1": "C"
+   },
+   "artikel": {
+    "BN": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Experiment",
+     "gemessen": "Naturwissenschaftlicher Unterricht",
+     "gemessen_als": "N3"
+    }
+   },
+   "paare": {
+    "P1": "BN"
+   }
+  },
+  {
+   "id": 19,
+   "art": "neutral",
+   "titel": "Methoden",
+   "zuordnung": {
+    "T": "D",
+    "S": "B",
+    "W0": "C",
+    "W1": "C"
+   },
+   "artikel": {
+    "BN": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Lehrmethode",
+     "gemessen": "Didaktik",
+     "gemessen_als": "N3"
+    }
+   },
+   "paare": {
+    "P1": "BN"
+   }
+  },
+  {
+   "id": 20,
+   "art": "neutral",
+   "titel": "Allgemeines",
+   "zuordnung": {
+    "T": "B",
+    "S": "C",
+    "W0": "D",
+    "W1": "A"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 21,
+   "art": "neutral",
+   "titel": "Experimente",
+   "zuordnung": {
+    "T": "A",
+    "S": "A",
+    "W0": "C",
+    "W1": "C"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Experiment",
+     "gemessen": "Didaktik",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 22,
+   "art": "neutral",
+   "titel": "Anwendungen",
+   "zuordnung": {
+    "T": "B",
+    "S": "D",
+    "W0": "A",
+    "W1": "B"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Informatik",
+     "gemessen": "Sprachbau des Esperanto",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 23,
+   "art": "kontrolle",
+   "titel": "Grundlagen der Prozentrechnung",
+   "zuordnung": {
+    "T": "B",
+    "S": "B",
+    "W0": "C",
+    "W1": "B"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Prozent",
+     "gemessen": "Zinsbescheinigung",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 24,
+   "art": "kontrolle",
+   "titel": "Grundlagen und Begriffe in der  Verhaltensbiologie",
+   "zuordnung": {
+    "T": "A",
+    "S": "D",
+    "W0": "C",
+    "W1": "C"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 25,
+   "art": "kontrolle",
+   "titel": "Grundlagen des betrieblichen Rechnungswesens",
+   "zuordnung": {
+    "T": "A",
+    "S": "A",
+    "W0": "A",
+    "W1": "A"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 26,
+   "art": "kontrolle",
+   "titel": "Grundlagen für chemische Bindungen",
+   "zuordnung": {
+    "T": "A",
+    "S": "A",
+    "W0": "D",
+    "W1": "D"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Chemische Bindung",
+     "gemessen": "Hans G. Grimm",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 27,
+   "art": "kontrolle",
+   "titel": "Grundbegriffe der Ökologie",
+   "zuordnung": {
+    "T": "A",
+    "S": "A",
+    "W0": "A",
+    "W1": "A"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 28,
+   "art": "kontrolle",
+   "titel": "psychologische Grundlagen des Lernens, Lerntheorien",
+   "zuordnung": {
+    "T": "C",
+    "S": "C",
+    "W0": "D",
+    "W1": "D"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Lerntheorie",
+     "gemessen": "Demokratiebildung",
+     "gemessen_als": "R1"
+    },
+    "BN": {
+     "X": "gebaut",
+     "Y": "gemessen",
+     "gebaut": "Lernen",
+     "gemessen": "Lerntheorie",
+     "gemessen_als": "N3"
+    }
+   },
+   "paare": {
+    "P1": "BR",
+    "P2": "BN"
+   }
+  },
+  {
+   "id": 29,
+   "art": "kontrolle",
+   "titel": "Grundlagen der Wirtschaftsordnung",
+   "zuordnung": {
+    "T": "B",
+    "S": "B",
+    "W0": "B",
+    "W1": "B"
+   },
+   "artikel": {},
+   "paare": {}
+  },
+  {
+   "id": 30,
+   "art": "kontrolle",
+   "titel": "Grundlagen E-Lehre",
+   "zuordnung": {
+    "T": "D",
+    "S": "D",
+    "W0": "C",
+    "W1": "C"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Benno Schulz",
+     "gemessen": "Carl Fromme (Physiker)",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 31,
+   "art": "kontrolle",
+   "titel": "Grundlagen Magnetismus",
+   "zuordnung": {
+    "T": "D",
+    "S": "D",
+    "W0": "B",
+    "W1": "B"
+   },
+   "artikel": {
+    "BR": {
+     "X": "gemessen",
+     "Y": "gebaut",
+     "gebaut": "Magnetismus",
+     "gemessen": "Carl Fromme (Physiker)",
+     "gemessen_als": "R1"
+    }
+   },
+   "paare": {
+    "P1": "BR"
+   }
+  },
+  {
+   "id": 32,
+   "art": "kontrolle",
+   "titel": "Grundlagen der Bruchrechnung",
+   "zuordnung": {
+    "T": "A",
+    "S": "A",
+    "W0": "A",
+    "W1": "A"
+   },
+   "artikel": {},
+   "paare": {}
+  }
+ ],
+ "urteile": {
+  "A": [
+   {
+    "id": 1,
+    "themen": {
+     "A": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "zu_eng",
+      "note": 3
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 2,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "daneben",
+      "note": 1
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 3,
+    "themen": {
+     "A": {
+      "urteil": "zu_breit",
+      "note": 3
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 2
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "Y"
+     },
+     "P2": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "besser": "Y"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "Y"
+     },
+     "P2": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 4,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "B": {
+      "urteil": "passt",
+      "note": 2
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "passt",
+       "note": 4
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "passt",
+       "note": 4
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 5,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "B": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "C": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "zu_eng",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "zu_eng",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 6,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 3
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 7,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 8,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 9,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 4
+      },
+      "besser": "Y"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 4
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 10,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 11,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "B": {
+      "urteil": "zu_breit",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 12,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 2
+     },
+     "B": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "keiner",
+       "note": 2
+      },
+      "besser": "gleich"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "keiner",
+       "note": 2
+      },
+      "besser": "gleich"
+     }
+    }
+   },
+   {
+    "id": 13,
+    "themen": {
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "D": {
+      "urteil": "zu_breit",
+      "note": 2
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 14,
+    "themen": {
+     "A": {
+      "urteil": "zu_breit",
+      "note": 3
+     },
+     "B": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "C": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 15,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 2
+     },
+     "B": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "nachbar",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "nachbar",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 16,
+    "themen": {
+     "B": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     },
+     "P2": {
+      "X": {
+       "urteil": "passt",
+       "note": 4
+      },
+      "Y": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "besser": "X"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     },
+     "P2": {
+      "X": {
+       "urteil": "passt",
+       "note": 4
+      },
+      "Y": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 17,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 18,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "B": {
+      "urteil": "daneben",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 19,
+    "themen": {
+     "B": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "besser": "Y"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 20,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 21,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 2
+     },
+     "C": {
+      "urteil": "daneben",
+      "note": 1
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 3
+      },
+      "besser": "Y"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 3
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 22,
+    "themen": {
+     "A": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 23,
+    "themen": {
+     "B": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 2
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 24,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 25,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 26,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "nachbar",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "nachbar",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 27,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 28,
+    "themen": {
+     "C": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     },
+     "P2": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     },
+     "P2": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 29,
+    "themen": {
+     "B": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   },
+   {
+    "id": 30,
+    "themen": {
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "gleich"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "gleich"
+     }
+    }
+   },
+   {
+    "id": 31,
+    "themen": {
+     "B": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    },
+    "hauptartikel_paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 32,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {},
+    "hauptartikel_paare": {}
+   }
+  ],
+  "B": [
+   {
+    "id": 1,
+    "themen": {
+     "A": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 2,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "daneben",
+      "note": 1
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 3,
+    "themen": {
+     "A": {
+      "urteil": "zu_breit",
+      "note": 3
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 2
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "besser": "Y"
+     },
+     "P2": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 4
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 4,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 2
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 3
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 5,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "B": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "C": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_eng",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 6,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 3
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 7,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 8,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 9,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 10,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 11,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "B": {
+      "urteil": "zu_breit",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 12,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "B": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "keiner",
+       "note": 2
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 13,
+    "themen": {
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "D": {
+      "urteil": "zu_breit",
+      "note": 2
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 14,
+    "themen": {
+     "A": {
+      "urteil": "zu_breit",
+      "note": 3
+     },
+     "B": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "C": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 15,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 2
+     },
+     "B": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "nachbar",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 16,
+    "themen": {
+     "B": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     },
+     "P2": {
+      "X": {
+       "urteil": "passt",
+       "note": 4
+      },
+      "Y": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 17,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 18,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "B": {
+      "urteil": "daneben",
+      "note": 2
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_eng",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 19,
+    "themen": {
+     "B": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 1
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 20,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 3
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 21,
+    "themen": {
+     "A": {
+      "urteil": "nichtssagend",
+      "note": 2
+     },
+     "C": {
+      "urteil": "zu_eng",
+      "note": 2
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 22,
+    "themen": {
+     "A": {
+      "urteil": "zu_breit",
+      "note": 2
+     },
+     "B": {
+      "urteil": "nichtssagend",
+      "note": 1
+     },
+     "D": {
+      "urteil": "nichtssagend",
+      "note": 2
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 2
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 23,
+    "themen": {
+     "B": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "C": {
+      "urteil": "zu_breit",
+      "note": 2
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 24,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 25,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 26,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "nachbar",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     }
+    }
+   },
+   {
+    "id": 27,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 28,
+    "themen": {
+     "C": {
+      "urteil": "passt",
+      "note": 4
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "X"
+     },
+     "P2": {
+      "X": {
+       "urteil": "zu_breit",
+       "note": 3
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 29,
+    "themen": {
+     "B": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {}
+   },
+   {
+    "id": 30,
+    "themen": {
+     "C": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 3
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "besser": "gleich"
+     }
+    }
+   },
+   {
+    "id": 31,
+    "themen": {
+     "B": {
+      "urteil": "passt",
+      "note": 5
+     },
+     "D": {
+      "urteil": "passt",
+      "note": 4
+     }
+    },
+    "paare": {
+     "P1": {
+      "X": {
+       "urteil": "daneben",
+       "note": 1
+      },
+      "Y": {
+       "urteil": "passt",
+       "note": 5
+      },
+      "besser": "Y"
+     }
+    }
+   },
+   {
+    "id": 32,
+    "themen": {
+     "A": {
+      "urteil": "passt",
+      "note": 5
+     }
+    },
+    "paare": {}
+   }
+  ]
+ }
+}

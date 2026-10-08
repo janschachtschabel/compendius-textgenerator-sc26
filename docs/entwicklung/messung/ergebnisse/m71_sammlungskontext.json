@@ -1,0 +1,5185 @@
+{
+ "note": "M71 (08.10.2026): Sammlungen des WLO-Staging-Repositorys mit inhaltsneutralem Titel und Kontrollen; je Sammlung der Kontext (Pfad, Untersammlungen, Materialtitel, Nachbarn) und sechs Varianten der Artikelwahl (R0 Regeln heute, R1 Regeln mit Elterntitel, N0 Frage N heute, N1 + Pfad, N2 + Untersammlungen und Materialien, N3 + Nachbarn als nicht gemeint), blind von zwei Claude-Subagenten bewertet (haupt, gesamt 1-5).",
+ "sammlungen": [
+  {
+   "id": "259ced32-2121-4468-baf1-0edf17004f43",
+   "title": "Grundlagen",
+   "art": "neutral",
+   "subjects": [],
+   "levels": [
+    "Hochschule",
+    "Berufliche Bildung",
+    "Fortbildung",
+    "Erwachsenenbildung"
+   ],
+   "path": [
+    "Evidenzbasierte Medizin - EbM"
+   ],
+   "children": [
+    "Statistik",
+    "Epidemiologie ",
+    "Wissenschaftliches Arbeiten",
+    "Gute wissenschaftliche Praxis "
+   ],
+   "materials": [],
+   "siblings": [
+    "Einführung in die Evidenzbasierte Medizin",
+    "Literaturrecherche",
+    "Kritische Bewertung",
+    "Anwendung EbM"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Sprachbau des Esperanto",
+     "method": "suggestion",
+     "named": [],
+     "asked": "Grundlagen"
+    },
+    "R1": {
+     "main": "Evidenzbasierte Medizin",
+     "method": "search",
+     "named": [],
+     "asked": "Evidenzbasierte Medizin - EbM"
+    },
+    "N0": {
+     "main": null,
+     "named": [],
+     "error": "404"
+    },
+    "N1": {
+     "main": "Evidenzbasierte Medizin",
+     "named": [
+      "Evidenzbasierte Medizin",
+      "Klinische Studie",
+      "Randomisierte kontrollierte Studie",
+      "Review (Wissenschaft)",
+      "Metaanalyse",
+      "Cochrane (Organisation)"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Evidenzbasierte Medizin - EbM",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Evidenzbasierte Medizin",
+     "named": [
+      "Evidenzbasierte Medizin",
+      "Statistik",
+      "Epidemiologie",
+      "Wissenschaftliche Arbeit",
+      "Gute wissenschaftliche Praxis"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Evidenzbasierte Medizin - EbM; ihre Untersammlungen: Statistik, Epidemiologie , Wissenschaftliches Arbeiten, Gute wissenschaftliche Praxis ",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Evidenzbasierte Medizin",
+     "named": [
+      "Evidenzbasierte Medizin",
+      "Statistik",
+      "Epidemiologie",
+      "Wissenschaftliche Arbeit",
+      "Gute wissenschaftliche Praxis"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Evidenzbasierte Medizin - EbM; ihre Untersammlungen: Statistik, Epidemiologie , Wissenschaftliches Arbeiten, Gute wissenschaftliche Praxis ; nicht gemeint sind die Nachbarsammlungen: Einführung in die Evidenzbasierte Medizin, Literaturrecherche, Kritische Bewertung, Anwendung EbM",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "keiner",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "keiner",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "8402f24f-81ae-458a-a696-b809e6e1eb69",
+   "title": "Grundlagen",
+   "art": "neutral",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Fachdidaktik"
+   ],
+   "children": [],
+   "materials": [
+    "Immunsystem",
+    "Warum muss man sich überhaupt waschen?",
+    "Was ist der Unterschied zwischen Viren und Bakterien? ",
+    "Vitamin",
+    "Von der Keimzelle zum Kind (Arbeitsblätter)",
+    "Von der Keimzelle zum Kind (Erklärvideos)",
+    "Die Anatomie der Biene",
+    "#bienenlive — Basiswissen Bienen",
+    "Was gutes Brot ist und wie es gut bleibt",
+    "Sauerteigbrot",
+    "Arbeitsmaterialien Ernährung",
+    "Verdauung - alpha Lernen",
+    "Ernährung - alpha Lernen",
+    "Vitamine - alpha Lernen",
+    "Das menschliche Skelett -Übungsblatt"
+   ],
+   "siblings": [
+    "Bewertungsstrategien",
+    "Methoden"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Sprachbau des Esperanto",
+     "method": "suggestion",
+     "named": [],
+     "asked": "Grundlagen"
+    },
+    "R1": {
+     "main": "Fachdidaktik",
+     "method": "title",
+     "named": [],
+     "asked": "Fachdidaktik"
+    },
+    "N0": {
+     "main": "Biologie",
+     "method": "llm",
+     "named": [
+      "Biologie",
+      "Zelle (Biologie)",
+      "Evolution",
+      "Genetik",
+      "Ökologie",
+      "Anatomie",
+      "Physiologie",
+      "Systematik (Biologie)"
+     ],
+     "asked": "Grundlagen"
+    },
+    "N1": {
+     "main": "Biologiedidaktik",
+     "named": [
+      "Biologiedidaktik",
+      "Fachdidaktik"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Fachdidaktik",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Biologie",
+     "named": [
+      "Biologie",
+      "Immunsystem",
+      "Hygiene",
+      "Bakterien",
+      "Vitamin",
+      "Mensch",
+      "Bienen"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Fachdidaktik; Materialien darin: Immunsystem, Warum muss man sich überhaupt waschen?, Was ist der Unterschied zwischen Viren und Bakterien? , Vitamin, Von der Keimzelle zum Kind (Arbeitsblätter), Von der Keimzelle zum Kind (Erklärvideos), Die Anatomie der Biene, #bienenlive — Basiswissen Bienen",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Biologie",
+     "named": [
+      "Biologie",
+      "Immunsystem",
+      "Hygiene",
+      "Bakterien",
+      "Vitamin",
+      "Gamet",
+      "Embryogenese (Mensch)",
+      "Bienen"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Fachdidaktik; Materialien darin: Immunsystem, Warum muss man sich überhaupt waschen?, Was ist der Unterschied zwischen Viren und Bakterien? , Vitamin, Von der Keimzelle zum Kind (Arbeitsblätter), Von der Keimzelle zum Kind (Erklärvideos), Die Anatomie der Biene, #bienenlive — Basiswissen Bienen; nicht gemeint sind die Nachbarsammlungen: Bewertungsstrategien, Methoden",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "0bf4bdbb-73cd-49f3-bccb-152dfef66790",
+   "title": "Grundlagen (erwachsende Lernende)",
+   "art": "neutral",
+   "subjects": [
+    "Nachhaltigkeit"
+   ],
+   "levels": [],
+   "path": [
+    "Nachhaltigkeit (LTP)",
+    "Ökologie (erwachsene Lernende)"
+   ],
+   "children": [],
+   "materials": [
+    "Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales"
+   ],
+   "siblings": [
+    "Wichtige Persönlichkeiten - ökologische Nachhaltigkeit",
+    "Wasser (erwachsene Lernenden)",
+    "Gesundheit (erwachsene Lernende)",
+    "Ökosysteme (erwachsene Lernende)",
+    "Wasser (erwachsene Lernende)",
+    "Flora und Fauna - Der Wald (Kinder 8-12 Jahre)"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Mehrdimensionales Lernen",
+     "method": "search",
+     "named": [],
+     "asked": "Grundlagen (erwachsende Lernende)"
+    },
+    "R1": {
+     "main": "Adasiyyah",
+     "method": "search",
+     "named": [],
+     "asked": "Ökologie (erwachsene Lernende)"
+    },
+    "N0": {
+     "main": "Nachhaltigkeit",
+     "method": "llm",
+     "named": [
+      "Nachhaltigkeit",
+      "Nachhaltige Entwicklung",
+      "Nachhaltigkeitswissenschaft",
+      "Soziale Nachhaltigkeit",
+      "Ökonomische Nachhaltigkeit",
+      "Nachhaltiger Konsum",
+      "Nachhaltige Landwirtschaft"
+     ],
+     "asked": "Grundlagen (erwachsende Lernende)"
+    },
+    "N1": {
+     "main": "Ökologie",
+     "named": [
+      "Ökologie",
+      "Ökosystem",
+      "Biodiversität",
+      "Biotop",
+      "Ökologische Nische",
+      "Nahrungskette",
+      "Stoffkreislauf",
+      "Nachhaltigkeit"
+     ],
+     "heard": "Grundlagen (erwachsende Lernende) – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP) › Ökologie (erwachsene Lernende)",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Nachhaltigkeit",
+     "named": [
+      "Nachhaltigkeit",
+      "Drei-Säulen-Modell (Nachhaltigkeit)",
+      "Ökonomische Nachhaltigkeit",
+      "Soziale Nachhaltigkeit"
+     ],
+     "heard": "Grundlagen (erwachsende Lernende) – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP) › Ökologie (erwachsene Lernende); Materialien darin: Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Ökologie",
+     "named": [
+      "Ökologie",
+      "Ökosystem",
+      "Biodiversität",
+      "Naturschutz",
+      "Umweltverschmutzung",
+      "Klimawandel",
+      "Nachhaltigkeit"
+     ],
+     "heard": "Grundlagen (erwachsende Lernende) – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP) › Ökologie (erwachsene Lernende); Materialien darin: Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales; nicht gemeint sind die Nachbarsammlungen: Wichtige Persönlichkeiten - ökologische Nachhaltigkeit, Wasser (erwachsene Lernenden), Gesundheit (erwachsene Lernende), Ökosysteme (erwachsene Lernende), Wasser (erwachsene Lernende), Flora und Fauna - Der Wald (Kinder 8-12 Jahre)",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    }
+   }
+  },
+  {
+   "id": "775d6268-e7fe-4918-9dc6-6870532318f6",
+   "title": "Grundlagen (Fachportalstartseite)",
+   "art": "neutral",
+   "subjects": [
+    "Nachhaltigkeit"
+   ],
+   "levels": [],
+   "path": [
+    "Nachhaltigkeit (LTP)"
+   ],
+   "children": [],
+   "materials": [
+    "Die Ziele für nachhaltige Entwicklung im Unterricht | Portal Globales Lernen",
+    "Lernen zu handeln! Was bedeutet Bildung für nachhaltige Entwicklung (BNE)? - YouTube",
+    "Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales"
+   ],
+   "siblings": [
+    "Ökonomie",
+    "Energie und Strom",
+    "Ökologie für Lehrende",
+    "Soziales",
+    "Grundbegriffe (Fachportalstartseite)",
+    "historischer Kontext (Fachportalseite)",
+    "BNE Didaktik und Methodik (Fachportalseite)",
+    "Nachhaltigkeit im Alltag",
+    "Ökologie (erwachsene Lernende)",
+    "Pädagogische Themenseite - Galeriemethode",
+    "Pädagogische Themenseite - Projektbasiertes Lernen (Nachhaltigkeit)",
+    "Redaktion Leuchtturm Nachhaltigkeit",
+    "Alphabetisierung",
+    "Kompetenzen",
+    "Bildung für nachhaltige Entwicklung",
+    "Map-Test"
+   ],
+   "varianten": {
+    "R0": {
+     "main": null,
+     "named": [],
+     "error": "404"
+    },
+    "R1": {
+     "main": "Carl von Ossietzky Universität Oldenburg",
+     "method": "search",
+     "named": [],
+     "asked": "Nachhaltigkeit (LTP)"
+    },
+    "N0": {
+     "main": "Nachhaltigkeit",
+     "method": "llm",
+     "named": [
+      "Nachhaltigkeit",
+      "Nachhaltige Entwicklung",
+      "Nachhaltigkeitswissenschaft",
+      "Drei-Säulen-Modell (Nachhaltigkeit)",
+      "Ökonomische Nachhaltigkeit",
+      "Soziale Nachhaltigkeit",
+      "Ziele für nachhaltige Entwicklung"
+     ],
+     "asked": "Grundlagen (Fachportalstartseite)"
+    },
+    "N1": {
+     "main": "Nachhaltigkeit",
+     "named": [
+      "Nachhaltigkeit",
+      "Nachhaltige Entwicklung",
+      "Nachhaltigkeitswissenschaft",
+      "Nachhaltigkeitsstrategie",
+      "Nachhaltigkeitsmanagement",
+      "Soziale Nachhaltigkeit",
+      "Ökonomische Nachhaltigkeit"
+     ],
+     "heard": "Grundlagen (Fachportalstartseite) – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP)",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Nachhaltigkeit",
+     "named": [
+      "Nachhaltigkeit",
+      "Nachhaltige Entwicklung",
+      "Bildung für nachhaltige Entwicklung",
+      "Ziele für nachhaltige Entwicklung",
+      "Drei-Säulen-Modell (Nachhaltigkeit)"
+     ],
+     "heard": "Grundlagen (Fachportalstartseite) – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP); Materialien darin: Die Ziele für nachhaltige Entwicklung im Unterricht | Portal Globales Lernen, Lernen zu handeln! Was bedeutet Bildung für nachhaltige Entwicklung (BNE)? - YouTube, Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Nachhaltigkeit",
+     "named": [
+      "Nachhaltigkeit",
+      "Nachhaltige Entwicklung",
+      "Ziele für nachhaltige Entwicklung",
+      "Bildung für nachhaltige Entwicklung",
+      "Drei-Säulen-Modell (Nachhaltigkeit)"
+     ],
+     "heard": "Grundlagen (Fachportalstartseite) – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP); Materialien darin: Die Ziele für nachhaltige Entwicklung im Unterricht | Portal Globales Lernen, Lernen zu handeln! Was bedeutet Bildung für nachhaltige Entwicklung (BNE)? - YouTube, Drei Säulen der Nachhaltigkeit: Ökologie, Ökonomie und Soziales; nicht gemeint sind die Nachbarsammlungen: Ökonomie, Energie und Strom, Ökologie für Lehrende, Soziales, Grundbegriffe (Fachportalstartseite), historischer Kontext (Fachportalseite), BNE Didaktik und Methodik (Fachportalseite), Nachhaltigkeit im Alltag, Ökologie (erwachsene Lernende), Pädagogische Themenseite - Galeriemethode",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "keiner",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "keiner",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "f9ea98a6-2840-433d-99ca-b6ca06d3ca95",
+   "title": "Grundlagen",
+   "art": "neutral",
+   "subjects": [
+    "Informatik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [],
+   "children": [
+    "Zahlensysteme",
+    "Anwendungen",
+    "Peripherie",
+    "Grafik / Bildbearbeitung",
+    "Audiobearbeitung"
+   ],
+   "materials": [
+    "1.1 - IKT",
+    "inf-schule | Information und ihre Darstellung",
+    "Ideenwolke Lerntheke",
+    "Informatik ohne Strom (PDF)",
+    "Sicherheitsregeln im digitalen Zeitalter",
+    "Digitale Kompetenzen",
+    "Passwörter - Schlüssel fürs Online-Leben",
+    "Sichere Passwörter"
+   ],
+   "siblings": [
+    "Angewandte Informatik",
+    "Informatik & Gesellschaft",
+    "Praktische Informatik",
+    "Technische Informatik",
+    "Theoretische Informatik",
+    "WP_Fachportal_Informatik"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Sprachbau des Esperanto",
+     "method": "suggestion",
+     "named": [],
+     "asked": "Grundlagen"
+    },
+    "R1": {
+     "main": "Informatik",
+     "method": "title",
+     "named": [],
+     "asked": "Informatik"
+    },
+    "N0": {
+     "main": "Informatik",
+     "method": "llm",
+     "named": [
+      "Informatik",
+      "Information",
+      "Algorithmus",
+      "Datenstruktur",
+      "Programmierung",
+      "Programmiersprache",
+      "Software",
+      "Hardware",
+      "Theoretische Informatik"
+     ],
+     "asked": "Grundlagen"
+    },
+    "N1": {
+     "main": "Informatik",
+     "named": [
+      "Informatik",
+      "Algorithmus",
+      "Datenstruktur",
+      "Programmierung",
+      "Software",
+      "Hardware",
+      "Betriebssystem",
+      "Datenbank",
+      "Rechnernetz"
+     ],
+     "heard": "Grundlagen – Sammlung im Fachportal Informatik",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Informatik",
+     "named": [
+      "Informatik",
+      "Information",
+      "Zahlensystem",
+      "Anwendungssoftware",
+      "Peripheriegerät",
+      "Computergrafik",
+      "Bildbearbeitung",
+      "Informationssicherheit"
+     ],
+     "heard": "Grundlagen – Sammlung im Fachportal Informatik; ihre Untersammlungen: Zahlensysteme, Anwendungen, Peripherie, Grafik / Bildbearbeitung, Audiobearbeitung; Materialien darin: 1.1 - IKT, inf-schule | Information und ihre Darstellung, Ideenwolke Lerntheke, Informatik ohne Strom (PDF), Sicherheitsregeln im digitalen Zeitalter, Digitale Kompetenzen, Passwörter - Schlüssel fürs Online-Leben, Sichere Passwörter",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Information",
+     "named": [
+      "Information",
+      "Zahlensystem",
+      "Anwendungssoftware",
+      "Eingabegerät",
+      "Ausgabegerät",
+      "Computergrafik",
+      "Bildbearbeitung"
+     ],
+     "heard": "Grundlagen – Sammlung im Fachportal Informatik; ihre Untersammlungen: Zahlensysteme, Anwendungen, Peripherie, Grafik / Bildbearbeitung, Audiobearbeitung; Materialien darin: 1.1 - IKT, inf-schule | Information und ihre Darstellung, Ideenwolke Lerntheke, Informatik ohne Strom (PDF), Sicherheitsregeln im digitalen Zeitalter, Digitale Kompetenzen, Passwörter - Schlüssel fürs Online-Leben, Sichere Passwörter; nicht gemeint sind die Nachbarsammlungen: Angewandte Informatik, Informatik & Gesellschaft, Praktische Informatik, Technische Informatik, Theoretische Informatik, WP_Fachportal_Informatik",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "zu_eng",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_eng",
+      "gesamt": 4
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "a79a644c-ecfc-4b65-8cf2-bb9b0c13dac4",
+   "title": "Anfangsunterricht",
+   "art": "neutral",
+   "subjects": [
+    "Chemie"
+   ],
+   "levels": [],
+   "path": [],
+   "children": [
+    "Stoffe und Stoffeigenschaften",
+    "Die chemische Reaktion",
+    "Metalle und die Gewinnung aus Erzen"
+   ],
+   "materials": [
+    "Freies Lehrbuch der anorganischen Chemie - Für Schüler und Studenten",
+    "Lösungsvorgang von Feststoffen in Wasser - Simulation"
+   ],
+   "siblings": [
+    "Säuren und Basen",
+    "Die Elektrochemie",
+    "Organische Chemie",
+    "Chemie und Umwelt 123",
+    "Fachportalseite Chemie",
+    "Fachmethoden und Reflexion",
+    "Energie & Kinetik",
+    "Atombau und PSE",
+    "Bindung & Struktur",
+    "Fachdidaktik",
+    "Fachportale",
+    "Youtube-Kanäle",
+    "Material des Monats - unsichtbar",
+    "H2o",
+    "Release 05/23",
+    "Sammlung für einen neuen Block auf deiner Fachportalstartseite"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Anfangsunterricht",
+     "method": "title",
+     "named": [],
+     "asked": "Anfangsunterricht"
+    },
+    "R1": {
+     "main": "Chemie",
+     "method": "title",
+     "named": [],
+     "asked": "Chemie"
+    },
+    "N0": {
+     "main": "Chemieunterricht",
+     "method": "llm",
+     "named": [
+      "Chemieunterricht",
+      "Chemie",
+      "Stoff (Chemie)",
+      "Reinstoff",
+      "Aggregatzustand",
+      "Chemische Reaktion",
+      "Sicherheitskennzeichen"
+     ],
+     "asked": "Anfangsunterricht"
+    },
+    "N1": {
+     "main": "Chemieunterricht",
+     "named": [
+      "Chemieunterricht",
+      "Stoffeigenschaft",
+      "Aggregatzustand",
+      "Gemisch",
+      "Reinstoff",
+      "Chemische Reaktion",
+      "Sicherheitskennzeichen"
+     ],
+     "heard": "Anfangsunterricht – Sammlung im Fachportal Chemie",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Chemieunterricht",
+     "named": [
+      "Chemieunterricht",
+      "Stoffeigenschaft",
+      "Chemische Reaktion",
+      "Metalle",
+      "Erz",
+      "Anorganische Chemie"
+     ],
+     "heard": "Anfangsunterricht – Sammlung im Fachportal Chemie; ihre Untersammlungen: Stoffe und Stoffeigenschaften, Die chemische Reaktion, Metalle und die Gewinnung aus Erzen; Materialien darin: Freies Lehrbuch der anorganischen Chemie - Für Schüler und Studenten, Lösungsvorgang von Feststoffen in Wasser - Simulation",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Chemie",
+     "named": [
+      "Chemie",
+      "Stoffeigenschaft",
+      "Chemische Reaktion",
+      "Metalle",
+      "Erz",
+      "Anorganische Chemie"
+     ],
+     "heard": "Anfangsunterricht – Sammlung im Fachportal Chemie; ihre Untersammlungen: Stoffe und Stoffeigenschaften, Die chemische Reaktion, Metalle und die Gewinnung aus Erzen; Materialien darin: Freies Lehrbuch der anorganischen Chemie - Für Schüler und Studenten, Lösungsvorgang von Feststoffen in Wasser - Simulation; nicht gemeint sind die Nachbarsammlungen: Säuren und Basen, Die Elektrochemie, Organische Chemie, Chemie und Umwelt 123, Fachportalseite Chemie, Fachmethoden und Reflexion, Energie & Kinetik, Atombau und PSE, Bindung & Struktur, Fachdidaktik",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "6481eff0-eb1d-45b7-b099-ddc9f670db0a",
+   "title": "Einführung / Grundlagen",
+   "art": "neutral",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Astronomie"
+   ],
+   "children": [],
+   "materials": [
+    "Paxi und unser Mond: Phasen und Finsternisse - YouTube",
+    "Totale Sonnenfinsternis - Sachgeschichten mit Armin Maiwald - YouTube",
+    "Wie entstehen Ebbe und Flut? - YouTube"
+   ],
+   "siblings": [
+    "Sternbeobachtung",
+    "Planetensystem",
+    "Sonne / Fixsterne",
+    "Kosmologie"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Handlungskonzept",
+     "method": "search",
+     "named": [],
+     "asked": "Einführung / Grundlagen"
+    },
+    "R1": {
+     "main": "Astronomie",
+     "method": "title",
+     "named": [],
+     "asked": "Astronomie"
+    },
+    "N0": {
+     "main": "Physik",
+     "method": "llm",
+     "named": [
+      "Physik",
+      "Klassische Physik",
+      "Quantenphysik",
+      "Mechanik",
+      "Thermodynamik",
+      "Elektromagnetische Wechselwirkung",
+      "Optik",
+      "Relativitätstheorie",
+      "Kernphysik"
+     ],
+     "asked": "Einführung / Grundlagen"
+    },
+    "N1": {
+     "main": "Astronomie",
+     "named": [
+      "Astronomie",
+      "Beobachtende Astronomie",
+      "Astrophysik",
+      "Kosmologie",
+      "Sonnensystem",
+      "Stern",
+      "Galaxie",
+      "Himmelsmechanik"
+     ],
+     "heard": "Einführung / Grundlagen – Sammlung im Themenbaum unter: Astronomie",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Gezeiten",
+     "named": [
+      "Gezeiten",
+      "Mond",
+      "Mondphase",
+      "Sonnenfinsternis",
+      "Mondfinsternis"
+     ],
+     "heard": "Einführung / Grundlagen – Sammlung im Themenbaum unter: Astronomie; Materialien darin: Paxi und unser Mond: Phasen und Finsternisse - YouTube, Totale Sonnenfinsternis - Sachgeschichten mit Armin Maiwald - YouTube, Wie entstehen Ebbe und Flut? - YouTube",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Mond",
+     "named": [
+      "Mond",
+      "Mondphase",
+      "Mondfinsternis",
+      "Sonnenfinsternis",
+      "Gezeiten"
+     ],
+     "heard": "Einführung / Grundlagen – Sammlung im Themenbaum unter: Astronomie; Materialien darin: Paxi und unser Mond: Phasen und Finsternisse - YouTube, Totale Sonnenfinsternis - Sachgeschichten mit Armin Maiwald - YouTube, Wie entstehen Ebbe und Flut? - YouTube; nicht gemeint sind die Nachbarsammlungen: Sternbeobachtung, Planetensystem, Sonne / Fixsterne, Kosmologie",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_eng",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_eng",
+      "gesamt": 4
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    }
+   }
+  },
+  {
+   "id": "47e6b1d9-8bb6-411c-be11-ece5736c739a",
+   "title": "Grundlagen",
+   "art": "neutral",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Kernphysik"
+   ],
+   "children": [],
+   "materials": [
+    "Der Nulleffekt | Radioaktivität überall",
+    "Isotope und die Radiocarbonmethode",
+    "Übung zum Verständnis der Isotopenschreibweise",
+    "Was sind Isotope? I musstewissen Chemie",
+    "Die Masse von Atomen I musstewissen Chemie",
+    "Isotope und Atommasse",
+    "Leseübungen zur Isotopenschreibweise",
+    "Verständnisfragen zum Begriff Nuklide und deren Schreibweise",
+    "Nuklide und deren Schreibweise",
+    "Lückentext zur Radioaktivität allgemein",
+    "Allgemeine Verständnisfragen zur Radioaktivität",
+    "Virtuelle Experimente zur Radioaktivität",
+    "Ordnungszahl und Massenzahl - YouTube",
+    "Was ist ein Atom? - YouTube",
+    "Abschirmung elektromagnetischer Strahlung - YouTube"
+   ],
+   "siblings": [
+    "Kernmodelle",
+    "Kernreaktionen",
+    "Kernfusion",
+    "Kernspaltung",
+    "Radioaktivität"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Sprachbau des Esperanto",
+     "method": "suggestion",
+     "named": [],
+     "asked": "Grundlagen"
+    },
+    "R1": {
+     "main": "Kernphysik",
+     "method": "title",
+     "named": [],
+     "asked": "Kernphysik"
+    },
+    "N0": {
+     "main": "Physik",
+     "method": "llm",
+     "named": [
+      "Physik",
+      "Klassische Mechanik",
+      "Thermodynamik",
+      "Elektromagnetische Wechselwirkung",
+      "Optik",
+      "Quantenmechanik",
+      "Relativitätstheorie",
+      "Atomphysik",
+      "Kernphysik"
+     ],
+     "asked": "Grundlagen"
+    },
+    "N1": {
+     "main": "Kernphysik",
+     "named": [
+      "Kernphysik",
+      "Atomkern",
+      "Radioaktivität",
+      "Kernspaltung",
+      "Kernfusion",
+      "Kernreaktion",
+      "Nukleon",
+      "Isotop"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Kernphysik",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Isotop",
+     "named": [
+      "Isotop",
+      "Nuklid",
+      "Atommasse",
+      "Radioaktivität",
+      "Radiokarbonmethode",
+      "Kernphysik"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Kernphysik; Materialien darin: Der Nulleffekt | Radioaktivität überall, Isotope und die Radiocarbonmethode, Übung zum Verständnis der Isotopenschreibweise, Was sind Isotope? I musstewissen Chemie, Die Masse von Atomen I musstewissen Chemie, Isotope und Atommasse, Leseübungen zur Isotopenschreibweise, Verständnisfragen zum Begriff Nuklide und deren Schreibweise",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Isotop",
+     "named": [
+      "Isotop",
+      "Atommasse",
+      "Nuklid",
+      "Isotopenverhältnis",
+      "Isotopenuntersuchung",
+      "Radiokarbonmethode",
+      "Massendefekt"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Kernphysik; Materialien darin: Der Nulleffekt | Radioaktivität überall, Isotope und die Radiocarbonmethode, Übung zum Verständnis der Isotopenschreibweise, Was sind Isotope? I musstewissen Chemie, Die Masse von Atomen I musstewissen Chemie, Isotope und Atommasse, Leseübungen zur Isotopenschreibweise, Verständnisfragen zum Begriff Nuklide und deren Schreibweise; nicht gemeint sind die Nachbarsammlungen: Kernmodelle, Kernreaktionen, Kernfusion, Kernspaltung, Radioaktivität",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "1894ea88-9e13-4fc2-b568-18f67575f85b",
+   "title": "Grundlagen",
+   "art": "neutral",
+   "subjects": [
+    "Medienbildung"
+   ],
+   "levels": [],
+   "path": [
+    "(Unsichtbar) Mediendidaktik"
+   ],
+   "children": [],
+   "materials": [
+    "Was ist digitale Didaktik?",
+    "Führt die Digitalisierung ins pädagogische Paradies? Kontrollverlust vs. Empowerment ",
+    "Mediendidaktik | E-Learning, Digitalisierung & Bildung",
+    "Mediendidaktik - SchuleDigital.jetzt",
+    "Was ist Mediendidaktik?",
+    "Digitale Medienkompetenz ‒ Was ist das wirklich? | Digitale Bildung³ ",
+    "Medienkompetenz nach Baacke "
+   ],
+   "siblings": [
+    "Didaktische Methoden",
+    "Lernorganisation & technische Umsetzung"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Sprachbau des Esperanto",
+     "method": "suggestion",
+     "named": [],
+     "asked": "Grundlagen"
+    },
+    "R1": {
+     "main": "Bildpädagogik",
+     "method": "search",
+     "named": [],
+     "asked": "(Unsichtbar) Mediendidaktik"
+    },
+    "N0": {
+     "main": "Medienkompetenz",
+     "method": "llm",
+     "named": [
+      "Medienkompetenz",
+      "Medienbildung",
+      "Medienpädagogik",
+      "Informationskompetenz",
+      "Digitale Kompetenz",
+      "Mediennutzung",
+      "Mediengestaltung"
+     ],
+     "asked": "Grundlagen"
+    },
+    "N1": {
+     "main": "Mediendidaktik",
+     "named": [
+      "Mediendidaktik",
+      "Medienpädagogik",
+      "E-Learning",
+      "Integriertes Lernen",
+      "Instruktionsdesign"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: (Unsichtbar) Mediendidaktik",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Mediendidaktik",
+     "named": [
+      "Mediendidaktik",
+      "E-Learning",
+      "Medienkompetenz",
+      "Medienpädagogik",
+      "Digitale Medien"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: (Unsichtbar) Mediendidaktik; Materialien darin: Was ist digitale Didaktik?, Führt die Digitalisierung ins pädagogische Paradies? Kontrollverlust vs. Empowerment , Mediendidaktik | E-Learning, Digitalisierung & Bildung, Mediendidaktik - SchuleDigital.jetzt, Was ist Mediendidaktik?, Digitale Medienkompetenz ‒ Was ist das wirklich? | Digitale Bildung³ , Medienkompetenz nach Baacke ",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Mediendidaktik",
+     "named": [
+      "Mediendidaktik",
+      "E-Learning",
+      "Medienkompetenz",
+      "Medienpädagogik",
+      "Didaktik"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: (Unsichtbar) Mediendidaktik; Materialien darin: Was ist digitale Didaktik?, Führt die Digitalisierung ins pädagogische Paradies? Kontrollverlust vs. Empowerment , Mediendidaktik | E-Learning, Digitalisierung & Bildung, Mediendidaktik - SchuleDigital.jetzt, Was ist Mediendidaktik?, Digitale Medienkompetenz ‒ Was ist das wirklich? | Digitale Bildung³ , Medienkompetenz nach Baacke ; nicht gemeint sind die Nachbarsammlungen: Didaktische Methoden, Lernorganisation & technische Umsetzung",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_eng",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_eng",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "6f5c9f2e-f187-4a4b-9252-9d63521b3ccc",
+   "title": "Grundlagen",
+   "art": "neutral",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Quantenphysik"
+   ],
+   "children": [],
+   "materials": [
+    "Wesenszug 1: Statistische Vorhersagbarkeit",
+    "Wesenszug 2: Fähigkeit zur Interferenz",
+    "Wesenszug 4: Komplementarität",
+    "Wesenszug 3: Eindeutige Messergebnisse",
+    "Die Kopenhagener Deutung",
+    "Schrödingers Katze",
+    "Quantenphysik: Potentialtöpfe und Elektronenwellen",
+    "Das Geheimnis der Quanten - Doppelspaltexperiment",
+    "Der Quanten Tunneleffekt",
+    "Quantenphysik einfach erklärt mit einer Kaffeetasse! Stehende Wellen+Knotenpunkte | Phil's Physics",
+    "SCHRÖDINGER Gleichung schnell und kurz erklärt! - Quantenphysik - Das Reich der Quanten.",
+    "Quantencomputer + Spin einfach erklärt! Quantenphysik, Qubits, Stern-Gerlach & Co | Phil's Physics",
+    "Quantenphysik einfach erklärt! Atom, Orbital, Spektrum, Elektronen | Phil's Physics",
+    "Dr  Quantum    erklärt das Doppel Spalt Experiment - YouTube",
+    "Quantenmechanik - Doppelspalt, Verschränkung und Nichtlokalität | Doku - YouTube"
+   ],
+   "siblings": [
+    "Photonen",
+    "Elektronen"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Sprachbau des Esperanto",
+     "method": "suggestion",
+     "named": [],
+     "asked": "Grundlagen"
+    },
+    "R1": {
+     "main": "Quantenphysik",
+     "method": "title",
+     "named": [],
+     "asked": "Quantenphysik"
+    },
+    "N0": {
+     "main": "Physik",
+     "method": "llm",
+     "named": [
+      "Physik",
+      "Klassische Mechanik",
+      "Thermodynamik",
+      "Elektromagnetische Wechselwirkung",
+      "Optik",
+      "Quantenmechanik",
+      "Relativitätstheorie",
+      "Akustik",
+      "Kernphysik"
+     ],
+     "asked": "Grundlagen"
+    },
+    "N1": {
+     "main": "Quantenphysik",
+     "named": [
+      "Quantenphysik",
+      "Quantenmechanik",
+      "Quantisierung (Physik)",
+      "Welle-Teilchen-Dualismus",
+      "Heisenbergsche Unschärferelation",
+      "Superposition (Physik)",
+      "Quantenverschränkung",
+      "Quantenfeldtheorie",
+      "Quantenoptik"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Quantenphysik",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Quantenmechanik",
+     "named": [
+      "Quantenmechanik",
+      "Kopenhagener Deutung der Quantenmechanik",
+      "Schrödingers Katze",
+      "Doppelspaltexperiment",
+      "Potentialtopf"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Quantenphysik; Materialien darin: Wesenszug 1: Statistische Vorhersagbarkeit, Wesenszug 2: Fähigkeit zur Interferenz, Wesenszug 4: Komplementarität, Wesenszug 3: Eindeutige Messergebnisse, Die Kopenhagener Deutung, Schrödingers Katze, Quantenphysik: Potentialtöpfe und Elektronenwellen, Das Geheimnis der Quanten - Doppelspaltexperiment",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Quantenmechanik",
+     "named": [
+      "Quantenmechanik",
+      "Kopenhagener Deutung der Quantenmechanik",
+      "Schrödingers Katze",
+      "Doppelspaltexperiment",
+      "Wellenfunktion"
+     ],
+     "heard": "Grundlagen – Sammlung im Themenbaum unter: Quantenphysik; Materialien darin: Wesenszug 1: Statistische Vorhersagbarkeit, Wesenszug 2: Fähigkeit zur Interferenz, Wesenszug 4: Komplementarität, Wesenszug 3: Eindeutige Messergebnisse, Die Kopenhagener Deutung, Schrödingers Katze, Quantenphysik: Potentialtöpfe und Elektronenwellen, Das Geheimnis der Quanten - Doppelspaltexperiment; nicht gemeint sind die Nachbarsammlungen: Photonen, Elektronen",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "cf885787-5125-4bc6-adca-e7f99b16a443",
+   "title": "Einführung",
+   "art": "neutral",
+   "subjects": [
+    "Zeitgemäße Bildung"
+   ],
+   "levels": [],
+   "path": [
+    "Communities",
+    "EbM / EbX"
+   ],
+   "children": [
+    "Begriffsbestimmung EbM/EbX",
+    "Historie zur EbM/EbX",
+    "Säulen der EbM/EbX",
+    "Relevanz der EbM/EbX",
+    "Geschichte der EbM"
+   ],
+   "materials": [],
+   "siblings": [
+    "Ask",
+    "Aquire",
+    "Appraise",
+    "Apply",
+    "Evaluate"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Intro",
+     "method": "title",
+     "named": [],
+     "asked": "Einführung"
+    },
+    "R1": {
+     "main": "Schramm (Band)",
+     "method": "search",
+     "named": [],
+     "asked": "EbM / EbX"
+    },
+    "N0": {
+     "main": "Intro",
+     "method": "llm",
+     "named": [
+      "Intro"
+     ],
+     "asked": "Einführung"
+    },
+    "N1": {
+     "main": "Evidenzbasierte Medizin",
+     "named": [
+      "Evidenzbasierte Medizin",
+      "Evidenzbasierte Pflege"
+     ],
+     "heard": "Einführung – Sammlung im Themenbaum unter: Communities › EbM / EbX",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Evidenzbasierte Medizin",
+     "named": [
+      "Evidenzbasierte Medizin",
+      "Evidenzbasierte Pflege",
+      "Medizinische Leitlinie"
+     ],
+     "heard": "Einführung – Sammlung im Themenbaum unter: Communities › EbM / EbX; ihre Untersammlungen: Begriffsbestimmung EbM/EbX, Historie zur EbM/EbX, Säulen der EbM/EbX, Relevanz der EbM/EbX, Geschichte der EbM",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Evidenzbasierte Medizin",
+     "named": [
+      "Evidenzbasierte Medizin"
+     ],
+     "heard": "Einführung – Sammlung im Themenbaum unter: Communities › EbM / EbX; ihre Untersammlungen: Begriffsbestimmung EbM/EbX, Historie zur EbM/EbX, Säulen der EbM/EbX, Relevanz der EbM/EbX, Geschichte der EbM; nicht gemeint sind die Nachbarsammlungen: Ask, Aquire, Appraise, Apply, Evaluate",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "ec9531cf-04ef-467e-baa6-d1e40a386148",
+   "title": "1 - Einführung",
+   "art": "neutral",
+   "subjects": [
+    "Geschichte",
+    "Zeitgemäße Bildung"
+   ],
+   "levels": [],
+   "path": [
+    "Pädagogischer Warenkorb",
+    "Galeriemethode (Weimarer Republik)"
+   ],
+   "children": [],
+   "materials": [
+    "Die Dolchstoßlegende: Darum war sie so verheerend",
+    "Die Weimarer Republik | Die Weltwirtschaftskrise 1929 | musstewissen Geschichte",
+    "Adolf Hitlers Herrschaft: Von 1933 bis zum Untergang",
+    "Der 9. November - Ein Schicksalstag für Deutschland",
+    "Worthless Paper Money - German Hyper-Inflation Starts After WW1 I THE GREAT WAR 1921",
+    "Bavarian Soviet Republic - 1919 Economy and Reconstruction I BEYOND THE GREAT WAR",
+    "Hitlers Machtübernahme | musstewissen Geschichte",
+    "Wie schließt man Frieden? 5 Antworten",
+    "Frauen in den 1920er-Jahren ",
+    "Die Weimarer Republik | Die Goldenen Zwanziger | musstewissen Geschichte",
+    "The Bloody Origin of the Weimar Republic (Documentary)",
+    "Novemberrevolution I musstewissen Geschichte",
+    "Wie die Nazis so viele Deutsche überzeugten",
+    "Außenpolitik der Weimarer Republik I musstewissen Geschichte",
+    "Das Grundgesetz erklärt"
+   ],
+   "siblings": [
+    "2 - Gruppeneinteilung",
+    "3 - Aufgabenstellung",
+    "4 - Bearbeitung und Visualisierung",
+    "5 - Präsentation und Feedback"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Einführung in das Christentum",
+     "method": "search",
+     "named": [],
+     "asked": "1 - Einführung"
+    },
+    "R1": {
+     "main": null,
+     "named": [],
+     "error": "404"
+    },
+    "N0": {
+     "main": "Geschichte",
+     "method": "llm",
+     "named": [
+      "Geschichte",
+      "Geschichtswissenschaft",
+      "Geschichtsdidaktik",
+      "Geschichtsbewusstsein",
+      "Quellenkritik"
+     ],
+     "asked": "1 - Einführung"
+    },
+    "N1": {
+     "main": "Galeriemethode",
+     "named": [
+      "Galeriemethode"
+     ],
+     "heard": "1 - Einführung – Sammlung im Themenbaum unter: Pädagogischer Warenkorb › Galeriemethode (Weimarer Republik)",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Weimarer Republik",
+     "named": [
+      "Weimarer Republik",
+      "Dolchstoßlegende",
+      "Weltwirtschaftskrise",
+      "Novemberrevolution",
+      "Münchner Räterepublik",
+      "Machtergreifung",
+      "Adolf Hitler",
+      "Friedensvertrag von Versailles"
+     ],
+     "heard": "1 - Einführung – Sammlung im Themenbaum unter: Pädagogischer Warenkorb › Galeriemethode (Weimarer Republik); Materialien darin: Die Dolchstoßlegende: Darum war sie so verheerend, Die Weimarer Republik | Die Weltwirtschaftskrise 1929 | musstewissen Geschichte, Adolf Hitlers Herrschaft: Von 1933 bis zum Untergang, Der 9. November - Ein Schicksalstag für Deutschland, Worthless Paper Money - German Hyper-Inflation Starts After WW1 I THE GREAT WAR 1921, Bavarian Soviet Republic - 1919 Economy and Reconstruction I BEYOND THE GREAT WAR, Hitlers Machtübernahme | musstewissen Geschichte, Wie schließt man Frieden? 5 Antworten",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Weimarer Republik",
+     "named": [
+      "Weimarer Republik",
+      "Dolchstoßlegende",
+      "Deutsche Inflation 1914 bis 1923",
+      "Weltwirtschaftskrise",
+      "Novemberrevolution",
+      "Münchner Räterepublik",
+      "Machtergreifung",
+      "Friedensvertrag von Versailles",
+      "Adolf Hitler"
+     ],
+     "heard": "1 - Einführung – Sammlung im Themenbaum unter: Pädagogischer Warenkorb › Galeriemethode (Weimarer Republik); Materialien darin: Die Dolchstoßlegende: Darum war sie so verheerend, Die Weimarer Republik | Die Weltwirtschaftskrise 1929 | musstewissen Geschichte, Adolf Hitlers Herrschaft: Von 1933 bis zum Untergang, Der 9. November - Ein Schicksalstag für Deutschland, Worthless Paper Money - German Hyper-Inflation Starts After WW1 I THE GREAT WAR 1921, Bavarian Soviet Republic - 1919 Economy and Reconstruction I BEYOND THE GREAT WAR, Hitlers Machtübernahme | musstewissen Geschichte, Wie schließt man Frieden? 5 Antworten; nicht gemeint sind die Nachbarsammlungen: 2 - Gruppeneinteilung, 3 - Aufgabenstellung, 4 - Bearbeitung und Visualisierung, 5 - Präsentation und Feedback",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "keiner",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "keiner",
+      "gesamt": 1
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "c07bbe8d-dc50-49f4-816e-84ba06d6d799",
+   "title": "Einführung",
+   "art": "neutral",
+   "subjects": [
+    "Nachhaltigkeit"
+   ],
+   "levels": [],
+   "path": [
+    "Nachhaltigkeit (LTP)",
+    "Pädagogische Themenseite - Galeriemethode"
+   ],
+   "children": [],
+   "materials": [
+    "SDG 6 — Sauberes Wasser",
+    "Virtuelles Wasser"
+   ],
+   "siblings": [
+    "Gruppeneinteilung",
+    "Aufgabenstellung",
+    "Bearbeitung und Visalisierung",
+    "Präsentation und Feedback"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Intro",
+     "method": "title",
+     "named": [],
+     "asked": "Einführung"
+    },
+    "R1": {
+     "main": null,
+     "named": [],
+     "error": "404"
+    },
+    "N0": {
+     "main": "Intro",
+     "method": "title",
+     "named": [
+      "Nachhaltigkeit",
+      "Nachhaltige Entwicklung",
+      "Nachhaltigkeitswissenschaft",
+      "Drei-Säulen-Modell (Nachhaltigkeit)",
+      "Ziele für nachhaltige Entwicklung",
+      "Kreislaufwirtschaft",
+      "Nachhaltiger Konsum"
+     ],
+     "asked": "Einführung"
+    },
+    "N1": {
+     "main": "Galeriemethode",
+     "named": [
+      "Galeriemethode",
+      "Museumspädagogik",
+      "Nachhaltigkeit"
+     ],
+     "heard": "Einführung – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP) › Pädagogische Themenseite - Galeriemethode",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Nachhaltigkeit",
+     "named": [
+      "Nachhaltigkeit",
+      "Ziele für nachhaltige Entwicklung",
+      "Wasserknappheit",
+      "Virtuelles Wasser",
+      "Wasserverbrauch",
+      "Wasserverfügbarkeit",
+      "Trinkwasser"
+     ],
+     "heard": "Einführung – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP) › Pädagogische Themenseite - Galeriemethode; Materialien darin: SDG 6 — Sauberes Wasser, Virtuelles Wasser",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Wasser",
+     "named": [
+      "Wasser",
+      "Nachhaltigkeit",
+      "Ziele für nachhaltige Entwicklung",
+      "Virtuelles Wasser",
+      "Wasserknappheit",
+      "Wasserverfügbarkeit"
+     ],
+     "heard": "Einführung – Sammlung im Themenbaum unter: Nachhaltigkeit (LTP) › Pädagogische Themenseite - Galeriemethode; Materialien darin: SDG 6 — Sauberes Wasser, Virtuelles Wasser; nicht gemeint sind die Nachbarsammlungen: Gruppeneinteilung, Aufgabenstellung, Bearbeitung und Visalisierung, Präsentation und Feedback",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 2
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "keiner",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "keiner",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "6437ffff-3f32-4fca-90f6-4a002cb70524",
+   "title": "Einstieg",
+   "art": "neutral",
+   "subjects": [
+    "Allgemein"
+   ],
+   "levels": [],
+   "path": [
+    "Open Educational Resources (OER)",
+    "OER im Detail",
+    "Offene Bildung in der Praxis"
+   ],
+   "children": [],
+   "materials": [
+    "OER in der Schule - Digitale Öffnung und Schließung",
+    "OER in der schulischen Praxis (Powerpoint)",
+    "Handlungsanleitung: OER in die Praxis integrieren",
+    "Zeitgemäße Bildung | Wir lernen online",
+    "mwk.baden-wuerttemberg.de/fileadmin/redaktion/m-mwk/intern/dateien/publikationen/Open_Educational_Resources__OER_.pdf"
+   ],
+   "siblings": [
+    "Weiterführendes",
+    "Berufliche Bildung / Erwachsenenbildung"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Einstieg (Klettern)",
+     "method": "disambiguation",
+     "named": [],
+     "asked": "Einstieg"
+    },
+    "R1": {
+     "main": "Offene Ganztagsschule",
+     "method": "search",
+     "named": [],
+     "asked": "Offene Bildung in der Praxis"
+    },
+    "N0": {
+     "main": "Unterrichtseinstieg",
+     "method": "llm",
+     "named": [
+      "Gemein"
+     ],
+     "asked": "Einstieg"
+    },
+    "N1": {
+     "main": "Open Education",
+     "named": [
+      "Open Education",
+      "Open Educational Resources",
+      "Open Access",
+      "Creative Commons",
+      "Freie Software"
+     ],
+     "heard": "Einstieg – Sammlung im Themenbaum unter: Open Educational Resources (OER) › OER im Detail › Offene Bildung in der Praxis",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Open Educational Resources",
+     "named": [
+      "Open Educational Resources",
+      "Freie Inhalte",
+      "E-Learning",
+      "Medienkompetenz",
+      "Bildung für nachhaltige Entwicklung"
+     ],
+     "heard": "Einstieg – Sammlung im Themenbaum unter: Open Educational Resources (OER) › OER im Detail › Offene Bildung in der Praxis; Materialien darin: OER in der Schule - Digitale Öffnung und Schließung, OER in der schulischen Praxis (Powerpoint), Handlungsanleitung: OER in die Praxis integrieren, Zeitgemäße Bildung | Wir lernen online, mwk.baden-wuerttemberg.de/fileadmin/redaktion/m-mwk/intern/dateien/publikationen/Open_Educational_Resources__OER_.pdf",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Open Educational Resources",
+     "named": [
+      "Open Educational Resources",
+      "Open Education",
+      "Medienkompetenz",
+      "E-Learning"
+     ],
+     "heard": "Einstieg – Sammlung im Themenbaum unter: Open Educational Resources (OER) › OER im Detail › Offene Bildung in der Praxis; Materialien darin: OER in der Schule - Digitale Öffnung und Schließung, OER in der schulischen Praxis (Powerpoint), Handlungsanleitung: OER in die Praxis integrieren, Zeitgemäße Bildung | Wir lernen online, mwk.baden-wuerttemberg.de/fileadmin/redaktion/m-mwk/intern/dateien/publikationen/Open_Educational_Resources__OER_.pdf; nicht gemeint sind die Nachbarsammlungen: Weiterführendes, Berufliche Bildung / Erwachsenenbildung",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "59fccc7a-8b87-41eb-9432-669ca0afa560",
+   "title": "Übungen und Spiele",
+   "art": "neutral",
+   "subjects": [
+    "Darstellendes Spiel"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Spielen und Gestalten"
+   ],
+   "children": [],
+   "materials": [
+    "Spiele für drinnen und draußen",
+    "Theater: Auf der Bühne - Zzzebra, das Web-Magazin für Kinder | Labbé Verlag",
+    "Atem- und Sprechtechnik - Landesmedienzentrum Baden-Württemberg",
+    "Theatre Game #5 - Energy Circle. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #28 - 10 Seconds To Make. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #14 - Frog In The Pond. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #52 - Character Bus. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #11 - Alan Sells Apples In Albania from Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #3 - Splat! From DRAMA MENU - drama games & ideas for drama.",
+    "Theatre Game #42 – Walking IT. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #26 – HANDS OF POWER. From Drama Menu - drama games & ideas for drama.",
+    "Theatre Game #48 - Picture Knockout. From Drama Menu - Theatre Games In Three Courses.",
+    "Theatre Game #37 - Blind Homing Actors. From Drama Menu - Theatre Games In Three Courses.",
+    "Theatre Game #15 - Alphabet Race. From Drama Menu - Theatre Games In Three Courses.",
+    "Theatre Game #63 - Speed Hate. From Drama Menu - Theatre Games In Three Courses."
+   ],
+   "siblings": [
+    "Gestalten von Szenen und Stücken",
+    "Feedbackkultur"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Szenisches Spiel",
+     "method": "search",
+     "named": [],
+     "asked": "Übungen und Spiele"
+    },
+    "R1": {
+     "main": "Das Spiel (Roman)",
+     "method": "search",
+     "named": [],
+     "asked": "Spielen und Gestalten"
+    },
+    "N0": {
+     "main": "Schauspiel",
+     "method": "llm",
+     "named": [
+      "Schauspiel",
+      "Improvisationstheater",
+      "Theaterpädagogik",
+      "Pantomime"
+     ],
+     "asked": "Übungen und Spiele"
+    },
+    "N1": {
+     "main": "Darstellendes Spiel",
+     "named": [
+      "Darstellendes Spiel",
+      "Theaterpädagogik",
+      "Improvisationstheater",
+      "Pantomime",
+      "Theatersport"
+     ],
+     "heard": "Übungen und Spiele – Sammlung im Themenbaum unter: Spielen und Gestalten",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Theaterpädagogik",
+     "named": [
+      "Theaterpädagogik",
+      "Darstellendes Spiel",
+      "Improvisationstheater",
+      "Theatersport",
+      "Pantomime",
+      "Stimmtraining"
+     ],
+     "heard": "Übungen und Spiele – Sammlung im Themenbaum unter: Spielen und Gestalten; Materialien darin: Spiele für drinnen und draußen, Theater: Auf der Bühne - Zzzebra, das Web-Magazin für Kinder | Labbé Verlag, Atem- und Sprechtechnik - Landesmedienzentrum Baden-Württemberg, Theatre Game #5 - Energy Circle. From Drama Menu - drama games & ideas for drama., Theatre Game #28 - 10 Seconds To Make. From Drama Menu - drama games & ideas for drama., Theatre Game #14 - Frog In The Pond. From Drama Menu - drama games & ideas for drama., Theatre Game #52 - Character Bus. From Drama Menu - drama games & ideas for drama., Theatre Game #11 - Alan Sells Apples In Albania from Drama Menu - drama games & ideas for drama.",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Spiel",
+     "named": [
+      "Spiel",
+      "Theaterpädagogik",
+      "Improvisationstheater",
+      "Körpersprache",
+      "Gruppenspiel",
+      "Bewegungsspiel"
+     ],
+     "heard": "Übungen und Spiele – Sammlung im Themenbaum unter: Spielen und Gestalten; Materialien darin: Spiele für drinnen und draußen, Theater: Auf der Bühne - Zzzebra, das Web-Magazin für Kinder | Labbé Verlag, Atem- und Sprechtechnik - Landesmedienzentrum Baden-Württemberg, Theatre Game #5 - Energy Circle. From Drama Menu - drama games & ideas for drama., Theatre Game #28 - 10 Seconds To Make. From Drama Menu - drama games & ideas for drama., Theatre Game #14 - Frog In The Pond. From Drama Menu - drama games & ideas for drama., Theatre Game #52 - Character Bus. From Drama Menu - drama games & ideas for drama., Theatre Game #11 - Alan Sells Apples In Albania from Drama Menu - drama games & ideas for drama.; nicht gemeint sind die Nachbarsammlungen: Gestalten von Szenen und Stücken, Feedbackkultur",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "nachbar",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "nachbar",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "381dc9bf-8ae1-4682-b821-9f6d05f4aa53",
+   "title": "Medien ",
+   "art": "neutral",
+   "subjects": [
+    "Politik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Politische Bildung",
+    "Digitalisierung"
+   ],
+   "children": [
+    "Meinungsbildung und Massenmedien ",
+    "Plattformen",
+    "Informationen, Nachrichten & Kommunikation"
+   ],
+   "materials": [
+    "Medien - Die \"vierte Gewalt\"?",
+    "Filterblasen",
+    "Struktur und Organisation der Medien",
+    "Medien – Klexikon",
+    "Digitale Öffentlichkeit, Social Media und ich - Themenblätter",
+    "Medien – die \"vierte Gewalt\"? - Themenblätter",
+    "Medien und Politik - Themenblätter",
+    "Mein Klick! Meine Verantwortung?",
+    "E-Sports - Unterrichtsmaterial",
+    "Leben in Filterblasen - Unterrichtsmaterial",
+    "Digitale Welt: Smartphone und andere Computer - einfachPOLITIK",
+    "Handysucht - LearningApps",
+    "Check das Netz!",
+    "Lösch dich nicht - Hate Speech im Netz begegnen"
+   ],
+   "siblings": [
+    "Überwachung",
+    "Recht",
+    "Künstliche Intelligenz",
+    "Bildung und Kultur ",
+    "Arbeitswelt"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Presse (Medien)",
+     "method": "disambiguation",
+     "named": [],
+     "asked": "Medien"
+    },
+    "R1": {
+     "main": "Digitalisierung",
+     "method": "title",
+     "named": [],
+     "asked": "Digitalisierung"
+    },
+    "N0": {
+     "main": "Presse (Medien)",
+     "method": "disambiguation",
+     "named": [
+      "Massenmedien",
+      "Hörfunk",
+      "Fernsehen",
+      "Internet",
+      "Soziale Medien",
+      "Öffentlichkeit",
+      "Medienpolitik"
+     ],
+     "asked": "Medien"
+    },
+    "N1": {
+     "main": "Massenmedien",
+     "named": [
+      "Massenmedien",
+      "Soziale Medien",
+      "Journalismus",
+      "Pressefreiheit",
+      "Medienkompetenz",
+      "Medienkonzentration",
+      "Öffentlich-rechtlicher Rundfunk",
+      "Desinformation"
+     ],
+     "heard": "Medien – Sammlung im Themenbaum unter: Politische Bildung › Digitalisierung",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Massenmedien",
+     "named": [
+      "Massenmedien",
+      "Öffentlichkeit",
+      "Meinungsbildung",
+      "Pressefreiheit",
+      "Vierte Gewalt",
+      "Soziale Medien",
+      "Filterblase",
+      "Fake News"
+     ],
+     "heard": "Medien – Sammlung im Themenbaum unter: Politische Bildung › Digitalisierung; ihre Untersammlungen: Meinungsbildung und Massenmedien , Plattformen, Informationen, Nachrichten & Kommunikation; Materialien darin: Medien - Die \"vierte Gewalt\"?, Filterblasen, Struktur und Organisation der Medien, Medien – Klexikon, Digitale Öffentlichkeit, Social Media und ich - Themenblätter, Medien – die \"vierte Gewalt\"? - Themenblätter, Medien und Politik - Themenblätter, Mein Klick! Meine Verantwortung?",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Massenmedien",
+     "named": [
+      "Massenmedien",
+      "Massenkommunikation",
+      "Öffentlichkeit",
+      "Digitale Medien",
+      "Soziale Medien",
+      "Journalismus",
+      "Meinungsfreiheit",
+      "Filterblase"
+     ],
+     "heard": "Medien – Sammlung im Themenbaum unter: Politische Bildung › Digitalisierung; ihre Untersammlungen: Meinungsbildung und Massenmedien , Plattformen, Informationen, Nachrichten & Kommunikation; Materialien darin: Medien - Die \"vierte Gewalt\"?, Filterblasen, Struktur und Organisation der Medien, Medien – Klexikon, Digitale Öffentlichkeit, Social Media und ich - Themenblätter, Medien – die \"vierte Gewalt\"? - Themenblätter, Medien und Politik - Themenblätter, Mein Klick! Meine Verantwortung?; nicht gemeint sind die Nachbarsammlungen: Überwachung, Recht, Künstliche Intelligenz, Bildung und Kultur , Arbeitswelt",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "zu_eng",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_eng",
+      "gesamt": 2
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_eng",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_eng",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 5
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    }
+   }
+  },
+  {
+   "id": "fb7d5747-a5bd-437f-bb16-7c2b8ea89af0",
+   "title": "Methoden",
+   "art": "neutral",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [],
+   "children": [
+    "Modellieren",
+    "Mathematik",
+    "Experimentieren",
+    "Dokumentieren",
+    "SI-Einheiten",
+    "Physikalische Konstanten"
+   ],
+   "materials": [
+    "SPARKvue",
+    "Digitale Tools für den Physikunterricht - Schule digital begreifen",
+    "Diagramm Generator - Meine Forscherwelt",
+    "Experimentieren",
+    "The Feynman Lectures on Physics"
+   ],
+   "siblings": [
+    "Astronomie",
+    "Relativitätstheorie",
+    "Akustik",
+    "Optik",
+    "Mechanik",
+    "Energie",
+    "Kernphysik",
+    "Quantenphysik",
+    "Teilchenphysik",
+    "Atomphysik",
+    "Elektrizitätslehre / Magnetismus",
+    "Wärmelehre / Thermodynamik",
+    "Schwingungen und Wellen",
+    "WP_Fachportal-Physik",
+    "Physik im Kontext",
+    "untersammlungstest"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Methode (Programmierung)",
+     "method": "disambiguation",
+     "named": [],
+     "asked": "Methoden"
+    },
+    "R1": {
+     "main": "Physik",
+     "method": "title",
+     "named": [],
+     "asked": "Physik"
+    },
+    "N0": {
+     "main": "Wissenschaftstheorie",
+     "method": "llm",
+     "named": [
+      "Experiment",
+      "Messung",
+      "Mathematisches Modell",
+      "Simulation",
+      "Induktion (Philosophie)",
+      "Deduktion"
+     ],
+     "asked": "Methoden"
+    },
+    "N1": {
+     "main": "Experiment",
+     "named": [
+      "Experiment",
+      "Beobachtung",
+      "Messung",
+      "Physikalisches Gesetz",
+      "Modell (Wissenschaft)",
+      "Simulation",
+      "Mathematisches Modell"
+     ],
+     "heard": "Methoden – Sammlung im Fachportal Physik",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Physik",
+     "named": [
+      "Physik",
+      "Mathematik",
+      "Experiment",
+      "Internationales Einheitensystem",
+      "Physikalische Konstante",
+      "Feynman-Vorlesungen über Physik"
+     ],
+     "heard": "Methoden – Sammlung im Fachportal Physik; ihre Untersammlungen: Modellieren, Mathematik, Experimentieren, Dokumentieren, SI-Einheiten, Physikalische Konstanten; Materialien darin: SPARKvue, Digitale Tools für den Physikunterricht - Schule digital begreifen, Diagramm Generator - Meine Forscherwelt, Experimentieren, The Feynman Lectures on Physics",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Physik",
+     "named": [
+      "Physik",
+      "Modell (Wissenschaft)",
+      "Mathematik",
+      "Experiment",
+      "Dokumentation",
+      "Internationales Einheitensystem",
+      "Physikalische Konstante",
+      "Feynman-Vorlesungen über Physik"
+     ],
+     "heard": "Methoden – Sammlung im Fachportal Physik; ihre Untersammlungen: Modellieren, Mathematik, Experimentieren, Dokumentieren, SI-Einheiten, Physikalische Konstanten; Materialien darin: SPARKvue, Digitale Tools für den Physikunterricht - Schule digital begreifen, Diagramm Generator - Meine Forscherwelt, Experimentieren, The Feynman Lectures on Physics; nicht gemeint sind die Nachbarsammlungen: Astronomie, Relativitätstheorie, Akustik, Optik, Mechanik, Energie, Kernphysik, Quantenphysik, Teilchenphysik, Atomphysik",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_eng",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_eng",
+      "gesamt": 4
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "26d59a4b-d9fc-45fc-841f-a0cf86db2361",
+   "title": "Methoden",
+   "art": "neutral",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Fachdidaktik"
+   ],
+   "children": [],
+   "materials": [
+    "Mikroben im Einsatz - das virtuelle Labor",
+    "Viel-Falter: Tagfalter-Monitoring",
+    "Bienen und Ökologie",
+    "Wasserhärte",
+    "Stoffe erforschen, Naturwissenschaften entdecken | FCI",
+    "Wie mikroskopiere ich richtig?",
+    "DNA-Isolation ",
+    "Chromatographie - Wie es funktioniert"
+   ],
+   "siblings": [
+    "Grundlagen",
+    "Bewertungsstrategien"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Methode (Programmierung)",
+     "method": "disambiguation",
+     "named": [],
+     "asked": "Methoden"
+    },
+    "R1": {
+     "main": "Fachdidaktik",
+     "method": "title",
+     "named": [],
+     "asked": "Fachdidaktik"
+    },
+    "N0": {
+     "main": "Wissenschaftstheorie",
+     "method": "llm",
+     "named": [
+      "Wissenschaftstheorie",
+      "Experiment",
+      "Beobachtung",
+      "Hypothese",
+      "Modell (Wissenschaft)",
+      "Statistik",
+      "Feldforschung",
+      "Mikroskop"
+     ],
+     "asked": "Methoden"
+    },
+    "N1": {
+     "main": "Biologiedidaktik",
+     "named": [
+      "Biologiedidaktik",
+      "Experiment",
+      "Beobachtung",
+      "Modell",
+      "Projektunterricht",
+      "Exkursion",
+      "Forschendes Lernen",
+      "Praktikum"
+     ],
+     "heard": "Methoden – Sammlung im Themenbaum unter: Fachdidaktik",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Wissenschaftstheorie",
+     "named": [
+      "Wissenschaftstheorie",
+      "Experiment",
+      "Beobachtung",
+      "Mikroskop",
+      "Chromatographie",
+      "DNA-Reinigung",
+      "Feldforschung",
+      "Citizen Science"
+     ],
+     "heard": "Methoden – Sammlung im Themenbaum unter: Fachdidaktik; Materialien darin: Mikroben im Einsatz - das virtuelle Labor, Viel-Falter: Tagfalter-Monitoring, Bienen und Ökologie, Wasserhärte, Stoffe erforschen, Naturwissenschaften entdecken | FCI, Wie mikroskopiere ich richtig?, DNA-Isolation , Chromatographie - Wie es funktioniert",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Naturwissenschaftlicher Unterricht",
+     "named": [
+      "Naturwissenschaftlicher Unterricht",
+      "Experiment",
+      "Forschendes Lernen",
+      "Mikroskop",
+      "DNA-Reinigung",
+      "Chromatographie",
+      "Wasserhärte",
+      "Monitoring"
+     ],
+     "heard": "Methoden – Sammlung im Themenbaum unter: Fachdidaktik; Materialien darin: Mikroben im Einsatz - das virtuelle Labor, Viel-Falter: Tagfalter-Monitoring, Bienen und Ökologie, Wasserhärte, Stoffe erforschen, Naturwissenschaften entdecken | FCI, Wie mikroskopiere ich richtig?, DNA-Isolation , Chromatographie - Wie es funktioniert; nicht gemeint sind die Nachbarsammlungen: Grundlagen, Bewertungsstrategien",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "27fea0bf-1888-4db0-866f-3d0305ea57f0",
+   "title": "Methoden",
+   "art": "neutral",
+   "subjects": [
+    "Politik"
+   ],
+   "levels": [],
+   "path": [
+    "Politische Bildung"
+   ],
+   "children": [],
+   "materials": [
+    "VR/AR in der historisch-politischen Bildung – Chancen und Risiken",
+    "Virtual und Augmented Reality im Klassenraum? Ein Überblick bildungsrelevanter Angebote ",
+    "Schülerwettbewerb zur politischen Bildung | bpb",
+    "Urheberrecht und Blogs erstellen",
+    "Rhetorik/Debatte",
+    "SimpleMind",
+    "WiseMapping",
+    "Urheberrecht für Lernende: Häufige Fragen und Antworten",
+    "Karikaturenrallye",
+    "GrafStat",
+    "Kanzlersimulator",
+    "Politik-Lernen mit digitalen Spielen",
+    "Politische Bildung: Links und Literatur",
+    "Besser lernen mit Trick 17 - Prüfungssimulation",
+    "Methoden"
+   ],
+   "siblings": [
+    "Grundfragen",
+    "Umwelt",
+    "Globalisierung und internationale Politik",
+    "Digitalisierung",
+    "Wahlen",
+    "Sozialer Wandel",
+    "Soziale Gerechtigkeit",
+    "Erinnerungsarbeit",
+    "Fachportalseite Politische Bildung",
+    "Berufliche und ökonomische Bildung"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Methode (Programmierung)",
+     "method": "disambiguation",
+     "named": [],
+     "asked": "Methoden"
+    },
+    "R1": {
+     "main": "Politische Bildung",
+     "method": "title",
+     "named": [],
+     "asked": "Politische Bildung"
+    },
+    "N0": {
+     "main": "Politische Partizipation",
+     "method": "llm",
+     "named": [
+      "Politische Partizipation",
+      "Wahl",
+      "Direkte Demokratie",
+      "Deliberative Demokratie",
+      "Vergleichende Politikwissenschaft",
+      "Inhaltsanalyse",
+      "Diskursanalyse",
+      "Befragung"
+     ],
+     "asked": "Methoden"
+    },
+    "N1": {
+     "main": "Brainstorming",
+     "named": [
+      "Brainstorming",
+      "Mindmap",
+      "Planspiel",
+      "Debatte",
+      "Diskussion",
+      "Projektunterricht",
+      "Fallstudie"
+     ],
+     "heard": "Methoden – Sammlung im Themenbaum unter: Politische Bildung",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Politische Bildung",
+     "named": [
+      "Politische Bildung",
+      "Virtuelle Realität",
+      "Erweiterte Realität",
+      "Planspiel",
+      "Debatte",
+      "Mindmap",
+      "Urheberrecht"
+     ],
+     "heard": "Methoden – Sammlung im Themenbaum unter: Politische Bildung; Materialien darin: VR/AR in der historisch-politischen Bildung – Chancen und Risiken, Virtual und Augmented Reality im Klassenraum? Ein Überblick bildungsrelevanter Angebote , Schülerwettbewerb zur politischen Bildung | bpb, Urheberrecht und Blogs erstellen, Rhetorik/Debatte, SimpleMind, WiseMapping, Urheberrecht für Lernende: Häufige Fragen und Antworten",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Didaktik",
+     "named": [
+      "Didaktik",
+      "Lehrmethode",
+      "Projektunterricht",
+      "Debatte",
+      "Rhetorik",
+      "Mindmap",
+      "Urheberrecht",
+      "Virtuelle Realität"
+     ],
+     "heard": "Methoden – Sammlung im Themenbaum unter: Politische Bildung; Materialien darin: VR/AR in der historisch-politischen Bildung – Chancen und Risiken, Virtual und Augmented Reality im Klassenraum? Ein Überblick bildungsrelevanter Angebote , Schülerwettbewerb zur politischen Bildung | bpb, Urheberrecht und Blogs erstellen, Rhetorik/Debatte, SimpleMind, WiseMapping, Urheberrecht für Lernende: Häufige Fragen und Antworten; nicht gemeint sind die Nachbarsammlungen: Grundfragen, Umwelt, Globalisierung und internationale Politik, Digitalisierung, Wahlen, Sozialer Wandel, Soziale Gerechtigkeit, Erinnerungsarbeit, Fachportalseite Politische Bildung, Berufliche und ökonomische Bildung",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_eng",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_eng",
+      "gesamt": 3
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "nachbar",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "nachbar",
+      "gesamt": 1
+     }
+    }
+   }
+  },
+  {
+   "id": "ac93e9f8-01c1-4908-93e9-f801c1490801",
+   "title": "Allgemeines",
+   "art": "neutral",
+   "subjects": [
+    "Geschichte",
+    "Gesellschaftskunde",
+    "Deutsch",
+    "Ethik",
+    "Religion",
+    "Kunst",
+    "Geschichte",
+    "Gesellschaftskunde",
+    "Deutsch",
+    "Ethik",
+    "Religion",
+    "Kunst"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II",
+    "Hochschule",
+    "Sekundarstufe I",
+    "Sekundarstufe II",
+    "Hochschule"
+   ],
+   "path": [
+    "Communities",
+    "WLO-Chatbot Themenbaum",
+    "Hexen"
+   ],
+   "children": [
+    "Mythologische Darstellungen"
+   ],
+   "materials": [],
+   "siblings": [
+    "Historische Aspekte",
+    "Feuer machen für Anfänger"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Allgemeines und Einzelnes",
+     "method": "title",
+     "named": [],
+     "asked": "Allgemeines"
+    },
+    "R1": {
+     "main": "Hexe",
+     "method": "disambiguation",
+     "named": [],
+     "asked": "Hexen"
+    },
+    "N0": {
+     "main": "Allgemeines und Einzelnes",
+     "method": "title",
+     "named": [
+      "Allgemeines und Einzelnes",
+      "Geschichte",
+      "Deutsche Sprache",
+      "Ethik",
+      "Religion",
+      "Kunst"
+     ],
+     "asked": "Allgemeines"
+    },
+    "N1": {
+     "main": "Hexe",
+     "named": [
+      "Hexe",
+      "Hexenverfolgung",
+      "Hexensabbat",
+      "Hexenhammer",
+      "Totenbeschwörerin von Endor",
+      "Wicca"
+     ],
+     "heard": "Allgemeines – Sammlung im Themenbaum unter: Communities › WLO-Chatbot Themenbaum › Hexen",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Hexe",
+     "named": [
+      "Hexe",
+      "Hexenverfolgung",
+      "Hexensabbat",
+      "Totenbeschwörerin von Endor",
+      "Baba Jaga",
+      "Medea",
+      "Morgan le Fay"
+     ],
+     "heard": "Allgemeines – Sammlung im Themenbaum unter: Communities › WLO-Chatbot Themenbaum › Hexen; ihre Untersammlungen: Mythologische Darstellungen",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Hexe",
+     "named": [
+      "Hexe",
+      "Medea",
+      "Baba Jaga",
+      "Morgan le Fay",
+      "Hekate"
+     ],
+     "heard": "Allgemeines – Sammlung im Themenbaum unter: Communities › WLO-Chatbot Themenbaum › Hexen; ihre Untersammlungen: Mythologische Darstellungen; nicht gemeint sind die Nachbarsammlungen: Historische Aspekte, Feuer machen für Anfänger",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 5
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "b468ec0a-aaf8-4b3b-96f1-b9443e577fdb",
+   "title": "Experimente",
+   "art": "neutral",
+   "subjects": [
+    "Geografie"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Geographie",
+    "Methodik & Didaktik"
+   ],
+   "children": [],
+   "materials": [
+    "Bodenerosion: Offenes Experimentieren"
+   ],
+   "siblings": [
+    "Kartenarbeit und Atlas",
+    "Auswertung von Diagrammen",
+    "Information gewinnen und auswerten",
+    "Messungen durchführen",
+    "Tabellen anlegen",
+    "Orientieren und messen",
+    "Arbeiten mit geographischen Informationssystemen (GIS)"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Experiment",
+     "method": "variant",
+     "named": [],
+     "asked": "Experimente"
+    },
+    "R1": {
+     "main": "Didaktik",
+     "method": "search",
+     "named": [],
+     "asked": "Methodik & Didaktik"
+    },
+    "N0": {
+     "main": "Experiment",
+     "method": "llm",
+     "named": [
+      "Experiment",
+      "Feldexperiment",
+      "Laborexperiment",
+      "Gedankenexperiment"
+     ],
+     "asked": "Experimente"
+    },
+    "N1": {
+     "main": "Experiment",
+     "named": [
+      "Experiment",
+      "Feldexperiment",
+      "Lehrmethode"
+     ],
+     "heard": "Experimente – Sammlung im Themenbaum unter: Geographie › Methodik & Didaktik",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Experiment",
+     "named": [
+      "Experiment",
+      "Feldexperiment",
+      "Bodenerosion"
+     ],
+     "heard": "Experimente – Sammlung im Themenbaum unter: Geographie › Methodik & Didaktik; Materialien darin: Bodenerosion: Offenes Experimentieren",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Experiment",
+     "named": [
+      "Experiment",
+      "Feldexperiment"
+     ],
+     "heard": "Experimente – Sammlung im Themenbaum unter: Geographie › Methodik & Didaktik; Materialien darin: Bodenerosion: Offenes Experimentieren; nicht gemeint sind die Nachbarsammlungen: Kartenarbeit und Atlas, Auswertung von Diagrammen, Information gewinnen und auswerten, Messungen durchführen, Tabellen anlegen, Orientieren und messen, Arbeiten mit geographischen Informationssystemen (GIS)",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 1
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    }
+   }
+  },
+  {
+   "id": "4c44d4f8-22c5-4dbd-9b3c-94063f3ed852",
+   "title": "Anwendungen",
+   "art": "neutral",
+   "subjects": [
+    "Informatik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Grundlagen"
+   ],
+   "children": [
+    "Browser",
+    "E-Mail",
+    "Office"
+   ],
+   "materials": [
+    "Videokonferenz mit iServ in 200 Sekunden - für Lehrer / Moderatoren ( Übersicht Kurzanleitung ) - YouTube",
+    "Kurzanleitung Videokonferenz mit iServ für Schüler(innen) # Die Videochat Funktionen im Überblick - YouTube",
+    "Aufgaben in iServ bearbeiten, abgeben und hochladen  - Kurzanleitung für Schüler - YouTube"
+   ],
+   "siblings": [
+    "Zahlensysteme",
+    "Peripherie",
+    "Grafik / Bildbearbeitung",
+    "Audiobearbeitung"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Auswertung (Informatik)",
+     "method": "disambiguation",
+     "named": [],
+     "asked": "Anwendungen"
+    },
+    "R1": {
+     "main": "Sprachbau des Esperanto",
+     "method": "suggestion",
+     "named": [],
+     "asked": "Grundlagen"
+    },
+    "N0": {
+     "main": "Auswertung (Informatik)",
+     "method": "disambiguation",
+     "named": [
+      "Anwendungssoftware",
+      "Textverarbeitung",
+      "Tabellenkalkulation",
+      "Datenbank",
+      "Präsentationsprogramm",
+      "Grafiksoftware",
+      "Webbrowser",
+      "E-Mail-Programm",
+      "Computerspiel"
+     ],
+     "asked": "Anwendungen"
+    },
+    "N1": {
+     "main": "Anwendungssoftware",
+     "named": [
+      "Anwendungssoftware",
+      "Textverarbeitung",
+      "Tabellenkalkulation",
+      "Präsentationsprogramm",
+      "Datenbank",
+      "Webbrowser",
+      "E-Mail-Programm",
+      "Computerspiel"
+     ],
+     "heard": "Anwendungen – Sammlung im Themenbaum unter: Grundlagen",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Anwendungssoftware",
+     "named": [
+      "Anwendungssoftware",
+      "Webbrowser",
+      "E-Mail",
+      "Office-Paket",
+      "Videokonferenz",
+      "Lernplattform"
+     ],
+     "heard": "Anwendungen – Sammlung im Themenbaum unter: Grundlagen; ihre Untersammlungen: Browser, E-Mail, Office; Materialien darin: Videokonferenz mit iServ in 200 Sekunden - für Lehrer / Moderatoren ( Übersicht Kurzanleitung ) - YouTube, Kurzanleitung Videokonferenz mit iServ für Schüler(innen) # Die Videochat Funktionen im Überblick - YouTube, Aufgaben in iServ bearbeiten, abgeben und hochladen  - Kurzanleitung für Schüler - YouTube",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Anwendungssoftware",
+     "named": [
+      "Anwendungssoftware",
+      "Webbrowser",
+      "E-Mail-Programm",
+      "Office-Paket",
+      "Videokonferenz",
+      "Lernplattform"
+     ],
+     "heard": "Anwendungen – Sammlung im Themenbaum unter: Grundlagen; ihre Untersammlungen: Browser, E-Mail, Office; Materialien darin: Videokonferenz mit iServ in 200 Sekunden - für Lehrer / Moderatoren ( Übersicht Kurzanleitung ) - YouTube, Kurzanleitung Videokonferenz mit iServ für Schüler(innen) # Die Videochat Funktionen im Überblick - YouTube, Aufgaben in iServ bearbeiten, abgeben und hochladen  - Kurzanleitung für Schüler - YouTube; nicht gemeint sind die Nachbarsammlungen: Zahlensysteme, Peripherie, Grafik / Bildbearbeitung, Audiobearbeitung",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 5
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 5
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 2
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    }
+   }
+  },
+  {
+   "id": "a53348c1-0233-4a40-bf2a-4fe4baab449d",
+   "title": "Grundlagen der Prozentrechnung",
+   "art": "kontrolle",
+   "subjects": [
+    "Mathematik"
+   ],
+   "levels": [
+    "Sekundarstufe I"
+   ],
+   "path": [
+    "Algebra53",
+    "Prozente & Zinsen"
+   ],
+   "children": [],
+   "materials": [
+    "Einführung in das Prozentrechnen — Landesbildungsserver Baden-Württemberg",
+    "Stationenlernen Prozentrechnung",
+    "Prozentrechnung durch Dreisatz",
+    "Anleitung Prozentrechnen mit Dreisatz",
+    "Die Bedeutung von Prozent (Video) | Khan Academy",
+    "Erklärvideo Prozentrechnen Einführung - YouTube",
+    "BRÜCHE in PROZENT umwandeln – rationale Zahlen, Beispiele auch über 100 - YouTube"
+   ],
+   "siblings": [
+    "Prozentwert",
+    "Prozentsatz",
+    "Grundwert",
+    "Formel umstellen",
+    "Zinsen",
+    "Zinssatz",
+    "Kapital",
+    "Berechnung des Zeitraums",
+    "Sachaufgaben Prozente & Zinsen",
+    "Zinseszinsen"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Prozent",
+     "method": "variant",
+     "named": [],
+     "asked": "Grundlagen der Prozentrechnung"
+    },
+    "R1": {
+     "main": "Zinsbescheinigung",
+     "method": "search",
+     "named": [],
+     "asked": "Prozente & Zinsen"
+    },
+    "N0": {
+     "main": "Prozent",
+     "method": "llm",
+     "named": [
+      "Prozent",
+      "Dreisatz"
+     ],
+     "asked": "Grundlagen der Prozentrechnung"
+    },
+    "N1": {
+     "main": "Prozent",
+     "named": [
+      "Prozent",
+      "Dreisatz",
+      "Zinsrechnung",
+      "Zins",
+      "Mehrwertsteuer"
+     ],
+     "heard": "Grundlagen der Prozentrechnung – Sammlung im Themenbaum unter: Algebra53 › Prozente & Zinsen",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Prozent",
+     "named": [
+      "Prozent",
+      "Dreisatz",
+      "Bruchrechnung",
+      "Prozentpunkt",
+      "Zinsrechnung"
+     ],
+     "heard": "Grundlagen der Prozentrechnung – Sammlung im Themenbaum unter: Algebra53 › Prozente & Zinsen; Materialien darin: Einführung in das Prozentrechnen — Landesbildungsserver Baden-Württemberg, Stationenlernen Prozentrechnung, Prozentrechnung durch Dreisatz, Anleitung Prozentrechnen mit Dreisatz, Die Bedeutung von Prozent (Video) | Khan Academy, Erklärvideo Prozentrechnen Einführung - YouTube, BRÜCHE in PROZENT umwandeln – rationale Zahlen, Beispiele auch über 100 - YouTube",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Prozent",
+     "named": [
+      "Prozent",
+      "Bruchrechnung",
+      "Dreisatz"
+     ],
+     "heard": "Grundlagen der Prozentrechnung – Sammlung im Themenbaum unter: Algebra53 › Prozente & Zinsen; Materialien darin: Einführung in das Prozentrechnen — Landesbildungsserver Baden-Württemberg, Stationenlernen Prozentrechnung, Prozentrechnung durch Dreisatz, Anleitung Prozentrechnen mit Dreisatz, Die Bedeutung von Prozent (Video) | Khan Academy, Erklärvideo Prozentrechnen Einführung - YouTube, BRÜCHE in PROZENT umwandeln – rationale Zahlen, Beispiele auch über 100 - YouTube; nicht gemeint sind die Nachbarsammlungen: Prozentwert, Prozentsatz, Grundwert, Formel umstellen, Zinsen, Zinssatz, Kapital, Berechnung des Zeitraums, Sachaufgaben Prozente & Zinsen, Zinseszinsen",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 5
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    }
+   }
+  },
+  {
+   "id": "f9245f29-7b51-491f-9bbf-c913b0b4b62e",
+   "title": "Grundlagen und Begriffe in der  Verhaltensbiologie",
+   "art": "kontrolle",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Verhaltensbiologie"
+   ],
+   "children": [],
+   "materials": [
+    "k- und r-Strategen"
+   ],
+   "siblings": [
+    "Angeborenes Verhalten",
+    "Erworbenes und erlerntes Verhalten",
+    "Soziobiologie & Verhaltensökologie"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Verhaltensbiologie",
+     "method": "search",
+     "named": [],
+     "asked": "Grundlagen und Begriffe in der Verhaltensbiologie"
+    },
+    "R1": {
+     "main": "Verhaltensbiologie",
+     "method": "title",
+     "named": [],
+     "asked": "Verhaltensbiologie"
+    },
+    "N0": {
+     "main": "Verhaltensbiologie",
+     "method": "llm",
+     "named": [
+      "Verhaltensbiologie",
+      "Ethologie",
+      "Instinkt",
+      "Lernen",
+      "Motivation",
+      "Schlüsselreiz"
+     ],
+     "asked": "Grundlagen und Begriffe in der Verhaltensbiologie"
+    },
+    "N1": {
+     "main": "Verhaltensbiologie",
+     "named": [
+      "Verhaltensbiologie",
+      "Ethologie",
+      "Instinkt",
+      "Lernen",
+      "Motivation",
+      "Schlüsselreiz",
+      "Soziobiologie"
+     ],
+     "heard": "Grundlagen und Begriffe in der  Verhaltensbiologie – Sammlung im Themenbaum unter: Verhaltensbiologie",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Verhaltensbiologie",
+     "named": [
+      "Verhaltensbiologie",
+      "Verhaltensökologie",
+      "Populationsökologie",
+      "Fortpflanzungsstrategie",
+      "Selektion (Evolution)"
+     ],
+     "heard": "Grundlagen und Begriffe in der  Verhaltensbiologie – Sammlung im Themenbaum unter: Verhaltensbiologie; Materialien darin: k- und r-Strategen",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Verhaltensbiologie",
+     "named": [
+      "Verhaltensbiologie"
+     ],
+     "heard": "Grundlagen und Begriffe in der  Verhaltensbiologie – Sammlung im Themenbaum unter: Verhaltensbiologie; Materialien darin: k- und r-Strategen; nicht gemeint sind die Nachbarsammlungen: Angeborenes Verhalten, Erworbenes und erlerntes Verhalten, Soziobiologie & Verhaltensökologie",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    }
+   }
+  },
+  {
+   "id": "ca80189b-94f5-44d9-8e39-20a9a7063921",
+   "title": "Grundlagen des betrieblichen Rechnungswesens",
+   "art": "kontrolle",
+   "subjects": [
+    "Wirtschaftskunde"
+   ],
+   "levels": [
+    "Sekundarstufe II",
+    "Berufliche Bildung"
+   ],
+   "path": [
+    "Wirtschaft",
+    "Rechnungswesen"
+   ],
+   "children": [],
+   "materials": [
+    "Advance Organizer Buchführung",
+    "Grundlagen Rechnungswesen -  YouTube"
+   ],
+   "siblings": [
+    "Jahresabschluss",
+    "Kostenrechnung"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Rechnungswesen",
+     "method": "search",
+     "named": [],
+     "asked": "Grundlagen des betrieblichen Rechnungswesens"
+    },
+    "R1": {
+     "main": "Rechnungswesen",
+     "method": "title",
+     "named": [],
+     "asked": "Rechnungswesen"
+    },
+    "N0": {
+     "main": "Rechnungswesen",
+     "method": "llm",
+     "named": [
+      "Rechnungswesen",
+      "Buchführung",
+      "Bilanz",
+      "Gewinn- und Verlustrechnung",
+      "Kosten- und Leistungsrechnung",
+      "Controlling",
+      "Jahresabschluss",
+      "Inventur"
+     ],
+     "asked": "Grundlagen des betrieblichen Rechnungswesens"
+    },
+    "N1": {
+     "main": "Rechnungswesen",
+     "named": [
+      "Rechnungswesen",
+      "Buchführung",
+      "Bilanz",
+      "Gewinn- und Verlustrechnung",
+      "Kosten- und Leistungsrechnung",
+      "Controlling",
+      "Jahresabschluss",
+      "Inventur",
+      "Kalkulation"
+     ],
+     "heard": "Grundlagen des betrieblichen Rechnungswesens – Sammlung im Themenbaum unter: Wirtschaft › Rechnungswesen",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Rechnungswesen",
+     "named": [
+      "Rechnungswesen",
+      "Buchführung",
+      "Jahresabschluss",
+      "Bilanz",
+      "Gewinn- und Verlustrechnung",
+      "Kosten- und Leistungsrechnung",
+      "Kontenrahmen"
+     ],
+     "heard": "Grundlagen des betrieblichen Rechnungswesens – Sammlung im Themenbaum unter: Wirtschaft › Rechnungswesen; Materialien darin: Advance Organizer Buchführung, Grundlagen Rechnungswesen -  YouTube",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Rechnungswesen",
+     "named": [
+      "Rechnungswesen",
+      "Buchführung",
+      "Bilanz",
+      "Inventur",
+      "Geschäftsvorfall",
+      "Kontenrahmen"
+     ],
+     "heard": "Grundlagen des betrieblichen Rechnungswesens – Sammlung im Themenbaum unter: Wirtschaft › Rechnungswesen; Materialien darin: Advance Organizer Buchführung, Grundlagen Rechnungswesen -  YouTube; nicht gemeint sind die Nachbarsammlungen: Jahresabschluss, Kostenrechnung",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "17c43ae5-8560-4b5b-8eb4-a649339fe4fd",
+   "title": "Grundlagen für chemische Bindungen",
+   "art": "kontrolle",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [],
+   "path": [
+    "Chemische Grundlagen",
+    "Chemische Begriffe in der Biologie",
+    "Atombau und chemische Bindungen"
+   ],
+   "children": [],
+   "materials": [
+    "Aufbau der Atome",
+    "Orbitalmodell - Grundlagen",
+    "Oktettregel und Edelgase I musstewissen Chemie",
+    "Elektronenbesetzung",
+    "Aufbau der Materie: Atome / Schalenmodell",
+    "Besetzung der Orbitale mit Elektronen",
+    "Aufbau des Kugelwolkenmodells",
+    "Atommodell nach Niels Bohr I musstewissen Chemie",
+    "Periodensystem mit Farben für Schalen",
+    "Das Schalenmodell nach Niels Bohr"
+   ],
+   "siblings": [
+    "Bindungstypen und -kräfte"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Chemische Bindung",
+     "method": "search",
+     "named": [],
+     "asked": "Grundlagen für chemische Bindungen"
+    },
+    "R1": {
+     "main": "Hans G. Grimm",
+     "method": "search",
+     "named": [],
+     "asked": "Atombau und chemische Bindungen"
+    },
+    "N0": {
+     "main": "Chemische Bindung",
+     "method": "llm",
+     "named": [
+      "Chemische Bindung",
+      "Kovalente Bindung",
+      "Ionische Bindung",
+      "Metallische Bindung",
+      "Wasserstoffbrückenbindung",
+      "Van-der-Waals-Kräfte",
+      "Elektronegativität",
+      "Molekül",
+      "Valenzelektron"
+     ],
+     "asked": "Grundlagen für chemische Bindungen"
+    },
+    "N1": {
+     "main": "Chemische Bindung",
+     "named": [
+      "Chemische Bindung",
+      "Kovalente Bindung",
+      "Ionische Bindung",
+      "Metallische Bindung",
+      "Wasserstoffbrückenbindung",
+      "Van-der-Waals-Kräfte",
+      "Elektronegativität",
+      "Valenzelektron",
+      "Molekülorbitaltheorie"
+     ],
+     "heard": "Grundlagen für chemische Bindungen – Sammlung im Themenbaum unter: Chemische Grundlagen › Chemische Begriffe in der Biologie › Atombau und chemische Bindungen",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Chemische Bindung",
+     "named": [
+      "Chemische Bindung",
+      "Atom",
+      "Liste der Atommodelle",
+      "Elektron",
+      "Elektronenkonfiguration",
+      "Oktettregel",
+      "Edelgase"
+     ],
+     "heard": "Grundlagen für chemische Bindungen – Sammlung im Themenbaum unter: Chemische Grundlagen › Chemische Begriffe in der Biologie › Atombau und chemische Bindungen; Materialien darin: Aufbau der Atome, Orbitalmodell - Grundlagen, Oktettregel und Edelgase I musstewissen Chemie, Elektronenbesetzung, Aufbau der Materie: Atome / Schalenmodell, Besetzung der Orbitale mit Elektronen, Aufbau des Kugelwolkenmodells, Atommodell nach Niels Bohr I musstewissen Chemie",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Chemische Bindung",
+     "named": [
+      "Chemische Bindung",
+      "Atom",
+      "Liste der Atommodelle",
+      "Elektronenkonfiguration",
+      "Oktettregel",
+      "Edelgase"
+     ],
+     "heard": "Grundlagen für chemische Bindungen – Sammlung im Themenbaum unter: Chemische Grundlagen › Chemische Begriffe in der Biologie › Atombau und chemische Bindungen; Materialien darin: Aufbau der Atome, Orbitalmodell - Grundlagen, Oktettregel und Edelgase I musstewissen Chemie, Elektronenbesetzung, Aufbau der Materie: Atome / Schalenmodell, Besetzung der Orbitale mit Elektronen, Aufbau des Kugelwolkenmodells, Atommodell nach Niels Bohr I musstewissen Chemie; nicht gemeint sind die Nachbarsammlungen: Bindungstypen und -kräfte",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    }
+   }
+  },
+  {
+   "id": "059c5a7a-3983-4a11-a9a2-89b7a5e18d98",
+   "title": "Grundbegriffe der Ökologie",
+   "art": "kontrolle",
+   "subjects": [
+    "Biologie"
+   ],
+   "levels": [],
+   "path": [
+    "Ökologie"
+   ],
+   "children": [],
+   "materials": [
+    "Aha! | Naturräume in Deutschland",
+    "Lebensraum Wasser: Anpassungsleistungen",
+    "Stickstoffkreislauf"
+   ],
+   "siblings": [
+    "Populationsökologie",
+    "Ökosysteme",
+    "Naturschutz und Nachhaltigkeit",
+    "Wechselwirkungen und Lebensgemeinschaften"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Ökologie",
+     "method": "search",
+     "named": [],
+     "asked": "Grundbegriffe der Ökologie"
+    },
+    "R1": {
+     "main": "Ökologie",
+     "method": "title",
+     "named": [],
+     "asked": "Ökologie"
+    },
+    "N0": {
+     "main": "Ökologie",
+     "method": "llm",
+     "named": [
+      "Ökologie",
+      "Ökosystem",
+      "Biotop",
+      "Biozönose",
+      "Population (Biologie)",
+      "Habitat",
+      "Ökologische Nische",
+      "Nahrungskette",
+      "Stoffkreislauf"
+     ],
+     "asked": "Grundbegriffe der Ökologie"
+    },
+    "N1": {
+     "main": "Ökologie",
+     "named": [
+      "Ökologie",
+      "Ökosystem",
+      "Biotop",
+      "Biozönose",
+      "Population (Biologie)",
+      "Ökologische Nische",
+      "Nahrungskette",
+      "Stoffkreislauf",
+      "Biotische Umweltfaktoren"
+     ],
+     "heard": "Grundbegriffe der Ökologie – Sammlung im Themenbaum unter: Ökologie",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Ökologie",
+     "named": [
+      "Ökologie",
+      "Ökosystem",
+      "Biotop",
+      "Biozönose",
+      "Ökologische Nische",
+      "Nahrungskette",
+      "Stoffkreislauf",
+      "Stickstoffkreislauf"
+     ],
+     "heard": "Grundbegriffe der Ökologie – Sammlung im Themenbaum unter: Ökologie; Materialien darin: Aha! | Naturräume in Deutschland, Lebensraum Wasser: Anpassungsleistungen, Stickstoffkreislauf",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Ökologie",
+     "named": [
+      "Ökologie",
+      "Biosphäre",
+      "Biotop",
+      "Umweltfaktor",
+      "Ökologische Nische",
+      "Stoffkreislauf",
+      "Kohlenstoffzyklus",
+      "Stickstoffkreislauf"
+     ],
+     "heard": "Grundbegriffe der Ökologie – Sammlung im Themenbaum unter: Ökologie; Materialien darin: Aha! | Naturräume in Deutschland, Lebensraum Wasser: Anpassungsleistungen, Stickstoffkreislauf; nicht gemeint sind die Nachbarsammlungen: Populationsökologie, Ökosysteme, Naturschutz und Nachhaltigkeit, Wechselwirkungen und Lebensgemeinschaften",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    }
+   }
+  },
+  {
+   "id": "a95ff036-16d3-46ef-a1d2-ad5b2768e376",
+   "title": "psychologische Grundlagen des Lernens, Lerntheorien",
+   "art": "kontrolle",
+   "subjects": [
+    "Pädagogik"
+   ],
+   "levels": [
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Lernen, Bildung und Erziehung"
+   ],
+   "children": [
+    "Behavioristische Lerntheorie",
+    "Konstruktivistische Lerntheorien",
+    "Die kognitive Wende und kognitive Lerntheorien",
+    "Modelllernen und Vorbilder",
+    "sonstige"
+   ],
+   "materials": [
+    "Lernen und Pädagogik Hamburger Bildungsserver",
+    "Lerntheorien: Zusammenfassung der klassischen Ansätze",
+    "Kognitives Lernen: Ein pädagogischer Leitfaden - CogniFit"
+   ],
+   "siblings": [
+    "Der pädagogische Blick auf Lernen und Erziehen",
+    "Lernen und Erziehen in der digitalen Welt",
+    "Bildungs- und Erziehungsziele",
+    "Erziehungstile",
+    "Pädagogischer Umgang mit neuen Medien"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Lerntheorie",
+     "method": "search",
+     "named": [],
+     "asked": "psychologische Grundlagen des Lernens, Lerntheorien"
+    },
+    "R1": {
+     "main": "Demokratiebildung",
+     "method": "search",
+     "named": [],
+     "asked": "Lernen, Bildung und Erziehung"
+    },
+    "N0": {
+     "main": "Lerntheorie",
+     "method": "llm",
+     "named": [
+      "Lerntheorie",
+      "Klassische Konditionierung",
+      "Instrumentelle und operante Konditionierung",
+      "Sozialkognitive Lerntheorie",
+      "Kognitivismus",
+      "Behaviorismus",
+      "Konnektivismus"
+     ],
+     "asked": "psychologische Grundlagen des Lernens, Lerntheorien"
+    },
+    "N1": {
+     "main": "Lerntheorie",
+     "named": [
+      "Lerntheorie",
+      "Lernen",
+      "Behaviorismus",
+      "Klassische Konditionierung",
+      "Instrumentelle und operante Konditionierung",
+      "Kognitivismus",
+      "Konstruktivismus (Lernpsychologie)",
+      "Entwicklungspsychologie"
+     ],
+     "heard": "psychologische Grundlagen des Lernens, Lerntheorien – Sammlung im Themenbaum unter: Lernen, Bildung und Erziehung",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Lernen",
+     "named": [
+      "Lernen",
+      "Lerntheorie",
+      "Behaviorismus",
+      "Kognitivismus",
+      "Klassische Konditionierung",
+      "Instrumentelle und operante Konditionierung",
+      "Sozialkognitive Lerntheorie"
+     ],
+     "heard": "psychologische Grundlagen des Lernens, Lerntheorien – Sammlung im Themenbaum unter: Lernen, Bildung und Erziehung; ihre Untersammlungen: Behavioristische Lerntheorie, Konstruktivistische Lerntheorien, Die kognitive Wende und kognitive Lerntheorien, Modelllernen und Vorbilder, sonstige; Materialien darin: Lernen und Pädagogik Hamburger Bildungsserver, Lerntheorien: Zusammenfassung der klassischen Ansätze, Kognitives Lernen: Ein pädagogischer Leitfaden - CogniFit",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Lerntheorie",
+     "named": [
+      "Lerntheorie",
+      "Behaviorismus",
+      "Kognitivismus",
+      "Konstruktivismus (Lernpsychologie)",
+      "Sozialkognitive Lerntheorie",
+      "Klassische Konditionierung",
+      "Instrumentelle und operante Konditionierung",
+      "Kognitive Wende"
+     ],
+     "heard": "psychologische Grundlagen des Lernens, Lerntheorien – Sammlung im Themenbaum unter: Lernen, Bildung und Erziehung; ihre Untersammlungen: Behavioristische Lerntheorie, Konstruktivistische Lerntheorien, Die kognitive Wende und kognitive Lerntheorien, Modelllernen und Vorbilder, sonstige; Materialien darin: Lernen und Pädagogik Hamburger Bildungsserver, Lerntheorien: Zusammenfassung der klassischen Ansätze, Kognitives Lernen: Ein pädagogischer Leitfaden - CogniFit; nicht gemeint sind die Nachbarsammlungen: Der pädagogische Blick auf Lernen und Erziehen, Lernen und Erziehen in der digitalen Welt, Bildungs- und Erziehungsziele, Erziehungstile, Pädagogischer Umgang mit neuen Medien",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 5
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    }
+   }
+  },
+  {
+   "id": "5e12bea8-8985-443e-96b7-ee0fb59f2e36",
+   "title": "Grundlagen der Wirtschaftsordnung",
+   "art": "kontrolle",
+   "subjects": [
+    "Wirtschaftskunde"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Wirtschaft",
+    "Wirtschaftsordnung"
+   ],
+   "children": [
+    "Bedürfnisse",
+    "Ressourcen"
+   ],
+   "materials": [
+    "Grundlagen einer Wirtschaftsordnung - Homo Oeconomicus, Leistung, Steuerungsverfahren, Eigenschaften",
+    "Wirtschaftskreislauf",
+    "Leitfaden für Unterrichtende",
+    "Youtube-Quizshow zu Wirtschaftsthemen - Joachim Herz Stiftung",
+    "Ina Praetorius: Ökonomie kommt von Oikonomia",
+    "Chrematistik - die Kunst Reichtum zu erlangen",
+    "Wirtschaft ist Care | Heinrich-Böll-Stiftung"
+   ],
+   "siblings": [
+    "Güter",
+    "Wirtschaftsakteure",
+    "Wirtschaftssysteme",
+    "Sozialversicherungssystem"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Wirtschaftsordnung",
+     "method": "variant",
+     "named": [],
+     "asked": "Grundlagen der Wirtschaftsordnung"
+    },
+    "R1": {
+     "main": "Wirtschaftsordnung",
+     "method": "title",
+     "named": [],
+     "asked": "Wirtschaftsordnung"
+    },
+    "N0": {
+     "main": "Wirtschaftsordnung",
+     "method": "llm",
+     "named": [
+      "Wirtschaftsordnung",
+      "Soziale Marktwirtschaft",
+      "Wirtschaftsliberalismus",
+      "Planwirtschaft",
+      "Marktwirtschaft",
+      "Eigentum",
+      "Marktgleichgewicht",
+      "Wirtschaftspolitik"
+     ],
+     "asked": "Grundlagen der Wirtschaftsordnung"
+    },
+    "N1": {
+     "main": "Wirtschaftsordnung",
+     "named": [
+      "Wirtschaftsordnung",
+      "Marktwirtschaft",
+      "Planwirtschaft",
+      "Soziale Marktwirtschaft",
+      "Wirtschaftsliberalismus",
+      "Zentralverwaltungswirtschaft",
+      "Ordoliberalismus",
+      "Wirtschaftsverfassung"
+     ],
+     "heard": "Grundlagen der Wirtschaftsordnung – Sammlung im Themenbaum unter: Wirtschaft › Wirtschaftsordnung",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Wirtschaftsordnung",
+     "named": [
+      "Wirtschaftsordnung",
+      "Bedürfnis",
+      "Ressource",
+      "Homo oeconomicus",
+      "Wirtschaftskreislauf",
+      "Planwirtschaft",
+      "Marktwirtschaft",
+      "Wirtschaftswissenschaft"
+     ],
+     "heard": "Grundlagen der Wirtschaftsordnung – Sammlung im Themenbaum unter: Wirtschaft › Wirtschaftsordnung; ihre Untersammlungen: Bedürfnisse, Ressourcen; Materialien darin: Grundlagen einer Wirtschaftsordnung - Homo Oeconomicus, Leistung, Steuerungsverfahren, Eigenschaften, Wirtschaftskreislauf, Leitfaden für Unterrichtende, Youtube-Quizshow zu Wirtschaftsthemen - Joachim Herz Stiftung, Ina Praetorius: Ökonomie kommt von Oikonomia, Chrematistik - die Kunst Reichtum zu erlangen, Wirtschaft ist Care | Heinrich-Böll-Stiftung",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Wirtschaftsordnung",
+     "named": [
+      "Wirtschaftsordnung",
+      "Bedürfnis",
+      "Ressource",
+      "Homo oeconomicus",
+      "Wirtschaftskreislauf",
+      "Wirtschaftspolitik",
+      "Wirtschaftswissenschaft",
+      "Care-Arbeit"
+     ],
+     "heard": "Grundlagen der Wirtschaftsordnung – Sammlung im Themenbaum unter: Wirtschaft › Wirtschaftsordnung; ihre Untersammlungen: Bedürfnisse, Ressourcen; Materialien darin: Grundlagen einer Wirtschaftsordnung - Homo Oeconomicus, Leistung, Steuerungsverfahren, Eigenschaften, Wirtschaftskreislauf, Leitfaden für Unterrichtende, Youtube-Quizshow zu Wirtschaftsthemen - Joachim Herz Stiftung, Ina Praetorius: Ökonomie kommt von Oikonomia, Chrematistik - die Kunst Reichtum zu erlangen, Wirtschaft ist Care | Heinrich-Böll-Stiftung; nicht gemeint sind die Nachbarsammlungen: Güter, Wirtschaftsakteure, Wirtschaftssysteme, Sozialversicherungssystem",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    }
+   }
+  },
+  {
+   "id": "33ce727a-9dca-418d-ae11-624f71dcb05d",
+   "title": "Grundlagen E-Lehre",
+   "art": "kontrolle",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Elektrizitätslehre / Magnetismus"
+   ],
+   "children": [
+    "Stromwirkung",
+    "Einfache Stromkreise",
+    "Elektrostatik",
+    "Elektrische Grundgrößen"
+   ],
+   "materials": [
+    "E-Lehre mit Potential (Schulbuch)",
+    "Steinphysik - Physik-Geschichten aus Bad Einstein",
+    "Lehrvideo mit Auftrag:   Analogien zwischen elektrischem und Wasserstromkreis - YouTube"
+   ],
+   "siblings": [
+    "Grundlagen Magnetismus",
+    "Bewegte Ladungen / Felder",
+    "Vertiefung E-Lehre"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Benno Schulz",
+     "method": "search",
+     "named": [],
+     "asked": "Grundlagen E-Lehre"
+    },
+    "R1": {
+     "main": "Carl Fromme (Physiker)",
+     "method": "search",
+     "named": [],
+     "asked": "Elektrizitätslehre / Magnetismus"
+    },
+    "N0": {
+     "main": "Elektrotechnik",
+     "method": "llm",
+     "named": [
+      "Elektrotechnik",
+      "Elektrodynamik",
+      "Elektrische Ladung",
+      "Elektrisches Feld",
+      "Elektrische Spannung",
+      "Elektrischer Strom",
+      "Elektrischer Widerstand",
+      "Ohmsches Gesetz",
+      "Elektrische Leistung"
+     ],
+     "asked": "Grundlagen E-Lehre"
+    },
+    "N1": {
+     "main": "Elektrodynamik",
+     "named": [
+      "Elektrodynamik",
+      "Elektrische Ladung",
+      "Elektrisches Feld",
+      "Elektrische Spannung",
+      "Elektrischer Strom",
+      "Elektrischer Widerstand",
+      "Ohmsches Gesetz",
+      "Elektrische Leistung",
+      "Magnetismus"
+     ],
+     "heard": "Grundlagen E-Lehre – Sammlung im Themenbaum unter: Elektrizitätslehre / Magnetismus",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Elektrodynamik",
+     "named": [
+      "Elektrodynamik",
+      "Elektrische Spannung",
+      "Elektrischer Strom",
+      "Elektrischer Widerstand",
+      "Stromkreis",
+      "Elektrostatik",
+      "Elektrische Ladung",
+      "Elektrisches Potential",
+      "Magnetismus"
+     ],
+     "heard": "Grundlagen E-Lehre – Sammlung im Themenbaum unter: Elektrizitätslehre / Magnetismus; ihre Untersammlungen: Stromwirkung, Einfache Stromkreise, Elektrostatik, Elektrische Grundgrößen; Materialien darin: E-Lehre mit Potential (Schulbuch), Steinphysik - Physik-Geschichten aus Bad Einstein, Lehrvideo mit Auftrag:   Analogien zwischen elektrischem und Wasserstromkreis - YouTube",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Elektrodynamik",
+     "named": [
+      "Elektrodynamik",
+      "Elektrischer Strom",
+      "Stromkreis",
+      "Elektrostatik",
+      "Elektrische Spannung",
+      "Elektrische Ladung",
+      "Elektrischer Widerstand",
+      "Elektrische Leistung",
+      "Ohmsches Gesetz"
+     ],
+     "heard": "Grundlagen E-Lehre – Sammlung im Themenbaum unter: Elektrizitätslehre / Magnetismus; ihre Untersammlungen: Stromwirkung, Einfache Stromkreise, Elektrostatik, Elektrische Grundgrößen; Materialien darin: E-Lehre mit Potential (Schulbuch), Steinphysik - Physik-Geschichten aus Bad Einstein, Lehrvideo mit Auftrag:   Analogien zwischen elektrischem und Wasserstromkreis - YouTube; nicht gemeint sind die Nachbarsammlungen: Grundlagen Magnetismus, Bewegte Ladungen / Felder, Vertiefung E-Lehre",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R0": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    }
+   }
+  },
+  {
+   "id": "c5d62d48-fbd3-4454-a9fe-bc37d141f548",
+   "title": "Grundlagen Magnetismus",
+   "art": "kontrolle",
+   "subjects": [
+    "Physik"
+   ],
+   "levels": [
+    "Primarstufe",
+    "Sekundarstufe I",
+    "Sekundarstufe II"
+   ],
+   "path": [
+    "Elektrizitätslehre / Magnetismus"
+   ],
+   "children": [
+    "Permanentmagnetismus",
+    "Elektromagnetismus"
+   ],
+   "materials": [],
+   "siblings": [
+    "Bewegte Ladungen / Felder",
+    "Grundlagen E-Lehre",
+    "Vertiefung E-Lehre"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Magnetismus",
+     "method": "search",
+     "named": [],
+     "asked": "Grundlagen Magnetismus"
+    },
+    "R1": {
+     "main": "Carl Fromme (Physiker)",
+     "method": "search",
+     "named": [],
+     "asked": "Elektrizitätslehre / Magnetismus"
+    },
+    "N0": {
+     "main": "Magnetismus",
+     "method": "llm",
+     "named": [
+      "Magnetismus",
+      "Magnetische Feldstärke",
+      "Magnetische Flussdichte",
+      "Magnetischer Fluss",
+      "Magnetische Suszeptibilität",
+      "Ferromagnetismus",
+      "Elektromagnetische Wechselwirkung",
+      "Lorentzkraft"
+     ],
+     "asked": "Grundlagen Magnetismus"
+    },
+    "N1": {
+     "main": "Magnetismus",
+     "named": [
+      "Magnetismus",
+      "Magnetische Flussdichte",
+      "Magnetische Feldstärke",
+      "Magnetische Polarisation",
+      "Magnetischer Dipol",
+      "Ferromagnetismus",
+      "Paramagnetismus",
+      "Diamagnetismus"
+     ],
+     "heard": "Grundlagen Magnetismus – Sammlung im Themenbaum unter: Elektrizitätslehre / Magnetismus",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Magnetismus",
+     "named": [
+      "Magnetismus",
+      "Magnetische Flussdichte",
+      "Magnetische Feldstärke",
+      "Dauermagnet",
+      "Ferromagnetismus",
+      "Elektromagnet",
+      "Elektromagnetische Induktion"
+     ],
+     "heard": "Grundlagen Magnetismus – Sammlung im Themenbaum unter: Elektrizitätslehre / Magnetismus; ihre Untersammlungen: Permanentmagnetismus, Elektromagnetismus",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Magnetismus",
+     "named": [
+      "Magnetismus",
+      "Dauermagnet",
+      "Elektromagnet",
+      "Ferromagnetismus",
+      "Paramagnetismus",
+      "Diamagnetismus",
+      "Elektromagnetische Induktion"
+     ],
+     "heard": "Grundlagen Magnetismus – Sammlung im Themenbaum unter: Elektrizitätslehre / Magnetismus; ihre Untersammlungen: Permanentmagnetismus, Elektromagnetismus; nicht gemeint sind die Nachbarsammlungen: Bewegte Ladungen / Felder, Grundlagen E-Lehre, Vertiefung E-Lehre",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    },
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "daneben",
+      "gesamt": 1
+     },
+     "B": {
+      "haupt": "daneben",
+      "gesamt": 1
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "passt",
+      "gesamt": 3
+     }
+    }
+   }
+  },
+  {
+   "id": "ac18e9bf-3209-4606-a598-e8e290c9b999",
+   "title": "Grundlagen der Bruchrechnung",
+   "art": "kontrolle",
+   "subjects": [
+    "Mathematik"
+   ],
+   "levels": [
+    "Sekundarstufe I"
+   ],
+   "path": [
+    "Algebra53",
+    "Bruchrechnung"
+   ],
+   "children": [],
+   "materials": [
+    "Bruchrechnung in der Pizzeria",
+    "Brüche",
+    "Bruchrechnen - ganz einfach erklärt - wirklich ganz einfach! | Mathematik | Lehrerschmidt - YouTube",
+    "Bruchrechnen - Medienportal der Siemens Stiftung",
+    "Brüche, Bruchrechnung, Beispiele | Mathe by Daniel Jung",
+    "Mathematik an Stationen",
+    "Brüche am ZahlenstrahlZahlenstrahl",
+    "Übungsmaterial zur Bruchrechnung: Darstellung von Brüchen",
+    "Brüche am Zahlenstrahl darstellen | Fundamente der Mathematik | Erklärvideo - YouTube",
+    "Brüche vergleichen Aufgaben / Übungen",
+    "Brüche, größer kleiner oder gleich einsetzen - Individuelle Mathe-Arbeitsblätter bei dw-Aufgaben",
+    "Größenvergleich von Brüchen ",
+    "Brüche verstehen und vergleichen",
+    "Brüche vergleichen | größer oder kleiner | Bruchrechnung einfach erklärt | Lehrerschmidt - YouTube",
+    "Interaktives Video: Einführung in die Bruchrechnung"
+   ],
+   "siblings": [
+    "Erweitern & Kürzen",
+    "Addition & Subtraktion von Brüchen",
+    "Multiplikation & Division von Brüchen",
+    "Besondere Brüche"
+   ],
+   "varianten": {
+    "R0": {
+     "main": "Bruchrechnung",
+     "method": "variant",
+     "named": [],
+     "asked": "Grundlagen der Bruchrechnung"
+    },
+    "R1": {
+     "main": "Bruchrechnung",
+     "method": "title",
+     "named": [],
+     "asked": "Bruchrechnung"
+    },
+    "N0": {
+     "main": "Bruchrechnung",
+     "method": "llm",
+     "named": [
+      "Bruchrechnung",
+      "Rationale Zahl",
+      "Gemeinsamer Nenner"
+     ],
+     "asked": "Grundlagen der Bruchrechnung"
+    },
+    "N1": {
+     "main": "Bruchrechnung",
+     "named": [
+      "Bruchrechnung",
+      "Dezimalbruch",
+      "Prozent"
+     ],
+     "heard": "Grundlagen der Bruchrechnung – Sammlung im Themenbaum unter: Algebra53 › Bruchrechnung",
+     "fallback": null
+    },
+    "N2": {
+     "main": "Bruchrechnung",
+     "named": [
+      "Bruchrechnung",
+      "Rationale Zahl",
+      "Zahlengerade"
+     ],
+     "heard": "Grundlagen der Bruchrechnung – Sammlung im Themenbaum unter: Algebra53 › Bruchrechnung; Materialien darin: Bruchrechnung in der Pizzeria, Brüche, Bruchrechnen - ganz einfach erklärt - wirklich ganz einfach! | Mathematik | Lehrerschmidt - YouTube, Bruchrechnen - Medienportal der Siemens Stiftung, Brüche, Bruchrechnung, Beispiele | Mathe by Daniel Jung, Mathematik an Stationen, Brüche am ZahlenstrahlZahlenstrahl, Übungsmaterial zur Bruchrechnung: Darstellung von Brüchen",
+     "fallback": null
+    },
+    "N3": {
+     "main": "Bruchrechnung",
+     "named": [
+      "Bruchrechnung",
+      "Rationale Zahl",
+      "Doppelbruch",
+      "Dezimalbruch",
+      "Stammbruch"
+     ],
+     "heard": "Grundlagen der Bruchrechnung – Sammlung im Themenbaum unter: Algebra53 › Bruchrechnung; Materialien darin: Bruchrechnung in der Pizzeria, Brüche, Bruchrechnen - ganz einfach erklärt - wirklich ganz einfach! | Mathematik | Lehrerschmidt - YouTube, Bruchrechnen - Medienportal der Siemens Stiftung, Brüche, Bruchrechnung, Beispiele | Mathe by Daniel Jung, Mathematik an Stationen, Brüche am ZahlenstrahlZahlenstrahl, Übungsmaterial zur Bruchrechnung: Darstellung von Brüchen; nicht gemeint sind die Nachbarsammlungen: Erweitern & Kürzen, Addition & Subtraktion von Brüchen, Multiplikation & Division von Brüchen, Besondere Brüche",
+     "fallback": null
+    }
+   },
+   "urteile": {
+    "N3": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    },
+    "N0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 4
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "R0": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N2": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 5
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 4
+     }
+    },
+    "R1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 3
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 3
+     }
+    },
+    "N1": {
+     "A": {
+      "haupt": "passt",
+      "gesamt": 2
+     },
+     "B": {
+      "haupt": "zu_breit",
+      "gesamt": 2
+     }
+    }
+   }
+  }
+ ]
+}

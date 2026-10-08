@@ -1,0 +1,75 @@
+{
+ "note": "M74 (08.10.2026): Teil 1 mit Wissens-Sammlung und Volltexten in llm-free und best-quality; je Lauf die Absätze aus Materialien, die als Seitenrest gelten, und welche davon gedruckt wurden.",
+ "laeufe": [
+  {
+   "topic": "Optik",
+   "preset": "llm-free",
+   "materials": 24,
+   "material_paragraphs": 187,
+   "remnants": 4,
+   "remnants_printed": 0,
+   "printed": [],
+   "examples": [
+    "Auf unserer Website können externe Inhalte und Dienste eingebunden sein, zum Beispiel Videos von YouTube oder unser Ticketing-Portal. Wenn ihr solche Inhalte oder Funktionen aktiviert beziehungsweise nutzt, kann eine Verbindung zum jeweiligen Anbieter hergestellt werden. Dabei können Informationen über euer Gerät und eure Nutzung der jeweiligen Funktion verarbeitet und Cookies oder vergleichbare Technologien eingesetzt werden. Je nach Anbieter können Daten auch in Länder außerhalb der Europäischen Union übermittelt werden. Welche Anbieter beteiligt sind und wie sie eure Daten verarbeiten, erfahrt ihr in unserer Datenschutzerklärung.",
+    "Derzeit verwenden wir auf unserer Website keine Cookies zu Marketingzwecken. Sollten künftig Marketingdienste eingesetzt werden, informieren wir euch an dieser Stelle über deren Zweck und holen eure Einwilligung ein, bevor entsprechende Cookies oder vergleichbare Technologien aktiviert werden.",
+    "Please note that Anubis requires the use of modern JavaScript features that plugins like JShelter will disable. Please disable JShelter or other such plugins for this domain.",
+    "Statistik-Cookies helfen uns zu verstehen, wie ihr unsere Website nutzt. Dafür wertet Matomo Informationen darüber aus, welche Seiten und Inhalte besonders häufig aufgerufen werden, wie ihr euch auf der Website bewegt und ob ihr die gewünschten Informationen gut findet. Die Auswertungen helfen uns, unsere Inhalte, die Orientierung und das digitale Besuchserlebnis für euch zu verbessern. Matomo wird von uns nicht für personalisierte Werbung oder Remarketing verwendet. Statistik-Cookies werden nur gesetzt, wenn ihr ihnen zustimmt."
+   ]
+  },
+  {
+   "topic": "Optik",
+   "preset": "best-quality",
+   "materials": 24,
+   "material_paragraphs": 187,
+   "remnants": 4,
+   "remnants_printed": 0,
+   "printed": [],
+   "examples": [
+    "Auf unserer Website können externe Inhalte und Dienste eingebunden sein, zum Beispiel Videos von YouTube oder unser Ticketing-Portal. Wenn ihr solche Inhalte oder Funktionen aktiviert beziehungsweise nutzt, kann eine Verbindung zum jeweiligen Anbieter hergestellt werden. Dabei können Informationen über euer Gerät und eure Nutzung der jeweiligen Funktion verarbeitet und Cookies oder vergleichbare Technologien eingesetzt werden. Je nach Anbieter können Daten auch in Länder außerhalb der Europäischen Union übermittelt werden. Welche Anbieter beteiligt sind und wie sie eure Daten verarbeiten, erfahrt ihr in unserer Datenschutzerklärung.",
+    "Derzeit verwenden wir auf unserer Website keine Cookies zu Marketingzwecken. Sollten künftig Marketingdienste eingesetzt werden, informieren wir euch an dieser Stelle über deren Zweck und holen eure Einwilligung ein, bevor entsprechende Cookies oder vergleichbare Technologien aktiviert werden.",
+    "Please note that Anubis requires the use of modern JavaScript features that plugins like JShelter will disable. Please disable JShelter or other such plugins for this domain.",
+    "Statistik-Cookies helfen uns zu verstehen, wie ihr unsere Website nutzt. Dafür wertet Matomo Informationen darüber aus, welche Seiten und Inhalte besonders häufig aufgerufen werden, wie ihr euch auf der Website bewegt und ob ihr die gewünschten Informationen gut findet. Die Auswertungen helfen uns, unsere Inhalte, die Orientierung und das digitale Besuchserlebnis für euch zu verbessern. Matomo wird von uns nicht für personalisierte Werbung oder Remarketing verwendet. Statistik-Cookies werden nur gesetzt, wenn ihr ihnen zustimmt."
+   ]
+  },
+  {
+   "topic": "Frühmittelalter",
+   "preset": "llm-free",
+   "materials": 1,
+   "material_paragraphs": 1,
+   "remnants": 0,
+   "remnants_printed": 0,
+   "printed": [],
+   "examples": []
+  },
+  {
+   "topic": "Frühmittelalter",
+   "preset": "best-quality",
+   "materials": 1,
+   "material_paragraphs": 1,
+   "remnants": 0,
+   "remnants_printed": 0,
+   "printed": [],
+   "examples": []
+  },
+  {
+   "topic": "Zelle (Biologie)",
+   "preset": "llm-free",
+   "materials": 1,
+   "material_paragraphs": 15,
+   "remnants": 0,
+   "remnants_printed": 0,
+   "printed": [],
+   "examples": []
+  },
+  {
+   "topic": "Zelle (Biologie)",
+   "preset": "best-quality",
+   "materials": 1,
+   "material_paragraphs": 15,
+   "remnants": 0,
+   "remnants_printed": 0,
+   "printed": [],
+   "examples": []
+  }
+ ]
+}

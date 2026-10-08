@@ -199,6 +199,16 @@ das auf dem Server dieselbe b-api anspricht.
   Die Übersicht der Frage N nimmt dann den Platz, wo das Archiv sie hat; sonst rät die Antwort zu einem Fach.
 - Material als Eingang (D47): Titel nennen oft ein Format statt eines Themas. Die Regeln finden den Artikel über Titel
   und Beschreibung mit einem F1 von 0,56 und 0,63 an zwei Stichproben, das LLM mit 0,98 und 0,88 (M25).
+- Sammlung als Eingang (D92): Im Themenbaum heißt eine Sammlung oft nur „Grundlagen“ oder „Einführung“. Mit dem Ort im
+  Baum - Sammlungen darüber, eigene Untersammlungen, erste Materialtitel, Nachbarn als nicht gemeint - nennt die Frage
+  N die Sammlung selbst statt des ganzen Fachs (Note 3,5 bis 4,0 statt 1,9 von 5, bei sprechenden Titeln 3,9 bis 4,3
+  statt 2,8 bis 2,9); bei neutralem Titel führt ihre Übersicht, und die schreibenden Profile formulieren das Thema mit
+  dem Ort im Baum (3,8 statt 3,4 bis 3,5). Ohne LLM lösen die Regeln dann die nächste sprechende Sammlung darüber auf,
+  ohne Zusätze in Klammern (3,3 statt 1,2, wo das von der ersten Messung abwich); bei sprechendem Titel bleibt es beim
+  Titel, denn dort schadete der Elterntitel (M71).
+- Fragen ohne LLM (D92): Eine Frage oder ein Satz ging ganz in die Volltextsuche (*Mond* für den Regenbogen). Wo die
+  Regeln nur raten, gelten jetzt die Stichwörter der Frage in ihrer Reihenfolge: 43 bis 45 statt 22 bis 24 von 60
+  Fragen bekommen einen passenden Artikel (M73). Bei kurzen Themen bleibt es bei den Regeln.
 
 ## 2. Korpusbau: welche Artikel neben den Hauptartikel kommen
 

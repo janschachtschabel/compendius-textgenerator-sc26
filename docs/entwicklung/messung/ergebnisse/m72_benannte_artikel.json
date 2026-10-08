@@ -1,0 +1,3509 @@
+{
+ "note": "M72 (08.10.2026, Audit F04): balanced bis zum Korpus für 20 gewöhnliche, 15 Sammel- und 8 Aspektthemen über OpenAI direkt; je Thema die von N benannten Artikel im Korpus, blind von zwei Gutachtern bewertet (passt, randthema, passt_nicht). Einleitungen bleiben außerhalb.",
+ "themen": [
+  {
+   "topic": "Optik",
+   "kind": "gewoehnlich",
+   "main": "Optik",
+   "method": "title",
+   "overview": "Optik",
+   "named": [
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Strahlenoptik",
+    "Lichtbrechung",
+    "Reflexion (Physik)",
+    "Interferenz (Physik)",
+    "Beugung (Physik)"
+   ],
+   "found": [
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Brechung (Physik)",
+    "Reflexion (Physik)",
+    "Interferenz (Physik)",
+    "Beugung (Physik)"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Brechung (Physik)",
+    "Reflexion (Physik)",
+    "Interferenz (Physik)",
+    "Beugung (Physik)"
+   ]
+  },
+  {
+   "topic": "Photosynthese",
+   "kind": "gewoehnlich",
+   "main": "Photosynthese",
+   "method": "title",
+   "overview": "Photosynthese",
+   "named": [
+    "Lichtreaktion",
+    "Dunkelreaktion",
+    "Calvin-Zyklus",
+    "Photosystem",
+    "Chlorophyll",
+    "Chloroplast",
+    "C4-Pflanze",
+    "CAM-Pflanze"
+   ],
+   "found": [
+    "Photosynthese",
+    "Calvin-Zyklus",
+    "Photosystem",
+    "Chlorophylle",
+    "Chloroplast",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Calvin-Zyklus",
+    "Photosystem",
+    "Chlorophylle",
+    "Chloroplast",
+    "C4-Pflanze",
+    "Crassulaceen-Säurestoffwechsel"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "kind": "gewoehnlich",
+   "main": "Französische Revolution",
+   "method": "title",
+   "overview": "Französische Revolution",
+   "named": [
+    "Ursachen der Französischen Revolution",
+    "Verfassung von 1791",
+    "Jakobiner",
+    "Girondisten",
+    "Nationalkonvent",
+    "Terrorherrschaft",
+    "Sturm auf die Tuilerien",
+    "Direktorium (Frankreich)"
+   ],
+   "found": [
+    "Französische Revolution",
+    "Französische Verfassung (1791)",
+    "Jakobiner",
+    "Girondisten",
+    "Nationalkonvent",
+    "Terrorherrschaft",
+    "Tuileriensturm",
+    "Direktorium (Frankreich)"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Französische Verfassung (1791)",
+    "Jakobiner",
+    "Girondisten",
+    "Nationalkonvent",
+    "Terrorherrschaft",
+    "Tuileriensturm",
+    "Direktorium (Frankreich)"
+   ]
+  },
+  {
+   "topic": "Klimawandel",
+   "kind": "gewoehnlich",
+   "main": "Klimawandel",
+   "method": "title",
+   "overview": "Globale Erwärmung",
+   "named": [
+    "Klimawandel",
+    "Klimaschutz",
+    "Folgen der globalen Erwärmung",
+    "Klimapolitik",
+    "Klimaskeptizismus",
+    "Klimamodell",
+    "Erneuerbare Energien",
+    "Pariser Übereinkommen"
+   ],
+   "found": [
+    "Globale Erwärmung",
+    "Klimawandel",
+    "Klimaschutz",
+    "Folgen der globalen Erwärmung",
+    "Klimapolitik",
+    "Klimawandelleugnung",
+    "Klimamodell",
+    "Erneuerbare Energien",
+    "Übereinkommen von Paris"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Globale Erwärmung",
+    "Klimaschutz",
+    "Folgen der globalen Erwärmung",
+    "Klimapolitik",
+    "Klimawandelleugnung",
+    "Klimamodell",
+    "Erneuerbare Energien",
+    "Übereinkommen von Paris"
+   ]
+  },
+  {
+   "topic": "Bruchrechnung",
+   "kind": "gewoehnlich",
+   "main": "Bruchrechnung",
+   "method": "title",
+   "overview": "Bruchrechnung",
+   "named": [
+    "Bruch (Mathematik)",
+    "Gemeiner Bruch",
+    "Dezimalbruch",
+    "Bruchgleichung",
+    "Bruchterm",
+    "Doppelbruch",
+    "Kettenbruch"
+   ],
+   "found": [
+    "Bruchrechnung",
+    "Dezimalbruch",
+    "Bruchgleichung",
+    "Doppelbruch",
+    "Kettenbruch"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Dezimalbruch",
+    "Bruchgleichung",
+    "Doppelbruch",
+    "Kettenbruch"
+   ]
+  },
+  {
+   "topic": "Ohmsches Gesetz",
+   "kind": "gewoehnlich",
+   "main": "Ohmsches Gesetz",
+   "method": "title",
+   "overview": "Ohmsches Gesetz",
+   "named": [
+    "Elektrischer Widerstand",
+    "Elektrische Spannung",
+    "Elektrische Stromstärke",
+    "Leitfähigkeit",
+    "Widerstand (Elektrotechnik)",
+    "Kirchhoffsche Regeln",
+    "Elektrische Leistung"
+   ],
+   "found": [
+    "Ohmsches Gesetz",
+    "Elektrischer Widerstand",
+    "Elektrische Spannung",
+    "Elektrische Stromstärke",
+    "Leitfähigkeit",
+    "Widerstand (Bauelement)",
+    "Kirchhoffsche Regeln",
+    "Elektrische Leistung"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Elektrischer Widerstand",
+    "Elektrische Spannung",
+    "Elektrische Stromstärke",
+    "Leitfähigkeit",
+    "Widerstand (Bauelement)",
+    "Kirchhoffsche Regeln",
+    "Elektrische Leistung"
+   ]
+  },
+  {
+   "topic": "Demokratie",
+   "kind": "gewoehnlich",
+   "main": "Demokratie",
+   "method": "title",
+   "overview": "Demokratie",
+   "named": [
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahl",
+    "Politische Partei",
+    "Demokratisierung"
+   ],
+   "found": [
+    "Demokratie",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahl",
+    "Politische Partei",
+    "Demokratisierung"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahl",
+    "Politische Partei",
+    "Demokratisierung"
+   ]
+  },
+  {
+   "topic": "Zellteilung",
+   "kind": "gewoehnlich",
+   "main": "Zellteilung",
+   "method": "title",
+   "overview": "Zellteilung",
+   "named": [
+    "Mitose",
+    "Meiose",
+    "Cytokinese",
+    "Prokaryotische Zellteilung",
+    "Zellzyklus",
+    "Spindelapparat",
+    "Chromosom"
+   ],
+   "found": [
+    "Zellteilung",
+    "Mitose",
+    "Meiose",
+    "Zellzyklus",
+    "Spindelapparat",
+    "Chromosom"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Mitose",
+    "Meiose",
+    "Zellzyklus",
+    "Spindelapparat",
+    "Chromosom"
+   ]
+  },
+  {
+   "topic": "Vulkan",
+   "kind": "gewoehnlich",
+   "main": "Vulkan",
+   "method": "title",
+   "overview": "Vulkan",
+   "named": [
+    "Vulkanismus",
+    "Plattentektonik",
+    "Magmakammer",
+    "Vulkanausbruch",
+    "Schildvulkan",
+    "Schichtvulkan",
+    "Caldera",
+    "Supervulkan"
+   ],
+   "found": [
+    "Vulkan",
+    "Vulkanismus",
+    "Plattentektonik",
+    "Magmakammer",
+    "Vulkanausbruch",
+    "Schildvulkan",
+    "Schichtvulkan",
+    "Supervulkan"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Vulkanismus",
+    "Plattentektonik",
+    "Magmakammer",
+    "Vulkanausbruch",
+    "Schildvulkan",
+    "Schichtvulkan",
+    "Supervulkan"
+   ]
+  },
+  {
+   "topic": "Industrialisierung",
+   "kind": "gewoehnlich",
+   "main": "Industrialisierung",
+   "method": "title",
+   "overview": "Industrielle Revolution",
+   "named": [
+    "Industrialisierung",
+    "Industrialisierung in Deutschland",
+    "Industrialisierung in Großbritannien",
+    "Industrialisierung in den Vereinigten Staaten",
+    "Dampfmaschine",
+    "Eisenbahn",
+    "Soziale Frage",
+    "Urbanisierung"
+   ],
+   "found": [
+    "Industrielle Revolution",
+    "Industrialisierung",
+    "Industrielle Revolution in Deutschland",
+    "Dampfmaschine",
+    "Eisenbahn",
+    "Soziale Frage",
+    "Urbanisierung"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Industrielle Revolution",
+    "Industrielle Revolution in Deutschland",
+    "Dampfmaschine",
+    "Eisenbahn",
+    "Soziale Frage",
+    "Urbanisierung"
+   ]
+  },
+  {
+   "topic": "Grundgesetz",
+   "kind": "gewoehnlich",
+   "main": "Grundgesetz für die Bundesrepublik Deutschland",
+   "method": "title",
+   "overview": "Grundgesetz für die Bundesrepublik Deutschland",
+   "named": [
+    "Präambel des Grundgesetzes für die Bundesrepublik Deutschland",
+    "Grundrechte (Deutschland)",
+    "Bundestag",
+    "Bundesrat (Deutschland)",
+    "Bundespräsident (Deutschland)",
+    "Bundesregierung (Deutschland)",
+    "Bundesverfassungsgericht",
+    "Föderalismus in Deutschland"
+   ],
+   "found": [
+    "Grundgesetz für die Bundesrepublik Deutschland",
+    "Präambel des Grundgesetzes für die Bundesrepublik Deutschland",
+    "Grundrechte (Deutschland)",
+    "Deutscher Bundestag",
+    "Bundesrat (Deutschland)",
+    "Bundespräsident (Deutschland)",
+    "Bundesregierung (Deutschland)",
+    "Bundesverfassungsgericht",
+    "Föderalismus in Deutschland"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Präambel des Grundgesetzes für die Bundesrepublik Deutschland",
+    "Grundrechte (Deutschland)",
+    "Deutscher Bundestag",
+    "Bundesrat (Deutschland)",
+    "Bundespräsident (Deutschland)",
+    "Bundesregierung (Deutschland)",
+    "Bundesverfassungsgericht",
+    "Föderalismus in Deutschland"
+   ]
+  },
+  {
+   "topic": "Magnetismus",
+   "kind": "gewoehnlich",
+   "main": "Magnetismus",
+   "method": "title",
+   "overview": "Magnetismus",
+   "named": [
+    "Magnetfeld",
+    "Elektromagnetismus",
+    "Ferromagnetismus",
+    "Paramagnetismus",
+    "Diamagnetismus",
+    "Magnetische Suszeptibilität",
+    "Magnetischer Monopol",
+    "Magnetische Domäne"
+   ],
+   "found": [
+    "Magnetismus",
+    "Elektromagnetische Wechselwirkung",
+    "Ferromagnetismus",
+    "Paramagnetismus",
+    "Diamagnetismus",
+    "Magnetische Suszeptibilität",
+    "Magnetischer Monopol",
+    "Weiss-Bezirk"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Elektromagnetische Wechselwirkung",
+    "Ferromagnetismus",
+    "Paramagnetismus",
+    "Diamagnetismus",
+    "Magnetische Suszeptibilität",
+    "Magnetischer Monopol",
+    "Weiss-Bezirk"
+   ]
+  },
+  {
+   "topic": "Wasserkreislauf",
+   "kind": "gewoehnlich",
+   "main": "Wasserkreislauf",
+   "method": "title",
+   "overview": "Wasserkreislauf",
+   "named": [
+    "Wasserkreislauf",
+    "Niederschlag",
+    "Verdunstung",
+    "Transpiration",
+    "Evaporation",
+    "Infiltration (Boden)",
+    "Grundwasser",
+    "Abfluss"
+   ],
+   "found": [
+    "Wasserkreislauf",
+    "Niederschlag",
+    "Verdunstung",
+    "Transpiration",
+    "Evaporation",
+    "Grundwasser",
+    "Abfluss"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Niederschlag",
+    "Verdunstung",
+    "Transpiration",
+    "Evaporation",
+    "Grundwasser",
+    "Abfluss"
+   ]
+  },
+  {
+   "topic": "Römisches Reich",
+   "kind": "gewoehnlich",
+   "main": "Römisches Reich",
+   "method": "title",
+   "overview": "Römisches Reich",
+   "named": [
+    "Römisches Reich",
+    "Römische Republik",
+    "Prinzipat",
+    "Dominat",
+    "Römische Kaiserzeit",
+    "Römisches Heer",
+    "Römisches Recht",
+    "Wirtschaft des Römischen Reiches"
+   ],
+   "found": [
+    "Römisches Reich",
+    "Römische Republik",
+    "Prinzipat",
+    "Dominat",
+    "Römische Kaiserzeit",
+    "Römische Legion",
+    "Römisches Recht",
+    "Wirtschaft im Römischen Reich"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Römische Republik",
+    "Prinzipat",
+    "Dominat",
+    "Römische Kaiserzeit",
+    "Römische Legion",
+    "Römisches Recht",
+    "Wirtschaft im Römischen Reich"
+   ]
+  },
+  {
+   "topic": "Kalter Krieg",
+   "kind": "gewoehnlich",
+   "main": "Kalter Krieg",
+   "method": "title",
+   "overview": "Kalter Krieg",
+   "named": [
+    "Kalter Krieg",
+    "Ursachen des Kalten Krieges",
+    "Koreakrieg",
+    "Kubakrise",
+    "Berliner Mauer",
+    "Stellvertreterkrieg",
+    "Wettrüsten",
+    "Ende des Kalten Krieges"
+   ],
+   "found": [
+    "Kalter Krieg",
+    "Koreakrieg",
+    "Kubakrise",
+    "Berliner Mauer",
+    "Stellvertreterkrieg",
+    "Wettrüsten"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Koreakrieg",
+    "Kubakrise",
+    "Berliner Mauer",
+    "Stellvertreterkrieg",
+    "Wettrüsten"
+   ]
+  },
+  {
+   "topic": "Evolution",
+   "kind": "gewoehnlich",
+   "main": "Evolution",
+   "method": "title",
+   "overview": "Evolution",
+   "named": [
+    "Evolutionstheorie",
+    "Charles Darwin",
+    "Natürliche Selektion",
+    "Mutation",
+    "Genetische Drift",
+    "Artbildung",
+    "Evolution des Menschen",
+    "Synthetische Evolutionstheorie"
+   ],
+   "found": [
+    "Evolution",
+    "Evolutionstheorie",
+    "Charles Darwin",
+    "Selektion (Evolution)",
+    "Mutation",
+    "Gendrift",
+    "Artbildung",
+    "Stammesgeschichte des Menschen",
+    "Synthetische Evolutionstheorie"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Evolutionstheorie",
+    "Charles Darwin",
+    "Selektion (Evolution)",
+    "Mutation",
+    "Gendrift",
+    "Artbildung",
+    "Stammesgeschichte des Menschen",
+    "Synthetische Evolutionstheorie"
+   ]
+  },
+  {
+   "topic": "Reformation",
+   "kind": "gewoehnlich",
+   "main": "Reformation",
+   "method": "title",
+   "overview": "Reformation",
+   "named": [
+    "Martin Luther",
+    "Reformierte Kirche",
+    "Schweizer Reformation",
+    "Radikale Reformation",
+    "Gegenreformation",
+    "Augsburger Religionsfrieden",
+    "Reichstag zu Worms (1521)",
+    "Reformation und Gegenreformation in der Schweiz"
+   ],
+   "found": [
+    "Reformation",
+    "Martin Luther",
+    "Reformierte Kirchen",
+    "Radikale Reformation",
+    "Gegenreformation",
+    "Augsburger Reichs- und Religionsfrieden",
+    "Reichstag zu Worms (1521)",
+    "Reformation und Gegenreformation in der Schweiz"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Martin Luther",
+    "Reformierte Kirchen",
+    "Radikale Reformation",
+    "Gegenreformation",
+    "Augsburger Reichs- und Religionsfrieden",
+    "Reichstag zu Worms (1521)",
+    "Reformation und Gegenreformation in der Schweiz"
+   ]
+  },
+  {
+   "topic": "Sonnensystem",
+   "kind": "gewoehnlich",
+   "main": "Sonnensystem",
+   "method": "title",
+   "overview": "Sonnensystem",
+   "named": [
+    "Sonne",
+    "Merkur (Planet)",
+    "Venus (Planet)",
+    "Erde",
+    "Mars (Planet)",
+    "Jupiter (Planet)",
+    "Saturn (Planet)",
+    "Uranus (Planet)"
+   ],
+   "found": [
+    "Sonnensystem",
+    "Sonne",
+    "Merkur (Planet)",
+    "Venus (Planet)",
+    "Erde",
+    "Mars (Planet)",
+    "Jupiter (Planet)",
+    "Saturn (Planet)",
+    "Uranus (Planet)"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Sonne",
+    "Merkur (Planet)",
+    "Venus (Planet)",
+    "Erde",
+    "Mars (Planet)",
+    "Jupiter (Planet)",
+    "Saturn (Planet)",
+    "Uranus (Planet)"
+   ]
+  },
+  {
+   "topic": "Lyrik",
+   "kind": "gewoehnlich",
+   "main": "Lyrik",
+   "method": "title",
+   "overview": "Lyrik",
+   "named": [
+    "Gedicht",
+    "Verslehre",
+    "Metrum (Verslehre)",
+    "Reim",
+    "Ballade",
+    "Ode",
+    "Sonett",
+    "Haiku"
+   ],
+   "found": [
+    "Lyrik",
+    "Verslehre",
+    "Reim",
+    "Ode",
+    "Sonett",
+    "Haiku"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Verslehre",
+    "Reim",
+    "Ode",
+    "Sonett",
+    "Haiku"
+   ]
+  },
+  {
+   "topic": "Plattentektonik",
+   "kind": "gewoehnlich",
+   "main": "Plattentektonik",
+   "method": "title",
+   "overview": "Plattentektonik",
+   "named": [
+    "Tektonische Platte",
+    "Kontinentaldrift",
+    "Seafloor Spreading",
+    "Subduktion",
+    "Mittelozeanischer Rücken",
+    "Transformstörung",
+    "Wilson-Zyklus",
+    "Erdbeben"
+   ],
+   "found": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Ozeanbodenspreizung",
+    "Subduktion",
+    "Mittelozeanischer Rücken",
+    "Transformstörung",
+    "Wilson-Zyklus",
+    "Erdbeben"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Kontinentaldrift",
+    "Ozeanbodenspreizung",
+    "Subduktion",
+    "Mittelozeanischer Rücken",
+    "Transformstörung",
+    "Wilson-Zyklus",
+    "Erdbeben"
+   ]
+  },
+  {
+   "topic": "deutsche Dichter",
+   "kind": "sammel",
+   "main": "Deutschsprachige Literatur",
+   "method": "llm",
+   "overview": "Deutsche Literatur",
+   "named": [
+    "Johann Wolfgang von Goethe",
+    "Friedrich Schiller",
+    "Heinrich Heine",
+    "Theodor Fontane",
+    "Rainer Maria Rilke",
+    "Bertolt Brecht",
+    "Annette von Droste-Hülshoff",
+    "Hermann Hesse"
+   ],
+   "found": [
+    "Deutschsprachige Literatur",
+    "Johann Wolfgang von Goethe",
+    "Friedrich Schiller",
+    "Heinrich Heine",
+    "Theodor Fontane",
+    "Rainer Maria Rilke",
+    "Bertolt Brecht",
+    "Annette von Droste-Hülshoff",
+    "Hermann Hesse"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Johann Wolfgang von Goethe",
+    "Friedrich Schiller",
+    "Heinrich Heine",
+    "Theodor Fontane",
+    "Rainer Maria Rilke",
+    "Bertolt Brecht",
+    "Annette von Droste-Hülshoff",
+    "Hermann Hesse"
+   ]
+  },
+  {
+   "topic": "Dichter der Romantik",
+   "kind": "sammel",
+   "main": "Romantik",
+   "method": "llm",
+   "overview": "Romantik",
+   "named": [
+    "Joseph von Eichendorff",
+    "Novalis",
+    "Clemens Brentano",
+    "Achim von Arnim",
+    "Friedrich Schlegel",
+    "August Wilhelm Schlegel",
+    "Ludwig Tieck",
+    "Bettina von Arnim"
+   ],
+   "found": [
+    "Romantik",
+    "Joseph von Eichendorff",
+    "Novalis",
+    "Clemens Brentano",
+    "Achim von Arnim",
+    "Friedrich Schlegel",
+    "August Wilhelm Schlegel",
+    "Ludwig Tieck",
+    "Bettina von Arnim"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Joseph von Eichendorff",
+    "Novalis",
+    "Clemens Brentano",
+    "Achim von Arnim",
+    "Friedrich Schlegel",
+    "August Wilhelm Schlegel",
+    "Ludwig Tieck",
+    "Bettina von Arnim"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "kind": "sammel",
+   "main": "Wiener Klassik",
+   "method": "llm",
+   "overview": "Wiener Klassik",
+   "named": [
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach"
+   ],
+   "found": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach"
+   ]
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "kind": "sammel",
+   "main": "Aufklärung",
+   "method": "llm",
+   "overview": "Aufklärung",
+   "named": [
+    "John Locke",
+    "Montesquieu",
+    "Voltaire",
+    "David Hume",
+    "Jean-Jacques Rousseau",
+    "Denis Diderot",
+    "Immanuel Kant",
+    "Gotthold Ephraim Lessing"
+   ],
+   "found": [
+    "Aufklärung",
+    "John Locke",
+    "Charles de Secondat, Baron de Montesquieu",
+    "Voltaire",
+    "David Hume",
+    "Jean-Jacques Rousseau",
+    "Denis Diderot",
+    "Immanuel Kant",
+    "Gotthold Ephraim Lessing"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "John Locke",
+    "Charles de Secondat, Baron de Montesquieu",
+    "Voltaire",
+    "David Hume",
+    "Jean-Jacques Rousseau",
+    "Denis Diderot",
+    "Immanuel Kant",
+    "Gotthold Ephraim Lessing"
+   ]
+  },
+  {
+   "topic": "Maler des Impressionismus",
+   "kind": "sammel",
+   "main": "Impressionismus",
+   "method": "llm",
+   "overview": "Impressionismus",
+   "named": [
+    "Claude Monet",
+    "Pierre-Auguste Renoir",
+    "Edgar Degas",
+    "Camille Pissarro",
+    "Alfred Sisley",
+    "Berthe Morisot",
+    "Mary Cassatt",
+    "Édouard Manet"
+   ],
+   "found": [
+    "Impressionismus",
+    "Claude Monet",
+    "Pierre-Auguste Renoir",
+    "Edgar Degas",
+    "Camille Pissarro",
+    "Alfred Sisley",
+    "Berthe Morisot",
+    "Mary Cassatt",
+    "Édouard Manet"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Claude Monet",
+    "Pierre-Auguste Renoir",
+    "Edgar Degas",
+    "Camille Pissarro",
+    "Alfred Sisley",
+    "Berthe Morisot",
+    "Mary Cassatt",
+    "Édouard Manet"
+   ]
+  },
+  {
+   "topic": "römische Kaiser",
+   "kind": "sammel",
+   "main": "Augustus",
+   "method": "llm",
+   "overview": "Römischer Kaiser",
+   "named": [
+    "Augustus",
+    "Tiberius",
+    "Caligula",
+    "Claudius",
+    "Nero",
+    "Trajan",
+    "Hadrian",
+    "Konstantin der Große"
+   ],
+   "found": [
+    "Augustus",
+    "Tiberius",
+    "Caligula",
+    "Claudius",
+    "Nero",
+    "Trajan",
+    "Hadrian",
+    "Konstantin der Große"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Tiberius",
+    "Caligula",
+    "Claudius",
+    "Nero",
+    "Trajan",
+    "Hadrian",
+    "Konstantin der Große"
+   ]
+  },
+  {
+   "topic": "deutsche Bundeskanzler",
+   "kind": "sammel",
+   "main": "Bundeskanzler (Deutschland)",
+   "method": "llm",
+   "overview": "Bundeskanzler (Deutschland)",
+   "named": [
+    "Bundeskanzler (Deutschland)",
+    "Liste der deutschen Bundeskanzler",
+    "Konrad Adenauer",
+    "Ludwig Erhard",
+    "Willy Brandt",
+    "Helmut Schmidt",
+    "Helmut Kohl",
+    "Gerhard Schröder"
+   ],
+   "found": [
+    "Bundeskanzler (Deutschland)",
+    "Konrad Adenauer",
+    "Ludwig Erhard",
+    "Willy Brandt",
+    "Helmut Schmidt",
+    "Helmut Kohl",
+    "Gerhard Schröder"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Konrad Adenauer",
+    "Ludwig Erhard",
+    "Willy Brandt",
+    "Helmut Schmidt",
+    "Helmut Kohl",
+    "Gerhard Schröder"
+   ]
+  },
+  {
+   "topic": "griechische Götter",
+   "kind": "sammel",
+   "main": "Griechische Mythologie",
+   "method": "title",
+   "overview": "Griechische Mythologie",
+   "named": [
+    "Griechische Mythologie",
+    "Olympische Götter",
+    "Zeus",
+    "Hera",
+    "Poseidon",
+    "Athene",
+    "Apollon",
+    "Artemis"
+   ],
+   "found": [
+    "Griechische Mythologie",
+    "Olympische Götter",
+    "Zeus",
+    "Hera",
+    "Poseidon",
+    "Athene",
+    "Apollon",
+    "Artemis"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Olympische Götter",
+    "Zeus",
+    "Hera",
+    "Poseidon",
+    "Athene",
+    "Apollon",
+    "Artemis"
+   ]
+  },
+  {
+   "topic": "Planeten des Sonnensystems",
+   "kind": "sammel",
+   "main": "Planet",
+   "method": "llm",
+   "overview": "Planet",
+   "named": [
+    "Merkur (Planet)",
+    "Venus (Planet)",
+    "Erde",
+    "Mars (Planet)",
+    "Jupiter (Planet)",
+    "Saturn (Planet)",
+    "Uranus (Planet)",
+    "Neptun (Planet)"
+   ],
+   "found": [
+    "Planet",
+    "Merkur (Planet)",
+    "Venus (Planet)",
+    "Erde",
+    "Mars (Planet)",
+    "Jupiter (Planet)",
+    "Saturn (Planet)",
+    "Uranus (Planet)",
+    "Neptun (Planet)"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Merkur (Planet)",
+    "Venus (Planet)",
+    "Erde",
+    "Mars (Planet)",
+    "Jupiter (Planet)",
+    "Saturn (Planet)",
+    "Uranus (Planet)",
+    "Neptun (Planet)"
+   ]
+  },
+  {
+   "topic": "Edelgase",
+   "kind": "sammel",
+   "main": "Edelgase",
+   "method": "title",
+   "overview": "Edelgase",
+   "named": [
+    "Helium",
+    "Neon",
+    "Argon",
+    "Krypton",
+    "Xenon",
+    "Radon",
+    "Oganesson",
+    "Edelgasverbindungen"
+   ],
+   "found": [
+    "Edelgase",
+    "Helium",
+    "Neon",
+    "Argon",
+    "Krypton",
+    "Xenon",
+    "Radon",
+    "Oganesson",
+    "Edelgasverbindungen"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Helium",
+    "Neon",
+    "Argon",
+    "Krypton",
+    "Xenon",
+    "Radon",
+    "Oganesson",
+    "Edelgasverbindungen"
+   ]
+  },
+  {
+   "topic": "Weltreligionen",
+   "kind": "sammel",
+   "main": "Weltreligion",
+   "method": "title",
+   "overview": "Weltreligion",
+   "named": [
+    "Christentum",
+    "Islam",
+    "Hinduismus",
+    "Buddhismus",
+    "Judentum",
+    "Sikhismus",
+    "Bahaitum",
+    "Daoismus"
+   ],
+   "found": [
+    "Weltreligion",
+    "Christentum",
+    "Islam",
+    "Hinduismus",
+    "Buddhismus",
+    "Judentum",
+    "Sikhismus",
+    "Bahaitum",
+    "Daoismus"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Christentum",
+    "Islam",
+    "Hinduismus",
+    "Buddhismus",
+    "Judentum",
+    "Sikhismus",
+    "Bahaitum",
+    "Daoismus"
+   ]
+  },
+  {
+   "topic": "erneuerbare Energien",
+   "kind": "sammel",
+   "main": "Erneuerbare Energien",
+   "method": "title",
+   "overview": "Erneuerbare Energien",
+   "named": [
+    "Solarenergie",
+    "Windenergie",
+    "Wasserkraft",
+    "Bioenergie",
+    "Geothermie",
+    "Erneuerbare Wärme",
+    "Erneuerbare Energien in Deutschland"
+   ],
+   "found": [
+    "Erneuerbare Energien",
+    "Sonnenenergie",
+    "Windenergie",
+    "Wasserkraft",
+    "Bioenergie",
+    "Geothermie",
+    "Erneuerbare Wärme",
+    "Erneuerbare Energien in Deutschland"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Sonnenenergie",
+    "Windenergie",
+    "Wasserkraft",
+    "Bioenergie",
+    "Geothermie",
+    "Erneuerbare Wärme",
+    "Erneuerbare Energien in Deutschland"
+   ]
+  },
+  {
+   "topic": "Entdecker der Neuzeit",
+   "kind": "sammel",
+   "main": "Zeitalter der Entdeckungen",
+   "method": "llm",
+   "overview": "Entdeckungszeitalter",
+   "named": [
+    "Christoph Kolumbus",
+    "Vasco da Gama",
+    "Ferdinand Magellan",
+    "Amerigo Vespucci",
+    "James Cook",
+    "Abel Tasman",
+    "Francis Drake",
+    "Marco Polo"
+   ],
+   "found": [
+    "Zeitalter der Entdeckungen",
+    "Christoph Kolumbus",
+    "Vasco da Gama",
+    "Ferdinand Magellan",
+    "Amerigo Vespucci",
+    "James Cook",
+    "Abel Tasman",
+    "Francis Drake",
+    "Marco Polo"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Christoph Kolumbus",
+    "Vasco da Gama",
+    "Ferdinand Magellan",
+    "Amerigo Vespucci",
+    "James Cook",
+    "Abel Tasman",
+    "Francis Drake",
+    "Marco Polo"
+   ]
+  },
+  {
+   "topic": "Frauen in der Wissenschaft",
+   "kind": "sammel",
+   "main": "Frauen in der Wissenschaft",
+   "method": "title",
+   "overview": "Frauen in der Wissenschaft",
+   "named": [
+    "Frauen in der Wissenschaft",
+    "Matilda-Effekt",
+    "Geschichte der Frauenbildung",
+    "Geschichte der Frauen in den Naturwissenschaften",
+    "Frauenstudium",
+    "Frauen in der Mathematik",
+    "Frauen in der Informatik",
+    "Frauen in der Medizin"
+   ],
+   "found": [
+    "Frauen in der Wissenschaft",
+    "Matilda-Effekt",
+    "Frauenstudium im deutschen Sprachraum",
+    "Frauen in der Informatik"
+   ],
+   "covers": true,
+   "im_korpus": [
+    "Matilda-Effekt",
+    "Frauenstudium im deutschen Sprachraum",
+    "Frauen in der Informatik"
+   ]
+  },
+  {
+   "topic": "Märchen der Brüder Grimm",
+   "kind": "sammel",
+   "main": "Grimms Märchen",
+   "method": "llm",
+   "overview": "Kinder- und Hausmärchen",
+   "named": [
+    "Brüder Grimm",
+    "Rotkäppchen",
+    "Hänsel und Gretel",
+    "Schneewittchen",
+    "Aschenputtel",
+    "Dornröschen",
+    "Der Froschkönig",
+    "Rumpelstilzchen"
+   ],
+   "found": [
+    "Grimms Märchen",
+    "Brüder Grimm",
+    "Rotkäppchen",
+    "Hänsel und Gretel",
+    "Schneewittchen",
+    "Aschenputtel",
+    "Dornröschen",
+    "Rumpelstilzchen"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Brüder Grimm",
+    "Rotkäppchen",
+    "Hänsel und Gretel",
+    "Schneewittchen",
+    "Aschenputtel",
+    "Dornröschen",
+    "Rumpelstilzchen"
+   ]
+  },
+  {
+   "topic": "OER-Förderungen",
+   "kind": "aspekt",
+   "main": "Open Educational Resources",
+   "method": "llm",
+   "overview": "Open Educational Resources",
+   "named": [
+    "Open Educational Resources",
+    "OER-Strategie",
+    "UNESCO",
+    "Creative Commons",
+    "Bildungsserver"
+   ],
+   "found": [
+    "Open Educational Resources",
+    "UNESCO",
+    "Creative Commons",
+    "Bildungsserver"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "UNESCO",
+    "Creative Commons",
+    "Bildungsserver"
+   ]
+  },
+  {
+   "topic": "Projektmanagement von agilen Projekten",
+   "kind": "aspekt",
+   "main": "Scrum",
+   "method": "llm",
+   "overview": "Agiles Projektmanagement",
+   "named": [
+    "Scrum",
+    "Kanban",
+    "Extreme Programming",
+    "Agile Softwareentwicklung",
+    "Manifest für Agile Softwareentwicklung",
+    "Sprint (Scrum)",
+    "Product Owner",
+    "Scrum Master"
+   ],
+   "found": [
+    "Scrum",
+    "Kanban",
+    "Extreme Programming",
+    "Agile Softwareentwicklung"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Kanban",
+    "Extreme Programming",
+    "Agile Softwareentwicklung"
+   ]
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "kind": "aspekt",
+   "main": "Künstliche Intelligenz",
+   "method": "llm",
+   "overview": "Künstliche Intelligenz in der Bildung",
+   "named": [
+    "Künstliche Intelligenz",
+    "Maschinelles Lernen",
+    "Chatbot",
+    "ChatGPT",
+    "E-Learning",
+    "Medienkompetenz"
+   ],
+   "found": [
+    "Künstliche Intelligenz",
+    "Maschinelles Lernen",
+    "Chatbot",
+    "ChatGPT",
+    "E-Learning",
+    "Medienkompetenz"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Maschinelles Lernen",
+    "Chatbot",
+    "ChatGPT",
+    "E-Learning",
+    "Medienkompetenz"
+   ]
+  },
+  {
+   "topic": "Digitale Bildung in der Grundschule",
+   "kind": "aspekt",
+   "main": "E-Learning",
+   "method": "llm",
+   "overview": "Digitale Bildung",
+   "named": [
+    "E-Learning",
+    "Blended Learning",
+    "Digitales Lernen",
+    "Lernplattform",
+    "Moodle",
+    "Massive Open Online Course",
+    "Medienkompetenz",
+    "Bildungstechnologie"
+   ],
+   "found": [
+    "E-Learning",
+    "Integriertes Lernen",
+    "Lernplattform",
+    "Moodle",
+    "Massive Open Online Course",
+    "Medienkompetenz",
+    "Lehrtechnologie"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Integriertes Lernen",
+    "Lernplattform",
+    "Moodle",
+    "Massive Open Online Course",
+    "Medienkompetenz",
+    "Lehrtechnologie"
+   ]
+  },
+  {
+   "topic": "Klimawandel in der Landwirtschaft",
+   "kind": "aspekt",
+   "main": "Klimawandel",
+   "method": "llm",
+   "overview": "Klimawandel und Landwirtschaft",
+   "named": [
+    "Klimawandel und Landwirtschaft",
+    "Auswirkungen der globalen Erwärmung auf die Landwirtschaft",
+    "Klimawandel",
+    "Landwirtschaft",
+    "Bewässerungslandwirtschaft",
+    "Dürre",
+    "Bodenerosion",
+    "Pflanzenzüchtung"
+   ],
+   "found": [
+    "Klimawandel",
+    "Landwirtschaft",
+    "Bewässerungsfeldwirtschaft",
+    "Dürre",
+    "Bodenerosion",
+    "Pflanzenzüchtung"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Landwirtschaft",
+    "Bewässerungsfeldwirtschaft",
+    "Dürre",
+    "Bodenerosion",
+    "Pflanzenzüchtung"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "kind": "aspekt",
+   "main": "Inklusive Pädagogik",
+   "method": "llm",
+   "overview": "Inklusion (Pädagogik)",
+   "named": [
+    "Inklusion (Pädagogik)",
+    "Sportunterricht",
+    "Behindertensport",
+    "Integrativer Sportunterricht",
+    "Inklusive Pädagogik",
+    "Sportpädagogik",
+    "Special Olympics"
+   ],
+   "found": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Behindertensport",
+    "Sportpädagogik",
+    "Special Olympics"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Sportunterricht",
+    "Behindertensport",
+    "Sportpädagogik",
+    "Special Olympics"
+   ]
+  },
+  {
+   "topic": "Datenschutz an Schulen",
+   "kind": "aspekt",
+   "main": "Datenschutz",
+   "method": "llm",
+   "overview": "Datenschutz",
+   "named": [
+    "Datenschutz",
+    "Datenschutz-Grundverordnung",
+    "Bundesdatenschutzgesetz",
+    "Datenschutzbeauftragter",
+    "Schulgesetz",
+    "Schulpflicht",
+    "Besondere Kategorien personenbezogener Daten",
+    "Informationelle Selbstbestimmung"
+   ],
+   "found": [
+    "Datenschutz",
+    "Datenschutz-Grundverordnung",
+    "Bundesdatenschutzgesetz",
+    "Schulrecht",
+    "Schulpflicht",
+    "Informationelle Selbstbestimmung"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Datenschutz-Grundverordnung",
+    "Bundesdatenschutzgesetz",
+    "Schulrecht",
+    "Schulpflicht",
+    "Informationelle Selbstbestimmung"
+   ]
+  },
+  {
+   "topic": "Nachhaltigkeit im Schulalltag",
+   "kind": "aspekt",
+   "main": "Nachhaltigkeit",
+   "method": "llm",
+   "overview": "Nachhaltigkeit",
+   "named": [
+    "Bildung für nachhaltige Entwicklung",
+    "Nachhaltigkeit im Bildungswesen",
+    "Umweltbildung",
+    "Nachhaltiger Konsum",
+    "Erneuerbare Energie",
+    "Abfallvermeidung",
+    "Ökologischer Fußabdruck",
+    "Fahrradverkehr"
+   ],
+   "found": [
+    "Nachhaltigkeit",
+    "Bildung für nachhaltige Entwicklung",
+    "Umweltbildung",
+    "Nachhaltiger Konsum",
+    "Erneuerbare Energien",
+    "Abfallvermeidung",
+    "Ökologischer Fußabdruck",
+    "Radverkehr"
+   ],
+   "covers": false,
+   "im_korpus": [
+    "Bildung für nachhaltige Entwicklung",
+    "Umweltbildung",
+    "Nachhaltiger Konsum",
+    "Erneuerbare Energien",
+    "Abfallvermeidung",
+    "Ökologischer Fußabdruck",
+    "Radverkehr"
+   ]
+  }
+ ],
+ "urteile": [
+  {
+   "thema": "Philosophen der Aufklärung",
+   "art": "sammel",
+   "artikel": "Charles de Secondat, Baron de Montesquieu",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Evolution",
+   "art": "gewoehnlich",
+   "artikel": "Gendrift",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "art": "sammel",
+   "artikel": "Ludwig Tieck",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Reformation",
+   "art": "gewoehnlich",
+   "artikel": "Gegenreformation",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "art": "sammel",
+   "artikel": "Carl Philipp Emanuel Bach",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Künstliche Intelligenz im Unterricht",
+   "art": "aspekt",
+   "artikel": "E-Learning",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "E-Learning allgemein, ohne Bezug zu künstlicher Intelligenz"
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "art": "sammel",
+   "artikel": "Mary Cassatt",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Industrialisierung",
+   "art": "gewoehnlich",
+   "artikel": "Eisenbahn",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Dichter",
+   "art": "sammel",
+   "artikel": "Friedrich Schiller",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "art": "sammel",
+   "artikel": "Hänsel und Gretel",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "art": "sammel",
+   "artikel": "Camille Pissarro",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Edelgase",
+   "art": "sammel",
+   "artikel": "Oganesson",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "griechische Götter",
+   "art": "sammel",
+   "artikel": "Poseidon",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel in der Landwirtschaft",
+   "art": "aspekt",
+   "artikel": "Bodenerosion",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Bodenerosion durch Landnutzung; Klimawandel ist nicht Gegenstand des Artikels"
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "art": "sammel",
+   "artikel": "Uranus (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel",
+   "art": "gewoehnlich",
+   "artikel": "Klimapolitik",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Nachhaltigkeit im Schulalltag",
+   "art": "aspekt",
+   "artikel": "Bildung für nachhaltige Entwicklung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Photosynthese",
+   "art": "gewoehnlich",
+   "artikel": "Crassulaceen-Säurestoffwechsel",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Plattentektonik",
+   "art": "gewoehnlich",
+   "artikel": "Erdbeben",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Weltreligionen",
+   "art": "sammel",
+   "artikel": "Judentum",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Edelgase",
+   "art": "sammel",
+   "artikel": "Xenon",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "art": "sammel",
+   "artikel": "Windenergie",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "art": "sammel",
+   "artikel": "Voltaire",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Künstliche Intelligenz im Unterricht",
+   "art": "aspekt",
+   "artikel": "Medienkompetenz",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Medienkompetenz allgemein; KI im Unterricht nur am Rand"
+  },
+  {
+   "thema": "Sonnensystem",
+   "art": "gewoehnlich",
+   "artikel": "Uranus (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Edelgase",
+   "art": "sammel",
+   "artikel": "Neon",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "art": "sammel",
+   "artikel": "Immanuel Kant",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Ohmsches Gesetz",
+   "art": "gewoehnlich",
+   "artikel": "Elektrische Stromstärke",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel",
+   "art": "gewoehnlich",
+   "artikel": "Folgen der globalen Erwärmung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Bruchrechnung",
+   "art": "gewoehnlich",
+   "artikel": "Bruchgleichung",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Gleichungslehre der Algebra, nicht das Rechnen mit Brüchen"
+  },
+  {
+   "thema": "Weltreligionen",
+   "art": "sammel",
+   "artikel": "Sikhismus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Magnetismus",
+   "art": "gewoehnlich",
+   "artikel": "Paramagnetismus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "römische Kaiser",
+   "art": "sammel",
+   "artikel": "Trajan",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "griechische Götter",
+   "art": "sammel",
+   "artikel": "Artemis",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Optik",
+   "art": "gewoehnlich",
+   "artikel": "Quantenoptik",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Ohmsches Gesetz",
+   "art": "gewoehnlich",
+   "artikel": "Widerstand (Bauelement)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Digitale Bildung in der Grundschule",
+   "art": "aspekt",
+   "artikel": "Massive Open Online Course",
+   "urteil_a": "passt_nicht",
+   "urteil_b": "passt_nicht",
+   "grund": "MOOCs dienen der Hochschul- und Erwachsenenbildung; verfehlt die Grundschule"
+  },
+  {
+   "thema": "griechische Götter",
+   "art": "sammel",
+   "artikel": "Hera",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Bruchrechnung",
+   "art": "gewoehnlich",
+   "artikel": "Dezimalbruch",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Evolution",
+   "art": "gewoehnlich",
+   "artikel": "Charles Darwin",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Weltreligionen",
+   "art": "sammel",
+   "artikel": "Bahaitum",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Optik",
+   "art": "gewoehnlich",
+   "artikel": "Geometrische Optik",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Ohmsches Gesetz",
+   "art": "gewoehnlich",
+   "artikel": "Elektrischer Widerstand",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Projektmanagement von agilen Projekten",
+   "art": "aspekt",
+   "artikel": "Agile Softwareentwicklung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Reformation",
+   "art": "gewoehnlich",
+   "artikel": "Reichstag zu Worms (1521)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Vulkan",
+   "art": "gewoehnlich",
+   "artikel": "Supervulkan",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Industrialisierung",
+   "art": "gewoehnlich",
+   "artikel": "Urbanisierung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Dichter",
+   "art": "sammel",
+   "artikel": "Hermann Hesse",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Digitale Bildung in der Grundschule",
+   "art": "aspekt",
+   "artikel": "Lernplattform",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Lernplattformen allgemein, ohne Bezug zur Grundschule"
+  },
+  {
+   "thema": "Sonnensystem",
+   "art": "gewoehnlich",
+   "artikel": "Venus (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "art": "sammel",
+   "artikel": "Joseph Haydn",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Sonnensystem",
+   "art": "gewoehnlich",
+   "artikel": "Merkur (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Weltreligionen",
+   "art": "sammel",
+   "artikel": "Buddhismus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "art": "sammel",
+   "artikel": "Frauenstudium im deutschen Sprachraum",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Weltreligionen",
+   "art": "sammel",
+   "artikel": "Islam",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "OER-Förderungen",
+   "art": "aspekt",
+   "artikel": "UNESCO",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "UNESCO als Ganzes; OER-Förderung nur ein kleiner Teilaspekt"
+  },
+  {
+   "thema": "Sonnensystem",
+   "art": "gewoehnlich",
+   "artikel": "Jupiter (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Nachhaltigkeit im Schulalltag",
+   "art": "aspekt",
+   "artikel": "Erneuerbare Energien",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Energiequellen allgemein, kaum Bezug zum Schulalltag"
+  },
+  {
+   "thema": "Digitale Bildung in der Grundschule",
+   "art": "aspekt",
+   "artikel": "Integriertes Lernen",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Blended Learning allgemein, ohne Bezug zur Grundschule"
+  },
+  {
+   "thema": "Plattentektonik",
+   "art": "gewoehnlich",
+   "artikel": "Mittelozeanischer Rücken",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Französische Revolution",
+   "art": "gewoehnlich",
+   "artikel": "Terrorherrschaft",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Magnetismus",
+   "art": "gewoehnlich",
+   "artikel": "Ferromagnetismus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Inklusion im Sportunterricht",
+   "art": "aspekt",
+   "artikel": "Sportpädagogik",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Sportpädagogik als Disziplin allgemein, Inklusion nicht im Blick"
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "art": "sammel",
+   "artikel": "Schneewittchen",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Grundgesetz",
+   "art": "gewoehnlich",
+   "artikel": "Bundespräsident (Deutschland)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "art": "sammel",
+   "artikel": "Neptun (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Dichter",
+   "art": "sammel",
+   "artikel": "Annette von Droste-Hülshoff",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Nachhaltigkeit im Schulalltag",
+   "art": "aspekt",
+   "artikel": "Nachhaltiger Konsum",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "griechische Götter",
+   "art": "sammel",
+   "artikel": "Athene",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Datenschutz an Schulen",
+   "art": "aspekt",
+   "artikel": "Schulrecht",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Schulrecht allgemein; Datenschutz nur ein Teilbereich"
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "art": "sammel",
+   "artikel": "Achim von Arnim",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Digitale Bildung in der Grundschule",
+   "art": "aspekt",
+   "artikel": "Lehrtechnologie",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Lehrtechnologie (EdTech) allgemein, ohne Bezug zur Grundschule"
+  },
+  {
+   "thema": "Grundgesetz",
+   "art": "gewoehnlich",
+   "artikel": "Bundesverfassungsgericht",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "römische Kaiser",
+   "art": "sammel",
+   "artikel": "Claudius",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Datenschutz an Schulen",
+   "art": "aspekt",
+   "artikel": "Informationelle Selbstbestimmung",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Lyrik",
+   "art": "gewoehnlich",
+   "artikel": "Verslehre",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Vulkan",
+   "art": "gewoehnlich",
+   "artikel": "Plattentektonik",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "art": "sammel",
+   "artikel": "Gotthold Ephraim Lessing",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "römische Kaiser",
+   "art": "sammel",
+   "artikel": "Tiberius",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "römische Kaiser",
+   "art": "sammel",
+   "artikel": "Caligula",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "art": "gewoehnlich",
+   "artikel": "Niederschlag",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Photosynthese",
+   "art": "gewoehnlich",
+   "artikel": "Photosystem",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Vulkan",
+   "art": "gewoehnlich",
+   "artikel": "Schichtvulkan",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "art": "sammel",
+   "artikel": "Christoph Kolumbus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Römisches Reich",
+   "art": "gewoehnlich",
+   "artikel": "Prinzipat",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Photosynthese",
+   "art": "gewoehnlich",
+   "artikel": "C4-Pflanze",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "OER-Förderungen",
+   "art": "aspekt",
+   "artikel": "Creative Commons",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Lizenzen für freie Inhalte, nicht die Förderung von OER"
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "art": "sammel",
+   "artikel": "Saturn (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Reformation",
+   "art": "gewoehnlich",
+   "artikel": "Martin Luther",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "griechische Götter",
+   "art": "sammel",
+   "artikel": "Zeus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Römisches Reich",
+   "art": "gewoehnlich",
+   "artikel": "Römische Republik",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Demokratie",
+   "art": "gewoehnlich",
+   "artikel": "Parlamentarismus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "art": "sammel",
+   "artikel": "Vasco da Gama",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "art": "sammel",
+   "artikel": "Gerhard Schröder",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Datenschutz an Schulen",
+   "art": "aspekt",
+   "artikel": "Schulpflicht",
+   "urteil_a": "passt_nicht",
+   "urteil_b": "passt_nicht",
+   "grund": "Schulpflicht hat keinen Bezug zum Datenschutz"
+  },
+  {
+   "thema": "griechische Götter",
+   "art": "sammel",
+   "artikel": "Olympische Götter",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Französische Revolution",
+   "art": "gewoehnlich",
+   "artikel": "Direktorium (Frankreich)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Weltreligionen",
+   "art": "sammel",
+   "artikel": "Hinduismus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Ohmsches Gesetz",
+   "art": "gewoehnlich",
+   "artikel": "Elektrische Leistung",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Eigene Größe; mit dem Ohmschen Gesetz nur verwandt"
+  },
+  {
+   "thema": "Evolution",
+   "art": "gewoehnlich",
+   "artikel": "Mutation",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Projektmanagement von agilen Projekten",
+   "art": "aspekt",
+   "artikel": "Extreme Programming",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "art": "sammel",
+   "artikel": "Pierre-Auguste Renoir",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Zellteilung",
+   "art": "gewoehnlich",
+   "artikel": "Zellzyklus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Inklusion im Sportunterricht",
+   "art": "aspekt",
+   "artikel": "Sportunterricht",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Sportunterricht allgemein, Inklusion nicht im Blick"
+  },
+  {
+   "thema": "Künstliche Intelligenz im Unterricht",
+   "art": "aspekt",
+   "artikel": "Maschinelles Lernen",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Technik der KI, ohne Bezug zum Unterricht"
+  },
+  {
+   "thema": "Edelgase",
+   "art": "sammel",
+   "artikel": "Helium",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Digitale Bildung in der Grundschule",
+   "art": "aspekt",
+   "artikel": "Medienkompetenz",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Klimawandel",
+   "art": "gewoehnlich",
+   "artikel": "Klimawandelleugnung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Grundgesetz",
+   "art": "gewoehnlich",
+   "artikel": "Deutscher Bundestag",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Plattentektonik",
+   "art": "gewoehnlich",
+   "artikel": "Kontinentaldrift",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Evolution",
+   "art": "gewoehnlich",
+   "artikel": "Artbildung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Grundgesetz",
+   "art": "gewoehnlich",
+   "artikel": "Föderalismus in Deutschland",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "art": "sammel",
+   "artikel": "Helmut Kohl",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "art": "sammel",
+   "artikel": "Erde",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Demokratie",
+   "art": "gewoehnlich",
+   "artikel": "Politische Partei",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Reformation",
+   "art": "gewoehnlich",
+   "artikel": "Augsburger Reichs- und Religionsfrieden",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Demokratie",
+   "art": "gewoehnlich",
+   "artikel": "Repräsentative Demokratie",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Dichter",
+   "art": "sammel",
+   "artikel": "Rainer Maria Rilke",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Nachhaltigkeit im Schulalltag",
+   "art": "aspekt",
+   "artikel": "Abfallvermeidung",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "griechische Götter",
+   "art": "sammel",
+   "artikel": "Apollon",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Römisches Reich",
+   "art": "gewoehnlich",
+   "artikel": "Römisches Recht",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Dichter",
+   "art": "sammel",
+   "artikel": "Theodor Fontane",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Magnetismus",
+   "art": "gewoehnlich",
+   "artikel": "Magnetischer Monopol",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Demokratie",
+   "art": "gewoehnlich",
+   "artikel": "Rechtsstaat",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "art": "sammel",
+   "artikel": "Mars (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Künstliche Intelligenz im Unterricht",
+   "art": "aspekt",
+   "artikel": "ChatGPT",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Optik",
+   "art": "gewoehnlich",
+   "artikel": "Interferenz (Physik)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Evolution",
+   "art": "gewoehnlich",
+   "artikel": "Synthetische Evolutionstheorie",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel",
+   "art": "gewoehnlich",
+   "artikel": "Übereinkommen von Paris",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Ohmsches Gesetz",
+   "art": "gewoehnlich",
+   "artikel": "Elektrische Spannung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Französische Revolution",
+   "art": "gewoehnlich",
+   "artikel": "Nationalkonvent",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "art": "sammel",
+   "artikel": "Novalis",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Edelgase",
+   "art": "sammel",
+   "artikel": "Edelgasverbindungen",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "art": "gewoehnlich",
+   "artikel": "Evaporation",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "art": "sammel",
+   "artikel": "Matilda-Effekt",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel in der Landwirtschaft",
+   "art": "aspekt",
+   "artikel": "Landwirtschaft",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Landwirtschaft allgemein, ohne Bezug zum Klimawandel"
+  },
+  {
+   "thema": "Sonnensystem",
+   "art": "gewoehnlich",
+   "artikel": "Mars (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Kalter Krieg",
+   "art": "gewoehnlich",
+   "artikel": "Koreakrieg",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Reformation",
+   "art": "gewoehnlich",
+   "artikel": "Radikale Reformation",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Plattentektonik",
+   "art": "gewoehnlich",
+   "artikel": "Transformstörung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "art": "sammel",
+   "artikel": "Merkur (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel",
+   "art": "gewoehnlich",
+   "artikel": "Klimaschutz",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "art": "sammel",
+   "artikel": "Berthe Morisot",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "art": "sammel",
+   "artikel": "Wolfgang Amadeus Mozart",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Evolution",
+   "art": "gewoehnlich",
+   "artikel": "Evolutionstheorie",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "art": "sammel",
+   "artikel": "Dornröschen",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Plattentektonik",
+   "art": "gewoehnlich",
+   "artikel": "Wilson-Zyklus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Dichter",
+   "art": "sammel",
+   "artikel": "Johann Wolfgang von Goethe",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Demokratie",
+   "art": "gewoehnlich",
+   "artikel": "Gewaltenteilung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "art": "sammel",
+   "artikel": "John Locke",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Photosynthese",
+   "art": "gewoehnlich",
+   "artikel": "Calvin-Zyklus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Grundgesetz",
+   "art": "gewoehnlich",
+   "artikel": "Bundesregierung (Deutschland)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Demokratie",
+   "art": "gewoehnlich",
+   "artikel": "Wahl",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "art": "sammel",
+   "artikel": "Friedrich Schlegel",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Lyrik",
+   "art": "gewoehnlich",
+   "artikel": "Ode",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "art": "sammel",
+   "artikel": "Erneuerbare Wärme",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Edelgase",
+   "art": "sammel",
+   "artikel": "Argon",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "art": "sammel",
+   "artikel": "Christoph Willibald Gluck",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel",
+   "art": "gewoehnlich",
+   "artikel": "Erneuerbare Energien",
+   "urteil_a": "randthema",
+   "urteil_b": "passt",
+   "grund": "Energiethema; für den Klimawandel nur als Schutzmaßnahme relevant"
+  },
+  {
+   "thema": "Kalter Krieg",
+   "art": "gewoehnlich",
+   "artikel": "Wettrüsten",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "art": "sammel",
+   "artikel": "Brüder Grimm",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "art": "sammel",
+   "artikel": "Helmut Schmidt",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "art": "sammel",
+   "artikel": "Jean-Jacques Rousseau",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Dichter",
+   "art": "sammel",
+   "artikel": "Heinrich Heine",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Optik",
+   "art": "gewoehnlich",
+   "artikel": "Wellenoptik",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Zellteilung",
+   "art": "gewoehnlich",
+   "artikel": "Spindelapparat",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Projektmanagement von agilen Projekten",
+   "art": "aspekt",
+   "artikel": "Kanban",
+   "urteil_a": "passt_nicht",
+   "urteil_b": "randthema",
+   "grund": "Kanban der Produktionssteuerung, nicht die agile Kanban-Methode"
+  },
+  {
+   "thema": "Römisches Reich",
+   "art": "gewoehnlich",
+   "artikel": "Römische Legion",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Industrialisierung",
+   "art": "gewoehnlich",
+   "artikel": "Dampfmaschine",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Reformation",
+   "art": "gewoehnlich",
+   "artikel": "Reformation und Gegenreformation in der Schweiz",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "art": "gewoehnlich",
+   "artikel": "Transpiration",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Bruchrechnung",
+   "art": "gewoehnlich",
+   "artikel": "Kettenbruch",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Zahlentheorie, weit über die Bruchrechnung hinaus"
+  },
+  {
+   "thema": "Vulkan",
+   "art": "gewoehnlich",
+   "artikel": "Magmakammer",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "römische Kaiser",
+   "art": "sammel",
+   "artikel": "Nero",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "art": "sammel",
+   "artikel": "Denis Diderot",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Zellteilung",
+   "art": "gewoehnlich",
+   "artikel": "Chromosom",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "art": "gewoehnlich",
+   "artikel": "Verdunstung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Optik",
+   "art": "gewoehnlich",
+   "artikel": "Reflexion (Physik)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "art": "sammel",
+   "artikel": "Bettina von Arnim",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Vulkan",
+   "art": "gewoehnlich",
+   "artikel": "Vulkanismus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Weltreligionen",
+   "art": "sammel",
+   "artikel": "Christentum",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "art": "sammel",
+   "artikel": "Edgar Degas",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Datenschutz an Schulen",
+   "art": "aspekt",
+   "artikel": "Bundesdatenschutzgesetz",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Für öffentliche Schulen gilt meist Landesdatenschutzrecht, nicht das BDSG"
+  },
+  {
+   "thema": "Optik",
+   "art": "gewoehnlich",
+   "artikel": "Brechung (Physik)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "art": "sammel",
+   "artikel": "Sonnenenergie",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "art": "sammel",
+   "artikel": "James Cook",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel",
+   "art": "gewoehnlich",
+   "artikel": "Klimamodell",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "art": "sammel",
+   "artikel": "Erneuerbare Energien in Deutschland",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Digitale Bildung in der Grundschule",
+   "art": "aspekt",
+   "artikel": "Moodle",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Kursmanagementsystem eher für Sekundarstufe und Hochschule; kein Grundschulbezug"
+  },
+  {
+   "thema": "Plattentektonik",
+   "art": "gewoehnlich",
+   "artikel": "Subduktion",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Zellteilung",
+   "art": "gewoehnlich",
+   "artikel": "Meiose",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Industrialisierung",
+   "art": "gewoehnlich",
+   "artikel": "Industrielle Revolution in Deutschland",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Römisches Reich",
+   "art": "gewoehnlich",
+   "artikel": "Wirtschaft im Römischen Reich",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "art": "sammel",
+   "artikel": "Konrad Adenauer",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Magnetismus",
+   "art": "gewoehnlich",
+   "artikel": "Weiss-Bezirk",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "art": "sammel",
+   "artikel": "Alfred Sisley",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Magnetismus",
+   "art": "gewoehnlich",
+   "artikel": "Magnetische Suszeptibilität",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Edelgase",
+   "art": "sammel",
+   "artikel": "Radon",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "art": "sammel",
+   "artikel": "Francis Drake",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Lyrik",
+   "art": "gewoehnlich",
+   "artikel": "Reim",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Inklusion im Sportunterricht",
+   "art": "aspekt",
+   "artikel": "Special Olympics",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Sportbewegung außerhalb der Schule, nicht Sportunterricht"
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "art": "sammel",
+   "artikel": "Aschenputtel",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Nachhaltigkeit im Schulalltag",
+   "art": "aspekt",
+   "artikel": "Umweltbildung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel",
+   "art": "gewoehnlich",
+   "artikel": "Globale Erwärmung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "art": "sammel",
+   "artikel": "Willy Brandt",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "art": "sammel",
+   "artikel": "Clemens Brentano",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "OER-Förderungen",
+   "art": "aspekt",
+   "artikel": "Bildungsserver",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Bildungsportale allgemein, nicht die Förderung von OER"
+  },
+  {
+   "thema": "Edelgase",
+   "art": "sammel",
+   "artikel": "Krypton",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Bruchrechnung",
+   "art": "gewoehnlich",
+   "artikel": "Doppelbruch",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Industrialisierung",
+   "art": "gewoehnlich",
+   "artikel": "Industrielle Revolution",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Evolution",
+   "art": "gewoehnlich",
+   "artikel": "Selektion (Evolution)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "art": "sammel",
+   "artikel": "Joseph von Eichendorff",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Künstliche Intelligenz im Unterricht",
+   "art": "aspekt",
+   "artikel": "Chatbot",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "deutsche Dichter",
+   "art": "sammel",
+   "artikel": "Bertolt Brecht",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "art": "sammel",
+   "artikel": "Édouard Manet",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Inklusion im Sportunterricht",
+   "art": "aspekt",
+   "artikel": "Behindertensport",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Behindertensport allgemein, nicht Inklusion im Sportunterricht"
+  },
+  {
+   "thema": "Lyrik",
+   "art": "gewoehnlich",
+   "artikel": "Haiku",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Datenschutz an Schulen",
+   "art": "aspekt",
+   "artikel": "Datenschutz-Grundverordnung",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "art": "sammel",
+   "artikel": "Amerigo Vespucci",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "art": "sammel",
+   "artikel": "Rumpelstilzchen",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Nachhaltigkeit im Schulalltag",
+   "art": "aspekt",
+   "artikel": "Radverkehr",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "art": "sammel",
+   "artikel": "Bioenergie",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Französische Revolution",
+   "art": "gewoehnlich",
+   "artikel": "Tuileriensturm",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Kalter Krieg",
+   "art": "gewoehnlich",
+   "artikel": "Stellvertreterkrieg",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Französische Revolution",
+   "art": "gewoehnlich",
+   "artikel": "Girondisten",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Reformation",
+   "art": "gewoehnlich",
+   "artikel": "Reformierte Kirchen",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "art": "gewoehnlich",
+   "artikel": "Grundwasser",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Französische Revolution",
+   "art": "gewoehnlich",
+   "artikel": "Jakobiner",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Photosynthese",
+   "art": "gewoehnlich",
+   "artikel": "Chloroplast",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Vulkan",
+   "art": "gewoehnlich",
+   "artikel": "Vulkanausbruch",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "art": "sammel",
+   "artikel": "Ferdinand Magellan",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Sonnensystem",
+   "art": "gewoehnlich",
+   "artikel": "Erde",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Demokratie",
+   "art": "gewoehnlich",
+   "artikel": "Direkte Demokratie",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Wasserkreislauf",
+   "art": "gewoehnlich",
+   "artikel": "Abfluss",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Dichter der Romantik",
+   "art": "sammel",
+   "artikel": "August Wilhelm Schlegel",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "art": "sammel",
+   "artikel": "Wasserkraft",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Frauen in der Wissenschaft",
+   "art": "sammel",
+   "artikel": "Frauen in der Informatik",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Evolution",
+   "art": "gewoehnlich",
+   "artikel": "Stammesgeschichte des Menschen",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Magnetismus",
+   "art": "gewoehnlich",
+   "artikel": "Diamagnetismus",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Zellteilung",
+   "art": "gewoehnlich",
+   "artikel": "Mitose",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "deutsche Bundeskanzler",
+   "art": "sammel",
+   "artikel": "Ludwig Erhard",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Plattentektonik",
+   "art": "gewoehnlich",
+   "artikel": "Ozeanbodenspreizung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel in der Landwirtschaft",
+   "art": "aspekt",
+   "artikel": "Pflanzenzüchtung",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Pflanzenzüchtung allgemein; Klimaanpassung nicht Gegenstand des Artikels"
+  },
+  {
+   "thema": "Römisches Reich",
+   "art": "gewoehnlich",
+   "artikel": "Römische Kaiserzeit",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Industrialisierung",
+   "art": "gewoehnlich",
+   "artikel": "Soziale Frage",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel in der Landwirtschaft",
+   "art": "aspekt",
+   "artikel": "Bewässerungsfeldwirtschaft",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Bewässerung allgemein; Klimawandel nicht Gegenstand des Artikels"
+  },
+  {
+   "thema": "Lyrik",
+   "art": "gewoehnlich",
+   "artikel": "Sonett",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "erneuerbare Energien",
+   "art": "sammel",
+   "artikel": "Geothermie",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Nachhaltigkeit im Schulalltag",
+   "art": "aspekt",
+   "artikel": "Ökologischer Fußabdruck",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Vulkan",
+   "art": "gewoehnlich",
+   "artikel": "Schildvulkan",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Kalter Krieg",
+   "art": "gewoehnlich",
+   "artikel": "Kubakrise",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Römisches Reich",
+   "art": "gewoehnlich",
+   "artikel": "Dominat",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Grundgesetz",
+   "art": "gewoehnlich",
+   "artikel": "Bundesrat (Deutschland)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Grundgesetz",
+   "art": "gewoehnlich",
+   "artikel": "Präambel des Grundgesetzes für die Bundesrepublik Deutschland",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "art": "sammel",
+   "artikel": "Abel Tasman",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Weltreligionen",
+   "art": "sammel",
+   "artikel": "Daoismus",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Photosynthese",
+   "art": "gewoehnlich",
+   "artikel": "Chlorophylle",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Maler des Impressionismus",
+   "art": "sammel",
+   "artikel": "Claude Monet",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Klimawandel in der Landwirtschaft",
+   "art": "aspekt",
+   "artikel": "Dürre",
+   "urteil_a": "passt",
+   "urteil_b": "randthema"
+  },
+  {
+   "thema": "Demokratie",
+   "art": "gewoehnlich",
+   "artikel": "Demokratisierung",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Komponisten der Klassik",
+   "art": "sammel",
+   "artikel": "Ludwig van Beethoven",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Ohmsches Gesetz",
+   "art": "gewoehnlich",
+   "artikel": "Leitfähigkeit",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Leitfähigkeit allgemein, auch Wärme; nur mittelbar zum Ohmschen Gesetz"
+  },
+  {
+   "thema": "Entdecker der Neuzeit",
+   "art": "sammel",
+   "artikel": "Marco Polo",
+   "urteil_a": "passt_nicht",
+   "urteil_b": "passt_nicht",
+   "grund": "Reisender des Mittelalters, kein Entdecker der Neuzeit"
+  },
+  {
+   "thema": "Optik",
+   "art": "gewoehnlich",
+   "artikel": "Beugung (Physik)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Märchen der Brüder Grimm",
+   "art": "sammel",
+   "artikel": "Rotkäppchen",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Sonnensystem",
+   "art": "gewoehnlich",
+   "artikel": "Sonne",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Französische Revolution",
+   "art": "gewoehnlich",
+   "artikel": "Französische Verfassung (1791)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Magnetismus",
+   "art": "gewoehnlich",
+   "artikel": "Elektromagnetische Wechselwirkung",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Grundkraft der Physik allgemein; Magnetismus nur ein Teilaspekt"
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "art": "sammel",
+   "artikel": "Jupiter (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Sonnensystem",
+   "art": "gewoehnlich",
+   "artikel": "Saturn (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "römische Kaiser",
+   "art": "sammel",
+   "artikel": "Hadrian",
+   "urteil_a": "passt_nicht",
+   "urteil_b": "passt_nicht",
+   "grund": "Artikel über den Vornamen, nicht über Kaiser Hadrian"
+  },
+  {
+   "thema": "Grundgesetz",
+   "art": "gewoehnlich",
+   "artikel": "Grundrechte (Deutschland)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Philosophen der Aufklärung",
+   "art": "sammel",
+   "artikel": "David Hume",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Planeten des Sonnensystems",
+   "art": "sammel",
+   "artikel": "Venus (Planet)",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "römische Kaiser",
+   "art": "sammel",
+   "artikel": "Konstantin der Große",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Kalter Krieg",
+   "art": "gewoehnlich",
+   "artikel": "Berliner Mauer",
+   "urteil_a": "passt",
+   "urteil_b": "passt"
+  },
+  {
+   "thema": "Ohmsches Gesetz",
+   "art": "gewoehnlich",
+   "artikel": "Kirchhoffsche Regeln",
+   "urteil_a": "randthema",
+   "urteil_b": "randthema",
+   "grund": "Eigene Schaltungsregeln; ergänzen das Ohmsche Gesetz nur"
+  }
+ ]
+}

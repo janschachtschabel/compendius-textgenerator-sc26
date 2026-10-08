@@ -2189,6 +2189,33 @@ API.
   `REQUEST_TIMEOUT_S` (F15); F09 und F11 sind Verhalten wie gewollt, F03, F04, F12, F17 und die Vorschläge der
   Abschnitte 5 bis 9 liegen bei Jan. Ein unabhängiger Review der Korrekturen fand drei Mängel der ersten Fassungen (F06,
   F08, F13), alle behoben; Bericht, Abschnitt 14.
+- **D92 (2026-10-08)** Die Empfehlungen der Entscheidungsgrundlage zum Audit vom 03.10. gemessen und, wo sie trugen,
+  gebaut (Jan: „deine empfehlungen testen und dann umsetzen“), dazu der Ort einer Sammlung im Themenbaum (Jan: eine
+  Sammlung heißt im Themenbaum oft nur „Grundlagen“; Kontext ja, aber „trennscharf … und nicht zuviel reingebracht
+  wird, was eher bei anderen sammlungen im baum liegt“). Gebaut: Gibt eine Sammlung das Thema (`node_id` oder
+  `collection_id` ohne `topic`), liest der Dienst die Sammlungen darüber bis unter das Fachportal und, wo ein LLM sie
+  hört, ihre Untersammlungen, die Titel ihrer ersten acht Materialien und ihre Nachbarn; den Baum eines Knotens ohne
+  Zugangsdaten wie den Knoten selbst. Die Frage N hört diesen Ort nach dem Titel, die Nachbarn ausdrücklich als nicht
+  gemeint (M71: Note 3,5 bis 4,0 statt 1,9 bei neutralen Titeln, 3,9 bis 4,3 statt 2,8 bis 2,9 bei sprechenden), und
+  die schreibenden Profile formulieren das Thema mit ihm (3,8 statt 3,4 bis 3,5 und 4,7 statt 4,4). Ein Titel aus
+  Wörtern, die keinen Gegenstand nennen („Grundlagen“, „Einführung“, „Methoden“, „Anwendungen“ …), steht für die
+  nächste sprechende Sammlung darüber, ohne Zusätze in Klammern, sonst für das Fach: Die Regeln lösen sie auf (gebaut
+  3,3 statt 1,2 bei den Sammlungen, wo das von der ersten Messung abwich), mit LLM führt die Übersicht, die N nennt,
+  und die Überschrift heißt „Grundlagen (Kernphysik)“ (2,4 statt 1,1). Bei sprechendem Titel bleibt der Titel, denn
+  dort schadete die Sammlung darüber; Formate von Material („Experimente“) gelten nicht als neutral, und eine
+  Formulierung, die selbst keinen Gegenstand nennt, verwirft der Dienst. `audit.topic_tree` zeigt, was gelesen wurde,
+  was das Repository nicht gab und was für den Titel stand; die Prüfansicht nennt es unter „Thema und Artikel“. Ohne
+  LLM findet eine Frage oder ein Satz ihren Artikel über die Stichwörter, wo die Regeln nur raten oder nichts finden
+  (M73: 43 bis 45 statt 22 bis 24 von 60 Fragen passend). Antworten von edu-sharing und der b-api liest der Dienst nur
+  bis zu einer Größe (F12), der Filter der Materialtexte erkennt Cookie-Hinweise auch mit dem Verb vor der Website
+  (M74), und eine Knoten-ID mit einem Zeilenumbruch dahinter gilt nicht mehr als Knoten-ID. Gemessen und nicht gebaut:
+  eine Passungsprüfung der Artikel, die N nennt (F04, M72: 4 bis 5 von 277 passen nicht), ein eigener Weg für
+  Aspekt-Themen (M72: zum Aspekt fehlt meist der Artikel; dort bleibt `best-coverage-generated`), ein Filter
+  wiederholter Absätze in Materialtexten (M74: kein Seitenrest gedruckt). F09 (If-Match) bleibt offen, solange keine
+  gleichzeitigen Bearbeiter von Templates genannt sind. Ein unabhängiger Review des Baus fand sieben kleinere Mängel und
+  vier Kleinigkeiten, alle behoben: die Übersicht führte bei neutralem Titel nur mit Ersatz, die schreibenden Profile
+  hörten den Baum nicht, der Baum eines Knotens kam mit dem Konto, die Eltern-ID ließ einen Zeilenumbruch durch, der Pfad
+  wurde auch gelesen, wo nichts ihn brauchte, fehlende Teile standen nur im Log, ein Test konnte nicht scheitern.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

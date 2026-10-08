@@ -126,6 +126,12 @@ Abschnittsmarker von Teil 1.
   die KI Sätze nur für neue Bausteine wählen. Gemessen und nicht gebaut: Verneinungsregeln der Belegprüfung (M67),
   Anteile im Korpusdeckel (M69), die Themenformulierung vor der Artikelwahl (M70); Bericht und Entscheidungsgrundlage in
   `docs/audits/2026-10-03-audit.md`.
+- Empfehlungen gemessen, Sammlungen im Themenbaum (D92, Release 2.13.0): Gibt eine Sammlung das Thema, liest der
+  Dienst ihren Ort im Themenbaum; die KI-Artikelwahl und die Themenformulierung hören ihn, die Nachbarsammlungen als
+  nicht gemeint. Ein inhaltsneutraler Titel wie „Grundlagen“ steht für die nächste sprechende Sammlung darüber, die
+  Überschrift heißt „Grundlagen (Kernphysik)“ (M71). Ohne KI findet eine Frage ihren Artikel über ihre Stichwörter
+  (M73). Antworten von edu-sharing und b-api liest der Dienst nur bis zu einer Größe (F12). Gemessen und nicht gebaut:
+  eine Passungsprüfung der Artikel, die die KI nennt (M72), ein Filter wiederholter Absätze in Materialtexten (M74).
 
 ## Installation
 
@@ -409,7 +415,7 @@ Eine Sammlung kann im Kompendium drei Rollen haben; meist ist es dieselbe ID (D7
 
 | Rolle | Feld | Was geschieht |
 |---|---|---|
-| Thema und Kontext | `collection_id` oder `node_id` | ohne `topic` ist ihr Titel das Thema (die schreibenden Profile formulieren es aus Titel, Fächern, Schlagwörtern und Beschreibung, D72); mit `topic` führt das Thema. Ihre Stufen werden Kontextwörter, ihre Fächer gelten, solange kein `subject` gesetzt ist |
+| Thema und Kontext | `collection_id` oder `node_id` | ohne `topic` ist ihr Titel das Thema (die schreibenden Profile formulieren es aus Titel, Fächern, Schlagwörtern und Beschreibung, D72); mit `topic` führt das Thema. Ihre Stufen werden Kontextwörter, ihre Fächer gelten, solange kein `subject` gesetzt ist. Ohne `topic` liest der Dienst auch ihren Ort im Themenbaum (D92): Die KI-Artikelwahl hört die Sammlungen darüber, ihre Untersammlungen, die ersten Materialtitel und die Nachbarn als nicht gemeint. Die schreibenden Profile formulieren das Thema mit diesem Ort. Ein inhaltsneutraler Titel („Grundlagen“, „Einführung“, „Methoden“) steht für die nächste sprechende Sammlung darüber: Die Regeln lösen sie auf, mit KI führt die genannte Übersicht, und die Überschrift heißt „Grundlagen (Kernphysik)“; `audit.topic_tree` zeigt, was gelesen wurde (M71) |
 | Teil 3 | `collection_id` oder `node_id` | beschreibt die Sammlung, wenn `parts` Teil 3 enthält (ohne das Feld: alle drei Teile) |
 | Quelle für Teil 1 | `knowledge_collection_id` (dieselbe ID oder eine andere) | ihre Materialien sind Quellen, mit `knowledge_fulltext` und `knowledge_depth` |
 
