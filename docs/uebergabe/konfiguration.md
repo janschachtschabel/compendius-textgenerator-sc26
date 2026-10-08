@@ -77,8 +77,8 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `API_STOP_GRACE_PERIOD` | `630s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; deckt academiccloud (600 s) und OpenAI (300 s), über `REQUEST_TIMEOUT_S` plus 15 s halten |
 | `REQUEST_TIMEOUT_S` | leer: `openai` 300, `academiccloud` 600 | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM. Ein gesetzter Wert gilt für jeden Anbieter |
 | `UVICORN_HTTP` | `h11` | wie Vorgabe | HTTP-Parser von uvicorn |
-| `LOG_LEVEL` | `INFO` | wie Vorgabe | Protokollstufe: `DEBUG`, `INFO`, `WARNING`, `ERROR` |
-| `LOG_FORMAT` | `text` | `json`, wenn ein Log-Sammler die Zeilen liest | eine Zeile Text oder ein JSON-Objekt je Ereignis, auch für die Zeilen von uvicorn und die Updater-Schleifen |
+| `LOG_LEVEL` | `INFO` | wie Vorgabe | Protokollstufe der Zeilen des Dienstes und der Updater: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` (`WARN` gilt als `WARNING`); ein unbekannter Wert hält den Start an |
+| `LOG_FORMAT` | `text` | `json`, wenn ein Log-Sammler die Zeilen liest | eine Zeile Text oder ein JSON-Objekt je Ereignis nach stderr, mit Prozess- und Anfrage-ID, auch für die Zeilen von uvicorn und die Updater-Schleifen (docs/betrieb.md, Abschnitt „Logs“) |
 | `PROMETHEUS_MULTIPROC_DIR` | leer | wie Vorgabe | wo die Worker ihre Messwerte ablegen; leer lassen, das Image setzt `/tmp/prometheus` |
 
 ### LLM über die b-api
