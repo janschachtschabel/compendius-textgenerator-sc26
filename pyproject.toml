@@ -13,7 +13,11 @@ dependencies = [
     # The service imports both itself (app/main.py, app/api/); fastapi brings them now, which it need not keep doing
     "starlette>=0.46",
     "anyio>=4.0",
-    "uvicorn[standard]>=0.35",
+    # uvicorn without its extra "standard", which brought watchfiles and websockets as well (audit 2026-09-18,
+    # DEP-02): of it the service uses uvloop, uvicorn's event loop where installed, and httptools for UVICORN_HTTP
+    "uvicorn>=0.35",
+    "uvloop>=0.15.1; sys_platform != 'win32' and sys_platform != 'cygwin' and platform_python_implementation != 'PyPy'",
+    "httptools>=0.8.0",
     "pydantic>=2.11",
     "pydantic-settings>=2.10",
     "httpx>=0.28",

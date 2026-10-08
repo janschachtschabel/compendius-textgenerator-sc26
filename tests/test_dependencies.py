@@ -45,3 +45,12 @@ def test_every_package_the_app_imports_is_declared() -> None:
         for distribution in distributions.get(module, [module])
     }
     assert imported <= _declared(), sorted(imported - _declared())
+
+
+def test_the_server_comes_without_reload_and_websocket_packages() -> None:
+    """uvicorn[standard] put watchfiles (for --reload) and websockets in the image, and the service uses neither: it
+    never reloads and serves no WebSocket route (audit 2026-09-18, DEP-02). uvloop and httptools are declared on their
+    own: uvicorn runs its event loop on uvloop where it is installed, and UVICORN_HTTP=httptools stays a choice."""
+    locked = {package["name"] for package in tomllib.loads((ROOT / "uv.lock").read_text(encoding="utf-8"))["package"]}
+    assert not locked & {"watchfiles", "websockets"}
+    assert {"uvloop", "httptools"} <= _declared()
