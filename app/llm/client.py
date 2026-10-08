@@ -91,6 +91,9 @@ class ChatResult:
     # prompt tokens the model read from its prompt cache, part of prompt_tokens (D69): the b-api passes the cache
     # through, a second call with the same opening of 3,507 tokens read 3,481 of them (2026-10-01)
     cached_tokens: int = 0
+    # The answer ended with a line break, which the strip of ``text`` removes: cut at the output limit, its last line
+    # is whole (review of 2026-10-08)
+    ended_line: bool = False
 
 
 @dataclass(frozen=True)
@@ -481,6 +484,7 @@ def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:
         if content is not None and not isinstance(content, str):
             raise TypeError("content is neither text nor a list of parts")
         text = (content or "").strip()
+        ended_line = (content or "").rstrip(" \t").endswith("\n")
         finish_reason = str(choice.get("finish_reason") or "")
         # Some academiccloud models answer in the reasoning field only. Cut off at the output limit it holds a thought,
         # not an answer: the article choice read {"wahl": 3} from one, the synthesis printed thoughts as model
@@ -505,6 +509,7 @@ def _parse_completion(data: Any, model: str, prompt_text: str) -> ChatResult:
         model=answered_by,
         finish_reason=finish_reason,
         cached_tokens=_cached(usage, prompt_tokens),
+        ended_line=ended_line,
     )
 
 

@@ -104,15 +104,14 @@ def is_json(text: str) -> bool:
 def without_unfinished_sentence(text: str) -> tuple[str, bool]:
     """``text`` without the sentence the output limit cut it off in, and whether there was one.
 
-    Only the last line can be unfinished: a line break the model wrote ended the line before it, a list item too, and
-    an answer that ends with one is whole. In the last line the German sentence splitter finds its last sentence
+    Only the last line can be unfinished: a line break the model wrote ended the line before it, a list item too (an
+    answer that ends with one is whole, which the caller knows from ``ChatResult.ended_line``: the client trims the
+    text). In the last line the German sentence splitter finds its last sentence
     (abbreviations and ordinals protected), and a full stop after markers or before a sentence the splitter does not
     see open ends one as well; markers that open it cite the sentence before it and stay, and a sentence
     that ends in an abbreviation or in a day or century without its noun is unfinished. A last line without a
     finished sentence goes whole.
     """
-    if text.rstrip(" \t").endswith("\n"):
-        return text, False
     head, newline, last = text.rstrip().rpartition("\n")
     # The probe only gains blanks, so its other characters map onto the line by their count
     sentences = split_sentences(_GLUED_MARKER_RE.sub(r"\1 ", last))
@@ -260,7 +259,7 @@ class LlmSynthesizer:
         if is_json(result.text):  # a block is prose; kept, an object or a list stood in it as model knowledge
             return LlmSkipped.after(NOT_TEXT, result)
         answer, cut_off = result.text, False
-        if result.finish_reason == "length":  # the output limit cut the answer, maybe inside a sentence
+        if result.finish_reason == "length" and not result.ended_line:  # cut by the output limit, maybe mid-sentence
             answer, cut_off = without_unfinished_sentence(answer)
             if not answer.strip():
                 return LlmSkipped.after(CUT_OFF, result)

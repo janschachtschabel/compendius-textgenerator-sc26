@@ -449,6 +449,15 @@ def test_a_cut_sentence_that_opens_in_bold_leaves_the_finished_one_before_it() -
     assert "geradlinig aus" in result.text and "Linsen" not in result.text
 
 
+def test_a_cut_answer_whose_line_had_ended_keeps_the_line() -> None:
+    """A line break before the limit ended the line: its list item is whole, also without a full stop. The client
+    trims an answer, so the rule for it in without_unfinished_sentence never saw one (review of 2026-10-08)."""
+    result = written(cut_off("Das Thema handelt vom Licht [1].\n- Sammellinsen bündeln es\n"))
+
+    assert isinstance(result, LlmSection) and not result.cut_off
+    assert "Sammellinsen bündeln es" in result.text
+
+
 def test_an_abbreviation_is_no_sentence_end_to_cut_back_to() -> None:
     result = written(cut_off("Das Thema handelt vom Licht [1]. Optische Geräte wie z. B. Fernro"))
 
@@ -835,7 +844,6 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
         ("Erster Satz [1]. Zweiter Satz.[2, 3]", "Erster Satz [1]. Zweiter Satz.[2, 3]", False),
         ("Erster Satz [1]. **Ein fetter Satz.**", "Erster Satz [1]. **Ein fetter Satz.**", False),
         ("Erster Satz [1]. ‚Ein Zitat.‘", "Erster Satz [1]. ‚Ein Zitat.‘", False),
-        ("Erster Satz [1].\n- Punkt eins\n", "Erster Satz [1].\n- Punkt eins\n", False),
         ("Erster Satz [1]. Geräte wie z. B.", "Erster Satz [1].", True),
         ("Erster Satz [1]. Linsen kennt man seit dem 17.", "Erster Satz [1].", True),
         ("Erster Satz [1]. Newton starb 1727.", "Erster Satz [1]. Newton starb 1727.", False),
@@ -859,7 +867,6 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
         "multi-marker",
         "bold",
         "quote",
-        "line ended",
         "abbreviation",
         "ordinal",
         "year",
