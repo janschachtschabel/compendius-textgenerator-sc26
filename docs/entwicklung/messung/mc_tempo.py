@@ -126,7 +126,7 @@ def generate_parallel(self, request, *, deadline=None, budget=None):
     started = time.monotonic()
 
     def part_2():
-        result = self._curricula_part(prepared, request, budget, deadline)
+        result = self._curricula_part(prepared, request, deadline)
         BRANCHES["part2"] = round(time.monotonic() - started, 3)
         return result
 

@@ -112,7 +112,7 @@ for kind, names in part_b_topics.items():
             else:
                 prepared.subtopics = terms
                 prepared.subjects = subjects
-                result = service._curricula_part(prepared, request, budget, deadline)
+                result = service._curricula_part(prepared, request, deadline)
                 part = result.part
                 row["mit_fach"] = {"keywords": part.keywords if part else [], "subject_terms": part.subject_terms if part else [],
                                    "summary": {k: (part.summary or {}).get(k) for k in ("matches", "bundled")} if part else {},

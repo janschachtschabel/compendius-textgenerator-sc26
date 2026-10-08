@@ -530,8 +530,11 @@ ein solches Profil, ist sie ein 503, der sagt, welcher Schalter ein LLM braucht.
 `template_id`, sonst `TEMPLATE_DEFAULT`, ausgeliefert `sc26`. Ist die b-api nur gerade nicht erreichbar, laufen die
 Regeln, und `audit.llm` sagt warum. Die LLM-Schritte einer Anfrage teilen sich ein Token-Budget: 60.000 in `llm-free`
 und `balanced` (`LLM_MAX_TOKENS_PER_REQUEST`), 180.000 in den drei Profilen ab `best-quality` (`best-quality`,
-`best-quality-generated`, `best-coverage-generated`; `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, D59), weil dort zur
-Zuordnung die Prüfung der Lehrplanelemente kommt; das reicht auch beim breitesten Thema von M32 für alle Elemente (M33).
+`best-quality-generated`, `best-coverage-generated`; `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, D59), weil dort das
+LLM die Absätze zuordnet. Die KI-Prüfung der Lehrplanelemente von Teil 2 hat ein eigenes Budget von 400.000 Tokens je
+Anfrage (`LLM_MAX_TOKENS_CURRICULUM_CHECK`, D94): Sie bewertet jedes Element, rund 70 bis 85 Tokens je Element (M76),
+und läuft neben Teil 1; so nimmt keiner dem anderen Platz, auch wenn Lehrpläne weiterer Länder oder Bildungsbereiche
+dazukommen. Was ihr Budget nicht prüfen kann, bleibt ungeprüft in Teil 2, wie die Regeln es fanden.
 Die Profile der Entscheidungsvorlage (`docs/entwicklung/07-entscheidungsvorlage.md`):
 
 | `preset` | setzt | Güte und Kosten je Kompendium (M25, M27 bis M31, M47, M48, M52, `gpt-6-luna`) |
@@ -638,7 +641,8 @@ Kompendium (18.800 bis 45.900, M14). Teil 1 dauerte mit `matcher=llm` im Median 
 zweite Runde, 22 bis 25 s für die Zuordnung statt 15 bis 17 s bei drei Stapeln im selben Lauf. Die drei Profile
 ab `best-quality`, die `matcher: llm` setzen, rechnen seit D59 mit 180.000 Tokens je
 Anfrage (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`): Das lässt rund dreimal so vielen Stapeln zugleich Platz, spart
-großen Themen die zweite Runde und lässt Raum für die Prüfung der Lehrplanelemente und das Schreiben; bei 60.000
+großen Themen die zweite Runde und lässt Raum für das Schreiben (die Prüfung der Lehrplanelemente hat seit D94 ein
+eigenes Budget); bei 60.000
 blieben neben einem großen Thema nur rund 14.000 Tokens. Die Grenze hebt den Rahmen, nicht den Verbrauch eines
 Themas, das darunter bleibt. Wer `matcher: llm` einzeln in `llm-free` oder `balanced` setzt, rechnet mit
 `LLM_MAX_TOKENS_PER_REQUEST`.
@@ -803,7 +807,8 @@ danach probiert ein einzelner Aufruf, ob sie wieder antwortet. Ein 401, 403 oder
 Versuch antwortet; eine Antwort, die sich nicht lesen lässt, ebenso, oder mit dem Verbrauch, den sie meldet.
 Jeder Aufruf reserviert sein Token-Budget vorab (je Anfrage das des Profils,
 `LLM_MAX_TOKENS_PER_REQUEST` oder in den `best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, bei `/qa`
-für Teil 1 und die Paare zusammen; `LLM_DAILY_TOKEN_BUDGET` je Tag, wenn gesetzt), den Text eines Aufrufers (`/entities`, `/qa`)
+für Teil 1 und die Paare zusammen; die Prüfung von Teil 2 aus `LLM_MAX_TOKENS_CURRICULUM_CHECK`;
+`LLM_DAILY_TOKEN_BUDGET` je Tag, wenn gesetzt), den Text eines Aufrufers (`/entities`, `/qa`)
 nach seinen UTF-8-Bytes: So viele Tokens kann er höchstens werden, wie man ihn auch formt; zufällige Zeichenfolgen
 kamen bei `gpt-6-luna` auf bis zu 4,3-mal so viele Tokens wie geschätzt (Audit 2026-09-28, SE-20).
 Passt er nicht mehr neben die laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung, solange danach noch
@@ -1043,7 +1048,8 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | `LLM_MAX_CONCURRENCY` | leer: je Anbieter, `openai` 20, `academiccloud` 2 | Gleichzeitige LLM-Aufrufe je Worker-Prozess (bei zwei Workern doppelt so viele); die Zuordnung stellt etwa 6 bis 8 zugleich, das Schreiben 10, die Prüfung von Teil 2 bei breiten Themen bis 14 neben der Zuordnung, und Anfragen können sich einen Worker teilen (M75, D93). Ein gesetzter Wert gilt für jeden Anbieter |
 | `LLM_ATTEMPTS` | `3` | Versuche je Aufruf, bevor aufgegeben wird |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Anfrage in den Profilen `llm-free` und `balanced` (ein Kompendium; bei `/qa` Teil 1 und die Paare zusammen). Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500, `matcher=llm` bis rund 46.000 (M14). Parallele Aufrufe reservieren vorab ihren Höchstbedarf; was nicht mehr hineinpasst, wartet auf die laufenden (D39) |
-| `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | Kostenschutz je Anfrage in `best-quality`, `best-quality-generated` und `best-coverage-generated` (D59, D69): Neben der Zuordnung durch das LLM (im Median rund 26.000 Tokens) prüft das LLM dort jedes Lehrplanelement von Teil 2, 80 bis 90 Tokens je Element; 60.000 reichten für rund 400 Elemente (M32). Das breiteste Thema, Demokratie ohne Fach mit 382 Absätzen und 819 Elementen, brauchte mit Teil 1 und 2 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated` (M33). Gilt in jedem Endpunkt dieser Profile, auch in `/qa`, `/knowledge` und der Lehrplansuche |
+| `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | Kostenschutz je Anfrage in `best-quality`, `best-quality-generated` und `best-coverage-generated` (D59, D69): Artikelwahl, Zuordnung durch das LLM (im Median rund 26.000 Tokens) und Schreiben; die Prüfung von Teil 2 hat ihr eigenes Budget (`LLM_MAX_TOKENS_CURRICULUM_CHECK`, D94). Das breiteste Thema, Demokratie mit rund 400 Absätzen, brauchte mit Teil 1 und 2 140.600 Tokens in `best-quality-generated` und 160.900 in `best-coverage-generated`, davon die Prüfung 66.200 (M79). Gilt in jedem Endpunkt dieser Profile, auch in `/qa`, `/knowledge` und der Lehrplansuche |
+| `LLM_MAX_TOKENS_CURRICULUM_CHECK` | `400000` | Kostenschutz der KI-Prüfung von Teil 2 (`curriculum_check=llm`) je Anfrage, neben dem Budget der Anfrage, im Kompendium und in der Lehrplansuche (D94): Die Prüfung bewertet jedes Element, das die Regeln fanden, rund 70 bis 85 Tokens je Element (M76: Demokratie 819 Elemente, 66.200 Tokens); 400.000 reichen für rund 4.800, Raum für die Lehrpläne weiterer Länder und Bildungsbereiche. Elemente darüber hinaus bleiben ungeprüft in Teil 2, wie die Regeln sie fanden; der Rückfallgrund nennt das Token-Budget der Lehrplanprüfung |
 | `LLM_DAILY_TOKEN_BUDGET` | `0` | Tokens je Tag für alle Worker zusammen. `0`, die Vorgabe seit D67, setzt keine Grenze: Im Betrieb können an einem Tag viele Einträge anfallen. Eine Zahl kappt den Tag; der Zähler liegt in `STATE_DIR/llm_budget.db`, gilt samt den Reservierungen laufender Aufrufe für alle Worker gemeinsam und übersteht Neustarts. Kann ein Worker die Datei nicht lesen oder schreiben, zählt er für sich weiter (das Log meldet es): Der Dienst bleibt verfügbar, die Grenze gilt dann aber je Worker, nicht für alle zusammen. Gezählt wird auch ohne Grenze (`/health`, `kompendium_llm_tokens_used_today`). Mit Grenze melden `KompendiumLlmBudgetNearlySpent` 90 % und `KompendiumLlmBudgetBurnsFast` ein Viertel in einer Stunde. Ohne Grenze und ohne `API_KEYS` warnt der Start: Dann kann jeder Tokens ohne Grenze verbrauchen |
 
 ### Metriken

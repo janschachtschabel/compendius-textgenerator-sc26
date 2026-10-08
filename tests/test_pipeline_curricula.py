@@ -195,20 +195,19 @@ def test_a_heading_only_element_the_llm_rates_fitting_is_listed_on_its_own(
 
 
 @pytest.mark.parametrize("preset", ["best-quality", "best-coverage-generated"])
-def test_the_best_quality_profiles_check_from_a_budget_of_their_own(
+def test_every_profile_checks_from_the_budget_of_the_check(
     service: CompendiumService, settings: Settings, monkeypatch: pytest.MonkeyPatch, preset: str
 ) -> None:
-    """D59: next to matcher llm the 60,000 tokens of a request cover about 400 elements (M32); best-quality,
-    best-quality-generated and best-coverage-generated (D69) spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY.
-    With the other cap far too small, only they still check."""
+    """D59 let the best-quality profiles check from their larger request budget, since next to matcher llm 60,000
+    tokens covered about 400 elements (M32); D94 gives the check a budget of its own in every profile. With the request
+    cap of balanced far too small, it checks all the same."""
     write_cache(settings.state_dir)
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(lambda body: json.dumps({"e1": 2})), per_request=100))
     asked = {"topic": "Optik", "parts": ["curricula"], "subject": "Physik"}
     best = service.generate(GenerateRequest(**asked, preset=preset)).audit.llm
     tight = service.generate(GenerateRequest(**asked, preset="balanced", curriculum_check="llm")).audit.llm
     assert best is not None and best["curriculum_check"]["answered"] == 1
-    assert tight is not None and tight["curriculum_check"]["answered"] == 0
-    assert any("Token-Budget der Anfrage" in reason for reason in tight["curriculum_check"]["fallbacks"])
+    assert tight is not None and tight["curriculum_check"]["answered"] == 1
 
 
 def test_while_the_b_api_is_away_the_rules_decide_part_two_and_the_audit_says_why(

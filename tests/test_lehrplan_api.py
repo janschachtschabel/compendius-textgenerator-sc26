@@ -125,8 +125,9 @@ SEARCH = "/api/v2/lehrplan/search"
 
 
 def test_best_quality_lets_the_llm_judge_what_the_rules_found(sample_zims: dict[str, Path], tmp_path: Path) -> None:
-    """D58, D59: the search takes the profiles as part 2 does; best-quality drops what the model rates 0, and it
-    spends from a budget of its own - the one of the other profiles is far too small here."""
+    """D58, D59, D94: the search takes the profiles as part 2 does; best-quality drops what the model rates 0. The
+    check spends from a budget of its own (LLM_MAX_TOKENS_CURRICULUM_CHECK): a request budget far too small, as the one
+    of balanced here, leaves it whole."""
     write_cache(tmp_path / "state")
     with _client(sample_zims, tmp_path) as client:
         fake = FakeBApi(lambda body: json.dumps({"e1": 0}))
@@ -144,8 +145,17 @@ def test_best_quality_lets_the_llm_judge_what_the_rules_found(sample_zims: dict[
         "fallback": None,
     }
     assert best["llm_tokens"]["calls"] == 1
-    assert [match["note"] for match in tight["matches"]] == [None], "the rules decide what the budget left unrated"
-    assert any("Token-Budget der Anfrage" in reason for reason in tight["llm"]["curriculum_check"]["fallbacks"])
+    assert tight["matches"] == [] and tight["llm"]["curriculum_check"]["answered"] == 1
+
+
+def test_what_the_check_budget_cannot_hold_the_rules_decide(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """D94: elements beyond the check's own budget stay, unrated, as the rules found them."""
+    write_cache(tmp_path / "state")
+    with _client(sample_zims, tmp_path, llm_max_tokens_curriculum_check=100) as client:
+        client.app.state.service.llm = make_gateway(FakeBApi(lambda body: json.dumps({"e1": 0})))  # type: ignore[attr-defined]
+        body = client.get(SEARCH, params={"q": "Optik", "preset": "best-quality"}).json()
+    assert [match["note"] for match in body["matches"]] == [None], "the rules decide what the budget left unrated"
+    assert any("Token-Budget der Lehrplanprüfung" in reason for reason in body["llm"]["curriculum_check"]["fallbacks"])
 
 
 def test_an_element_the_llm_rates_fitting_comes_back_with_its_note(

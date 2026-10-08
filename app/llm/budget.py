@@ -164,17 +164,19 @@ class TokenBudget:
                 saved = self._store.settle(self._owner, self._reserved, self._day, pending, self._clock())
                 self._unsaved = 0 if saved else pending
 
-    def open_request(self, limit: int | None = None) -> RequestBudget:
-        """The budget of one request: ``limit`` tokens, else ``per_request`` (the best-quality profiles, D59)."""
-        return RequestBudget(self, self.per_request if limit is None else limit)
+    def open_request(self, limit: int | None = None, label: str = "der Anfrage") -> RequestBudget:
+        """The budget of one request: ``limit`` tokens, else ``per_request`` (the best-quality profiles, D59).
+        ``label`` names it in the reason a call falls back for (the check of part 2 has its own, D94)."""
+        return RequestBudget(self, self.per_request if limit is None else limit, label)
 
 
 class RequestBudget:
     """Budget of one compendium request; every reservation also reserves in the daily budget."""
 
-    def __init__(self, budget: TokenBudget, limit: int) -> None:
+    def __init__(self, budget: TokenBudget, limit: int, label: str = "der Anfrage") -> None:
         self.budget = budget
         self.limit = limit
+        self.label = label
         self.used = 0
         self.cached_tokens = 0  # of the used prompt tokens, those the model read from its prompt cache (D69)
         self._reserved = 0
@@ -199,7 +201,7 @@ class RequestBudget:
         with self._settled:
             self._settled.wait_for(lambda: self._fits(tokens) or self.used + tokens > self.limit, timeout=wait_s)
             if not self._fits(tokens):
-                return f"Token-Budget der Anfrage erschöpft ({tokens} Tokens nötig, {self.remaining} frei)"
+                return f"Token-Budget {self.label} erschöpft ({tokens} Tokens nötig, {self.remaining} frei)"
             if not self.budget.reserve(tokens):
                 return f"Tagesbudget erschöpft ({tokens} Tokens nötig, {self.budget.remaining_today} frei)"
             self._reserved += tokens

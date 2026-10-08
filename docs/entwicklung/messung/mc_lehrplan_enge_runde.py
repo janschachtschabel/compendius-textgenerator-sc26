@@ -148,7 +148,7 @@ for kind, names in topics.items():
                 WHOLE.clear()
                 WHOLE.update(word.casefold() for word in extra)
                 prepared.subjects = narrow if narrow else own_subjects
-                result = service._curricula_part(prepared, request, budget, deadline)
+                result = service._curricula_part(prepared, request, deadline)
                 part = result.part
                 row[name] = {"keywords": part.keywords if part else [], "entries": entries(part),
                              "summary": {k: (part.summary or {}).get(k) for k in ("matches", "bundled")} if part else {}}

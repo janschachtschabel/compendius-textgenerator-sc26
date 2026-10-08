@@ -5,7 +5,7 @@
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu vier, die Compose selbst auswertet
 (`IMAGE`, `API_BIND`, `API_MEMORY`, `API_STOP_GRACE_PERIOD`). Eine fehlende Variable nimmt ihre Vorgabe; die Vorlage
-[`.env.example`](../../.env.example) listet alle 73 des Dienstes mit ihrer Vorgabe. Die ausführliche Beschreibung jeder
+[`.env.example`](../../.env.example) listet alle 74 des Dienstes mit ihrer Vorgabe. Die ausführliche Beschreibung jeder
 Variable steht im [README](../../README.md), Abschnitt „Konfiguration“.
 
 ## Für den Betrieb
@@ -49,7 +49,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 ## Alle Variablen
 
-77 Variablen: 73 des Dienstes und 4 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
+78 Variablen: 74 des Dienstes und 4 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
 `docker-compose.yml`; „Betrieb“ nennt die Empfehlung, wo sie davon abweicht.
 
 ### Zugang und Sicherheit
@@ -99,6 +99,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LLM_ATTEMPTS` | `3` | wie Vorgabe | Versuche je Aufruf |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | wie Vorgabe | Tokens je Anfrage in `llm-free` und `balanced` |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | wie Vorgabe | Tokens je Anfrage in den drei Profilen ab `best-quality` |
+| `LLM_MAX_TOKENS_CURRICULUM_CHECK` | `400000` | wie Vorgabe | Tokens der KI-Prüfung von Teil 2 je Anfrage, neben denen der Anfrage (D94); was darüber hinausgeht, bleibt ungeprüft stehen |
 | `LLM_DAILY_TOKEN_BUDGET` | `0` | wie Vorgabe | Tokens je Tag für alle Worker; `0` setzt keine Grenze (D67), gezählt wird trotzdem. Eine Zahl kappt den Tag: 2.000.000 reichen für 25 bis 40 Kompendien mit `best-quality` oder rund 3.500 mit `balanced`. Ohne Grenze gehören `API_KEYS` gesetzt. Bis Release 2.5.0 hieß `0` ein leeres Budget: kein LLM-Aufruf, jeder Schritt fällt auf die Regeln zurück |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | wie Vorgabe | Sätze ohne deckenden Beleg: `drop` verwirft, `mark` kennzeichnet sie |
 | `LLM_EXTRACTION_CANDIDATES` | `8` | wie Vorgabe | Absätze je Baustein, die `extraction=llm` angeboten bekommt: die der Policy und bis zu dieser Zahl die nächstbesten |

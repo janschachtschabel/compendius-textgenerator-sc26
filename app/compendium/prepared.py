@@ -159,6 +159,7 @@ class CurriculaResult:
     requested: str  # curriculum_check as the request or its profile set it
     report: CurriculumCheckReport | None = None  # what the check did, once it ran
     fallback: str | None = None  # why the rules decided instead of the LLM
+    cached_tokens: int = 0  # prompt tokens of the check read from the prompt cache; it has its own budget (D94)
 
 
 @dataclass

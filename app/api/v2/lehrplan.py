@@ -297,6 +297,7 @@ def lehrplan_search(
     asked_for = {"mode": mode, "topic": search.topic, "preset": profile}
     reports: list[CurriculumCheckReport] = []
     fallback: str | None = None
+    check_budget: RequestBudget | None = None  # the check spends from its own (D94)
     matches: list[CurriculumMatch] = []
     result = None
     if builder.store.available:
@@ -309,10 +310,14 @@ def lehrplan_search(
     if result is not None and result.matches:
         matches = result.matches
         if asked.curriculum_check == "llm":  # all of them, as part 2 checks them
-            check, fallback = service.curriculum_check(search.topic or q, search.subjects, budget, deadline, reports)
+            check_budget = service.open_check_budget()
+            check, fallback = service.curriculum_check(
+                search.topic or q, search.subjects, check_budget, deadline, reports
+            )
             if check is not None:
                 matches = check(matches)
-    llm, tokens = _llm_answer(service, asked, search, reports, fallback, budget.cached_tokens if budget else 0)
+    cached = sum(spent.cached_tokens for spent in (budget, check_budget) if spent is not None)
+    llm, tokens = _llm_answer(service, asked, search, reports, fallback, cached)
     if result is None:
         return {
             "available": False,

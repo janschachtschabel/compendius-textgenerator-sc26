@@ -251,10 +251,19 @@ class Settings(BaseSettings):
         180_000,
         ge=100,
         description="Budget guard per request in the profiles best-quality, best-quality-generated and "
-        "best-coverage-generated (D59, D69): next to "
-        "matcher llm their LLM checks the curriculum elements of part 2, 80 to 90 tokens each; 60,000 covered about "
-        "400 of them (M32). On the widest topic, Demokratie with 382 paragraphs and 819 elements, a compendium with "
-        "both parts took 137,398 tokens in best-quality and 152,197 in best-quality-generated (M33)",
+        "best-coverage-generated (D59, D69): article choice, matcher llm and the writing; the check of part 2 has its "
+        "own (LLM_MAX_TOKENS_CURRICULUM_CHECK, D94). On the widest topic, Demokratie with about 400 paragraphs, a "
+        "compendium with both parts took 140,600 tokens in best-quality-generated and 160,900 in "
+        "best-coverage-generated, the check 66,200 of them (M79)",
+    )
+    llm_max_tokens_curriculum_check: int = Field(
+        400_000,
+        ge=100,
+        description="Budget guard of the LLM check of part 2 (curriculum_check=llm) per request, beside the request's "
+        "own, in the compendium and the curriculum search (D94): the check rates every element the rules found, about "
+        "70 to 85 tokens each (M76: Demokratie 819 elements, 66,200 tokens), so 400,000 hold about 4,800 - room for "
+        "the curricula of more states and levels (Jan, 2026-10-08: 'möglichst nichts verlieren'). Elements beyond it "
+        "stay in part 2 unrated, as the rules found them",
     )
     llm_daily_token_budget: int = Field(
         0,

@@ -23,6 +23,8 @@ from app.settings import Settings
 from app.sources.lehrplan.matcher import CurriculumMatch
 from app.sources.lehrplan.subjects import SubjectCatalog
 
+CHECK_BUDGET = "der Lehrplanprüfung"  # names the budget of the check of part 2 in a fallback reason (D94)
+
 
 class LlmPolicy:
     llm: LlmGateway | None
@@ -131,14 +133,22 @@ class LlmPolicy:
     def open_budget(self, profile: str) -> RequestBudget | None:
         """The token budget of one request in ``profile``; ``None`` without a configured LLM.
 
-        The best-quality profiles spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY: their LLM also checks the
-        curriculum elements of part 2, and next to matcher llm the 60,000 tokens of the others covered only about
-        400 of them (D59, M32).
+        The best-quality profiles spend from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY: next to the writing their LLM
+        assigns the paragraphs (D59). The check of part 2 spends from its own (``open_check_budget``).
         """
         if self.llm is None:
             return None
         large = profile in BEST_QUALITY_PRESETS
         return self.llm.open_budget(self.settings.llm_max_tokens_per_request_best_quality if large else None)
+
+    def open_check_budget(self) -> RequestBudget | None:
+        """The token budget of the LLM check of part 2 in one request, beside the request's own (D94); ``None``
+        without a configured LLM. The check rates every element the rules found: with the curricula of more states
+        or levels it took part 1 its room, now neither takes from the other, and part 2 keeps what the check cannot
+        rate, unrated (Jan, 2026-10-08: "möglichst nichts verlieren")."""
+        if self.llm is None:
+            return None
+        return self.llm.open_budget(self.settings.llm_max_tokens_curriculum_check, label=CHECK_BUDGET)
 
     def llm_unavailable(self) -> str | None:
         """Why an LLM switch cannot be used now (D3, D10), or ``None``: it needs a configured, available LLM."""

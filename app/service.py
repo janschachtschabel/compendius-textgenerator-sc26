@@ -317,7 +317,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             writing = request.generation if "world" in request.parts else None
             wording = self.wording_job(writing, choice, deadline, budget)
             prepared = self.prepare(request, deadline, choice, wording=wording)
-            curricula_job = beside.start(timed(self._curricula_part), prepared, request, budget, beside_time)
+            curricula_job = beside.start(timed(self._curricula_part), prepared, request, beside_time)
             requested = Requested.of(request)
             timings = dict(prepared.timings)
             if "world" in request.parts:
@@ -341,7 +341,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             collection=collection,
             facets_visible=self._facets_visible(request),
             timings=timings,
-            cached_tokens=budget.cached_tokens if budget is not None else 0,
+            # of the request's budget and the check's own (D94)
+            cached_tokens=(budget.cached_tokens if budget is not None else 0) + curricula.cached_tokens,
         )
         archives = prepared.registry or self.registry
         lap = Stopwatch(timings).lap  # the assembly's own time
@@ -363,18 +364,19 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             raise PartsUnavailableError("; ".join(unmakeable.values()))
         return request, profile
 
-    def _curricula_part(
-        self, prepared: PreparedTopic, request: GenerateRequest, budget: RequestBudget | None, deadline: Deadline
-    ) -> CurriculaResult:
+    def _curricula_part(self, prepared: PreparedTopic, request: GenerateRequest, deadline: Deadline) -> CurriculaResult:
         """Part 2 when requested and set up here, the curriculum elements checked by the LLM when curriculum_check
-        asks for it (D58)."""
+        asks for it (D58), from a budget of its own (D94)."""
         requested = request.curriculum_check or "rule-based"  # set by the profile (with_profile)
         if "curricula" not in request.parts or self.curricula is None:
             return CurriculaResult(part=None, requested=requested)
         checked: list[CurriculumCheckReport] = []  # what the LLM check did, once it ran
-        check, fallback = None, None
+        check, fallback, check_budget = None, None, None
         if requested == "llm":
-            check, fallback = self.curriculum_check(prepared.prompt_topic, prepared.subjects, budget, deadline, checked)
+            check_budget = self.open_check_budget()
+            check, fallback = self.curriculum_check(
+                prepared.prompt_topic, prepared.subjects, check_budget, deadline, checked
+            )
         part = self.curricula.build(
             title=prepared.title,
             aliases=prepared.aliases,
@@ -391,7 +393,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
                 "dropped": report.dropped,
                 "fallbacks": dict(report.fallbacks),
             }
-        return CurriculaResult(part=part, requested=requested, report=report, fallback=fallback)
+        cached = check_budget.cached_tokens if check_budget is not None else 0
+        return CurriculaResult(part=part, requested=requested, report=report, fallback=fallback, cached_tokens=cached)
 
     def _unmakeable(self, request: GenerateRequest) -> dict[str, str]:
         """Requested parts this request cannot get from this server, with the reason."""
