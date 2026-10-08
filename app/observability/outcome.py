@@ -13,6 +13,7 @@ import logging
 from collections import Counter
 from typing import Any
 
+from app.compendium.llm_report import NOTHING_CONTRIBUTED
 from app.domain.models import Compendium
 
 log = logging.getLogger(__name__)
@@ -58,9 +59,12 @@ def _cause(reason: str) -> str:
 
 
 def log_compendium(compendium: Compendium) -> None:
-    """The line of one generated compendium; a WARNING when time or budget cut LLM work."""
+    """The line of one generated compendium; a WARNING when time or budget cut LLM work, or when the request wanted an
+    LLM that was not there - the breaker open, none configured -, with the reason the audit's note gives."""
     audit = compendium.audit
     causes = fallback_causes(audit.llm)
+    note = (audit.llm or {}).get("note")
+    unavailable = str(note) if note and note != NOTHING_CONTRIBUTED else None
     stages = [
         name for name, block in (audit.llm or {}).items() if isinstance(block, dict) and block.get("used") == "llm"
     ]
@@ -74,11 +78,12 @@ def log_compendium(compendium: Compendium) -> None:
         "llm_tokens": tokens.get("total", 0),
         "fallbacks": causes,
         "duration_ms": audit.duration_ms,
+        "llm_unavailable": unavailable,
     }
     cut = any(cause in stage for stage in causes.values() for cause in CUT)
     log.log(
-        logging.WARNING if cut else logging.INFO,
-        "compendium %r: %s, parts %s, LLM %s, %d calls, %d tokens, fallbacks %s, %s ms",
+        logging.WARNING if cut or unavailable else logging.INFO,
+        "compendium %r: %s, parts %s, LLM %s, %d calls, %d tokens, fallbacks %s, %s ms%s",
         fields["topic"],
         fields["preset"],
         "/".join(f"{part} {status}" for part, status in fields["parts"].items()) or "-",
@@ -91,5 +96,6 @@ def log_compendium(compendium: Compendium) -> None:
         )
         or "none",
         audit.duration_ms if audit.duration_ms is not None else "-",
+        f"; {unavailable}" if unavailable else "",
         extra={"fields": fields},
     )

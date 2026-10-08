@@ -13,6 +13,7 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
+from app.compendium.llm_report import NOTHING_CONTRIBUTED
 from app.domain.requests import GenerateRequest
 from app.main import create_app
 from app.observability.outcome import fallback_causes, log_compendium
@@ -73,3 +74,38 @@ def test_a_compendium_through_the_api_writes_its_line(
     assert message.startswith("compendium 'Optik': llm-free, ") and "LLM none" in message and " ms" in message
     fields = record.fields  # type: ignore[attr-defined]
     assert fields["preset"] == "llm-free" and fields["fallbacks"] == {} and fields["llm_calls"] == 0
+
+
+@pytest.mark.parametrize(
+    "note",
+    [
+        "LLM nicht verfügbar (b-api nach wiederholten Fehlern vorübergehend ausgesetzt); Regelmodus verwendet",
+        "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet",
+    ],
+)
+def test_a_compendium_that_wanted_an_unavailable_llm_is_a_warning_with_the_reason(
+    service: CompendiumService, caplog: pytest.LogCaptureFixture, note: str
+) -> None:
+    """A best-quality request while the breaker was open ran on the rules alone; its line said "LLM none, fallbacks
+    none", and only the audit named the reason (logging review of 2026-10-08)."""
+    result = service.generate(GenerateRequest(topic="Optik", parts=["world"], preset="llm-free"))
+    result.audit.llm = {"note": note, "generation": {"used": "rule-based", "fallbacks": {}}}
+
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        log_compendium(result)
+
+    [record] = caplog.records
+    assert record.levelno == logging.WARNING and record.getMessage().endswith(f"; {note}")
+
+
+def test_a_compendium_the_llm_contributed_nothing_to_stays_an_info_line(
+    service: CompendiumService, caplog: pytest.LogCaptureFixture
+) -> None:
+    result = service.generate(GenerateRequest(topic="Optik", parts=["world"], preset="llm-free"))
+    result.audit.llm = {"note": NOTHING_CONTRIBUTED, "generation": {"used": "rule-based", "fallbacks": {}}}
+
+    with caplog.at_level(logging.INFO, logger="app.observability.outcome"):
+        log_compendium(result)
+
+    [record] = caplog.records
+    assert record.levelno == logging.INFO and NOTHING_CONTRIBUTED not in record.getMessage()
