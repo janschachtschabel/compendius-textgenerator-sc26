@@ -32,6 +32,15 @@ def test_ordinal_numbers_do_not_split_sentences() -> None:
     assert sentences == ["Die Visby-Linsen stammen aus dem 11. Jahrhundert.", "Sie sind erstaunlich gut."]
 
 
+def test_an_ordinal_before_an_abbreviated_century_does_not_split_sentences() -> None:
+    """The abbreviation pass took the dot of "Jh." before the ordinal pass looked for it: "im 18. Jh." split, and a
+    written block lost "Im 17." as an uncited sentence (review of 2026-10-08)."""
+    assert split_sentences("Er starb im 18. Jh. in Rom. Danach kam nichts.") == [
+        "Er starb im 18. Jh. in Rom.",
+        "Danach kam nichts.",
+    ]
+
+
 def test_abbreviations_and_dates_are_protected() -> None:
     sentences = split_sentences("Linsen bestehen z. B. aus Glas. Am 3. Oktober 1990 änderte sich vieles. Fertig.")
     assert len(sentences) == 3

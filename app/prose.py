@@ -41,12 +41,13 @@ _ABBREVIATION_RE = re.compile(
 _ABBREVIATION_END_RE = re.compile(_ABBREVIATION_RE.pattern + r"\Z")
 _ABBREVIATION_TAIL = 1 + max(len(a) for a in _ABBREVIATIONS)  # the longest one and the character before it
 _ORDINAL_FOLLOWERS = (
-    r"Jahrhundert|Jahrhunderts|Jh\.|Jahrtausend|Jahrtausends|Klasse|Auflage|Kapitel|Band|Teil|Buch|Akt|Satz|"
+    r"Jahrhundert|Jahrhunderts|Jahrtausend|Jahrtausends|Klasse|Auflage|Kapitel|Band|Teil|Buch|Akt|Satz|"
     r"Sinfonie|Symphonie|Legion|Armee|Dynastie|Konzil|Weltkrieg|Lebensjahr|Platz|Rang|Stelle|Mal|Tag|Monat|Woche|"
     r"Jahr|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|Halbjahr|Quartal|"
     r"Jahrgangsstufe|Schuljahr|Semester|Stunde|Generation|Version|Ausgabe"
 )
-_ORDINAL_RE = re.compile(rf"\b(\d{{1,2}})\.(?=\s+(?:{_ORDINAL_FOLLOWERS})\b)")
+# "Jh." ends in its dot, after which no word boundary follows: it stands outside the words that need one
+_ORDINAL_RE = re.compile(rf"\b(\d{{1,2}})\.(?=\s+(?:(?:{_ORDINAL_FOLLOWERS})\b|Jh\.))")
 _SPLIT_RE = re.compile(r"(?<=[.!?…])\s+(?=[A-ZÄÖÜ„\"(\[0-9])")
 # A protected full stop while the text is split, restored afterwards: a sign of the private use area, which prose
 # does not hold. It was a dot leader (U+2024), and one the paragraph held became a full stop as well (audit
@@ -74,8 +75,10 @@ def ends_with_abbreviation(text: str) -> bool:
 def split_sentences(text: str) -> list[str]:
     """Split German prose into sentences while protecting abbreviations and ordinal numbers."""
     protected = re.sub(r"\s+", " ", text).strip()
-    protected = _ABBREVIATION_RE.sub(lambda m: m.group(0).replace(".", _PLACEHOLDER), protected)
+    # Ordinals first: the abbreviations take the dot of the "Jh." an ordinal is known by ("im 18. Jh.", review of
+    # 2026-10-08)
     protected = _ORDINAL_RE.sub(lambda m: f"{m.group(1)}{_PLACEHOLDER}", protected)
+    protected = _ABBREVIATION_RE.sub(lambda m: m.group(0).replace(".", _PLACEHOLDER), protected)
     protected = _INITIAL_RE.sub(_protect_initial, protected)
     protected = re.sub(r"(\d)\.(\d)", rf"\1{_PLACEHOLDER}\2", protected)
     parts = _SPLIT_RE.split(protected)

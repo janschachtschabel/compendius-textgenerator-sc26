@@ -60,7 +60,7 @@ _CLOSED_END_RE = re.compile(rf"[.!?…][{_CLOSERS}]+\s+(?=[A-ZÄÖÜ„\"‚'(\[
 _MARKED_END_RE = re.compile(rf"{_MARKER_GROUP}[.!?…][{_CLOSERS}]*\s+")
 _OTHER_START_RE = re.compile(r"[.!?]\s+(?=[*_»‚]|[^\W\dA-ZÄÖÜ_])")
 # A day or a century cut off before its noun: "seit dem 17." ends no sentence, "starb 1727." does
-_CUT_ORDINAL_RE = re.compile(r"\b(?:im|am|vom|zum|beim|dem|den)\s+\d{1,2}\.$")
+_CUT_ORDINAL_RE = re.compile(r"\b(?:im|am|vom|zum|zur|beim|ins|dem|den|der|des)\s+\d{1,2}\.$", re.IGNORECASE)
 _JSON_OPENING_RE = re.compile(r'[{\[]\s*["{\[]|\{\s*\}|\[\s*\]')
 BYTE_ORDER_MARK = chr(0xFEFF)
 

@@ -847,6 +847,10 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
         ("Erster Satz [1]. α-Strahlen durchdr", "Erster Satz [1].", True),
         ("Licht aus Modellwissen. **Linsen** brechen es an", "Licht aus Modellwissen.", True),
         ("Erster Satz [1]. Geräte wie z. B. **Fernro", "Erster Satz [1].", True),
+        ("Erster Satz [1]. Im 17.", "Erster Satz [1].", True),
+        ("Erster Satz [1]. Das endete am Ende des 17.", "Erster Satz [1].", True),
+        ("Erster Satz [1]. Das reicht bis ins 19.", "Erster Satz [1].", True),
+        ("Erster Satz [1]. Im 17. Jh. entwickelten Forscher die ersten Mikros", "Erster Satz [1].", True),
     ],
     ids=[
         "marker after the stop",
@@ -867,6 +871,10 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
         "cut sentence opens in Greek",
         "uncited sentence before one in bold",
         "abbreviation before bold",
+        "ordinal opening the sentence",
+        "ordinal after des",
+        "ordinal after ins",
+        "ordinal before an abbreviated century",
     ],
 )
 def test_only_the_sentence_an_answer_broke_off_in_goes_and_the_citations_of_the_others_stay(
