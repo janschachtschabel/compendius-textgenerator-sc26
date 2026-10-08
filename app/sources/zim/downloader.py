@@ -27,6 +27,7 @@ log = logging.getLogger(__name__)
 
 DEFAULT_ALLOWED_HOSTS: tuple[str, ...] = ("download.kiwix.org", "lb.download.kiwix.org", "mirror.download.kiwix.org")
 PART_SUFFIX = ".part"
+LOG_EVERY_S = 600.0  # a line of a running download at least every ten minutes, besides every tenth
 _FILE_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _HASH_LABELS = {"sha256": "SHA-256", "sha1": "SHA-1"}
 _CONTENT_RANGE = re.compile(r"^bytes (\d+)-\d+/(?:\d+|\*)$")
@@ -91,6 +92,40 @@ class _Transfer:
     part: Path
     progress: DownloadProgress
     hasher: Any  # hashlib object; typeshed names it differently across versions
+
+
+def _mb(count: int) -> str:
+    return f"{count / 1e6:,.0f} MB"
+
+
+class _ProgressLog:
+    """A line at every full tenth of a download and at least every ``LOG_EVERY_S`` - ten to some dozen lines, not one
+    per chunk."""
+
+    def __init__(self, name: str, state: DownloadProgress) -> None:
+        self.name, self.state = name, state
+        self.started = self.logged = time.monotonic()
+        self.from_bytes = state.bytes_done
+        self.next_tenth = self._tenth() + 1
+
+    def _tenth(self) -> int:
+        return self.state.bytes_done * 10 // max(self.state.bytes_total, 1)
+
+    def step(self, now: float) -> None:
+        tenth = self._tenth()
+        if not (self.next_tenth <= tenth < 10 or now - self.logged >= LOG_EVERY_S):
+            return
+        rate = (self.state.bytes_done - self.from_bytes) / 1e6 / max(now - self.started, 1e-3)
+        percent = self.state.bytes_done * 100 // max(self.state.bytes_total, 1)
+        log.info(
+            "%s: %d %% (%s of %s, %.1f MB/s)",
+            self.name,
+            percent,
+            _mb(self.state.bytes_done),
+            _mb(self.state.bytes_total),
+            rate,
+        )
+        self.logged, self.next_tenth = now, tenth + 1
 
 
 def _hash_file(path: Path, hasher: Any, chunk_size: int) -> None:
@@ -159,6 +194,7 @@ class Downloader:
         if existing:
             log.info("%s: resuming at %d of %d bytes", part.name, existing, size)
             _hash_file(part, transfer.hasher, self.chunk_size)
+        began = time.monotonic()
         if existing < size:
             self._transfer(url, transfer, progress)
 
@@ -176,6 +212,15 @@ class Downloader:
         os.replace(part, target)
         if progress:
             progress(transfer.progress)
+        seconds = max(time.monotonic() - began, 1e-3)
+        fetched = done - transfer.progress.resumed_from
+        log.info(
+            "%s: downloaded and verified, %s in %.0f s (%.1f MB/s)",
+            file_name,
+            _mb(fetched),
+            seconds,
+            fetched / 1e6 / seconds,
+        )
         return target
 
     def _already_complete(self, target: Path, *, digest: str, size: int) -> bool:
@@ -215,6 +260,18 @@ class Downloader:
                         state.bytes_done = state.resumed_from = 0
                 else:
                     raise TransferError(f"HTTP {response.status_code} for {url}")
+                # The log of the updater said nothing while a download ran, often for hours: where it comes from, how
+                # far it got, how fast (logging review of 2026-10-08)
+                resumed = f", resuming at {_mb(state.bytes_done)}" if state.bytes_done else ""
+                left = _mb(state.bytes_total - state.bytes_done)
+                log.info(
+                    "%s: downloading %s from %s%s",
+                    transfer.part.name.removesuffix(PART_SUFFIX),
+                    left,
+                    response.url.host,
+                    resumed,
+                )
+                logged = _ProgressLog(transfer.part.name.removesuffix(PART_SUFFIX), state)
                 with transfer.part.open(mode) as fh:
                     for chunk in response.iter_raw(self.chunk_size):
                         fh.write(chunk)
@@ -226,6 +283,7 @@ class Downloader:
                         if progress and now - last_report >= self.progress_interval_s:
                             progress(state)
                             last_report = now
+                        logged.step(now)
         except _OversizedError:
             transfer.part.unlink(missing_ok=True)
             raise DownloadError(

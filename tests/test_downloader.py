@@ -2,6 +2,7 @@
 
 import gzip
 import hashlib
+import logging
 from collections.abc import Callable, Iterator
 from pathlib import Path
 
@@ -266,3 +267,21 @@ def test_a_dump_sent_with_a_content_encoding_arrives_as_it_is_on_the_server(tmp_
     path = _dump_downloader(gzip_encoded).download(DUMP_URL, tmp_path, digest=GZIPPED_SHA1, size=len(GZIPPED))
     assert path.read_bytes() == GZIPPED
     assert calls[0].headers["Accept-Encoding"] == "identity"
+
+
+def test_a_download_says_where_it_starts_how_it_goes_and_how_it_ends(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """A fresh ZIM download wrote nothing while it ran, often for hours, while installation.md sends the operator to the
+    updater's log: no file, no host, no rate (logging review of 2026-10-08). One line when it starts, one at every
+    tenth, one when the file is verified."""
+    calls: list[httpx.Request] = []
+    client = httpx.Client(transport=httpx.MockTransport(_server(BLOB, calls)))
+
+    with caplog.at_level(logging.INFO, logger="app.sources.zim.downloader"):
+        Downloader(client=client, chunk_size=1024).download(URL, tmp_path, digest=SHA, size=len(BLOB))
+
+    lines = [record.getMessage() for record in caplog.records if record.name == "app.sources.zim.downloader"]
+    assert lines[0].startswith(f"{FILE}: downloading") and "lb.download.kiwix.org" in lines[0]
+    assert [line.split(" %")[0] for line in lines[1:-1]] == [f"{FILE}: {tenth}" for tenth in range(10, 100, 10)]
+    assert lines[-1].startswith(f"{FILE}: downloaded and verified")
