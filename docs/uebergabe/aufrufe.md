@@ -59,7 +59,7 @@ export ALT=https://alt.example.org                 # der alte Dienst, nur für d
 
 Die Beispiele brauchen `curl` und `jq`. Ein Kompendium kann mit `best-quality` unter Last 40 s dauern; `--max-time 180`
 lässt dafür genug Zeit. Die Frist des Dienstes ist länger (`REQUEST_TIMEOUT_S`: mit OpenAI 300 s, mit academiccloud
-600 s): Wer nie vor dem Dienst abbrechen will, nimmt `--max-time 330` oder `630`. Unter Windows (Git Bash, PowerShell) schickt curl Umlaute aus `-d` nicht als UTF-8, der Dienst
+600 s): Wer nie vor dem Dienst abbrechen will, nimmt `--max-time 630`. Unter Windows (Git Bash, PowerShell) schickt curl Umlaute aus `-d` nicht als UTF-8, der Dienst
 antwortet dann mit 422: dort den Körper aus einer UTF-8-Datei senden (`--data-binary @anfrage.json`).
 
 ## Alt und neu im Vergleich

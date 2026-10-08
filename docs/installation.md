@@ -252,7 +252,7 @@ location / {
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_read_timeout 330s;   # eine Anfrage darf REQUEST_TIMEOUT_S lang dauern: OpenAI 300 s; mit academiccloud 630s
+    proxy_read_timeout 630s;   # eine Anfrage darf REQUEST_TIMEOUT_S lang dauern: academiccloud 600 s, OpenAI 300 s
 }
 ```
 

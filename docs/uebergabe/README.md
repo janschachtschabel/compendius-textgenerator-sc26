@@ -211,7 +211,7 @@ Für das neue GitLab zu klären:
   meldete die API sich in der Messung nach 30 bis 45 s gesund.
 - **Prüfen:** `GET /health` nennt Version, Commit, Archive, Indexe, LLM und verbrauchte Tokens des Tages.
 - **Update:** neues Tag in `IMAGE`, dann `docker compose pull && docker compose up -d`. Laufende Anfragen bekommen bis
-  zu 330 s (`API_STOP_GRACE_PERIOD`; mit academiccloud 630 s setzen). Was sich je Release am Betrieb ändert, steht in [betrieb.md](../betrieb.md).
+  zu 630 s (`API_STOP_GRACE_PERIOD`), genug auch für academiccloud. Was sich je Release am Betrieb ändert, steht in [betrieb.md](../betrieb.md).
 - **Sicherheit:** `API_KEYS` setzen, sonst beantwortet der Dienst jeden, und jeder verbraucht LLM-Tokens ohne
   Tagesgrenze (Vorgabe von `LLM_DAILY_TOKEN_BUDGET`: keine);
   dazu `METRICS_TOKEN` und `ADMIN_TOKEN`, alle mit `openssl rand -hex 32` erzeugt.

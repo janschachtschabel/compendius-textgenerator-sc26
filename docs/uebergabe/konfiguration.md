@@ -74,7 +74,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.14.0`** | Compose: Image aller fünf Container |
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen 3,4 GiB Prozesse mit 2 Workern, dazu Seiten-Cache |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 1,7 GiB, mit 3 Workern `API_MEMORY=8g` |
-| `API_STOP_GRACE_PERIOD` | `330s` | wie Vorgabe, mit academiccloud `630s` | Compose: Zeit für laufende Anfragen bei einem Update; über `REQUEST_TIMEOUT_S` plus 15 s halten |
+| `API_STOP_GRACE_PERIOD` | `630s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; deckt academiccloud (600 s) und OpenAI (300 s), über `REQUEST_TIMEOUT_S` plus 15 s halten |
 | `REQUEST_TIMEOUT_S` | leer: `openai` 300, `academiccloud` 600 | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM. Ein gesetzter Wert gilt für jeden Anbieter |
 | `UVICORN_HTTP` | `h11` | wie Vorgabe | HTTP-Parser von uvicorn |
 | `LOG_LEVEL` | `INFO` | wie Vorgabe | Protokollstufe: `DEBUG`, `INFO`, `WARNING`, `ERROR` |

@@ -64,11 +64,10 @@ services:
       # braucht API_BIND=127.0.0.1:8000 und FORWARDED_ALLOW_IPS auf das Gateway des Compose-Netzes.
       - "${API_BIND:-0.0.0.0:8000}:8000"
     # Ein Update beendet die API mit SIGTERM; uvicorn laesst laufende Anfragen bis REQUEST_TIMEOUT_S plus 15 s zu
-    # Ende laufen (app/serve.py), Docker toetete sie sonst nach 10 s. Die Vorgabe passt zu REQUEST_TIMEOUT_S von
-    # OpenAI (300 s, M75); wer REQUEST_TIMEOUT_S hebt oder academiccloud nutzt (600 s), setzt API_STOP_GRACE_PERIOD
-    # ueber REQUEST_TIMEOUT_S plus 15 s, etwa 630s: Das Panel uebernimmt diese Datei bei jedem Update (Audit
-    # 2026-09-28, BE-17).
-    stop_grace_period: ${API_STOP_GRACE_PERIOD:-330s}
+    # Ende laufen (app/serve.py), Docker toetete sie sonst nach 10 s. Die Vorgabe deckt die laengste Frist eines
+    # Anbieters, academiccloud mit 600 s (D94; OpenAI 300 s): Das Panel uebernimmt diese Datei bei jedem Update (Audit
+    # 2026-09-28, BE-17). Wer REQUEST_TIMEOUT_S darueber hebt, setzt API_STOP_GRACE_PERIOD ueber diese Frist plus 15 s.
+    stop_grace_period: ${API_STOP_GRACE_PERIOD:-630s}
     # Gemessen am 29.09.2026 2,5 GiB nach dem Start und 3,4 GiB nach dem Aufwaermen, rund 1,7 GiB je Worker
     # (docs/uebergabe/README.md). Die alte Grenze 4 GiB trug die zwei Worker des Images knapp, den Rest fuellte der
     # Seiten-Cache; 6 GiB lassen Luft fuer Spitzen. Mit mehr Workern API_MEMORY heben, je Worker rund 1,7 GiB.
