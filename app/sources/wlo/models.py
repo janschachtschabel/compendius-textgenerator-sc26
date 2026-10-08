@@ -17,8 +17,9 @@ from app.domain.spelling import readable
 from app.sources.wlo.errors import MalformedAnswerError
 from app.synthesis.safe_markdown import one_line
 
-# The id of a node as edu-sharing gives it; only such an id goes into a URL of the repository
-NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+# The id of a node as edu-sharing gives it; only such an id goes into a URL of the repository. "\Z", not "$": "$"
+# lets a line break after the id through (review 2026-10-08)
+NODE_ID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\Z")
 
 LICENSE_LABELS = {
     "CC_0": "CC0 1.0",

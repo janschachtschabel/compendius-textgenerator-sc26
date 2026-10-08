@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from app.sources.wlo.models import (
+    NODE_ID,
     license_label,
     parse_collection,
     parse_node,
@@ -140,3 +141,10 @@ def test_a_reference_without_an_original_falls_back_to_its_own_id() -> None:
     node.pop("originalId")
     ref = parse_reference(node)
     assert ref.original_id is None and ref.node_id == ref.id
+
+
+def test_a_node_id_with_a_line_break_after_it_is_none() -> None:
+    """The pattern ended in "$", which matches before a final line break: such an id passed the check and failed the
+    request with a 500 when it went into a URL (review 2026-10-08)."""
+    node_id = "11111111-aaaa-4aaa-8aaa-000000000002"
+    assert NODE_ID.match(node_id + "\n") is None and NODE_ID.match(node_id)
