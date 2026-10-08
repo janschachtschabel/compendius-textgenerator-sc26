@@ -1,6 +1,7 @@
 """Part 2 inside a generated compendium: keywords from part 1, cache present or missing, parts selection."""
 
 import json
+import logging
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -222,3 +223,24 @@ def test_while_the_b_api_is_away_the_rules_decide_part_two_and_the_audit_says_wh
     audit = result.audit.llm
     assert audit is not None and audit["curriculum_check"]["used"] == "rule-based"
     assert audit["curriculum_check"]["fallback"] == "b-api gerade nicht erreichbar (Test)"
+
+
+def test_an_unexpected_error_in_part_two_keeps_part_one(
+    service: CompendiumService, settings: Settings, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Part 2 runs beside part 1 (D93); a defect in it raised out of the request and threw away a finished part 1
+    with a 500. "Möglichst nichts verlieren" (Jan, 2026-10-08): the part says it is missing and why, the log has the
+    traceback (review of 2026-10-08)."""
+    write_cache(settings.state_dir)
+
+    def broken(self: object, **kwargs: object) -> None:
+        raise RuntimeError("kaputt")
+
+    monkeypatch.setattr(type(service.curricula), "build", broken)
+
+    with caplog.at_level(logging.ERROR):
+        result = service.generate(GenerateRequest(topic="Optik", parts=["world", "curricula"], preset="llm-free"))
+
+    assert result.sections and result.curricula is not None and not result.curricula.available
+    assert result.curricula.summary["reason"] == "error" and "nicht verfügbar" in result.curricula.markdown
+    assert any(record.exc_info for record in caplog.records if "part 2" in record.getMessage())

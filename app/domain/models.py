@@ -288,7 +288,10 @@ class AuditReport(BaseModel):
 class CollectionPart(BaseModel):
     """Part 3: overview of the collection the compendium belongs to (PLAN.md 6)."""
 
-    available: bool = Field(description="False when the repository could not be read; markdown then holds a hint")
+    available: bool = Field(
+        description="False when the repository could not be read or part 3 failed otherwise (error); markdown then "
+        "holds a hint"
+    )
     collection_id: str
     title: str = ""
     summary: dict[str, Any] = Field(default_factory=dict)
@@ -299,7 +302,9 @@ class CollectionPart(BaseModel):
 class CurriculaPart(BaseModel):
     """Part 2: curriculum references from the local MEM cache (PLAN.md 5)."""
 
-    available: bool = Field(description="False when no harvested cache exists; markdown then holds a hint")
+    available: bool = Field(
+        description="False when no harvested cache exists or part 2 failed (summary.reason); markdown then holds a hint"
+    )
     keywords: list[str] = Field(default_factory=list)
     subject_terms: list[str] = Field(default_factory=list)
     summary: dict[str, Any] = Field(default_factory=dict)

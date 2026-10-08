@@ -58,6 +58,11 @@ def render_missing_cache() -> str:
     return f"{PART_HEADING}\n\n{MISSING_CACHE_TEXT}\n"
 
 
+def render_failed(error: str) -> str:
+    """Part 2 that failed for a reason of its own, not the cache's: the hint names it, part 1 stands."""
+    return f"{PART_HEADING}\n\n*Die Lehrplanbezüge sind nicht verfügbar: {error}*\n"
+
+
 def render_unreadable_cache() -> str:
     return f"{PART_HEADING}\n\n{UNREADABLE_CACHE_TEXT}\n"
 

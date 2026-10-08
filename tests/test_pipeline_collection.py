@@ -1,5 +1,6 @@
 """Collections in the pipeline: topic from the collection, part 3 in the markdown, knowledge sources for part 1."""
 
+import logging
 from collections import Counter
 from collections.abc import Iterator
 from pathlib import Path
@@ -378,3 +379,26 @@ def test_a_repository_failing_mid_request_leaves_part_three_unavailable_and_the_
     assert answer["parts_status"] == {"world": "ok", "collection": "unavailable"}
     assert answer["collection"]["available"] is False
     assert "Der Sammlungsüberblick konnte nicht erstellt werden" in answer["markdown"]
+
+
+def test_an_unexpected_error_in_part_three_keeps_part_one(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Part 3 runs beside part 1 (D93); a defect in it, no error of the repository, raised out of the request and
+    threw away a finished part 1 with a 500 (review of 2026-10-08)."""
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()), page_size=10)
+    builder = CollectionBuilder(client=client, cache=None)
+    monkeypatch.setattr(service, "collections", builder)
+
+    def broken(self: object, collection_id: str, **kwargs: object) -> None:
+        raise RuntimeError("kaputt")
+
+    monkeypatch.setattr(CollectionBuilder, "overview", broken)
+    request = GenerateRequest(topic="Optik", collection_id=OPTIK, parts=["world", "collection"], preset="llm-free")
+
+    with caplog.at_level(logging.ERROR):
+        result = service.generate(request)
+
+    assert result.sections and result.collection is not None and not result.collection.available
+    assert result.collection.error == "unerwarteter Fehler (RuntimeError)"
+    assert any(record.exc_info for record in caplog.records if "part 3" in record.getMessage())

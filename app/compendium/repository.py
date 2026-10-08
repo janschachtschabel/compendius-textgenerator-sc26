@@ -221,3 +221,10 @@ class RepositoryReading:
             log.warning("collection %s overview failed: %s", collection_id, exc)
             markdown = f"{COLLECTION_HEADING}\n\n*Der Sammlungsüberblick ist nicht verfügbar: {exc}*\n"
             return CollectionPart(available=False, collection_id=collection_id, markdown=markdown, error=str(exc))
+        except Exception as exc:
+            # a defect, no error of the repository: part 3 runs beside part 1, which it threw away with a 500 (review
+            # of 2026-10-08)
+            log.exception("part 3 of collection %s failed unexpectedly", collection_id)
+            error = f"unerwarteter Fehler ({type(exc).__name__})"
+            markdown = f"{COLLECTION_HEADING}\n\n*Der Sammlungsüberblick ist nicht verfügbar: {error}*\n"
+            return CollectionPart(available=False, collection_id=collection_id, markdown=markdown, error=error)

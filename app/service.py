@@ -29,6 +29,7 @@ from app.concurrency import Beside
 from app.domain.models import (
     CollectionPart,
     Compendium,
+    CurriculaPart,
     primary_of,
 )
 from app.domain.requests import PART_3_NEEDS_A_COLLECTION, GenerateRequest, with_profile
@@ -51,6 +52,7 @@ from app.llm.deadline import Deadline
 from app.matching.registry import ensure_strategy
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
+from app.sources.lehrplan.render import render_failed
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.models import CollectionInfo, NodeInfo
 from app.sources.wlo.part import CollectionBuilder
@@ -362,10 +364,29 @@ class CompendiumService(RepositoryReading, WorldBuilding):
 
     def _curricula_part(self, prepared: PreparedTopic, request: GenerateRequest, deadline: Deadline) -> CurriculaResult:
         """Part 2 when requested and set up here, the curriculum elements checked by the LLM when curriculum_check
-        asks for it (D58), from a budget of its own (D94)."""
+        asks for it (D58), from a budget of its own (D94). An unexpected error leaves part 2 unavailable with its
+        reason: it runs beside part 1 and threw a finished part 1 away with a 500 (review of 2026-10-08)."""
         requested = request.curriculum_check or "rule-based"  # set by the profile (with_profile)
         if "curricula" not in request.parts or self.curricula is None:
             return CurriculaResult(part=None, requested=requested)
+        try:
+            return self._checked_curricula(self.curricula, prepared, request, deadline, requested)
+        except Exception as exc:
+            log.exception("part 2 failed unexpectedly")
+            error = f"unerwarteter Fehler ({type(exc).__name__})"
+            failed = CurriculaPart(
+                available=False, summary={"reason": "error", "error": error}, markdown=render_failed(error)
+            )
+            return CurriculaResult(part=failed, requested=requested)
+
+    def _checked_curricula(
+        self,
+        curricula: CurriculaBuilder,
+        prepared: PreparedTopic,
+        request: GenerateRequest,
+        deadline: Deadline,
+        requested: str,
+    ) -> CurriculaResult:
         checked: list[CurriculumCheckReport] = []  # what the LLM check did, once it ran
         check, fallback, check_budget = None, None, None
         if requested == "llm":
@@ -373,7 +394,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             check, fallback = self.curriculum_check(
                 prepared.prompt_topic, prepared.subjects, check_budget, deadline, checked
             )
-        part = self.curricula.build(
+        part = curricula.build(
             title=prepared.title,
             aliases=prepared.aliases,
             subtopics=prepared.subtopics,
