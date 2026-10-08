@@ -1,6 +1,6 @@
 # Methoden, Messwerte und Profile
 
-[Übersicht](README.md) · Stand 01.10.2026 (D70) · Zahlen: [Messprotokoll](05-messprotokoll.md); die fünf Profile
+[Übersicht](README.md) · Stand 08.10.2026 (D92) · Zahlen: [Messprotokoll](05-messprotokoll.md); die fünf Profile
 im Vergleich aus M48, Zeit und Tokens mit Teil 2 aus M45, die Güte jeder Methode aus ihrer jeweils letzten Messung
 
 Diese Seite begründet die fünf Profile. Für jeden wichtigen Schritt nennt sie die gemessenen Methoden mit Güte, Zeit
