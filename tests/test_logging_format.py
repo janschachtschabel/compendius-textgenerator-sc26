@@ -175,3 +175,27 @@ def test_any_other_log_format_is_refused(monkeypatch: pytest.MonkeyPatch) -> Non
 
     with pytest.raises(ValueError, match="log_format"):
         Settings(_env_file=None)
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [(None, "INFO"), ("", "INFO"), ("debug", "DEBUG"), (" Warn ", "WARNING"), ("error", "ERROR")],
+)
+def test_log_level_takes_any_case_and_warn(monkeypatch: pytest.MonkeyPatch, value: str | None, expected: str) -> None:
+    if value is None:
+        monkeypatch.delenv("LOG_LEVEL", raising=False)
+    else:
+        monkeypatch.setenv("LOG_LEVEL", value)
+
+    assert Settings(_env_file=None).log_level == expected
+
+
+@pytest.mark.parametrize("value", ["verbose", "trace", "INF0"])
+def test_an_unknown_log_level_is_refused_at_the_start(monkeypatch: pytest.MonkeyPatch, value: str) -> None:
+    """An unknown level passed the settings: the updaters stopped at their start with "Unknown level", and the API's
+    workers raised while the app was built and were started again without end, the container "Up" all the while
+    (logging review of 2026-10-08). Now the start command stops before uvicorn, with the setting's name."""
+    monkeypatch.setenv("LOG_LEVEL", value)
+
+    with pytest.raises(ValueError, match="LOG_LEVEL"):
+        Settings(_env_file=None)

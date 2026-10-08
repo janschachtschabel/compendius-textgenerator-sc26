@@ -57,6 +57,7 @@ DEFAULT_REASONING_EFFORTS = (
 # no embeddings, no spaCy model. Every other setting left empty is its default (BE-13). The image sets the two models;
 # an entry emptied in a panel overrides that and switches them off, which the start says (audit 2026-09-29, S5).
 EMPTY_IS_A_CHOICE = frozenset({"edu_sharing_base_url", "edu_sharing_repositories", "model2vec_path", "spacy_model"})
+LOG_LEVELS = ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")
 
 
 def _split_csv(value: str) -> list[str]:
@@ -310,6 +311,18 @@ class Settings(BaseSettings):
     )
     metrics_enabled: bool = Field(True, description="Serve GET /metrics for Prometheus")
     metrics_token: str = Field("", description="Bearer token GET /metrics requires; empty = no token")
+
+    @field_validator("log_level")
+    @classmethod
+    def _known_level(cls, value: str) -> str:
+        """A level of Python's logging in any case, WARN for WARNING. An unknown one passed: the updaters stopped at
+        their start, and the API's workers raised while the app was built and were started again without end (logging
+        review of 2026-10-08)."""
+        level = value.strip().upper()
+        level = "WARNING" if level == "WARN" else level
+        if level not in LOG_LEVELS:
+            raise ValueError(f"LOG_LEVEL kennt nur {', '.join(LOG_LEVELS)}")
+        return level
 
     @field_validator("admin_token", "metrics_token", "api_keys")
     @classmethod
