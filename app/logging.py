@@ -1,10 +1,14 @@
-"""Logging setup: one line per event, no secrets, level from settings, and the id of the request it belongs to.
+"""Logging setup: one line per event on stderr, no secrets, level from settings, and the id of the request it
+belongs to.
 
 Every answer carries ``X-Request-ID``: the one the caller sent (its harmless signs, shortened to what a log line can
 hold) or a new one. The id lives in a context variable, so every log line written while the request runs names it —
 also from the threads the service uses: anyio's threads inherit the context, and the pools of the LLM stages and the
 material reads run in a copy of it (app/concurrency.py; a plain ThreadPoolExecutor does not, audit 2026-09-27,
 TE-03). Outside a request the field is ``-``.
+
+The lines go to stderr: the one-shot commands print their reports on stdout, and a report piped on began with log
+lines (logging review of 2026-10-08). Docker keeps both streams.
 """
 
 from __future__ import annotations
@@ -84,7 +88,7 @@ def configure_logging(level: str = "INFO", format_: str = "text") -> None:
     adjust the level."""
     root = logging.getLogger()
     if not root.handlers:
-        handler = logging.StreamHandler(sys.stdout)
+        handler = logging.StreamHandler(sys.stderr)
         handler.setFormatter(_JsonFormatter() if format_ == "json" else logging.Formatter(_FORMAT))
         handler.addFilter(_RequestIdFilter())
         root.addHandler(handler)
@@ -110,13 +114,13 @@ def json_log_config(level: str = "INFO") -> dict[str, Any]:
         "formatters": {"json": {"()": f"{__name__}._JsonFormatter"}},
         "filters": {"request_id": {"()": f"{__name__}._RequestIdFilter"}},
         "handlers": {
-            "stdout": {
+            "stderr": {
                 "class": "logging.StreamHandler",
-                "stream": "ext://sys.stdout",
+                "stream": "ext://sys.stderr",
                 "formatter": "json",
                 "filters": ["request_id"],
             }
         },
         "loggers": {name: {"handlers": [], "propagate": True} for name in UVICORN_LOGGERS},
-        "root": {"handlers": ["stdout"], "level": level.upper()},
+        "root": {"handlers": ["stderr"], "level": level.upper()},
     }

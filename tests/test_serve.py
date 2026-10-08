@@ -138,7 +138,7 @@ def test_with_json_logs_uvicorn_s_own_process_writes_json_lines(
 
     logging.getLogger("uvicorn.error").warning("Child process [%d] died", 7)
 
-    [line] = capsys.readouterr().out.splitlines()
+    [line] = capsys.readouterr().err.splitlines()
     assert {key: json.loads(line)[key] for key in ("level", "logger", "message")} == {
         "level": "WARNING",
         "logger": "uvicorn.error",

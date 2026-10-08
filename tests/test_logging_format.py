@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import logging
+import sys
 from logging.config import dictConfig
 
 import pytest
@@ -42,7 +43,21 @@ def configured(monkeypatch: pytest.MonkeyPatch, *format_: str, uvicorn: bool = F
 
 
 def lines_with(text: str, capsys: pytest.CaptureFixture[str]) -> list[str]:
-    return [line for line in capsys.readouterr().out.splitlines() if text in line]
+    return [line for line in capsys.readouterr().err.splitlines() if text in line]
+
+
+def test_log_lines_go_to_stderr_so_a_report_on_stdout_stays_readable(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """`compendium zim sync --offline > report.json` began with a log line, and the report no longer parsed (logging
+    review of 2026-10-08): the commands print their reports on stdout, the log goes to stderr; Docker keeps both."""
+    configured(monkeypatch)
+    logging.getLogger("app.probe").info("Probe 3")
+    sys.stdout.write('{"report": 1}\n')  # as the commands print their reports
+
+    written = capsys.readouterr()
+
+    assert json.loads(written.out) == {"report": 1} and "Probe 3" in written.err
 
 
 def test_a_json_line_names_time_level_logger_request_and_message(
@@ -91,13 +106,13 @@ def test_uvicorn_writes_its_access_and_error_lines_as_json_too(
         logging.getLogger("uvicorn.error").exception("Exception in ASGI application")
 
     written = capsys.readouterr()
-    events = [json.loads(line) for line in written.out.splitlines()]
+    events = [json.loads(line) for line in written.err.splitlines()]
 
     assert [(event["logger"], event["message"]) for event in events] == [
         ("uvicorn.access", '172.18.0.1:4711 - "GET /health HTTP/1.1" 200'),
         ("uvicorn.error", "Exception in ASGI application"),
     ]
-    assert "RuntimeError: kaputt" in events[1]["exc"] and written.err == ""
+    assert "RuntimeError: kaputt" in events[1]["exc"] and written.out == ""
 
 
 def test_at_debug_the_transport_of_the_http_client_stays_quiet(monkeypatch: pytest.MonkeyPatch) -> None:
