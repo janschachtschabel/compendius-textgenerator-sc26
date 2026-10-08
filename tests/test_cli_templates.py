@@ -76,3 +76,8 @@ def test_an_unreadable_file_is_reported_not_raised(cli_env: Path, capsys: pytest
 def test_deleting_something_that_is_not_there_is_reported(cli_env: Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["templates", "delete", "gibtesnicht"]) == 1
     assert "gibtesnicht" in capsys.readouterr().err
+
+
+def test_deleting_a_builtin_template_is_refused(cli_env: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["templates", "delete", "sc26"]) == 1
+    assert "built-in template 'sc26' cannot be deleted" in capsys.readouterr().err

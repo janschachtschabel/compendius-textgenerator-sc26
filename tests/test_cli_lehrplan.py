@@ -2,13 +2,17 @@
 
 import json
 from collections.abc import Iterator
+from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
 import pytest
 
 from app.cli import main
+from app.cli_lehrplan import loop_task
 from app.settings import get_settings
+from app.sources.lehrplan.harvest import HarvestRunningError
+from app.sources.lehrplan.sparql import SparqlError, SparqlRefusedError
 from tests.conftest import ROOT
 from tests.test_lehrplan_api import write_broken_cache, write_cache
 
@@ -81,8 +85,6 @@ def test_the_harvest_loop_stops_cleanly_on_sigterm(state_dir: Path, monkeypatch:
 def test_a_failed_harvest_is_retried_within_the_hour(state_dir: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Without retry_after a MEM failure waited the whole LEHRPLAN_CHECK_INTERVAL of seven days, also on the first
     start with no cache; the ZIM loop retries after an hour (review of 2026-09-25)."""
-    from datetime import timedelta
-
     seen: dict[str, object] = {}
     monkeypatch.setattr("app.cli_lehrplan.stop_on_sigterm", lambda: None)
 
@@ -97,17 +99,24 @@ def test_a_failed_harvest_is_retried_within_the_hour(state_dir: Path, monkeypatc
 class FakeHarvest:
     """Stands in for the harvest the CLI builds; records how each run was asked for."""
 
-    def __init__(self, *, due: bool = False, refuse: bool = False) -> None:
-        self.is_due, self.refuse = due, refuse
+    def __init__(self, *, due: bool = False, refuse: bool = False, error: Exception | None = None) -> None:
+        self.is_due, self.refuse, self.error = due, refuse, error
         self.forced: list[bool] = []
 
     def due(self, *, max_age: object) -> bool:
         return self.is_due
 
+    def check(self) -> dict[str, Any]:
+        if self.error is not None:
+            raise self.error
+        return {"changed": True, "remote": {"SN": 2}, "local": {"SN": 1}}
+
     def run(self, *, force: bool = False) -> object:
         from app.sources.lehrplan.harvest import HarvestRefusedError, HarvestReport
 
         self.forced.append(force)
+        if self.error is not None:
+            raise self.error
         if self.refuse and not force:
             raise HarvestRefusedError("MEM listet keinen Lehrplan; der bisherige Cache bleibt")
         return HarvestReport(started_at="2026-09-27T00:00:00+00:00", finished_at="2026-09-27T00:15:00+00:00")
@@ -145,3 +154,104 @@ def test_the_harvest_loop_signs_life_into_the_state_directory(state_dir: Path, m
     seen["alive"]()
 
     assert last_alive(state_dir / ALIVE_FILE) is not None  # what the API reports (kompendium_lehrplan_harvest_...)
+
+
+def test_status_tells_an_unusable_cache_from_a_missing_one(state_dir: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    state_dir.mkdir(parents=True)
+    (state_dir / "lehrplan.db").write_bytes(b"keine SQLite-Datei")
+
+    assert main(["lehrplan", "status"]) == 0
+
+    assert "Lehrplan-Cache unbrauchbar" in capsys.readouterr().out
+
+
+def test_status_names_the_error_and_the_progress_of_a_running_harvest(
+    state_dir: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    write_cache(state_dir)
+    progress = {"state": "SN", "lehrplaene_done": 3, "of": 16, "nodes": 1200}
+    status = {
+        "state": "running",
+        "updated_at": "2026-10-08T09:00:00Z",
+        "error": "MEM antwortete 502",
+        "progress": progress,
+    }
+    (state_dir / "lehrplan_status.json").write_text(json.dumps(status), encoding="utf-8")
+
+    assert main(["lehrplan", "status"]) == 0
+
+    out = capsys.readouterr().out
+    assert "Letzter Harvest-Lauf: running (2026-10-08T09:00:00Z)" in out
+    assert "  Fehler: MEM antwortete 502" in out and f"  Fortschritt: {progress}" in out
+
+
+def test_check_prints_the_counts_of_mem_beside_those_of_the_cache(
+    state_dir: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr("app.cli_lehrplan._harvest", lambda settings: FakeHarvest())
+
+    assert main(["lehrplan", "check"]) == 0
+
+    assert json.loads(capsys.readouterr().out) == {"changed": True, "remote": {"SN": 2}, "local": {"SN": 1}}
+
+
+def test_check_says_when_mem_is_unreachable(
+    state_dir: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    unreachable = SparqlError("https://sparql.test/sparql/ antwortet nicht")
+    monkeypatch.setattr("app.cli_lehrplan._harvest", lambda settings: FakeHarvest(error=unreachable))
+
+    assert main(["lehrplan", "check"]) == 1
+
+    assert "MEM nicht erreichbar: https://sparql.test/sparql/ antwortet nicht" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize(
+    ("error", "message"),
+    [
+        (HarvestRunningError("ein anderer Harvest hält lehrplan.lock"), "ein anderer Harvest hält lehrplan.lock"),
+        (SparqlError("MEM antwortet nicht"), "Harvest abgebrochen, alter Cache bleibt: MEM antwortet nicht"),
+    ],
+)
+def test_a_harvest_that_cannot_run_ends_with_a_message(
+    state_dir: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    error: Exception,
+    message: str,
+) -> None:
+    monkeypatch.setattr("app.cli_lehrplan._harvest", lambda settings: FakeHarvest(due=True, error=error))
+
+    assert main(["lehrplan", "harvest"]) == 1
+
+    assert message in capsys.readouterr().err
+
+
+def test_the_loop_forces_its_first_run_only_and_waits_out_a_refusal(capsys: pytest.CaptureFixture[str]) -> None:
+    fake = FakeHarvest(due=True, refuse=True)
+    task = loop_task(fake, max_age=timedelta(days=30), force=True)  # type: ignore[arg-type]
+
+    assert task() is None  # forced: the result is taken although the harvest would refuse it
+    assert task() is True  # refused: the next try is the next check, not the early retry
+    assert fake.forced == [True, False]
+    assert "Harvest verworfen, nächster Versuch mit der nächsten Prüfung" in capsys.readouterr().err
+
+
+def test_the_loop_waits_out_a_refused_query_and_leaves_an_unreachable_mem_to_the_early_retry() -> None:
+    refused = FakeHarvest(due=True, error=SparqlRefusedError("HTTP 400"))
+    unreachable = FakeHarvest(due=True, error=SparqlError("nicht erreichbar"))
+
+    assert loop_task(refused, max_age=timedelta(days=30), force=False)() is True  # type: ignore[arg-type]
+    with pytest.raises(SparqlError, match="nicht erreichbar"):  # run_periodically retries a raising task early
+        loop_task(unreachable, max_age=timedelta(days=30), force=False)()  # type: ignore[arg-type]
+
+
+def test_search_writes_its_matches_as_json(state_dir: Path, tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    write_cache(state_dir)
+    out_file = tmp_path / "treffer.json"
+
+    assert main(["lehrplan", "search", "--q", "Optik", "--json", str(out_file)]) == 0
+
+    [entry] = json.loads(out_file.read_text(encoding="utf-8"))
+    assert entry["label"] == "Lichtbrechung an Linsen" and entry["bundesland_code"] == "SN"
+    assert f"JSON geschrieben: {out_file}" in capsys.readouterr().out

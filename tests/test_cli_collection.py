@@ -12,7 +12,7 @@ from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
 from tests.conftest import ROOT
-from tests.test_wlo_client import BASE, OPTIK, FakeRepository
+from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
 
 
 @pytest.fixture
@@ -40,3 +40,29 @@ def test_overview_command_prints_part_three(
     assert text.startswith("## Teil 3 · Die Sammlung im Überblick") and "16 Inhalte" in text
     assert "16 Inhalte" in capsys.readouterr().out
     assert main(["collection", "overview", "not-a-uuid"]) == 1
+
+
+def test_overview_prints_the_markdown_without_out(
+    fake_repository: FakeRepository, capsys: pytest.CaptureFixture[str]
+) -> None:
+    assert main(["collection", "overview", OPTIK]) == 0
+
+    assert capsys.readouterr().out.startswith("## Teil 3 · Die Sammlung im Überblick")
+
+
+def test_overview_of_an_unknown_collection_names_it(
+    fake_repository: FakeRepository, capsys: pytest.CaptureFixture[str]
+) -> None:
+    assert main(["collection", "overview", UNKNOWN]) == 1
+
+    assert f"Sammlung {UNKNOWN} nicht gefunden" in capsys.readouterr().err
+
+
+def test_overview_without_a_repository_says_which_setting_is_missing(
+    fake_repository: FakeRepository, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr("app.cli_collection.build_collections", lambda settings: None)
+
+    assert main(["collection", "overview", OPTIK]) == 1
+
+    assert "kein edu-sharing-Repository konfiguriert (EDU_SHARING_BASE_URL)" in capsys.readouterr().err

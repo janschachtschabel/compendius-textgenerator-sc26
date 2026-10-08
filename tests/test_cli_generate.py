@@ -11,11 +11,16 @@ import httpx
 import pytest
 
 from app.cli import main
+from app.compendium.errors import PartsUnavailableError, TopicNotFoundError
+from app.domain.models import Resolution
 from app.domain.requests import GenerateRequest
+from app.service import CompendiumService
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
 from tests.conftest import ROOT
+from tests.test_llm_client import FakeBApi
+from tests.test_pipeline_llm import answer_from_evidence, make_gateway
 from tests.test_wlo_client import BASE, OPTIK, FakeRepository
 
 
@@ -190,3 +195,80 @@ def test_generate_reads_the_knowledge_collection_as_deep_and_as_full_as_asked(
     assert (knowledge["depth"], knowledge["fulltext"], knowledge["collections"]) == (1, True, 5)
     assert main(["generate", "--topic", "Optik", "--knowledge-depth", "1", *zim_args]) == 1
     assert "knowledge_depth" in capsys.readouterr().err
+
+
+def test_generate_takes_the_archives_from_zim_paths_without_zim(
+    cli_env: Path, sample_zims: dict[str, Path], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("ZIM_PATHS", ",".join(str(path) for path in sample_zims.values()))
+    get_settings.cache_clear()
+    out_file = cli_env / "optik.md"
+
+    assert main(["generate", "--topic", "Optik", "--out", str(out_file)]) == 0
+
+    assert "Optik" in out_file.read_text(encoding="utf-8")
+
+
+def test_generate_without_any_archive_stops_with_code_2(
+    cli_env: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    (cli_env / "zim").mkdir()
+    monkeypatch.setenv("ZIM_DIR", str(cli_env / "zim"))
+    get_settings.cache_clear()
+
+    with pytest.raises(SystemExit) as stopped:
+        main(["generate", "--topic", "Optik"])
+
+    assert stopped.value.code == 2
+    assert "Keine ZIM-Archive gefunden" in capsys.readouterr().err
+
+
+class Refusing:
+    """Stands in for the service of the command and refuses every request with ``error``."""
+
+    def __init__(self, error: Exception) -> None:
+        self.error = error
+
+    def generate(self, request: GenerateRequest) -> None:
+        raise self.error
+
+
+@pytest.mark.parametrize(
+    ("error", "lines"),
+    [
+        (
+            TopicNotFoundError(Resolution(query="Optick", normalized="optick", alternatives=["Optik", "Optiker"])),
+            ["Thema nicht gefunden: optick", "Vorschläge: Optik, Optiker"],
+        ),
+        (TopicNotFoundError(Resolution(query="Xqzt", normalized="xqzt")), ["Thema nicht gefunden: xqzt"]),
+        (
+            PartsUnavailableError("Teil 3 braucht ein edu-sharing-Repository (EDU_SHARING_BASE_URL)"),
+            ["Kein angefragter Teil ist erzeugbar: Teil 3 braucht ein edu-sharing-Repository (EDU_SHARING_BASE_URL)"],
+        ),
+    ],
+)
+def test_generate_explains_a_refused_request_instead_of_a_traceback(
+    cli_env: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    error: Exception,
+    lines: list[str],
+) -> None:
+    monkeypatch.setattr("app.cli.cli_service", lambda zim: Refusing(error))
+
+    assert main(["generate", "--topic", "Optick"]) == 1
+
+    assert capsys.readouterr().err.splitlines() == lines
+
+
+def test_generate_with_an_llm_reports_what_it_asked_for_and_what_it_used(
+    cli_env: Path, service: CompendiumService, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer_from_evidence)))
+    monkeypatch.setattr("app.cli.cli_service", lambda zim: service)
+
+    assert main(["generate", "--topic", "Optik", "--generation", "llm-fast"]) == 0
+
+    [line] = [line for line in capsys.readouterr().err.splitlines() if line.startswith("LLM: ")]
+    assert "| Generierung angefordert llm-fast, verwendet llm-fast |" in line
+    assert "| Aufrufe: 0 |" not in line and "| Rückfälle: " in line
