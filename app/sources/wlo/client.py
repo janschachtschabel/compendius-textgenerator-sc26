@@ -50,8 +50,11 @@ CUT_TIME = "das Zeitbudget der Anfrage war erschöpft"
 CUT_PAGES = "eine Liste endet nach {count} Materialien, der Obergrenze des Dienstes"
 CUT_REPEATED = "das Repository lieferte eine Seite einer Liste ein zweites Mal"
 ATTEMPTS = 2  # the repository occasionally drops a connection; the same request a moment later works
-# An answer is read up to this many bytes (audit 2026-10-03, F12): a page of 100 references with all their properties
-# and the text of a long material stay far below it
+# An answer is read up to this many bytes (audit 2026-10-03, F12). Measured on the staging repository on 2026-10-08:
+# a page of 100 references of the Optik collection with all their properties is 895 KB unpacked (148 KB in gzip),
+# the texts of its materials stay below 32 KB. Parsed, JSON of many small objects takes 19 times its size, so at
+# this bound a faulty repository could still cost a worker some 600 MB per answer; one collection is too few to
+# lower it on (review of 2026-10-08)
 MAX_ANSWER_BYTES = 32 * 1024 * 1024
 _BODY_EXCERPT = 200
 _DEFAULT_PORTS = {"http": 80, "https": 443}

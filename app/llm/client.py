@@ -57,8 +57,9 @@ REASONING_ALLOWANCE = 1000
 # No call spends more: the largest windows hold about a million tokens. A broken or hostile gateway's usage of 2^63
 # raised out of the budget store and stood in the day's counter until midnight (audit 2026-09-28, KO-26)
 MAX_USAGE = 10_000_000
-# An answer is read up to this many bytes (audit 2026-10-03, F12); a completion of the longest output this service
-# asks for stays far below it
+# An answer is read up to this many bytes (audit 2026-10-03, F12). A completion holds at most the output limit of
+# its call, 4,000 tokens or some 16 KB of text for the longest block (MAX_FULL_OUTPUT_TOKENS); the model list was
+# not measured. Parsed, JSON of many small objects takes 19 times its size (review of 2026-10-08)
 MAX_ANSWER_BYTES = 16 * 1024 * 1024
 _KEPT_HEADERS = frozenset({"content-type", "retry-after"})  # what the attempts read of an answer's headers
 
