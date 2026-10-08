@@ -1,0 +1,240 @@
+{
+ "messung": "M77",
+ "datum": "2026-10-08",
+ "skript": "docs/entwicklung/messung/mc_reasoning.py zuordnung llm_50x250 llm_50x250z (Durchgang 4: umgekehrt)",
+ "stand": "6fcd28f (eingefroren), OpenAI direkt, gpt-6-luna, reasoning_effort low, LLM_MAX_CONCURRENCY=4",
+ "wege": {
+  "llm_50x250": "JSON-Objekt (Prompt v2, ausgeliefert bis 2.13)",
+  "llm_50x250z": "eine Zeile je Absatz (Prompt v3)"
+ },
+ "durchgaenge": [
+  {
+   "durchgang": 1,
+   "reihenfolge": [
+    "llm_50x250",
+    "llm_50x250z"
+   ],
+   "ergebnis": {
+    "llm_50x250": {
+     "macro_f1": 0.6906623569546164,
+     "micro_f1": 0.8072866730584851,
+     "misassigned": 105,
+     "assigned": 526,
+     "tokens": 95433,
+     "completion": 14950,
+     "calls": 18,
+     "fallback": 0,
+     "paragraphs": 595,
+     "seconds": 165.8,
+     "seconds_per_topic": {
+      "Barockliteratur": 25.95,
+      "Bruchrechnung": 11.42,
+      "Demokratie": 19.92,
+      "Französische Revolution": 12.17,
+      "Klimawandel": 12.88,
+      "Optik": 23.26,
+      "Photosynthese": 20.06,
+      "Programmiersprache": 13.69,
+      "Säure-Base-Konzepte": 10.73,
+      "Sinfonie": 15.7
+     }
+    },
+    "llm_50x250z": {
+     "macro_f1": 0.6706056718536009,
+     "micro_f1": 0.7904761904761906,
+     "misassigned": 118,
+     "assigned": 533,
+     "tokens": 93362,
+     "completion": 13185,
+     "calls": 18,
+     "fallback": 0,
+     "paragraphs": 595,
+     "seconds": 107.1,
+     "seconds_per_topic": {
+      "Barockliteratur": 7.34,
+      "Bruchrechnung": 9.19,
+      "Demokratie": 11.9,
+      "Französische Revolution": 11.75,
+      "Klimawandel": 12.04,
+      "Optik": 12.11,
+      "Photosynthese": 10.5,
+      "Programmiersprache": 11.57,
+      "Säure-Base-Konzepte": 8.82,
+      "Sinfonie": 11.87
+     }
+    }
+   }
+  },
+  {
+   "durchgang": 2,
+   "reihenfolge": [
+    "llm_50x250",
+    "llm_50x250z"
+   ],
+   "ergebnis": {
+    "llm_50x250": {
+     "macro_f1": 0.6672057796574478,
+     "micro_f1": 0.7736943907156673,
+     "misassigned": 117,
+     "assigned": 517,
+     "tokens": 95511,
+     "completion": 15028,
+     "calls": 18,
+     "fallback": 1,
+     "paragraphs": 595,
+     "seconds": 149.2,
+     "seconds_per_topic": {
+      "Barockliteratur": 16.26,
+      "Bruchrechnung": 11.31,
+      "Demokratie": 13.3,
+      "Französische Revolution": 11.8,
+      "Klimawandel": 15.89,
+      "Optik": 16.27,
+      "Photosynthese": 16.76,
+      "Programmiersprache": 19.28,
+      "Säure-Base-Konzepte": 13.2,
+      "Sinfonie": 15.18
+     }
+    },
+    "llm_50x250z": {
+     "macro_f1": 0.6621988782962147,
+     "micro_f1": 0.779047619047619,
+     "misassigned": 124,
+     "assigned": 533,
+     "tokens": 92400,
+     "completion": 12223,
+     "calls": 18,
+     "fallback": 0,
+     "paragraphs": 595,
+     "seconds": 105.0,
+     "seconds_per_topic": {
+      "Barockliteratur": 9.22,
+      "Bruchrechnung": 9.76,
+      "Demokratie": 12.1,
+      "Französische Revolution": 12.84,
+      "Klimawandel": 13.08,
+      "Optik": 12.84,
+      "Photosynthese": 9.18,
+      "Programmiersprache": 9.64,
+      "Säure-Base-Konzepte": 11.18,
+      "Sinfonie": 5.14
+     }
+    }
+   }
+  },
+  {
+   "durchgang": 3,
+   "reihenfolge": [
+    "llm_50x250",
+    "llm_50x250z"
+   ],
+   "ergebnis": {
+    "llm_50x250": {
+     "macro_f1": 0.6638576545248331,
+     "micro_f1": 0.7896253602305476,
+     "misassigned": 113,
+     "assigned": 524,
+     "tokens": 95223,
+     "completion": 14740,
+     "calls": 18,
+     "fallback": 5,
+     "paragraphs": 595,
+     "seconds": 145.9,
+     "seconds_per_topic": {
+      "Barockliteratur": 13.53,
+      "Bruchrechnung": 13.13,
+      "Demokratie": 16.29,
+      "Französische Revolution": 14.35,
+      "Klimawandel": 17.79,
+      "Optik": 16.39,
+      "Photosynthese": 14.18,
+      "Programmiersprache": 13.29,
+      "Säure-Base-Konzepte": 12.26,
+      "Sinfonie": 14.71
+     }
+    },
+    "llm_50x250z": {
+     "macro_f1": 0.7053013008471909,
+     "micro_f1": 0.7999999999999999,
+     "misassigned": 110,
+     "assigned": 528,
+     "tokens": 92742,
+     "completion": 12565,
+     "calls": 18,
+     "fallback": 0,
+     "paragraphs": 595,
+     "seconds": 102.0,
+     "seconds_per_topic": {
+      "Barockliteratur": 9.54,
+      "Bruchrechnung": 9.67,
+      "Demokratie": 12.63,
+      "Französische Revolution": 12.78,
+      "Klimawandel": 9.5,
+      "Optik": 12.06,
+      "Photosynthese": 9.68,
+      "Programmiersprache": 7.09,
+      "Säure-Base-Konzepte": 9.22,
+      "Sinfonie": 9.79
+     }
+    }
+   }
+  },
+  {
+   "durchgang": 4,
+   "reihenfolge": [
+    "llm_50x250z",
+    "llm_50x250"
+   ],
+   "ergebnis": {
+    "llm_50x250z": {
+     "macro_f1": 0.6881069298906233,
+     "micro_f1": 0.7927063339731285,
+     "misassigned": 112,
+     "assigned": 525,
+     "tokens": 92848,
+     "completion": 12671,
+     "calls": 18,
+     "fallback": 0,
+     "paragraphs": 595,
+     "seconds": 112.8,
+     "seconds_per_topic": {
+      "Barockliteratur": 22.26,
+      "Bruchrechnung": 4.78,
+      "Demokratie": 12.39,
+      "Französische Revolution": 11.35,
+      "Klimawandel": 10.79,
+      "Optik": 12.32,
+      "Photosynthese": 9.47,
+      "Programmiersprache": 9.54,
+      "Säure-Base-Konzepte": 8.85,
+      "Sinfonie": 11.09
+     }
+    },
+    "llm_50x250": {
+     "macro_f1": 0.6842672269649903,
+     "micro_f1": 0.7923076923076923,
+     "misassigned": 111,
+     "assigned": 523,
+     "tokens": 95829,
+     "completion": 15346,
+     "calls": 18,
+     "fallback": 2,
+     "paragraphs": 595,
+     "seconds": 121.6,
+     "seconds_per_topic": {
+      "Barockliteratur": 9.03,
+      "Bruchrechnung": 10.67,
+      "Demokratie": 14.17,
+      "Französische Revolution": 10.22,
+      "Klimawandel": 12.62,
+      "Optik": 14.84,
+      "Photosynthese": 14.05,
+      "Programmiersprache": 11.87,
+      "Säure-Base-Konzepte": 11.13,
+      "Sinfonie": 13.01
+     }
+    }
+   }
+  }
+ ]
+}

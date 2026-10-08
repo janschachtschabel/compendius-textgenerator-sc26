@@ -3826,3 +3826,109 @@ kamen bei beiden 3.600 Tokens aus dem Cache, nach weiteren 40 Minuten bei keinem
 nicht. Ob die b-api den Parameter durchreicht, ist damit ohne Belang.
 
 **Ergebnis:** Entscheidungsvorlage, Punkt 15. Rohdaten: `m75_tempo.json`.
+
+## M76 Ein Deckel für die Prüfung von Teil 2: was er streichen würde (08.10.2026)
+
+Jan, 08.10.2026, zu Punkt 15f: „bei den entscheidungsfragen teil-2-prüfung nochmal genauer nachmessen“. M75 hatte aus
+den Daten von M59 geschlossen, dass sechs breite Themen den Großteil der Prüftokens brauchen, und einen Deckel
+vorgeschlagen: nur die ersten N Elemente prüfen. `mc_teil2_deckel.py` erzeugt im Einmal-Container (eingefrorener
+Stand `6fcd28f`, OpenAI direkt) je Thema Teil 2 in `best-quality` mit der Prüfung aller Elemente, wie ausgeliefert,
+und schneidet dabei die Elemente in der Reihenfolge der Prüfung mit (nach den Punkten der Regeln absteigend), ihre
+Noten und die Darstellung. Für jeden Deckel N rechnet es mit derselben Darstellung (`render_curricula`) nach, was
+Teil 2 zeigte, wenn nur die ersten N geprüft und die übrigen weggelassen würden. Gezählt sind die Elemente, die als
+eigene Zeile gedruckt werden. Acht breite Themen von M75 und vier mittlere:
+
+| Thema | geprüft | verworfen | gedruckt | Tokens | Deckel 120 | 240 | 360 | 480 | 600 |
+|---|---|---|---|---|---|---|---|---|---|
+| Demokratie | 800 | 38 | 489 | 66.200 | −489 | −422 | −308 | −233 | −157 |
+| Elektrischer Strom | 769 | 53 | 520 | 49.700 | −455 | −364 | −282 | −194 | −104 |
+| Chemie im Alltag | 679 | 205 | 183 | 44.500 | −183 | −182 | −124 | −78 | −43 |
+| Klimaanpassung in Städten | 664 | 615 | 10 | 49.100 | −8 | −8 | −4 | −4 | −1 |
+| Säure-Base-Konzepte | 607 | 67 | 403 | 45.500 | −340 | −257 | −160 | −94 | −5 |
+| Zelle (Biologie) | 461 | 115 | 243 | 30.200 | −208 | −125 | −42 | | |
+| Edelgase | 352 | 175 | 52 | 24.800 | −32 | −20 | | | |
+| Photosynthese | 239 | 1 | 192 | 16.300 | −94 | | | | |
+| Optik | 145 | 1 | 114 | 9.500 | −25 | | | | |
+| Französische Revolution | 40 | 0 | 26 | 4.100 | | | | | |
+| Bruchrechnung | 5 | 0 | 3 | 800 | | | | | |
+| zusammen | 4.761 | 1.270 | 2.235 | 340.800 | −1.834 | −1.378 | −920 | −603 | −310 |
+
+*Nachhaltigkeit im Chemieunterricht* fand kein Element. Die Spalten des Deckels nennen die gedruckten Elemente, die
+wegfielen; ein leeres Feld: das Thema hat nicht mehr Elemente. **Jedes wegfallende Element hatte die Note „passt“**:
+Was die Prüfung verwirft, wird ohnehin nicht gedruckt, der Deckel streicht nur, was sie bestätigt hätte. Anteilig an
+den geprüften Elementen spart ein Deckel von 600 rund 37.900 Tokens (11 %) und streicht 310 von 2.235 Zeilen (14 %),
+einer von 360 spart 131.400 (39 %) und streicht 920 (41 %). Ließe ein Deckel den Rest ungeprüft stehen, statt ihn
+wegzulassen, kämen die Elemente zurück, die die Prüfung verwirft: insgesamt 27 %, bei *Klimaanpassung in Städten*
+93 %.
+
+Die Zahlen von M75 stammen aus M59: *Edelgase* hatte dort 2.632 Elemente und 176.000 Tokens, heute 352 und 24.800 (der
+Häufigkeitsfilter von D80 und die engeren Suchwörter seither). Das breiteste Thema ist jetzt *Demokratie* mit 800
+Elementen und 66.200 Tokens, gut ein Drittel des Budgets von `best-quality`.
+
+**Ergebnis:** kein Deckel (Punkt 15f). Was er spart, kostet bestätigte Lehrplanbezüge im selben Verhältnis. Rohdaten:
+`m76_teil2_deckel.json`.
+
+## M77 Die Zuordnung antwortet in Zeilen statt in JSON (08.10.2026)
+
+Jan, 08.10.2026: „bei den profilen max-quality-generated oder best-coverage-generated die zuordnung auf
+regelbasierung umzustellen würde die qualität senken - auch wenn es spürbar schneller wird. aber ist das nicht
+parallelisierbar mit mehreren workern? zumindest beim zeitfaktor sollten doch auch mit llm verbesserungen möglich
+sein“. Die Stapel der Zuordnung laufen schon alle zugleich (M75: kein Aufruf wartete), kleinere Stapel ordnen
+schlechter zu (M75, Punkt 15d). Ein Aufruf dauert so lange, wie das Modell schreibt, rund 100 Tokens je Sekunde: Die
+Antwort ist der Hebel. Bisher ein JSON-Objekt, je Absatz `"p12": ["fachinhalte", 0.8]`; gemessen wird eine Zeile je
+Absatz, `p12 fachinhalte 8`, die Sicherheit als Ziffer von 0 bis 9. Sonst gleich: dieselben Bausteine, Regeln und
+Absätze (50 à 250 Zeichen). `mc_reasoning.py zuordnung llm_50x250 llm_50x250z` am Gold (595 Absätze, zehn Themen),
+eingefrorener Stand, OpenAI direkt, vier Durchgänge; im vierten liefen die Zeilen zuerst:
+
+| Durchgang | macro-F1 JSON | Zeilen | micro-F1 JSON | Zeilen | Rückfälle JSON | Zeilen | Zeit JSON | Zeilen |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 0,691 | 0,671 | 0,807 | 0,790 | 0 | 0 | 165,8 s | 107,1 s |
+| 2 | 0,667 | 0,662 | 0,774 | 0,779 | 1 | 0 | 149,2 s | 105,0 s |
+| 3 | 0,664 | 0,705 | 0,790 | 0,800 | 5 | 0 | 145,9 s | 102,0 s |
+| 4 (Zeilen zuerst) | 0,684 | 0,688 | 0,792 | 0,793 | 2 | 0 | 121,6 s | 112,8 s |
+| Mittel | 0,676 | 0,682 | 0,791 | 0,791 | 8 | 0 | 145,6 s | 106,7 s |
+
+Rückfälle sind Absätze, die eine Antwort ausließ oder einem unbekannten Baustein gab; die Regeln entschieden sie.
+Tokens je Durchgang: JSON 95.500, davon 15.000 Ausgabe; Zeilen 92.800 (−2,8 %), davon 12.700 Ausgabe (−16 %).
+
+Die Zeit hängt an der Reihenfolge: Wer im Container zuerst läuft, zahlt beim ersten Thema das Aufwärmen (13 bis 26 s
+statt 7 bis 10 s), und JSON brauchte als Zweites je Thema 12,5 s, als Erstes 14,7 bis 15,5 s. Ohne das erste Thema
+brauchen die Zeilen je Thema 10,1 bis 11,1 s, gleich an welcher Stelle; JSON 12,5 bis 15,5 s. Die Zuordnung braucht
+in Zeilen also ein Fünftel (Zeilen zuerst) bis knapp ein Drittel (JSON zuerst) weniger Zeit.
+
+**Ergebnis:** gebaut als Version 3 des Prompts (D93): Güte in der Streuung (macro-F1 im Mittel 0,682 statt 0,676,
+micro-F1 gleich), keine ausgelassenen Absätze, 16 % weniger Ausgabe, ein Fünftel bis ein Drittel weniger Zeit. Ein
+JSON-Objekt liest der Dienst weiter, falls ein Modell trotzdem so antwortet. Rohdaten: `m77_antwortformat.json`.
+
+## M78 Zeit und Tokens nach dem Bau (08.10.2026)
+
+Was D93 an Zeit gewinnt, im Ablauf des Dienstes: `mc_tempo.py --variant=seq` wie in M75, dieselben neun Themen und
+fünf Profile, jetzt mit dem gebauten Stand (Teil 2 neben Teil 1, Zuordnung in Zeilen, 20 Plätze als Vorgabe von
+OpenAI), Auswertung mit `mc_tempo_auswertung.py`. Mediane über die Themen:
+
+| Profil | Anfrage M75 | M78 | Zuordnung M75 | M78 | Ausgabe der Zuordnung je Absatz M75 | M78 |
+|---|---|---|---|---|---|---|
+| `llm-free` | 7,3 s (2,3 bis 14,5) | 4,7 s (2,5 bis 10,3) | – | – | – | – |
+| `balanced` | 5,1 s (2,1 bis 9,1) | 4,4 s (2,5 bis 8,0) | – | – | – | – |
+| `best-quality` | 20,4 s (16,0 bis 25,7) | 15,1 s (13,4 bis 39,2) | 13,8 s | 11,9 s | 22,2 | 17,8 |
+| `best-quality-generated` | 33,9 s (29,5 bis 37,9) | 29,8 s (24,0 bis 36,7) | 13,8 s | 12,4 s | 21,2 | 17,6 |
+| `best-coverage-generated` | 37,3 s (34,3 bis 42,8) | 36,7 s (31,2 bis 40,3) | 15,1 s | 11,6 s | 21,2 | 17,5 |
+
+- Teil 2 lief neben der Zuordnung: Seine Prüfung endete 4,7 bis 5,7 s nach Beginn der Anfrage, in M75 lag sie mit
+  2,2 bis 2,4 s am Ende.
+- Die Zuordnung schreibt je Absatz 17 bis 20 % weniger und ist kürzer, obwohl die Korpora diesmal teils größer waren
+  (Median 374 statt 285 Absätze in `best-quality`; die Frage N nennt je Lauf andere Artikel). Kein Absatz fiel an die
+  Regeln zurück, kein Aufruf wartete auf einen Platz, höchstens 10 liefen zugleich.
+- Das Schreiben ist unverändert und dauerte so lange, wie der Anbieter schrieb: in `best-quality-generated` 13,7 statt
+  14,6 s, in `best-coverage-generated` 21,5 statt 17,8 s bei gleich viel Ausgabe (13.700 statt 13.300 Tokens) und
+  84 statt 92 Tokens je Sekunde. Dort hob der langsamere Anbieter die gewonnenen rund 6 s fast auf.
+- Ein Lauf von `best-quality` brauchte 39 s: Das Thema aufzulösen dauerte 15 s ohne einen weiteren KI-Aufruf (dasselbe
+  Thema in den beiden folgenden Profilen 2,0 und 2,2 s); dazu kam ein Stapel der Zuordnung mit 20 s.
+- `llm-free` und `balanced` haben auf ihrem Weg keinen geänderten Schritt; ihre Unterschiede kommen aus dem Archiv
+  (Korpus in `llm-free` 1,5 statt 2,6 s).
+- Tokens je Anfrage folgen der Größe des Korpus: `best-quality` 56.700 statt 48.500 bei 31 % mehr Absätzen,
+  `best-quality-generated` 67.900 statt 75.600, `best-coverage-generated` 91.800 statt 90.100.
+
+**Ergebnis:** `best-quality` rund 5 s schneller (−26 %), `best-quality-generated` rund 4 s (−12 %);
+`best-coverage-generated` gewann in Zuordnung und Teil 2 rund 6 s, die das langsamere Schreiben dieses Laufs fast
+aufbrauchte. Rohdaten: `m78_tempo_nachher.json`.

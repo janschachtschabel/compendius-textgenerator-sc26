@@ -422,9 +422,10 @@ Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in `bes
 60.000; die Grenze schützt vor Ausreißern, die meisten Anfragen bleiben weit darunter. Das Tagesbudget gilt für alle
 Anfragen und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück.
 
-Stand M75 (08.10.2026, Teil 1 und 2, die neun Themen von M52, Median): `balanced` 320 Tokens und 5,1 s,
-`best-quality` 48.500 und 20,4 s, `best-quality-generated` 75.600 und 33,9 s, `best-coverage-generated` 90.100 und
-37,3 s. Wohin Zeit und Tokens gehen und was sich daran sparen ließe: Punkt 15.
+Stand M78 (08.10.2026, nach D93, Teil 1 und 2, die neun Themen von M52, Median): `balanced` 313 Tokens und 4,4 s,
+`best-quality` 56.700 und 15,1 s, `best-quality-generated` 67.900 und 29,8 s, `best-coverage-generated` 91.800 und
+36,7 s; die Tokens folgen der Größe des Korpus, die von Lauf zu Lauf streut. Vor D93 (M75): 320 und 5,1 s, 48.500 und
+20,4 s, 75.600 und 33,9 s, 90.100 und 37,3 s. Wohin Zeit und Tokens gehen und was sich daran sparen ließ: Punkt 15.
 
 ## Die Empfehlungen im Einzelnen
 
@@ -943,21 +944,45 @@ Passung 4,56 und Nutzen 4,31.
 
     | # | Vorschlag | Zeit | Tokens | Güte | Empfehlung |
     |---|---|---|---|---|---|
-    | a | Gleichzeitige Aufrufe je Anbieter: openai 20, academiccloud 2; `LLM_MAX_CONCURRENCY` überschreibt beide (Jans Vorschlag) | allein nichts, da kein Schritt mehr als 10 Aufrufe stellt; nötig für b und c und wenn sich Anfragen einen Worker teilen | – | – | bauen |
-    | b | Teil 2 neben Teil 1, sobald die Artikelwahl steht | −1,4 bis −2,2 s in `best-quality`, `best-quality-generated`, `best-coverage-generated` | – | gleich: dieselben Prompts, gemessen ohne Rückfall | bauen |
-    | c | Teil 3 von Anfang an neben dem Rest | −0,8 bis −5,9 s, wenn eine Sammlung ohne Cache gelesen wird, in jedem Profil | – | gleich | bauen |
+    | a | Gleichzeitige Aufrufe je Anbieter: openai 20, academiccloud 2; `LLM_MAX_CONCURRENCY` überschreibt beide (Jans Vorschlag) | allein nichts, da kein Schritt mehr als 10 Aufrufe stellt; nötig für b und c und wenn sich Anfragen einen Worker teilen | – | – | gebaut (D93) |
+    | b | Teil 2 neben Teil 1, sobald die Artikelwahl steht | −1,4 bis −2,2 s in `best-quality`, `best-quality-generated`, `best-coverage-generated` | – | gleich: dieselben Prompts, gemessen ohne Rückfall | gebaut (D93) |
+    | c | Teil 3 von Anfang an neben dem Rest | −0,8 bis −5,9 s, wenn eine Sammlung ohne Cache gelesen wird, in jedem Profil | – | gleich | gebaut (D93) |
     | d | Zuordnung in Stapeln von 25 statt 50 | −4 s | +23 % | macro-F1 0,635 statt 0,684, zweimal ausgelassene Absätze | nicht bauen |
     | e | Absatzkopf der Zuordnung kompakter (Artikel und Abschnitt nur beim Wechsel) | – | −7,5 % der Zuordnung, rund 3.500 Eingabe-Tokens je Anfrage | in der Streuung, im Mittel 0,02 macro-F1 darunter | nicht vordringlich |
-    | f | Teil-2-Prüfung auf die ersten N Elemente begrenzen (etwa 600) | bei breiten Themen bis −14 s | 54 % der Prüftokens stecken in 6 von 57 Themen (*Edelgase* 176.000); dort bis −135.000 | breite Themen zeigen weniger Elemente | erst messen, was gedruckt würde, dann entscheiden |
-    | g | `best-coverage-generated` mit Regel-Zuordnung (Punkt 12d) | rund −14 s | rund −38.000 (40 %) | Passung 4,56 statt 4,81, Nutzen 4,31 statt 4,81 (M47) | Jans Entscheidung, bisher nein |
+    | f | Teil-2-Prüfung auf die ersten N Elemente begrenzen (etwa 600) | wenig: Teil 2 läuft jetzt neben Teil 1 | M76, zwölf Themen: ein Deckel von 600 spart 11 % der Prüftokens, einer von 360 39 % | jedes Element, das er streicht, hatte die Note „passt“: bei 600 fallen 310 von 2.235 gedruckten weg, bei 360 920 | nicht bauen (M76) |
+    | g | `best-coverage-generated` mit Regel-Zuordnung (Punkt 12d) | rund −14 s | rund −38.000 (40 %) | Passung 4,56 statt 4,81, Nutzen 4,31 statt 4,81 (M47) | nein (Jan, 08.10.2026: „würde die qualität senken“) |
     | h | Nachzügler doppelt stellen | selten (einer unter rund 1.100 Aufrufen, dann 100 statt 10 s) | wenige | gleich | optional, später |
     | i | Cache-Haltezeit 24 h beim Anbieter (`prompt_cache_retention`) | – | keine: nach 20 min Pause noch im Cache, nach weiteren 40 min auch mit dem Parameter nicht mehr | gleich | nicht bauen |
-    | j | academiccloud mit 2 Plätzen | `best-quality-generated` 100 s, `best-coverage-generated` 119 s schon mit der Geschwindigkeit von `gpt-6-luna` | – | bei `REQUEST_TIMEOUT_S` 120 s Rückfälle | dann `REQUEST_TIMEOUT_S` anheben oder `balanced`/`best-quality` |
+    | j | academiccloud mit 2 Plätzen | `best-quality-generated` 100 s, `best-coverage-generated` 119 s schon mit der Geschwindigkeit von `gpt-6-luna` | – | bei 120 s Frist Rückfälle | gebaut (D93): Frist je Anbieter, academiccloud 600 s, openai 300 s |
     | k | `llm-free`: Artikel parallel lesen und nachschlagen | kalt 2 bis 15 s, davon ein Teil | – | gleich | erst messen |
+    | l | Zuordnung antwortet in Zeilen (`p12 fachinhalte 8`) statt in einem JSON-Objekt (M77) | ein Fünftel bis knapp ein Drittel der Zuordnung | −2,8 % der Zuordnung, davon Ausgabe −16 % | gleich: macro-F1 0,682 statt 0,676, micro-F1 0,791 wie zuvor; kein ausgelassener Absatz (JSON: 8) | gebaut (D93) |
 
-    Kurz: Ohne Abstriche an der Güte lassen sich die LLM-Profile um rund 2 s und mit Sammlung um bis zu 8 s
-    beschleunigen (a bis c); das ist wenig, weil Zuordnung und Schreiben auf das Modell warten, nicht auf den Dienst.
-    Mehr Tempo und spürbar weniger Tokens gibt es nur gegen Güte (d, g) oder mit anderer Ausgabe (f).
+    **Nach dem Bau** (M78, dieselben neun Themen und Profile wie M75, 20 Plätze): `best-quality` 15,1 statt 20,4 s,
+    `best-quality-generated` 29,8 statt 33,9 s, `best-coverage-generated` 36,7 statt 37,3 s. Die Zuordnung schreibt je
+    Absatz 17 bis 20 % weniger und war in allen drei Profilen kürzer (11,6 bis 12,4 statt 13,8 bis 15,1 s); Teil 2
+    endete 4,7 bis 5,7 s nach Beginn neben ihr statt mit 2,3 s am Ende; kein Absatz fiel an die Regeln zurück. In
+    `best-coverage-generated` schrieb der Anbieter in diesem Lauf langsamer (84 statt 92 Tokens je Sekunde, längster
+    Baustein 21,4 statt 17,8 s) und hob die gewonnenen rund 6 s fast auf. Schneller als ihr längster Aufruf wird keine
+    Stufe: Die Stapel der Zuordnung und die Bausteine des Schreibens laufen schon alle zugleich (Jans Frage nach mehr
+    Workern); mehr Worker-Prozesse helfen, wenn mehrere Anfragen zugleich kommen, nicht der einzelnen.
+
+    **Kaputte Antworten** (Jan: „eventuell müßte man auch fälle einplanen bei denen eine llm rückmeldung fehlschlägt
+    oder nicht sauber geparst werden kann“): Jeder Schritt mit LLM fällt bei einem Fehler des Aufrufs, erschöpftem
+    Budget, abgelaufener Frist oder unlesbarer Antwort auf seine Regeln zurück und nennt den Grund im Audit; der Client
+    wiederholt Aufrufe bei 429 und den Gateway-Fehlern 500 und 502 bis 504, die Zuordnung fragt bei unlesbarer Antwort
+    einmal nach (V4). Ein neuer Test beantwortet jede Frage mit acht Arten kaputter Antworten (leer, Prosa, leeres
+    Objekt, Liste, `null`, abgeschnittenes JSON, falsche Typen, unbekannte Schlüssel), in jedem Profil mit LLM und an
+    jedem Endpunkt, der fragt: nie ein Fehler, jeder Rückfall mit Grund. Eine Lücke fand er beim Schreiben in den
+    Profilen mit Modellwissen: Dort stand jede nicht leere Antwort als gekennzeichneter Text im Kompendium, auch JSON und
+    eine Antwort, die das Ausgabelimit mitten im Satz abschnitt. Jetzt gilt JSON nicht als Text (Rückfall mit Grund),
+    und von einer abgeschnittenen Antwort fällt der unvollendete Satz weg (`cut_off` im Audit). Nicht gebaut: Absagen
+    des Modells („dazu kann ich nichts sagen“) an Wörtern zu erkennen wäre unzuverlässig; in den gespeicherten
+    Messtexten kam keine vor.
+
+    Kurz: Gebaut sind a bis c, j und l (D93): `best-quality` rund 5 s und `best-quality-generated` rund 4 s schneller,
+    `best-coverage-generated` in Zuordnung und Teil 2 rund 6 s, mit Sammlung bis zu 6 s mehr, wenn Teil 3 ohne Cache
+    liest. Zuordnung und Schreiben warten auf das Modell; mehr Tempo und spürbar weniger Tokens gäbe es nur gegen Güte
+    (d, g) oder mit weniger bestätigten Lehrplanbezügen (f).
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

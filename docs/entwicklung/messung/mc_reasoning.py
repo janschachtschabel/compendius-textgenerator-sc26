@@ -15,8 +15,9 @@ Schritte:
   gründliche Wahl); richtig, wenn der Titel erwartet ist oder das Ziel einer Weiterleitung auf einen erwarteten Titel.
 - zuordnung <weg>...: matcher=llm am Gold von eval/gold (das Verzeichnis nach /gold gebunden: -v <repo>/eval/gold:/gold),
   wie mc_llm_sparvarianten.py (M12): je Goldthema der Korpus nach den Regeln, davon die benoteten Absätze; Wege rules
-  (hybrid_light), llm (50 Absätze à 400 Zeichen je Aufruf), llm_100x400, llm_50x250, llm_25x250 und llm_50x250k
-  (M75: Artikel und Abschnitt nur beim Wechsel genannt); macro- und micro-F1, Tokens, Sekunden. Dazu
+  (hybrid_light), llm (50 Absätze à 400 Zeichen je Aufruf), llm_100x400, llm_50x250, llm_25x250, llm_50x250k
+  (M75: Artikel und Abschnitt nur beim Wechsel genannt) und llm_50x250z (M77: Antwort als Zeilen „p1 fachinhalte 8“
+  statt JSON); macro- und micro-F1, Tokens, Sekunden. Dazu
   -e LLM_MAX_TOKENS_PER_REQUEST=400000 -e LLM_MAX_CONCURRENCY=4, damit kein Budget eingreift.
 - lehrplan '<themen.json>': Teil 2 in best-quality an den Themen von M57 (je Art eine Liste), mit der LLM-Prüfung
   jedes Elements; je Element IRI, Stichwort, Fundort und Note, dazu Tokens und Sekunden.
@@ -109,8 +110,32 @@ def zuordnung(ways):
         "llm_50x250": (50, 250),
         "llm_25x250": (25, 250),
         "llm_50x250k": (50, 250),
+        "llm_50x250z": (50, 250),
     }
     shipped_render = llm_assignment.render_messages
+    shipped_parse = llm_assignment.parse_assignment
+    newline = chr(10)
+    base = get_prompt("paragraph_assignment").system
+    lines_base = base[: base.index("Antworte ausschließlich")] + (
+        "Antworte ausschließlich mit einer Zeile je Absatz: Absatz-ID, Baustein-Schlüssel oder keiner und deine "
+        "Sicherheit von 0 bis 9, durch Leerzeichen getrennt, zum Beispiel:" + newline + "p1 fachinhalte 8" + newline
+        + "p2 keiner 9"
+    )
+
+    def render_lines(template, topic, chunks, sources):
+        """M77: the answer as one short line per paragraph instead of a JSON object; the rest as shipped."""
+        messages = shipped_render(template, topic, chunks, sources)
+        messages[0]["content"] = messages[0]["content"].replace(base, lines_base, 1)
+        messages[1]["content"] = messages[1]["content"].replace("Gib das JSON-Objekt zurück.", "Gib die Zeilen zurück.")
+        return messages
+
+    def parse_lines(text):
+        parsed = {}
+        for line in (text or "").splitlines():
+            parts = line.replace(":", " ").replace(",", " ").split()
+            if len(parts) >= 3 and parts[0].startswith("p") and parts[0][1:].isdigit() and parts[2][:1].isdigit():
+                parsed[parts[0]] = (llm_assignment.block_key(parts[1]), int(parts[2][0]) / 9)
+        return parsed or None
 
     def render_compact(template, topic, chunks, sources):
         """M75: article and section named once where they change, not before every paragraph."""
@@ -144,7 +169,8 @@ def zuordnung(ways):
     for way in ways:
         strategy = "hybrid_light" if way == "rules" else "llm"
         llm_assignment.BATCH_SIZE, llm_assignment.TEXT_CHARS = sizes.get(way, (50, 400))
-        llm_assignment.render_messages = render_compact if way.endswith("k") else shipped_render
+        llm_assignment.render_messages = {"k": render_compact, "z": render_lines}.get(way[-1], shipped_render)
+        llm_assignment.parse_assignment = parse_lines if way.endswith("z") else shipped_parse
         evals, per_topic, totals = [], {}, {"tokens": 0, "completion": 0, "calls": 0, "fallback": 0, "paragraphs": 0}
         started_all = time.perf_counter()
         for gold, alignment, pool in pools:

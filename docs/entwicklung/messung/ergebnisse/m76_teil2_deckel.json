@@ -1,0 +1,549 @@
+{
+ "messung": "M76",
+ "datum": "2026-10-08",
+ "skript": "docs/entwicklung/messung/mc_teil2_deckel.py",
+ "stand": "6fcd28f (eingefroren), OpenAI direkt, gpt-6-luna, best-quality, parts=[curricula]",
+ "deckel": [
+  120,
+  240,
+  360,
+  480,
+  600
+ ],
+ "themen": [
+  {
+   "topic": "Edelgase",
+   "rated": 352,
+   "dropped": 175,
+   "note2": 73,
+   "note1": 104,
+   "unrated": 0,
+   "printed": 52,
+   "printed_note2": 52,
+   "tokens": {
+    "prompt": 22994,
+    "completion": 1828,
+    "total": 24822,
+    "calls": 7,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 352,
+    "answered": 352,
+    "dropped": 175,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 20,
+     "lost": 32,
+     "lost_note2": 32,
+     "gained": 0,
+     "share_checked": 0.341
+    },
+    "240": {
+     "printed": 32,
+     "lost": 20,
+     "lost_note2": 20,
+     "gained": 0,
+     "share_checked": 0.682
+    }
+   }
+  },
+  {
+   "topic": "Demokratie",
+   "rated": 800,
+   "dropped": 38,
+   "note2": 575,
+   "note1": 187,
+   "unrated": 0,
+   "printed": 489,
+   "printed_note2": 489,
+   "tokens": {
+    "prompt": 62041,
+    "completion": 4131,
+    "total": 66172,
+    "calls": 16,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 800,
+    "answered": 800,
+    "dropped": 38,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 0,
+     "lost": 489,
+     "lost_note2": 489,
+     "gained": 0,
+     "share_checked": 0.15
+    },
+    "240": {
+     "printed": 67,
+     "lost": 422,
+     "lost_note2": 422,
+     "gained": 0,
+     "share_checked": 0.3
+    },
+    "360": {
+     "printed": 181,
+     "lost": 308,
+     "lost_note2": 308,
+     "gained": 0,
+     "share_checked": 0.45
+    },
+    "480": {
+     "printed": 256,
+     "lost": 233,
+     "lost_note2": 233,
+     "gained": 0,
+     "share_checked": 0.6
+    },
+    "600": {
+     "printed": 332,
+     "lost": 157,
+     "lost_note2": 157,
+     "gained": 0,
+     "share_checked": 0.75
+    }
+   }
+  },
+  {
+   "topic": "Elektrischer Strom",
+   "rated": 769,
+   "dropped": 53,
+   "note2": 542,
+   "note1": 174,
+   "unrated": 0,
+   "printed": 520,
+   "printed_note2": 520,
+   "tokens": {
+    "prompt": 45774,
+    "completion": 3959,
+    "total": 49733,
+    "calls": 14,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 769,
+    "answered": 769,
+    "dropped": 53,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 65,
+     "lost": 455,
+     "lost_note2": 455,
+     "gained": 0,
+     "share_checked": 0.156
+    },
+    "240": {
+     "printed": 156,
+     "lost": 364,
+     "lost_note2": 364,
+     "gained": 0,
+     "share_checked": 0.312
+    },
+    "360": {
+     "printed": 238,
+     "lost": 282,
+     "lost_note2": 282,
+     "gained": 0,
+     "share_checked": 0.468
+    },
+    "480": {
+     "printed": 326,
+     "lost": 194,
+     "lost_note2": 194,
+     "gained": 0,
+     "share_checked": 0.624
+    },
+    "600": {
+     "printed": 416,
+     "lost": 104,
+     "lost_note2": 104,
+     "gained": 0,
+     "share_checked": 0.78
+    }
+   }
+  },
+  {
+   "topic": "Chemie im Alltag",
+   "rated": 679,
+   "dropped": 205,
+   "note2": 317,
+   "note1": 157,
+   "unrated": 0,
+   "printed": 183,
+   "printed_note2": 183,
+   "tokens": {
+    "prompt": 41011,
+    "completion": 3503,
+    "total": 44514,
+    "calls": 13,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 679,
+    "answered": 679,
+    "dropped": 205,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 0,
+     "lost": 183,
+     "lost_note2": 183,
+     "gained": 0,
+     "share_checked": 0.177
+    },
+    "240": {
+     "printed": 1,
+     "lost": 182,
+     "lost_note2": 182,
+     "gained": 0,
+     "share_checked": 0.353
+    },
+    "360": {
+     "printed": 59,
+     "lost": 124,
+     "lost_note2": 124,
+     "gained": 0,
+     "share_checked": 0.53
+    },
+    "480": {
+     "printed": 105,
+     "lost": 78,
+     "lost_note2": 78,
+     "gained": 0,
+     "share_checked": 0.707
+    },
+    "600": {
+     "printed": 140,
+     "lost": 43,
+     "lost_note2": 43,
+     "gained": 0,
+     "share_checked": 0.884
+    }
+   }
+  },
+  {
+   "topic": "Klimaanpassung in Städten",
+   "rated": 664,
+   "dropped": 615,
+   "note2": 10,
+   "note1": 39,
+   "unrated": 0,
+   "printed": 10,
+   "printed_note2": 10,
+   "tokens": {
+    "prompt": 45702,
+    "completion": 3431,
+    "total": 49133,
+    "calls": 13,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 664,
+    "answered": 664,
+    "dropped": 615,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 2,
+     "lost": 8,
+     "lost_note2": 8,
+     "gained": 0,
+     "share_checked": 0.181
+    },
+    "240": {
+     "printed": 2,
+     "lost": 8,
+     "lost_note2": 8,
+     "gained": 0,
+     "share_checked": 0.361
+    },
+    "360": {
+     "printed": 6,
+     "lost": 4,
+     "lost_note2": 4,
+     "gained": 0,
+     "share_checked": 0.542
+    },
+    "480": {
+     "printed": 6,
+     "lost": 4,
+     "lost_note2": 4,
+     "gained": 0,
+     "share_checked": 0.723
+    },
+    "600": {
+     "printed": 9,
+     "lost": 1,
+     "lost_note2": 1,
+     "gained": 0,
+     "share_checked": 0.904
+    }
+   }
+  },
+  {
+   "topic": "Säure-Base-Konzepte",
+   "rated": 607,
+   "dropped": 67,
+   "note2": 432,
+   "note1": 108,
+   "unrated": 0,
+   "printed": 403,
+   "printed_note2": 403,
+   "tokens": {
+    "prompt": 42356,
+    "completion": 3152,
+    "total": 45508,
+    "calls": 12,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 607,
+    "answered": 607,
+    "dropped": 67,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 63,
+     "lost": 340,
+     "lost_note2": 340,
+     "gained": 0,
+     "share_checked": 0.198
+    },
+    "240": {
+     "printed": 146,
+     "lost": 257,
+     "lost_note2": 257,
+     "gained": 0,
+     "share_checked": 0.395
+    },
+    "360": {
+     "printed": 243,
+     "lost": 160,
+     "lost_note2": 160,
+     "gained": 0,
+     "share_checked": 0.593
+    },
+    "480": {
+     "printed": 309,
+     "lost": 94,
+     "lost_note2": 94,
+     "gained": 0,
+     "share_checked": 0.791
+    },
+    "600": {
+     "printed": 398,
+     "lost": 5,
+     "lost_note2": 5,
+     "gained": 0,
+     "share_checked": 0.988
+    }
+   }
+  },
+  {
+   "topic": "Nachhaltigkeit im Chemieunterricht",
+   "note": "keine Prüfung (keine Elemente)"
+  },
+  {
+   "topic": "Zelle (Biologie)",
+   "rated": 461,
+   "dropped": 115,
+   "note2": 279,
+   "note1": 67,
+   "unrated": 0,
+   "printed": 243,
+   "printed_note2": 243,
+   "tokens": {
+    "prompt": 27813,
+    "completion": 2410,
+    "total": 30223,
+    "calls": 9,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 461,
+    "answered": 461,
+    "dropped": 115,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 35,
+     "lost": 208,
+     "lost_note2": 208,
+     "gained": 0,
+     "share_checked": 0.26
+    },
+    "240": {
+     "printed": 118,
+     "lost": 125,
+     "lost_note2": 125,
+     "gained": 0,
+     "share_checked": 0.521
+    },
+    "360": {
+     "printed": 201,
+     "lost": 42,
+     "lost_note2": 42,
+     "gained": 0,
+     "share_checked": 0.781
+    }
+   }
+  },
+  {
+   "topic": "Photosynthese",
+   "rated": 239,
+   "dropped": 1,
+   "note2": 199,
+   "note1": 39,
+   "unrated": 0,
+   "printed": 192,
+   "printed_note2": 192,
+   "tokens": {
+    "prompt": 15015,
+    "completion": 1274,
+    "total": 16289,
+    "calls": 5,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 239,
+    "answered": 239,
+    "dropped": 1,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 98,
+     "lost": 94,
+     "lost_note2": 94,
+     "gained": 0,
+     "share_checked": 0.502
+    }
+   }
+  },
+  {
+   "topic": "Optik",
+   "rated": 145,
+   "dropped": 1,
+   "note2": 132,
+   "note1": 12,
+   "unrated": 0,
+   "printed": 114,
+   "printed_note2": 114,
+   "tokens": {
+    "prompt": 8646,
+    "completion": 816,
+    "total": 9462,
+    "calls": 5,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 145,
+    "answered": 145,
+    "dropped": 1,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {
+    "120": {
+     "printed": 89,
+     "lost": 25,
+     "lost_note2": 25,
+     "gained": 0,
+     "share_checked": 0.828
+    }
+   }
+  },
+  {
+   "topic": "Bruchrechnung",
+   "rated": 5,
+   "dropped": 0,
+   "note2": 3,
+   "note1": 2,
+   "unrated": 0,
+   "printed": 3,
+   "printed_note2": 3,
+   "tokens": {
+    "prompt": 736,
+    "completion": 99,
+    "total": 835,
+    "calls": 2,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 5,
+    "answered": 5,
+    "dropped": 0,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {}
+  },
+  {
+   "topic": "Französische Revolution",
+   "rated": 40,
+   "dropped": 0,
+   "note2": 28,
+   "note1": 12,
+   "unrated": 0,
+   "printed": 26,
+   "printed_note2": 26,
+   "tokens": {
+    "prompt": 3777,
+    "completion": 293,
+    "total": 4070,
+    "calls": 3,
+    "cached": 0
+   },
+   "check": {
+    "requested": "llm",
+    "used": "llm",
+    "rated": 40,
+    "answered": 40,
+    "dropped": 0,
+    "fallbacks": {},
+    "fallback": null
+   },
+   "caps": {}
+  }
+ ]
+}

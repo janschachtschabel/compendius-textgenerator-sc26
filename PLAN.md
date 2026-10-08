@@ -2216,6 +2216,28 @@ API.
   vier Kleinigkeiten, alle behoben: die Übersicht führte bei neutralem Titel nur mit Ersatz, die schreibenden Profile
   hörten den Baum nicht, der Baum eines Knotens kam mit dem Konto, die Eltern-ID ließ einen Zeilenumbruch durch, der Pfad
   wurde auch gelesen, wo nichts ihn brauchte, fehlende Teile standen nur im Log, ein Test konnte nicht scheitern.
+- **D93 (2026-10-08)** Zeit, Tokens und Ausfälle des LLM (Punkt 15 der Entscheidungsvorlage, M75 bis M78; Jan: „die
+  empfehlungen kann man umsetzen“, die Teil-2-Prüfung „nochmal genauer nachmessen“, die Zuordnung der schreibenden
+  Profile nicht auf Regeln umstellen, weil das die Güte senkt, aber „zumindest beim zeitfaktor sollten doch auch mit
+  llm verbesserungen möglich sein“, „zeitgrenzen anheben … generell damit es nicht schief geht“, und „fälle einplanen
+  bei denen eine llm rückmeldung fehlschlägt oder nicht sauber geparst werden kann“). Gebaut: Wie viele LLM-Aufrufe ein
+  Worker zugleich stellt und wie lange eine Anfrage dauern darf, hängt am Anbieter (openai 20 und 300 s, academiccloud
+  2 und 600 s); `LLM_MAX_CONCURRENCY` und `REQUEST_TIMEOUT_S` überschreiben beide, leer gilt die Vorgabe des Anbieters,
+  `API_STOP_GRACE_PERIOD` folgt mit 330 s. Teil 3 beginnt mit der Anfrage, Teil 2, sobald das Thema vorbereitet ist,
+  beide neben Teil 1; eine Anfrage, die in Teil 1 scheitert, wartet nicht auf sie, und `audit.duration_ms` nennt die
+  Dauer der ganzen Anfrage, weil die Schritte sich nun überlappen. Die Zuordnung antwortet in Zeilen
+  (`p12 fachinhalte 8`) statt in einem JSON-Objekt (Prompt Version 3; M77: Güte in der Streuung, 16 % weniger Ausgabe,
+  ein Fünftel bis knapp ein Drittel weniger Zeit, kein ausgelassener Absatz); ein JSON-Objekt liest der Dienst weiter.
+  Nach dem Bau (M78) braucht `best-quality` 15,1 statt 20,4 s, `best-quality-generated` 29,8 statt 33,9 s;
+  `best-coverage-generated` gewinnt in Zuordnung und Teil 2 rund 6 s, die ein langsamerer Anbieter beim Schreiben in
+  M78 fast aufbrauchte. Beim Schreiben gilt eine Antwort, die ein JSON-Objekt oder eine Liste ist, nicht als Text, und
+  eine Antwort, die das Ausgabelimit abschnitt, verliert den Satz, in dem sie abbrach (`cut_off` im Audit); in den
+  Profilen mit Modellwissen standen beide bisher als gekennzeichnete Sätze im Text. Ein Test beantwortet jede Frage des
+  Dienstes in jedem Profil mit LLM und an jedem Endpunkt, der fragt, mit acht Arten kaputter Antworten: nie ein Fehler,
+  jeder Rückfall mit Grund im Audit. Nicht gebaut: ein Deckel für die Teil-2-Prüfung (M76: jedes Element, das er
+  strich, hatte die Note „passt“), kleinere Stapel der Zuordnung (M75: schlechter und teurer), die Regel-Zuordnung in
+  den schreibenden Profilen (Jan), eine längere Haltezeit des Caches (M75: wirkte nicht), Absagen des Modells an
+  Wörtern zu erkennen (unzuverlässig; in den gespeicherten Messtexten kam keine vor).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
