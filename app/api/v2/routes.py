@@ -7,9 +7,10 @@ endpoints, because a template decides what every following compendium looks like
 from __future__ import annotations
 
 import logging
+import re
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Path, Request
+from fastapi import APIRouter, Body, Depends, Header, HTTPException, Path, Request, Response
 
 from app.api.admin import require_admin
 from app.api.deps import get_service
@@ -17,10 +18,17 @@ from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import ADMIN_REFUSALS, PROFILE_REFUSALS, refusals
-from app.api.v2.routes_examples import BUILTIN_TEMPLATES, EXAMPLES, TEMPLATE_EXAMPLES, TEMPLATE_ID_HELP
+from app.api.v2.routes_examples import (
+    BUILTIN_TEMPLATES,
+    EXAMPLES,
+    IF_MATCH_HELP,
+    TEMPLATE_EXAMPLES,
+    TEMPLATE_ID_HELP,
+)
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.observability.metrics import record_compendium
+from app.templates.manager import Expected, VersionConflictError
 from app.templates.schema import TEMPLATE_ID_PATTERN, Template
 
 log = logging.getLogger(__name__)
@@ -148,6 +156,43 @@ def generate_compendium(
     return compendium
 
 
+_STRONG_TAG = re.compile(r'"([0-9]{1,9})"')
+
+
+def _etag(version: int) -> str:
+    """The version as a strong entity tag."""
+    return f'"{version}"'
+
+
+def _expected(if_match: str | None) -> Expected | None:
+    """What If-Match asks the stored template to be. RFC 9110 compares strongly: a weak tag never matches, and a tag
+    that names no version is none; a list matches by any of its tags."""
+    if if_match is None:
+        return None
+    tags = [tag.strip() for tag in if_match.split(",")]
+    if "*" in tags:
+        return Expected(any_version=True)
+    return Expected(versions=frozenset(int(found[1]) for tag in tags if (found := _STRONG_TAG.fullmatch(tag))))
+
+
+@admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409))
+def delete_template(
+    template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)], request: Request
+) -> None:
+    """Delete a custom template (204).
+
+    Built-in templates ship with the image and are refused (409); an unknown id is a 404. A compendium
+    request naming the deleted id answers 404 from then on, so check what still uses it first.
+    """
+    try:
+        removed = request.app.state.templates.delete(template_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    if not removed:
+        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {template_id}")
+    log.info("template %s deleted", template_id)
+
+
 @router.get("/templates")
 def list_templates(request: Request) -> list[dict[str, Any]]:
     """The templates this service knows, built-in and custom, with their slot count and version.
@@ -175,23 +220,27 @@ def get_template(
         str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP, openapi_examples=BUILTIN_TEMPLATES)
     ],
     request: Request,
+    response: Response,
 ) -> dict[str, Any]:
     """One template in full: every block with its budget, facets, search queries and generator.
 
     This is the shape ``PUT /api/v2/templates/{id}`` takes back, so it is also the way to start a custom
     template - read a built-in one, change what you need, write it under your own id. An unknown id is a
-    404.
+    404. The header ``ETag`` names the version, for ``If-Match`` of the write that follows.
     """
     template = request.app.state.templates.get(template_id)
+    response.headers["ETag"] = _etag(template.version)
     data: dict[str, Any] = template.model_dump()
     return data
 
 
-@admin.put("/templates/{template_id}", summary="Template anlegen oder ersetzen", responses=refusals(409, 413, 422))
+@admin.put("/templates/{template_id}", summary="Template anlegen oder ersetzen", responses=refusals(409, 412, 413, 422))
 def put_template(
     template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)],
     payload: Annotated[Template, Body(openapi_examples=TEMPLATE_EXAMPLES)],
     request: Request,
+    response: Response,
+    if_match: Annotated[str | None, Header(description=IF_MATCH_HELP)] = None,
 ) -> dict[str, Any]:
     """Store a custom template under this id; the version counts up on every write.
 
@@ -201,33 +250,20 @@ def put_template(
     examples go from the smallest template - an id, a name, one block - to one that sets every field; the fields
     of a block are explained under ``slots``. ``GET /api/v2/templates/sc26`` shows a full built-in one to start
     from. No profile changes a template; which blocks the LLM writes is ``generation`` of a compendium request.
+    With ``If-Match`` the write goes through only over the version it names (412 otherwise), so an edit made since
+    the read is not lost (audit 2026-10-03, F09); without it the last write wins.
     """
     if payload.id != template_id:
         raise HTTPException(
             status_code=422, detail=f"id im Pfad ({template_id}) und im Body ({payload.id}) stimmen nicht überein"
         )
     try:
-        stored = request.app.state.templates.save(payload)
+        stored = request.app.state.templates.save(payload, _expected(if_match))
+    except VersionConflictError as exc:
+        raise HTTPException(status_code=412, detail=str(exc)) from exc
     except ValueError as exc:  # a built-in id; the message names it and says what to do instead
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     log.info("template %s saved as version %d", stored.id, stored.version)
+    response.headers["ETag"] = _etag(stored.version)
     data: dict[str, Any] = stored.model_dump()
     return data
-
-
-@admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409))
-def delete_template(
-    template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)], request: Request
-) -> None:
-    """Delete a custom template (204).
-
-    Built-in templates ship with the image and are refused (409); an unknown id is a 404. A compendium
-    request naming the deleted id answers 404 from then on, so check what still uses it first.
-    """
-    try:
-        removed = request.app.state.templates.delete(template_id)
-    except ValueError as exc:
-        raise HTTPException(status_code=409, detail=str(exc)) from exc
-    if not removed:
-        raise HTTPException(status_code=404, detail=f"Template nicht gefunden: {template_id}")
-    log.info("template %s deleted", template_id)

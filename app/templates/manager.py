@@ -20,6 +20,7 @@ import time
 import uuid
 from collections.abc import Iterator
 from contextlib import contextmanager
+from dataclasses import dataclass
 from pathlib import Path
 
 from pydantic import ValidationError
@@ -50,6 +51,26 @@ _TEMPLATE_ID = re.compile(TEMPLATE_ID_PATTERN)
 
 class TemplateNotFoundError(KeyError):
     pass
+
+
+@dataclass(frozen=True)
+class Expected:
+    """The stored version a write starts from (If-Match, audit 2026-10-03, F09): one of ``versions``, or any one."""
+
+    versions: frozenset[int] = frozenset()
+    any_version: bool = False
+
+    def met_by(self, current: int | None) -> bool:
+        return current is not None and (self.any_version or current in self.versions)
+
+
+class VersionConflictError(Exception):
+    """The template is not in the version a write started from: another write came between (F09)."""
+
+    def __init__(self, template_id: str, current: int | None) -> None:
+        self.current = current
+        state = f"liegt in Version {current} vor" if current is not None else "gibt es noch nicht"
+        super().__init__(f"Template {template_id} {state}; neu lesen und die Änderung darauf anwenden")
 
 
 def _load(path: Path, *, builtin: bool) -> Template:
@@ -178,7 +199,9 @@ class TemplateManager:
             return self._builtin[template_id]
         raise TemplateNotFoundError(template_id)
 
-    def save(self, template: Template) -> Template:
+    def save(self, template: Template, expected: Expected | None = None) -> Template:
+        """Store ``template`` as a custom one, its version one up. With ``expected`` only over that stored version:
+        compared under the same lock as the write, so no write can come between (F09)."""
         if self.custom_dir is None:
             raise RuntimeError("no custom template directory configured")
         if template.id in self._builtin:
@@ -187,6 +210,8 @@ class TemplateManager:
         self.custom_dir.mkdir(parents=True, exist_ok=True)
         with _locked(self.custom_dir):
             current = _stored_version(path)
+            if expected is not None and not expected.met_by(current):
+                raise VersionConflictError(template.id, current)
             version = current + 1 if current is not None else max(template.version, 1)
             stored = template.model_copy(update={"version": version, "builtin": False})
             _write_whole(path, stored.model_dump_json(indent=2, exclude={"builtin"}))

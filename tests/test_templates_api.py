@@ -178,3 +178,40 @@ def test_an_id_that_is_no_template_id_is_refused_before_it_names_a_file(
     response = client.request(method, "/api/v2/templates/..%5Cziel", headers=AUTH)
     assert response.status_code == 422
     assert victim.exists()
+
+
+def test_a_write_from_a_version_read_before_another_write_is_refused(client: TestClient) -> None:
+    """Audit 2026-10-03, F09: a stale draft overwrote a newer edit. A read names its version as ETag; a write that
+    names it in If-Match is refused (412) once another write came between, and the answer names the version now."""
+    client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
+    read = client.get("/api/v2/templates/mein")
+    assert read.headers["ETag"] == '"1"'
+
+    newer = client.put(
+        "/api/v2/templates/mein", json={**TEMPLATE, "name": "Neuer"}, headers={**AUTH, "If-Match": read.headers["ETag"]}
+    )
+    stale = client.put(
+        "/api/v2/templates/mein", json={**TEMPLATE, "name": "Alt"}, headers={**AUTH, "If-Match": read.headers["ETag"]}
+    )
+
+    assert newer.status_code == 200 and newer.headers["ETag"] == '"2"'
+    assert stale.status_code == 412 and "Version 2" in stale.json()["detail"]
+    assert client.get("/api/v2/templates/mein").json()["name"] == "Neuer"
+
+
+def test_if_match_star_writes_only_over_a_template_there_is(client: TestClient) -> None:
+    first = client.put("/api/v2/templates/mein", json=TEMPLATE, headers={**AUTH, "If-Match": "*"})
+    client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
+    again = client.put("/api/v2/templates/mein", json=TEMPLATE, headers={**AUTH, "If-Match": "*"})
+
+    assert first.status_code == 412 and again.status_code == 200
+
+
+@pytest.mark.parametrize(("tags", "status"), [('W/"1"', 412), ("1", 412), ('"eins"', 412), ('"7", "1"', 200)])
+def test_if_match_compares_strong_tags_only(client: TestClient, tags: str, status: int) -> None:
+    """RFC 9110: If-Match takes the strong comparison - a weak tag never matches; a list matches by any of its tags."""
+    client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
+
+    answer = client.put("/api/v2/templates/mein", json=TEMPLATE, headers={**AUTH, "If-Match": tags})
+
+    assert answer.status_code == status

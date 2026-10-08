@@ -64,6 +64,10 @@ RESPONSES: dict[int, dict[str, Any]] = {
         "file; on an admin route: the admin endpoints are off (no ADMIN_TOKEN)",
     },
     409: {"model": Refusal, "description": "In the way of what the request wants: a built-in template, an active file"},
+    412: {
+        "model": Refusal,
+        "description": "If-Match names no version the template has now: another write came since it was read",
+    },
     413: {"model": Refusal, "description": "The body is larger than the service reads"},
     422: {
         "model": Invalid,

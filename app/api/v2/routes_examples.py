@@ -303,6 +303,10 @@ TEMPLATE_ID_HELP = (
     "a textbook) ship with the image and are read-only; a custom one has the id it was saved under - letters, "
     "digits, underscore and hyphen, up to 80 characters. GET /api/v2/templates lists them; an unknown one is a 404"
 )
+IF_MATCH_HELP = (
+    'The ETag of the read the change starts from, e.g. "3": the write goes through only over that version; "*" only '
+    "over a template there is. Without the header the last write wins."
+)
 BUILTIN_TEMPLATES: dict[str, dict[str, Any]] = {
     "sc26": {"summary": "SC26, 13 Bausteine - die Vorgabe", "value": "sc26"},
     "standard": {"summary": "Standard, 6 Bausteine wie ein Lehrbuch", "value": "standard"},
