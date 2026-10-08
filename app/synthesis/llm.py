@@ -27,6 +27,7 @@ from app.synthesis.citations import (
     MODEL_KNOWLEDGE,
     collapse,
     drop_unsupported,
+    ends_a_sentence,
     escape_model_text,
     opening_marker,
     renumber,
@@ -53,6 +54,11 @@ _LEADING_MARKERS_RE = re.compile(rf"(?:\s*{_MARKER_GROUP})+\s*")
 # after it ("Satz.** Weiter")
 _GLUED_MARKER_RE = re.compile(rf"([.!?…][{_CLOSERS}]*)(?=\[\d)")
 _CLOSED_END_RE = re.compile(rf"[.!?…][{_CLOSERS}]+\s+(?=[A-ZÄÖÜ„\"‚'(\[0-9*_])")
+# A full stop after the markers that cite its sentence ends it, whatever comes next ("aus [1]. **Linsen** …"): the form
+# every prompt asks for. One before emphasis, an angled or low quote, or a word in lower case or of another script
+# ends a sentence after a real word, as the citation check splits (review of 2026-10-08)
+_MARKED_END_RE = re.compile(rf"{_MARKER_GROUP}[.!?…][{_CLOSERS}]*\s+")
+_OTHER_START_RE = re.compile(r"[.!?]\s+(?=[*_»‚]|[^\W\dA-ZÄÖÜ_])")
 # A day or a century cut off before its noun: "seit dem 17." ends no sentence, "starb 1727." does
 _CUT_ORDINAL_RE = re.compile(r"\b(?:im|am|vom|zum|beim|dem|den)\s+\d{1,2}\.$")
 _JSON_OPENING_RE = re.compile(r'[{\[]\s*["{\[]|\{\s*\}|\[\s*\]')
@@ -100,7 +106,8 @@ def without_unfinished_sentence(text: str) -> tuple[str, bool]:
 
     Only the last line can be unfinished: a line break the model wrote ended the line before it, a list item too, and
     an answer that ends with one is whole. In the last line the German sentence splitter finds its last sentence
-    (abbreviations and ordinals protected); markers that open it cite the sentence before it and stay, and a sentence
+    (abbreviations and ordinals protected), and a full stop after markers or before a sentence the splitter does not
+    see open ends one as well; markers that open it cite the sentence before it and stay, and a sentence
     that ends in an abbreviation or in a day or century without its noun is unfinished. A last line without a
     finished sentence goes whole.
     """
@@ -111,8 +118,10 @@ def without_unfinished_sentence(text: str) -> tuple[str, bool]:
     sentences = split_sentences(_GLUED_MARKER_RE.sub(r"\1 ", last))
     if not sentences:
         return text, False
-    ends = [match.end() for match in _CLOSED_END_RE.finditer(sentences[-1])]
-    tail = sentences[-1][ends[-1] :] if ends else sentences[-1]
+    sentence = sentences[-1]
+    ends = [match.end() for match in (*_CLOSED_END_RE.finditer(sentence), *_MARKED_END_RE.finditer(sentence))]
+    ends += [end.end() for end in _OTHER_START_RE.finditer(sentence) if ends_a_sentence(sentence[: end.start() + 1])]
+    tail = sentence[max(ends) :] if ends else sentence
     opening = _LEADING_MARKERS_RE.match(tail)
     rest = tail[opening.end() :] if opening else tail
     finished = _FINISHED_RE.search(rest) and not ends_with_abbreviation(rest) and not _CUT_ORDINAL_RE.search(rest)

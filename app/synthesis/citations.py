@@ -311,7 +311,7 @@ def _split_lower_case_starts(sentence: str) -> list[str]:
     start = 0
     for match in _LOWER_START_RE.finditer(sentence):
         head = sentence[start : match.start()]
-        if not _ends_a_sentence(head):
+        if not ends_a_sentence(head):
             continue
         pieces.append(head)
         start = match.end()
@@ -319,7 +319,9 @@ def _split_lower_case_starts(sentence: str) -> list[str]:
     return pieces
 
 
-def _ends_a_sentence(head: str) -> bool:
+def ends_a_sentence(head: str) -> bool:
+    """Whether the full stop that ends ``head`` ends a sentence when the next one opens in lower case or with another
+    sign the German splitter does not split before: after the markers that cite it, or after a real word."""
     stripped = head.rstrip(" .!?…")
     if _MARKER_RE.search(stripped[-5:]):  # "… aus [1]." is the sentence form the prompt asks for
         return True

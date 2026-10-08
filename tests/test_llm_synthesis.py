@@ -440,6 +440,15 @@ def test_a_list_the_output_limit_cut_keeps_its_finished_lines() -> None:
     assert "Zerstreuungslinsen streuen es" in result.text and "Pri" not in result.text.split("streuen es")[-1]
 
 
+def test_a_cut_sentence_that_opens_in_bold_leaves_the_finished_one_before_it() -> None:
+    """The German splitter only splits before a capital: the finished sentence went with the one the limit cut, and
+    the block fell back for no finished sentence (review of 2026-10-08)."""
+    result = written(cut_off("Licht breitet sich geradlinig aus [1]. **Linsen** brechen es an ihren"))
+
+    assert isinstance(result, LlmSection) and result.cut_off
+    assert "geradlinig aus" in result.text and "Linsen" not in result.text
+
+
 def test_an_abbreviation_is_no_sentence_end_to_cut_back_to() -> None:
     result = written(cut_off("Das Thema handelt vom Licht [1]. Optische Geräte wie z. B. Fernro"))
 
@@ -830,6 +839,14 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
         ("Erster Satz [1]. Geräte wie z. B.", "Erster Satz [1].", True),
         ("Erster Satz [1]. Linsen kennt man seit dem 17.", "Erster Satz [1].", True),
         ("Erster Satz [1]. Newton starb 1727.", "Erster Satz [1]. Newton starb 1727.", False),
+        ("Erster Satz [1]. **Linsen** brechen es an ihren", "Erster Satz [1].", True),
+        ("Erster Satz [1]. pH-Indikatoren ändern ihre Far", "Erster Satz [1].", True),
+        ("Erster Satz [1]. Zweiter Satz [1]. de Broglie zeig", "Erster Satz [1]. Zweiter Satz [1].", True),
+        ("Erster Satz [1]. »Ein Zitat bri", "Erster Satz [1].", True),
+        ("Erster Satz [1]. ‚Ein Zitat bri", "Erster Satz [1].", True),
+        ("Erster Satz [1]. α-Strahlen durchdr", "Erster Satz [1].", True),
+        ("Licht aus Modellwissen. **Linsen** brechen es an", "Licht aus Modellwissen.", True),
+        ("Erster Satz [1]. Geräte wie z. B. **Fernro", "Erster Satz [1].", True),
     ],
     ids=[
         "marker after the stop",
@@ -842,6 +859,14 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
         "abbreviation",
         "ordinal",
         "year",
+        "cut sentence opens in bold",
+        "cut sentence opens in lower case",
+        "cut sentence opens with a name in lower case",
+        "cut sentence opens with a guillemet",
+        "cut sentence opens with a low quote",
+        "cut sentence opens in Greek",
+        "uncited sentence before one in bold",
+        "abbreviation before bold",
     ],
 )
 def test_only_the_sentence_an_answer_broke_off_in_goes_and_the_citations_of_the_others_stay(
