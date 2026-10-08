@@ -11,6 +11,21 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 Noch nichts.
 
+## 2.17.0 – 2026-10-09
+
+Die Ergebniszeile des Kompendiums auch für die übrigen Endpunkte mit KI (D96; Nachtrag im
+[Bericht](docs/audits/2026-10-08-logging.md)).
+
+- **Neu:** `/qa`, `/entities`, `/knowledge` und die Lehrplansuche schreiben bei einer Anfrage, die ein LLM verlangte,
+  die Zeile eines Kompendiums ohne Teile und Dauer: Profil, KI-Stufen, Aufrufe, Tokens, Rückfälle je Stufe und
+  Ursache; eine WARNING, wenn Zeit oder Budget KI-Arbeit abschnitten oder das LLM fehlte. Die Rückfallzeile von `/qa`
+  entfällt; ohne LLM schreiben diese Anfragen keine solche Zeile. Im JSON nennt das Feld `answer`, wofür eine
+  Ergebniszeile steht, auch beim Kompendium.
+- **Behoben (Logging):** Die Zeile eines Kompendiums zählt auch die Rückfälle der Trefferprüfung und der Frage nach den
+  Artikeln eines Themas. Ein LLM, das fehlte, ist eine eigene Ursache (`unavailable`) statt eines Fehlers der b-api und
+  macht die Zeile zur WARNING mit dem Grund, auch wo nur eine Stufe ihn nennt: Teil 2 mit `curriculum_check=llm`, wenn
+  die Regeln den Artikel wählten.
+
 ## 2.16.0 – 2026-10-08
 
 Die letzten Audit-Befunde und eine Prüfung des Loggings mit allen Befunden behoben (D95; M81;

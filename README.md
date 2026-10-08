@@ -151,6 +151,9 @@ Abschnittsmarker von Teil 1.
   Prüfung des Loggings ([Bericht](docs/audits/2026-10-08-logging.md)): je Anfrage eine Zeile mit Status und Dauer, je
   Kompendium eine mit KI-Anteil und Rückfällen nach Ursache, Startzeilen mit Version, der Schutzschalter und die
   Updater melden sich mit Grund, ein Fehler steht einmal im Log; das Log geht nach stderr (docs/betrieb.md, „Logs“).
+- Ergebniszeile für alle Endpunkte mit KI (D96, Release 2.17.0): `/qa`, `/entities`, `/knowledge` und die
+  Lehrplansuche schreiben bei einer Anfrage mit LLM die Zeile eines Kompendiums mit KI-Anteil und Rückfällen nach
+  Ursache; ein fehlendes LLM ist eine eigene Ursache und eine WARNING mit Grund (docs/betrieb.md, „Logs“).
 
 ## Installation
 

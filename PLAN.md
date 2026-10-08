@@ -2291,6 +2291,17 @@ API.
   und Rückfällen nach Ursache (WARNING bei Zeit oder Budget), der Schutzschalter meldet seine Wechsel statt jedes
   Aufrufs, ein unerwarteter Fehler steht einmal mit seiner Ursache im Log, jede Antwort mit 5xx nennt ihre Ursache, die
   Updater melden Fehlschläge mit Namen und Ursache, Downloads ihren Fortschritt, und das Log geht nach stderr.
+- **D96 (2026-10-09)** Die Ergebniszeile eines Kompendiums auch für `/qa`, `/entities`, `/knowledge` und die
+  Lehrplansuche (Jan: „wie empfohlen umsetzen“; im Logging-Bericht als H2 zunächst nicht gebaut). Dafür: Jans Regel,
+  einen Rückfall mit Grund sichtbar zu machen, gilt so auch im Log und für jeden Endpunkt gleich; seit D95 steht ein
+  Aufruf, den der Schutzschalter zurückhält, nur auf DEBUG, und eine schwache Antwort dieser Endpunkte ließ sich dem
+  Schutzschalter nur über die Uhrzeit zuordnen. Dagegen: eine Zeile mehr je Anfrage mit KI, teils doppelt zur Antwort
+  und zu Prometheus. Gebaut schlank: eine gemeinsame Funktion in der Form der Kompendium-Zeile, ohne Teile und ohne
+  Dauer (die nennt die Zeile der Anfrage), nur für Anfragen, die ein LLM verlangten; sie ersetzt die Rückfallzeile von
+  `/qa`, und jede Ergebniszeile trägt im JSON das Feld `answer`. Dabei zwei Lücken der Kompendium-Zeile geschlossen:
+  Von der Artikelwahl las sie nur deren eigenen Rückfall, nicht die der Trefferprüfung und der Artikelfrage (D63), und
+  ein fehlendes LLM, das nur eine Stufe nannte, zählte als Fehler der b-api und blieb eine INFO; es ist jetzt die
+  Ursache `unavailable` und macht die Zeile zur WARNING mit dem Grund.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
