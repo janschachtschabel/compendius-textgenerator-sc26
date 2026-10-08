@@ -426,3 +426,16 @@ def test_a_wording_that_names_no_subject_matter_leaves_the_topic_of_before(
 
     assert result.topic == "Grundlagen (Optik)"
     assert result.audit.llm is not None and result.audit.llm["topic_wording"]["fallback"] == NEUTRAL_ANSWER
+
+
+def test_a_wording_that_names_its_subject_matter_in_brackets_is_taken(
+    service: CompendiumService, in_tree: FakeTree, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The check took the brackets off before it judged: "Grundlagen (Lichtausbreitung)" counted as naming nothing,
+    fell back to "Grundlagen (Optik)" and named the wrong reason (review of 2026-10-08)."""
+    fake = wording_then(answer_with_model_knowledge, "Grundlagen (Lichtausbreitung)")
+    monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=400_000))
+
+    result = service.generate(GenerateRequest(node_id=NODE, parts=["world"], preset="best-quality-generated"))
+
+    assert result.topic == "Grundlagen (Lichtausbreitung)"

@@ -147,7 +147,9 @@ def word_topic(job: ArticleChoiceJob, text: str, report: TopicWordingReport) -> 
     if len(worded.split()) > ANSWER_WORDS or len(worded) > ANSWER_CHARS:
         report.fallback = TOO_LONG_ANSWER
         return None
-    if is_neutral(worded):  # "Anwendungen" for a collection of that name: the topic of before says more (M71)
+    # "Anwendungen" for a collection of that name: the topic of before says more (M71). Judged by all its words: a
+    # subject matter in brackets is one, "Grundlagen (Lichtausbreitung)" (review of 2026-10-08)
+    if is_neutral(worded.replace("(", " ").replace(")", " ")):
         report.fallback = NEUTRAL_ANSWER
         return None
     report.topic = worded
