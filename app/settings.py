@@ -38,6 +38,14 @@ MIN_SECRET_CHARS = 16
 
 # The model the service asks when B_API_MODEL names none (D44)
 DEFAULT_B_API_MODEL = "gpt-6-luna"
+# Per provider, where LLM_MAX_CONCURRENCY and REQUEST_TIMEOUT_S name none (Jan, 2026-10-08, M75): how many LLM calls a
+# worker process sends at once, and how long a request may take. The OpenAI models take many calls at once - no step
+# asks more than 10, so 20 leaves room for part 2 beside part 1 and for requests sharing a worker; academiccloud queues
+# them on few GPUs, and with 2 at once best-coverage-generated needs about 120 s even at the speed of gpt-6-luna. Both
+# limits sit well above what a request takes, so that a slow answer does not cost the LLM steps (Jan: "damit es nicht
+# schief geht"); M75 measured 35 to 43 s for best-coverage-generated on OpenAI and once 126 s behind one slow answer.
+PROVIDER_CONCURRENCY: dict[str, int] = {"openai": 20, "academiccloud": 2}
+PROVIDER_REQUEST_TIMEOUT_S: dict[str, int] = {"openai": 300, "academiccloud": 600}
 # The questions that think otherwise than LLM_REASONING_EFFORT (M59): without the model's thinking these chose the same
 # articles, rated the curriculum elements alike and wrote equal topics and question pairs, in about half the time; the
 # writing, the paragraph assignment, the entities and the article of a material lost without it and keep thinking
@@ -210,7 +218,13 @@ class Settings(BaseSettings):
         "carries a safety_identifier of its own, so the answer is new; the provider's prompt cache stays in use",
     )
     llm_timeout_s: int = Field(120, ge=10, description="Timeout per LLM request")
-    llm_max_concurrency: int = Field(10, ge=1, le=26, description="Parallel LLM requests")
+    llm_max_concurrency: int | None = Field(
+        None,
+        ge=1,
+        le=64,
+        description="Parallel LLM requests per worker process; empty takes the provider's default (openai 20, "
+        "academiccloud 2)",
+    )
     llm_attempts: int = Field(
         3, ge=1, le=6, description="Attempts per LLM request (429/502/503/504, connection errors)"
     )
@@ -253,11 +267,12 @@ class Settings(BaseSettings):
     )
 
     # --- Service -------------------------------------------------------------------------------
-    request_timeout_s: int = Field(
-        120,
+    request_timeout_s: int | None = Field(
+        None,
         ge=5,
         description="Time budget per request - a compendium, or part 1 and the pairs of /qa together - for LLM "
-        "calls and every repository read: the collection and node of the request, part 3, the knowledge collection",
+        "calls and every repository read: the collection and node of the request, part 3, the knowledge collection; "
+        "empty takes the provider's default (openai 300 s, academiccloud 600 s)",
     )
     rate_limit: int = Field(
         60, ge=0, description="Requests per minute and client on the generating endpoints (per worker); 0 = off"
@@ -309,6 +324,20 @@ class Settings(BaseSettings):
             for name, value in data.items()
             if name in EMPTY_IS_A_CHOICE or not _blank(value)
         }
+
+    @property
+    def llm_concurrency(self) -> int:
+        """LLM_MAX_CONCURRENCY, else the provider's default."""
+        if self.llm_max_concurrency is not None:
+            return self.llm_max_concurrency
+        return PROVIDER_CONCURRENCY[self.b_api_provider]
+
+    @property
+    def request_time_limit_s(self) -> int:
+        """REQUEST_TIMEOUT_S, else the provider's default."""
+        if self.request_timeout_s is not None:
+            return self.request_timeout_s
+        return PROVIDER_REQUEST_TIMEOUT_S[self.b_api_provider]
 
     @property
     def api_key_list(self) -> list[str]:

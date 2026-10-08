@@ -53,7 +53,7 @@ from app.matching.lexicon import HeadingLexicon
 from app.matching.registry import LOCAL_MATCHER, active_components
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request, record_llm_call
 from app.service import CompendiumService
-from app.settings import Settings, b_api_for, get_settings, parse_reasoning_efforts
+from app.settings import PROVIDER_REQUEST_TIMEOUT_S, Settings, b_api_for, get_settings, parse_reasoning_efforts
 from app.sources.gnd.index import GndIndex
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.render import RenderOptions
@@ -162,14 +162,15 @@ def resolve_b_api(settings: Settings) -> str:
 def warn_about_llm_settings(settings: Settings) -> None:
     """Settings the LLM can hardly work with, named at start; the service keeps them (a warning, not a refusal: a
     stricter check stopped all containers on 2026-09-28, BE-13)."""
-    if settings.request_timeout_s <= SHORTEST_LLM_TIMEOUT_S:
+    if settings.request_time_limit_s <= SHORTEST_LLM_TIMEOUT_S:
         log.warning(
             "REQUEST_TIMEOUT_S=%d leaves the LLM hardly a call: one starts only while %g s of the request remain and "
             "has to be answered by its end, and the quickest LLM steps take about 4 s, the matching and the writing "
-            "longer; the LLM steps fall back to the rules. The default is %d s (audit 2026-09-29, S6)",
-            settings.request_timeout_s,
+            "longer; the LLM steps fall back to the rules. Empty, it is the provider's default, %d s here (audit "
+            "2026-09-29, S6)",
+            settings.request_time_limit_s,
             MIN_CALL_S,
-            Settings.model_fields["request_timeout_s"].default,
+            PROVIDER_REQUEST_TIMEOUT_S[settings.b_api_provider],
         )
     if not settings.llm_daily_token_budget and not settings.api_key_list:
         log.warning(
@@ -226,7 +227,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
         provider=settings.b_api_provider,
         model=settings.b_api_model,
         timeout_s=settings.llm_timeout_s,
-        max_concurrency=settings.llm_max_concurrency,
+        max_concurrency=settings.llm_concurrency,
         attempts=settings.llm_attempts,
         reasoning_effort=settings.llm_reasoning_effort,
         reasoning_efforts=settings.llm_reasoning_effort_by_prompt,
@@ -249,7 +250,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
     options = LlmOptions(
         fast_sections=tuple(settings.llm_fast_section_ids),
         extraction_candidates=settings.llm_extraction_candidates,
-        concurrency=settings.llm_max_concurrency,
+        concurrency=settings.llm_concurrency,
         mark_unsupported=settings.llm_unsupported_sentences == "mark",
     )
     gateway = LlmGateway(client, budget, options)

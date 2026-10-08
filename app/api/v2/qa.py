@@ -64,7 +64,7 @@ def _allowance(request: Request, payload: QaRequest, profile: str) -> LlmAllowan
     budget = service.open_budget(profile)
     if budget is None:
         return None
-    return LlmAllowance(budget, Deadline(service.settings.request_timeout_s))
+    return LlmAllowance(budget, Deadline(service.settings.request_time_limit_s))
 
 
 def _default_profile(request: Request) -> Preset:

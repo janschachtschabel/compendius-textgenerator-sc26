@@ -293,7 +293,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         """The compendium of a request. ``deadline`` and ``budget`` let a caller spend one time and one token budget
         over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own."""
         if deadline is None:  # bounds the LLM work; the rule-based path needs none
-            deadline = Deadline(self.settings.request_timeout_s)
+            deadline = Deadline(self.settings.request_time_limit_s)
         request, profile = self._admit(request, deadline)
         # The request's one budget, the profile's size (D59), unless the caller brought one to share over more than
         # the compendium (/qa); article_choice=llm (D35) spends from it first

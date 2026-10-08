@@ -74,8 +74,8 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.13.0`** | Compose: Image aller fünf Container |
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen 3,4 GiB Prozesse mit 2 Workern, dazu Seiten-Cache |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 1,7 GiB, mit 3 Workern `API_MEMORY=8g` |
-| `API_STOP_GRACE_PERIOD` | `150s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; über `REQUEST_TIMEOUT_S` plus 15 s halten |
-| `REQUEST_TIMEOUT_S` | `120` | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM |
+| `API_STOP_GRACE_PERIOD` | `330s` | wie Vorgabe, mit academiccloud `630s` | Compose: Zeit für laufende Anfragen bei einem Update; über `REQUEST_TIMEOUT_S` plus 15 s halten |
+| `REQUEST_TIMEOUT_S` | leer: `openai` 300, `academiccloud` 600 | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM. Ein gesetzter Wert gilt für jeden Anbieter |
 | `UVICORN_HTTP` | `h11` | wie Vorgabe | HTTP-Parser von uvicorn |
 | `LOG_LEVEL` | `INFO` | wie Vorgabe | Protokollstufe: `DEBUG`, `INFO`, `WARNING`, `ERROR` |
 | `PROMETHEUS_MULTIPROC_DIR` | leer | wie Vorgabe | wo die Worker ihre Messwerte ablegen; leer lassen, das Image setzt `/tmp/prometheus` |
@@ -95,7 +95,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LLM_VERBOSITY` | `low` | wie Vorgabe | Ausführlichkeit von Reasoning-Modellen |
 | `LLM_TEMPERATURE` | `0.2` | wie Vorgabe | nur klassische Modelle |
 | `LLM_TIMEOUT_S` | `120` | wie Vorgabe | Frist je LLM-Aufruf |
-| `LLM_MAX_CONCURRENCY` | `10` | wie Vorgabe | gleichzeitige LLM-Aufrufe |
+| `LLM_MAX_CONCURRENCY` | leer: `openai` 20, `academiccloud` 2 | wie Vorgabe | gleichzeitige LLM-Aufrufe je Worker-Prozess; ein gesetzter Wert gilt für jeden Anbieter |
 | `LLM_ATTEMPTS` | `3` | wie Vorgabe | Versuche je Aufruf |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | wie Vorgabe | Tokens je Anfrage in `llm-free` und `balanced` |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | wie Vorgabe | Tokens je Anfrage in den drei Profilen ab `best-quality` |

@@ -55,7 +55,7 @@ def from_llm(
     if unavailable:
         return None, unavailable  # it names the cause and the fallback itself
     if allowance is None:
-        allowance = LlmAllowance(llm.open_budget(), Deadline(service.settings.request_timeout_s))
+        allowance = LlmAllowance(llm.open_budget(), Deadline(service.settings.request_time_limit_s))
     answer = llm.qa.pairs(
         text,
         count=payload.count,

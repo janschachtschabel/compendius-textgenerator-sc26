@@ -171,7 +171,8 @@ class BApiClient:
         self.temperature = temperature
         self.response_cache = response_cache  # B_API_RESPONSE_CACHE (D70)
         self._sleep = sleep
-        self._semaphore = threading.BoundedSemaphore(max(1, max_concurrency))
+        self.max_concurrency = max(1, max_concurrency)
+        self._semaphore = threading.BoundedSemaphore(self.max_concurrency)
         self._client = httpx.Client(
             headers={"X-API-KEY": api_key, "Accept": "application/json"}, timeout=timeout_s, transport=transport
         )

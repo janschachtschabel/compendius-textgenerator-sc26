@@ -80,7 +80,8 @@ liefen nicht. Rohdaten: [lasttest-2026-09-29.json](lasttest-2026-09-29.json), Sk
 | vier weitere Runden `llm-free`, 20 neue Themen | je 5 | 8,7 bis 24,9 s | – | 3,38 → 3,41 GiB | 20,2 bis 24,5 s | bis 3,3 |
 
 - **Alle 47 Anfragen kamen mit HTTP 200 zurück**, die längste nach 41,6 s. Die Frist je Anfrage
-  (`REQUEST_TIMEOUT_S`) ist 120 s; Aufrufer sollten 150 s warten.
+  (`REQUEST_TIMEOUT_S`) ist mit OpenAI 300 s, mit academiccloud 600 s (bis 2.13.0: 120 s); Aufrufer sollten 30 s
+  länger warten.
 - **Gleichzeitige Anfragen teilen sich die Worker.** Ein Worker nimmt mehrere Anfragen an, rechnet sie aber
   weitgehend nacheinander: Lesen der Archive und Zuordnung halten die Interpreter-Sperre von Python. Ein Kompendium
   allein dauerte 6,8 s, fünf gleichzeitig je 9 bis 26 s.
@@ -210,7 +211,7 @@ Für das neue GitLab zu klären:
   meldete die API sich in der Messung nach 30 bis 45 s gesund.
 - **Prüfen:** `GET /health` nennt Version, Commit, Archive, Indexe, LLM und verbrauchte Tokens des Tages.
 - **Update:** neues Tag in `IMAGE`, dann `docker compose pull && docker compose up -d`. Laufende Anfragen bekommen bis
-  zu 150 s (`API_STOP_GRACE_PERIOD`). Was sich je Release am Betrieb ändert, steht in [betrieb.md](../betrieb.md).
+  zu 330 s (`API_STOP_GRACE_PERIOD`; mit academiccloud 630 s setzen). Was sich je Release am Betrieb ändert, steht in [betrieb.md](../betrieb.md).
 - **Sicherheit:** `API_KEYS` setzen, sonst beantwortet der Dienst jeden, und jeder verbraucht LLM-Tokens ohne
   Tagesgrenze (Vorgabe von `LLM_DAILY_TOKEN_BUDGET`: keine);
   dazu `METRICS_TOKEN` und `ADMIN_TOKEN`, alle mit `openssl rand -hex 32` erzeugt.

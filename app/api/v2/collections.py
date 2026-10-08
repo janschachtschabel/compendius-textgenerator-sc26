@@ -61,7 +61,7 @@ def collection_overview(
     builder: CollectionBuilder | None = request.app.state.collections
     if builder is None:
         raise HTTPException(status_code=503, detail="Kein edu-sharing-Repository konfiguriert (EDU_SHARING_BASE_URL).")
-    deadline = Deadline(request.app.state.settings.request_timeout_s)  # the same budget as a compendium's part 3
+    deadline = Deadline(request.app.state.settings.request_time_limit_s)  # the same budget as a compendium's part 3
     part = builder.overview(collection_id, remaining=deadline.remaining)
     if not part.available:  # read, but not listed: inside a compendium a hint, on its own a failed request
         raise HTTPException(status_code=502, detail=part.error or "Die Sammlung ließ sich nicht auflisten")

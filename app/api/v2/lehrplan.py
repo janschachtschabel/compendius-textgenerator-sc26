@@ -288,7 +288,7 @@ def lehrplan_search(
     profile = asked.preset or service.default_preset
     # the words alone need no article, so only mode=topic can need the LLM for one
     service.refuse_without_llm(llm_switches(asked, corpus=mode == "topic"), profile, defaulted=preset is None)
-    budget, deadline = service.open_budget(profile), Deadline(service.settings.request_timeout_s)
+    budget, deadline = service.open_budget(profile), Deadline(service.settings.request_time_limit_s)
     if mode == "topic":
         search = _as_part_two(request, asked, budget, deadline)
     else:

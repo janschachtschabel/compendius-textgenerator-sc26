@@ -301,7 +301,7 @@ def entities(
         text = _node_text(info)
     # one deadline for the whole request: the LLM ways and the linking, which read up to 200 articles without one
     # and took 6 to 19 s of CPU without an LLM (audit 2026-09-28, PE-04)
-    deadline = Deadline(settings.request_timeout_s)
+    deadline = Deadline(settings.request_time_limit_s)
     report = EntitiesLlmReport() if needed else None
     job = _llm_job(service, profile, report, deadline) if report is not None else None
     notes: list[str | None] = []

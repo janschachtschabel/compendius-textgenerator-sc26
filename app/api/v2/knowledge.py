@@ -312,7 +312,7 @@ def knowledge(
     needed = [f"article_choice={article_choice}"] if article_choice in LLM_ARTICLE_CHOICES else []
     service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
     registry = archives_for(service.registry, payload.archives)
-    deadline = Deadline(service.settings.request_timeout_s)
+    deadline = Deadline(service.settings.request_time_limit_s)
     requested, note, job = service.article_choice_job(article_choice, deadline, service.open_budget(profile))
     # The article and its corpus as a compendium chooses them (D35, D40, D47), the articles left whole
     prepared = service.prepare(

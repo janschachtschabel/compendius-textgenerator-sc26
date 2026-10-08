@@ -54,6 +54,13 @@ def test_the_example_ships_the_default_profile_and_template_of_the_code() -> Non
     assert values["TEMPLATE_DEFAULT"] == Settings.model_fields["template_default"].default == "sc26"
 
 
+def test_the_example_leaves_the_limits_of_the_provider_to_the_provider() -> None:
+    """A value copied from the example would hold for every provider (M75, 2026-10-08): 10 calls at once and 120 s
+    slowed OpenAI's profiles down and cut academiccloud's short. Empty, the provider's defaults hold."""
+    values = documented()
+    assert values["LLM_MAX_CONCURRENCY"] == values["REQUEST_TIMEOUT_S"] == ""
+
+
 def test_no_credential_carries_a_value() -> None:
     values = documented()
     filled = [name for name in SECRETS if values.get(name)]

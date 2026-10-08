@@ -9,6 +9,7 @@ import pytest
 import yaml
 
 from app import serve
+from app.settings import Settings
 from tests.conftest import ROOT
 
 
@@ -70,10 +71,11 @@ def test_a_stop_lets_the_requests_in_flight_finish(budget: int) -> None:
 
 
 def test_compose_waits_longer_for_the_api_than_uvicorn_waits_for_its_requests() -> None:
-    """With the shipped REQUEST_TIMEOUT_S. An operator who raises it raises the grace period with it, and can: the
-    panel takes docker-compose.yml from main at every update, so a fixed 150 s let Docker kill the requests of a
-    REQUEST_TIMEOUT_S of 300 half way (audit 2026-09-28, BE-17)."""
-    command = serve.uvicorn_command(120)
+    """With the shipped REQUEST_TIMEOUT_S of OpenAI, the provider shipped (M75: 300 s). An operator who raises it, or
+    runs academiccloud (600 s), raises the grace period with it, and can: the panel takes docker-compose.yml from main
+    at every update, so a fixed 150 s let Docker kill the requests of a REQUEST_TIMEOUT_S of 300 half way (audit
+    2026-09-28, BE-17)."""
+    command = serve.uvicorn_command(Settings(_env_file=None).request_time_limit_s)
     grace = int(command[command.index("--timeout-graceful-shutdown") + 1])
     compose = yaml.safe_load((ROOT / "docker-compose.yml").read_text(encoding="utf-8"))
     stop = re.fullmatch(r"\$\{API_STOP_GRACE_PERIOD:-(\d+)s\}", compose["services"]["api"]["stop_grace_period"])
