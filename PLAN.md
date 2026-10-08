@@ -1161,7 +1161,8 @@ wird auf die neuen Modi umgestellt (Regelmodus 0, Hybridszenarien).
 `pipeline_statistics` (v1; im Neubau `audit.timings_ms`), optional `/metrics` (Prometheus): Latenz, Cache-Trefferquote, LLM-Tokens,
 ZIM-Stand, Harvest-Alter. **Stand 2026-09-18:** `/metrics` umgesetzt (D31) mit Latenz, LLM-Tokens,
 ZIM-Stand und Harvest-Alter, dazu Alarmregeln; die Cache-Trefferquote fehlt, weil es den Ergebnis-Cache
-noch nicht gibt. Request-IDs sind seit Fassung v17 umgesetzt (OPS-03), JSON-Logs sind offen.
+noch nicht gibt. Request-IDs sind seit Fassung v17 umgesetzt (OPS-03), JSON-Logs seit D94 (`LOG_FORMAT=json`,
+ein JSON-Objekt je Zeile mit Zeit, Stufe, Logger, Anfrage-ID, Meldung und Traceback).
 
 **Sicherheit.** Admin-Endpunkte hinter `ADMIN_TOKEN`; Download-URLs nur von Kiwix-Hosts;
 Dateinamen ohne Pfadanteile; edu-sharing-Zugangsdaten als Secret; keine Nutzereingaben in
@@ -2249,6 +2250,31 @@ API.
   Zuordnung las von „0.8“ nur die erste Ziffer; das Dauer-Histogramm endete bei 120 s, 14 Messskripte lasen die
   Einstellungen, die jetzt leer sein dürfen. Gemessen (M79): Teil 1 und 2 teilen sich das Budget auch beim breitesten
   Thema ohne Rückfall.
+- **D94 (2026-10-08)** Offene Befunde und ein Review aller Änderungen des Tages (Jan: „beachte das bei vorliegen von
+  lehrplänen anderer bildungsbereiche oder bundesländer das budget für teil 2 eventuell nicht reicht - aber wir
+  möglichst nichts verlieren wollen. behebe alle offenen befunde“, `API_STOP_GRACE_PERIOD` 630 s, „mach bitte nochmal
+  ein review aller heutigen codeänderungen“). Gebaut: Die KI-Prüfung von Teil 2 rechnet aus einem eigenen Budget,
+  `LLM_MAX_TOKENS_CURRICULUM_CHECK` (400.000), neben dem der Anfrage. Unbewertet ging nie ein Element verloren, es
+  blieb nach den Regeln stehen; die Gefahr war, dass Teil 2 neben Teil 1 dessen Budget aufbrauchte. Die Prompts
+  blieben, eine Messung braucht es nicht, Tests decken die Erschöpfung ab. `API_STOP_GRACE_PERIOD` hat die Vorgabe
+  630 s. Aus den Audits: If-Match für Templates (F09), eine Antwort der Trefferprüfung ohne Note als Rückfall, „seit dem
+  17.“ als unvollendet, JSON-Logs (OPS-03), keine Pakete mehr, die einander importieren (A-01), der Dienst wird in
+  `app/wiring.py` gebaut (A-03), die Quellen schreiben ihr Markdown mit `app/markup` (A-04), Tests der Fehlerpfade der
+  Kommandozeile (T-03, die CLI-Module zu 99 bis 100 % abgedeckt), Änderungsprotokoll und CONTRIBUTING (DOC-06), die
+  letzten Zahlen ohne Messung gemessen (WA-02, M80, ohne Änderung: `MIN_CHAR_SIMILARITY` 0,1 und `MAX_MENTIONS` 16 heben
+  das Gold und werden erst blind beurteilt, `TOPIC_WORD_IN_TITLE` wirkt nie, `MAX_LOOKUPS` 80 verdoppelte die Akteure
+  für rund 2 s). Das Review lief mit sechs unabhängigen Prüfern über alle Änderungen von D92 bis D94, jeder Befund am
+  Quelltext nachgeprüft und mit zuerst rotem Test behoben: Eine komprimierte Antwort wurde vor ihrer Grenze entpackt
+  (gestapeltes gzip 558 MiB aus 590 Byte); die Stichwörter einer Frage liefen durch Vorschläge und Volltextsuche, deren
+  Treffer nie zählten (1.462 Suchen für ein langes Thema); JSON-Logs erfassten weder uvicorn noch die Updater; eine
+  abgeschnittene Antwort verlor den fertigen Satz vor einem, der klein oder fett begann; ein Skript importierte einen
+  verschobenen Pfad, und `mypy app scripts tests` war rot. Dazu: If-Match über Löschen und Neuanlage, ein wartender
+  Aufruf, dessen Anfrage endete, die Frist der Knotenvorschau, der Leser der Zuordnung (mehrere Angaben je Zeile,
+  Tabellen, Bemerkungen), JSON hinter einer Einleitung und in Codezäunen, unsichtbare Zeichen, Cookie-Hinweise in
+  umgedrehter Wortfolge, der Themenbaum ohne Pfad, Architekturtests, die relative Importe und Ringe nicht sahen. Aus
+  den Altbefunden der Prüfer: Ein unerwarteter Fehler in Teil 2 oder 3 verwirft Teil 1 nicht mehr, „im 18. Jh.“ ist
+  ein Satz, tief verschachteltes JSON bricht keine Wissens-Anfrage, der JSON-Leser der Antworten ist linear. Offen bei
+  Jan: die beiden Werte von M80 zum blinden Urteil, `MAX_LOOKUPS`, die Antwortgrenzen (gemessen an einer Sammlung).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

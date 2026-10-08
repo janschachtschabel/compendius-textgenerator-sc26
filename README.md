@@ -138,6 +138,13 @@ Abschnittsmarker von Teil 1.
   Zeilen statt in JSON (M77): `best-quality` braucht rund 5 s, `best-quality-generated` rund 4 s weniger (M78). Beim
   Schreiben gilt JSON nicht als Text, und ein Satz, den das Ausgabelimit abschnitt, fällt weg. Gemessen und nicht
   gebaut: ein Deckel für die KI-Prüfung von Teil 2 (M76: er strich nur bestätigte Lehrplanbezüge).
+- Offene Befunde und Review des Tages (D94, Release 2.15.0): Die KI-Prüfung von Teil 2 rechnet aus einem eigenen
+  Budget (`LLM_MAX_TOKENS_CURRICULUM_CHECK`, 400.000), so nehmen Lehrpläne weiterer Länder und Schularten Teil 1
+  nichts weg. `API_STOP_GRACE_PERIOD` hat 630 s als Vorgabe. Aus den Audits: Templates mit `ETag` und `If-Match` (F09),
+  `LOG_FORMAT=json` (OPS-03), Pakete ohne gegenseitige Importe (A-01, A-03, A-04), Tests der Kommandozeile (T-03),
+  [Änderungsprotokoll](CHANGELOG.md) und [CONTRIBUTING](CONTRIBUTING.md) (DOC-06), die letzten ungemessenen Zahlen
+  gemessen und belassen (WA-02, M80). Ein Review aller Änderungen des Tages fand 5 schwere und rund 25 kleinere
+  Befunde, alle behoben; dazu verwirft ein unerwarteter Fehler in Teil 2 oder 3 Teil 1 nicht mehr.
 
 ## Installation
 
