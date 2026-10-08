@@ -21,7 +21,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from app.matching.lexicon import HeadingLexicon
+from app.knowledge.lexicon import HeadingLexicon
 from app.sources.zim.archive import ZimArchive
 
 _NUMERIC = re.compile(r"^\d{3,4}(er)?( Jahre| bis \d{3,4})?$")
