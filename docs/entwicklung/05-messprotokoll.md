@@ -3731,3 +3731,98 @@ auf unserer Website keine Cookies …“).
 
 **Ergebnis:** kein Filter nach Wiederholung gebaut (D92): Die Zuordnung lässt solche Absätze schon liegen. Der
 Cookie-Filter erkennt die umgestellte Wortfolge jetzt mit (`ec0e72a`). Rohdaten: `m74_seitenreste.json`.
+
+## M75 Zeit und Tokens je Profil, Aufruf für Aufruf (08.10.2026)
+
+Jan: „abschließend sollten wir die frage analysieren ob wir bearbeitungsgeschwindigkeit und tokenverbrauch verbessern
+können. dazu könnten prozessoptimierungen in den profilen gehören. verbesserter promptaufbau um providerabhängiges
+caching der input token häufiger zu triggern usw. … auch könnte man überlegen die anzahl gleichzeitiger worker bei llm
+nutzung konfigurierbar zu machen … die qualität muss aber im auge behalten werden“. `mc_tempo.py` erzeugt im
+Einmal-Container (Arbeitsstand eingehängt, OpenAI direkt) je Thema und Profil ein Kompendium mit Teil 1 und 2 und
+zeichnet jeden LLM-Aufruf auf: wann er gestellt und wann er gesendet wurde (dazwischen das Warten auf einen freien
+Platz), wann die Antwort kam, Eingabe-Tokens mit dem Anteil aus dem Cache, Ausgabe-Tokens mit dem Anteil fürs Denken.
+Die neun Themen von M52; `mc_tempo_auswertung.py` ordnet die Aufrufe den Schritten zu.
+
+**Wohin Zeit und Tokens gehen**, wie ausgeliefert (10 gleichzeitige Aufrufe), Mediane über die neun Themen:
+
+| Profil | Anfrage (Spanne) | Vorbereitung | Zuordnung | Schreiben | Teil 2 | Tokens | davon Ausgabe, darin Denken |
+|---|---|---|---|---|---|---|---|
+| `llm-free` | 7,3 s (2,3 bis 14,5) | – | – | – | 0,2 s | 0 | – |
+| `balanced` | 5,1 s (2,1 bis 9,1) | 1,7 s | – | – | 0,1 s | 320 | 60 |
+| `best-quality` | 20,4 s (16,0 bis 25,7) | 1,6 s | 13,8 s, 6 Stapel | – | 2,4 s | 48.500 | 7.300, 3.400 |
+| `best-quality-generated` | 33,9 s (29,5 bis 37,9) | 1,6 s | 13,8 s, 7 Stapel | 14,6 s, 10 Bausteine | 2,3 s | 75.600 | 15.800, 6.300 |
+| `best-coverage-generated` | 37,3 s (34,3 bis 42,8) | 1,6 s | 15,1 s, 6 Stapel | 17,8 s, 10 Bausteine | 2,3 s | 90.100 | 20.000, 5.600 |
+
+- Kein Aufruf wartete auf einen Platz; das Schreiben nutzt die 10 Plätze genau aus. Schritte, die auf dem Weg liegen,
+  laufen nacheinander: Vorbereitung, Zuordnung, Schreiben, dann Teil 2.
+- Das Modell schreibt rund 100 Tokens je Sekunde. Das Schreiben dauert so lange wie der längste Baustein (das 1,2- bis
+  1,6-fache des Medians, bis 1.900 Ausgabe-Tokens in `best-coverage-generated`), die Zuordnung so lange wie ihr
+  langsamster Stapel (9 bis 15 s für 0,9 bis 1,3 Tausend Ausgabe-Tokens, davon 35 bis 60 % Denken; ohne Denken verlor
+  sie in M59 vier Punkte micro-F1, D81).
+- `llm-free` wartet auf das Archiv, nicht auf Rechnung: Im ersten Lauf eines Themas brauchten Korpus 2,6 s und
+  Satzauswahl 2,3 s im Median (bis 6,2 und 9,2 s; die Satzauswahl schlägt Akteure und Glossar im Archiv nach), im
+  zweiten Lauf desselben Themas 0,0 bis 0,1 s und 0,2 bis 4,6 s (Median 1,1 s).
+- Die Tokens aus dem Cache sind hier zu hoch: Dasselbe Thema lief in den Profilen nacheinander, spätere Profile lasen
+  Stapel und Teil 2 des vorigen aus dem Cache. Über OpenAI direkt cacht der Anbieter auch den gleichen Anfang der
+  Nachricht des Nutzers, über die b-api nach M46 nur die System-Nachricht. Im Betrieb kommen je Anfrage der
+  Bausteinkatalog der Zuordnung und in `best-coverage-generated` der Überblick der Bausteine aus dem Cache (D69).
+
+**Wie viele Aufrufe zugleich** (`mc_tempo_simulation.py`: die gemessenen Dauern, je Schritt höchstens k Aufrufe; bei 10
+Plätzen trifft die Rechnung die Messung):
+
+| Plätze | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+|---|---|---|---|
+| 1 | 86 s | 187 s | 229 s |
+| 2 | 47 s | 100 s | 119 s |
+| 4 | 30 s | 60 s | 73 s |
+| 10 (ausgeliefert) | 20 s | 34 s | 37 s |
+| 20 | 20 s | 34 s | 37 s |
+
+Mehr als 10 Plätze bringen allein nichts, weil kein Schritt mehr als 10 Aufrufe zugleich stellt; sie helfen, wenn
+Schritte nebeneinander laufen oder mehrere Anfragen sich einen Worker teilen. Bei 2 Plätzen landen die schreibenden
+Profile schon mit der Geschwindigkeit von `gpt-6-luna` nahe der Grenze von 120 s (`REQUEST_TIMEOUT_S`); ein
+langsameres Modell bei academiccloud liegt darüber.
+
+**Teil 2 neben Teil 1, Zuordnung in 25er-Stapeln, 20 Plätze** (`--variant=par --batch=25`, dieselben Themen):
+
+| Profil | Anfrage vorher | nachher | Zuordnung vorher | nachher |
+|---|---|---|---|---|
+| `best-quality` | 20,4 s | 16,3 s | 13,8 s | 10,4 s |
+| `best-quality-generated` | 33,9 s | 29,7 s | 13,8 s | 11,0 s |
+| `best-coverage-generated` | 37,3 s | 35,2 s | 15,1 s | 10,8 s |
+
+Teil 2 lief neben der Zuordnung (2,3 bis 5,8 s nach Beginn) ohne einen Rückfall. Bei gleich großem Korpus (11 Paare;
+die Frage N nennt je Lauf andere Artikel, die Korpora streuen) fiel die Zuordnung im Median von 14,5 auf 10,3 s, die
+Anfrage von 35,4 auf 28,1 s. Die kleineren Stapel kosten aber Tokens: je Absatz 26,6 statt 21,7 Ausgabe-Tokens
+(+23 %), davon Denken 15,2 statt 10,4 (+46 %), weil jeder Aufruf einen festen Teil denkt; die Eingabe stieg um 30 %,
+weil der Katalog in doppelt so vielen Aufrufen steht (im Betrieb meist aus dem Cache). In 2 von 27 Läufen ließ eine
+Antwort Absätze aus (einmal 24, zurück an die Regeln), in der Grundmessung nie. Ein Stapel brauchte beim Anbieter
+einmal 100 s statt 7 bis 15 s und hielt die Anfrage auf 126 s auf; unter den 456 Aufrufen der Grundmessung dauerte
+keiner länger als 20 s.
+
+**Güte der Zuordnung am Gold** (`mc_reasoning.py zuordnung`, 595 Absätze, je drei Durchgänge; dazu die kompaktere
+Schreibweise des Absatzkopfs: Artikel und Abschnitt nur beim Wechsel genannt, nicht vor jedem Absatz):
+
+| Zuordnung | macro-F1 (Spanne) | micro-F1 | Tokens | davon Ausgabe |
+|---|---|---|---|---|
+| 50 Absätze à 250 Zeichen (ausgeliefert) | 0,684 (0,658–0,699) | 0,794 | 95.000 | 14.500 |
+| 25 Absätze à 250 Zeichen | 0,635 (0,612–0,661) | 0,787 | 117.100 | 17.300 |
+| 50 à 250, kompakter Kopf | 0,666 (0,616–0,692) | 0,786 | 87.800 | 14.500 |
+
+Die kleineren Stapel ordnen schlechter zu und kosten 23 % mehr: Sie scheiden aus. Der kompakte Kopf spart 7,5 % der
+Tokens, nur Eingabe; seine Güte liegt in der Streuung, im Mittel knapp darunter.
+
+**Teil 3** (`--part3`, ohne LLM): vier Sammlungen des Staging-Repositorys brauchten ohne Cache 0,8 bis 5,9 s, aus dem
+Cache 0,00 bis 0,03 s. Heute läuft Teil 3 nach Teil 2.
+
+**Teil 2 breiter Themen** (aus den Daten von M59, 57 Themen, `best-quality`): Die Prüfung bewertet jedes gefundene
+Element, im Median 40 (4.000 Tokens). Sechs Themen mit mehr als 600 Elementen brauchten 54 % aller Tokens der Prüfung,
+*Edelgase* allein 176.000 für 2.632 Elemente, von denen 2.261 verworfen wurden; dort war am Ende das Budget der
+Anfrage erschöpft.
+
+**Haltezeit des Caches** (`mc_cache_dauer.py`, OpenAI direkt, zwei gemeinsame Texte von je 3.600 Tokens als
+System-Nachricht, einer mit `prompt_cache_retention: "24h"`): OpenAI nimmt den Parameter an. Nach 20 Minuten Pause
+kamen bei beiden 3.600 Tokens aus dem Cache, nach weiteren 40 Minuten bei keinem; die verlängerte Haltezeit wirkte
+nicht. Ob die b-api den Parameter durchreicht, ist damit ohne Belang.
+
+**Ergebnis:** Entscheidungsvorlage, Punkt 15. Rohdaten: `m75_tempo.json`.

@@ -15,8 +15,9 @@ Schritte:
   gründliche Wahl); richtig, wenn der Titel erwartet ist oder das Ziel einer Weiterleitung auf einen erwarteten Titel.
 - zuordnung <weg>...: matcher=llm am Gold von eval/gold (das Verzeichnis nach /gold gebunden: -v <repo>/eval/gold:/gold),
   wie mc_llm_sparvarianten.py (M12): je Goldthema der Korpus nach den Regeln, davon die benoteten Absätze; Wege rules
-  (hybrid_light), llm (50 Absätze à 400 Zeichen je Aufruf), llm_100x400, llm_50x250; macro- und micro-F1, Tokens,
-  Sekunden. Dazu -e LLM_MAX_TOKENS_PER_REQUEST=400000 -e LLM_MAX_CONCURRENCY=4, damit kein Budget eingreift.
+  (hybrid_light), llm (50 Absätze à 400 Zeichen je Aufruf), llm_100x400, llm_50x250, llm_25x250 und llm_50x250k
+  (M75: Artikel und Abschnitt nur beim Wechsel genannt); macro- und micro-F1, Tokens, Sekunden. Dazu
+  -e LLM_MAX_TOKENS_PER_REQUEST=400000 -e LLM_MAX_CONCURRENCY=4, damit kein Budget eingreift.
 - lehrplan '<themen.json>': Teil 2 in best-quality an den Themen von M57 (je Art eine Liste), mit der LLM-Prüfung
   jedes Elements; je Element IRI, Stichwort, Fundort und Note, dazu Tokens und Sekunden.
 - schreiben <variante>... -- <thema>...: Teil 1 in best-quality-generated (bqg) oder best-coverage-generated (bcg) wie
@@ -98,10 +99,40 @@ def zuordnung(ways):
     from pathlib import Path
 
     import app.matching.llm_assignment as llm_assignment
+    from app.llm.prompts import get_prompt
     from app.matching.eval import aggregate, align, evaluate, predictions_from_classification
     from app.matching.gold import load_gold
 
-    sizes = {"llm": (50, 400), "llm_100x400": (100, 400), "llm_50x250": (50, 250)}
+    sizes = {
+        "llm": (50, 400),
+        "llm_100x400": (100, 400),
+        "llm_50x250": (50, 250),
+        "llm_25x250": (25, 250),
+        "llm_50x250k": (50, 250),
+    }
+    shipped_render = llm_assignment.render_messages
+
+    def render_compact(template, topic, chunks, sources):
+        """M75: article and section named once where they change, not before every paragraph."""
+        blocks = "\n".join(
+            f"- {slot.slot} ({slot.title}): {slot.description} Gehört hinein: {slot.inclusions} "
+            f"Gehört nicht hinein: {slot.exclusions}"
+            for slot in template.content_slots()
+        )
+        lines, article_seen, heading_seen = [], None, None
+        for number, chunk in enumerate(chunks, start=1):
+            article = f"{llm_assignment._title(chunk, sources)}, {llm_assignment._role(chunk, sources)}"
+            if article != article_seen:
+                lines.append(f"Artikel: {article}")
+                article_seen, heading_seen = article, None
+            if chunk.full_heading != heading_seen:
+                lines.append(f"Abschnitt: {chunk.full_heading}")
+                heading_seen = chunk.full_heading
+            lines.append(f"p{number}: {' '.join(chunk.text.split())[:llm_assignment.TEXT_CHARS]}")
+        rules = f"\n\n{template.assignment_rules}" if template.assignment_rules else ""
+        shared = f"Bausteine:\n{blocks}{rules}"
+        return get_prompt("paragraph_assignment").sharing(shared).render(topic=topic, paragraphs="\n".join(lines))
+
     pools = []
     for path in sorted(Path("/gold").glob("*.jsonl")):
         gold = load_gold(path)
@@ -113,6 +144,7 @@ def zuordnung(ways):
     for way in ways:
         strategy = "hybrid_light" if way == "rules" else "llm"
         llm_assignment.BATCH_SIZE, llm_assignment.TEXT_CHARS = sizes.get(way, (50, 400))
+        llm_assignment.render_messages = render_compact if way.endswith("k") else shipped_render
         evals, per_topic, totals = [], {}, {"tokens": 0, "completion": 0, "calls": 0, "fallback": 0, "paragraphs": 0}
         started_all = time.perf_counter()
         for gold, alignment, pool in pools:

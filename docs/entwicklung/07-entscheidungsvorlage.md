@@ -1,6 +1,6 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 02.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M51; Rohdaten und
+[Übersicht](README.md) · Stand 08.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M75; Rohdaten und
 Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von `/entities`:
 [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit und Tokens
 je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
@@ -421,6 +421,10 @@ Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in `bes
 `best-quality-generated` (M33). Eine Anfrage dieser Profile darf bis 180.000 Tokens ausgeben (D59), die der anderen
 60.000; die Grenze schützt vor Ausreißern, die meisten Anfragen bleiben weit darunter. Das Tagesbudget gilt für alle
 Anfragen und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück.
+
+Stand M75 (08.10.2026, Teil 1 und 2, die neun Themen von M52, Median): `balanced` 320 Tokens und 5,1 s,
+`best-quality` 48.500 und 20,4 s, `best-quality-generated` 75.600 und 33,9 s, `best-coverage-generated` 90.100 und
+37,3 s. Wohin Zeit und Tokens gehen und was sich daran sparen ließe: Punkt 15.
 
 ## Die Empfehlungen im Einzelnen
 
@@ -920,6 +924,41 @@ Passung 4,56 und Nutzen 4,31.
     Klassik* für deckend hält. Mitbehoben: Ein Baustein mit Belegen, dessen Text keinen davon zitiert, fiel in
     `best-quality-generated` auf wörtliche Absätze zurück, mitten in einem geschriebenen Text; er bleibt jetzt
     geschrieben, jeder Satz gekennzeichnet.
+15. **Zeit und Tokens** (Jan, 08.10.2026: „abschließend sollten wir die frage analysieren ob wir
+    bearbeitungsgeschwindigkeit und tokenverbrauch verbessern können … die qualität muss aber im auge behalten werden -
+    nochmal für alle profile durchdenken“): gemessen in M75, Aufruf für Aufruf, an den neun Themen von M52.
+
+    **Wo die Zeit hingeht:** Ohne LLM wartet der Dienst auf das Archiv: Im ersten Lauf eines Themas brauchte
+    `llm-free` 2 bis 15 s, vor allem für Korpus und Nachschlagen von Akteuren und Glossar; im zweiten Lauf brauchte der
+    Korpus 0,0 bis 0,1 s und das Nachschlagen 0,2 bis 4,6 s. Mit LLM liegen die Schritte nacheinander auf dem Weg:
+    Vorbereitung 1,6 s, Zuordnung 14 bis 15 s, Schreiben 15 bis 18 s, dann Teil 2 mit 2,3 s, dann Teil 3. Kein Aufruf
+    wartete auf einen der 10 Plätze. Das Modell schreibt rund 100 Tokens je Sekunde; das Schreiben dauert so lange wie der längste Baustein,
+    die Zuordnung so lange wie ihr langsamster Stapel. Die großen Hebel sind schon gezogen und gemessen: Absätze für die
+    Zuordnung auf 250 Zeichen, 50 je Stapel (D36, M59), kein Denken bei den fünf Fragen, die ohne gleich gut antworten
+    (D81), alles, was Aufrufe teilen, in der System-Nachricht für den Cache des Anbieters (D69).
+
+    **Wo die Tokens hingehen** (`best-quality-generated`, 75.600 je Anfrage): Zuordnung rund 63 %, Schreiben 27 %,
+    Teil 2 10 %; ein Fünftel ist Ausgabe, und davon sind zwei Fünftel Denken (Zuordnung und Schreiben, D81). Bei OpenAI
+    kostet Ausgabe üblicherweise ein Mehrfaches der Eingabe, Eingabe aus dem Cache einen Bruchteil.
+
+    | # | Vorschlag | Zeit | Tokens | Güte | Empfehlung |
+    |---|---|---|---|---|---|
+    | a | Gleichzeitige Aufrufe je Anbieter: openai 20, academiccloud 2; `LLM_MAX_CONCURRENCY` überschreibt beide (Jans Vorschlag) | allein nichts, da kein Schritt mehr als 10 Aufrufe stellt; nötig für b und c und wenn sich Anfragen einen Worker teilen | – | – | bauen |
+    | b | Teil 2 neben Teil 1, sobald die Artikelwahl steht | −1,4 bis −2,2 s in `best-quality`, `best-quality-generated`, `best-coverage-generated` | – | gleich: dieselben Prompts, gemessen ohne Rückfall | bauen |
+    | c | Teil 3 von Anfang an neben dem Rest | −0,8 bis −5,9 s, wenn eine Sammlung ohne Cache gelesen wird, in jedem Profil | – | gleich | bauen |
+    | d | Zuordnung in Stapeln von 25 statt 50 | −4 s | +23 % | macro-F1 0,635 statt 0,684, zweimal ausgelassene Absätze | nicht bauen |
+    | e | Absatzkopf der Zuordnung kompakter (Artikel und Abschnitt nur beim Wechsel) | – | −7,5 % der Zuordnung, rund 3.500 Eingabe-Tokens je Anfrage | in der Streuung, im Mittel 0,02 macro-F1 darunter | nicht vordringlich |
+    | f | Teil-2-Prüfung auf die ersten N Elemente begrenzen (etwa 600) | bei breiten Themen bis −14 s | 54 % der Prüftokens stecken in 6 von 57 Themen (*Edelgase* 176.000); dort bis −135.000 | breite Themen zeigen weniger Elemente | erst messen, was gedruckt würde, dann entscheiden |
+    | g | `best-coverage-generated` mit Regel-Zuordnung (Punkt 12d) | rund −14 s | rund −38.000 (40 %) | Passung 4,56 statt 4,81, Nutzen 4,31 statt 4,81 (M47) | Jans Entscheidung, bisher nein |
+    | h | Nachzügler doppelt stellen | selten (einer unter rund 1.100 Aufrufen, dann 100 statt 10 s) | wenige | gleich | optional, später |
+    | i | Cache-Haltezeit 24 h beim Anbieter (`prompt_cache_retention`) | – | keine: nach 20 min Pause noch im Cache, nach weiteren 40 min auch mit dem Parameter nicht mehr | gleich | nicht bauen |
+    | j | academiccloud mit 2 Plätzen | `best-quality-generated` 100 s, `best-coverage-generated` 119 s schon mit der Geschwindigkeit von `gpt-6-luna` | – | bei `REQUEST_TIMEOUT_S` 120 s Rückfälle | dann `REQUEST_TIMEOUT_S` anheben oder `balanced`/`best-quality` |
+    | k | `llm-free`: Artikel parallel lesen und nachschlagen | kalt 2 bis 15 s, davon ein Teil | – | gleich | erst messen |
+
+    Kurz: Ohne Abstriche an der Güte lassen sich die LLM-Profile um rund 2 s und mit Sammlung um bis zu 8 s
+    beschleunigen (a bis c); das ist wenig, weil Zuordnung und Schreiben auf das Modell warten, nicht auf den Dienst.
+    Mehr Tempo und spürbar weniger Tokens gibt es nur gegen Güte (d, g) oder mit anderer Ausgabe (f).
+
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
 `best-quality`-Profilen (`curriculum_check=llm`); `llm-free` und `balanced` bleiben bei den Regeln mit gebündelten
