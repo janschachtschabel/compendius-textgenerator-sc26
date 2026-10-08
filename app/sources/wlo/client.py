@@ -19,7 +19,7 @@ from urllib.parse import urlsplit
 
 import httpx
 
-from app.http_body import AnswerTooLargeError, read_bounded
+from app.http_body import ACCEPT_ENCODING, UnreadableAnswerError, read_bounded
 
 # The errors live apart so that the parsers raise them too; the service imports them from here
 from app.sources.wlo.errors import CollectionNotFoundError as CollectionNotFoundError
@@ -135,7 +135,7 @@ class EduSharingClient:
                 timeout=timeout_s,
                 auth=auth,
                 cookies=_no_cookies(),
-                headers={"Accept": "application/json", "User-Agent": USER_AGENT},
+                headers={"Accept": "application/json", "Accept-Encoding": ACCEPT_ENCODING, "User-Agent": USER_AGENT},
             )
 
         self._client = connection(httpx.BasicAuth(user, password) if user else None)
@@ -286,7 +286,7 @@ class EduSharingClient:
             except httpx.TransportError as exc:
                 last_error = exc
                 continue
-            except AnswerTooLargeError as exc:
+            except UnreadableAnswerError as exc:
                 log.warning("answer of %s%s: %s", self.base_url, path, exc)
                 raise EduSharingError(f"edu-sharing antwortete mit {exc}") from exc
             if status >= 400:

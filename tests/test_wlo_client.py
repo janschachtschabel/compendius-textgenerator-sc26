@@ -1,9 +1,10 @@
 """edu-sharing client: URL building, pagination, auth, error mapping, id validation (offline, mocked transport)."""
 
 import base64
+import gzip
 import json
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -91,6 +92,14 @@ def test_collection_metadata_and_subcollections() -> None:
     assert repo.requests[0].url.path == f"/edu-sharing/rest/collection/v1/collections/-home-/{OPTIK}"
     assert repo.requests[0].headers["accept"] == "application/json"
     assert "authorization" not in repo.requests[0].headers  # anonymous without credentials
+
+
+def test_the_client_asks_only_for_the_codings_it_unpacks() -> None:
+    """httpx asks for br and zstd once their packages are installed; read_bounded unpacks gzip and deflate only."""
+    repo = FakeRepository()
+    _client(repo).collection(OPTIK)
+
+    assert repo.requests[0].headers["accept-encoding"] == "gzip, deflate"
 
 
 def test_references_are_paginated_until_the_total_is_reached() -> None:
@@ -431,3 +440,27 @@ def test_an_answer_past_the_bound_is_an_error_not_a_full_read(monkeypatch: pytes
         _client(FakeRepository()).listing(OPTIK)  # a page of the fixture is larger
     monkeypatch.setattr("app.sources.wlo.client.MAX_ANSWER_BYTES", 1_000_000)
     assert len(_client(FakeRepository()).listing(OPTIK).refs) == 16
+
+
+class Packed(httpx.SyncByteStream):
+    """An answer streamed as it arrives over the network: not read before the client reads it."""
+
+    def __init__(self, body: bytes) -> None:
+        self.body = body
+
+    def __iter__(self) -> Iterator[bytes]:
+        yield self.body
+
+
+def test_a_compressed_answer_past_the_bound_is_an_error_not_unpacked_whole(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The fakes above hand over answers read already; this one streams 50 MB of zeros packed in gzip, which httpx
+    unpacked whole before the bound was checked (review of 2026-10-08)."""
+    monkeypatch.setattr("app.sources.wlo.client.MAX_ANSWER_BYTES", 1_000_000)
+    bomb = gzip.compress(bytes(50_000_000))
+    answer = httpx.MockTransport(
+        lambda request: httpx.Response(200, headers={"Content-Encoding": "gzip"}, stream=Packed(bomb))
+    )
+    client = EduSharingClient(BASE, transport=answer)
+
+    with pytest.raises(EduSharingError, match=re.escape("mehr als 1.000.000 Byte")):
+        client.collection(OPTIK)

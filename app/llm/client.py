@@ -23,7 +23,7 @@ from typing import Any
 
 import httpx
 
-from app.http_body import AnswerTooLargeError, read_bounded
+from app.http_body import ACCEPT_ENCODING, UnreadableAnswerError, read_bounded
 from app.llm.budget import estimate_tokens
 from app.llm.deadline import MIN_CALL_S
 
@@ -178,7 +178,9 @@ class BApiClient:
         self.max_concurrency = max(1, max_concurrency)
         self._semaphore = threading.BoundedSemaphore(self.max_concurrency)
         self._client = httpx.Client(
-            headers={"X-API-KEY": api_key, "Accept": "application/json"}, timeout=timeout_s, transport=transport
+            headers={"X-API-KEY": api_key, "Accept": "application/json", "Accept-Encoding": ACCEPT_ENCODING},
+            timeout=timeout_s,
+            transport=transport,
         )
 
     def close(self) -> None:
@@ -344,7 +346,7 @@ class BApiClient:
                     if hard_end is not None:
                         ends = min(ends + waited, hard_end)  # the wait was the request's time, not the call's
                     response = self._send(method, url, json_body, had)
-            except AnswerTooLargeError as exc:
+            except UnreadableAnswerError as exc:
                 # the model answered, so the attempt may have cost its prompt (A05)
                 raise LlmError(f"b-api antwortete mit {exc}", reached=reached + 1) from exc
             except LlmError as exc:
@@ -439,8 +441,8 @@ class BApiClient:
 
     def _send(self, method: str, url: str, json_body: Mapping[str, Any] | None, limit: float) -> httpx.Response:
         """One HTTP attempt of at most ``limit`` seconds, made holding a call slot (``_slot``). The answer is read up
-        to ``MAX_ANSWER_BYTES`` (``AnswerTooLargeError`` past it) and comes back read, with the headers a caller looks
-        at."""
+        to ``MAX_ANSWER_BYTES`` (``AnswerTooLargeError`` past it, ``UnreadableAnswerError`` in a coding it does not
+        unpack) and comes back read, with the headers a caller looks at."""
         request = self._client.build_request(method, url, json=json_body, timeout=limit)
         streamed = self._client.send(request, stream=True)
         try:

@@ -416,6 +416,16 @@ def test_models_url_and_chat_url_follow_the_provider() -> None:
     assert client.models_url == f"{BASE}/api/v1/llm/academiccloud/models"
 
 
+def test_the_client_asks_only_for_the_codings_it_unpacks() -> None:
+    """httpx asks for br and zstd once their packages are installed; read_bounded unpacks gzip and deflate only."""
+    fake = FakeBApi()
+    client, _ = make_client(fake)
+
+    client.chat(MESSAGES, max_output_tokens=50)
+
+    assert {request.headers["accept-encoding"] for request in fake.requests} == {"gzip, deflate"}
+
+
 def test_an_answer_past_the_bound_ends_the_call_unread(monkeypatch: pytest.MonkeyPatch) -> None:
     """Audit 2026-10-03, F12: every answer was read whole, so a faulty gateway could fill a worker's memory. One past
     MAX_ANSWER_BYTES is an error that counts the attempt as one that reached the model."""
