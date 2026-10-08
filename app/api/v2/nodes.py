@@ -24,6 +24,7 @@ from app.knowledge.collection_context import is_neutral, stand_in
 from app.knowledge.derived_topic import derive_topic, node_topic
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import node_block
+from app.llm.deadline import Deadline
 
 router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 
@@ -108,12 +109,15 @@ def read_node(
       named by its REST root, e.g. ``https://repository.staging.openeduhub.net/edu-sharing/rest``
     """
     service = request.app.state.service
-    info, node = service.read_node(node_id, repository)
+    # REQUEST_TIMEOUT_S as for every compendium read: a slow repository held the preview for the client's whole
+    # timeout per read, up to three collections above a neutral one (review of 2026-10-08)
+    deadline = Deadline(service.settings.request_time_limit_s)
+    info, node = service.read_node(node_id, repository, remaining=deadline.remaining)
     found = derive_topic(None, [node_topic(info)], is_subject=service.subjects.knows)
     topic: str | None = found.normalized.topic
     title = found.normalized.topic
     if info.kind == "collection" and is_neutral(title):  # it stands for the collection above it (M71)
-        tree = service.collection_tree(info, None, repository, content=False)
+        tree = service.collection_tree(info, None, repository, content=False, remaining=deadline.remaining)
         labels = service.subjects.labels_of(found.subjects)
         topic = stand_in(title, tree, labels, is_subject=service.subjects.knows) or title
     node_article: dict[str, Any] | None = None

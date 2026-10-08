@@ -314,6 +314,18 @@ def test_the_node_preview_shows_the_collection_the_rules_resolve(settings: Setti
     assert body["title"] == "Grundlagen" and body["topic"] == "Optik"
 
 
+def test_the_node_preview_reads_within_the_time_of_a_request(settings: Settings) -> None:
+    """The preview read the node and, for a neutral collection, the collections above it with the client's whole
+    timeout each, whatever REQUEST_TIMEOUT_S allows a request (review of 2026-10-08)."""
+    app = create_app(settings.model_copy(update={"request_timeout_s": 5}))
+    fake = FakeTree()
+    app.state.collections = app.state.service.collections = _builder(fake)
+
+    assert TestClient(app).get(f"/api/v2/nodes/{NODE}").json()["topic"] == "Optik"
+
+    assert len(fake.requests) > 1 and max(request.extensions["timeout"]["read"] for request in fake.requests) <= 5
+
+
 def test_a_collection_as_collection_id_gives_its_topic_with_its_place_as_well(
     service: CompendiumService, in_tree: FakeTree
 ) -> None:
