@@ -118,16 +118,32 @@ class StatusCollector:
             ("edu_sharing", self._edu_sharing),
             ("llm", self._llm),
         )
+        failing = self._failing()
         for name, section in sections:
             try:
                 metrics = list(section())
             except Exception:  # one unreadable source must not fail the scrape and fire KompendiumDown
-                log.exception("status section %s left out of this scrape", name)
+                if name not in failing:
+                    log.exception("status section %s left out of the scrape until it can be read again", name)
+                    failing.add(name)
                 failed.add_metric([name], 1)
                 continue
+            if name in failing:
+                failing.discard(name)
+                log.info("status section %s is back in the scrape", name)
             failed.add_metric([name], 0)
             yield from metrics
         yield failed
+
+    def _failing(self) -> set[str]:
+        """The sections the last scrapes left out, kept on the app's state between scrapes: a section that kept
+        failing logged its traceback with every scrape, every 30 s, and the gauge carries the ongoing state (logging
+        review of 2026-10-08)."""
+        failing: set[str] | None = getattr(self._state, "failing_status_sections", None)
+        if failing is None:
+            failing = set()
+            self._state.failing_status_sections = failing
+        return failing
 
     def _archives(self) -> Iterator[Metric]:
         registry = self._state.registry

@@ -1,11 +1,13 @@
 """Prometheus metrics: status gauges at scrape time, request and generation metrics, access and format."""
 
 import json
+import logging
 import os
 import re
 import shutil
 import subprocess
 import sys
+from collections.abc import Iterator
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -14,6 +16,7 @@ import httpx
 import pytest
 import yaml
 from fastapi.testclient import TestClient
+from prometheus_client.metrics_core import Metric
 from prometheus_client.parser import text_string_to_metric_families
 
 from app import __version__
@@ -202,6 +205,28 @@ def test_a_failing_status_section_leaves_the_others_in_the_scrape(
     assert value(samples, "kompendium_status_section_failed", section="curricula") == 1
     assert ("kompendium_status_section_failed", (("section", "archives"),)) in samples
     assert value(samples, "kompendium_status_section_failed", section="archives") == 0
+
+
+def test_a_failing_status_section_is_logged_when_it_starts_and_ends_failing(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """A section that kept failing logged its traceback with every scrape, every 30 s (logging review of
+    2026-10-08); the gauge carries the ongoing state."""
+    calls = iter([True, True, False])
+
+    def flaky(self: object) -> Iterator[Metric]:
+        if next(calls):
+            raise RuntimeError("lehrplan.db locked")
+        return iter(())
+
+    monkeypatch.setattr("app.observability.status.StatusCollector._curricula", flaky)
+    with _app(sample_zims, tmp_path) as client, caplog.at_level(logging.INFO, logger="app.observability.status"):
+        for _ in range(3):
+            scrape(client)
+
+    lines = [(record.levelno, record.getMessage()) for record in caplog.records if "curricula" in record.getMessage()]
+    assert [level for level, _message in lines] == [logging.ERROR, logging.INFO]
+    assert "back" in lines[1][1]
 
 
 def test_missing_status_files_leave_their_gauges_out(sample_zims: dict[str, Path], tmp_path: Path) -> None:
