@@ -115,7 +115,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
     stop_on_sigterm()
     try:
         run_periodically(
-            lambda: _run_once(sync, options),
+            lambda: _run_once(sync, options, interval),
             interval,
             retry_after=RETRY_AFTER_FAILURE,
             poll_s=POLL_SECONDS,
@@ -129,16 +129,38 @@ def cmd_sync(args: argparse.Namespace) -> int:
     return 0
 
 
-def _run_once(sync: ZimSync, options: SyncOptions) -> bool | timedelta:
+def _run_once(sync: ZimSync, options: SyncOptions, interval: timedelta) -> bool | timedelta:
     """One loop run; ``False`` asks the loop for the early retry, a ``timedelta`` for a run once a retired archive may
-    go - the next run would otherwise come after ZIM_SYNC_INTERVAL, 30 days (audit 2026-09-28, BE-12)."""
+    go - the next run would otherwise come after ZIM_SYNC_INTERVAL, 30 days (audit 2026-09-28, BE-12).
+
+    The run is one log record of one line, the report a field of it (with LOG_FORMAT=json one JSON object, review of
+    2026-10-08): a WARNING when a step failed or a required archive is missing, naming them and the next run. A run
+    with failed steps - a download cut short, no room, a hash that does not match, a downloaded archive deleted as
+    unreadable - logged only at INFO, its reasons inside a JSON string, and nothing said when it was tried again
+    (logging review of 2026-10-08)."""
     report = sync.run(options)
-    # One log record of one line: with LOG_FORMAT=json one JSON object (review of 2026-10-08)
-    log.info("Sync-Bericht: %s", json.dumps(report.to_dict(), ensure_ascii=False))
-    if report.retry_soon:
-        return False
-    due = sync.due_in(report)
-    return due if due is not None else True
+    due = None if report.retry_soon else sync.due_in(report)
+    result: bool | timedelta = False if report.retry_soon else due if due is not None else True
+    next_run = RETRY_AFTER_FAILURE if report.retry_soon else min(due, interval) if due is not None else interval
+    log.log(
+        logging.WARNING if report.errors or report.missing else logging.INFO,
+        "Sync-Bericht (Profil %s): übernommen %s, geladen %s, übersprungen %s, entfernt %s, fehlende Pflichtarchive "
+        "%s, Fehler %s; nächster Lauf in %s",
+        report.profile,
+        _names(report.adopted),
+        _names(report.downloaded),
+        _names(report.skipped),
+        _names(report.pruned),
+        _names(report.missing),
+        "; ".join(report.errors) or "keine",
+        next_run,
+        extra={"fields": {"report": report.to_dict(), "next_run_s": int(next_run.total_seconds())}},
+    )
+    return result
+
+
+def _names(items: list[str]) -> str:
+    return ", ".join(items) or "keine"
 
 
 def _print_report(report: SyncReport) -> None:

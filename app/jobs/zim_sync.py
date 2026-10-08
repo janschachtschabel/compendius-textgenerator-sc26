@@ -224,17 +224,7 @@ class ZimSync:
             raise
         report.finished_at = self._clock().isoformat()
         self._write_status("idle")
-        log.info(
-            "zim sync %s: adopted %s, downloaded %s, skipped %s, missing %s, pruned %s, errors %d",
-            options.profile,
-            report.adopted,
-            report.downloaded,
-            report.skipped,
-            report.missing,
-            report.pruned,
-            len(report.errors),
-        )
-        return report
+        return report  # the loop logs it as one record, the command prints it (app/cli_zim.py)
 
     # -- steps -----------------------------------------------------------------------------------
     def _load_state(self, profile: str) -> ActiveState:

@@ -21,6 +21,7 @@ from app.sources.zim.catalog import KiwixCatalog
 
 OPDS = Path(__file__).parent / "fixtures" / "opds"
 
+MONTH = timedelta(days=30)
 MANIFEST_YAML = """version: 1
 profiles: {compact: test}
 subscriptions:
@@ -100,8 +101,10 @@ class OneRun:
 
 def test_one_loop_run_asks_for_an_early_retry_when_its_report_says_so() -> None:
     options = SyncOptions(profile="compact")
-    assert _run_once(OneRun(SyncReport("compact", "t0", retry_soon=True)), options) is False  # type: ignore[arg-type]
-    assert _run_once(OneRun(SyncReport("compact", "t0", errors=["x: SHA-256 mismatch"])), options) is True  # type: ignore[arg-type]
+    retry = OneRun(SyncReport("compact", "t0", retry_soon=True))
+    assert _run_once(retry, options, MONTH) is False  # type: ignore[arg-type]
+    again = OneRun(SyncReport("compact", "t0", errors=["x: SHA-256 mismatch"]))
+    assert _run_once(again, options, MONTH) is True  # type: ignore[arg-type]
 
 
 def test_the_sync_loop_stops_cleanly_on_sigterm(zim_env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -225,11 +228,31 @@ def test_info_prints_the_metadata_of_each_archive(
 
 
 def test_a_loop_run_reports_in_one_log_record(caplog: pytest.LogCaptureFixture) -> None:
-    """As the updater the report is a log record of one line, so LOG_FORMAT=json makes it one JSON object; printed,
-    it spread over many lines (review of 2026-10-08)."""
+    """As the updater the report is a log record of one line, so LOG_FORMAT=json makes it one JSON object with the
+    report as a field (review of 2026-10-08)."""
     caplog.set_level(logging.INFO, logger="app.cli_zim")
 
-    _run_once(OneRun(SyncReport("compact", "t0", errors=["x: SHA-256 mismatch"])), SyncOptions(profile="compact"))  # type: ignore[arg-type]
+    _run_once(OneRun(SyncReport("compact", "t0", downloaded=["a_2026-10.zim"])), SyncOptions(profile="compact"), MONTH)  # type: ignore[arg-type]
 
-    [message] = [record.getMessage() for record in caplog.records if record.name == "app.cli_zim"]
-    assert "\n" not in message and '"errors": ["x: SHA-256 mismatch"]' in message
+    [record] = [record for record in caplog.records if record.name == "app.cli_zim"]
+    assert record.levelno == logging.INFO and "\n" not in record.getMessage()
+    assert "geladen a_2026-10.zim" in record.getMessage() and "nächster Lauf in 30 days" in record.getMessage()
+    assert record.fields["report"]["downloaded"] == ["a_2026-10.zim"]  # type: ignore[attr-defined]
+
+
+def test_a_loop_run_with_errors_is_a_warning_that_names_them_and_the_retry(caplog: pytest.LogCaptureFixture) -> None:
+    """A run with failed steps - a download cut short, no room, a hash that does not match, a downloaded archive deleted
+    as unreadable, required archives missing - logged only at INFO, its reasons inside a JSON string, and nothing
+    announced the retry an hour later (logging review of 2026-10-08)."""
+    caplog.set_level(logging.INFO, logger="app.cli_zim")
+    report = SyncReport(
+        "compact", "t0", errors=["x: Download abgebrochen"], missing=["wikipedia_de_all"], retry_soon=True
+    )
+
+    _run_once(OneRun(report), SyncOptions(profile="compact"), MONTH)  # type: ignore[arg-type]
+
+    [record] = [record for record in caplog.records if record.name == "app.cli_zim"]
+    assert record.levelno == logging.WARNING
+    message = record.getMessage()
+    assert "Fehler x: Download abgebrochen" in message and "fehlende Pflichtarchive wikipedia_de_all" in message
+    assert "nächster Lauf in 1:00:00" in message
