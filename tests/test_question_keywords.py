@@ -133,3 +133,23 @@ def test_the_article_of_a_keyword_is_shown_as_a_guess_beside_what_the_rules_gues
     resolution = service.prepare(GenerateRequest(topic=question, parts=["world"], preset="llm-free")).resolution
 
     assert (resolution.title, resolution.confident, resolution.alternatives[:1]) == ("Regenbogen", False, ["Optik"])
+
+
+def test_a_sentence_the_rules_name_exactly_keeps_their_article(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Only where the rules guessed do the keywords decide; the test with "Optik" above never reached their path, so
+    the condition could go unnoticed (review of 2026-10-08)."""
+    sentence = "Wie breitet sich das Licht in der Optik aus und warum?"
+    real = main_article.resolve_topic
+
+    def rules(registry: Any, topic: str, **options: Any) -> Resolution:
+        if topic != sentence:
+            return real(registry, topic, **options)
+        return Resolution(query=topic, normalized=topic, title="Optik", path="Optik", method="title", confident=True)
+
+    monkeypatch.setattr(main_article, "resolve_topic", rules)
+
+    resolution = service.prepare(GenerateRequest(topic=sentence, parts=["world"], preset="llm-free")).resolution
+
+    assert (resolution.title, resolution.method, resolution.confident) == ("Optik", "title", True)
