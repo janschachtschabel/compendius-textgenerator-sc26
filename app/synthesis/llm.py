@@ -61,7 +61,9 @@ _MARKED_END_RE = re.compile(rf"{_MARKER_GROUP}[.!?…][{_CLOSERS}]*\s+")
 _OTHER_START_RE = re.compile(r"[.!?]\s+(?=[*_»‚]|[^\W\dA-ZÄÖÜ_])")
 # A day or a century cut off before its noun: "seit dem 17." ends no sentence, "starb 1727." does
 _CUT_ORDINAL_RE = re.compile(r"\b(?:im|am|vom|zum|zur|beim|ins|dem|den|der|des)\s+\d{1,2}\.$", re.IGNORECASE)
-_JSON_OPENING_RE = re.compile(r'[{\[]\s*["{\[]|\{\s*\}|\[\s*\]')
+# An object or a list as it opens, also cut off; an empty one only as the whole answer: "{} bezeichnet die leere
+# Menge" is a text (review of 2026-10-08)
+_JSON_OPENING_RE = re.compile(r'[{\[]\s*["{\[]|[{\[]\s*[}\]]\s*$')
 BYTE_ORDER_MARK = chr(0xFEFF)
 
 
@@ -80,18 +82,24 @@ class LlmSection:
     cut_off: bool = False  # the output limit cut the answer; the sentence it broke off in was struck
 
 
-def _unfenced(text: str) -> str:
-    """``text`` without a code fence around it (```json … ```); the opening line names the language."""
-    if not text.startswith("```"):
+def unfenced(text: str) -> str:
+    """``text`` without a code fence around the whole of it (```json … ```, the opening line names the language), also
+    after a lead-in line that ends in a colon ("Hier ist der Baustein:") or cut off before the fence closes. A fence
+    that closes before the end encloses a part of the answer, not the answer, and stays."""
+    stripped = text.strip()
+    lead, _, rest = stripped.partition("\n")
+    if lead.rstrip().endswith(":") and rest.lstrip().startswith("```"):
+        stripped = rest.lstrip()
+    if not stripped.startswith("```"):
         return text
-    _, _, body = text.partition("\n")
-    return body.strip().removesuffix("```").strip()
+    body = stripped.partition("\n")[2].strip().removesuffix("```")
+    return text if "```" in body else body.strip()
 
 
 def is_json(text: str) -> bool:
     """An answer that is JSON and no prose: an object, a list, a number or null, also fenced, after a byte order mark
     or cut off. A text in quotes is a text (review 2026-10-08)."""
-    stripped = _unfenced(text.strip().lstrip(BYTE_ORDER_MARK).strip())
+    stripped = unfenced(text.strip().lstrip(BYTE_ORDER_MARK).strip())
     if _JSON_OPENING_RE.match(stripped):
         return True
     try:
@@ -258,7 +266,7 @@ class LlmSynthesizer:
             return LlmSkipped.after(reason, result)
         if is_json(result.text):  # a block is prose; kept, an object or a list stood in it as model knowledge
             return LlmSkipped.after(NOT_TEXT, result)
-        answer, cut_off = result.text, False
+        answer, cut_off = unfenced(result.text), False  # a fence around the text, and a lead-in before it, are none
         if result.finish_reason == "length" and not result.ended_line:  # cut by the output limit, maybe mid-sentence
             answer, cut_off = without_unfinished_sentence(answer)
             if not answer.strip():

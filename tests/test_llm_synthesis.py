@@ -481,8 +481,13 @@ def test_an_answer_that_ended_its_last_sentence_at_the_limit_keeps_it() -> None:
 
 @pytest.mark.parametrize(
     "answer",
-    ['{"text": "Das Thema ist ein Gebiet der Physik [1]."}', "[1, 2, 3]", '{"p1": ["fachinhalte", 0.9], "p2": ["de'],
-    ids=["object", "list", "cut-off object"],
+    [
+        '{"text": "Das Thema ist ein Gebiet der Physik [1]."}',
+        "[1, 2, 3]",
+        '{"p1": ["fachinhalte", 0.9], "p2": ["de',
+        'Hier ist der Baustein:\n```json\n{"text": "Das Thema ist ein Gebiet der Physik [1]."}\n```',
+    ],
+    ids=["object", "list", "cut-off object", "fenced after a lead-in"],
 )
 def test_json_instead_of_text_is_no_block(answer: str) -> None:
     """A block is prose; an object or a list answers another question, and kept it stood in the text as model
@@ -494,6 +499,14 @@ def test_json_instead_of_text_is_no_block(answer: str) -> None:
 
 def test_a_text_that_opens_with_a_marker_is_text() -> None:
     assert isinstance(written("[1] Das Thema ist ein Gebiet der Physik und handelt vom Licht."), LlmSection)
+
+
+def test_a_fence_around_a_text_is_no_part_of_it() -> None:
+    """The fence was taken off for the check only, and the block showed it, escaped as \\`\\`\\` (review of
+    2026-10-08)."""
+    result = written("```\nDas Thema ist ein Gebiet der Physik und handelt vom Licht [1].\n```")
+
+    assert isinstance(result, LlmSection) and "handelt vom Licht" in result.text and "`" not in result.text
 
 
 def test_html_comments_in_the_answer_never_reach_the_document() -> None:
@@ -909,8 +922,15 @@ def test_json_in_any_form_is_no_text(answer: str) -> None:
 
 @pytest.mark.parametrize(
     "answer",
-    ["[1] Das Thema ist ein Gebiet.", "{1, 2, 3} ist eine Menge.", '"Das Thema ist ein Gebiet der Physik."', "Text"],
-    ids=["opening marker", "set", "quoted text", "word"],
+    [
+        "[1] Das Thema ist ein Gebiet.",
+        "{1, 2, 3} ist eine Menge.",
+        '"Das Thema ist ein Gebiet der Physik."',
+        "Text",
+        "{} bezeichnet die leere Menge [1].",
+        "[] steht für eine leere Liste.",
+    ],
+    ids=["opening marker", "set", "quoted text", "word", "empty set", "empty brackets"],
 )
 def test_prose_that_opens_like_json_is_text(answer: str) -> None:
     assert not is_json(answer)
