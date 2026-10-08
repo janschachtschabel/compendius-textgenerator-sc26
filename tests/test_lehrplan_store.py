@@ -215,3 +215,41 @@ def test_a_search_within_its_limit_keeps_the_order_the_curricula_were_written(tm
     hits = store.search(["Optik"], limit=10, role_order=("inhalt",))
 
     assert [hit.iri for hit in hits] == ["n:1", "n:2", "n:3", "n:9"]
+
+
+def store_warnings(caplog: pytest.LogCaptureFixture) -> list[str]:
+    return [r.getMessage() for r in caplog.records if r.name == "app.sources.lehrplan.store" and r.levelno >= 30]
+
+
+def test_an_unreadable_cache_is_named_once_per_file(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    """Every look at an unreadable cache wrote a WARNING - each request of part 2, each /health twice, the healthcheck
+    every 30 s (logging review of 2026-10-08). Once per file now, and again for another one."""
+    store = LehrplanStore(tmp_path / "lehrplan.db")
+    store.path.write_bytes(b"not a database at all")
+
+    with caplog.at_level("WARNING"):
+        for _ in range(3):
+            assert store.state == "unreadable" and store.meta() == {} and not store.available
+        first = len(store_warnings(caplog))
+        store.path.write_bytes(b"not a database either, and longer")
+        assert store.state == "unreadable"
+
+    assert first == 1 and len(store_warnings(caplog)) == 2
+
+
+def test_a_cache_of_another_schema_version_says_which(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    """A cache an older or newer service wrote was "unreadable" without a word why (logging review of 2026-10-08)."""
+    import sqlite3
+    from contextlib import closing
+
+    path = tmp_path / "lehrplan.db"
+    store = _write(path)
+    with closing(sqlite3.connect(path)) as connection:
+        connection.execute("UPDATE meta SET value = '0' WHERE key = 'schema_version'")
+        connection.commit()
+
+    with caplog.at_level("WARNING"):
+        assert store.state == "unreadable" and store.state == "unreadable"
+
+    [warning] = store_warnings(caplog)
+    assert "schema version 0" in warning and "reads 1" in warning

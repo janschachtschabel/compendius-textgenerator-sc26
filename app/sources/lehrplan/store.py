@@ -133,6 +133,20 @@ class LehrplanStore:
 
     def __init__(self, path: Path) -> None:
         self.path = Path(path)
+        self._warned: tuple[int, int] | None = None  # size and change time of the file a warning named last
+
+    def _warn_once(self, message: str, *args: object) -> None:
+        """A warning about the file, once per file: every look at an unreadable cache wrote one - each request of
+        part 2, each /health twice, the healthcheck every 30 s (logging review of 2026-10-08)."""
+        try:
+            stat = self.path.stat()
+            identity: tuple[int, int] | None = (stat.st_size, stat.st_mtime_ns)
+        except OSError:
+            identity = None
+        if identity is not None and identity == self._warned:
+            return
+        self._warned = identity
+        log.warning(message, *args)
 
     @property
     def exists(self) -> bool:
@@ -147,9 +161,18 @@ class LehrplanStore:
         try:
             version = self._read_meta().get("schema_version")
         except sqlite3.Error as exc:
-            log.warning("lehrplan cache %s is unreadable: %s", self.path, exc)
+            self._warn_once("lehrplan cache %s is unreadable: %s", self.path, exc)
             return "unreadable"
-        return "ok" if version == SCHEMA_VERSION else "unreadable"
+        if version != SCHEMA_VERSION:  # it was "unreadable" without a word why
+            self._warn_once(
+                "lehrplan cache %s has schema version %s, this service reads %s: part 2 is unavailable until a "
+                "harvest writes the cache anew",
+                self.path,
+                version,
+                SCHEMA_VERSION,
+            )
+            return "unreadable"
+        return "ok"
 
     @property
     def available(self) -> bool:
@@ -185,7 +208,7 @@ class LehrplanStore:
             with closing(self._connect()) as connection:
                 rows = connection.execute("SELECT lehrplan_iri, COUNT(*) FROM node GROUP BY lehrplan_iri").fetchall()
         except sqlite3.Error as exc:
-            log.warning("lehrplan cache %s cannot be counted: %s", self.path, exc)
+            self._warn_once("lehrplan cache %s cannot be counted: %s", self.path, exc)
             return {}
         return {row[0]: row[1] for row in rows}
 
@@ -201,7 +224,7 @@ class LehrplanStore:
                     " WHERE node.matchable = 1 GROUP BY lehrplan.bundesland_code"
                 ).fetchall()
         except sqlite3.Error as exc:
-            log.warning("lehrplan cache %s cannot be counted: %s", self.path, exc)
+            self._warn_once("lehrplan cache %s cannot be counted: %s", self.path, exc)
             return {}
         return {row[0]: row[1] for row in rows}
 
@@ -216,7 +239,7 @@ class LehrplanStore:
                     " OR jahrgangsstufen != '[]' OR schulstufen != '[]'"
                 ).fetchall()
         except sqlite3.Error as exc:
-            log.warning("lehrplan cache %s cannot be read: %s", self.path, exc)
+            self._warn_once("lehrplan cache %s cannot be read: %s", self.path, exc)
             return set()
         return {row[0] for row in rows}
 
@@ -226,7 +249,7 @@ class LehrplanStore:
         try:
             return self._read_meta()
         except sqlite3.Error as exc:
-            log.warning("lehrplan cache %s is unreadable: %s", self.path, exc)
+            self._warn_once("lehrplan cache %s is unreadable: %s", self.path, exc)
             return {}
 
     def _read_meta(self) -> dict[str, str]:
@@ -240,7 +263,7 @@ class LehrplanStore:
         try:
             return self._counts()
         except sqlite3.Error as exc:
-            log.warning("lehrplan cache %s cannot be counted: %s", self.path, exc)
+            self._warn_once("lehrplan cache %s cannot be counted: %s", self.path, exc)
             return empty
 
     def _counts(self) -> dict[str, Any]:
