@@ -6,6 +6,7 @@ import json
 import math
 import re
 import threading
+import time
 from collections.abc import Callable
 from dataclasses import replace
 from typing import Any
@@ -21,6 +22,7 @@ from app.llm.client import BApiClient
 from app.llm.prompts import get_prompt
 from app.matching.llm_assignment import (
     BATCH_SIZE,
+    LEFT_OUT_AT_LIMIT,
     OUTPUT_TOKENS_PER_PARAGRAPH,
     TEXT_CHARS,
     AssignmentJob,
@@ -32,7 +34,7 @@ from app.matching.llm_assignment import (
 from app.matching.policy import AssignmentResult
 from app.service import CompendiumService
 from app.templates.schema import ACTORS_KEY
-from tests.test_llm_client import BASE, KEY, FakeBApi
+from tests.test_llm_client import BASE, KEY, FakeBApi, completion
 
 PARAGRAPH_RE = re.compile(r"^(p\d+) \(Artikel: (.+?), (.+?); Abschnitt: (.+?)\):$", re.MULTILINE)
 
@@ -362,6 +364,47 @@ def test_a_line_in_another_form_is_read_as_meant() -> None:
         "p6": ("praxis", 1.0),
         "p7": ("x", 1.0),
     }
+
+
+def test_several_entries_on_a_line_and_a_table_row_are_read() -> None:
+    """Review 2026-10-08: only the first entry of a line was read, and the pipes of a table made the whole answer
+    unreadable."""
+    assert parse_assignment("p1 praxis 8; p2 keiner 9; p3 fachinhalte 7") == {
+        "p1": ("praxis", 8 / 9),
+        "p2": ("keiner", 1.0),
+        "p3": ("fachinhalte", 7 / 9),
+    }
+    assert parse_assignment("| p1 | praxis | 8 |\n| p2 | keiner | 9 |") == {
+        "p1": ("praxis", 8 / 9),
+        "p2": ("keiner", 1.0),
+    }
+
+
+def test_a_sentence_that_mentions_a_paragraph_is_no_entry() -> None:
+    """A remark after the lines read "p1 bis 50" as the block "bis" for p1 (review 2026-10-08)."""
+    assert parse_assignment("p1 praxis 8\nDie Absätze p1 bis 50 passen nirgends.") == {"p1": ("praxis", 8 / 9)}
+
+
+def test_a_long_run_of_pipes_or_stars_costs_no_time() -> None:
+    """With the pipe in the signs that may open an entry, every pipe of a run was tried as its start: 9.9 s for 20,000
+    pipes in a first draft of the fix (review of 2026-10-08)."""
+    started = time.perf_counter()
+
+    for line in ("|" * 20_000, "; " + "*" * 20_000, "| * - " * 4_000):
+        assert parse_assignment(line) is None
+
+    assert time.perf_counter() - started < 1.0
+
+
+def test_paragraphs_a_cut_answer_left_out_name_the_output_limit(
+    prepared: PreparedTopic, rule_based: AssignmentResult
+) -> None:
+    payload = completion("p1 praxis 8")
+    payload["choices"][0]["finish_reason"] = "length"
+
+    _, report = run(prepared, rule_based, make_job(FakeBApi(raw=payload)))
+
+    assert [reason for reason in report.fallbacks if "fehlt" in reason] == [LEFT_OUT_AT_LIMIT]
 
 
 def test_the_model_decides_every_paragraph_it_answers_in_lines(

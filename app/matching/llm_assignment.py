@@ -51,11 +51,15 @@ NONE_KEY = "keiner"
 MATCHER = "llm"
 UNKNOWN_BLOCK = "unbekannter Baustein in der Antwort"
 LEFT_OUT = "Absatz fehlt in der Antwort"
-# A line "p12 fachinhalte 8" (M77); read also as "P12", "**p12**", "1. p12" or "p012", with a colon or a comma
-# between the words, and the confidence as a share, on a scale to 10 or as a percentage (review 2026-10-08). ASCII
-# digits only: "²" is a digit to str.isdigit and none to int (audit 2026-09-28, KO-25).
-_LINE_RE = re.compile(
-    r"(?:^|[\s*])p([0-9]{1,4})\**[\s:;,=]+\**([^\s:;,=*]+)\**[\s:;,=]+([0-9]{1,3}(?:[.,][0-9]+)?)(?![0-9])",
+LEFT_OUT_AT_LIMIT = "Absatz fehlt, die Antwort brach am Ausgabelimit ab (finish_reason=length)"
+# A line "p12 fachinhalte 8" (M77); read also as "P12", "**p12**", "- p12", "1. p12" or "p012", with a colon, a comma
+# or a pipe between the words, and the confidence as a share, on a scale to 10 or as a percentage (review
+# 2026-10-08). An entry opens its line or follows a semicolon or a pipe, so a line holds several and a table row one:
+# a remark that names "p1 bis 50" in a sentence is none. ASCII digits only: "²" is a digit to str.isdigit and none to
+# int (audit 2026-09-28, KO-25).
+_ENTRY_RE = re.compile(
+    r"(?:^|[;|])[\s*>•-]*+(?:[0-9]{1,3}[.)]\s+)?\**p([0-9]{1,4})\**[\s:;,=|]+\**([^\s:;,=*|]+)\**[\s:;,=|]+"
+    r"([0-9]{1,3}(?:[.,][0-9]+)?)(?![0-9])",
     re.IGNORECASE,
 )
 
@@ -120,14 +124,13 @@ def _role(chunk: Chunk, sources: Mapping[str, Source]) -> str:
 def parse_assignment(text: str) -> dict[str, tuple[str, float]] | None:
     """Block key and confidence per paragraph id; ``None`` when the answer holds neither lines nor a JSON object.
 
-    A line ``p12 fachinhalte 8`` gives paragraph, block and confidence (``_LINE_RE``). An answer without such a line
+    A line ``p12 fachinhalte 8`` gives paragraph, block and confidence (``_ENTRY_RE``). An answer without such a line
     is read as the JSON object of version 2, which a model may still give. Keys are compared in lower case; a line or
     an entry of another shape is skipped.
     """
     parsed: dict[str, tuple[str, float]] = {}
     for line in text.splitlines():
-        found = _LINE_RE.search(line)
-        if found is not None:
+        for found in _ENTRY_RE.finditer(line):
             number, key, confidence = found.groups()
             parsed[f"p{int(number)}"] = (block_key(key), _confidence(confidence))
     return parsed or _parse_object(text)
@@ -229,8 +232,8 @@ def assign_with_llm(
             continue
         for number, chunk in enumerate(batch, start=1):
             entry = parsed.get(f"p{number}")
-            if entry is None:
-                fallbacks[LEFT_OUT] += 1
+            if entry is None:  # an answer the output limit cut says so, for LLM_MAX_TOKENS and the reasoning effort
+                fallbacks[LEFT_OUT_AT_LIMIT if answer.finish_reason == "length" else LEFT_OUT] += 1
             elif entry[0] == NONE_KEY:
                 decided[chunk.chunk_id] = (None, entry[1])
             elif entry[0] in key_to_id:
