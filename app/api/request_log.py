@@ -91,7 +91,8 @@ class RequestLog:
             await self.app(scope, receive, named)
         except Exception as exc:
             cause = " ".join(f"{type(exc).__name__}: {exc}".split())[:MAX_CAUSE_CHARS]
-            log.exception("unhandled error in %s %s: %s", scope["method"], scope["path"], cause)
+            # the path as the line of the request has it: decoded, %0A would break the line and forge one
+            log.exception("unhandled error in %s %s: %s", scope["method"], _target(scope), cause)
             if not answered:  # an answer begun cannot be taken back; the connection ends with it
                 content = {"detail": INTERNAL_ERROR, "request_id": request_id}
                 await JsonResponse(content, status_code=500)(scope, receive, named)

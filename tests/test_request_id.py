@@ -31,6 +31,10 @@ def client(sample_zims: dict[str, Path], tmp_path_factory: pytest.TempPathFactor
     def boom() -> None:
         raise RuntimeError("kaputt")
 
+    @app.get("/boom/{tail}")
+    def boom_with(tail: str) -> None:
+        raise RuntimeError("kaputt")
+
     @app.get("/refused")
     def refused() -> None:
         raise HTTPException(status_code=418, detail="nein")
@@ -171,5 +175,17 @@ def test_a_request_that_makes_something_is_logged_when_it_starts(
 
     lines = [record.getMessage() for record in access_lines(caplog)]
     assert lines[0] == "POST /api/v2/compendium started" and lines[1].startswith("POST /api/v2/compendium 200 ")
-    assert [line for line in lines if line.startswith("GET")] == [line for line in lines[2:]]
+    assert [line for line in lines if line.startswith("GET")] == lines[2:]
     assert not any(line.startswith("GET") and line.endswith("started") for line in lines)
+
+
+def test_the_line_of_an_error_keeps_a_path_with_a_line_break_on_one_line(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    """The error line named the decoded path, so %0A in a URL broke it and forged a line of the plain format; it is
+    quoted as in the line of the request."""
+    with caplog.at_level(logging.ERROR):
+        client.get("/boom/a%0AERROR%20forged")
+
+    [error] = [record for record in caplog.records if record.levelno >= logging.ERROR]
+    assert "\n" not in error.getMessage() and "/boom/a%0AERROR%20forged" in error.getMessage()
