@@ -7,10 +7,11 @@ being created where PROMETHEUS_MULTIPROC_DIR points nowhere. They live in app/wi
 
 from __future__ import annotations
 
-import ast
 import subprocess
 import sys
 from pathlib import Path
+
+from tests.test_architecture import imported_modules
 
 ROOT = Path(__file__).resolve().parents[1]
 WEB_ENTRY = {ROOT / "app" / "main.py", ROOT / "app" / "serve.py"}
@@ -18,7 +19,7 @@ WEB_ENTRY = {ROOT / "app" / "main.py", ROOT / "app" / "serve.py"}
 
 def test_the_wiring_loads_neither_fastapi_nor_the_api_metrics() -> None:
     script = (
-        "import sys, app.wiring, app.cli_common, app.cli_collection; "
+        "import sys, app.wiring, app.cli, app.cli_common, app.cli_collection; "
         "print(sorted(m for m in ('fastapi', 'app.main', 'app.observability.metrics') if m in sys.modules))"
     )
     loaded = subprocess.run(  # noqa: S603 - the interpreter of this test, a fixed script
@@ -33,15 +34,7 @@ def test_nothing_but_the_web_entry_imports_app_main() -> None:
     for path in sorted((ROOT / "app").rglob("*.py")):
         if path in WEB_ENTRY:
             continue
-        for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
-            named = (
-                [node.module]
-                if isinstance(node, ast.ImportFrom) and node.module
-                else [alias.name for alias in node.names]
-                if isinstance(node, ast.Import)
-                else []
-            )
-            if "app.main" in named:
-                importers.append(str(path.relative_to(ROOT)))
+        if "app.main" in imported_modules(path):  # also "from app import main" and relative imports
+            importers.append(str(path.relative_to(ROOT)))
 
     assert importers == []
