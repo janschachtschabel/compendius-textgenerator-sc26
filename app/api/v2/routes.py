@@ -30,6 +30,7 @@ from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
 from app.domain.template_bounds import TEMPLATE_ID_PATTERN
 from app.observability.metrics import record_compendium
+from app.observability.outcome import log_compendium
 from app.templates.manager import Expected, VersionConflictError
 from app.templates.schema import Template
 
@@ -156,6 +157,7 @@ def generate_compendium(
     service = get_service(request)
     compendium = service.generate(payload)  # a refusal rises to its answer in app.api.domain_errors
     record_compendium(compendium)
+    log_compendium(compendium)
     return compendium
 
 
