@@ -345,7 +345,13 @@ class LehrplanHarvest:
         except BaseException as exc:  # also Ctrl+C: the status must not stay "running"
             if writer is not None:
                 writer.abort()
-            self._write_status("error", started_at=started.isoformat(), error=f"{type(exc).__name__}: {exc}")
+            if isinstance(exc, KeyboardInterrupt):
+                # A stopped container is no failed harvest, as in the ZIM and dump syncs (KO-13): it fired
+                # KompendiumLehrplanHarvestFailed after an hour stopped (logging review of 2026-10-08)
+                log.info("harvest stopped; the next start checks MEM again")
+                self._write_status("idle", started_at=started.isoformat())
+            else:
+                self._write_status("error", started_at=started.isoformat(), error=f"{type(exc).__name__}: {exc}")
             raise
         report = HarvestReport(
             started_at=started.isoformat(),

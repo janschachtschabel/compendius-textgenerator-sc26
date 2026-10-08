@@ -197,7 +197,11 @@ def test_a_second_harvest_is_refused_while_the_lock_is_held_and_a_stale_lock_is_
     assert not lock.exists()  # released after the run
 
 
-def test_an_interrupt_records_the_error_and_leaves_no_temporary_file(tmp_path: Path) -> None:
+def test_a_container_stop_is_no_failed_harvest_and_leaves_no_temporary_file(tmp_path: Path) -> None:
+    """A stop during the 25-minute harvest was recorded as a failure ("KeyboardInterrupt: "), and after an hour
+    stopped KompendiumLehrplanHarvestFailed fired for a clean stop; the ZIM and dump syncs record a stop as none (KO-13,
+    logging review of 2026-10-08). The status keeps the last error of a finished run."""
+
     class Interrupting(FakeEndpoint):
         def select(self, query: str) -> list[dict[str, str]]:
             if "SELECT DISTINCT ?n WHERE" in query:
@@ -207,7 +211,8 @@ def test_an_interrupt_records_the_error_and_leaves_no_temporary_file(tmp_path: P
     with pytest.raises(KeyboardInterrupt):
         _harvest(tmp_path, Interrupting()).run()
     status = read_status(tmp_path)
-    assert status is not None and status["state"] == "error" and "KeyboardInterrupt" in status["error"]
+    assert status is not None and status["state"] == "idle" and status["error"] is None
+    assert status["last_error"] is None
     assert not (tmp_path / "lehrplan.db.tmp").exists()
 
 
