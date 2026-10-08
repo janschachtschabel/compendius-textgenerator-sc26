@@ -9,11 +9,13 @@ TE-03). Outside a request the field is ``-``.
 
 from __future__ import annotations
 
+import json
 import logging
 import re
 import sys
 import uuid
 from contextvars import ContextVar
+from datetime import UTC, datetime
 
 _FORMAT = "%(asctime)s | %(levelname)-8s | %(name)s | %(request_id)s | %(message)s"
 
@@ -52,12 +54,31 @@ class _RequestIdFilter(logging.Filter):
         return True
 
 
-def configure_logging(level: str = "INFO") -> None:
-    """Configure the root logger once; repeated calls only adjust the level."""
+class _JsonFormatter(logging.Formatter):
+    """One JSON object per event (LOG_FORMAT=json, audit 2026-09-18, OPS-03): a log collector reads its fields without
+    a pattern of its own, and a traceback stays inside its line."""
+
+    def format(self, record: logging.LogRecord) -> str:
+        moment = datetime.fromtimestamp(record.created, UTC).isoformat(timespec="milliseconds")
+        event = {
+            "time": moment.replace("+00:00", "Z"),
+            "level": record.levelname,
+            "logger": record.name,
+            "request_id": getattr(record, "request_id", NO_REQUEST),
+            "message": record.getMessage(),
+        }
+        if record.exc_info:
+            event["exc"] = self.formatException(record.exc_info)
+        return json.dumps(event, ensure_ascii=False)
+
+
+def configure_logging(level: str = "INFO", format_: str = "text") -> None:
+    """Configure the root logger once, as plain lines or with ``format_`` json as JSON lines; repeated calls only
+    adjust the level."""
     root = logging.getLogger()
     if not root.handlers:
         handler = logging.StreamHandler(sys.stdout)
-        handler.setFormatter(logging.Formatter(_FORMAT))
+        handler.setFormatter(_JsonFormatter() if format_ == "json" else logging.Formatter(_FORMAT))
         handler.addFilter(_RequestIdFilter())
         root.addHandler(handler)
     root.setLevel(level.upper())

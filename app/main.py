@@ -199,7 +199,7 @@ def log_defaults(settings: Settings, service: CompendiumService, templates: Temp
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the application; nothing happens at import time."""
     settings = settings or get_settings()
-    configure_logging(settings.log_level)
+    configure_logging(settings.log_level, settings.log_format)
     warn_about_removed_settings()
     registry = build_registry(settings)
     templates = TemplateManager(custom_dir=Path(settings.state_dir) / "templates")

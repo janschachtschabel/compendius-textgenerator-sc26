@@ -294,7 +294,8 @@ def main(argv: list[str] | None = None) -> int:
     tpl_delete.set_defaults(func=cmd_templates_delete)
 
     args = parser.parse_args(argv)
-    configure_logging(get_settings().log_level)
+    settings = get_settings()
+    configure_logging(settings.log_level, settings.log_format)
     result: int = args.func(args)
     return result
 

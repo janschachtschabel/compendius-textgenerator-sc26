@@ -5,7 +5,7 @@
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu vier, die Compose selbst auswertet
 (`IMAGE`, `API_BIND`, `API_MEMORY`, `API_STOP_GRACE_PERIOD`). Eine fehlende Variable nimmt ihre Vorgabe; die Vorlage
-[`.env.example`](../../.env.example) listet alle 74 des Dienstes mit ihrer Vorgabe. Die ausführliche Beschreibung jeder
+[`.env.example`](../../.env.example) listet alle 75 des Dienstes mit ihrer Vorgabe. Die ausführliche Beschreibung jeder
 Variable steht im [README](../../README.md), Abschnitt „Konfiguration“.
 
 ## Für den Betrieb
@@ -49,7 +49,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 ## Alle Variablen
 
-78 Variablen: 74 des Dienstes und 4 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
+79 Variablen: 75 des Dienstes und 4 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
 `docker-compose.yml`; „Betrieb“ nennt die Empfehlung, wo sie davon abweicht.
 
 ### Zugang und Sicherheit
@@ -78,6 +78,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `REQUEST_TIMEOUT_S` | leer: `openai` 300, `academiccloud` 600 | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM. Ein gesetzter Wert gilt für jeden Anbieter |
 | `UVICORN_HTTP` | `h11` | wie Vorgabe | HTTP-Parser von uvicorn |
 | `LOG_LEVEL` | `INFO` | wie Vorgabe | Protokollstufe: `DEBUG`, `INFO`, `WARNING`, `ERROR` |
+| `LOG_FORMAT` | `text` | `json`, wenn ein Log-Sammler die Zeilen liest | eine Zeile Text oder ein JSON-Objekt je Ereignis |
 | `PROMETHEUS_MULTIPROC_DIR` | leer | wie Vorgabe | wo die Worker ihre Messwerte ablegen; leer lassen, das Image setzt `/tmp/prometheus` |
 
 ### LLM über die b-api

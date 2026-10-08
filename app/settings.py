@@ -89,6 +89,9 @@ class Settings(BaseSettings):
     )
 
     log_level: str = Field("INFO", description="Python log level name")
+    log_format: Literal["text", "json"] = Field(
+        "text", description="text: one plain line per event; json: one JSON object per event, for a log collector"
+    )
 
     # --- ZIM archives ------------------------------------------------------------------------
     zim_dir: Path = Field(Path("data/zim"), description="Directory with ZIM archives and active.json")
