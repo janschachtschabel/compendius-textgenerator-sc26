@@ -80,6 +80,21 @@ def test_a_json_line_names_time_level_process_logger_request_and_message(
     assert event["time"].endswith("Z")
 
 
+def test_the_fields_of_an_event_become_fields_of_its_json_object(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A collector reads the status of a request without a pattern of its own; the fields never replace the line's own
+    (logging review of 2026-10-08)."""
+    configured(monkeypatch, "json")
+    fields = {"status": 418, "duration_ms": 12, "level": "forged"}
+    logging.getLogger("app.probe").info("GET /x 418 12 ms", extra={"fields": fields})
+
+    [line] = lines_with("GET /x", capsys)
+    event = json.loads(line)
+
+    assert (event["status"], event["duration_ms"], event["level"]) == (418, 12, "INFO")
+
+
 def test_an_error_keeps_its_traceback_inside_its_line(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:

@@ -64,6 +64,8 @@ def uvicorn_command(request_timeout_s: int, log_config: Path | None = None) -> l
         str(request_timeout_s + HEALTHCHECK_MARGIN_S),
         "--timeout-graceful-shutdown",
         str(request_timeout_s + GRACEFUL_MARGIN_S),
+        # The service logs each request itself, with duration and request id (app/api/request_log.py)
+        "--no-access-log",
         *(["--log-config", str(log_config)] if log_config is not None else []),
     ]
 

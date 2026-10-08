@@ -83,6 +83,11 @@ class _JsonFormatter(logging.Formatter):
         }
         if record.exc_info:
             event["exc"] = self.formatException(record.exc_info)
+        # The fields of an event (``extra={"fields": ...}``: a request's status and duration) become fields of its
+        # object, never in place of the line's own (logging review of 2026-10-08)
+        fields = getattr(record, "fields", None)
+        if isinstance(fields, dict):
+            event.update({key: value for key, value in fields.items() if key not in event})
         return json.dumps(event, ensure_ascii=False)
 
 

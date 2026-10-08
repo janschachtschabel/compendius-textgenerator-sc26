@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextvars
 import logging
 from pathlib import Path
 
@@ -9,9 +10,16 @@ import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
-from app.logging import MAX_REQUEST_ID_CHARS, REQUEST_ID_HEADER, current_request_id, set_request_id
+from app.logging import MAX_REQUEST_ID_CHARS, REQUEST_ID_HEADER, _RequestIdFilter, current_request_id
+from app.logging import set_request_id as set_in_this_context
 from app.main import create_app
 from tests.conftest import make_settings
+
+
+def set_request_id(value: str | None) -> str:
+    """``app.logging.set_request_id`` in a context of its own: the id it sets stayed behind in the test's context and
+    named the lines of the tests after it."""
+    return contextvars.copy_context().run(set_in_this_context, value)
 
 
 @pytest.fixture(scope="module")
@@ -45,13 +53,15 @@ def test_an_id_from_the_caller_is_kept(client: TestClient) -> None:
 
 
 def test_an_unexpected_error_is_logged_and_named(client: TestClient, caplog: pytest.LogCaptureFixture) -> None:
+    caplog.handler.addFilter(_RequestIdFilter())  # the field the service's own handler gives every line
     with caplog.at_level(logging.ERROR):
         response = client.get("/boom", headers={REQUEST_ID_HEADER: "rid-7"})
     assert response.status_code == 500
     body = response.json()
     assert body["request_id"] == "rid-7" and "rid-7" in response.headers[REQUEST_ID_HEADER]
     assert "kaputt" not in body["detail"], "the caller learns nothing about the internals"
-    assert "rid-7" in caplog.text and "kaputt" in caplog.text
+    [error] = caplog.records
+    assert error.request_id == "rid-7" and "kaputt" in caplog.text  # type: ignore[attr-defined]
 
 
 def test_a_refusal_keeps_its_status_and_detail(client: TestClient) -> None:
@@ -91,3 +101,59 @@ def test_an_id_keeps_only_the_signs_ids_are_written_with(client: TestClient) -> 
     assert [set_request_id(kept) for kept in (uuid, traceparent, others)] == [uuid, traceparent, others]
     made = set_request_id("\x1b\x07 |")  # nothing of it is kept: a new id instead of an empty one
     assert len(made) == 12 and made.isalnum()
+
+
+def access_lines(caplog: pytest.LogCaptureFixture) -> list[logging.LogRecord]:
+    return [
+        record for record in caplog.records if record.name == "app.api.request_log" and record.levelno == logging.INFO
+    ]
+
+
+def test_every_request_is_logged_once_with_its_status_and_duration(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    """uvicorn's access line was the only trace of most requests: without duration, in the plain format without time
+    or request id, and not written at all when the client had gone (logging review of 2026-10-08)."""
+    with caplog.at_level(logging.INFO, logger="app.api.request_log"):
+        client.get("/refused?x=1", headers={REQUEST_ID_HEADER: "rid-9"})
+
+    [record] = access_lines(caplog)
+
+    assert record.getMessage().startswith("GET /refused?x=1 418 ") and record.getMessage().endswith(" ms")
+    fields = record.fields  # type: ignore[attr-defined]
+    assert {key: fields[key] for key in ("method", "path", "status", "client")} == {
+        "method": "GET",
+        "path": "/refused?x=1",
+        "status": 418,
+        "client": "testclient",
+    }
+    assert isinstance(fields["duration_ms"], int)
+
+
+def test_a_probe_that_answers_writes_no_line(client: TestClient, caplog: pytest.LogCaptureFixture) -> None:
+    """The healthcheck every 30 s and the scrape of Prometheus made most lines of a quiet server (188 of 224 in the
+    dev container); a probe that fails is still logged."""
+    with caplog.at_level(logging.INFO, logger="app.api.request_log"):
+        assert client.get("/health").status_code == 200
+        assert client.get("/ready").status_code == 200
+
+    assert access_lines(caplog) == []
+
+
+def test_an_unexpected_error_is_logged_once_with_its_cause_in_the_first_line(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    """The handler logged the error, starlette raised it on and uvicorn logged it again, each traceback with the
+    frames of three middlewares twice and an ExceptionGroup in front of the cause; grep for the request id found the
+    header line, the cause 190 lines further down (logging review of 2026-10-08)."""
+    with caplog.at_level(logging.INFO):
+        response = client.get("/boom", headers={REQUEST_ID_HEADER: "rid-10"})
+
+    assert response.status_code == 500 and response.json()["request_id"] == "rid-10"
+    [error] = [record for record in caplog.records if record.levelno >= logging.ERROR]
+    assert "GET /boom" in error.getMessage() and "RuntimeError: kaputt" in error.getMessage()
+    assert error.exc_info is not None
+    traceback = logging.Formatter().formatException(error.exc_info)
+    assert "ExceptionGroup" not in traceback and traceback.count('raise RuntimeError("kaputt")') == 1
+    [access] = access_lines(caplog)
+    assert access.fields["status"] == 500  # type: ignore[attr-defined]

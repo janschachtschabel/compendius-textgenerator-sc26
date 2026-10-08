@@ -65,6 +65,12 @@ def test_a_worker_outlives_the_longest_request_it_may_serve(budget: int) -> None
     assert timeout > budget
 
 
+def test_uvicorn_writes_no_access_line_of_its_own() -> None:
+    """The service logs each request itself, with its duration and request id (app/api/request_log.py); uvicorn's line
+    beside it said less and was missing when the client had gone (logging review of 2026-10-08)."""
+    assert "--no-access-log" in serve.uvicorn_command(120)
+
+
 @pytest.mark.parametrize("budget", [120, 300])
 def test_a_stop_lets_the_requests_in_flight_finish(budget: int) -> None:
     """Docker killed every running compendium 10 s after the SIGTERM of an update, while a request may take its whole

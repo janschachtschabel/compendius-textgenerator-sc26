@@ -4,29 +4,27 @@ from __future__ import annotations
 
 import logging
 import os
-import time
-from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 
-from fastapi import Depends, FastAPI, Request, Response
+from fastapi import Depends, FastAPI
 from fastapi.exceptions import RequestValidationError
-from fastapi.routing import iter_route_contexts
 from starlette.exceptions import HTTPException
-from starlette.routing import BaseRoute, Match
-from starlette.types import Scope
 
 from app import __version__
+from app.api.active_archives import FollowActiveArchives
 from app.api.body_limit import BodySizeLimit
 from app.api.docs import docs_router
 from app.api.domain_errors import DOMAIN_ERRORS
 from app.api.errors import JsonResponse, http_error, validation_error
 from app.api.health import router as health_router
 from app.api.limits import RateLimiter
-from app.api.metrics import METRICS_PATH, name_the_route
+from app.api.metrics import name_the_route
 from app.api.metrics import router as metrics_router
-from app.api.system_threads import run_system, system_limiter
+from app.api.request_log import RequestLog
+from app.api.system_threads import system_limiter
 from app.api.v2.collections import router as collections_router
 from app.api.v2.entities import router as entities_router
 from app.api.v2.knowledge import router as knowledge_router
@@ -41,9 +39,9 @@ from app.api.v2.zim import admin as zim_admin_router
 from app.api.v2.zim import router as zim_router
 from app.knowledge.recognise import load_spacy
 from app.llm.call import listen_to_calls
-from app.logging import REQUEST_ID_HEADER, configure_logging, current_request_id, set_request_id
+from app.logging import configure_logging
 from app.matching.registry import LOCAL_MATCHER, active_components
-from app.observability.metrics import UNMATCHED_ROUTE, observe_request, record_llm_call
+from app.observability.metrics import record_llm_call
 from app.service import CompendiumService
 from app.settings import Settings, get_settings
 from app.sources.gnd.index import GndIndex
@@ -161,20 +159,6 @@ def describe_entities(settings: Settings) -> dict[str, Any]:
     return {"ner": ready, "model": settings.spacy_model}
 
 
-def route_template(routes: Sequence[BaseRoute], scope: Scope) -> str:
-    """The template of the route a request was meant for, when it left none in its scope - the metric's label.
-
-    The 413 of BodySizeLimit answers a declared length before the router runs and counted as unmatched, beside the
-    404s (audit 2026-09-29, S8); /docs, /redoc and /openapi.json are plain Starlette routes, which never store one. The
-    templates are a fixed set, so the label values stay bounded; a path no route takes stays unmatched.
-    """
-    for context in iter_route_contexts(routes):  # the routes of the included routers as well (FastAPI 0.141)
-        match, _ = context.matches(scope)
-        if match is not Match.NONE:
-            return context.path or UNMATCHED_ROUTE
-    return UNMATCHED_ROUTE
-
-
 def log_defaults(settings: Settings, service: CompendiumService, templates: TemplateManager) -> None:
     """What a request that names no profile or template gets (D68): the profile follows the LLM, and a TEMPLATE_DEFAULT
     that names no template leaves the shipped one until a template of that id exists."""
@@ -287,52 +271,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.add_exception_handler(error, answer)
     # Added first, so it runs innermost: the refusal of a body too large still gets its request id and its metric
     app.add_middleware(BodySizeLimit, max_bytes=settings.request_body_max_bytes)
-
     if not settings.zim_path_list:
-        refresher = RegistryRefresher(registry, settings.zim_dir)
-
-        @app.middleware("http")
-        async def follow_active_archives(
-            request: Request, call_next: Callable[[Request], Awaitable[Response]]
-        ) -> Response:
-            # One stat call per request; archives are reopened only when the sync job replaced active.json. It runs
-            # in the monitoring threads, so a probe never waits for a thread that a compendium request holds.
-            await run_system(request, refresher.refresh)
-            return await call_next(request)
-
-    @app.middleware("http")
-    async def record_http_metrics(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
-        # Added last, so it runs outermost and times the whole request; scrapes are not requests of the service.
-        if request.url.path == METRICS_PATH:
-            return await call_next(request)
-        started = time.perf_counter()
-        status = 500  # an exception escaping the app reaches the client as a 500
-        try:
-            response = await call_next(request)
-            status = response.status_code
-            return response
-        finally:
-            # FastAPI stores the matched route in the scope; its template keeps the label values bounded
-            route = getattr(request.scope.get("route"), "path", None) or route_template(app.routes, request.scope)
-            observe_request(request.method, route, status, time.perf_counter() - started)
-
-    @app.middleware("http")
-    async def name_the_request(request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
-        # Added last, so it runs outermost: every log line of this request, and the answer, carry the same id
-        request_id = set_request_id(request.headers.get(REQUEST_ID_HEADER))
-        response = await call_next(request)
-        response.headers[REQUEST_ID_HEADER] = request_id
-        return response
-
-    @app.exception_handler(Exception)
-    async def report_unexpected(request: Request, exc: Exception) -> JsonResponse:
-        """An error nobody planned for: the log holds the cause, the caller gets the id to quote (audit OPS-03)."""
-        request_id = current_request_id()
-        log.exception("unhandled error in %s %s (request %s)", request.method, request.url.path, request_id)
-        return JsonResponse(
-            status_code=500,
-            content={"detail": "Interner Fehler; bitte die Anfrage-ID melden", "request_id": request_id},
-            headers={REQUEST_ID_HEADER: request_id},
-        )
+        app.add_middleware(FollowActiveArchives, refresher=RegistryRefresher(registry, settings.zim_dir))
+    # Added last, so it runs outermost: it names the request, times all of it, and answers an error nothing else
+    # handled (app/api/request_log.py)
+    app.add_middleware(RequestLog, routes=app.routes)
 
     return app
