@@ -33,16 +33,20 @@ log = logging.getLogger(__name__)
 Handler = Callable[[Request, Exception], Awaitable[Response]]
 
 
-def _answer(status: int, detail: Callable[[Exception], Any] = str) -> Handler:
+def _answer(status: int, detail: Callable[[Exception], Any] = str, failure: str | None = None) -> Handler:
+    """The answer to an error; ``failure`` names in the log one on the server's side: the 5xx alarm sends the operator
+    there, and a 502 of a repository answer the service could not read, or the 503 of a server without an LLM, left
+    no line (logging review of 2026-10-08). A refusal of what the caller sent stays out of the log."""
+
     async def answer(request: Request, exc: Exception) -> Response:
+        if failure is not None:
+            log.warning("%s: %s", failure, exc)
         return JsonResponse({"detail": detail(exc)}, status_code=status)
 
     return answer
 
 
-def _refused(exc: Exception) -> str:
-    # A gap in the configuration that no retry fixes; the log keeps it apart from missing archives (docs/betrieb.md)
-    log.warning("compendium request refused: %s", exc)
+def _no_part(exc: Exception) -> str:
     return f"Kein angefragter Teil ist erzeugbar: {exc}"
 
 
@@ -57,8 +61,9 @@ DOMAIN_ERRORS: dict[type[Exception], Handler] = {
     UnreadableDocumentError: _answer(422),
     UnplacedSectionsError: _answer(422),
     UnknownMatcherError: _answer(422, lambda exc: f"Unbekannte Matching-Strategie: {exc}"),
-    EduSharingError: _answer(502),
-    LlmNotConfiguredError: _answer(503),
-    RepositoryUnavailableError: _answer(503),
-    PartsUnavailableError: _answer(503, _refused),
+    EduSharingError: _answer(502, failure="repository failed"),
+    LlmNotConfiguredError: _answer(503, failure="request refused"),
+    RepositoryUnavailableError: _answer(503, failure="request refused"),
+    # A gap in the configuration that no retry fixes; the log keeps it apart from missing archives (docs/betrieb.md)
+    PartsUnavailableError: _answer(503, _no_part, failure="compendium request refused"),
 }

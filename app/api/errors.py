@@ -11,6 +11,7 @@ problem, and 1.3 million unknown fields came back as 114 MB after 19 s (audit 20
 from __future__ import annotations
 
 import json
+import logging
 from collections.abc import Mapping
 from typing import Any, cast
 
@@ -22,6 +23,8 @@ from fastapi.utils import is_body_allowed_for_status_code
 from starlette.exceptions import HTTPException
 
 from app.domain.caller_values import cut
+
+log = logging.getLogger(__name__)
 
 # What a validation error keeps: where the value was (loc), why it failed (type, msg) and the limits it broke
 # (ctx) - never the value itself (input)
@@ -53,6 +56,8 @@ async def http_error(request: Request, exc: Exception) -> Response:
     error = cast(HTTPException, exc)  # registered for HTTPException only
     if error.status_code == 400 and error.detail == FASTAPI_UNPARSED_BODY:
         return _unreadable_body(error.__cause__)
+    if error.status_code >= 500:  # a failure on the server's side: no archives, no repository, no way to run
+        log.warning("answered %d: %s", error.status_code, error.detail)
     headers = getattr(error, "headers", None)
     if not is_body_allowed_for_status_code(error.status_code):
         return Response(status_code=error.status_code, headers=headers)

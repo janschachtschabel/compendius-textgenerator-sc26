@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.testclient import TestClient
 
 from app.compendium.errors import (
@@ -66,6 +66,10 @@ def client(settings: Settings) -> TestClient:
     def raise_it(kind: str) -> None:
         raise ANSWERS[kind][0]
 
+    @probe.get("/unavailable")
+    def unavailable() -> None:
+        raise HTTPException(status_code=503, detail="Kein Verfahren verfügbar: ner")
+
     app.include_router(probe)
     return TestClient(app, raise_server_exceptions=False)
 
@@ -84,3 +88,41 @@ def test_a_refused_compendium_still_says_so_in_the_log(client: TestClient, caplo
     with caplog.at_level("WARNING"):
         client.get("/probe/parts")
     assert "compendium request refused: Teil 3 braucht collection_id" in caplog.text
+
+
+@pytest.mark.parametrize(
+    ("kind", "line"),
+    [
+        ("repository", "repository failed: repo.test antwortet 500"),
+        ("llm", "request refused: LLM_ENABLED ist nicht aktiv"),
+        ("no_repository", "request refused: Kein Repository konfiguriert"),
+    ],
+)
+def test_an_answer_on_the_server_s_side_names_its_cause_in_the_log(
+    client: TestClient, caplog: pytest.LogCaptureFixture, kind: str, line: str
+) -> None:
+    """The 5xx alarm sends the operator to the log, and a 502 of a repository answer the service could not read, or
+    the 503 of a server without an LLM, left no line there (logging review of 2026-10-08)."""
+    with caplog.at_level("WARNING"):
+        client.get(f"/probe/{kind}")
+
+    assert line in caplog.text
+
+
+def test_a_5xx_raised_as_http_exception_names_its_cause_in_the_log(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    with caplog.at_level("WARNING"):
+        assert client.get("/unavailable").status_code == 503
+
+    assert "answered 503: Kein Verfahren verfügbar: ner" in caplog.text
+
+
+def test_a_refusal_of_what_the_caller_sent_writes_no_warning(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    with caplog.at_level("WARNING"):
+        for kind in ("topic", "subject", "node", "address", "template"):
+            client.get(f"/probe/{kind}")
+
+    assert caplog.records == []
