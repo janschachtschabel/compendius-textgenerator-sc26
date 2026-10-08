@@ -11,7 +11,9 @@ none) they kept macro-F1 at 0.676 where 400 characters fell to 0.609.
 
 The model sees what a labeller sees: the content blocks with their description, what belongs in them and what does
 not, the template's rules for the assignment, and per paragraph the article, its role, the heading path and the text
-cut to ``TEXT_CHARS``. It answers per paragraph with a block key or "keiner" and a confidence. Batches of
+cut to ``TEXT_CHARS``. It answers per paragraph with a line: the paragraph's id, a block key or "keiner" and a
+confidence from 0 to 9 - on 2026-10-08 (M77, four runs on 595 paragraphs) as good as the JSON object of version 2,
+at 16 % fewer output tokens and a fifth to a third less time (D93). Batches of
 ``BATCH_SIZE`` paragraphs run in parallel; a batch the request budget cannot hold next to the others waits for them
 to settle (``budgeted_chat``, D39): each reserves about 13,000 tokens and spends about 8,000.
 
@@ -26,6 +28,7 @@ budgets like the policy's, ordered by the model's confidence.
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
@@ -48,6 +51,9 @@ NONE_KEY = "keiner"
 MATCHER = "llm"
 UNKNOWN_BLOCK = "unbekannter Baustein in der Antwort"
 LEFT_OUT = "Absatz fehlt in der Antwort"
+_PARAGRAPH_ID_RE = re.compile(r"p[0-9]{1,4}")
+_LIST_MARKS = frozenset({"-", "*", "•"})
+_DIGITS = frozenset("0123456789")  # "²" is a digit to str.isdigit and none to int (audit 2026-09-28, KO-25)
 
 
 @dataclass
@@ -108,9 +114,27 @@ def _role(chunk: Chunk, sources: Mapping[str, Source]) -> str:
 
 
 def parse_assignment(text: str) -> dict[str, tuple[str, float]] | None:
-    """Block key and confidence per paragraph id; ``None`` when the answer holds no JSON object.
+    """Block key and confidence per paragraph id; ``None`` when the answer holds neither lines nor a JSON object.
 
-    Keys are compared in lower case; a confidence outside 0 to 1 is clipped, an entry of another shape is skipped.
+    A line ``p12 fachinhalte 8`` gives paragraph, block and confidence: colons and commas count as blanks, a list mark
+    before the id is skipped, the confidence is the first digit of the third word read as a share of 9. An answer
+    without such a line is read as the JSON object of version 2, which a model may still give. Keys are compared in
+    lower case; a line or an entry of another shape is skipped.
+    """
+    parsed: dict[str, tuple[str, float]] = {}
+    for line in text.splitlines():
+        words = line.replace(":", " ").replace(",", " ").split()
+        if words and words[0] in _LIST_MARKS:
+            words = words[1:]
+        if len(words) >= 3 and _PARAGRAPH_ID_RE.fullmatch(words[0]) and words[2][0] in _DIGITS:
+            parsed[words[0]] = (block_key(words[1]), int(words[2][0]) / 9)
+    return parsed or _parse_object(text)
+
+
+def _parse_object(text: str) -> dict[str, tuple[str, float]] | None:
+    """The JSON object of version 2: ``{"p1": ["fachinhalte", 0.8]}``; ``None`` when the answer holds none.
+
+    A confidence outside 0 to 1 is clipped, an entry of another shape is skipped.
     """
     start, end = text.find("{"), text.rfind("}")
     if start < 0 or end <= start:

@@ -317,7 +317,43 @@ def test_the_prompt_offers_the_blocks_the_rules_and_each_paragraph(prepared: Pre
     assert len(text) > TEXT_CHARS and text[:TEXT_CHARS] in user and text[: TEXT_CHARS + 1] not in user
 
 
+def test_the_prompt_asks_for_a_line_per_paragraph() -> None:
+    """M77: lines like "p1 fachinhalte 8" in place of a JSON object - as good on the gold, a fifth to a third faster (D93)."""
+    prompt = get_prompt("paragraph_assignment")
+
+    assert prompt.version == 3
+    assert prompt.system.endswith("zum Beispiel:\np1 fachinhalte 8\np2 keiner 9")
+    assert prompt.user.endswith("Gib die Zeilen zurück.")
+
+
+def test_parse_assignment_reads_a_line_per_paragraph() -> None:
+    answer = "p1 fachinhalte 8\np2: keiner, 9\np3 Praxis 9\n- p4 praxis 5\np5 praxis hoch\np6 praxis\np7 praxis ²\np¹ praxis 8\np8 praxis 85"
+
+    assert parse_assignment(answer) == {
+        "p1": ("fachinhalte", 8 / 9),
+        "p2": ("keiner", 1.0),
+        "p3": ("praxis", 1.0),
+        "p4": ("praxis", 5 / 9),
+        "p8": ("praxis", 8 / 9),
+    }
+
+
+def test_the_model_decides_every_paragraph_it_answers_in_lines(
+    prepared: PreparedTopic, rule_based: AssignmentResult, offered: list[Chunk]
+) -> None:
+    def lines(body: dict[str, Any]) -> str:
+        return "\n".join(f"{alias} fachinhalte 8" for alias, *_ in PARAGRAPH_RE.findall(body["messages"][1]["content"]))
+
+    assignment, report = run(prepared, rule_based, make_job(FakeBApi(lines)))
+
+    fachinhalte = prepared.template.slot_by_key("fachinhalte")
+    assert fachinhalte is not None
+    assert report.answered == len(offered) and report.fallback == 0 and report.asked_again == 0
+    assert assignment.classified == {chunk.chunk_id: fachinhalte.id for chunk in offered}
+
+
 def test_parse_assignment_reads_blocks_and_confidences() -> None:
+    """The JSON object of version 2, which a model may still give, is read where the answer holds no line."""
     answer = (
         'Hier die Zuordnung: {"p1": ["Fachinhalte ", 0.8], "p2": ["keiner", "0.9"], "p3": ["praxis", 1.7], '
         '"p4": "praxis", "p5": ["praxis"], "p6": ["praxis", -0.2]}'

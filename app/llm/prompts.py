@@ -175,14 +175,16 @@ PASSAGE_SELECTION = Prompt(
 # which the provider's prompt cache keeps for every batch of every topic
 PARAGRAPH_ASSIGNMENT = Prompt(
     id="paragraph_assignment",
-    version=2,
+    # version 3 (M77, D93): a line per paragraph in place of a JSON object - as good on the gold, 16 % fewer output
+    # tokens and a fifth to a third less time
+    version=3,
     system=(
         "Du ordnest Absätze aus Lexikonartikeln den Bausteinen eines Kompendiums für Lehrkräfte zu "
         "(WirLernenOnline). Jeder Absatz gehört in genau einen Baustein oder in keinen. Antworte ausschließlich mit "
-        'einem JSON-Objekt, das jede Absatz-ID auf [Baustein-Schlüssel oder "keiner", Sicherheit von 0 bis 1] '
-        'abbildet, zum Beispiel {"p1": ["fachinhalte", 0.8], "p2": ["keiner", 0.9]}.'
+        "einer Zeile je Absatz: Absatz-ID, Baustein-Schlüssel oder keiner und deine Sicherheit von 0 bis 9, durch "
+        "Leerzeichen getrennt, zum Beispiel:\np1 fachinhalte 8\np2 keiner 9"
     ),
-    user="Thema des Kompendiums: {topic}\n\nAbsätze:\n{paragraphs}\n\nGib das JSON-Objekt zurück.",
+    user="Thema des Kompendiums: {topic}\n\nAbsätze:\n{paragraphs}\n\nGib die Zeilen zurück.",
 )
 
 # article_choice=llm (D35): the prompt measured against the gold of eval/artikelwahl on 2026-09-23 (M8)
