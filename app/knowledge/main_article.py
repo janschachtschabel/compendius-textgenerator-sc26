@@ -26,9 +26,11 @@ from app.knowledge.article_choice import (
     LlmArticleChooser,
 )
 from app.knowledge.node_article import NodeArticleReport, ask_topic, ranked_entities, rule_article
+from app.knowledge.question import resolve_by_keywords
 from app.knowledge.resolution import CHOSEN_BY_LLM, GUESSED, resolve_topic
 from app.knowledge.topic import NormalizedTopic, normalize_topic
 from app.knowledge.topic_articles import TopicArticlesReport, ask_topic_articles
+from app.knowledge.topic_wording import needs_wording
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.models import NodeInfo
 from app.sources.wlo.part import CollectionTopic, DerivedTopic, derive_topic
@@ -113,6 +115,17 @@ def choose_main_article(
             thorough=job is not None and job.thorough,
             overview=overview,
         )
+        if (
+            job is None
+            and needs_wording(found.normalized.query)
+            and (resolution.method in GUESSED or not resolution.resolved)
+        ):
+            # Without an LLM a question or a sentence went whole into the full-text search ("Mond" for the rainbow,
+            # M70); its keywords find the article where the rules only guessed (M73)
+            keyed = resolve_by_keywords(
+                registry, found.normalized.topic, context=found.context, query=found.normalized.query, terms=terms
+            )
+            resolution = keyed or resolution
         if articles is not None and overview is not None:
             # the overview took the rules' place: where they missed the topic, or where the chooser rejected all (A01)
             chose = chooser is not None and chooser.report.offered > 0 and not chooser.report.rejected

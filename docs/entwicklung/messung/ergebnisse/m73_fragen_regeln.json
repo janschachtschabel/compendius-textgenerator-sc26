@@ -1,0 +1,3252 @@
+{
+ "note": "M73 (08.10.2026): 60 Fragen (40 Entwicklung, 20 neu) in llm-free, heute und mit Stichwörtern, blind von zwei Gutachtern bewertet; dazu der eingebaute Code (eingebaut) und die Probe an den 215 Themen von M63, wo die Regeln raten (geraten).",
+ "fragen": [
+  {
+   "frage": "Wie funktioniert die Photosynthese bei Pflanzen?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Photosynthese",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Photosynthese",
+    "title": "Photosynthese",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert die Photosynthese bei Pflanzen?",
+    "title": "Photosynthese",
+    "method": "title",
+    "normalized": "Photosynthese"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Warum gibt es Jahreszeiten auf der Erde?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Erde",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Jahreszeiten",
+    "title": "Jahreszeit",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Warum gibt es Jahreszeiten auf der Erde?",
+    "title": "Jahreszeit",
+    "method": "title",
+    "normalized": "Jahreszeiten"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Erkläre den Unterschied zwischen Wetter und Klima",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Klima",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Wetter",
+    "title": "Wetter",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Erkläre den Unterschied zwischen Wetter und Klima",
+    "title": "Wetter",
+    "method": "title",
+    "normalized": "Wetter"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Die Ursachen des Ersten Weltkriegs für eine 9. Klasse",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Reliance (Schiff, 1920)",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Erster Weltkriegs",
+    "title": "Erster Weltkrieg",
+    "method": "variant"
+   },
+   "eingebaut": {
+    "input": "Die Ursachen des Ersten Weltkriegs für eine 9. Klasse",
+    "title": "Erster Weltkrieg",
+    "method": "variant",
+    "normalized": "Erster Weltkriegs"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie entsteht ein Regenbogen und warum ist er gekrümmt?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Mond",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Regenbogen",
+    "title": "Regenbogen",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie entsteht ein Regenbogen und warum ist er gekrümmt?",
+    "title": "Regenbogen",
+    "method": "title",
+    "normalized": "Regenbogen"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Was passiert bei der Verdauung im menschlichen Körper?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Antikörper",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Verdauung",
+    "title": "Verdauung",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was passiert bei der Verdauung im menschlichen Körper?",
+    "title": "Verdauung",
+    "method": "title",
+    "normalized": "Verdauung"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Welche Rolle spielte Martin Luther bei der Reformation?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Ursula Cotta",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Martin Luther",
+    "title": "Martin Luther",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Welche Rolle spielte Martin Luther bei der Reformation?",
+    "title": "Martin Luther",
+    "method": "title",
+    "normalized": "Martin Luther"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Bruchrechnung mit ungleichen Nennern für Klasse 6",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Bruchrechnung",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Bruchrechnung",
+    "title": "Bruchrechnung",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Bruchrechnung mit ungleichen Nennern für Klasse 6",
+    "title": "Bruchrechnung",
+    "method": "title",
+    "normalized": "Bruchrechnung"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert ein Elektromotor?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Elektromotorische Bremse",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Elektromotor",
+    "title": "Elektromotor",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert ein Elektromotor?",
+    "title": "Elektromotor",
+    "method": "title",
+    "normalized": "Elektromotor"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "764 (Netzwerk)",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Netzwerke",
+    "title": "Netzwerk",
+    "method": "variant"
+   },
+   "eingebaut": {
+    "input": "Gefahren und Chancen sozialer Netzwerke für Jugendliche",
+    "title": "Netzwerk",
+    "method": "variant",
+    "normalized": "Netzwerke"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    }
+   }
+  },
+  {
+   "frage": "Wie arbeiten Lunge und Herz beim Sport zusammen?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Herz",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Lunge",
+    "title": "Lunge",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie arbeiten Lunge und Herz beim Sport zusammen?",
+    "title": "Lunge",
+    "method": "title",
+    "normalized": "Lunge"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Warum ist der Regenwald wichtig für das Klima der Erde?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Erde",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Regenwald",
+    "title": "Regenwald",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Warum ist der Regenwald wichtig für das Klima der Erde?",
+    "title": "Regenwald",
+    "method": "title",
+    "normalized": "Regenwald"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Die Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Haus der Weimarer Republik",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Weimarer Republik",
+    "title": "Weimarer Republik",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Die Entstehung der Weimarer Republik nach dem Ersten Weltkrieg",
+    "title": "Weimarer Republik",
+    "method": "title",
+    "normalized": "Weimarer Republik"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie wird aus einer Raupe ein Schmetterling?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Raupe (Schmetterling)",
+    "method": "search"
+   },
+   "stichwort": null,
+   "eingebaut": {
+    "input": "Wie wird aus einer Raupe ein Schmetterling?",
+    "title": "Raupe (Schmetterling)",
+    "method": "search",
+    "normalized": "Wie wird aus einer Raupe ein Schmetterling?"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Was sind Primzahlen und wie findet man sie?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Primzahl",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Primzahlen",
+    "title": "Primzahl",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was sind Primzahlen und wie findet man sie?",
+    "title": "Primzahl",
+    "method": "title",
+    "normalized": "Primzahlen"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Eichendorffs Lyrik",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Lyrik",
+    "title": "Lyrik",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Lyrik der Romantik am Beispiel von Joseph von Eichendorff",
+    "title": "Lyrik",
+    "method": "title",
+    "normalized": "Lyrik"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert die Gewaltenteilung in Deutschland?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Inquisitionsverfahren",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Gewaltenteilung",
+    "title": "Gewaltenteilung",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert die Gewaltenteilung in Deutschland?",
+    "title": "Gewaltenteilung",
+    "method": "title",
+    "normalized": "Gewaltenteilung"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Was versteht man unter nachhaltiger Landwirtschaft?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Hofstelle",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Nachhaltige Landwirtschaft",
+    "title": "Nachhaltige Landwirtschaft",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was versteht man unter nachhaltiger Landwirtschaft?",
+    "title": "Nachhaltige Landwirtschaft",
+    "method": "title",
+    "normalized": "Nachhaltige Landwirtschaft"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Welche Folgen hat der Klimawandel für die Landwirtschaft in Deutschland?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Folgen der globalen Erwärmung in Deutschland",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Klimawandel",
+    "title": "Klimawandel",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Welche Folgen hat der Klimawandel für die Landwirtschaft in Deutschland?",
+    "title": "Klimawandel",
+    "method": "title",
+    "normalized": "Klimawandel"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Wie entstehen Erdbeben und wie kann man sich schützen?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Das Erdbeben in Chili",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Erdbeben",
+    "title": "Erdbeben",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie entstehen Erdbeben und wie kann man sich schützen?",
+    "title": "Erdbeben",
+    "method": "title",
+    "normalized": "Erdbeben"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert ein Kühlschrank?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Kühlschrank",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Kühlschrank",
+    "title": "Kühlschrank",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert ein Kühlschrank?",
+    "title": "Kühlschrank",
+    "method": "title",
+    "normalized": "Kühlschrank"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Warum ist der Himmel blau?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Hellblau",
+    "method": "search"
+   },
+   "stichwort": null,
+   "eingebaut": {
+    "input": "Warum ist der Himmel blau?",
+    "title": "Hellblau",
+    "method": "search",
+    "normalized": "Warum ist der Himmel blau?"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    }
+   }
+  },
+  {
+   "frage": "Was ist das Bruttoinlandsprodukt?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Bruttoinlandsprodukt",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Bruttoinlandsprodukt",
+    "title": "Bruttoinlandsprodukt",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was ist das Bruttoinlandsprodukt?",
+    "title": "Bruttoinlandsprodukt",
+    "method": "title",
+    "normalized": "Bruttoinlandsprodukt"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie entstehen Ebbe und Flut?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Gezeiten",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Ebbe",
+    "title": "Ebbe",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie entstehen Ebbe und Flut?",
+    "title": "Ebbe",
+    "method": "title",
+    "normalized": "Ebbe"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Was sind Enzyme und wie wirken sie im Körper?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Biotransformation",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Enzyme",
+    "title": "Enzym",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was sind Enzyme und wie wirken sie im Körper?",
+    "title": "Enzym",
+    "method": "title",
+    "normalized": "Enzyme"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Warum gibt es Tag und Nacht?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Ja, ist denn heut’ schon Weihnachten",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Tag",
+    "title": "Tag",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Warum gibt es Tag und Nacht?",
+    "title": "Tag",
+    "method": "title",
+    "normalized": "Tag"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Wie wird ein Gesetz in Deutschland beschlossen?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Verteidigungsfall (Deutschland)",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Gesetz",
+    "title": "Gesetz",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie wird ein Gesetz in Deutschland beschlossen?",
+    "title": "Gesetz",
+    "method": "title",
+    "normalized": "Gesetz"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Was war die Industrielle Revolution?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Industrielle Revolution",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Industrielle Revolution",
+    "title": "Industrielle Revolution",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was war die Industrielle Revolution?",
+    "title": "Industrielle Revolution",
+    "method": "title",
+    "normalized": "Industrielle Revolution"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert das menschliche Auge?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Helligkeit",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Menschliches Auge",
+    "title": "Wirbeltierauge",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert das menschliche Auge?",
+    "title": "Wirbeltierauge",
+    "method": "title",
+    "normalized": "Menschliches Auge"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Was ist der Treibhauseffekt?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Treibhauseffekt",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Treibhauseffekt",
+    "title": "Treibhauseffekt",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was ist der Treibhauseffekt?",
+    "title": "Treibhauseffekt",
+    "method": "title",
+    "normalized": "Treibhauseffekt"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Welche Aufgaben hat das Bundesverfassungsgericht?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Trennungsgebot zwischen Polizei und Nachrichtendiensten",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Bundesverfassungsgericht",
+    "title": "Bundesverfassungsgericht",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Welche Aufgaben hat das Bundesverfassungsgericht?",
+    "title": "Bundesverfassungsgericht",
+    "method": "title",
+    "normalized": "Bundesverfassungsgericht"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie vermehren sich Bakterien?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Bakterien",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Bakterien",
+    "title": "Bakterien",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie vermehren sich Bakterien?",
+    "title": "Bakterien",
+    "method": "title",
+    "normalized": "Bakterien"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Warum schwimmt ein Schiff aus Stahl?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Bibliothek der Sachgeschichten",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Schiff",
+    "title": "Schiff",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Warum schwimmt ein Schiff aus Stahl?",
+    "title": "Schiff",
+    "method": "title",
+    "normalized": "Schiff"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Was bedeutet Inflation für Verbraucher?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Inflation",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Inflation",
+    "title": "Inflation",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was bedeutet Inflation für Verbraucher?",
+    "title": "Inflation",
+    "method": "title",
+    "normalized": "Inflation"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie ist das Universum entstanden?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Universum",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Universum",
+    "title": "Universum",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie ist das Universum entstanden?",
+    "title": "Universum",
+    "method": "title",
+    "normalized": "Universum"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Was sind Primärfarben und wie mischt man sie?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Harmonie (Malerei)",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Primärfarben",
+    "title": "Grundfarbe",
+    "method": "variant"
+   },
+   "eingebaut": {
+    "input": "Was sind Primärfarben und wie mischt man sie?",
+    "title": "Grundfarbe",
+    "method": "variant",
+    "normalized": "Primärfarben"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wer war Johann Wolfgang von Goethe?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Das Tagebuch (Goethe)",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Johann Wolfgang von Goethe",
+    "title": "Johann Wolfgang von Goethe",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wer war Johann Wolfgang von Goethe?",
+    "title": "Johann Wolfgang von Goethe",
+    "method": "title",
+    "normalized": "Johann Wolfgang von Goethe"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert die Blutgerinnung?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Hämophilie",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Blutgerinnung",
+    "title": "Hämostase",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert die Blutgerinnung?",
+    "title": "Hämostase",
+    "method": "title",
+    "normalized": "Blutgerinnung"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Photosynthese einfach erklärt für die Grundschule",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Große Sauerstoffkatastrophe",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Photosynthese",
+    "title": "Photosynthese",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Photosynthese einfach erklärt für die Grundschule",
+    "title": "Große Sauerstoffkatastrophe",
+    "method": "search",
+    "normalized": "Photosynthese einfach erklärt"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Welche Tiere leben im Wattenmeer?",
+   "satz": "entwicklung",
+   "heute": {
+    "title": "Nationalpark Schleswig-Holsteinisches Wattenmeer",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Wattenmeer",
+    "title": "Wattenmeer",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Welche Tiere leben im Wattenmeer?",
+    "title": "Wattenmeer",
+    "method": "title",
+    "normalized": "Wattenmeer"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert ein Generator?",
+   "satz": "neu",
+   "heute": {
+    "title": "Generative Adversarial Networks",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Generator",
+    "title": "Elektrischer Generator",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert ein Generator?",
+    "title": "Elektrischer Generator",
+    "method": "title",
+    "normalized": "Generator"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Warum fallen im Herbst die Blätter von den Bäumen?",
+   "satz": "neu",
+   "heute": {
+    "title": "Gemeine Esche",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Herbst",
+    "title": "Herbst",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Warum fallen im Herbst die Blätter von den Bäumen?",
+    "title": "Herbst",
+    "method": "title",
+    "normalized": "Herbst"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Was ist der Unterschied zwischen Viren und Bakterien?",
+   "satz": "neu",
+   "heute": {
+    "title": "Bakteriophagen",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Viren",
+    "title": "Viren",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was ist der Unterschied zwischen Viren und Bakterien?",
+    "title": "Viren",
+    "method": "title",
+    "normalized": "Viren"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Welche Ursachen hatte der Dreißigjährige Krieg?",
+   "satz": "neu",
+   "heute": {
+    "title": "Dreißigjähriger Krieg",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Dreißigjähriger Krieg",
+    "title": "Dreißigjähriger Krieg",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Welche Ursachen hatte der Dreißigjährige Krieg?",
+    "title": "Dreißigjähriger Krieg",
+    "method": "title",
+    "normalized": "Dreißigjähriger Krieg"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert die parlamentarische Demokratie in Deutschland?",
+   "satz": "neu",
+   "heute": {
+    "title": "Direkte Demokratie",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Parlamentarische Demokratie",
+    "title": "Parlamentarisches Regierungssystem",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert die parlamentarische Demokratie in Deutschland?",
+    "title": "Parlamentarisches Regierungssystem",
+    "method": "title",
+    "normalized": "Parlamentarische Demokratie"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Was passiert bei einer Mondfinsternis?",
+   "satz": "neu",
+   "heute": {
+    "title": "Liste der Mondfinsternisse des 21. Jahrhunderts",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Mondfinsternis",
+    "title": "Mondfinsternis",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was passiert bei einer Mondfinsternis?",
+    "title": "Mondfinsternis",
+    "method": "title",
+    "normalized": "Mondfinsternis"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie entsteht ein Gewitter?",
+   "satz": "neu",
+   "heute": {
+    "title": "Gewitter",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Gewitter",
+    "title": "Gewitter",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie entsteht ein Gewitter?",
+    "title": "Gewitter",
+    "method": "title",
+    "normalized": "Gewitter"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Welche Bedeutung hatte die Erfindung des Buchdrucks?",
+   "satz": "neu",
+   "heute": {
+    "title": "Buchdruck",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Buchdrucks",
+    "title": "Buchdruck",
+    "method": "variant"
+   },
+   "eingebaut": {
+    "input": "Welche Bedeutung hatte die Erfindung des Buchdrucks?",
+    "title": "Buchdruck",
+    "method": "variant",
+    "normalized": "Buchdrucks"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert unser Immunsystem gegen Krankheiten?",
+   "satz": "neu",
+   "heute": {
+    "title": "Immunsystem",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Immunsystem",
+    "title": "Immunsystem",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert unser Immunsystem gegen Krankheiten?",
+    "title": "Immunsystem",
+    "method": "title",
+    "normalized": "Immunsystem"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Was sind Säuren und Basen?",
+   "satz": "neu",
+   "heute": {
+    "title": "Säure-Base-Konzepte",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Säuren",
+    "title": "Säuren",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was sind Säuren und Basen?",
+    "title": "Säuren",
+    "method": "title",
+    "normalized": "Säuren"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Warum gibt es Wüsten auf der Erde?",
+   "satz": "neu",
+   "heute": {
+    "title": "Das Lied von der Erde (Texte)",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Wüste",
+    "title": "Wüste",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Warum gibt es Wüsten auf der Erde?",
+    "title": "Wüste",
+    "method": "title",
+    "normalized": "Wüste"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie lernen Kinder lesen und schreiben?",
+   "satz": "neu",
+   "heute": {
+    "title": "Jürgen Reichen",
+    "method": "search"
+   },
+   "stichwort": null,
+   "eingebaut": {
+    "input": "Wie lernen Kinder lesen und schreiben?",
+    "title": "Jürgen Reichen",
+    "method": "search",
+    "normalized": "Wie lernen Kinder lesen und schreiben?"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Welche Rolle spielt die Europäische Union für Deutschland?",
+   "satz": "neu",
+   "heute": {
+    "title": "Europakoordinierung (Deutschland)",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Europäische Union",
+    "title": "Europäische Union",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Welche Rolle spielt die Europäische Union für Deutschland?",
+    "title": "Europäische Union",
+    "method": "title",
+    "normalized": "Europäische Union"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie funktioniert eine Solarzelle?",
+   "satz": "neu",
+   "heute": {
+    "title": "KickSat",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Solarzelle",
+    "title": "Solarzelle",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie funktioniert eine Solarzelle?",
+    "title": "Solarzelle",
+    "method": "title",
+    "normalized": "Solarzelle"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Was sind rationale Zahlen?",
+   "satz": "neu",
+   "heute": {
+    "title": "Rationale Zahl",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Rationale Zahlen",
+    "title": "Rationale Zahl",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was sind rationale Zahlen?",
+    "title": "Rationale Zahl",
+    "method": "title",
+    "normalized": "Rationale Zahlen"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie lebten die Menschen in der Steinzeit?",
+   "satz": "neu",
+   "heute": {
+    "title": "Steinzeit",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Steinzeit",
+    "title": "Steinzeit",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie lebten die Menschen in der Steinzeit?",
+    "title": "Steinzeit",
+    "method": "title",
+    "normalized": "Steinzeit"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Was ist die Relativitätstheorie von Albert Einstein?",
+   "satz": "neu",
+   "heute": {
+    "title": "Albert Einstein",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Relativitätstheorie",
+    "title": "Relativitätstheorie",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Was ist die Relativitätstheorie von Albert Einstein?",
+    "title": "Relativitätstheorie",
+    "method": "title",
+    "normalized": "Relativitätstheorie"
+   },
+   "urteile": {
+    "heute": {
+     "A": "teilweise",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  },
+  {
+   "frage": "Wie entstehen Wolken und Regen?",
+   "satz": "neu",
+   "heute": {
+    "title": "Regen",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Wolke",
+    "title": "Wolke",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Wie entstehen Wolken und Regen?",
+    "title": "Wolke",
+    "method": "title",
+    "normalized": "Wolke"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "teilweise"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Warum sterben Bienen und was kann man dagegen tun?",
+   "satz": "neu",
+   "heute": {
+    "title": "Taschelhit",
+    "method": "search"
+   },
+   "stichwort": {
+    "word": "Bienen",
+    "title": "Bienen",
+    "method": "title"
+   },
+   "eingebaut": {
+    "input": "Warum sterben Bienen und was kann man dagegen tun?",
+    "title": "Bienen",
+    "method": "title",
+    "normalized": "Bienen"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt_nicht",
+     "B": "passt_nicht"
+    },
+    "stichwort": {
+     "A": "teilweise",
+     "B": "teilweise"
+    }
+   }
+  },
+  {
+   "frage": "Was regelt das Jugendschutzgesetz?",
+   "satz": "neu",
+   "heute": {
+    "title": "Jugendschutzgesetz (Deutschland)",
+    "method": "search"
+   },
+   "stichwort": null,
+   "eingebaut": {
+    "input": "Was regelt das Jugendschutzgesetz?",
+    "title": "Jugendschutzgesetz (Deutschland)",
+    "method": "search",
+    "normalized": "Was regelt das Jugendschutzgesetz?"
+   },
+   "urteile": {
+    "heute": {
+     "A": "passt",
+     "B": "passt"
+    },
+    "stichwort": {
+     "A": "passt",
+     "B": "passt"
+    }
+   }
+  }
+ ],
+ "geraten": [
+  {
+   "topic": "Barockliteratur",
+   "today": "Barockliteratur",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Bruchrechnung",
+   "today": "Bruchrechnung",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Demokratie",
+   "today": "Demokratie",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Französische Revolution",
+   "today": "Französische Revolution",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Klimawandel",
+   "today": "Klimawandel",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Optik",
+   "today": "Optik",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Photosynthese",
+   "today": "Photosynthese",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Programmiersprache",
+   "today": "Programmiersprache",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Säure-Base-Konzepte",
+   "today": "Säure-Base-Konzepte",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Sinfonie",
+   "today": "Sinfonie",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Plattentektonik",
+   "today": "Plattentektonik",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Ökosystem",
+   "today": "Ökosystem",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Atommodell",
+   "today": "Liste der Atommodelle",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Industrielle Revolution",
+   "today": "Industrielle Revolution",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Elektrischer Strom",
+   "today": "Elektrischer Strom",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Wasserkreislauf",
+   "today": "Wasserkreislauf",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Römisches Reich",
+   "today": "Römisches Reich",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Lineare Funktion",
+   "today": "Lineare Funktion",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Zelle (Biologie)",
+   "today": "Zelle (Biologie)",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Gedicht",
+   "today": "Lyrik",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Optik in Klasse 7",
+   "today": "Optik",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Optik (Sek I)",
+   "today": "Optik",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Photosynthese für die Grundschule",
+   "today": "Photosynthese",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Bruchrechnung Klasse 6",
+   "today": "Bruchrechnung",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Demokratie in der Sekundarstufe I",
+   "today": "Demokratie",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Thema: Klimawandel",
+   "today": "Klimawandel",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Geschichte: Französische Revolution",
+   "today": "Französische Revolution",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Plattentektonik (Oberstufe)",
+   "today": "Plattentektonik",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Welle",
+   "today": "Welle",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Leiter",
+   "today": "Leiter (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Strom",
+   "today": "Strom (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Leistung",
+   "today": "Leistung (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Arbeit",
+   "today": "Arbeit (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Biologie: Zelle",
+   "today": "Zelle (Biologie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Chemie: Bindung",
+   "today": "Chemische Bindung",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Mathematik: Funktion",
+   "today": "Funktion (Mathematik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Mathematik: Satz",
+   "today": "Satz (Mathematik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Deutsch: Satz",
+   "today": "Satz (Grammatik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Musik: Takt",
+   "today": "Takt (Musik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Informatik: Baum",
+   "today": "Baum (Datenstruktur)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Informatik: Maus",
+   "today": "Computermaus",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Informatik: Virus",
+   "today": "Computervirus",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Erdkunde: Strom",
+   "today": "Strom (Gewässerart)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Geschichte: Wende",
+   "today": "Wende (Einheit)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Strom",
+   "today": "Elektrischer Strom",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Zelle",
+   "today": "Zelle (Biologie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Welle",
+   "today": "Welle",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Fotosynthese",
+   "today": "Photosynthese",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "photosynthese",
+   "today": "Photosynthese",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Lichtlehre",
+   "today": "Ernst Adalbert Voretzsch",
+   "method": "search",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Klimaerwärmung",
+   "today": "Globale Erwärmung",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "DNA",
+   "today": "Desoxyribonukleinsäure",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "EU",
+   "today": "Europäische Union",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Bruchrechnen",
+   "today": "Bruchrechnung",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Lineare Funktionen",
+   "today": "Lineare Funktion",
+   "method": "variant",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Gewaltenteilung in Deutschland",
+   "today": "Gewaltenteilung",
+   "method": "search",
+   "keyword": {
+    "word": "Gewaltenteilung",
+    "title": "Gewaltenteilung"
+   },
+   "error": null
+  },
+  {
+   "topic": "Die Französische Revolution",
+   "today": "Französische Revolution",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Photosynthese bei Pflanzen",
+   "today": "Photosynthese",
+   "method": "search",
+   "keyword": {
+    "word": "Photosynthese",
+    "title": "Photosynthese"
+   },
+   "error": null
+  },
+  {
+   "topic": "Kreislauf des Wassers",
+   "today": "Wasserkreislauf",
+   "method": "variant",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Spannung",
+   "today": "Elektrische Spannung",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Linse",
+   "today": "Linse (Botanik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Chemie: Element",
+   "today": "Chemisches Element",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Musik: Intervall",
+   "today": "Intervall (Musik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Deutsch: Artikel",
+   "today": "Artikel (Wortart)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Erdkunde: Delta",
+   "today": "Delta",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Biologie: Stamm",
+   "today": "Stamm (Biologie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Informatik: Netzwerk",
+   "today": "Netzwerk",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Mathematik: Ableitung",
+   "today": "Differentialrechnung",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Vulkane",
+   "today": "Vulkan",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Ursachen des Ersten Weltkriegs",
+   "today": "Erster Weltkrieg",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Erster Weltkriegs",
+    "title": "Erster Weltkrieg"
+   },
+   "error": null
+  },
+  {
+   "topic": "Aufbau der Zelle",
+   "today": "Zelle (Biologie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Feld",
+   "today": "Feld (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Masse",
+   "today": "Masse (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Druck",
+   "today": "Druck (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Chemie: Lösung",
+   "today": "Lösung (Chemie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Chemie: Base",
+   "today": "Basen (Chemie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Mathematik: Menge",
+   "today": "Menge (Mathematik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Informatik: Schleife",
+   "today": "Schleife (Programmierung)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Informatik: Bus",
+   "today": "Bus (Datenverarbeitung)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Musik: Note",
+   "today": "Note (Musik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Musik: Satz",
+   "today": "Satz (Musikstück)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Deutsch: Fall",
+   "today": "Schlacht an der Sutjeska",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Biologie: Art",
+   "today": "Art (Biologie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Geschichte: Restauration",
+   "today": "Restauration (Geschichte)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Treibhauseffekt",
+   "today": "Treibhauseffekt",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Weimarer Republik",
+   "today": "Weimarer Republik",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Satz des Pythagoras",
+   "today": "Satz des Pythagoras",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Physik: Energie",
+   "today": "Energie",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Säure",
+   "today": "Säuren",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Klimawandels",
+   "today": "Klimawandel",
+   "method": "variant",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Evolutionstheorie",
+   "today": "Evolutionstheorie",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Aufbau der Atome",
+   "today": "Atom",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Ursachen der Französischen Revolution",
+   "today": "Französische Revolution",
+   "method": "variant",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Kreislauf des Kohlenstoffs",
+   "today": "Kohlenstoffzyklus",
+   "method": "variant",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "deutsche Dichter",
+   "today": "Liste deutschsprachiger Lyriker",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Dichter der Romantik",
+   "today": "Englische Romantik",
+   "method": "search",
+   "keyword": {
+    "word": "Dichter",
+    "title": "Dichter"
+   },
+   "error": null
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "today": "Max Richter (Komponist)",
+   "method": "search",
+   "keyword": {
+    "word": "Komponisten",
+    "title": "Komponist"
+   },
+   "error": null
+  },
+  {
+   "topic": "Philosophen der Aufklärung",
+   "today": "Böse Philosophen",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Philosophen",
+    "title": "Philosoph"
+   },
+   "error": null
+  },
+  {
+   "topic": "Maler des Impressionismus",
+   "today": "Liste der Maler des Impressionismus",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "römische Kaiser",
+   "today": "Liste der römischen Kaiser der Antike",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "deutsche Bundeskanzler",
+   "today": "Bundeskanzler (Deutschland)",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Deutscher Bundeskanzler",
+    "title": "Bundeskanzler (Deutschland)"
+   },
+   "error": null
+  },
+  {
+   "topic": "griechische Götter",
+   "today": "Griechische Mythologie",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Planeten des Sonnensystems",
+   "today": "Liste der Planeten des Sonnensystems",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Planeten",
+    "title": "Planet"
+   },
+   "error": null
+  },
+  {
+   "topic": "Edelgase",
+   "today": "Edelgase",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Weltreligionen",
+   "today": "Weltreligion",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "erneuerbare Energien",
+   "today": "Erneuerbare Energien",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Erfindungen der Industrialisierung",
+   "today": "Industrialisierung",
+   "method": "search",
+   "keyword": {
+    "word": "Erfindungen",
+    "title": "Erfindung"
+   },
+   "error": null
+  },
+  {
+   "topic": "Nobelpreisträger für Physik",
+   "today": "Liste der Nobelpreisträger für Physik",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Nobelpreisträger",
+    "title": "Liste der Nobelpreisträger"
+   },
+   "error": null
+  },
+  {
+   "topic": "Frauen in der Wissenschaft",
+   "today": "Frauen in der Wissenschaft",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Märchen der Brüder Grimm",
+   "today": "Brüder Grimm",
+   "method": "search",
+   "keyword": {
+    "word": "Märchen",
+    "title": "Märchen"
+   },
+   "error": null
+  },
+  {
+   "topic": "deutsche Flüsse",
+   "today": "Liste von Flüssen in Deutschland",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Flüsse",
+    "title": "Fluss"
+   },
+   "error": null
+  },
+  {
+   "topic": "Säugetiere des Waldes",
+   "today": "Nonnenbruchwald",
+   "method": "search",
+   "keyword": {
+    "word": "Säugetiere",
+    "title": "Säugetiere"
+   },
+   "error": null
+  },
+  {
+   "topic": "Vulkane Europas",
+   "today": "Marsili (Vulkan)",
+   "method": "search",
+   "keyword": {
+    "word": "Vulkane",
+    "title": "Vulkan"
+   },
+   "error": null
+  },
+  {
+   "topic": "Entdecker der Neuzeit",
+   "today": "Entdeckung",
+   "method": "search",
+   "keyword": {
+    "word": "Entdecker",
+    "title": "Entdecker"
+   },
+   "error": null
+  },
+  {
+   "topic": "Klimawandel und Landwirtschaft",
+   "today": "American Farm Bureau Federation",
+   "method": "search",
+   "keyword": {
+    "word": "Klimawandel",
+    "title": "Klimawandel"
+   },
+   "error": null
+  },
+  {
+   "topic": "Mathematik in der Musik",
+   "today": "Karlheinz Schüffler",
+   "method": "search",
+   "keyword": {
+    "word": "Mathematik",
+    "title": "Mathematik"
+   },
+   "error": null
+  },
+  {
+   "topic": "Chemie im Alltag",
+   "today": "Chemie in unserer Zeit",
+   "method": "search",
+   "keyword": {
+    "word": "Chemie",
+    "title": "Chemie"
+   },
+   "error": null
+  },
+  {
+   "topic": "Frauen im Mittelalter",
+   "today": "Schreibende Frauen im Mittelalter",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Frauen",
+    "title": "Frau"
+   },
+   "error": null
+  },
+  {
+   "topic": "Musik der Romantik",
+   "today": "Musik der Romantik",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Dichter aus dem Mittelalter",
+   "today": "Sangspruchdichtung",
+   "method": "search",
+   "keyword": {
+    "word": "Dichter",
+    "title": "Dichter"
+   },
+   "error": null
+  },
+  {
+   "topic": "OER-Förderungen",
+   "today": "Open Educational Resources",
+   "method": "search",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "today": "Sportdidaktik",
+   "method": "search",
+   "keyword": {
+    "word": "Sportunterricht",
+    "title": "Sportunterricht"
+   },
+   "error": null
+  },
+  {
+   "topic": "Künstliche Intelligenz im Unterricht",
+   "today": "Halluzination (Künstliche Intelligenz)",
+   "method": "search",
+   "keyword": {
+    "word": "Künstliche Intelligenz",
+    "title": "Künstliche Intelligenz"
+   },
+   "error": null
+  },
+  {
+   "topic": "Nachhaltigkeit im Chemieunterricht",
+   "today": "Johannes Huwer",
+   "method": "search",
+   "keyword": {
+    "word": "Nachhaltigkeit",
+    "title": "Nachhaltigkeit"
+   },
+   "error": null
+  },
+  {
+   "topic": "Klimaanpassung in Städten",
+   "today": "Katja Aufermann",
+   "method": "search",
+   "keyword": {
+    "word": "Klimaanpassung",
+    "title": "Anpassung an die globale Erwärmung"
+   },
+   "error": null
+  },
+  {
+   "topic": "Fake News erkennen",
+   "today": "Fake News",
+   "method": "search",
+   "keyword": {
+    "word": "Fake News",
+    "title": "Fake News"
+   },
+   "error": null
+  },
+  {
+   "topic": "Energiewende in Deutschland",
+   "today": "Energiewende in Deutschland",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Mikroplastik im Meer",
+   "today": "Mikroplastik",
+   "method": "search",
+   "keyword": {
+    "word": "Mikroplastik",
+    "title": "Mikroplastik"
+   },
+   "error": null
+  },
+  {
+   "topic": "Datenschutz für Schüler",
+   "today": "Datenschutz",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Algorithmen im Alltag",
+   "today": "Teile-und-herrsche-Verfahren",
+   "method": "search",
+   "keyword": {
+    "word": "Alltag",
+    "title": "Alltag"
+   },
+   "error": null
+  },
+  {
+   "topic": "Wasserstoff als Energieträger",
+   "today": "Energieträger",
+   "method": "search",
+   "keyword": {
+    "word": "Wasserstoff",
+    "title": "Wasserstoff"
+   },
+   "error": null
+  },
+  {
+   "topic": "Wie funktioniert die Photosynthese bei Pflanzen?",
+   "today": "Photosynthese",
+   "method": "search",
+   "keyword": {
+    "word": "Photosynthese",
+    "title": "Photosynthese"
+   },
+   "error": null
+  },
+  {
+   "topic": "Warum ist der Himmel blau?",
+   "today": "Hellblau",
+   "method": "search",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Ich möchte mit meiner 8. Klasse über die Ursachen des Ersten Weltkriegs sprechen.",
+   "today": "Kadettenkorps Trogen",
+   "method": "search",
+   "keyword": {
+    "word": "Ich",
+    "title": "Ich"
+   },
+   "error": null
+  },
+  {
+   "topic": "Die Schülerinnen und Schüler sollen verstehen, wie eine repräsentative Demokratie funktioniert und welche Rolle Wahlen spielen.",
+   "today": "Bunce Court School",
+   "method": "search",
+   "keyword": {
+    "word": "Repräsentative Demokratie",
+    "title": "Repräsentative Demokratie"
+   },
+   "error": null
+  },
+  {
+   "topic": "Material zur Lichtbrechung an Linsen für den Physikunterricht der Sekundarstufe I mit Experimenten",
+   "today": null,
+   "method": null,
+   "keyword": null,
+   "error": "TopicNotFoundError"
+  },
+  {
+   "topic": "Förderprogramme für offene Bildungsmaterialien in Deutschland und Europa seit 2015",
+   "today": null,
+   "method": null,
+   "keyword": null,
+   "error": "TopicNotFoundError"
+  },
+  {
+   "topic": "Was müssen Lehrkräfte über Künstliche Intelligenz im Unterricht wissen?",
+   "today": "Mathematikunterricht",
+   "method": "search",
+   "keyword": {
+    "word": "Künstliche Intelligenz",
+    "title": "Künstliche Intelligenz"
+   },
+   "error": null
+  },
+  {
+   "topic": "Inklusion im Sportunterricht: Wie gelingt gemeinsames Bewegen von Kindern mit und ohne Behinderung?",
+   "today": null,
+   "method": null,
+   "keyword": null,
+   "error": "TopicNotFoundError"
+  },
+  {
+   "topic": "Förderprogramme für offene Bildungsmaterialien in Deutschland",
+   "today": null,
+   "method": null,
+   "keyword": null,
+   "error": "TopicNotFoundError"
+  },
+  {
+   "topic": "OER-Förderprogramme",
+   "today": "Legden",
+   "method": "search",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Escape Room im Unterricht",
+   "today": "Pete Trewavas",
+   "method": "search",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Lernlandkarte",
+   "today": "Inselwissen",
+   "method": "search",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Bruchrechnen mit Pizza",
+   "today": "Liste von Merksprüchen",
+   "method": "search",
+   "keyword": {
+    "word": "Bruchrechnen",
+    "title": "Bruchrechnung"
+   },
+   "error": null
+  },
+  {
+   "topic": "Biodiversität im Schulumfeld",
+   "today": "Hertzhaimer-Naturgarten",
+   "method": "search",
+   "keyword": {
+    "word": "Biodiversität",
+    "title": "Biodiversität"
+   },
+   "error": null
+  },
+  {
+   "topic": "Stationenlernen Elektrizität",
+   "today": null,
+   "method": null,
+   "keyword": null,
+   "error": "TopicNotFoundError"
+  },
+  {
+   "topic": "Wetter und Klima Grundschule",
+   "today": "Grundschule Adelby",
+   "method": "search",
+   "keyword": {
+    "word": "Wetter",
+    "title": "Wetter"
+   },
+   "error": null
+  },
+  {
+   "topic": "Mittelalterliche Burgen",
+   "today": "Mittelalterliche Burg und neuzeitliches Wirtshaus",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Mittelalterliche",
+    "title": "Mittelalter"
+   },
+   "error": null
+  },
+  {
+   "topic": "Römer in Germanien",
+   "today": "Römisch-Germanische Kriege",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Römer",
+    "title": "Römisches Bürgerrecht"
+   },
+   "error": null
+  },
+  {
+   "topic": "Energiesparen in der Schule",
+   "today": "Technikerschule Neumarkt i. d. OPf.",
+   "method": "search",
+   "keyword": {
+    "word": "Energiesparen",
+    "title": "Energieeinsparung"
+   },
+   "error": null
+  },
+  {
+   "topic": "Mobbing in der Klasse",
+   "today": "Cyber-Mobbing",
+   "method": "search",
+   "keyword": {
+    "word": "Mobbing",
+    "title": "Mobbing"
+   },
+   "error": null
+  },
+  {
+   "topic": "Gesunde Ernährung",
+   "today": "Gesunde Ernährung und Bewegung",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Gesunde",
+    "title": "Gesundheit"
+   },
+   "error": null
+  },
+  {
+   "topic": "Verkehrserziehung",
+   "today": "Verkehrserziehung",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Prozentrechnung im Alltag",
+   "today": "Prozent",
+   "method": "search",
+   "keyword": {
+    "word": "Prozentrechnung",
+    "title": "Prozent"
+   },
+   "error": null
+  },
+  {
+   "topic": "Zellatmung",
+   "today": "Zellatmung",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Industrielle Revolution in England",
+   "today": "Industrielle Revolution",
+   "method": "search",
+   "keyword": {
+    "word": "Industrielle Revolution",
+    "title": "Industrielle Revolution"
+   },
+   "error": null
+  },
+  {
+   "topic": "Weimarer Republik Krisenjahre",
+   "today": "Detlev Peukert",
+   "method": "search",
+   "keyword": {
+    "word": "Republik",
+    "title": "Republik"
+   },
+   "error": null
+  },
+  {
+   "topic": "Kalter Krieg",
+   "today": "Kalter Krieg",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Plastik im Meer",
+   "today": "Plastikmüll in den Ozeanen",
+   "method": "search",
+   "keyword": {
+    "word": "Meer",
+    "title": "Meer"
+   },
+   "error": null
+  },
+  {
+   "topic": "Programmieren mit Scratch",
+   "today": "Scratch (Programmiersprache)",
+   "method": "search",
+   "keyword": {
+    "word": "Programmieren",
+    "title": "Programmierung"
+   },
+   "error": null
+  },
+  {
+   "topic": "Erneuerbare Energien Windkraft",
+   "today": "Erneuerbare Energien Hamburg",
+   "method": "search",
+   "keyword": {
+    "word": "Energien",
+    "title": "Energie"
+   },
+   "error": null
+  },
+  {
+   "topic": "Vulkane und Erdbeben",
+   "today": "San Antonio (Vulkan)",
+   "method": "search",
+   "keyword": {
+    "word": "Vulkane",
+    "title": "Vulkan"
+   },
+   "error": null
+  },
+  {
+   "topic": "Gedichtanalyse Romantik",
+   "today": "Lyrisches Ich",
+   "method": "search",
+   "keyword": {
+    "word": "Gedichtanalyse",
+    "title": "Gedichtinterpretation"
+   },
+   "error": null
+  },
+  {
+   "topic": "Kurzgeschichten der Nachkriegszeit",
+   "today": "Kurzgeschichte",
+   "method": "search",
+   "keyword": {
+    "word": "Kurzgeschichten",
+    "title": "Kurzgeschichte"
+   },
+   "error": null
+  },
+  {
+   "topic": "Säuren und Basen im Alltag",
+   "today": "Säure-Basen-Haushalt",
+   "method": "search",
+   "keyword": {
+    "word": "Säuren",
+    "title": "Säuren"
+   },
+   "error": null
+  },
+  {
+   "topic": "Ökosystem Wald",
+   "today": "Ökosystem",
+   "method": "search",
+   "keyword": {
+    "word": "Ökosystem",
+    "title": "Ökosystem"
+   },
+   "error": null
+  },
+  {
+   "topic": "Menschenrechte",
+   "today": "Menschenrechte",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Europäische Union Institutionen",
+   "today": "Europäische Union",
+   "method": "suggestion",
+   "keyword": {
+    "word": "Europäische",
+    "title": "Europa"
+   },
+   "error": null
+  },
+  {
+   "topic": "Bank",
+   "today": "Bank",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Kiefer",
+   "today": "Kiefer (Anatomie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Leiter",
+   "today": "Leiter (Gerät)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Schloss",
+   "today": "Schloss (Architektur)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Feder",
+   "today": "Feder",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Ton",
+   "today": "Klang",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Netz",
+   "today": "Netz (Textilie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Bauer",
+   "today": "Landwirt",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Läufer",
+   "today": "Hausschwein",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Golf",
+   "today": "Golf (Meer)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Kraft",
+   "today": "Kraft",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Arbeit",
+   "today": "Arbeit (Philosophie)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Masse",
+   "today": "Masse (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Spannung",
+   "today": "Elektrische Spannung",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Ladung",
+   "today": "Ladung (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Leistung",
+   "today": "Leistung (Physik)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Stamm",
+   "today": "Stamm (Familienname)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Wurzel",
+   "today": "Wurzel (Pflanze)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Gleichung",
+   "today": "Gleichung",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Funktion",
+   "today": "Funktion (Objekt)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Körper",
+   "today": "Gegenstand",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Atlas",
+   "today": "Atlas (Gebirge)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Merkur",
+   "today": "Mercurius",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Pupille",
+   "today": "Pupille",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Kreuzung",
+   "today": "Kreuzung (Verkehr)",
+   "method": "disambiguation",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Reformation",
+   "today": "Reformation",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  },
+  {
+   "topic": "Revolution",
+   "today": "Revolution",
+   "method": "title",
+   "keyword": null,
+   "error": null
+  }
+ ]
+}
