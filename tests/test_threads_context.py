@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import contextvars
 import logging
+import os
 import threading
 import time
 from collections.abc import Callable
@@ -158,18 +159,17 @@ def test_the_services_log_line_names_the_request_of_a_worker_thread(
     """TE-13 (audit 2026-09-28): under pytest the root logger has handlers already, so configure_logging never set
     the service's format and its request-id filter here. Without the filter every line in production became
     "--- Logging error ---", and suite and smoke probe stayed green."""
-    root, httpx_logger = logging.getLogger(), logging.getLogger("httpx")
-    levels = root.level, httpx_logger.level
+    root = logging.getLogger()
     monkeypatch.setattr(root, "handlers", [])  # as in production; the test's own handlers come back afterwards
-    try:
-        configure_logging("INFO")
-        in_a_request(
-            "rid-13",
-            lambda: map_in_threads(lambda item: logging.getLogger("app.probe").info("Probe %s", item), [1], workers=1),
-        )
-    finally:
-        root.setLevel(levels[0])
-        httpx_logger.setLevel(levels[1])
+    for logger in (root, *(logging.getLogger(name) for name in ("httpx", "httpcore", "uvicorn", "uvicorn.access"))):
+        monkeypatch.setattr(logger, "level", logger.level)
+        monkeypatch.setattr(logger, "handlers", list(logger.handlers))
+        monkeypatch.setattr(logger, "propagate", logger.propagate)
+    configure_logging("INFO")
+    in_a_request(
+        "rid-13",
+        lambda: map_in_threads(lambda item: logging.getLogger("app.probe").info("Probe %s", item), [1], workers=1),
+    )
 
-    [line] = [line for line in capsys.readouterr().out.splitlines() if "Probe 1" in line]
-    assert line.split(" | ")[1:] == ["INFO    ", "app.probe", "rid-13", "Probe 1"]
+    [line] = [line for line in capsys.readouterr().err.splitlines() if "Probe 1" in line]
+    assert line.split(" | ")[1:] == ["INFO    ", str(os.getpid()), "app.probe", "rid-13", "Probe 1"]
