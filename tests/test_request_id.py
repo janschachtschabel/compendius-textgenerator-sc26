@@ -157,3 +157,19 @@ def test_an_unexpected_error_is_logged_once_with_its_cause_in_the_first_line(
     assert "ExceptionGroup" not in traceback and traceback.count('raise RuntimeError("kaputt")') == 1
     [access] = access_lines(caplog)
     assert access.fields["status"] == 500  # type: ignore[attr-defined]
+
+
+def test_a_request_that_makes_something_is_logged_when_it_starts(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    """A request that ends with its worker - the healthcheck window, the memory - wrote no line at all: the line of a
+    request comes when it ends (logging review of 2026-10-08). A POST names its start; a GET, the probes among them,
+    does not."""
+    with caplog.at_level(logging.INFO, logger="app.api.request_log"):
+        client.post("/api/v2/compendium", json={"topic": "Optik", "preset": "llm-free", "parts": ["world"]})
+        client.get("/refused")
+
+    lines = [record.getMessage() for record in access_lines(caplog)]
+    assert lines[0] == "POST /api/v2/compendium started" and lines[1].startswith("POST /api/v2/compendium 200 ")
+    assert [line for line in lines if line.startswith("GET")] == [line for line in lines[2:]]
+    assert not any(line.startswith("GET") and line.endswith("started") for line in lines)

@@ -36,6 +36,9 @@ log = logging.getLogger(__name__)
 PROBES = frozenset({"/health", "/ready", METRICS_PATH})
 MAX_TARGET_CHARS = 500  # path and query in a line; h11 refuses a request line with headers over 16 KB
 MAX_CAUSE_CHARS = 300
+# A request of these methods reads; any other makes something and names its start: one that ends with its worker - the
+# healthcheck window, the memory - left no line, as the line of a request comes when it ends
+READS = frozenset({"GET", "HEAD", "OPTIONS"})
 INTERNAL_ERROR = "Interner Fehler; bitte die Anfrage-ID melden"
 
 
@@ -69,6 +72,11 @@ class RequestLog:
             return
         request_id = set_request_id(_header(scope, REQUEST_ID_HEADER))
         started = time.perf_counter()
+        if scope["method"] not in READS:
+            target = _target(scope)
+            log.info(
+                "%s %s started", scope["method"], target, extra={"fields": {"method": scope["method"], "path": target}}
+            )
         status = 500  # what the client sees when the app ends without an answer
         answered = False
 
@@ -97,8 +105,7 @@ class RequestLog:
             observe_request(scope["method"], route, status, seconds)
         if path in PROBES and status < 400:
             return
-        query = scope.get("query_string", b"").decode("latin-1")
-        target = _printable(quote(path) + (f"?{query}" if query else ""))[:MAX_TARGET_CHARS]
+        target = _target(scope)
         client = scope.get("client")
         fields = {
             "method": scope["method"],
@@ -109,6 +116,12 @@ class RequestLog:
             "client": client[0] if client else "-",
         }
         log.info("%s %s %d %d ms", fields["method"], target, status, fields["duration_ms"], extra={"fields": fields})
+
+
+def _target(scope: Scope) -> str:
+    """Path and query of the request as a line can hold them: quoted, every other sign escaped, cut."""
+    query = scope.get("query_string", b"").decode("latin-1")
+    return _printable(quote(scope["path"]) + (f"?{query}" if query else ""))[:MAX_TARGET_CHARS]
 
 
 def _header(scope: Scope, name: str) -> str | None:
