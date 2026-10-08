@@ -828,6 +828,8 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
         ("Erster Satz [1]. ‚Ein Zitat.‘", "Erster Satz [1]. ‚Ein Zitat.‘", False),
         ("Erster Satz [1].\n- Punkt eins\n", "Erster Satz [1].\n- Punkt eins\n", False),
         ("Erster Satz [1]. Geräte wie z. B.", "Erster Satz [1].", True),
+        ("Erster Satz [1]. Linsen kennt man seit dem 17.", "Erster Satz [1].", True),
+        ("Erster Satz [1]. Newton starb 1727.", "Erster Satz [1]. Newton starb 1727.", False),
     ],
     ids=[
         "marker after the stop",
@@ -838,6 +840,8 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
         "quote",
         "line ended",
         "abbreviation",
+        "ordinal",
+        "year",
     ],
 )
 def test_only_the_sentence_an_answer_broke_off_in_goes_and_the_citations_of_the_others_stay(

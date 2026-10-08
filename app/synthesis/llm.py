@@ -53,6 +53,8 @@ _LEADING_MARKERS_RE = re.compile(rf"(?:\s*{_MARKER_GROUP})+\s*")
 # after it ("Satz.** Weiter")
 _GLUED_MARKER_RE = re.compile(rf"([.!?…][{_CLOSERS}]*)(?=\[\d)")
 _CLOSED_END_RE = re.compile(rf"[.!?…][{_CLOSERS}]+\s+(?=[A-ZÄÖÜ„\"‚'(\[0-9*_])")
+# A day or a century cut off before its noun: "seit dem 17." ends no sentence, "starb 1727." does
+_CUT_ORDINAL_RE = re.compile(r"\b(?:im|am|vom|zum|beim|dem|den)\s+\d{1,2}\.$")
 _JSON_OPENING_RE = re.compile(r'[{\[]\s*["{\[]|\{\s*\}|\[\s*\]')
 BYTE_ORDER_MARK = chr(0xFEFF)
 
@@ -99,7 +101,8 @@ def without_unfinished_sentence(text: str) -> tuple[str, bool]:
     Only the last line can be unfinished: a line break the model wrote ended the line before it, a list item too, and
     an answer that ends with one is whole. In the last line the German sentence splitter finds its last sentence
     (abbreviations and ordinals protected); markers that open it cite the sentence before it and stay, and a sentence
-    that ends in an abbreviation is unfinished. A last line without a finished sentence goes whole.
+    that ends in an abbreviation or in a day or century without its noun is unfinished. A last line without a
+    finished sentence goes whole.
     """
     if text.rstrip(" \t").endswith("\n"):
         return text, False
@@ -112,7 +115,8 @@ def without_unfinished_sentence(text: str) -> tuple[str, bool]:
     tail = sentences[-1][ends[-1] :] if ends else sentences[-1]
     opening = _LEADING_MARKERS_RE.match(tail)
     rest = tail[opening.end() :] if opening else tail
-    if not rest.strip() or (_FINISHED_RE.search(rest) and not ends_with_abbreviation(rest)):
+    finished = _FINISHED_RE.search(rest) and not ends_with_abbreviation(rest) and not _CUT_ORDINAL_RE.search(rest)
+    if not rest.strip() or finished:
         return text, False
     # The unfinished rest starts where as many of the line's other characters are left as it has
     start, remaining = len(last), sum(1 for char in rest if not char.isspace())
