@@ -89,10 +89,11 @@ def test_a_run_that_retires_an_archive_asks_the_loop_back_when_it_can_go(
     catalog = FakeCatalog({KLEXIKON: "klexikon_de_sample_2026-08.zim"}, sources)
     sync = ZimSync(tmp_path, MANIFEST, catalog, FakeDownloader(sources), clock=Clock(), retention=timedelta(hours=24))
 
-    wait = _run_once(sync, COMPACT)
+    wait = _run_once(sync, COMPACT, timedelta(days=30))
 
     assert wait == timedelta(hours=24)  # not the 30 days of ZIM_SYNC_INTERVAL
-    assert _run_once(ZimSync(tmp_path / "leer", MANIFEST, None, FakeDownloader(sources), clock=Clock()), COMPACT)
+    empty = ZimSync(tmp_path / "leer", MANIFEST, None, FakeDownloader(sources), clock=Clock())
+    assert _run_once(empty, COMPACT, timedelta(days=30))
 
 
 def test_a_download_waits_until_the_volume_has_room_for_it(tmp_path: Path, sources: dict[str, Path]) -> None:
