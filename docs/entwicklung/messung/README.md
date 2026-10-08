@@ -1,6 +1,6 @@
 # Messskripte zur Entwicklungsdokumentation
 
-Die Skripte zu den Messungen vom 23. bis 28.09.2026 im [Messprotokoll](../05-messprotokoll.md). Sie sind für den
+Die Skripte zu den Messungen ab dem 23.09.2026 im [Messprotokoll](../05-messprotokoll.md). Sie sind für den
 Entwicklungsrechner geschrieben: Archive unter `kompendium-test\data`, die venv dieses Projekts, die venv der Testapp
 und die venv des alten Dienstes. Pfade stehen am Anfang jedes Skripts. Wer auf dem Server misst, übergibt dessen
 Adresse als Argument; sie steht nicht im Repository. Der b-api-Schlüssel kommt aus `B_API_KEY` und wird nirgends
@@ -87,6 +87,7 @@ geschrieben.
 | M77 Die Zuordnung in Zeilen | `mc_reasoning.py zuordnung llm_50x250 llm_50x250z` (mit `mc_openai_direkt.py`, Gold nach `/gold`): die Antwort als JSON-Objekt und als eine Zeile je Absatz, beide Reihenfolgen | Einmal-Container | OpenAI direkt (`OPENAI_API_KEY`) |
 | M79 Das breiteste Thema nach dem Bau | `mc_tempo.py /out/breit.json --variant=seq --profiles=best-quality-generated,best-coverage-generated Demokratie` wie M78 | Einmal-Container | OpenAI direkt (`OPENAI_API_KEY`) |
 | M78 Zeit und Tokens nach dem Bau | `mc_tempo.py /out/seq_c20.json --variant=seq --profiles=… <thema> …` wie M75, mit dem gebauten Stand und `-e LLM_MAX_CONCURRENCY=20` | Einmal-Container | OpenAI direkt (`OPENAI_API_KEY`) |
+| M80 Die letzten Zahlen ohne Messung (Audit WA-02) | `cat mc_schwellen.py \| docker compose run --rm --no-deps -T … api python - /m80/themen.json /gold` (Kopf der Datei) misst die Schwellen von Model2Vec und der Zeichenähnlichkeit, die Untergrenze eines Bausteinanteils, die Gewichte der Link-Rangfolge und die Grenze des Akteursverzeichnisses an den 81 Themen von M65 und am Gold | Einmal-Container mit `git archive` des Commits | keins |
 | M37 Sammel- und Mischthemen | `mc_sammelthemen.py <out.json> <bogen.json> [--normal]` stellt 25 Sammel- und Mischthemen (mit `--normal` die 20 Themen von M1) auf vier Wegen durch Teil 1: `llm-free`, `balanced`, die Entitäten der alten App als Korpus, das LLM nennt Übersicht und Teile; `mc_sammelthemen_auswertung.py <lauf.json> <noten.yaml> [<zweit.yaml>] [--normal]` rechnet die gedruckten Absätze nach Noten | venv dieses Projekts; aus dem Projektordner mit `PYTHONPATH=.;docs/entwicklung/messung` | `gpt-6-luna`, Staging-b-api; rund 125.000 Tokens neu ausgegeben (Probe `balanced` 32.432, alter Linker 67.954, N 24.188), dazu 17.875 für B der Kontrolle, überwiegend aus dem b-api-Cache |
 | Zusammenfassungen von M9 bis M15 | `mc_zusammenfassung.py <ergebnisse-ordner>` | beliebiges Python | keins; rechnet nur aus den Rohdaten |
 | Präsentationsseite (Seiten 01, 09 und 07 als eine HTML-Seite) | `mc_praesentation.py [<ziel.html>] [--fragment]`, Ziel `docs/entwicklung/praesentation.html`; `--fragment` ohne Dokumentgerüst für ein Claude-Artifact | venv dieses Projekts (markdown-it-py kommt mit rich) | keins |
@@ -104,6 +105,22 @@ unverändert. Die Umgebung des alten Dienstes entsteht mit `uv sync --frozen --n
 `new_part1_check.py` prüft jeden Satz gegen den Absatz, auf den seine Belegnummer zeigt. Die Laufzeiten in M3 stammen
 aus einem ersten Lauf mit einer früheren Fassung, die denselben Server abfragte und Sätze nur im ganzen Korpus
 suchte; beide Läufe ergaben dieselben Sätze.
+
+## Nachmessen
+
+Jede Messung im Messprotokoll nennt den Codestand, mit dem sie lief. Nachmessen heißt: diesen Stand in einen eigenen
+Arbeitsbaum holen (`git worktree add <ordner> <commit>`, für den Einmal-Container `git archive <commit> app | tar -x -C
+<kopie>`) und das Skript von dort starten; mit dem heutigen Code misst dasselbe Skript den heutigen Stand. Diese Skripte
+importieren Namen, die der heutige Code nicht mehr hat (geprüft am 08.10.2026 mit Release 2.15.0); sie brauchen einen
+Stand bis zum genannten Commit:
+
+| Skript | Messung | Stand bis | was sich danach änderte |
+|---|---|---|---|
+| `mc_variants_v200.py`, `mc_model_variants.py` | M4, M6 | `e536235` | `_scale_budgets` heißt `scale_budgets` und liegt in `app/compendium/world.py` (Audit vom 27.09., AR-01) |
+| `mc_qa_profile.py`, `mc_qa_stufen.py` | M29, M30 | `1ae63db` | die QA-Stufen `models` und `parse-based` sind weg (D57) |
+| `mc_korpus_verlinkung.py`, `mc_sichere_aufloesung.py`, `mc_genannte_teile.py`, `mc_lehrplan_teile.py` | M25, M35, M54, M55 | `9f18138` | Themenauflösung und Korpusbau liegen in `app/knowledge` (D90) |
+
+`old_run.py` gehört zum alten Dienst und läuft in dessen venv (M2).
 
 ## Ablauf von M4 und M5
 
@@ -162,6 +179,7 @@ Zwischendateien entstehen in einem Arbeitsordner außerhalb des Repositorys, wei
 | `ergebnisse/m77_antwortformat.json` | M77, je Durchgang und Antwortform macro- und micro-F1, Rückfälle, Tokens und Sekunden je Thema |
 | `ergebnisse/m79_breitestes_thema.json` | M79, die beiden Läufe mit ihren LLM-Aufrufen wie in M75 |
 | `ergebnisse/m78_tempo_nachher.json` | M78, jeder Lauf mit seinen LLM-Aufrufen wie in M75, mit dem gebauten Stand |
+| `ergebnisse/m80_schwellen.json` | M80, je Schwelle und Untergrenze die Absätze, die ihren Baustein wechseln, je Gewicht die Nebenartikel, die im Korpus wechseln, jeweils mit den Werten am Gold; je Thema und Grenze des Akteursverzeichnisses die Akteure, Nachschlagungen und Millisekunden |
 | `ergebnisse/README.md` | alle Messungen auf einen Blick: Frage, Ergebnis, Dateien; Lesehinweise |
 | `ergebnisse/m1_laufzeit_server.json` | M1, alle 47 Anfragen an den Server mit Schrittzeiten |
 | `ergebnisse/m1_laufzeit_entwicklungsrechner.json` | dieselbe Messung im lokalen Container |
