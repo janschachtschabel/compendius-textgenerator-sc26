@@ -214,6 +214,22 @@ def test_a_repository_that_fails_on_a_part_leaves_that_part_empty() -> None:
     assert tree.path == ("Optik",) and tree.materials == ()
 
 
+def test_a_spent_time_budget_reads_nothing_and_names_every_part_missing() -> None:
+    fake = FakeTree()
+
+    tree = read_tree(_builder(fake), NODE, PARENT, ("Physik",), remaining=lambda: 0.0)
+
+    assert fake.requests == [] and set(tree.missing) == {"path", "children", "materials", "neighbours"}
+
+
+def test_the_path_stops_after_max_path_collections(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("app.sources.wlo.tree.MAX_PATH", 1)
+
+    tree = read_tree(_builder(FakeTree()), NODE, PARENT, (), content=False)  # without a subject: up to the root
+
+    assert tree.path == ("Optik",)
+
+
 # -- in the compendium ------------------------------------------------------------------------------------------------
 
 

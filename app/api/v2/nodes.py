@@ -36,10 +36,10 @@ STAGING_COLLECTION = "9e7ae956-e9df-430f-bace-f3db4b910013"  # the collection "O
 class NodePreview(NodeInput):
     topic: str | None = Field(
         description="The topic a request with this node alone resolves without the LLM: a collection's title, for a "
-        'title that names no subject matter ("Grundlagen") the nearest collection above it that does (M71); for a '
-        "material the article the rules find in its title and description (D47), null when they find none or no "
-        "archive is loaded. With article_choice llm the LLM names a material's article instead, and a topic sent "
-        "along leads"
+        'title that names no subject matter ("Grundlagen") the nearest collection above it that does (M71), else its '
+        "subject, else its title; for a material the article the rules find in its title and description (D47), "
+        "null when they find none or no archive is loaded. With article_choice llm the LLM names a material's article "
+        "instead, and a topic sent along leads"
     )
     topic_subjects: list[str] = Field(
         default_factory=list,
