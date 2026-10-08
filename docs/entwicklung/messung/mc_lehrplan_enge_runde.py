@@ -117,7 +117,7 @@ for kind, names in topics.items():
             EXTRA.clear()
             WHOLE.clear()
             request = GenerateRequest(topic=topic, preset=preset, parts=["curricula"])
-            deadline = Deadline(settings.request_timeout_s)
+            deadline = Deadline(settings.request_time_limit_s)
             started = time.perf_counter()
             try:
                 request, profile = service._admit(request, deadline)

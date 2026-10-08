@@ -61,7 +61,7 @@ def siblings(entry):
 
 
 def prepared_for(preset, *, topic=None, node_id=None):
-    deadline = Deadline(settings.request_timeout_s)
+    deadline = Deadline(settings.request_time_limit_s)
     request, profile = service._admit(
         GenerateRequest(topic=topic, node_id=node_id, parts=["world"], preset=preset), deadline
     )
@@ -87,7 +87,7 @@ def run(preset, **kwargs):
 
 
 def ask(heard, subjects):
-    job = ArticleChoiceJob(service.llm.client, service.llm.open_budget(), Deadline(settings.request_timeout_s))
+    job = ArticleChoiceJob(service.llm.client, service.llm.open_budget(), Deadline(settings.request_time_limit_s))
     report = ask_topic_articles(job, archive, heard, subjects)
     return {"main": report.found[0] if report.found else None, "named": list(report.found), "heard": heard,
             "fallback": report.fallback}

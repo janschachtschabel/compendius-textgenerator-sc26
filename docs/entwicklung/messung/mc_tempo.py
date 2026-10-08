@@ -112,7 +112,7 @@ main_module.BApiClient = RecordingClient
 def generate_parallel(self, request, *, deadline=None, budget=None):
     """CompendiumService.generate with part 2 beside part 1: it needs only what the article choice prepared."""
     if deadline is None:
-        deadline = Deadline(self.settings.request_timeout_s)
+        deadline = Deadline(self.settings.request_time_limit_s)
     request, profile = self._admit(request, deadline)
     if budget is None:
         budget = self.open_budget(profile)
@@ -158,7 +158,7 @@ def generate_parallel(self, request, *, deadline=None, budget=None):
 
 def run_compendia(service, settings, out: Path, topics, profiles, variant: str) -> None:
     rows = json.loads(out.read_text(encoding="utf-8")) if out.exists() else []
-    concurrency = settings.llm_max_concurrency
+    concurrency = settings.llm_concurrency
     done = {(r["topic"], r["profile"], r["variant"], r["concurrency"]) for r in rows}
     for topic in topics:
         for profile in profiles:

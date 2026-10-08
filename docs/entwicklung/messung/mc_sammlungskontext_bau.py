@@ -39,7 +39,7 @@ service = build_service(settings, build_registry(settings), TemplateManager())
 
 
 def prepared_for(preset, node_id):
-    deadline = Deadline(settings.request_timeout_s)
+    deadline = Deadline(settings.request_time_limit_s)
     request, profile = service._admit(GenerateRequest(node_id=node_id, parts=["world"], preset=preset), deadline)
     budget = service.open_budget(profile)
     _, _, choice = service.article_choice_job(request.article_choice, deadline, budget)
@@ -64,7 +64,7 @@ def run(preset, node_id):
 
 
 def worded(text):
-    job = ArticleChoiceJob(service.llm.client, service.llm.open_budget(), Deadline(settings.request_timeout_s))
+    job = ArticleChoiceJob(service.llm.client, service.llm.open_budget(), Deadline(settings.request_time_limit_s))
     report = TopicWordingReport()
     return {"topic": word_topic(job, text, report), "fallback": report.fallback}
 

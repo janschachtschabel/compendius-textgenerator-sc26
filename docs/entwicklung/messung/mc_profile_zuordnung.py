@@ -66,7 +66,7 @@ for path in sorted(Path("eval/gold").glob("*.jsonl")):
         if way == "llm-free":
             prepared, tokens, dropped = service.prepare(request), 0, []
         else:
-            deadline = Deadline(service.settings.request_timeout_s)
+            deadline = Deadline(service.settings.request_time_limit_s)
             _, note, choice = service.article_choice_job("llm", deadline)
             if choice is None:
                 raise SystemExit(f"{gold.topic}: keine Artikelwahl ({note})")

@@ -1,0 +1,1400 @@
+{
+ "messung": "M79",
+ "datum": "2026-10-08",
+ "skript": "docs/entwicklung/messung/mc_tempo.py --variant=seq --profiles=best-quality-generated,best-coverage-generated Demokratie",
+ "stand": "f576d84 mit den Korrekturen des Reviews (Arbeitsstand eingehängt), OpenAI direkt, gpt-6-luna, LLM_MAX_CONCURRENCY=20",
+ "laeufe": [
+  {
+   "topic": "Demokratie",
+   "profile": "best-quality-generated",
+   "variant": "seq",
+   "concurrency": 20,
+   "s": 65.26,
+   "timings": {
+    "resolve": 6238,
+    "corpus": 111,
+    "segment": 35,
+    "match": 30632,
+    "synthesize": 28214,
+    "curricula": 8248,
+    "assemble": 16
+   },
+   "branches": {},
+   "tokens": {
+    "prompt": 120772,
+    "completion": 19832,
+    "total": 140604,
+    "calls": 34,
+    "cached": 11984
+   },
+   "parts_status": {
+    "world": "ok",
+    "curricula": "ok"
+   },
+   "main": "Demokratie",
+   "chars": 53211,
+   "sections": 13,
+   "statuses": [
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "maschinell-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "maschinell-generiert",
+    "maschinell-generiert"
+   ],
+   "curricula_entries": 200,
+   "llm_check": {
+    "rated": 819,
+    "answered": 819,
+    "dropped": 27,
+    "fallbacks": {}
+   },
+   "llm": {
+    "note": null,
+    "article_choice": {
+     "requested": "llm-thorough",
+     "used": "llm",
+     "needed": true,
+     "asked": true,
+     "offered": 4,
+     "chosen": "Demokratie",
+     "named": null,
+     "rejected": false,
+     "fallback": null,
+     "hits_checked": 0,
+     "hits_dropped": [],
+     "hits_fallback": null,
+     "articles_asked": true,
+     "articles_found": [
+      "Demokratie",
+      "Direkte Demokratie",
+      "Repräsentative Demokratie",
+      "Demokratietheorie",
+      "Demokratisierung",
+      "Demokratiemessung",
+      "Liberale Demokratie",
+      "Deliberative Demokratie"
+     ],
+     "articles_overview": "Demokratie",
+     "articles_main": false,
+     "articles_covers": true,
+     "articles_fallback": null
+    },
+    "matching": {
+     "requested": "llm",
+     "used": "llm",
+     "paragraphs": 389,
+     "answered": 389,
+     "fallback_paragraphs": 0,
+     "fallbacks": {},
+     "unknown_keys": 0,
+     "asked_again": 0
+    },
+    "extraction": {
+     "requested": "rule-based",
+     "used": "rule-based",
+     "sections": [],
+     "emptied": [],
+     "fallbacks": {},
+     "offered": 0,
+     "sentences": 0,
+     "invalid_numbers": 0,
+     "deduped_sentences": 0,
+     "cut_sentences": 0
+    },
+    "generation": {
+     "requested": "llm",
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_7",
+      "sc26_8",
+      "sc26_9",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {},
+     "dropped_sentences": 83,
+     "unsupported_sentences": 1,
+     "marked_sentences": 84,
+     "cut_off": [],
+     "enrichment": "model-knowledge",
+     "enrichment_requested": "model-knowledge"
+    },
+    "curriculum_check": {
+     "requested": "llm",
+     "used": "llm",
+     "rated": 819,
+     "answered": 819,
+     "dropped": 27,
+     "fallbacks": {},
+     "fallback": null
+    },
+    "model_knowledge_check": {
+     "requested": "rule-based",
+     "used": "rule-based",
+     "sections": [],
+     "checked": 0,
+     "unchecked": 0,
+     "struck": 0,
+     "corrected": 0,
+     "fallbacks": {}
+    },
+    "topic_wording": null
+   },
+   "calls": [
+    {
+     "prompt": "topic_articles",
+     "asked": 0.015,
+     "attempts": [
+      {
+       "sent": 0.623,
+       "received": 3.813,
+       "status": 200,
+       "prompt": 249,
+       "cached": 0,
+       "completion": 63,
+       "reasoning": 0
+      }
+     ],
+     "done": 3.867
+    },
+    {
+     "prompt": "article_choice",
+     "asked": 4.918,
+     "attempts": [
+      {
+       "sent": 4.918,
+       "received": 6.198,
+       "status": 200,
+       "prompt": 350,
+       "cached": 0,
+       "completion": 14,
+       "reasoning": 0
+      }
+     ],
+     "done": 6.199
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.234,
+     "attempts": [
+      {
+       "sent": 9.241,
+       "received": 12.238,
+       "status": 200,
+       "prompt": 3431,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.239
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.248,
+     "attempts": [
+      {
+       "sent": 9.249,
+       "received": 12.34,
+       "status": 200,
+       "prompt": 2731,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.341
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.253,
+     "attempts": [
+      {
+       "sent": 9.254,
+       "received": 12.161,
+       "status": 200,
+       "prompt": 4947,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.162
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.257,
+     "attempts": [
+      {
+       "sent": 9.258,
+       "received": 12.054,
+       "status": 200,
+       "prompt": 5006,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.055
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.26,
+     "attempts": [
+      {
+       "sent": 9.261,
+       "received": 12.374,
+       "status": 200,
+       "prompt": 5074,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.375
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.266,
+     "attempts": [
+      {
+       "sent": 9.267,
+       "received": 12.218,
+       "status": 200,
+       "prompt": 5328,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.219
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.271,
+     "attempts": [
+      {
+       "sent": 9.272,
+       "received": 12.754,
+       "status": 200,
+       "prompt": 3874,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.755
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.279,
+     "attempts": [
+      {
+       "sent": 9.28,
+       "received": 12.252,
+       "status": 200,
+       "prompt": 5838,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.26
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.287,
+     "attempts": [
+      {
+       "sent": 9.288,
+       "received": 12.411,
+       "status": 200,
+       "prompt": 5622,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.412
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.292,
+     "attempts": [
+      {
+       "sent": 9.293,
+       "received": 12.332,
+       "status": 200,
+       "prompt": 4718,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.333
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.295,
+     "attempts": [
+      {
+       "sent": 9.296,
+       "received": 12.418,
+       "status": 200,
+       "prompt": 4764,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.419
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.309,
+     "attempts": [
+      {
+       "sent": 9.31,
+       "received": 12.331,
+       "status": 200,
+       "prompt": 4279,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.332
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.311,
+     "attempts": [
+      {
+       "sent": 9.313,
+       "received": 12.329,
+       "status": 200,
+       "prompt": 4236,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 12.33
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 9.315,
+     "attempts": [
+      {
+       "sent": 9.316,
+       "received": 11.901,
+       "status": 200,
+       "prompt": 2951,
+       "cached": 0,
+       "completion": 199,
+       "reasoning": 0
+      }
+     ],
+     "done": 11.938
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 22.67,
+     "attempts": [
+      {
+       "sent": 22.671,
+       "received": 33.054,
+       "status": 200,
+       "prompt": 5988,
+       "cached": 1712,
+       "completion": 882,
+       "reasoning": 435
+      }
+     ],
+     "done": 33.055
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 22.673,
+     "attempts": [
+      {
+       "sent": 22.674,
+       "received": 33.944,
+       "status": 200,
+       "prompt": 5663,
+       "cached": 0,
+       "completion": 1052,
+       "reasoning": 592
+      }
+     ],
+     "done": 33.971
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 22.678,
+     "attempts": [
+      {
+       "sent": 22.679,
+       "received": 33.484,
+       "status": 200,
+       "prompt": 5994,
+       "cached": 1712,
+       "completion": 897,
+       "reasoning": 421
+      }
+     ],
+     "done": 33.485
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 22.682,
+     "attempts": [
+      {
+       "sent": 22.683,
+       "received": 33.052,
+       "status": 200,
+       "prompt": 5705,
+       "cached": 1712,
+       "completion": 907,
+       "reasoning": 484
+      }
+     ],
+     "done": 33.053
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 22.686,
+     "attempts": [
+      {
+       "sent": 22.687,
+       "received": 34.298,
+       "status": 200,
+       "prompt": 5558,
+       "cached": 1712,
+       "completion": 948,
+       "reasoning": 512
+      }
+     ],
+     "done": 34.299
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 22.689,
+     "attempts": [
+      {
+       "sent": 22.69,
+       "received": 33.485,
+       "status": 200,
+       "prompt": 5547,
+       "cached": 1712,
+       "completion": 872,
+       "reasoning": 447
+      }
+     ],
+     "done": 33.486
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 22.693,
+     "attempts": [
+      {
+       "sent": 22.743,
+       "received": 36.656,
+       "status": 200,
+       "prompt": 5323,
+       "cached": 1712,
+       "completion": 1163,
+       "reasoning": 722
+      }
+     ],
+     "done": 36.657
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 22.746,
+     "attempts": [
+      {
+       "sent": 22.747,
+       "received": 31.226,
+       "status": 200,
+       "prompt": 4785,
+       "cached": 1712,
+       "completion": 803,
+       "reasoning": 454
+      }
+     ],
+     "done": 31.227
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.275,
+     "attempts": [
+      {
+       "sent": 37.276,
+       "received": 43.713,
+       "status": 200,
+       "prompt": 1090,
+       "cached": 0,
+       "completion": 430,
+       "reasoning": 234
+      }
+     ],
+     "done": 43.713
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.277,
+     "attempts": [
+      {
+       "sent": 37.278,
+       "received": 49.28,
+       "status": 200,
+       "prompt": 1602,
+       "cached": 0,
+       "completion": 974,
+       "reasoning": 270
+      }
+     ],
+     "done": 49.282
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.28,
+     "attempts": [
+      {
+       "sent": 37.281,
+       "received": 48.937,
+       "status": 200,
+       "prompt": 1342,
+       "cached": 0,
+       "completion": 907,
+       "reasoning": 308
+      }
+     ],
+     "done": 48.938
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.283,
+     "attempts": [
+      {
+       "sent": 37.283,
+       "received": 51.484,
+       "status": 200,
+       "prompt": 1449,
+       "cached": 0,
+       "completion": 1103,
+       "reasoning": 281
+      }
+     ],
+     "done": 51.486
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.285,
+     "attempts": [
+      {
+       "sent": 37.286,
+       "received": 51.487,
+       "status": 200,
+       "prompt": 1774,
+       "cached": 0,
+       "completion": 582,
+       "reasoning": 0
+      }
+     ],
+     "done": 51.488
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.335,
+     "attempts": [
+      {
+       "sent": 37.336,
+       "received": 51.624,
+       "status": 200,
+       "prompt": 763,
+       "cached": 0,
+       "completion": 850,
+       "reasoning": 151
+      }
+     ],
+     "done": 51.625
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.337,
+     "attempts": [
+      {
+       "sent": 37.338,
+       "received": 51.626,
+       "status": 200,
+       "prompt": 740,
+       "cached": 0,
+       "completion": 846,
+       "reasoning": 187
+      }
+     ],
+     "done": 51.627
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.342,
+     "attempts": [
+      {
+       "sent": 37.343,
+       "received": 47.317,
+       "status": 200,
+       "prompt": 1019,
+       "cached": 0,
+       "completion": 718,
+       "reasoning": 258
+      }
+     ],
+     "done": 47.319
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.345,
+     "attempts": [
+      {
+       "sent": 37.346,
+       "received": 49.175,
+       "status": 200,
+       "prompt": 1565,
+       "cached": 0,
+       "completion": 943,
+       "reasoning": 274
+      }
+     ],
+     "done": 49.176
+    },
+    {
+     "prompt": "section_enrichment",
+     "asked": 37.348,
+     "attempts": [
+      {
+       "sent": 37.349,
+       "received": 46.846,
+       "status": 200,
+       "prompt": 1467,
+       "cached": 0,
+       "completion": 727,
+       "reasoning": 231
+      }
+     ],
+     "done": 46.847
+    }
+   ]
+  },
+  {
+   "topic": "Demokratie",
+   "profile": "best-coverage-generated",
+   "variant": "seq",
+   "concurrency": 20,
+   "s": 57.19,
+   "timings": {
+    "resolve": 5058,
+    "corpus": 19,
+    "segment": 27,
+    "match": 18678,
+    "synthesize": 33390,
+    "curricula": 5561,
+    "assemble": 13
+   },
+   "branches": {},
+   "tokens": {
+    "prompt": 135484,
+    "completion": 25439,
+    "total": 160923,
+    "calls": 34,
+    "cached": 47778
+   },
+   "parts_status": {
+    "world": "ok",
+    "curricula": "ok"
+   },
+   "main": "Demokratie",
+   "chars": 91129,
+   "sections": 13,
+   "statuses": [
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "maschinell-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "ki-generiert",
+    "maschinell-generiert",
+    "maschinell-generiert"
+   ],
+   "curricula_entries": 200,
+   "llm_check": {
+    "rated": 800,
+    "answered": 800,
+    "dropped": 37,
+    "fallbacks": {}
+   },
+   "llm": {
+    "note": null,
+    "article_choice": {
+     "requested": "llm-thorough",
+     "used": "llm",
+     "needed": true,
+     "asked": true,
+     "offered": 4,
+     "chosen": "Demokratie",
+     "named": null,
+     "rejected": false,
+     "fallback": null,
+     "hits_checked": 0,
+     "hits_dropped": [],
+     "hits_fallback": null,
+     "articles_asked": true,
+     "articles_found": [
+      "Demokratie",
+      "Direkte Demokratie",
+      "Repräsentative Demokratie",
+      "Parlamentarismus",
+      "Gewaltenteilung",
+      "Rechtsstaat",
+      "Politische Partei",
+      "Demokratietheorie"
+     ],
+     "articles_overview": "Demokratie",
+     "articles_main": false,
+     "articles_covers": true,
+     "articles_fallback": null
+    },
+    "matching": {
+     "requested": "llm",
+     "used": "llm",
+     "paragraphs": 400,
+     "answered": 400,
+     "fallback_paragraphs": 0,
+     "fallbacks": {},
+     "unknown_keys": 0,
+     "asked_again": 0
+    },
+    "extraction": {
+     "requested": "rule-based",
+     "used": "rule-based",
+     "sections": [],
+     "emptied": [],
+     "fallbacks": {},
+     "offered": 0,
+     "sentences": 0,
+     "invalid_numbers": 0,
+     "deduped_sentences": 0,
+     "cut_sentences": 0
+    },
+    "generation": {
+     "requested": "llm",
+     "used": "llm",
+     "sections": [
+      "sc26_1",
+      "sc26_2",
+      "sc26_3",
+      "sc26_4",
+      "sc26_5",
+      "sc26_7",
+      "sc26_8",
+      "sc26_9",
+      "sc26_10",
+      "sc26_11"
+     ],
+     "fallbacks": {},
+     "dropped_sentences": 267,
+     "unsupported_sentences": 1,
+     "marked_sentences": 268,
+     "cut_off": [],
+     "enrichment": "model-knowledge-full",
+     "enrichment_requested": "model-knowledge-full"
+    },
+    "curriculum_check": {
+     "requested": "llm",
+     "used": "llm",
+     "rated": 800,
+     "answered": 800,
+     "dropped": 37,
+     "fallbacks": {},
+     "fallback": null
+    },
+    "model_knowledge_check": {
+     "requested": "rule-based",
+     "used": "rule-based",
+     "sections": [],
+     "checked": 0,
+     "unchecked": 0,
+     "struck": 0,
+     "corrected": 0,
+     "fallbacks": {}
+    },
+    "topic_wording": null
+   },
+   "calls": [
+    {
+     "prompt": "topic_articles",
+     "asked": 0.001,
+     "attempts": [
+      {
+       "sent": 0.002,
+       "received": 1.61,
+       "status": 200,
+       "prompt": 249,
+       "cached": 0,
+       "completion": 58,
+       "reasoning": 0
+      }
+     ],
+     "done": 1.611
+    },
+    {
+     "prompt": "article_choice",
+     "asked": 3.94,
+     "attempts": [
+      {
+       "sent": 3.94,
+       "received": 4.916,
+       "status": 200,
+       "prompt": 350,
+       "cached": 0,
+       "completion": 14,
+       "reasoning": 0
+      }
+     ],
+     "done": 4.917
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.065,
+     "attempts": [
+      {
+       "sent": 6.065,
+       "received": 8.553,
+       "status": 200,
+       "prompt": 3379,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 8.554
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.094,
+     "attempts": [
+      {
+       "sent": 6.095,
+       "received": 8.913,
+       "status": 200,
+       "prompt": 2719,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 8.913
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.147,
+     "attempts": [
+      {
+       "sent": 6.151,
+       "received": 10.171,
+       "status": 200,
+       "prompt": 5092,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 10.172
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.156,
+     "attempts": [
+      {
+       "sent": 6.157,
+       "received": 9.107,
+       "status": 200,
+       "prompt": 4966,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 9.107
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.177,
+     "attempts": [
+      {
+       "sent": 6.178,
+       "received": 8.817,
+       "status": 200,
+       "prompt": 5204,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 8.818
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.179,
+     "attempts": [
+      {
+       "sent": 6.18,
+       "received": 8.996,
+       "status": 200,
+       "prompt": 4778,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 8.996
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.181,
+     "attempts": [
+      {
+       "sent": 6.183,
+       "received": 9.065,
+       "status": 200,
+       "prompt": 4396,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 9.066
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.197,
+     "attempts": [
+      {
+       "sent": 6.206,
+       "received": 8.987,
+       "status": 200,
+       "prompt": 6529,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 8.988
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.201,
+     "attempts": [
+      {
+       "sent": 6.202,
+       "received": 9.25,
+       "status": 200,
+       "prompt": 5195,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 9.251
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.213,
+     "attempts": [
+      {
+       "sent": 6.213,
+       "received": 8.975,
+       "status": 200,
+       "prompt": 4533,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 8.975
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.224,
+     "attempts": [
+      {
+       "sent": 6.226,
+       "received": 9.102,
+       "status": 200,
+       "prompt": 4543,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 9.103
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.265,
+     "attempts": [
+      {
+       "sent": 6.266,
+       "received": 9.089,
+       "status": 200,
+       "prompt": 4118,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 9.089
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.267,
+     "attempts": [
+      {
+       "sent": 6.268,
+       "received": 9.059,
+       "status": 200,
+       "prompt": 4088,
+       "cached": 0,
+       "completion": 304,
+       "reasoning": 0
+      }
+     ],
+     "done": 9.06
+    },
+    {
+     "prompt": "curriculum_check",
+     "asked": 6.268,
+     "attempts": [
+      {
+       "sent": 6.269,
+       "received": 8.131,
+       "status": 200,
+       "prompt": 1902,
+       "cached": 0,
+       "completion": 104,
+       "reasoning": 0
+      }
+     ],
+     "done": 8.131
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 7.26,
+     "attempts": [
+      {
+       "sent": 7.261,
+       "received": 18.071,
+       "status": 200,
+       "prompt": 5663,
+       "cached": 5660,
+       "completion": 898,
+       "reasoning": 440
+      }
+     ],
+     "done": 18.072
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 7.263,
+     "attempts": [
+      {
+       "sent": 7.263,
+       "received": 16.237,
+       "status": 200,
+       "prompt": 5988,
+       "cached": 5985,
+       "completion": 796,
+       "reasoning": 356
+      }
+     ],
+     "done": 16.238
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 7.265,
+     "attempts": [
+      {
+       "sent": 7.266,
+       "received": 19.383,
+       "status": 200,
+       "prompt": 5994,
+       "cached": 5991,
+       "completion": 1085,
+       "reasoning": 610
+      }
+     ],
+     "done": 19.384
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 7.271,
+     "attempts": [
+      {
+       "sent": 7.272,
+       "received": 17.306,
+       "status": 200,
+       "prompt": 5705,
+       "cached": 5702,
+       "completion": 909,
+       "reasoning": 480
+      }
+     ],
+     "done": 17.307
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 7.274,
+     "attempts": [
+      {
+       "sent": 7.275,
+       "received": 16.831,
+       "status": 200,
+       "prompt": 5502,
+       "cached": 1712,
+       "completion": 868,
+       "reasoning": 429
+      }
+     ],
+     "done": 16.831
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 8.197,
+     "attempts": [
+      {
+       "sent": 8.198,
+       "received": 21.321,
+       "status": 200,
+       "prompt": 5611,
+       "cached": 1712,
+       "completion": 1094,
+       "reasoning": 671
+      }
+     ],
+     "done": 21.322
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 10.359,
+     "attempts": [
+      {
+       "sent": 10.36,
+       "received": 20.634,
+       "status": 200,
+       "prompt": 5564,
+       "cached": 1712,
+       "completion": 924,
+       "reasoning": 512
+      }
+     ],
+     "done": 20.634
+    },
+    {
+     "prompt": "paragraph_assignment",
+     "asked": 10.577,
+     "attempts": [
+      {
+       "sent": 10.578,
+       "received": 23.748,
+       "status": 200,
+       "prompt": 5624,
+       "cached": 1712,
+       "completion": 994,
+       "reasoning": 609
+      }
+     ],
+     "done": 23.75
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 23.79,
+     "attempts": [
+      {
+       "sent": 23.791,
+       "received": 36.407,
+       "status": 200,
+       "prompt": 2654,
+       "cached": 0,
+       "completion": 1179,
+       "reasoning": 447
+      }
+     ],
+     "done": 36.409
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 23.793,
+     "attempts": [
+      {
+       "sent": 23.794,
+       "received": 38.706,
+       "status": 200,
+       "prompt": 2938,
+       "cached": 0,
+       "completion": 1358,
+       "reasoning": 154
+      }
+     ],
+     "done": 38.707
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 23.797,
+     "attempts": [
+      {
+       "sent": 23.798,
+       "received": 40.609,
+       "status": 200,
+       "prompt": 3054,
+       "cached": 2199,
+       "completion": 1596,
+       "reasoning": 178
+      }
+     ],
+     "done": 40.61
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 23.8,
+     "attempts": [
+      {
+       "sent": 23.8,
+       "received": 37.954,
+       "status": 200,
+       "prompt": 2905,
+       "cached": 2199,
+       "completion": 1232,
+       "reasoning": 121
+      }
+     ],
+     "done": 37.955
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 23.803,
+     "attempts": [
+      {
+       "sent": 23.804,
+       "received": 40.643,
+       "status": 200,
+       "prompt": 3346,
+       "cached": 2199,
+       "completion": 1595,
+       "reasoning": 261
+      }
+     ],
+     "done": 40.644
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 23.806,
+     "attempts": [
+      {
+       "sent": 23.806,
+       "received": 39.523,
+       "status": 200,
+       "prompt": 2282,
+       "cached": 2199,
+       "completion": 1382,
+       "reasoning": 221
+      }
+     ],
+     "done": 39.524
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 23.808,
+     "attempts": [
+      {
+       "sent": 23.808,
+       "received": 39.745,
+       "status": 200,
+       "prompt": 2278,
+       "cached": 2199,
+       "completion": 1374,
+       "reasoning": 385
+      }
+     ],
+     "done": 39.746
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 36.436,
+     "attempts": [
+      {
+       "sent": 36.436,
+       "received": 51.786,
+       "status": 200,
+       "prompt": 2795,
+       "cached": 2199,
+       "completion": 1385,
+       "reasoning": 232
+      }
+     ],
+     "done": 51.787
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 38.725,
+     "attempts": [
+      {
+       "sent": 38.726,
+       "received": 51.933,
+       "status": 200,
+       "prompt": 2789,
+       "cached": 2199,
+       "completion": 1211,
+       "reasoning": 182
+      }
+     ],
+     "done": 51.934
+    },
+    {
+     "prompt": "section_coverage",
+     "asked": 40.633,
+     "attempts": [
+      {
+       "sent": 40.634,
+       "received": 56.306,
+       "status": 200,
+       "prompt": 2751,
+       "cached": 2199,
+       "completion": 1431,
+       "reasoning": 198
+      }
+     ],
+     "done": 56.307
+    }
+   ]
+  }
+ ]
+}

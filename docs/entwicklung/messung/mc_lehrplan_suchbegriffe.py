@@ -88,7 +88,7 @@ for kind, names in part_b_topics.items():
         for preset in ("balanced", "best-quality"):
             captured.clear()
             request = GenerateRequest(topic=topic, preset=preset, parts=["curricula"])
-            deadline = Deadline(settings.request_timeout_s)
+            deadline = Deadline(settings.request_time_limit_s)
             started = time.perf_counter()
             try:
                 request, profile = service._admit(request, deadline)

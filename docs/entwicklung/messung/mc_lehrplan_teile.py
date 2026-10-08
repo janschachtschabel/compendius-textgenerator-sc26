@@ -28,7 +28,7 @@ out = []
 for kind, names in topics.items():
     for topic in names:
         request = GenerateRequest(topic=topic, preset="balanced", parts=["world", "curricula"])
-        deadline = Deadline(settings.request_timeout_s)
+        deadline = Deadline(settings.request_time_limit_s)
         request, profile = service._admit(request, deadline)
         budget = service.open_budget(profile)
         _, _, choice = service.article_choice_job(request.article_choice, deadline, budget)

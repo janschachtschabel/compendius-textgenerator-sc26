@@ -111,7 +111,7 @@ def one_material(
 
     def choose(topic: str | None, node: Any, llm: bool) -> tuple[Any, float]:
         started = time.perf_counter()
-        job = service.article_choice_job("llm", Deadline(service.settings.request_timeout_s))[2] if llm else None
+        job = service.article_choice_job("llm", Deadline(service.settings.request_time_limit_s))[2] if llm else None
         chosen = choose_main_article(
             service.registry, service.subjects, topic, derived if node else [], node=node, job=job
         )

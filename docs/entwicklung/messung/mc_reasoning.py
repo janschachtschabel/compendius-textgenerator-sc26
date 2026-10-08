@@ -72,7 +72,7 @@ def artikelwahl(preset, gold):
                 accepted.append(article.title)
         # part 1 up to the corpus: N names its articles while the corpus is built (D63)
         request = GenerateRequest(topic=entry["anfrage"], preset=preset, parts=["world"])
-        deadline = Deadline(settings.request_timeout_s)
+        deadline = Deadline(settings.request_time_limit_s)
         started = time.perf_counter()
         budget = None
         try:

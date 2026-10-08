@@ -3932,3 +3932,21 @@ OpenAI), Auswertung mit `mc_tempo_auswertung.py`. Mediane über die Themen:
 **Ergebnis:** `best-quality` rund 5 s schneller (−26 %), `best-quality-generated` rund 4 s (−12 %);
 `best-coverage-generated` gewann in Zuordnung und Teil 2 rund 6 s, die das langsamere Schreiben dieses Laufs fast
 aufbrauchte. Rohdaten: `m78_tempo_nachher.json`.
+
+## M79 Das breiteste Thema nach dem Bau: ein Budget für Teil 1 und 2 (08.10.2026)
+
+Der Review des Baus (D93) fragte, ob Teil 1 zu kurz kommt, wenn Teil 2 neben ihm aus demselben Budget prüft; bisher
+bekam Teil 2, was Teil 1 übrig ließ. `mc_tempo.py` wie in M78, mit den Korrekturen des Reviews, an *Demokratie*, dem
+Thema mit den meisten Lehrplanelementen (M76), in den beiden schreibenden Profilen:
+
+| Profil | Anfrage | Tokens (Grenze 180.000) | Absätze, davon an die Regeln | Elemente geprüft, beantwortet | Prüfung von Teil 2 |
+|---|---|---|---|---|---|
+| `best-quality-generated` | 65,3 s | 140.600 | 389, 0 | 819, 819 | 14 Aufrufe, 9,2 bis 12,8 s nach Beginn |
+| `best-coverage-generated` | 57,2 s | 160.900 | 400, 0 | 800, 800 | 14 Aufrufe, 6,1 bis 10,2 s nach Beginn |
+
+Kein Baustein fiel zurück, kein Aufruf wartete auf Platz im Budget (höchstens 0,05 s vor dem Senden). Die Prüfung von
+Teil 2 war fertig, bevor die Zuordnung ihre letzten Stapel stellte; in `best-quality-generated` stellte die Zuordnung
+ihre ersten erst nach 22,7 s.
+
+**Ergebnis:** Das Budget trägt auch beim breitesten Thema beide Teile nebeneinander; eine Rangfolge der Teile im Budget
+braucht es nicht. Rohdaten: `m79_breitestes_thema.json`.

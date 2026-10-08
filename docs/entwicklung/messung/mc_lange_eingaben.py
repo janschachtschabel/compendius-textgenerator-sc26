@@ -40,7 +40,7 @@ service = build_service(settings, build_registry(settings), TemplateManager())
 
 def prepared_for(topic):
     """The start of generate: admission, budget, the article choice and the wording, then prepare."""
-    deadline = Deadline(settings.request_timeout_s)
+    deadline = Deadline(settings.request_time_limit_s)
     request, profile = service._admit(GenerateRequest(topic=topic, parts=["world"], preset=preset), deadline)
     budget = service.open_budget(profile)
     _, _, choice = service.article_choice_job(request.article_choice, deadline, budget)

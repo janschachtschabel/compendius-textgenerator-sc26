@@ -1081,7 +1081,8 @@ Weitere: `GET /api/v2/templates`, `GET /api/v2/templates/{id}` (geplant: `PUT|DE
 
 ### 8.3 Laufzeitverhalten
 
-Synchron mit Gesamtbudget `REQUEST_TIMEOUT_S` (Standard 120 s). Regelmodus liegt weit darunter;
+Synchron mit Gesamtbudget `REQUEST_TIMEOUT_S` (Standard je Anbieter: OpenAI 300 s, academiccloud 600 s; bis 2.13
+120 s, D93). Regelmodus liegt weit darunter;
 Die LLM-Schalter parallelisieren ihre Aufrufe (Semaphore). Ein Job-Modell (`202 Accepted` +
 `GET /api/v2/jobs/{id}`) ist vorgesehen, aber erst nötig, wenn Konsumenten es brauchen.
 
@@ -2237,7 +2238,17 @@ API.
   jeder Rückfall mit Grund im Audit. Nicht gebaut: ein Deckel für die Teil-2-Prüfung (M76: jedes Element, das er
   strich, hatte die Note „passt“), kleinere Stapel der Zuordnung (M75: schlechter und teurer), die Regel-Zuordnung in
   den schreibenden Profilen (Jan), eine längere Haltezeit des Caches (M75: wirkte nicht), Absagen des Modells an
-  Wörtern zu erkennen (unzuverlässig; in den gespeicherten Messtexten kam keine vor).
+  Wörtern zu erkennen (unzuverlässig; in den gespeicherten Messtexten kam keine vor). Ein unabhängiger Review des Baus
+  fand einen schweren Mangel und sechs kleinere, alle behoben: Beim Kürzen einer abgeschnittenen Antwort gingen
+  Belegnummern nach dem Punkt verloren („Satz. [1]“), und eine vollständige Antwort galt als abgebrochen; JSON in einem
+  Code-Zaun, `null` und eine abgeschnittene Liste galten als Text; die Tests der kaputten Antworten prüften nur den
+  Status; bei academiccloud verbrauchte das Warten auf einen der 2 Plätze das eigene Fenster eines Aufrufs
+  (`LLM_TIMEOUT_S`), und ein Timeout danach sperrte die b-api im Worker für 60 s - jetzt wartet ein Aufruf so lange,
+  wie seine Anfrage Zeit hat, und der Schutzschalter zählt nur die Zeit, die er wirklich hatte; nach einem Fehler in
+  Teil 1 arbeiteten Teil 2 und 3 weiter, jetzt endet ihre Zeit mit der Anfrage, und ihre Fehler stehen im Log; die
+  Zuordnung las von „0.8“ nur die erste Ziffer; das Dauer-Histogramm endete bei 120 s, 14 Messskripte lasen die
+  Einstellungen, die jetzt leer sein dürfen. Gemessen (M79): Teil 1 und 2 teilen sich das Budget auch beim breitesten
+  Thema ohne Rückfall.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
