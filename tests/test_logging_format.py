@@ -109,14 +109,12 @@ def test_an_error_keeps_its_traceback_inside_its_line(
     assert "ValueError: kaputt" in json.loads(line)["exc"]
 
 
-def test_uvicorn_writes_its_access_and_error_lines_as_json_too(
+def test_uvicorn_writes_its_error_lines_as_json_too(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    """uvicorn gives its loggers handlers of their own: its access line for every request (the healthcheck every 30 s)
-    and its traceback of an error stayed plain text between the JSON lines (review of 2026-10-08)."""
+    """uvicorn gives its loggers handlers of their own: its traceback of an error stayed plain text between the JSON
+    lines (review of 2026-10-08)."""
     configured(monkeypatch, "json", uvicorn=True)
-    access = logging.getLogger("uvicorn.access")
-    access.info('%s - "%s %s HTTP/%s" %d', "172.18.0.1:4711", "GET", "/health", "1.1", 200)
     try:
         raise RuntimeError("kaputt")
     except RuntimeError:
@@ -126,29 +124,39 @@ def test_uvicorn_writes_its_access_and_error_lines_as_json_too(
     events = [json.loads(line) for line in written.err.splitlines()]
 
     assert [(event["logger"], event["message"]) for event in events] == [
-        ("uvicorn.access", '172.18.0.1:4711 - "GET /health HTTP/1.1" 200'),
-        ("uvicorn.error", "Exception in ASGI application"),
+        ("uvicorn.error", "Exception in ASGI application")
     ]
-    assert "RuntimeError: kaputt" in events[1]["exc"] and written.out == ""
+    assert "RuntimeError: kaputt" in events[0]["exc"] and written.out == ""
+
+
+@pytest.mark.parametrize("format_", ["text", "json"])
+def test_uvicorn_writes_no_access_line_of_its_own(monkeypatch: pytest.MonkeyPatch, format_: str) -> None:
+    """The service logs each request itself (app/api/request_log.py). uvicorn decides at every connection whether to
+    write its access line, by whether its access logger has a handler: configure_logging made it propagate to the root
+    again after the start command had switched it off, and the dev container of 2.16.0 logged both lines, the
+    healthcheck's among them (logging review of 2026-10-08)."""
+    configured(monkeypatch, format_, uvicorn=True)
+
+    assert not logging.getLogger("uvicorn.access").hasHandlers()
 
 
 def test_uvicorn_s_lines_name_time_logger_and_request_in_the_plain_format_too(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    """In the plain format uvicorn kept its own lines - its access line, its start, a worker that died - without time,
-    logger or request id, so grep for the id of a refused request found nothing (logging review of 2026-10-08)."""
+    """In the plain format uvicorn kept its own lines - its start, a worker that died, an error - without time, logger
+    or request id (logging review of 2026-10-08)."""
     configured(monkeypatch, uvicorn=True)
-    access = logging.getLogger("uvicorn.access")
-    in_a_request("rid-21", lambda: access.info('%s - "%s %s HTTP/%s" %d', "172.18.0.1:4711", "GET", "/x", "1.1", 401))
+    error = logging.getLogger("uvicorn.error")
+    in_a_request("rid-21", lambda: error.warning("Invalid HTTP request received."))
 
-    [line] = lines_with('"GET /x HTTP/1.1"', capsys)
+    [line] = lines_with("Invalid HTTP request", capsys)
 
     assert line.split(" | ")[1:] == [
-        "INFO    ",
+        "WARNING ",
         str(os.getpid()),
-        "uvicorn.access",
+        "uvicorn.error",
         "rid-21",
-        '172.18.0.1:4711 - "GET /x HTTP/1.1" 401',
+        "Invalid HTTP request received.",
     ]
 
 

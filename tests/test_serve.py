@@ -170,6 +170,16 @@ def test_with_plain_logs_uvicorn_s_own_process_writes_the_service_s_lines(
 
 
 @pytest.mark.parametrize("log_format", ["text", "json"])
+def test_uvicorn_s_own_process_writes_no_access_line(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, log_format: str
+) -> None:
+    """uvicorn writes its access line where its access logger has a handler; the service writes its own."""
+    uvicorn_configured(monkeypatch, started(monkeypatch, tmp_path, log_format))
+
+    assert not logging.getLogger("uvicorn.access").hasHandlers()
+
+
+@pytest.mark.parametrize("log_format", ["text", "json"])
 def test_uvicorn_names_a_dead_worker_whatever_log_level_says(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str], log_format: str
 ) -> None:

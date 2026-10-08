@@ -30,8 +30,11 @@ REQUEST_ID_HEADER = "X-Request-ID"
 MAX_REQUEST_ID_CHARS = 64  # a header is caller input; a log line must stay readable
 _NOT_IN_AN_ID = re.compile("[^A-Za-z0-9._:@+/=-]")
 NO_REQUEST = "-"
-# uvicorn's loggers with handlers of their own; uvicorn.error writes through "uvicorn"
-UVICORN_LOGGERS = ("uvicorn", "uvicorn.access")
+# uvicorn's logger with handlers of its own; uvicorn.error writes through it
+UVICORN_LOGGER = "uvicorn"
+# uvicorn writes its access line at a connection whose access logger has a handler, its own or an ancestor's. The
+# service writes its own line per request (app/api/request_log.py), so this one keeps none and passes nothing on
+UVICORN_ACCESS_LOGGER = "uvicorn.access"
 # The HTTP client: httpx names every request at INFO, and httpcore writes a dozen lines per request at DEBUG, the
 # response headers among them - so the session cookie edu-sharing hands the configured account (logging review of
 # 2026-10-08). Both stay at WARNING, whatever LOG_LEVEL says
@@ -103,11 +106,15 @@ def configure_logging(level: str = "INFO", format_: str = "text") -> None:
     # uvicorn sets up its loggers in every worker before the app is built, with lines of their own: without time,
     # logger or request id, also as text between JSON lines (review of 2026-10-08). They write through the root's
     # handler instead, at INFO whatever LOG_LEVEL says: uvicorn logs a worker that died at INFO
-    for name in UVICORN_LOGGERS:
-        uvicorn_logger = logging.getLogger(name)
-        uvicorn_logger.handlers.clear()
-        uvicorn_logger.propagate = True
-        uvicorn_logger.setLevel(logging.INFO)
+    uvicorn_logger = logging.getLogger(UVICORN_LOGGER)
+    uvicorn_logger.handlers.clear()
+    uvicorn_logger.propagate = True
+    uvicorn_logger.setLevel(logging.INFO)
+    # Its access line stays off: the start command switched it off, and propagating it to the root switched it on
+    # again in every worker, so the dev container of 2.16.0 logged each request twice (logging review of 2026-10-08)
+    access = logging.getLogger(UVICORN_ACCESS_LOGGER)
+    access.handlers.clear()
+    access.propagate = False
     root.setLevel(level.upper())
     for name in QUIET_LOGGERS:
         logging.getLogger(name).setLevel(logging.WARNING)
@@ -131,6 +138,9 @@ def uvicorn_log_config(level: str = "INFO", format_: str = "text") -> dict[str, 
                 "filters": ["request_id"],
             }
         },
-        "loggers": {name: {"handlers": [], "propagate": True, "level": "INFO"} for name in UVICORN_LOGGERS},
+        "loggers": {
+            UVICORN_LOGGER: {"handlers": [], "propagate": True, "level": "INFO"},
+            UVICORN_ACCESS_LOGGER: {"handlers": [], "propagate": False},
+        },
         "root": {"handlers": ["stderr"], "level": level.upper()},
     }
