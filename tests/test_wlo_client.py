@@ -3,6 +3,7 @@
 import base64
 import gzip
 import json
+import logging
 import re
 from collections.abc import Callable, Iterator
 from concurrent.futures import ThreadPoolExecutor
@@ -141,10 +142,52 @@ def test_errors_are_mapped_and_ids_validated() -> None:
 
 def test_error_messages_carry_no_repository_internals(caplog: pytest.LogCaptureFixture) -> None:
     client = _client(FakeRepository())
-    with caplog.at_level("WARNING"), pytest.raises(EduSharingError) as failure:
+    with caplog.at_level("DEBUG"), pytest.raises(EduSharingError) as failure:
         client.text_content("11111111-1111-4111-8111-111111111111")
     assert str(failure.value) == "edu-sharing antwortete mit HTTP 500"  # shown to API clients and in part 3
     assert BASE in caplog.text  # the details stay in the log
+
+
+def test_a_text_that_cannot_be_read_is_a_detail_not_a_warning(caplog: pytest.LogCaptureFixture) -> None:
+    """Each material text the repository refused wrote a WARNING here and one in the knowledge collection, with
+    every request again: 34 lines for the 17 of 30 texts the staging collection refuses anonymously. The texts of a
+    request make one line there (app/sources/wlo/knowledge.py); the details stay at DEBUG (logging review of
+    2026-10-08)."""
+    client = _client(FakeRepository())
+
+    with caplog.at_level("DEBUG"), pytest.raises(EduSharingError):
+        client.text_content("11111111-1111-4111-8111-111111111111")
+
+    [record] = [record for record in caplog.records if record.name == "app.sources.wlo.client"]
+    assert record.levelno == logging.DEBUG and "HTTP 500" in record.getMessage()
+
+
+def test_an_error_page_stays_on_one_line_of_the_log(caplog: pytest.LogCaptureFixture) -> None:
+    """An nginx error page brings CR and LF: in the plain format one record became several lines without time,
+    level or request id, as forged ones would (logging review of 2026-10-08)."""
+    page = "<html>\r\n<head><title>502 Bad Gateway</title></head>\r\n</html>\r\n"
+    transport = httpx.MockTransport(lambda request: httpx.Response(502, text=page))
+
+    with caplog.at_level("WARNING"), pytest.raises(EduSharingError):
+        EduSharingClient(BASE, transport=transport).collection(OPTIK)
+
+    [record] = caplog.records
+    assert "\n" not in record.getMessage() and "\r" not in record.getMessage()
+    assert "<html> <head><title>502 Bad Gateway</title></head> </html>" in record.getMessage()
+
+
+def test_a_connection_error_before_the_time_ran_out_is_named(caplog: pytest.LogCaptureFixture) -> None:
+    """A read whose answer never came lost its transport error when the next attempt found the time spent: the
+    caller blamed the time budget, and nothing said the repository had not answered (logging review of
+    2026-10-08)."""
+    left = iter([20.0, 0.0])
+
+    with caplog.at_level("WARNING"), pytest.raises(TimeUpError) as failure:
+        _client(FakeRepository(fail=True)).collection(OPTIK, remaining=lambda: next(left))
+
+    assert isinstance(failure.value.__cause__, httpx.ConnectError)
+    [record] = caplog.records
+    assert "time ran out" in record.getMessage() and "ConnectError" in record.getMessage()
 
 
 def test_pagination_stops_at_the_page_cap(monkeypatch: pytest.MonkeyPatch) -> None:

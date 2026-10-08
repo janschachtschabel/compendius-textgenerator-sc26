@@ -11,6 +11,7 @@ from __future__ import annotations
 import logging
 import re
 import textwrap
+from collections import Counter
 from dataclasses import dataclass, field
 from typing import Protocol
 
@@ -249,12 +250,14 @@ def material_sources(
         return ref, text, None
 
     outcomes = map_in_threads(fetch, chosen, options.concurrency)  # the log lines keep the request id
+    errors: Counter[str] = Counter()
     for ref, text, error in outcomes:
         if error is TIME_UP:
             result.timed_out += 1
             continue
         if error is not None:
-            log.warning("material %s (%s) could not be read: %s", ref.id, ref.title, error)
+            log.debug("material %s (%s) could not be read: %s", ref.id, ref.title, error)
+            errors[error] += 1
             result.failed.append(ref.id)
             continue
         paragraphs = paragraphs_from_text(text or "", options.max_chars)
@@ -262,4 +265,10 @@ def material_sources(
             result.empty += 1
             continue
         result.sources.append(_source(ref, paragraphs))
+    if errors:
+        # One line per request, a WARNING only when no text came: a text the repository refuses is refused with every
+        # request, and two warnings per material buried the ones that mattered (logging review of 2026-10-08)
+        level = logging.WARNING if len(result.failed) == len(chosen) else logging.INFO
+        common = ", ".join(f"{count}x {error}" for error, count in errors.most_common(3))
+        log.log(level, "%d of %d material texts not readable: %s", len(result.failed), len(chosen), common)
     return result

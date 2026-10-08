@@ -490,3 +490,21 @@ def test_a_retry_names_its_cause_and_its_wait(caplog: pytest.LogCaptureFixture) 
         "b-api HTTP 429 on attempt 1 of 3, retrying in 1.5 s",
         "b-api HTTP 503 on attempt 2 of 3, retrying in 3.0 s",
     ]
+
+
+def test_an_error_page_of_the_b_api_stays_on_one_line_of_the_log(caplog: pytest.LogCaptureFixture) -> None:
+    """Logging review of 2026-10-08: a 413 page of the proxy in front of the b-api split its log line."""
+    page = "<html>\r\n<head><title>413 Request Entity Too Large</title></head>\r\n</html>"
+    client = BApiClient(
+        BASE,
+        KEY,
+        provider="openai",
+        model="gpt-5.6-luna",
+        transport=httpx.MockTransport(lambda request: httpx.Response(413, text=page)),
+    )
+
+    with caplog.at_level(logging.WARNING, logger="app.llm.client"), pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    [line] = client_lines(caplog)
+    assert "\n" not in line and "<html> <head><title>413 Request Entity Too Large</title></head> </html>" in line

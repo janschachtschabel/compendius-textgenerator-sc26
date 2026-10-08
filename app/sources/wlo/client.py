@@ -250,7 +250,9 @@ class EduSharingClient:
 
     def text_content(self, node_id: str, *, remaining: Remaining | None = None) -> str:
         """Extracted plain text of a material, or an empty string when the node has none (404)."""
-        payload = self._get(f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/textContent", remaining=remaining)
+        # quiet: the texts of a request are counted in one line (app/sources/wlo/knowledge.py, logging review)
+        path = f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/textContent"
+        payload = self._get(path, remaining=remaining, quiet=True)
         if not payload:
             return ""
         return str(payload.get("text") or payload.get("raw") or "").strip()
@@ -263,9 +265,11 @@ class EduSharingClient:
         anonymous: bool = False,
         missing: Collection[int] = (404,),
         remaining: Remaining | None = None,
+        quiet: bool = False,
     ) -> dict[str, Any] | None:
         """The JSON object of the answer, ``None`` for a status in ``missing``; transport failures are retried once,
-        other errors raised, among them an answer that is JSON but no object (``null``, a list, a value).
+        other errors raised, among them an answer that is JSON but no object (``null``, a list, a value). ``quiet``
+        logs a refused status at DEBUG, for reads whose caller counts the failures in one line.
 
         ``anonymous`` reads without the client's credentials, over the connection that never had them. ``remaining``
         bounds every attempt, a retry included: none starts once the caller's budget is spent (``TimeUpError``), and
@@ -279,6 +283,16 @@ class EduSharingClient:
             if remaining is not None:
                 left = remaining()
                 if left <= 0:
+                    if last_error is not None:
+                        # The caller blames the time budget; the repository had not answered (logging review of
+                        # 2026-10-08)
+                        log.warning(
+                            "%s%s: no answer before the request's time ran out (%s)",
+                            self.base_url,
+                            path,
+                            f"{type(last_error).__name__}: {last_error}",
+                        )
+                        raise TimeUpError() from last_error
                     raise TimeUpError()
                 timeout = min(timeout, left)
             try:
@@ -294,8 +308,16 @@ class EduSharingClient:
                 log.warning("answer of %s%s: %s", self.base_url, path, exc)
                 raise EduSharingError(f"edu-sharing antwortete mit {exc}") from exc
             if status >= 400:
-                excerpt = body[:_BODY_EXCERPT].decode("utf-8", "replace")
-                log.warning("HTTP %s from %s%s: %s", status, self.base_url, path, excerpt)
+                # on one line: the CR and LF of an error page split a record of the plain format (logging review)
+                excerpt = " ".join(body[:_BODY_EXCERPT].decode("utf-8", "replace").split())
+                log.log(
+                    logging.DEBUG if quiet else logging.WARNING,
+                    "HTTP %s from %s%s: %s",
+                    status,
+                    self.base_url,
+                    path,
+                    excerpt,
+                )
                 raise EduSharingError(f"edu-sharing antwortete mit HTTP {status}")
             try:
                 data = json.loads(body)

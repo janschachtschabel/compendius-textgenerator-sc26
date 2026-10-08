@@ -2,7 +2,10 @@
 for part 1."""
 
 import dataclasses
+import logging
 from pathlib import Path
+
+import pytest
 
 from app.domain.models import SourceRole
 from app.knowledge.lexicon import HeadingLexicon
@@ -244,3 +247,36 @@ def test_the_text_of_a_material_becomes_chunks_of_part_one(tmp_path: Path) -> No
     assert [chunk.text[:12] for chunk in chunks] == ["Ein Arbeitsb", "Trifft Licht", "Konstruiere "]
     assert material.reference_lines == []  # nothing of the text lands among the further sources
     assert [chunk.lexicon_slot for chunk in chunks] == [None, None, None]  # the heading claims no block
+
+
+def knowledge_lines(caplog: pytest.LogCaptureFixture) -> list[logging.LogRecord]:
+    return [r for r in caplog.records if r.name == "app.sources.wlo.knowledge" and r.levelno >= logging.INFO]
+
+
+def test_texts_that_could_not_be_read_make_one_line_per_request(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Each text the repository refused wrote two WARNINGs, with every request again; the staging collection refuses
+    17 of its 30 texts anonymously, so 34 lines buried the warnings that mattered (logging review of 2026-10-08)."""
+    refs = [_ref(f"n{i}", "CC_BY") for i in range(4)]
+    client = FakeTexts({f"n{i}": TEXT for i in range(4)}, fail={"n1", "n2"})
+
+    with caplog.at_level(logging.DEBUG, logger="app.sources.wlo.knowledge"):
+        material_sources(client, TtlCache(tmp_path / "c.db"), refs, options=KnowledgeOptions(), fulltext=True)
+
+    [line] = knowledge_lines(caplog)
+    assert line.levelno == logging.INFO
+    assert line.getMessage() == "2 of 4 material texts not readable: 2x HTTP 500 von repo"
+
+
+def test_a_collection_none_of_whose_texts_can_be_read_is_a_warning(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    refs = [_ref(f"n{i}", "CC_BY") for i in range(2)]
+    client = FakeTexts({}, fail={"n0", "n1"})
+
+    with caplog.at_level(logging.INFO, logger="app.sources.wlo.knowledge"):
+        material_sources(client, TtlCache(tmp_path / "c.db"), refs, options=KnowledgeOptions(), fulltext=True)
+
+    [line] = knowledge_lines(caplog)
+    assert line.levelno == logging.WARNING and line.getMessage().startswith("2 of 2 material texts not readable")

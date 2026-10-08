@@ -389,7 +389,10 @@ class BApiClient:
                 if status not in RETRY_STATUSES:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
                     # key is blanked before the cut, which otherwise left the start of an echoed key (SE-10).
-                    log.warning("b-api answered HTTP %s: %s", status, self._redact(response.text)[:200])
+                    # on one line: the CR and LF of an error page split a record of the plain format (logging review)
+                    log.warning(
+                        "b-api answered HTTP %s: %s", status, " ".join(self._redact(response.text)[:200].split())
+                    )
                     if status in REFUSED_STATUSES:
                         self._refused(status)
                     elif status < 500:
