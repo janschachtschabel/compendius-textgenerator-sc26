@@ -11,6 +11,7 @@ from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from app import __version__, revision
 from app.files import atomic_write_text
 
 log = logging.getLogger(__name__)
@@ -91,6 +92,10 @@ def run_periodically(
     a traceback: 24 ERROR tracebacks a day of an outage at MEM or the DNB (logging review of 2026-10-08).
     """
     stop = stop or threading.Event()
+    # The updaters have no /health: the version and the commit tell an updater left on an old image (logging review)
+    log.info(
+        "%s: loop started, Kompendium %s (revision %s), every %s", name, __version__, revision() or "local", interval
+    )
     next_run = next_alive = clock()
     while not stop.is_set():
         if alive is not None and clock() >= next_alive:

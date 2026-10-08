@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from app import __version__
 from app.jobs.runner import parse_interval, run_periodically, stop_on_sigterm
 
 
@@ -232,10 +233,28 @@ def test_a_failure_names_the_job_and_an_expected_one_comes_without_a_traceback(
             expected=(ConnectionError,),
         )
 
-    expected, unexpected = [record for record in caplog.records if record.name == "app.jobs.runner"]
+    expected, unexpected = [
+        record for record in caplog.records if record.name == "app.jobs.runner" and record.levelname != "INFO"
+    ]
     assert expected.levelname == "WARNING" and expected.exc_info is None
     assert expected.getMessage() == (
         "Lehrplan-Harvest did not run: ConnectionError: MEM nicht erreichbar; next attempt in 0:00:30"
     )
     assert unexpected.levelname == "ERROR" and unexpected.exc_info is not None
     assert unexpected.getMessage() == "Lehrplan-Harvest failed; next attempt in 0:00:30"
+
+
+def test_a_loop_names_its_job_version_and_revision_when_it_starts(
+    caplog: pytest.LogCaptureFixture, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The four updaters have no /health: an updater left on an old image showed nothing, and a collector could not tie
+    an error of a loop to a release (logging review of 2026-10-08)."""
+    monkeypatch.setenv("GIT_REVISION", "abc1234")
+    stop = threading.Event()
+    stop.set()
+
+    with caplog.at_level("INFO", logger="app.jobs.runner"):
+        run_periodically(lambda: None, timedelta(days=7), stop=stop, name="GND-Index")
+
+    [line] = [record.getMessage() for record in caplog.records if record.name == "app.jobs.runner"]
+    assert line == f"GND-Index: loop started, Kompendium {__version__} (revision abc1234), every 7 days, 0:00:00"
