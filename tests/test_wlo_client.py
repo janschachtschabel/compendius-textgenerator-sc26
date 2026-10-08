@@ -432,6 +432,23 @@ def test_an_entry_whose_id_is_no_node_id_is_left_out() -> None:
     assert [sub.id for sub in subs] == [VALID]
 
 
+def test_the_first_materials_are_one_short_page(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The first titles of a collection for its place in the topic tree (M71) are one short page: with an entry left
+    out, the listing read on to fill the count, beyond what the operations table promises (review of 2026-10-08)."""
+    pages: list[str] = []
+
+    def answer(request: httpx.Request) -> httpx.Response:
+        pages.append(request.url.params["skipCount"])
+        nodes = [{"ref": {"id": "keine-uuid"}, "properties": {}}, {"ref": {"id": VALID}, "properties": {}}]
+        return httpx.Response(200, json={"references": nodes, "pagination": {"total": 40}})
+
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(answer))
+
+    listing = client.listing(OPTIK, limit=2)
+
+    assert [ref.id for ref in listing.refs] == [VALID] and pages == ["0"]
+
+
 def test_an_answer_past_the_bound_is_an_error_not_a_full_read(monkeypatch: pytest.MonkeyPatch) -> None:
     """Audit 2026-10-03, F12: answers were read whole; a faulty repository could fill a worker's memory."""
     monkeypatch.setattr("app.sources.wlo.client.MAX_ANSWER_BYTES", 1_000)

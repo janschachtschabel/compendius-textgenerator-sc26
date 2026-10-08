@@ -184,7 +184,8 @@ class EduSharingClient:
 
         ``remaining`` gives the seconds left of the caller's time budget: once it is spent, the listing ends after the
         last page that came in time. When not one page came, ``TimeUpError``: an empty list would read as an empty
-        collection. With ``limit``, the first ``limit`` materials, from pages of at most that size.
+        collection. With ``limit``, the materials of one page of that size, at most ``limit``: the first titles of a
+        collection for its place in the topic tree are one short read (M71, review of 2026-10-08).
         """
         path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}/children/references"
         refs: list[MaterialRef] = []
@@ -216,7 +217,7 @@ class EduSharingClient:
             if total is not None and not isinstance(total, int):
                 raise MalformedAnswerError("pagination.total")
             skip += len(items)
-            if limit and len(refs) >= limit:
+            if limit:
                 return ReferenceListing(refs[:limit])
             if not items or len(items) < size or (total is not None and skip >= total):
                 return ReferenceListing(refs)
