@@ -40,6 +40,14 @@ test('the article choice the LLM made counts as the method asked for, however th
   assert.equal(rows.matcher.used, 'llm');
 });
 
+test('the writing step names the blocks the output limit cut, their unfinished sentence struck', () => {
+  const answer = { extraction: 'rule-based', generation: 'llm', enrichment: 'model-knowledge', audit: { llm: { generation: { sections: ['sc26_1', 'sc26_2'], dropped_sentences: 1, cut_off: ['sc26_2'] } } } };
+
+  const rows = byStep(stepsAccount(answer, { parts: ['world'] }, 'best-quality-generated', options));
+
+  assert.equal(rows.generation.note, '2 Bausteine geschrieben, 1 Satz verworfen, 1 am Ausgabelimit gekürzt');
+});
+
 test('a step whose part was not asked for did not run, and did not fall back either', () => {
   const answer = { extraction: 'rule-based', generation: 'llm', enrichment: 'model-knowledge', audit: { llm: { curriculum_check: { requested: 'llm', used: 'rule-based' } } } };
   const rows = byStep(stepsAccount(answer, { parts: ['world'] }, 'best-quality-generated', options));

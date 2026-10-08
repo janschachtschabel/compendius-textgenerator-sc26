@@ -68,6 +68,7 @@ class LlmReport(Tokens):
     dropped_sentences: int = 0
     unsupported_sentences: int = 0
     marked_sentences: int = 0
+    cut_off: list[str] = field(default_factory=list)  # slot ids whose answer the output limit cut
 
 
 @dataclass
@@ -317,6 +318,8 @@ def _account(report: LlmReport, slot_id: str, draft: LlmSection) -> None:
     report.dropped_sentences += draft.dropped_sentences
     report.unsupported_sentences += draft.unsupported_sentences
     report.marked_sentences += draft.marked_sentences
+    if draft.cut_off:  # its unfinished sentence struck
+        report.cut_off.append(slot_id)
 
 
 def _account_skipped(report: LlmReport, skipped: LlmSkipped) -> None:

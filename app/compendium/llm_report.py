@@ -137,6 +137,7 @@ def build_llm_report(
         "dropped_sentences": generation.dropped_sentences if generation else 0,
         "unsupported_sentences": generation.unsupported_sentences if generation else 0,
         "marked_sentences": generation.marked_sentences if generation else 0,
+        "cut_off": list(generation.cut_off) if generation else [],  # blocks the output limit cut
         "enrichment": work.enrichment_used,
         "enrichment_requested": work.enrichment_requested,
     }

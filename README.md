@@ -703,7 +703,11 @@ Modellantwort werden entfernt, damit sie keine Marker des Dokuments fälschen ka
 HTML-Tags und nackte Adressen: Die Belege enthalten fremden Text, und eine Anweisung darin könnte das Modell einen
 Link schreiben lassen, den keine Quelle enthält. Die Wörter eines Links bleiben stehen. Was nur wie eine Marke des
 Dienstes aussieht, steht als Text da: eine Nummer, die die Prüfung nicht gelesen hat (`[1234]`, `[0012]`), und ein
-`[Modellwissen]`, das das Modell selbst schrieb, außerhalb eines so gekennzeichneten Satzes.
+`[Modellwissen]`, das das Modell selbst schrieb, außerhalb eines so gekennzeichneten Satzes. Eine Antwort, die ein
+JSON-Objekt oder eine Liste ist, gilt nicht als Text: Der Baustein fällt zurück wie bei einem gescheiterten Aufruf,
+mit Grund im Audit. Schnitt das Ausgabelimit die Antwort ab (`finish_reason=length`), fällt der Satz weg, in dem sie
+abbrach; `cut_off` nennt die Bausteine (D93). In den Profilen mit Modellwissen standen beide sonst als
+gekennzeichnete Sätze im Text.
 
 Mit `enrichment: model-knowledge` gilt dieselbe Prüfung, aber nicht gedeckte Sätze werden nicht verworfen,
 sondern als `<!-- f: Evidenzgrad=Modellwissen -->` … `<!-- /f -->` gekennzeichnet. Der Kommentar allein

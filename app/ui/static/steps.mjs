@@ -65,10 +65,13 @@ const USED = {
   curriculum_check: (answer, llm, asked) => (llm.curriculum_check?.requested === 'llm' ? llm.curriculum_check.used : asked),
 };
 
+// Blocks whose answer the output limit cut: their unfinished last sentence was struck
+const cutOff = (generation) => (generation.cut_off?.length ? `, ${formatNumber(generation.cut_off.length)} am Ausgabelimit gekürzt` : '');
+
 const NOTES = {
   matcher: (llm) => (llm.matching?.requested === 'llm' ? `${formatNumber(llm.matching.answered ?? 0)} von ${formatCount(llm.matching.paragraphs ?? 0, 'Absatz', 'Absätzen')} von der KI zugeordnet` : null),
   extraction: () => null,
-  generation: (llm) => (llm.generation?.sections?.length ? `${formatCount(llm.generation.sections.length, 'Baustein', 'Bausteine')} geschrieben, ${formatCount(llm.generation.dropped_sentences ?? 0, 'Satz', 'Sätze')} verworfen` : null),
+  generation: (llm) => (llm.generation?.sections?.length ? `${formatCount(llm.generation.sections.length, 'Baustein', 'Bausteine')} geschrieben, ${formatCount(llm.generation.dropped_sentences ?? 0, 'Satz', 'Sätze')} verworfen${cutOff(llm.generation)}` : null),
   enrichment: (llm) => (llm.generation?.marked_sentences ? `${formatCount(llm.generation.marked_sentences, 'Satz', 'Sätze')} gekennzeichnet` : null),
 };
 

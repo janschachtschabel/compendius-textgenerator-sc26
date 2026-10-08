@@ -8,10 +8,13 @@ table stays deterministic.
 
 from __future__ import annotations
 
+import json
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, replace
 
 from app.domain.models import Chunk, Citation, ScoredChunk, Source
+from app.knowledge.segmentation import split_sentences
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
@@ -38,6 +41,10 @@ MAX_OUTPUT_TOKENS = 1500
 # character (some three characters of German each) up to this ceiling
 MAX_FULL_OUTPUT_TOKENS = 4000
 SNIPPET_CHARS = 220
+NOT_TEXT = "Antwort ist kein Text (JSON)"
+CUT_OFF = "Antwort am Ausgabelimit abgebrochen, kein Satz vollendet (finish_reason=length)"
+# A finished sentence ends with its mark, maybe a closing quote or bracket, and the markers that cite it
+_FINISHED_RE = re.compile(r"[.!?…][\"'»«“”)\]]*(?:\s*\[\d{1,3}\])*\s*$")
 
 
 @dataclass(frozen=True)
@@ -52,6 +59,41 @@ class LlmSection:
     dropped_sentences: int  # no valid citation marker
     unsupported_sentences: int = 0  # marker present, but the cited chunks do not cover the sentence
     marked_sentences: int = 0  # sentences kept marked instead of dropped (conclusions, or model knowledge)
+    cut_off: bool = False  # the output limit cut the answer; the sentence it broke off in was struck
+
+
+def is_json(text: str) -> bool:
+    """An answer that is a JSON object or list, or begins as an object: no prose, whatever it holds."""
+    stripped = text.strip()
+    if stripped.startswith("{"):
+        return True
+    if not stripped.startswith("["):
+        return False
+    try:
+        json.loads(stripped)
+    except (ValueError, RecursionError):  # "[1] Das Thema …" is a text that opens with a marker
+        return False
+    return True
+
+
+def without_unfinished_sentence(text: str) -> tuple[str, bool]:
+    """``text`` without the sentence the output limit cut it off in, and whether there was one.
+
+    Only the last line can be unfinished: a line break the model wrote ended the line before it, a list item too.
+    In the last line the German sentence splitter finds where its last sentence starts (abbreviations and ordinals
+    protected); a last line without a finished sentence goes whole.
+    """
+    head, newline, last = text.rstrip().rpartition("\n")
+    sentences = split_sentences(last)
+    if not sentences or _FINISHED_RE.search(sentences[-1]):
+        return text, False
+    # The splitter collapses blanks: the last sentence starts where its other characters are all behind
+    start, remaining = len(last), sum(1 for char in sentences[-1] if not char.isspace())
+    while remaining and start:
+        start -= 1
+        if not last[start].isspace():
+            remaining -= 1
+    return (head + newline + last[:start]).rstrip(), True
 
 
 def evidence_block(
@@ -175,9 +217,16 @@ class LlmSynthesizer:
             # Measured: the model answers with nothing when the evidence does not fit the block.
             reason = f"leere Antwort des Modells (finish_reason={result.finish_reason or 'unbekannt'})"
             return LlmSkipped.after(reason, result)
+        if is_json(result.text):  # a block is prose; kept, an object or a list stood in it as model knowledge
+            return LlmSkipped.after(NOT_TEXT, result)
+        answer, cut_off = result.text, False
+        if result.finish_reason == "length":  # the output limit cut the answer, maybe inside a sentence
+            answer, cut_off = without_unfinished_sentence(answer)
+            if not answer.strip():
+                return LlmSkipped.after(CUT_OFF, result)
         mark = MODEL_KNOWLEDGE if enrich or full else (CONCLUSION if self.mark_unsupported else "")
         # formulas the model wrote in LaTeX, as text: escaped for markdown every backslash showed (D83)
-        text, dropped = verify_citations(plain_formulas(result.text), set(range(1, len(items) + 1)), mark=mark)
+        text, dropped = verify_citations(plain_formulas(answer), set(range(1, len(items) + 1)), mark=mark)
         evidence_texts = {n: chunk.text for n, (chunk, _) in enumerate(items, start=1)}
         text, unsupported = drop_unsupported(text, evidence_texts, mark=mark)
         # conclusion blocks alone are no evidence-based section; marked model knowledge is a block wherever the request
@@ -211,4 +260,5 @@ class LlmSynthesizer:
             dropped_sentences=dropped,
             unsupported_sentences=unsupported,
             marked_sentences=text.count(opening_marker(mark)) if mark else 0,  # what a reader sees marked
+            cut_off=cut_off,
         )

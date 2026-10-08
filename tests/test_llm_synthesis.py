@@ -36,7 +36,7 @@ from app.synthesis.llm import (
     shift_citations,
 )
 from app.templates.manager import TemplateManager
-from tests.test_llm_client import BASE, KEY, FakeBApi, thought_only
+from tests.test_llm_client import BASE, KEY, FakeBApi, completion, thought_only
 
 SOURCE = Source(
     source_id="wikipedia:Test", project="wikipedia", role=SourceRole.LEITQUELLE, title="Test", url="u", is_primary=True
@@ -399,6 +399,81 @@ def test_a_thought_cut_off_at_the_output_limit_is_no_block() -> None:
 
     assert isinstance(result, LlmSkipped) and "leere Antwort" in result.reason and "length" in result.reason
     assert result.total_tokens == 2400 and budget.used == 2400
+
+
+def cut_off(text: str) -> dict[str, Any]:
+    """A completion the output limit cut: its text as far as the model got."""
+    payload: dict[str, Any] = completion(text)
+    payload["choices"][0]["finish_reason"] = "length"
+    return payload
+
+
+def written(answer: dict[str, Any] | str) -> LlmSection | LlmSkipped:
+    """A block written with model knowledge from ``answer``: a whole completion, or the text of one that finished."""
+    fake = FakeBApi(raw=answer) if isinstance(answer, dict) else FakeBApi(lambda body: answer)
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    return LlmSynthesizer(_client(fake)).write_section(
+        _slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, enrich=True
+    )
+
+
+def test_an_answer_the_output_limit_cut_loses_the_sentence_it_broke_off_in() -> None:
+    """With model knowledge every uncited sentence stays, marked: the fragment the limit left stood in the text."""
+    result = written(
+        cut_off("Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. Linsen bündeln Licht, weil sie es an")
+    )
+
+    assert isinstance(result, LlmSection) and result.cut_off
+    assert "handelt vom Licht" in result.text and "bündeln" not in result.text
+
+
+def test_a_list_the_output_limit_cut_keeps_its_finished_lines() -> None:
+    answer = (
+        "Linsen gibt es in zwei Arten [1].\n- Sammellinsen bündeln Licht [1].\n- Zerstreuungslinsen streuen es\n- Pri"
+    )
+
+    result = written(cut_off(answer))
+
+    assert isinstance(result, LlmSection) and result.cut_off
+    assert "Zerstreuungslinsen streuen es" in result.text and "Pri" not in result.text.split("streuen es")[-1]
+
+
+def test_an_abbreviation_is_no_sentence_end_to_cut_back_to() -> None:
+    result = written(cut_off("Das Thema handelt vom Licht [1]. Optische Geräte wie z. B. Fernro"))
+
+    assert isinstance(result, LlmSection) and result.cut_off
+    assert "Licht" in result.text and "z. B." not in result.text
+
+
+def test_an_answer_cut_off_before_its_first_sentence_ends_is_no_block() -> None:
+    result = written(cut_off("Das Thema ist ein Gebiet der Phys"))
+
+    assert isinstance(result, LlmSkipped) and "abgebrochen" in result.reason and "length" in result.reason
+    assert result.calls == 1 and result.total_tokens == 24
+
+
+def test_an_answer_that_ended_its_last_sentence_at_the_limit_keeps_it() -> None:
+    result = written(cut_off("Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]."))
+
+    assert isinstance(result, LlmSection) and not result.cut_off
+    assert "handelt vom Licht" in result.text
+
+
+@pytest.mark.parametrize(
+    "answer",
+    ['{"text": "Das Thema ist ein Gebiet der Physik [1]."}', "[1, 2, 3]", '{"p1": ["fachinhalte", 0.9], "p2": ["de'],
+    ids=["object", "list", "cut-off object"],
+)
+def test_json_instead_of_text_is_no_block(answer: str) -> None:
+    """A block is prose; an object or a list answers another question, and kept it stood in the text as model
+    knowledge (2026-10-08)."""
+    result = written(answer)
+
+    assert isinstance(result, LlmSkipped) and "kein Text" in result.reason
+
+
+def test_a_text_that_opens_with_a_marker_is_text() -> None:
+    assert isinstance(written("[1] Das Thema ist ein Gebiet der Physik und handelt vom Licht."), LlmSection)
 
 
 def test_html_comments_in_the_answer_never_reach_the_document() -> None:

@@ -63,6 +63,18 @@ def asking(articles: Any, choice: Any = None, notes: dict[str, int] | None = Non
     return lambda body: answer if body["messages"][0]["content"] == ARTICLES_PROMPT.system else others(body)
 
 
+def asking_and_writing(articles: Any) -> Callable[[dict[str, Any]], str]:
+    """``asking`` for the questions of the article choice; a block is written in prose from its evidence, with one
+    sentence of model knowledge - not the JSON of those questions, which the writer refuses as no text."""
+    n = asking(articles)
+
+    def answer(body: dict[str, Any]) -> str:
+        writing = body["messages"][0]["content"].startswith("Du formulierst einen Baustein")
+        return answer_with_model_knowledge(body) if writing else n(body)
+
+    return answer
+
+
 def job_for(fake: FakeBApi, per_request: int = 100_000) -> ArticleChoiceJob:
     gateway = make_gateway(fake, per_request=per_request)
     return ArticleChoiceJob(gateway.client, gateway.open_budget())
@@ -494,12 +506,7 @@ def test_without_an_llm_the_words_of_the_topic_decide_the_hint(service: Compendi
 def test_a_text_written_about_the_topic_as_asked_gets_no_hint(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    n = asking({"uebersicht": "Optik", "artikel": ["Geometrische Optik"], "deckt_ab": False})
-
-    def answer(body: dict[str, Any]) -> str:
-        writing = body["messages"][0]["content"].startswith("Du formulierst einen Baustein")
-        return answer_with_model_knowledge(body) if writing else n(body)
-
+    answer = asking_and_writing({"uebersicht": "Optik", "artikel": ["Geometrische Optik"], "deckt_ab": False})
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer), per_request=200_000))
     request = GenerateRequest(
         topic="Optik im Alltag", article_choice="llm", generation="llm", enrichment="model-knowledge", parts=["world"]
@@ -515,8 +522,8 @@ def test_blocks_whose_writing_fell_back_get_the_hint_of_the_article_they_print(
 ) -> None:
     """Audit 2026-10-02, A10: the blocks with evidence fail and keep the article's paragraphs, those without are
     written from model knowledge; once one block was written, the check said nothing of the verbatim ones."""
-    n = asking({"uebersicht": "Optik", "artikel": ["Geometrische Optik"], "deckt_ab": False})
-    gateway = make_gateway(FakeBApi(n), per_request=200_000)
+    answer = asking_and_writing({"uebersicht": "Optik", "artikel": ["Geometrische Optik"], "deckt_ab": False})
+    gateway = make_gateway(FakeBApi(answer), per_request=200_000)
     write = gateway.synthesizer.write_section
 
     def failing_with_evidence(slot: Any, scored: Any, *args: Any, **kwargs: Any) -> Any:
