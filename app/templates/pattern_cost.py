@@ -1,6 +1,6 @@
 """How much work a heading pattern can do, checked before a template stores it.
 
-Every heading of a compendium runs through the patterns of every block of its template (app/matching/lexicon.py):
+Every heading of a compendium runs through the patterns of every block of its template (app/knowledge/lexicon.py):
 a pattern whose work grows fast with the heading held a worker (audit 2026-09-28, AP-04; audit 2026-09-29, A08).
 app/templates/schema.py sets the bounds and refuses a template beyond them.
 """
@@ -11,9 +11,9 @@ import importlib
 from functools import lru_cache
 from typing import Any
 
-# A heading pattern reads the first HEADING_MAX_CHARS characters of a heading (app/matching/lexicon.py), so its work has
-# a bound: the longest of the 390 headings of eval/gold has 91 characters, the longest of the 1,000 most frequent ones
-# in eval/headings_top.csv 52
+# A heading pattern reads the first HEADING_MAX_CHARS characters of a heading (app/knowledge/lexicon.py), so its work
+# has a bound: the longest of the 390 headings of eval/gold has 91 characters, the longest of the 1,000 most frequent
+# ones in eval/headings_top.csv 52
 HEADING_MAX_CHARS = 120
 STEPS_CAP = 10**12  # counting stops here, far beyond every bound
 # The standard library's own parser of patterns, private but in every CPython since 3.11 (tests/test_template_bounds.py

@@ -4,7 +4,7 @@
 // Not a general parser: it reads what the endpoints produce - YAML frontmatter, headings, paragraphs, lists, tables
 // and the comments that mark blocks and facets - and it never produces markup. A tag in the text stays text, a
 // comment is dropped unless it is one of the service's markers, and a link only becomes one when its target is a web
-// address. The service escapes the text of its sources for CommonMark (app/synthesis/safe_markdown.py), so an escape
+// address. The service escapes the text of its sources for CommonMark (app/markup/safe_markdown.py), so an escape
 // reads as the sign it stands for. Every pattern here reads a line in one pass, quotes nested deeper than MAX_DEPTH
 // read as paragraphs and list items as items of the deepest list: however badly a text is formed, it takes time in
 // proportion to its length, and its nesting cannot exhaust the stack.

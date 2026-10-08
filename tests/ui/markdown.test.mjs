@@ -122,7 +122,7 @@ test('emphasis beside signs and inside words still reads as CommonMark reads it'
 });
 
 test('an escaped asterisk closes nothing, and a closer after an escaped one still closes', () => {
-  // The service escapes a star that starts a line of its sources (app/synthesis/safe_markdown.py)
+  // The service escapes a star that starts a line of its sources (app/markup/safe_markdown.py)
   const [paragraph] = parseMarkdown('Geboren *1879 in Ulm\n\\* laut Taufregister').blocks;
 
   assert.deepEqual(paragraph.children, [text('Geboren *1879 in Ulm * laut Taufregister')]);

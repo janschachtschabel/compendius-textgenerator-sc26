@@ -66,7 +66,7 @@ Lexikon schaut allein auf die Überschriften.
 
 | Datum | Wofür | Code |
 |---|---|---|
-| Überschriftenpfad des Absatzes, etwa „Teilbereiche der Optik > Wellenoptik“; ohne Artikeltitel, bei der Einleitung „Einleitung“ | Lexikon; zusammen mit dem Text Eingabe der Ranker; die ersten zwei Ebenen bilden den Abschnitt für die Glättung | `app/matching/lexicon.py`, `app/matching/base.py` |
+| Überschriftenpfad des Absatzes, etwa „Teilbereiche der Optik > Wellenoptik“; ohne Artikeltitel, bei der Einleitung „Einleitung“ | Lexikon; zusammen mit dem Text Eingabe der Ranker; die ersten zwei Ebenen bilden den Abschnitt für die Glättung | `app/knowledge/lexicon.py`, `app/matching/base.py` |
 | Text des Absatzes (ganzer Absatz, eine Liste oder Tabelle als Einheit) | Eingabe der Ranker; Suche nach Abgrenzungswörtern | `chunk_representation` in `app/matching/base.py` |
 | Baustein: Titel, Beschreibung, „gehört hinein“, Unterpunkte, Suchbegriffe | Anfrage, gegen die die Ranker jeden Absatz vergleichen | `slot_representation` in `app/matching/base.py` |
 | Baustein: „gehört nicht hinein“ (Abgrenzung) | nur als Abwertung in der Policy, nie Teil der Anfrage der Ranker | `app/matching/policy.py` |
