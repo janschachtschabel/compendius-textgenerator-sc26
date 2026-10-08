@@ -10,12 +10,16 @@ running service opens a new index by itself within a minute.
 from __future__ import annotations
 
 import argparse
+import logging
+from collections.abc import Callable
 from pathlib import Path
 
 from app.cli_sync import run_build, run_sync
 from app.settings import get_settings
 from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.wikidata.sync import ALIVE_FILE, LOCK_FILE, build_sync
+
+log = logging.getLogger(__name__)
 
 REASONS = {
     "no index": "kein Index vorhanden",
@@ -59,17 +63,20 @@ def cmd_sync(args: argparse.Namespace) -> int:
     settings = get_settings()
     sync = build_sync(settings)
     force = bool(args.force)
+    # As the sidecar every message is a log record, so LOG_FORMAT=json makes it a JSON object (review of 2026-10-08);
+    # once, the command prints for the person who runs it
+    say: Callable[[str], None] = log.info if args.loop else print
 
     def task() -> None:
         nonlocal force
         reason = sync.due(force=force)
         force = False
         if reason is None:
-            print("Wikidata-Index ist aktuell: vorhanden, und kein neueres Wikipedia-Archiv braucht einen neueren Dump")
+            say("Wikidata-Index ist aktuell: vorhanden, und kein neueres Wikipedia-Archiv braucht einen neueren Dump")
             return
-        print(f"Wikidata-Index wird gebaut ({REASONS.get(reason, reason)}): drei Dumps laden, rund 750 MB")
+        say(f"Wikidata-Index wird gebaut ({REASONS.get(reason, reason)}): drei Dumps laden, rund 750 MB")
         meta = sync.run(reason)
-        print(f"Wikidata-Index {sync.index_path}: {meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}")
+        say(f"Wikidata-Index {sync.index_path}: {meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}")
 
     return run_sync(
         task,

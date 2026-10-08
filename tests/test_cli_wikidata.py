@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import zlib
 from collections.abc import Callable, Iterator
 from contextlib import closing
@@ -156,7 +157,7 @@ def _loop_task(monkeypatch: pytest.MonkeyPatch) -> list[Callable[[], object]]:
 
 
 def test_in_the_loop_a_checksum_that_does_not_match_waits_for_the_next_check(
-    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
 ) -> None:
     site = FakeDumps(tmp_path / "site")
     site.add("20260901", "2026-09-07 16:21:03", wrong_sha1=True)
@@ -164,7 +165,29 @@ def test_in_the_loop_a_checksum_that_does_not_match_waits_for_the_next_check(
     tasks = _loop_task(monkeypatch)
     assert main(["wikidata", "sync", "--loop"]) == 0
     assert tasks[0]() is not False  # no early retry: the same run would fail the same way, 420 MB each hour
-    assert "SHA-1 mismatch" in capsys.readouterr().err
+    [refused] = [record for record in caplog.records if record.levelno == logging.WARNING]
+    assert "SHA-1 mismatch" in refused.getMessage()
+
+
+def test_in_the_loop_the_sync_reports_in_log_records(
+    state_dir: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """As the sidecar every message is a log record, so LOG_FORMAT=json makes it a JSON object; printed, it stayed
+    plain text between the JSON lines (review of 2026-10-08)."""
+    caplog.set_level(logging.INFO, logger="app.cli_wikidata")
+    site = FakeDumps(tmp_path / "site")
+    site.add("20260901", "2026-09-07 16:21:03")
+    _fake_sync(monkeypatch, site)
+    tasks = _loop_task(monkeypatch)
+    assert main(["wikidata", "sync", "--loop"]) == 0
+
+    tasks[0]()  # builds the missing index
+    tasks[0]()  # finds it current
+
+    messages = [record.getMessage() for record in caplog.records if record.name == "app.cli_wikidata"]
+    assert messages[0].startswith("Wikidata-Index wird gebaut") and messages[-1].startswith(
+        "Wikidata-Index ist aktuell"
+    )
 
 
 def test_in_the_loop_a_dump_site_without_a_finished_run_is_asked_again_soon(

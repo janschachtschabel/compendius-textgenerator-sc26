@@ -1,6 +1,7 @@
 """CLI: ``compendium zim sync --offline`` and ``zim status`` against a temporary ZIM directory."""
 
 import json
+import logging
 import shutil
 from collections.abc import Iterator
 from datetime import timedelta
@@ -12,7 +13,8 @@ import pytest
 
 from app.cli import main
 from app.jobs.runner import last_alive
-from app.jobs.zim_sync import ALIVE_FILE, STATUS_FILE
+from app.cli_zim import _run_once
+from app.jobs.zim_sync import ALIVE_FILE, STATUS_FILE, SyncOptions, SyncReport
 from app.settings import get_settings
 from app.sources.zim.active import RetiredArchive, read_active, write_active
 from app.sources.zim.catalog import KiwixCatalog
@@ -83,20 +85,20 @@ def test_a_manual_sync_while_the_updater_runs_says_so(zim_env: Path, capsys: pyt
     assert "läuft bereits" in capsys.readouterr().err
 
 
+class OneRun:
+    """Stands in for the sync of the loop: every run reports ``report``."""
+
+    def __init__(self, report: SyncReport) -> None:
+        self.report = report
+
+    def run(self, options: SyncOptions) -> SyncReport:
+        return self.report
+
+    def due_in(self, report: SyncReport) -> None:
+        return None  # no retired archive waits
+
+
 def test_one_loop_run_asks_for_an_early_retry_when_its_report_says_so() -> None:
-    from app.cli_zim import _run_once
-    from app.jobs.zim_sync import SyncOptions, SyncReport
-
-    class OneRun:
-        def __init__(self, report: SyncReport) -> None:
-            self.report = report
-
-        def run(self, options: SyncOptions) -> SyncReport:
-            return self.report
-
-        def due_in(self, report: SyncReport) -> None:
-            return None  # no retired archive waits
-
     options = SyncOptions(profile="compact")
     assert _run_once(OneRun(SyncReport("compact", "t0", retry_soon=True)), options) is False  # type: ignore[arg-type]
     assert _run_once(OneRun(SyncReport("compact", "t0", errors=["x: SHA-256 mismatch"])), options) is True  # type: ignore[arg-type]
@@ -194,8 +196,9 @@ def test_catalog_all_lists_every_german_archive(
 
 
 def test_ctrl_c_ends_the_sync_loop_without_a_traceback(
-    zim_env: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    zim_env: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
 ) -> None:
+    caplog.set_level(logging.INFO, logger="app.cli_zim")
     monkeypatch.setattr("app.cli_zim.stop_on_sigterm", lambda: None)
 
     def interrupted(*args: object, **kwargs: object) -> None:
@@ -204,7 +207,7 @@ def test_ctrl_c_ends_the_sync_loop_without_a_traceback(
     monkeypatch.setattr("app.cli_zim.run_periodically", interrupted)
 
     assert main(["zim", "sync", "--offline", "--loop"]) == 0
-    assert "Sync-Schleife beendet." in capsys.readouterr().out
+    assert "Sync-Schleife beendet." in caplog.messages
 
 
 def test_info_prints_the_metadata_of_each_archive(
@@ -219,3 +222,14 @@ def test_info_prints_the_metadata_of_each_archive(
         snapshots.append(snapshot)
     assert {snapshot["file"] for snapshot in snapshots} == {path.name for path in sample_zims.values()}
     assert {snapshot["project"] for snapshot in snapshots} == {"wikipedia", "klexikon"}
+
+
+def test_a_loop_run_reports_in_one_log_record(caplog: pytest.LogCaptureFixture) -> None:
+    """As the updater the report is a log record of one line, so LOG_FORMAT=json makes it one JSON object; printed,
+    it spread over many lines (review of 2026-10-08)."""
+    caplog.set_level(logging.INFO, logger="app.cli_zim")
+
+    _run_once(OneRun(SyncReport("compact", "t0", errors=["x: SHA-256 mismatch"])), SyncOptions(profile="compact"))  # type: ignore[arg-type]
+
+    [message] = [record.getMessage() for record in caplog.records if record.name == "app.cli_zim"]
+    assert "\n" not in message and '"errors": ["x: SHA-256 mismatch"]' in message

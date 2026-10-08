@@ -1,6 +1,7 @@
 """CLI: ``compendium lehrplan status`` and ``lehrplan search`` against a temporary state directory."""
 
 import json
+import logging
 from collections.abc import Iterator
 from datetime import timedelta
 from pathlib import Path
@@ -227,14 +228,16 @@ def test_a_harvest_that_cannot_run_ends_with_a_message(
     assert message in capsys.readouterr().err
 
 
-def test_the_loop_forces_its_first_run_only_and_waits_out_a_refusal(capsys: pytest.CaptureFixture[str]) -> None:
+def test_the_loop_forces_its_first_run_only_and_waits_out_a_refusal(caplog: pytest.LogCaptureFixture) -> None:
+    caplog.set_level(logging.INFO, logger="app.cli_lehrplan")
     fake = FakeHarvest(due=True, refuse=True)
     task = loop_task(fake, max_age=timedelta(days=30), force=True)  # type: ignore[arg-type]
 
     assert task() is None  # forced: the result is taken although the harvest would refuse it
     assert task() is True  # refused: the next try is the next check, not the early retry
     assert fake.forced == [True, False]
-    assert "Harvest verworfen, nächster Versuch mit der nächsten Prüfung" in capsys.readouterr().err
+    [refused] = [record for record in caplog.records if record.levelno == logging.WARNING]
+    assert refused.getMessage().startswith("Harvest verworfen, nächster Versuch mit der nächsten Prüfung")
 
 
 def test_the_loop_waits_out_a_refused_query_and_leaves_an_unreachable_mem_to_the_early_retry() -> None:
@@ -255,3 +258,16 @@ def test_search_writes_its_matches_as_json(state_dir: Path, tmp_path: Path, caps
     [entry] = json.loads(out_file.read_text(encoding="utf-8"))
     assert entry["label"] == "Lichtbrechung an Linsen" and entry["bundesland_code"] == "SN"
     assert f"JSON geschrieben: {out_file}" in capsys.readouterr().out
+
+
+def test_a_loop_run_reports_in_one_log_record(caplog: pytest.LogCaptureFixture) -> None:
+    """As the updater a report or "current" is a log record of one line, so LOG_FORMAT=json makes it one JSON
+    object; printed, the report spread over many lines (review of 2026-10-08)."""
+    caplog.set_level(logging.INFO, logger="app.cli_lehrplan")
+
+    assert loop_task(FakeHarvest(due=True), max_age=timedelta(days=30), force=False)() is None  # type: ignore[arg-type]
+    assert loop_task(FakeHarvest(due=False), max_age=timedelta(days=30), force=False)() is None  # type: ignore[arg-type]
+
+    report, current = [record.getMessage() for record in caplog.records if record.name == "app.cli_lehrplan"]
+    assert report.startswith("Harvest-Bericht: {") and "2026-09-27T00:15:00+00:00" in report
+    assert current.startswith("Lehrplan-Cache ist aktuell") and not any("\n" in text for text in (report, current))

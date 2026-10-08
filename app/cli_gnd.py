@@ -9,6 +9,8 @@ as the ``gnd-updater`` sidecar. A running service opens a new index by itself wi
 from __future__ import annotations
 
 import argparse
+import logging
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +18,8 @@ from app.cli_sync import run_build, run_sync
 from app.settings import get_settings
 from app.sources.gnd.index import GndIndex, build_gnd_index
 from app.sources.gnd.sync import ALIVE_FILE, KINDS, LOCK_FILE, build_gnd_sync
+
+log = logging.getLogger(__name__)
 
 REASONS = {
     "no index": "kein Index vorhanden",
@@ -62,17 +66,20 @@ def cmd_sync(args: argparse.Namespace) -> int:
     settings = get_settings()
     sync = build_gnd_sync(settings)
     force = bool(args.force)
+    # As the sidecar every message is a log record, so LOG_FORMAT=json makes it a JSON object (review of 2026-10-08);
+    # once, the command prints for the person who runs it
+    say: Callable[[str], None] = log.info if args.loop else print
 
     def task() -> None:
         nonlocal force
         reason = sync.due(force=force)
         force = False
         if reason is None:
-            print("GND-Index ist aktuell: vorhanden und aus der neuesten Ausgabe der DNB")
+            say("GND-Index ist aktuell: vorhanden und aus der neuesten Ausgabe der DNB")
             return
-        print(f"GND-Index wird gebaut ({REASONS.get(reason, reason)}): zwei Abzüge der DNB laden, rund 65 MB")
+        say(f"GND-Index wird gebaut ({REASONS.get(reason, reason)}): zwei Abzüge der DNB laden, rund 65 MB")
         meta = sync.run(reason)
-        print(f"GND-Index {sync.index_path}: {_describe(meta)}")
+        say(f"GND-Index {sync.index_path}: {_describe(meta)}")
 
     return run_sync(
         task,

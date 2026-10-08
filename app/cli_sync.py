@@ -4,6 +4,7 @@ loops as the sidecar, and a build by hand from files on disk that takes the sync
 
 from __future__ import annotations
 
+import logging
 import os
 import sqlite3
 import sys
@@ -22,6 +23,8 @@ from app.locks import LockHeldError, acquire_lock
 from app.sources.dump_sync import LOCK_STALE_S, ReleaseNotFoundError
 from app.sources.local_index import IndexInUseError
 from app.sources.zim.downloader import DownloadError, TransferError
+
+log = logging.getLogger(__name__)
 
 POLL_SECONDS = 60
 RETRY_AFTER_FAILURE = timedelta(hours=1)
@@ -54,7 +57,7 @@ def run_sync(task: Callable[[], None], *, loop: bool, interval: str, name: str, 
         except Exception as exc:
             if not fails_again(exc):
                 raise
-            print(f"{name} nicht gebaut, der alte bleibt bis zur nächsten Prüfung: {exc}", file=sys.stderr)
+            log.warning("%s nicht gebaut, der alte bleibt bis zur nächsten Prüfung: %s", name, exc)
 
     if loop:
         stop_on_sigterm()
@@ -67,7 +70,7 @@ def run_sync(task: Callable[[], None], *, loop: bool, interval: str, name: str, 
                 alive=partial(mark_alive, alive),
             )
         except KeyboardInterrupt:  # Ctrl+C or a container stop; a run has written its status
-            print(f"{name}: Schleife beendet.")
+            log.info("%s: Schleife beendet.", name)
         return 0
     try:
         task()

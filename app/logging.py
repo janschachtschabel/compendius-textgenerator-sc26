@@ -16,6 +16,7 @@ import sys
 import uuid
 from contextvars import ContextVar
 from datetime import UTC, datetime
+from typing import Any
 
 _FORMAT = "%(asctime)s | %(levelname)-8s | %(name)s | %(request_id)s | %(message)s"
 
@@ -23,6 +24,8 @@ REQUEST_ID_HEADER = "X-Request-ID"
 MAX_REQUEST_ID_CHARS = 64  # a header is caller input; a log line must stay readable
 _NOT_IN_AN_ID = re.compile("[^A-Za-z0-9._:@+/=-]")
 NO_REQUEST = "-"
+# uvicorn's loggers with handlers of their own; uvicorn.error writes through "uvicorn"
+UVICORN_LOGGERS = ("uvicorn", "uvicorn.access")
 
 _request_id: ContextVar[str] = ContextVar("request_id", default=NO_REQUEST)
 
@@ -81,5 +84,34 @@ def configure_logging(level: str = "INFO", format_: str = "text") -> None:
         handler.setFormatter(_JsonFormatter() if format_ == "json" else logging.Formatter(_FORMAT))
         handler.addFilter(_RequestIdFilter())
         root.addHandler(handler)
+    if format_ == "json":
+        # uvicorn sets up its loggers in every worker before the app is built, with plain lines of their own: the
+        # access line of every request and the traceback of an error stayed text between the JSON lines (review of
+        # 2026-10-08). They write through the root's handler instead
+        for name in UVICORN_LOGGERS:
+            uvicorn_logger = logging.getLogger(name)
+            uvicorn_logger.handlers.clear()
+            uvicorn_logger.propagate = True
     root.setLevel(level.upper())
     logging.getLogger("httpx").setLevel(logging.WARNING)
+
+
+def json_log_config(level: str = "INFO") -> dict[str, Any]:
+    """LOG_FORMAT=json as uvicorn's ``--log-config``: its own process writes before any worker builds the app - the
+    start, the stop, a worker that died - and so never runs configure_logging."""
+    return {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {"json": {"()": f"{__name__}._JsonFormatter"}},
+        "filters": {"request_id": {"()": f"{__name__}._RequestIdFilter"}},
+        "handlers": {
+            "stdout": {
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+                "formatter": "json",
+                "filters": ["request_id"],
+            }
+        },
+        "loggers": {name: {"handlers": [], "propagate": True} for name in UVICORN_LOGGERS},
+        "root": {"handlers": ["stdout"], "level": level.upper()},
+    }

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 from datetime import timedelta
 from functools import partial
@@ -25,6 +26,8 @@ from app.sources.zim.active import read_active
 from app.sources.zim.archive import ZimArchive
 from app.sources.zim.catalog import OPDS_DEFAULT_URL, KiwixCatalog
 from app.sources.zim.subscriptions import load_manifest
+
+log = logging.getLogger(__name__)
 
 POLL_SECONDS = 60
 # A run that aborted, or whose downloads stopped on the way (network, full volume), is tried again after an hour,
@@ -106,7 +109,9 @@ def cmd_sync(args: argparse.Namespace) -> int:
         return 1 if report.errors else 0
     interval = parse_interval(settings.zim_sync_interval)
     trigger = Path(settings.zim_dir) / TRIGGER_FILE
-    print(f"Sync-Schleife: Profil {options.profile}, Intervall {settings.zim_sync_interval}, Trigger-Datei {trigger}")
+    log.info(
+        "Sync-Schleife: Profil %s, Intervall %s, Trigger-Datei %s", options.profile, settings.zim_sync_interval, trigger
+    )
     stop_on_sigterm()
     try:
         run_periodically(
@@ -118,7 +123,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
             alive=partial(mark_alive, Path(settings.zim_dir) / ALIVE_FILE),
         )
     except KeyboardInterrupt:
-        print("Sync-Schleife beendet.")
+        log.info("Sync-Schleife beendet.")
     return 0
 
 
@@ -126,7 +131,8 @@ def _run_once(sync: ZimSync, options: SyncOptions) -> bool | timedelta:
     """One loop run; ``False`` asks the loop for the early retry, a ``timedelta`` for a run once a retired archive may
     go - the next run would otherwise come after ZIM_SYNC_INTERVAL, 30 days (audit 2026-09-28, BE-12)."""
     report = sync.run(options)
-    _print_report(report)
+    # One log record of one line: with LOG_FORMAT=json one JSON object (review of 2026-10-08)
+    log.info("Sync-Bericht: %s", json.dumps(report.to_dict(), ensure_ascii=False))
     if report.retry_soon:
         return False
     due = sync.due_in(report)

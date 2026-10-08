@@ -1,7 +1,11 @@
 """Start command of the image: only the metric files of an earlier run are removed, then uvicorn takes over."""
 
+import json
+import logging
 import os
 import re
+import tempfile
+from logging.config import dictConfig
 from pathlib import Path
 from typing import Any
 
@@ -9,7 +13,7 @@ import pytest
 import yaml
 
 from app import serve
-from app.settings import PROVIDER_REQUEST_TIMEOUT_S, Settings
+from app.settings import PROVIDER_REQUEST_TIMEOUT_S, Settings, get_settings
 from tests.conftest import ROOT
 
 
@@ -101,3 +105,46 @@ def test_uvicorn_parses_with_h11_unless_the_operator_chose_otherwise(
     serve.main()
 
     assert handed[0]["UVICORN_HTTP"] == expected
+
+
+def started(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, log_format: str) -> list[str]:
+    """The uvicorn call of the start command with ``LOG_FORMAT``; files go to ``tmp_path``."""
+    monkeypatch.setenv("LOG_FORMAT", log_format)
+    monkeypatch.setenv("PROMETHEUS_MULTIPROC_DIR", str(tmp_path / "metrics"))
+    monkeypatch.setattr(tempfile, "tempdir", str(tmp_path))
+    calls: list[list[str]] = []
+    monkeypatch.setattr(os, "execvpe", lambda file, args, env: calls.append(args))
+    get_settings.cache_clear()
+    try:
+        serve.main()
+    finally:
+        get_settings.cache_clear()
+    [args] = calls
+    return args
+
+
+def test_with_json_logs_uvicorn_s_own_process_writes_json_lines(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """uvicorn's parent process writes before any worker builds the app - its start, its stop, a worker that died -
+    and so never heard of LOG_FORMAT (review of 2026-10-08); the start command hands it a logging configuration."""
+    args = started(monkeypatch, tmp_path, "json")
+    config = json.loads(Path(args[args.index("--log-config") + 1]).read_text(encoding="utf-8"))
+    for logger in (logging.getLogger(), *(logging.getLogger(name) for name in ("uvicorn", "uvicorn.access"))):
+        monkeypatch.setattr(logger, "handlers", [])
+        monkeypatch.setattr(logger, "propagate", logger.propagate)
+        monkeypatch.setattr(logger, "level", logger.level)
+    dictConfig(config)  # as uvicorn applies --log-config, in the parent and in every worker
+
+    logging.getLogger("uvicorn.error").warning("Child process [%d] died", 7)
+
+    [line] = capsys.readouterr().out.splitlines()
+    assert {key: json.loads(line)[key] for key in ("level", "logger", "message")} == {
+        "level": "WARNING",
+        "logger": "uvicorn.error",
+        "message": "Child process [7] died",
+    }
+
+
+def test_plain_logs_leave_uvicorn_its_own(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    assert "--log-config" not in started(monkeypatch, tmp_path, "text")

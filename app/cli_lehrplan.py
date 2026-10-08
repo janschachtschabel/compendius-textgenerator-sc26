@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 from collections.abc import Callable
 from dataclasses import asdict
@@ -17,6 +18,7 @@ from app.sources.lehrplan.harvest import (
     ALIVE_FILE,
     TRIGGER_FILE,
     HarvestRefusedError,
+    HarvestReport,
     HarvestRunningError,
     LehrplanHarvest,
     read_status,
@@ -28,10 +30,13 @@ from app.sources.lehrplan.sparql import SparqlClient, SparqlError, SparqlRefused
 from app.sources.lehrplan.store import LehrplanCacheError, LehrplanStore
 from app.sources.lehrplan.subjects import SubjectCatalog
 
+log = logging.getLogger(__name__)
+
 POLL_SECONDS = 60
 # A failed harvest (MEM unreachable, also on a first start without a cache) tries again after an hour rather than
 # after LEHRPLAN_CHECK_INTERVAL, as the ZIM loop does
 RETRY_AFTER_FAILURE = timedelta(hours=1)
+CURRENT = "Lehrplan-Cache ist aktuell: MEM-Zählung unverändert und jünger als LEHRPLAN_HARVEST_MAX_AGE"
 
 
 def _harvest(settings: Settings) -> LehrplanHarvest:
@@ -81,13 +86,11 @@ def cmd_check(args: argparse.Namespace) -> int:
     return 0
 
 
-def harvest_once(harvest: LehrplanHarvest, *, max_age: timedelta, force: bool) -> None:
-    """A harvest when one is due or forced, with its report printed; errors rise to the caller."""
+def harvest_once(harvest: LehrplanHarvest, *, max_age: timedelta, force: bool) -> HarvestReport | None:
+    """A harvest when one is due or forced, ``None`` when the cache is current; errors rise to the caller."""
     if force or harvest.due(max_age=max_age):
-        report = harvest.run(force=force)
-        print(json.dumps(asdict(report), ensure_ascii=False, indent=2))
-    else:
-        print("Lehrplan-Cache ist aktuell: MEM-Zählung unverändert und jünger als LEHRPLAN_HARVEST_MAX_AGE")
+        return harvest.run(force=force)
+    return None
 
 
 def loop_task(harvest: LehrplanHarvest, *, max_age: timedelta, force: bool) -> Callable[[], bool | None]:
@@ -98,12 +101,17 @@ def loop_task(harvest: LehrplanHarvest, *, max_age: timedelta, force: bool) -> C
         nonlocal force
         forced, force = force, False
         try:
-            harvest_once(harvest, max_age=max_age, force=forced)
+            report = harvest_once(harvest, max_age=max_age, force=forced)
         except (HarvestRefusedError, SparqlRefusedError) as exc:
             # A person, not a loop: an hour later MEM lists as little, and a refused query fails again. The next try
             # is the next check; the status keeps the error for the alert (audit 2026-09-28, BE-11)
-            print(f"Harvest verworfen, nächster Versuch mit der nächsten Prüfung: {exc}", file=sys.stderr)
+            log.warning("Harvest verworfen, nächster Versuch mit der nächsten Prüfung: %s", exc)
             return True
+        # One log record of one line: with LOG_FORMAT=json one JSON object (review of 2026-10-08)
+        if report is None:
+            log.info(CURRENT)
+        else:
+            log.info("Harvest-Bericht: %s", json.dumps(asdict(report), ensure_ascii=False))
         return None
 
     return task
@@ -126,10 +134,10 @@ def cmd_harvest(args: argparse.Namespace) -> int:
                 alive=partial(mark_alive, Path(settings.state_dir) / ALIVE_FILE),
             )
         except KeyboardInterrupt:  # Ctrl+C or a container stop; the harvest has written its status
-            print("Harvest-Schleife beendet.")
+            log.info("Harvest-Schleife beendet.")
         return 0
     try:
-        harvest_once(harvest, max_age=max_age, force=bool(args.force))
+        report = harvest_once(harvest, max_age=max_age, force=bool(args.force))
     except HarvestRunningError as exc:
         print(f"{exc}", file=sys.stderr)
         return 1
@@ -139,6 +147,7 @@ def cmd_harvest(args: argparse.Namespace) -> int:
     except SparqlError as exc:
         print(f"Harvest abgebrochen, alter Cache bleibt: {exc}", file=sys.stderr)
         return 1
+    print(CURRENT if report is None else json.dumps(asdict(report), ensure_ascii=False, indent=2))
     return 0
 
 

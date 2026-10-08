@@ -12,9 +12,12 @@ in quadratic time. h11 answers 400 to a request line with headers over 16 KB.
 
 from __future__ import annotations
 
+import json
 import os
+import tempfile
 from pathlib import Path
 
+from app.logging import json_log_config
 from app.settings import get_settings
 
 DEFAULT_DIR = "/tmp/prometheus"  # noqa: S108  # container-local, emptied at every start
@@ -33,6 +36,8 @@ GRACEFUL_MARGIN_S = 15
 # Variables uvicorn reads itself, with the service's defaults. A value the operator sets wins; an empty entry, as a
 # panel writes one left blank, counts as none - uvicorn read WEB_CONCURRENCY= with int() and stopped (BE-13)
 UVICORN_DEFAULTS = {"UVICORN_HTTP": "h11", "WEB_CONCURRENCY": "2", "FORWARDED_ALLOW_IPS": "127.0.0.1,::1"}
+# In the temporary directory of the container, which compose leaves writable
+LOG_CONFIG_FILE = "kompendium-logging.json"
 
 
 def clear_metric_files(directory: Path) -> None:
@@ -43,7 +48,14 @@ def clear_metric_files(directory: Path) -> None:
             path.unlink(missing_ok=True)
 
 
-def uvicorn_command(request_timeout_s: int) -> list[str]:
+def write_log_config(level: str) -> Path:
+    """LOG_FORMAT=json for uvicorn's own process, as the file ``--log-config`` reads."""
+    path = Path(tempfile.gettempdir()) / LOG_CONFIG_FILE
+    path.write_text(json.dumps(json_log_config(level)), encoding="utf-8")
+    return path
+
+
+def uvicorn_command(request_timeout_s: int, log_config: Path | None = None) -> list[str]:
     """The uvicorn call; a worker keeps its healthcheck grace until well past the request budget, and a stop waits
     for the requests in flight."""
     return [
@@ -52,13 +64,16 @@ def uvicorn_command(request_timeout_s: int) -> list[str]:
         str(request_timeout_s + HEALTHCHECK_MARGIN_S),
         "--timeout-graceful-shutdown",
         str(request_timeout_s + GRACEFUL_MARGIN_S),
+        *(["--log-config", str(log_config)] if log_config is not None else []),
     ]
 
 
 def main() -> None:
     directory = os.environ.get("PROMETHEUS_MULTIPROC_DIR") or DEFAULT_DIR
     clear_metric_files(Path(directory))
-    command = uvicorn_command(get_settings().request_time_limit_s)
+    settings = get_settings()
+    log_config = write_log_config(settings.log_level) if settings.log_format == "json" else None
+    command = uvicorn_command(settings.request_time_limit_s, log_config)
     defaults = {name: value for name, value in UVICORN_DEFAULTS.items() if not os.environ.get(name, "").strip()}
     # exec: uvicorn takes over the process and receives the container's signals (clean shutdown)
     os.execvpe(command[0], command, {**os.environ, **defaults, "PROMETHEUS_MULTIPROC_DIR": directory})  # noqa: S606
