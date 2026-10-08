@@ -21,9 +21,9 @@ from app.api.responses import PROFILE_REFUSALS
 from app.domain.models import NodeInput
 from app.domain.requests import NODE_ID_PATTERN, REPOSITORY_HELP
 from app.knowledge.collection_context import is_neutral, stand_in
+from app.knowledge.derived_topic import derive_topic, node_topic
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import node_block
-from app.sources.wlo.part import derive_topic, node_topic
 
 router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 

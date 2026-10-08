@@ -18,7 +18,7 @@ from typing import Any
 import httpx
 import pytest
 
-from app.jobs.lock import LockHeldError
+from app.locks import LockHeldError
 from app.settings import Settings
 from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.wikidata.sync import (

@@ -31,7 +31,7 @@ FILLERS = ("Begriff", "Person", "Akteur")
 
 def pairs_step(free_path: Path, out: Path) -> None:
     from app.knowledge.recognise import load_spacy
-    from app.knowledge.segmentation import split_sentences
+    from app.prose import split_sentences
     from app.synthesis.qa import cut
     from app.synthesis.qa_questions import clause_questions
     from app.synthesis.qa_rules import (

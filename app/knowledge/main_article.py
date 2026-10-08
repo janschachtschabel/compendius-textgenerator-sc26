@@ -26,6 +26,7 @@ from app.knowledge.article_choice import (
     LlmArticleChooser,
 )
 from app.knowledge.collection_context import describe, is_neutral, stand_in
+from app.knowledge.derived_topic import CollectionTopic, DerivedTopic, derive_topic
 from app.knowledge.node_article import NodeArticleReport, ask_topic, ranked_entities, rule_article
 from app.knowledge.question import resolve_by_keywords
 from app.knowledge.resolution import CHOSEN_BY_LLM, GUESSED, resolve_topic
@@ -34,7 +35,6 @@ from app.knowledge.topic_articles import TopicArticlesReport, ask_topic_articles
 from app.knowledge.topic_wording import needs_wording
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.models import NodeInfo
-from app.sources.wlo.part import CollectionTopic, DerivedTopic, derive_topic
 from app.sources.wlo.tree import TreeContext
 from app.sources.zim.registry import ZimRegistry
 

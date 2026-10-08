@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from app.files import atomic_write_text
-from app.jobs.lock import HeldLock, LockHeldError, acquire_lock
+from app.locks import HeldLock, LockHeldError, acquire_lock
 from app.sources.lehrplan import queries
 from app.sources.lehrplan.store import LehrplanRecord, LehrplanStore, LehrplanWriter
 from app.sources.lehrplan.tree import ClassInfo, build_class_index, build_nodes

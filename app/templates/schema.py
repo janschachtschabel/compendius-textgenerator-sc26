@@ -14,17 +14,11 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validat
 
 from app.domain.caller_values import NAMED, listed
 from app.domain.spelling import OneSpelling
+from app.domain.template_bounds import MAX_SLOTS, SLOT_ID_MAX_CHARS, TEMPLATE_ID_PATTERN
 from app.templates.pattern_cost import HEADING_MAX_CHARS, STEPS_CAP, nested_quantifier, pattern_steps
 
 Generator = Literal["", "sources", "glossary", "actors"]
 Role = Literal["", "definition", "systematik", "context"]
-# A template id names the file it is stored in: letters, digits, underscore and hyphen, nothing that leads out of
-# the directory (audit 2026-09-27, SE-09)
-TEMPLATE_ID_PATTERN = r"^[\w-]{1,80}$"
-# Bounds of a template's blocks, and of the names regenerate_sections may send (audit 2026-09-28, SE-15): sc26
-# has 13 blocks, and a block id is as short as a template id
-MAX_SLOTS = 60
-SLOT_ID_MAX_CHARS = 80
 # A block's id and key stand in the markers of a compendium and its title is a heading line: an id with a space or
 # "-->", or a title over two lines, left parse_document reading two of four blocks, and existing_markdown replaced
 # even reviewed ones without a word (audit 2026-09-28, AP-04)

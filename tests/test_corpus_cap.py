@@ -11,7 +11,7 @@ from collections import Counter
 
 from app.compendium.corpus import segment_corpus
 from app.domain.models import ArticleSection, Paragraph, Source
-from app.matching.lexicon import HeadingLexicon
+from app.knowledge.lexicon import HeadingLexicon
 
 
 def _source(title: str, count: int, origin: str) -> Source:

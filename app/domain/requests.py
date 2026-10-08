@@ -9,7 +9,7 @@ from pydantic.json_schema import WithJsonSchema
 
 from app.domain.caller_values import NAMED, listed
 from app.domain.spelling import OneSpelling
-from app.templates.schema import MAX_SLOTS, SLOT_ID_MAX_CHARS, TEMPLATE_ID_PATTERN
+from app.domain.template_bounds import MAX_SLOTS, SLOT_ID_MAX_CHARS, TEMPLATE_ID_PATTERN
 
 Part = Literal["world", "curricula", "collection"]
 # The matching strategies of app/matching/registry.py (STRATEGIES; a test keeps both lists equal). The field stays a

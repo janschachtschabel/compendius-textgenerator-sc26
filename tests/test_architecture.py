@@ -42,6 +42,13 @@ def package_edges() -> dict[tuple[str, str], frozenset[str]]:
     return {pair: frozenset(files) for pair, files in edges.items()}
 
 
+def test_no_two_packages_import_each_other() -> None:
+    edges = package_edges()
+    mutual = sorted({tuple(sorted(pair)) for pair in edges if (pair[1], pair[0]) in edges})
+
+    assert not mutual, {f"{a} <-> {b}": (sorted(edges[(a, b)]), sorted(edges[(b, a)])) for a, b in mutual}
+
+
 def test_the_sources_write_their_markdown_without_the_synthesis() -> None:
     edges = package_edges()
 

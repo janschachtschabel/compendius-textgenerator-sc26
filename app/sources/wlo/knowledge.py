@@ -17,7 +17,7 @@ from typing import Protocol
 from app.concurrency import map_in_threads
 from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
 from app.domain.spelling import readable
-from app.knowledge.segmentation import split_sentences
+from app.prose import split_sentences
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError, Remaining, spent
 from app.sources.wlo.errors import TimeUpError

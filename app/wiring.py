@@ -12,12 +12,12 @@ import sqlite3
 from pathlib import Path
 
 from app.compendium.gateway import LlmGateway, LlmOptions
+from app.knowledge.lexicon import HeadingLexicon
 from app.llm.budget import DailyStore, TokenBudget
 from app.llm.budget_store import SqliteDailyStore
 from app.llm.client import BApiClient, is_reasoning_model
 from app.llm.deadline import MIN_CALL_S
 from app.llm.prompts import PROMPTS
-from app.matching.lexicon import HeadingLexicon
 from app.service import CompendiumService
 from app.settings import PROVIDER_REQUEST_TIMEOUT_S, Settings, b_api_for, parse_reasoning_efforts
 from app.sources.lehrplan.part import CurriculaBuilder

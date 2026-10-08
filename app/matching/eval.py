@@ -13,8 +13,8 @@ from dataclasses import dataclass, field
 from pydantic import BaseModel, Field, computed_field
 
 from app.domain.models import Chunk, ScoredChunk
-from app.knowledge.segmentation import split_sentences
 from app.matching.gold import GoldLabel, GoldSet, text_hash
+from app.prose import split_sentences
 from app.templates.schema import Template
 
 

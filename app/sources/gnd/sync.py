@@ -18,9 +18,9 @@ from typing import Any
 
 import httpx
 
-from app.jobs.dump_sync import DumpFile, DumpSync, Release, ReleaseNotFoundError
-from app.jobs.dump_sync import read_status as read_dump_status
 from app.settings import Settings
+from app.sources.dump_sync import DumpFile, DumpSync, Release, ReleaseNotFoundError
+from app.sources.dump_sync import read_status as read_dump_status
 from app.sources.gnd.index import GndIndex, build_gnd_index
 from app.sources.zim.catalog import USER_AGENT
 from app.sources.zim.downloader import Downloader, check_download_url

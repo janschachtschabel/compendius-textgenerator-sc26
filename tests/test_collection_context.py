@@ -29,6 +29,7 @@ from app.knowledge.collection_context import (
     shown_topic,
     stand_in,
 )
+from app.knowledge.derived_topic import CollectionTopic
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.resolution import resolve_topic
 from app.knowledge.topic_wording import NEUTRAL_ANSWER
@@ -37,7 +38,7 @@ from app.service import CompendiumService
 from app.settings import Settings
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient
-from app.sources.wlo.part import CollectionBuilder, CollectionTopic
+from app.sources.wlo.part import CollectionBuilder
 from app.sources.wlo.tree import TreeContext, read_tree
 from app.sources.zim.registry import ZimRegistry
 from tests.test_asked_topic import WORDING, users, wording_then

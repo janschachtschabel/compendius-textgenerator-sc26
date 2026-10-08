@@ -15,11 +15,12 @@ from pathlib import Path
 import httpx
 import pytest
 
+from app.knowledge.derived_topic import CollectionTopic, derive_topic, node_topic
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient, EduSharingError, NodeNotFoundError
 from app.sources.wlo.models import NodeInfo, parse_node
-from app.sources.wlo.part import CollectionBuilder, CollectionTopic, derive_topic, node_input, node_topic
+from app.sources.wlo.part import CollectionBuilder, node_input
 from app.sources.wlo.repository import RepositoryNotAllowedError, repository_root
 from tests.conftest import ROOT
 from tests.test_wlo_client import BASE, MATERIAL, OPTIK, PRIVATE, UNKNOWN, FakeRepository, _client, _fixture

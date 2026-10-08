@@ -18,9 +18,9 @@ from starlette.requests import Request
 
 from app.api.errors import MAX_PROBLEMS, JsonResponse, validation_error
 from app.domain.requests import ARCHIVE_ID_MAX_CHARS, MAX_ARCHIVES
+from app.domain.template_bounds import MAX_SLOTS, SLOT_ID_MAX_CHARS
 from app.main import create_app
 from app.settings import Settings
-from app.templates.schema import MAX_SLOTS, SLOT_ID_MAX_CHARS
 
 SMALL = 2_000  # bytes of an answer that repeats nothing of the request
 QA_TEXT = "Die Optik ist die Lehre vom Licht und seiner Ausbreitung."

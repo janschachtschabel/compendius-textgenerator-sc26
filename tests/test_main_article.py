@@ -12,10 +12,10 @@ import json
 from typing import Any
 
 from app.knowledge.article_choice import ArticleChoiceJob
+from app.knowledge.derived_topic import node_topic
 from app.knowledge.main_article import choose_main_article
 from app.service import CompendiumService
 from app.sources.wlo.models import NodeInfo
-from app.sources.wlo.part import node_topic
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
 

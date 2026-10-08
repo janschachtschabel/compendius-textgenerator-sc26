@@ -16,13 +16,13 @@ from dataclasses import dataclass
 from typing import Any
 
 from app.knowledge.node_article import FORMAT_WORDS
-from app.knowledge.segmentation import split_sentences
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
 from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.llm.usage import Usage
+from app.prose import split_sentences
 from app.synthesis.citations import neutralize
 
 log = logging.getLogger(__name__)

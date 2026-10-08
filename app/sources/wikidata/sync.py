@@ -23,9 +23,9 @@ from typing import Any
 
 import httpx
 
-from app.jobs.dump_sync import DumpFile, DumpSync, Release, ReleaseNotFoundError
-from app.jobs.dump_sync import read_status as read_dump_status
 from app.settings import Settings
+from app.sources.dump_sync import DumpFile, DumpSync, Release, ReleaseNotFoundError
+from app.sources.dump_sync import read_status as read_dump_status
 from app.sources.wikidata.index import WikidataIndex, build_index
 from app.sources.zim.active import read_active
 from app.sources.zim.archive import dump_date

@@ -20,13 +20,13 @@ from app.compose.regeneration import PreservedSection
 from app.concurrency import map_in_threads
 from app.domain.licences import freely_accessible
 from app.domain.models import Citation, ScoredChunk, Section, SectionStatus, Source
+from app.knowledge.lexicon import HeadingLexicon
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, skipped_on_error
 from app.llm.deadline import Deadline
 from app.llm.usage import Tokens
 from app.markup.citations import marker_numbers
 from app.markup.safe_markdown import defuse, no_definitions
-from app.matching.lexicon import HeadingLexicon
 from app.synthesis import facets as facet_rules
 from app.synthesis.actors import build_actors_section, collect_actors
 from app.synthesis.citations import CONCLUSION, MODEL_KNOWLEDGE

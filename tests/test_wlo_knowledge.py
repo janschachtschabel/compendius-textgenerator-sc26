@@ -5,8 +5,8 @@ import dataclasses
 from pathlib import Path
 
 from app.domain.models import SourceRole
+from app.knowledge.lexicon import HeadingLexicon
 from app.knowledge.segmentation import segment_source
-from app.matching.lexicon import HeadingLexicon
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingError
 from app.sources.wlo.errors import TimeUpError

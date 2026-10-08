@@ -27,9 +27,10 @@ from app.api.v2.routes_examples import (
 )
 from app.domain.models import Compendium
 from app.domain.requests import GenerateRequest
+from app.domain.template_bounds import TEMPLATE_ID_PATTERN
 from app.observability.metrics import record_compendium
 from app.templates.manager import Expected, VersionConflictError
-from app.templates.schema import TEMPLATE_ID_PATTERN, Template
+from app.templates.schema import Template
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)

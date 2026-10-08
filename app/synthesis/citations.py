@@ -11,11 +11,10 @@ import re
 from collections.abc import Collection, Mapping
 from decimal import Decimal
 
-from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
 from app.markup.citations import CITATION_MARKER_RE as _MARKER_RE
 from app.markup.facets import END_MARKER
 from app.markup.safe_markdown import escape_text
-from app.matching.base import tokenize
+from app.prose import ends_with_abbreviation, split_sentences, tokenize
 
 # Support check: share of a sentence's content stems that occur in the chunks it cites. Measured with
 # gpt-5.6-luna on 2026-09-18 (175 sentences): median 0.73; inference sentences that only carry a marker

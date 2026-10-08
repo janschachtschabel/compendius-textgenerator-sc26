@@ -41,7 +41,7 @@ from app.cli_common import cli_service
 from app.llm.client import BApiClient
 from app.settings import get_settings
 from app.sources.wlo.client import EduSharingClient
-from app.sources.wlo.part import derive_topic, node_topic
+from app.knowledge.derived_topic import derive_topic, node_topic
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")

@@ -24,6 +24,7 @@ from app.domain.models import Resolution, SectionStatus
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob
 from app.knowledge.corpus_sources import NAMED_ORIGIN, build_corpus
+from app.knowledge.derived_topic import node_topic
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.resolution import misses_topic, resolve_topic
 from app.knowledge.topic_articles import NO_PARTS, NONE_FOUND, ask_topic_articles
@@ -31,7 +32,6 @@ from app.llm.prompts import get_prompt
 from app.main import create_app
 from app.service import CompendiumService
 from app.settings import Settings
-from app.sources.wlo.part import node_topic
 from app.sources.zim.registry import ZimRegistry
 from tests.conftest import HtmlItem
 from tests.test_article_choice import by_prompt

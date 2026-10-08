@@ -22,7 +22,7 @@ import re
 import sys
 from pathlib import Path
 
-from app.knowledge.segmentation import split_sentences
+from app.prose import split_sentences
 from app.synthesis.citations import _MARKER_RE, _OPENERS, _split_claims, _stems
 
 if sys.platform == "win32":

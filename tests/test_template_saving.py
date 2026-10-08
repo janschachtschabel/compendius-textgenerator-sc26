@@ -21,7 +21,7 @@ from typing import Any
 
 import pytest
 
-from app.jobs.lock import LockHeldError
+from app.locks import LockHeldError
 from app.templates import manager as manager_module
 from app.templates.manager import TemplateManager, TemplateNotFoundError
 from app.templates.schema import Template, TemplateSlot

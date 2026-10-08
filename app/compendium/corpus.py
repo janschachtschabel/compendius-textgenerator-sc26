@@ -6,9 +6,9 @@ import logging
 
 from app.domain.models import Chunk, Source, primary_of
 from app.knowledge.corpus_sources import NAMED_ORIGIN, NODE_ORIGIN
+from app.knowledge.lexicon import HeadingLexicon
 from app.knowledge.segmentation import segment_source
 from app.knowledge.topic import TopicMention
-from app.matching.lexicon import HeadingLexicon
 
 log = logging.getLogger(__name__)
 

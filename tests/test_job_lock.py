@@ -7,7 +7,7 @@ from typing import Any
 
 import pytest
 
-from app.jobs.lock import LockHeldError, acquire_lock
+from app.locks import LockHeldError, acquire_lock
 
 
 def _acquire(path: Path, stale_s: float = 3600) -> Any:

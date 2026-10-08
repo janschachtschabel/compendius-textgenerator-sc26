@@ -20,8 +20,8 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
 from app.markup.safe_markdown import unescape
+from app.prose import ends_with_abbreviation, split_sentences
 from app.synthesis.qa import MIN_SENTENCE_CHARS, QaPair, cut
 from app.synthesis.qa_questions import Question, clause_questions
 from app.synthesis.qa_words import parse_ready, unclear, words

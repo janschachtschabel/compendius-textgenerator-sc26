@@ -12,11 +12,11 @@ from app.domain.models import Chunk, CollectionPart, CurriculaPart, NodeInput, R
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import ArticleChoiceReport, HitCheckReport
 from app.knowledge.curriculum_check import CurriculumCheckReport
+from app.knowledge.lexicon import HeadingLexicon
 from app.knowledge.node_article import NodeArticleReport
 from app.knowledge.topic import NormalizedTopic
 from app.knowledge.topic_articles import TopicArticlesReport
 from app.knowledge.topic_wording import TopicWordingReport
-from app.matching.lexicon import HeadingLexicon
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.matching.policy import AssignmentResult
 from app.sources.wlo.models import CollectionInfo

@@ -102,7 +102,7 @@ def one_material(
     """The six ways for one material, each timed; ``accepted`` are the gold's titles as the archive names them."""
     from app.knowledge.main_article import choose_main_article
     from app.llm.deadline import Deadline
-    from app.sources.wlo.part import derive_topic, node_topic
+    from app.knowledge.derived_topic import derive_topic, node_topic
 
     derived = [node_topic(info)]
     term = entry.get("begriff")

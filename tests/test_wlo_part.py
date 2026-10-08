@@ -9,6 +9,7 @@ from typing import Any
 import httpx
 import pytest
 
+from app.knowledge.derived_topic import collection_topic
 from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import (
     CUT_PAGES,
@@ -21,7 +22,7 @@ from app.sources.wlo.client import (
 from app.sources.wlo.errors import TimeUpError
 from app.sources.wlo.knowledge import KnowledgeOptions
 from app.sources.wlo.models import MaterialRef, SubCollection
-from app.sources.wlo.part import SUB_UNREADABLE, CollectionBuilder, CollectionOptions, _hydrate, collection_topic
+from app.sources.wlo.part import SUB_UNREADABLE, CollectionBuilder, CollectionOptions, _hydrate
 from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
 
 

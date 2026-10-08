@@ -35,11 +35,11 @@ from app.domain.requests import (
     Preset,
     RequestModel,
 )
+from app.domain.template_bounds import TEMPLATE_ID_PATTERN
 from app.knowledge.article_choice import choice_block
 from app.knowledge.collection_context import tree_block
 from app.knowledge.node_article import node_block
 from app.llm.deadline import Deadline
-from app.templates.schema import TEMPLATE_ID_PATTERN
 
 router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 

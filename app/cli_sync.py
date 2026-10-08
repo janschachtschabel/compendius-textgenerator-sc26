@@ -17,9 +17,9 @@ from typing import Any
 
 import httpx
 
-from app.jobs.dump_sync import LOCK_STALE_S, ReleaseNotFoundError
-from app.jobs.lock import LockHeldError, acquire_lock
 from app.jobs.runner import mark_alive, parse_interval, run_periodically, stop_on_sigterm
+from app.locks import LockHeldError, acquire_lock
+from app.sources.dump_sync import LOCK_STALE_S, ReleaseNotFoundError
 from app.sources.local_index import IndexInUseError
 from app.sources.zim.downloader import DownloadError, TransferError
 

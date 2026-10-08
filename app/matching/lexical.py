@@ -15,7 +15,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from app.domain.models import Chunk, ScoredChunk
-from app.matching.base import chunk_representation, slot_representation, tokenize
+from app.matching.base import chunk_representation, slot_representation
+from app.prose import tokenize
 from app.templates.schema import TemplateSlot
 
 CANDIDATES_PER_SLOT = 15

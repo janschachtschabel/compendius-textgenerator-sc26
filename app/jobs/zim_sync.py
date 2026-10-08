@@ -27,7 +27,7 @@ from typing import Any, Protocol
 import httpx
 
 from app.files import atomic_write_text
-from app.jobs.lock import HeldLock, LockHeldError, acquire_lock
+from app.locks import HeldLock, LockHeldError, acquire_lock
 from app.settings import Settings
 from app.sources.zim.active import ACTIVE_FILE, ActiveArchive, ActiveState, RetiredArchive, read_active, write_active
 from app.sources.zim.archive import ZimArchive, dump_date

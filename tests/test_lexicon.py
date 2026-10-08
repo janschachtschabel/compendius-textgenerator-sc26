@@ -1,6 +1,6 @@
 import re
 
-from app.matching.lexicon import HeadingLexicon
+from app.knowledge.lexicon import HeadingLexicon
 from app.templates.manager import TemplateManager
 from app.templates.pattern_cost import HEADING_MAX_CHARS
 from app.templates.schema import Template, TemplateSlot

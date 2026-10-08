@@ -14,7 +14,6 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, replace
 
 from app.domain.models import Chunk, Citation, ScoredChunk, Source
-from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
@@ -22,6 +21,7 @@ from app.llm.deadline import Deadline
 from app.llm.prompts import get_prompt
 from app.markup.citations import marker_numbers
 from app.markup.formulas import plain_formulas
+from app.prose import ends_with_abbreviation, split_sentences
 from app.synthesis.citations import (
     CONCLUSION,
     MODEL_KNOWLEDGE,

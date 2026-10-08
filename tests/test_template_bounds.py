@@ -15,16 +15,10 @@ import pytest
 import yaml
 from pydantic import ValidationError
 
+from app.domain.template_bounds import MAX_SLOTS
 from app.templates.manager import TemplateManager
 from app.templates.pattern_cost import pattern_steps
-from app.templates.schema import (
-    MAX_SLOTS,
-    PATTERN_STEPS_MAX,
-    TEMPLATE_PATTERN_STEPS_MAX,
-    WEIGHT_MAX,
-    Template,
-    TemplateSlot,
-)
+from app.templates.schema import PATTERN_STEPS_MAX, TEMPLATE_PATTERN_STEPS_MAX, WEIGHT_MAX, Template, TemplateSlot
 from tests.conftest import ROOT
 
 B = chr(92)

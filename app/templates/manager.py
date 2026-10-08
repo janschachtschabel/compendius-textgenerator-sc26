@@ -26,9 +26,10 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from app.domain.caller_values import listed
-from app.jobs.lock import LockHeldError, acquire_lock
+from app.domain.template_bounds import TEMPLATE_ID_PATTERN
+from app.locks import LockHeldError, acquire_lock
 from app.settings import Settings
-from app.templates.schema import STORED_UNKNOWN_FIELDS, TEMPLATE_ID_PATTERN, Template
+from app.templates.schema import STORED_UNKNOWN_FIELDS, Template
 
 log = logging.getLogger(__name__)
 

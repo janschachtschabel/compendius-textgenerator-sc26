@@ -1,8 +1,8 @@
 from app.domain.models import ArticleSection, Chunk, Paragraph, ScoredChunk, Source, SourceRole
+from app.knowledge.lexicon import HeadingLexicon
 from app.knowledge.segmentation import segment_source
 from app.matching.fusion import fuse_rankings, smooth_sections
 from app.matching.lexical import BM25Matcher, CharTfidfMatcher
-from app.matching.lexicon import HeadingLexicon
 from app.matching.policy import assign, cut_to_budgets
 from app.matching.registry import get_matcher, list_strategies
 from app.templates.manager import TemplateManager

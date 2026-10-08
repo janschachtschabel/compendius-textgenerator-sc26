@@ -22,7 +22,7 @@ from typing import Any, ClassVar
 import httpx
 
 from app.files import atomic_write_text
-from app.jobs.lock import HeldLock, LockHeldError, acquire_lock
+from app.locks import HeldLock, LockHeldError, acquire_lock
 from app.sources.zim.downloader import PART_SUFFIX, Downloader
 
 log = logging.getLogger(__name__)

@@ -10,8 +10,8 @@ from __future__ import annotations
 
 from app.compendium.corpus import segment_corpus, subtopics
 from app.domain.models import ArticleSection, Paragraph, Source, primary_of
+from app.knowledge.lexicon import HeadingLexicon
 from app.knowledge.topic import TopicMention
-from app.matching.lexicon import HeadingLexicon
 
 
 def _source(title: str, paragraphs: list[str], origin: str = "linked") -> Source:

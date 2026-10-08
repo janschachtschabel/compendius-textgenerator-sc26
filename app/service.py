@@ -40,24 +40,20 @@ from app.knowledge.article_choice import (
 from app.knowledge.collection_context import describe, shown_topic
 from app.knowledge.corpus_sources import NODE_ORIGIN, build_corpus
 from app.knowledge.curriculum_check import CurriculumCheckReport
+from app.knowledge.derived_topic import CollectionTopic, collection_topic, node_topic
+from app.knowledge.lexicon import HeadingLexicon
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.topic import topic_as_asked
 from app.knowledge.topic_articles import settle
 from app.knowledge.topic_wording import TopicWordingReport, word_topic, wording_request
 from app.llm.budget import RequestBudget
 from app.llm.deadline import Deadline
-from app.matching.lexicon import HeadingLexicon
 from app.matching.registry import ensure_strategy
 from app.settings import Settings
 from app.sources.lehrplan.part import CurriculaBuilder
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.models import CollectionInfo, NodeInfo
-from app.sources.wlo.part import (
-    CollectionBuilder,
-    CollectionTopic,
-    collection_topic,
-    node_topic,
-)
+from app.sources.wlo.part import CollectionBuilder
 from app.sources.wlo.tree import TreeContext
 from app.sources.zim.registry import ZimRegistry
 from app.synthesis.facets import FacetCatalog

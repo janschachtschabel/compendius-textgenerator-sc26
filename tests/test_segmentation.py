@@ -1,8 +1,9 @@
 from pathlib import Path
 
 from app.domain.models import ArticleSection, Paragraph, Source, SourceRole
-from app.knowledge.segmentation import ends_with_abbreviation, segment_source, split_sentences
-from app.matching.lexicon import HeadingLexicon
+from app.knowledge.lexicon import HeadingLexicon
+from app.knowledge.segmentation import segment_source
+from app.prose import ends_with_abbreviation, split_sentences
 from app.sources.zim.html import parse_article
 from tests.conftest import ROOT
 
