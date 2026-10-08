@@ -140,6 +140,9 @@ CONSENT_NOTICES = [
     "Unsere Website setzt Cookies ein, um die Nutzung zu analysieren und Inhalte anzupassen.",
     "Auf dieser Website werden Cookies verwendet, die für den Betrieb technisch notwendig sind.",
     "Klicken Sie auf „Alle akzeptieren“, um der Verwendung von Cookies auf dieser Seite zuzustimmen.",
+    # a page of the Optik collection (M74): the site speaks after its verb
+    "Derzeit verwenden wir auf unserer Website keine Cookies zu Marketingzwecken. Sollten künftig Marketingdienste "
+    "eingesetzt werden, fragen wir vorher nach.",
 ]
 
 

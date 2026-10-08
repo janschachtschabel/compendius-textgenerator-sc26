@@ -66,7 +66,8 @@ _SETTINGS = re.compile(
 _SITE = r"(?:wir|we|(?:diese|unsere)[nrs]? (?:web)?(?:seite|site)|this (?:web)?site)"  # Webseite, Website, Seite
 _SITE_USES_COOKIES = re.compile(
     rf"\b{_SITE}\b[^.!?]{{0,40}}?\b(?:nutz|verwend|setz|einsetz|benutz|use|using)\w*[^.!?]{{0,60}}?\bcookie"
-    rf"|\b{_SITE}\b[^.!?]{{0,40}}?\bcookies\b[^.!?]{{0,40}}?\b(?:verwendet|genutzt|gesetzt|eingesetzt|benutzt|used)\b",
+    rf"|\b{_SITE}\b[^.!?]{{0,40}}?\bcookies\b[^.!?]{{0,40}}?\b(?:verwendet|genutzt|gesetzt|eingesetzt|benutzt|used)\b"
+    rf"|\b(?:nutz|verwend|setz|benutz)\w*\s+{_SITE}\b[^.!?]{{0,60}}?\bcookie",  # "Derzeit verwenden wir ... Cookies"
     re.IGNORECASE,
 )
 # the polite form of a dialog, so case matters: "Ihre Auswahl", not "Ihre Schülerinnen" or "Ihre Aufgabe"
