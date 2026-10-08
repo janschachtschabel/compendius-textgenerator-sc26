@@ -20,15 +20,16 @@ from tests.test_threads_context import in_a_request
 UVICORN_LOGGERS = ("uvicorn", "uvicorn.error", "uvicorn.access")
 
 
-def configured(monkeypatch: pytest.MonkeyPatch, *format_: str, uvicorn: bool = False) -> None:
+def configured(monkeypatch: pytest.MonkeyPatch, *format_: str, uvicorn: bool = False, level: str = "INFO") -> None:
     """configure_logging on a root logger without the handlers pytest gave it, as in production; with ``uvicorn``
     after uvicorn's own logging, as it sets it up in every worker before the app is built. In the test, not in a
     fixture: pytest adds its capturing handler again when the test starts, and a root with a handler is left as it
     is. Levels, handlers and propagation come back afterwards."""
-    root, httpx_logger = logging.getLogger(), logging.getLogger("httpx")
+    root = logging.getLogger()
     monkeypatch.setattr(root, "handlers", [])
     monkeypatch.setattr(root, "level", root.level)
-    monkeypatch.setattr(httpx_logger, "level", httpx_logger.level)
+    for name in ("httpx", "httpcore"):
+        monkeypatch.setattr(logging.getLogger(name), "level", logging.getLogger(name).level)
     for name in UVICORN_LOGGERS:
         logger = logging.getLogger(name)
         for attribute in ("handlers", "propagate", "level"):
@@ -37,7 +38,7 @@ def configured(monkeypatch: pytest.MonkeyPatch, *format_: str, uvicorn: bool = F
             )
     if uvicorn:
         dictConfig(LOGGING_CONFIG)
-    configure_logging("INFO", *format_)
+    configure_logging(level, *format_)
 
 
 def lines_with(text: str, capsys: pytest.CaptureFixture[str]) -> list[str]:
@@ -97,6 +98,16 @@ def test_uvicorn_writes_its_access_and_error_lines_as_json_too(
         ("uvicorn.error", "Exception in ASGI application"),
     ]
     assert "RuntimeError: kaputt" in events[1]["exc"] and written.err == ""
+
+
+def test_at_debug_the_transport_of_the_http_client_stays_quiet(monkeypatch: pytest.MonkeyPatch) -> None:
+    """At LOG_LEVEL=DEBUG httpcore wrote twelve lines per outgoing request, every response header among them, so the
+    session cookie edu-sharing hands the configured account (logging review of 2026-10-08); httpx was quiet already."""
+    configured(monkeypatch, level="DEBUG")
+
+    assert logging.getLogger("httpcore.http11").getEffectiveLevel() == logging.WARNING
+    assert logging.getLogger("httpx").getEffectiveLevel() == logging.WARNING
+    assert logging.getLogger("app.sources").getEffectiveLevel() == logging.DEBUG
 
 
 def test_the_plain_line_stays_the_default(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:

@@ -26,6 +26,10 @@ _NOT_IN_AN_ID = re.compile("[^A-Za-z0-9._:@+/=-]")
 NO_REQUEST = "-"
 # uvicorn's loggers with handlers of their own; uvicorn.error writes through "uvicorn"
 UVICORN_LOGGERS = ("uvicorn", "uvicorn.access")
+# The HTTP client: httpx names every request at INFO, and httpcore writes a dozen lines per request at DEBUG, the
+# response headers among them - so the session cookie edu-sharing hands the configured account (logging review of
+# 2026-10-08). Both stay at WARNING, whatever LOG_LEVEL says
+QUIET_LOGGERS = ("httpx", "httpcore")
 
 _request_id: ContextVar[str] = ContextVar("request_id", default=NO_REQUEST)
 
@@ -93,7 +97,8 @@ def configure_logging(level: str = "INFO", format_: str = "text") -> None:
             uvicorn_logger.handlers.clear()
             uvicorn_logger.propagate = True
     root.setLevel(level.upper())
-    logging.getLogger("httpx").setLevel(logging.WARNING)
+    for name in QUIET_LOGGERS:
+        logging.getLogger(name).setLevel(logging.WARNING)
 
 
 def json_log_config(level: str = "INFO") -> dict[str, Any]:
