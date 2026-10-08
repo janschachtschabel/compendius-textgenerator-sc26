@@ -12,8 +12,8 @@ import httpx
 import pytest
 
 from app.cli import main
-from app.jobs.runner import last_alive
 from app.cli_zim import _run_once
+from app.jobs.runner import last_alive
 from app.jobs.zim_sync import ALIVE_FILE, STATUS_FILE, SyncOptions, SyncReport
 from app.settings import get_settings
 from app.sources.zim.active import RetiredArchive, read_active, write_active

@@ -10,9 +10,8 @@ import pytest
 from app.compendium.errors import TopicNotFoundError
 from app.domain.models import Resolution
 from app.domain.requests import GenerateRequest
-from app.knowledge import main_article
-from app.knowledge import question as question_module
 from app.knowledge.question import MAX_KEYWORDS, keywords, resolve_by_keywords
+from app.knowledge.resolution import resolve_topic
 from app.service import CompendiumService
 from app.sources.zim.archive import ZimArchive
 
@@ -100,13 +99,13 @@ def test_no_more_keywords_are_tried_than_a_question_names(
         "Planeten Sonnensystem Merkur Venus Erde Mars Jupiter Saturn Uranus Neptun Zwergplaneten Pluto Ceres Monde"
     )
     tried: list[str] = []
-    original = question_module.resolve_topic
+    original = resolve_topic
 
     def counting(registry: Any, word: str, **options: Any) -> Any:
         tried.append(word)
         return original(registry, word, **options)
 
-    monkeypatch.setattr(question_module, "resolve_topic", counting)
+    monkeypatch.setattr("app.knowledge.question.resolve_topic", counting)
 
     resolve_by_keywords(service.registry, planets)
 
@@ -119,7 +118,7 @@ def test_the_article_of_a_keyword_is_shown_as_a_guess_beside_what_the_rules_gues
     """M73: of 60 questions 2 articles were foreign and 5 better before; the review page showed a keyword's article as
     an exact title, sure, and no unsure hit to check (review of 2026-10-08)."""
     question = "Wie entsteht ein Regenbogen und warum ist er gekrümmt?"
-    real = main_article.resolve_topic
+    real = resolve_topic
 
     def rules(registry: Any, topic: str, **options: Any) -> Resolution:
         if topic != question:
@@ -128,7 +127,7 @@ def test_the_article_of_a_keyword_is_shown_as_a_guess_beside_what_the_rules_gues
             query=topic, normalized=topic, title="Optik", path="Optik", method="search"
         )  # a full-text hit
 
-    monkeypatch.setattr(main_article, "resolve_topic", rules)
+    monkeypatch.setattr("app.knowledge.main_article.resolve_topic", rules)
 
     resolution = service.prepare(GenerateRequest(topic=question, parts=["world"], preset="llm-free")).resolution
 
@@ -141,14 +140,14 @@ def test_a_sentence_the_rules_name_exactly_keeps_their_article(
     """Only where the rules guessed do the keywords decide; the test with "Optik" above never reached their path, so
     the condition could go unnoticed (review of 2026-10-08)."""
     sentence = "Wie breitet sich das Licht in der Optik aus und warum?"
-    real = main_article.resolve_topic
+    real = resolve_topic
 
     def rules(registry: Any, topic: str, **options: Any) -> Resolution:
         if topic != sentence:
             return real(registry, topic, **options)
         return Resolution(query=topic, normalized=topic, title="Optik", path="Optik", method="title", confident=True)
 
-    monkeypatch.setattr(main_article, "resolve_topic", rules)
+    monkeypatch.setattr("app.knowledge.main_article.resolve_topic", rules)
 
     resolution = service.prepare(GenerateRequest(topic=sentence, parts=["world"], preset="llm-free")).resolution
 

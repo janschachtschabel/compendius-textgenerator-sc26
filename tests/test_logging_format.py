@@ -17,7 +17,6 @@ from app.logging import configure_logging
 from app.settings import Settings
 from tests.test_threads_context import in_a_request
 
-
 UVICORN_LOGGERS = ("uvicorn", "uvicorn.error", "uvicorn.access")
 
 
