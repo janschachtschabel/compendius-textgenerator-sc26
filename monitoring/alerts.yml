@@ -1,6 +1,7 @@
 # Alarmregeln für die Kompendium-API (Metriken siehe README, Abschnitt „Überwachung“; Maßnahmen in docs/betrieb.md).
-# Die Schwellen folgen den Standardwerten: ZIM_SYNC_INTERVAL 30d, LEHRPLAN_HARVEST_MAX_AGE 30d, REQUEST_TIMEOUT_S 120,
-# WIKIDATA_CHECK_INTERVAL und GND_CHECK_INTERVAL 1d. Jemanden erreichen die Alarme erst über einen Alertmanager
+# Die Schwellen folgen den Standardwerten: ZIM_SYNC_INTERVAL 30d, LEHRPLAN_HARVEST_MAX_AGE 30d, WIKIDATA_CHECK_INTERVAL
+# und GND_CHECK_INTERVAL 1d, und die Dauer der Kompendien mit B_API_PROVIDER=openai; mit academiccloud (2 Aufrufe
+# zugleich, REQUEST_TIMEOUT_S 600 s) dauern die schreibenden Profile länger, dort KompendiumSlowCompendia anheben. Jemanden erreichen die Alarme erst über einen Alertmanager
 # (monitoring/prometheus.yml).
 groups:
   - name: kompendium-verfuegbarkeit

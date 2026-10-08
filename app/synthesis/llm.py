@@ -14,7 +14,7 @@ from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, replace
 
 from app.domain.models import Chunk, Citation, ScoredChunk, Source
-from app.knowledge.segmentation import split_sentences
+from app.knowledge.segmentation import ends_with_abbreviation, split_sentences
 from app.llm.budget import RequestBudget
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.client import BApiClient
@@ -43,8 +43,18 @@ MAX_FULL_OUTPUT_TOKENS = 4000
 SNIPPET_CHARS = 220
 NOT_TEXT = "Antwort ist kein Text (JSON)"
 CUT_OFF = "Antwort am Ausgabelimit abgebrochen, kein Satz vollendet (finish_reason=length)"
-# A finished sentence ends with its mark, maybe a closing quote or bracket, and the markers that cite it
-_FINISHED_RE = re.compile(r"[.!?…][\"'»«“”)\]]*(?:\s*\[\d{1,3}\])*\s*$")
+# What ends a sentence (review 2026-10-08): its mark, then closing quotes, brackets or emphasis, then the markers that
+# cite it, before or after the mark, one number or several ("[2, 3]")
+_CLOSERS = r"\"'»«“”‘’›‹)*_\]"
+_MARKER_GROUP = r"\[\d{1,3}(?:\s*(?:[,;]|und|-|–)\s*\d{1,3})*\]"
+_FINISHED_RE = re.compile(rf"[.!?…][{_CLOSERS}]*(?:\s*{_MARKER_GROUP})*\s*$")
+_LEADING_MARKERS_RE = re.compile(rf"(?:\s*{_MARKER_GROUP})+\s*")
+# Ends the German sentence splitter does not see: a marker right after the mark ("es.[1] Weiter"), and closing signs
+# after it ("Satz.** Weiter")
+_GLUED_MARKER_RE = re.compile(rf"([.!?…][{_CLOSERS}]*)(?=\[\d)")
+_CLOSED_END_RE = re.compile(rf"[.!?…][{_CLOSERS}]+\s+(?=[A-ZÄÖÜ„\"‚'(\[0-9*_])")
+_JSON_OPENING_RE = re.compile(r'[{\[]\s*["{\[]|\{\s*\}|\[\s*\]')
+BYTE_ORDER_MARK = chr(0xFEFF)
 
 
 @dataclass(frozen=True)
@@ -62,33 +72,50 @@ class LlmSection:
     cut_off: bool = False  # the output limit cut the answer; the sentence it broke off in was struck
 
 
+def _unfenced(text: str) -> str:
+    """``text`` without a code fence around it (```json … ```); the opening line names the language."""
+    if not text.startswith("```"):
+        return text
+    _, _, body = text.partition("\n")
+    return body.strip().removesuffix("```").strip()
+
+
 def is_json(text: str) -> bool:
-    """An answer that is a JSON object or list, or begins as an object: no prose, whatever it holds."""
-    stripped = text.strip()
-    if stripped.startswith("{"):
+    """An answer that is JSON and no prose: an object, a list, a number or null, also fenced, after a byte order mark
+    or cut off. A text in quotes is a text (review 2026-10-08)."""
+    stripped = _unfenced(text.strip().lstrip(BYTE_ORDER_MARK).strip())
+    if _JSON_OPENING_RE.match(stripped):
         return True
-    if not stripped.startswith("["):
-        return False
     try:
-        json.loads(stripped)
+        value = json.loads(stripped)
     except (ValueError, RecursionError):  # "[1] Das Thema …" is a text that opens with a marker
         return False
-    return True
+    return not isinstance(value, str)
 
 
 def without_unfinished_sentence(text: str) -> tuple[str, bool]:
     """``text`` without the sentence the output limit cut it off in, and whether there was one.
 
-    Only the last line can be unfinished: a line break the model wrote ended the line before it, a list item too.
-    In the last line the German sentence splitter finds where its last sentence starts (abbreviations and ordinals
-    protected); a last line without a finished sentence goes whole.
+    Only the last line can be unfinished: a line break the model wrote ended the line before it, a list item too, and
+    an answer that ends with one is whole. In the last line the German sentence splitter finds its last sentence
+    (abbreviations and ordinals protected); markers that open it cite the sentence before it and stay, and a sentence
+    that ends in an abbreviation is unfinished. A last line without a finished sentence goes whole.
     """
-    head, newline, last = text.rstrip().rpartition("\n")
-    sentences = split_sentences(last)
-    if not sentences or _FINISHED_RE.search(sentences[-1]):
+    if text.rstrip(" \t").endswith("\n"):
         return text, False
-    # The splitter collapses blanks: the last sentence starts where its other characters are all behind
-    start, remaining = len(last), sum(1 for char in sentences[-1] if not char.isspace())
+    head, newline, last = text.rstrip().rpartition("\n")
+    # The probe only gains blanks, so its other characters map onto the line by their count
+    sentences = split_sentences(_GLUED_MARKER_RE.sub(r"\1 ", last))
+    if not sentences:
+        return text, False
+    ends = [match.end() for match in _CLOSED_END_RE.finditer(sentences[-1])]
+    tail = sentences[-1][ends[-1] :] if ends else sentences[-1]
+    opening = _LEADING_MARKERS_RE.match(tail)
+    rest = tail[opening.end() :] if opening else tail
+    if not rest.strip() or (_FINISHED_RE.search(rest) and not ends_with_abbreviation(rest)):
+        return text, False
+    # The unfinished rest starts where as many of the line's other characters are left as it has
+    start, remaining = len(last), sum(1 for char in rest if not char.isspace())
     while remaining and start:
         start -= 1
         if not last[start].isspace():

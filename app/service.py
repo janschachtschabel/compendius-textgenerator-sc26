@@ -296,7 +296,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own.
 
         Parts 2 and 3 are made beside part 1, which waits on the model longest (M75): part 3 needs nothing of the
-        topic and starts at once, part 2 once the topic is prepared. A request that fails does not wait for them."""
+        topic and starts at once, part 2 once the topic is prepared. A request that fails does not wait for them, and
+        their time ends with it: they start no further call or read."""
         started = time.perf_counter()
         if deadline is None:  # bounds the LLM work; the rule-based path needs none
             deadline = Deadline(self.settings.request_time_limit_s)
@@ -305,17 +306,18 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         # the compendium (/qa); article_choice=llm (D35) spends from it first
         if budget is None:
             budget = self.open_budget(profile)
-        with Beside(workers=2) as beside:
+        beside_time = deadline.branch()
+        with Beside(workers=2, on_failure=beside_time.expire) as beside:
             collection_job = None
             if "collection" in request.parts and request.collection_id and self.collections is not None:
-                collection_job = beside.start(timed(self._collection_part), request.collection_id, deadline)
+                collection_job = beside.start(timed(self._collection_part), request.collection_id, beside_time)
             choice_requested, choice_note, choice = self.article_choice_job(request.article_choice, deadline, budget)
             budget = choice.budget if choice is not None else budget
             # the topic a writing profile words is the one of part 1; without it nothing is written about it (D72)
             writing = request.generation if "world" in request.parts else None
             wording = self.wording_job(writing, choice, deadline, budget)
             prepared = self.prepare(request, deadline, choice, wording=wording)
-            curricula_job = beside.start(timed(self._curricula_part), prepared, request, budget, deadline)
+            curricula_job = beside.start(timed(self._curricula_part), prepared, request, budget, beside_time)
             requested = Requested.of(request)
             timings = dict(prepared.timings)
             if "world" in request.parts:

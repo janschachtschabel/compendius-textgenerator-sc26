@@ -33,7 +33,9 @@ from app.synthesis.llm import (
     LlmSection,
     LlmSynthesizer,
     evidence_block,
+    is_json,
     shift_citations,
+    without_unfinished_sentence,
 )
 from app.templates.manager import TemplateManager
 from tests.test_llm_client import BASE, KEY, FakeBApi, completion, thought_only
@@ -813,3 +815,58 @@ def test_a_reading_text_carries_no_evidence_numbers() -> None:
     assert without_markers("Beides gilt [1, 2] und mehr [3; 4].") == "Beides gilt und mehr."
     assert without_markers("Ohne Nummern bleibt alles.") == "Ohne Nummern bleibt alles."
     assert without_markers(f"Linsen bündeln Licht. {MODEL_KNOWLEDGE_LABEL} Mehr.") == "Linsen bündeln Licht. Mehr."
+
+
+@pytest.mark.parametrize(
+    ("answer", "kept", "cut"),
+    [
+        ("Erster Satz [1]. Zweiter Satz. [1] Dritter bricht", "Erster Satz [1]. Zweiter Satz. [1]", True),
+        ("Erster Satz.[1] Zweiter Satz.[1] Dritter bricht", "Erster Satz.[1] Zweiter Satz.[1]", True),
+        ("Erster Satz [1]. Zweiter Satz. [1]", "Erster Satz [1]. Zweiter Satz. [1]", False),
+        ("Erster Satz [1]. Zweiter Satz.[2, 3]", "Erster Satz [1]. Zweiter Satz.[2, 3]", False),
+        ("Erster Satz [1]. **Ein fetter Satz.**", "Erster Satz [1]. **Ein fetter Satz.**", False),
+        ("Erster Satz [1]. ‚Ein Zitat.‘", "Erster Satz [1]. ‚Ein Zitat.‘", False),
+        ("Erster Satz [1].\n- Punkt eins\n", "Erster Satz [1].\n- Punkt eins\n", False),
+        ("Erster Satz [1]. Geräte wie z. B.", "Erster Satz [1].", True),
+    ],
+    ids=[
+        "marker after the stop",
+        "glued marker",
+        "finished",
+        "multi-marker",
+        "bold",
+        "quote",
+        "line ended",
+        "abbreviation",
+    ],
+)
+def test_only_the_sentence_an_answer_broke_off_in_goes_and_the_citations_of_the_others_stay(
+    answer: str, kept: str, cut: bool
+) -> None:
+    """Review 2026-10-08: markers after the full stop opened the next sentence and went with it."""
+    assert without_unfinished_sentence(answer) == (kept, cut)
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        '```json\n{"text": "Das Thema ist ein Gebiet [1]."}\n```',
+        "null",
+        "42",
+        '[{"text": "Das Thema", "ab',
+        '{ "text": "Das Thema',
+        chr(0xFEFF) + '{"text": "Das Thema"}',
+    ],
+    ids=["fenced", "null", "number", "cut-off list", "cut-off object with a blank", "byte order mark"],
+)
+def test_json_in_any_form_is_no_text(answer: str) -> None:
+    assert is_json(answer)
+
+
+@pytest.mark.parametrize(
+    "answer",
+    ["[1] Das Thema ist ein Gebiet.", "{1, 2, 3} ist eine Menge.", '"Das Thema ist ein Gebiet der Physik."', "Text"],
+    ids=["opening marker", "set", "quoted text", "word"],
+)
+def test_prose_that_opens_like_json_is_text(answer: str) -> None:
+    assert not is_json(answer)

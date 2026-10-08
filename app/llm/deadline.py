@@ -30,3 +30,13 @@ class Deadline:
     def wait_s(self) -> float:
         """How long a call may wait to start (for room in the token budget) and still get ``MIN_CALL_S`` to run."""
         return max(0.0, self.remaining() - MIN_CALL_S)
+
+    def branch(self) -> Deadline:
+        """A deadline with the same end that can end on its own: the time of the work beside a request's own (D93)."""
+        branch = Deadline(0.0, self._clock)
+        branch._end = self._end
+        return branch
+
+    def expire(self) -> None:
+        """End the time now: what runs on this deadline starts no further call and no further read."""
+        self._end = self._clock()

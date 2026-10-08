@@ -34,13 +34,17 @@ LISTINGS = ("/children/collections", "/children/references")
 
 
 class ListingRepository(FakeRepository):
-    """The fixtures' repository; calls ``on_listing`` when part 3 lists the collection (part 1 never does)."""
+    """The fixtures' repository; ``on_read`` sees every read of part 3, ``on_listing`` its listings (part 1 reads
+    neither)."""
 
-    def __init__(self, on_listing: Any) -> None:
+    def __init__(self, on_listing: Any, on_read: Any = lambda: None) -> None:
         super().__init__()
-        self.on_listing = on_listing
+        self.on_listing, self.on_read = on_listing, on_read
+        self.begun: list[str] = []  # every read as it starts; ``requests`` has it once it is answered
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
+        self.begun.append(request.url.path)
+        self.on_read()
         if request.url.path.endswith(LISTINGS):
             self.on_listing()
         return super().__call__(request)
@@ -95,25 +99,38 @@ def test_part_3_is_read_from_the_start(service: CompendiumService, monkeypatch: 
 
     assert overlapped and overlapped[0], "part 3 started only after part 1"
     assert result.collection is not None and result.collection.available
-    assert result.audit.timings_ms["collection"] >= 0
+    assert "collection" in result.audit.timings_ms
 
 
-def test_a_topic_not_found_does_not_wait_for_part_3(
+def test_a_topic_not_found_neither_waits_for_part_3_nor_lets_it_read_on(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    release = threading.Event()
-    with_repository(service, monkeypatch, ListingRepository(lambda: release.wait(WAIT_S)))
+    """Review 2026-10-08: a request that failed left part 3 reading the repository (and part 2 asking the model)."""
+    part_3_reads, release = threading.Event(), threading.Event()
+    repository = ListingRepository(lambda: release.wait(WAIT_S), on_read=part_3_reads.set)
+    with_repository(service, monkeypatch, repository)
+    overlapped: list[bool] = []
+
+    def answer(body: dict[str, Any]) -> str:  # the question N, while part 3 reads
+        overlapped.append(part_3_reads.wait(WAIT_S))
+        return json.dumps({"uebersicht": "", "artikel": []})
+
+    monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(answer)))
     started = time.monotonic()
 
     with pytest.raises(TopicNotFoundError):
         service.generate(
             GenerateRequest(
-                topic="Zzyzxquark Xylophonwolke", collection_id=OPTIK, parts=["world", "collection"], preset="llm-free"
+                topic="Zzyzxquark Xylophonwolke", collection_id=OPTIK, parts=["world", "collection"], preset="balanced"
             )
         )
 
     assert time.monotonic() - started < WAIT_S, "the 404 waited for part 3 to read the collection"
+    assert overlapped and overlapped[0], "part 3 started only after part 1"
+    reads = len(repository.begun)
     release.set()
+    time.sleep(0.5)  # part 3 would read on within milliseconds
+    assert len(repository.begun) == reads, "part 3 read on after its request had failed"
 
 
 def test_the_audit_names_the_time_of_the_whole_request(service: CompendiumService) -> None:

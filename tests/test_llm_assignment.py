@@ -334,7 +334,33 @@ def test_parse_assignment_reads_a_line_per_paragraph() -> None:
         "p2": ("keiner", 1.0),
         "p3": ("praxis", 1.0),
         "p4": ("praxis", 5 / 9),
-        "p8": ("praxis", 8 / 9),
+        "p8": ("praxis", 0.85),  # a percentage
+    }
+
+
+def test_a_line_in_another_form_is_read_as_meant() -> None:
+    """Review 2026-10-08: only the first digit was read - "0.8" gave 0.0 and "10" 0.11, below the rules' paragraphs -
+    and "P12", "**p12**" or a numbered line were skipped."""
+    answer = "\n".join(
+        [
+            "p1 praxis 0.8",
+            "p2 praxis 0,8",
+            "p3 praxis 10",
+            "P4 praxis 7",
+            "**p5** praxis 9",
+            "1. p6 praxis 9",
+            "p07 x 9",
+        ]
+    )
+
+    assert parse_assignment(answer) == {
+        "p1": ("praxis", 0.8),
+        "p2": ("praxis", 0.8),
+        "p3": ("praxis", 1.0),
+        "p4": ("praxis", 7 / 9),
+        "p5": ("praxis", 1.0),
+        "p6": ("praxis", 1.0),
+        "p7": ("x", 1.0),
     }
 
 

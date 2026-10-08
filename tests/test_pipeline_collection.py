@@ -158,6 +158,12 @@ def test_the_request_deadline_stops_material_fetches(
         def remaining(self) -> float:
             return 0.0
 
+        def branch(self) -> "Spent":  # parts 2 and 3 run on this budget beside part 1 (D93)
+            return self
+
+        def expire(self) -> None:
+            pass
+
     monkeypatch.setattr("app.service.Deadline", Spent)
     result = with_collections.generate(GenerateRequest(topic="Optik", knowledge_collection_id=OPTIK, parts=["world"]))
     # Not even a page of the listing after the deadline, which still cost a request with the full client timeout;

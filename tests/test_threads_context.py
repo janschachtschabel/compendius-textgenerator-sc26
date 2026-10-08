@@ -11,7 +11,7 @@ import logging
 import threading
 import time
 from collections.abc import Callable
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import Future, ThreadPoolExecutor
 
 import pytest
 
@@ -68,6 +68,55 @@ def test_leaving_does_not_wait_for_a_job_still_running() -> None:
 
     assert time.monotonic() - started < 1.0
     release.set()
+
+
+def test_a_caller_that_fails_ends_the_time_of_its_jobs_and_one_that_succeeds_does_not() -> None:
+    ended: list[str] = []
+
+    with pytest.raises(LookupError), Beside(workers=1, on_failure=lambda: ended.append("failed")):
+        raise LookupError("Thema nicht gefunden")
+    with Beside(workers=1, on_failure=lambda: ended.append("succeeded")) as beside:
+        beside.start(lambda: 1).result()
+
+    assert ended == ["failed"]
+
+
+def test_the_error_of_a_job_a_failed_caller_dropped_is_logged_with_its_request(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Review 2026-10-08: nobody read the result of a job left running, so its error was lost."""
+    release = threading.Event()
+
+    def failing() -> None:
+        release.wait(3.0)
+        raise RuntimeError("kaputt")
+
+    def request() -> Future[None]:
+        with pytest.raises(LookupError), Beside(workers=1) as beside:
+            job = beside.start(failing)
+            raise LookupError("Thema nicht gefunden")
+        return job
+
+    caplog.handler.addFilter(_RequestIdFilter())  # the field the service's own handler adds
+    with caplog.at_level(logging.WARNING):
+        in_a_request("rid-14", request)
+        release.set()
+        waited = time.monotonic()
+        while not [r for r in caplog.records if "kaputt" in r.getMessage()] and time.monotonic() - waited < 3.0:
+            time.sleep(0.01)  # the job logs from its own thread once it ends
+
+    [record] = [record for record in caplog.records if "kaputt" in record.getMessage()]
+    assert record.request_id == "rid-14"  # type: ignore[attr-defined]
+
+
+def test_the_error_a_failed_caller_raised_itself_is_not_logged_twice(caplog: pytest.LogCaptureFixture) -> None:
+    def failing() -> None:
+        raise RuntimeError("kaputt")
+
+    with caplog.at_level(logging.WARNING), pytest.raises(RuntimeError), Beside(workers=1) as beside:
+        beside.start(failing).result()
+
+    assert not [record for record in caplog.records if "kaputt" in record.getMessage()]
 
 
 def test_an_unexpected_error_is_a_fallback_and_a_log_line_that_names_the_request(

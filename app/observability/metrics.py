@@ -26,11 +26,13 @@ HTTP_REQUESTS = Counter(
     "HTTP requests by method, route template and status",
     ["method", "route", "status"],
 )
+# Up to the longest a request may take: REQUEST_TIMEOUT_S, 300 s with openai, 600 s with academiccloud (D93)
+DURATION_BUCKETS = (0.01, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 20, 30, 60, 120, 300, 600)
 HTTP_DURATION = Histogram(
     "kompendium_http_request_duration_seconds",
     "Duration of HTTP requests by method and route template",
     ["method", "route"],
-    buckets=(0.01, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 20, 30, 60, 120),  # REQUEST_TIMEOUT_S defaults to 120
+    buckets=DURATION_BUCKETS,
 )
 COMPENDIA = Counter(
     "kompendium_compendium_requests_total",

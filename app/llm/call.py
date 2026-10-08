@@ -119,7 +119,12 @@ def budgeted_chat(
                 _heard("skipped")
                 return LlmSkipped(TIME_UP)
         answer = client.chat(
-            messages, max_output_tokens=limit, timeout_s=timeout_s, before_retry=reserve_retry, prompt=prompt
+            messages,
+            max_output_tokens=limit,
+            timeout_s=timeout_s,
+            before_retry=reserve_retry,
+            prompt=prompt,
+            request_s=deadline.remaining() if deadline is not None else None,  # how long it may queue for a slot
         )
         if answer.reached_before:
             # an attempt that reached the model before this answer may have cost its prompt too; only a call that

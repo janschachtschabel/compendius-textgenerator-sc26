@@ -16,7 +16,8 @@ import re
 import threading
 import time
 import uuid
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Iterator, Mapping, Sequence
+from contextlib import contextmanager
 from dataclasses import dataclass, replace
 from typing import Any
 
@@ -205,17 +206,21 @@ class BApiClient:
         timeout_s: float | None = None,
         before_retry: Callable[[], str | None] | None = None,
         prompt: str | None = None,
+        request_s: float | None = None,
     ) -> ChatResult:
         """One chat completion; raises ``LlmError`` when the API fails or answers in an unexpected format.
 
-        ``timeout_s`` shortens the configured timeout, e.g. to what is left of the request deadline. ``before_retry`` is
+        ``timeout_s`` shortens the configured timeout, e.g. to what is left of the request deadline. ``request_s`` is
+        the time the request of the call has left: the call may wait that long for a free call slot, less
+        ``MIN_CALL_S``, and its own time starts once it has one (D93); without it the wait counts against
+        ``timeout_s``. ``before_retry`` is
         asked before each retry after an attempt that may have reached the model; a reason instead of ``None`` ends
         the call with the attempts made (the budget has no room for another prompt, audit 2026-09-29, L1).
         ``prompt`` names the question, whose reasoning effort ``reasoning_efforts`` may set (M59).
         """
         body = self._body(messages, max_output_tokens, prompt)
         data, reached = self._request(
-            "POST", self.chat_url, json_body=body, timeout_s=timeout_s, before_retry=before_retry
+            "POST", self.chat_url, json_body=body, timeout_s=timeout_s, before_retry=before_retry, request_s=request_s
         )
         try:
             result = _parse_completion(data, self.model, "".join(str(m.get("content", "")) for m in messages))
@@ -295,15 +300,19 @@ class BApiClient:
         attempts: int | None = None,
         timeout_s: float | None = None,
         before_retry: Callable[[], str | None] | None = None,
+        request_s: float | None = None,
     ) -> tuple[Any, int]:
         """One call: attempts until an answer, all of them within one deadline; with the answer, how many attempts
         before it may have reached the model. Every retry used to get the whole
         limit again, so a call outlived the deadline of its request (audit 2026-09-27, KO-04)."""
-        ends = self._clock() + (timeout_s if timeout_s is not None else self.timeout_s)
+        now = self._clock()
+        ends = now + (timeout_s if timeout_s is not None else self.timeout_s)
+        hard_end = now + request_s if request_s is not None else None
         probe = self._admit()
         try:
             # After a break a single attempt decides whether the b-api is back
-            return self._attempts(method, url, json_body, 1 if probe else attempts or self.attempts, ends, before_retry)
+            tries = 1 if probe else attempts or self.attempts
+            return self._attempts(method, url, json_body, tries, (ends, hard_end), before_retry)
         finally:
             if probe:
                 with self._state:
@@ -315,16 +324,23 @@ class BApiClient:
         url: str,
         json_body: Mapping[str, Any] | None,
         attempts: int,
-        ends: float,
+        window: tuple[float, float | None],
         before_retry: Callable[[], str | None] | None,
     ) -> tuple[Any, int]:
+        """The attempts of one call until ``ends``; the wait for a call slot moves ``ends`` up to ``hard_end``, the end
+        of the call's request, where the caller named it (D93)."""
+        ends, hard_end = window
         last_error = ""
         status: int | None = None
         reached = 0
         for attempt in range(attempts):
             limit = ends - self._clock()
+            had = limit  # the time the attempt had for itself once it held a call slot
             try:
-                response = self._send(method, url, json_body, limit)
+                with self._slot(limit, hard_end) as (had, waited):
+                    if hard_end is not None:
+                        ends = min(ends + waited, hard_end)  # the wait was the request's time, not the call's
+                    response = self._send(method, url, json_body, had)
             except AnswerTooLargeError as exc:
                 # the model answered, so the attempt may have cost its prompt (A05)
                 raise LlmError(f"b-api antwortete mit {exc}", reached=reached + 1) from exc
@@ -335,7 +351,9 @@ class BApiClient:
             except httpx.TimeoutException as exc:
                 # A request that timed out once will not answer in time on a retry within a synchronous request.
                 reached += isinstance(exc, httpx.ReadTimeout | httpx.WriteTimeout)
-                if limit >= min(self.timeout_s, TRIP_TIMEOUT_S):
+                # Silence is an outage only where the attempt had the time: a wait in the queue that left a call 20 of
+                # its 120 s is none (D93)
+                if had >= min(self.timeout_s, TRIP_TIMEOUT_S):
                     self._trip()
                 raise LlmError(f"b-api antwortete nicht rechtzeitig ({type(exc).__name__})", reached=reached) from exc
             except httpx.HTTPError as exc:
@@ -396,26 +414,39 @@ class BApiClient:
         reason = f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, Schlüssel, Berechtigung oder Modell prüfen"
         self._trip(AUTH_SUSPEND_S, reason)
 
-    def _send(self, method: str, url: str, json_body: Mapping[str, Any] | None, limit: float) -> httpx.Response:
-        """One HTTP attempt; waiting for a free call slot counts against ``limit`` like the request itself. The answer
-        is read up to ``MAX_ANSWER_BYTES`` (``AnswerTooLargeError`` past it) and comes back read, with the headers a
-        caller looks at."""
+    @contextmanager
+    def _slot(self, limit: float, hard_end: float | None) -> Iterator[tuple[float, float]]:
+        """A free call slot for one attempt; yields the time the attempt has and how long it waited for the slot.
+
+        Without ``hard_end`` the wait counts against ``limit`` like the request itself. With it, the end of the
+        request the call belongs to, the call may wait until ``MIN_CALL_S`` before that end and then has ``limit``
+        for itself, no more than the request has left: on academiccloud's two slots the wait ate most of a call's
+        own time (D93).
+        """
         began = self._clock()  # the client's one clock: the real one mixed in drifted from an injected one
-        if not self._semaphore.acquire(timeout=limit):
+        patience = limit if hard_end is None else hard_end - began - MIN_CALL_S
+        if not self._semaphore.acquire(timeout=max(0.0, patience)):
             raise LlmError("kein freier Platz für einen b-api-Aufruf innerhalb des Zeitlimits")
         try:
-            remaining = max(1.0, limit - (self._clock() - began))
-            request = self._client.build_request(method, url, json=json_body, timeout=remaining)
-            streamed = self._client.send(request, stream=True)
-            try:
-                body = read_bounded(streamed, MAX_ANSWER_BYTES)
-            finally:
-                streamed.close()
-            # decoded already: without the headers of the transfer, which would have it decoded a second time
-            kept = {name: value for name, value in streamed.headers.items() if name.lower() in _KEPT_HEADERS}
-            return httpx.Response(streamed.status_code, headers=kept, content=body, request=request)
+            waited = self._clock() - began
+            time_left = limit - waited if hard_end is None else min(limit, hard_end - began - waited)
+            yield max(1.0, time_left), waited
         finally:
             self._semaphore.release()
+
+    def _send(self, method: str, url: str, json_body: Mapping[str, Any] | None, limit: float) -> httpx.Response:
+        """One HTTP attempt of at most ``limit`` seconds, made holding a call slot (``_slot``). The answer is read up
+        to ``MAX_ANSWER_BYTES`` (``AnswerTooLargeError`` past it) and comes back read, with the headers a caller looks
+        at."""
+        request = self._client.build_request(method, url, json=json_body, timeout=limit)
+        streamed = self._client.send(request, stream=True)
+        try:
+            body = read_bounded(streamed, MAX_ANSWER_BYTES)
+        finally:
+            streamed.close()
+        # decoded already: without the headers of the transfer, which would have it decoded a second time
+        kept = {name: value for name, value in streamed.headers.items() if name.lower() in _KEPT_HEADERS}
+        return httpx.Response(streamed.status_code, headers=kept, content=body, request=request)
 
     def _trip(self, seconds: float = BREAKER_S, reason: str = SUSPENDED_MESSAGE) -> None:
         with self._state:

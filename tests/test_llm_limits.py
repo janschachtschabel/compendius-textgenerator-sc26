@@ -16,7 +16,8 @@ import pytest
 
 from app.llm.client import BApiClient
 from app.main import build_llm
-from app.settings import Settings
+from app.observability.metrics import DURATION_BUCKETS
+from app.settings import PROVIDER_REQUEST_TIMEOUT_S, Settings
 from tests.conftest import make_settings
 from tests.test_llm_client import FakeBApi
 
@@ -53,3 +54,8 @@ def test_the_gateway_sends_as_many_calls_at_once_as_the_provider_takes(
     gateway = build_llm(settings)
 
     assert gateway is not None and gateway.client.max_concurrency == gateway.options.concurrency == 2
+
+
+def test_the_duration_histogram_reaches_the_longest_request_a_provider_allows() -> None:
+    """Review 2026-10-08: the buckets ended at 120 s, so every longer request of academiccloud counted as +Inf."""
+    assert max(DURATION_BUCKETS) >= max(PROVIDER_REQUEST_TIMEOUT_S.values())

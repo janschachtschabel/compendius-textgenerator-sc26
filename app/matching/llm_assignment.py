@@ -51,9 +51,13 @@ NONE_KEY = "keiner"
 MATCHER = "llm"
 UNKNOWN_BLOCK = "unbekannter Baustein in der Antwort"
 LEFT_OUT = "Absatz fehlt in der Antwort"
-_PARAGRAPH_ID_RE = re.compile(r"p[0-9]{1,4}")
-_LIST_MARKS = frozenset({"-", "*", "•"})
-_DIGITS = frozenset("0123456789")  # "²" is a digit to str.isdigit and none to int (audit 2026-09-28, KO-25)
+# A line "p12 fachinhalte 8" (M77); read also as "P12", "**p12**", "1. p12" or "p012", with a colon or a comma
+# between the words, and the confidence as a share, on a scale to 10 or as a percentage (review 2026-10-08). ASCII
+# digits only: "²" is a digit to str.isdigit and none to int (audit 2026-09-28, KO-25).
+_LINE_RE = re.compile(
+    r"(?:^|[\s*])p([0-9]{1,4})\**[\s:;,=]+\**([^\s:;,=*]+)\**[\s:;,=]+([0-9]{1,3}(?:[.,][0-9]+)?)(?![0-9])",
+    re.IGNORECASE,
+)
 
 
 @dataclass
@@ -116,19 +120,28 @@ def _role(chunk: Chunk, sources: Mapping[str, Source]) -> str:
 def parse_assignment(text: str) -> dict[str, tuple[str, float]] | None:
     """Block key and confidence per paragraph id; ``None`` when the answer holds neither lines nor a JSON object.
 
-    A line ``p12 fachinhalte 8`` gives paragraph, block and confidence: colons and commas count as blanks, a list mark
-    before the id is skipped, the confidence is the first digit of the third word read as a share of 9. An answer
-    without such a line is read as the JSON object of version 2, which a model may still give. Keys are compared in
-    lower case; a line or an entry of another shape is skipped.
+    A line ``p12 fachinhalte 8`` gives paragraph, block and confidence (``_LINE_RE``). An answer without such a line
+    is read as the JSON object of version 2, which a model may still give. Keys are compared in lower case; a line or
+    an entry of another shape is skipped.
     """
     parsed: dict[str, tuple[str, float]] = {}
     for line in text.splitlines():
-        words = line.replace(":", " ").replace(",", " ").split()
-        if words and words[0] in _LIST_MARKS:
-            words = words[1:]
-        if len(words) >= 3 and _PARAGRAPH_ID_RE.fullmatch(words[0]) and words[2][0] in _DIGITS:
-            parsed[words[0]] = (block_key(words[1]), int(words[2][0]) / 9)
+        found = _LINE_RE.search(line)
+        if found is not None:
+            number, key, confidence = found.groups()
+            parsed[f"p{int(number)}"] = (block_key(key), _confidence(confidence))
     return parsed or _parse_object(text)
+
+
+def _confidence(written: str) -> float:
+    """The confidence of a line as the model wrote it: a digit of the scale the prompt asks for, 0 to 9; a share like
+    0.8 or 0,8; 10 as the top of a scale to 10; a larger number as a percentage."""
+    value = float(written.replace(",", "."))
+    if "." in written or "," in written:
+        return min(1.0, value)
+    if value <= 9:
+        return value / 9
+    return 1.0 if value == 10 else min(1.0, value / 100)
 
 
 def _parse_object(text: str) -> dict[str, tuple[str, float]] | None:

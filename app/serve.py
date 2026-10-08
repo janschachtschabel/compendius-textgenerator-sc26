@@ -27,7 +27,8 @@ UVICORN = ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "
 # and the caller sees a broken connection instead of an answer. So the grace has to outlast a whole request.
 HEALTHCHECK_MARGIN_S = 60
 # After SIGTERM uvicorn lets the requests in flight finish for their budget plus this; Docker killed them after 10 s
-# (audit 2026-09-27, BE-06), and docker-compose.yml waits 150 s, longer than this with the shipped budget
+# (audit 2026-09-27, BE-06), and docker-compose.yml waits 330 s (API_STOP_GRACE_PERIOD), longer than this with
+# openai's 300 s; with academiccloud's 600 s the operator sets 630 s (D93)
 GRACEFUL_MARGIN_S = 15
 # Variables uvicorn reads itself, with the service's defaults. A value the operator sets wins; an empty entry, as a
 # panel writes one left blank, counts as none - uvicorn read WEB_CONCURRENCY= with int() and stopped (BE-13)

@@ -39,11 +39,12 @@ MIN_SECRET_CHARS = 16
 # The model the service asks when B_API_MODEL names none (D44)
 DEFAULT_B_API_MODEL = "gpt-6-luna"
 # Per provider, where LLM_MAX_CONCURRENCY and REQUEST_TIMEOUT_S name none (Jan, 2026-10-08, M75): how many LLM calls a
-# worker process sends at once, and how long a request may take. The OpenAI models take many calls at once - no step
-# asks more than 10, so 20 leaves room for part 2 beside part 1 and for requests sharing a worker; academiccloud queues
-# them on few GPUs, and with 2 at once best-coverage-generated needs about 120 s even at the speed of gpt-6-luna. Both
-# limits sit well above what a request takes, so that a slow answer does not cost the LLM steps (Jan: "damit es nicht
-# schief geht"); M75 measured 35 to 43 s for best-coverage-generated on OpenAI and once 126 s behind one slow answer.
+# worker process sends at once, and how long a request may take. The OpenAI models take many calls at once: the
+# assignment asks about 6 to 8 at once, the writing 10, the check of part 2 up to 14 for a wide topic, beside the
+# assignment (D93), and requests may share a worker; academiccloud queues them on few GPUs, and with 2 at once
+# best-coverage-generated needs about 120 s even at the speed of gpt-6-luna. Both limits sit well above what a request
+# takes, so that a slow answer does not cost the LLM steps (Jan: "damit es nicht schief geht"); M75 measured 35 to 43 s
+# for best-coverage-generated on OpenAI and once 126 s behind one slow answer.
 PROVIDER_CONCURRENCY: dict[str, int] = {"openai": 20, "academiccloud": 2}
 PROVIDER_REQUEST_TIMEOUT_S: dict[str, int] = {"openai": 300, "academiccloud": 600}
 # The questions that think otherwise than LLM_REASONING_EFFORT (M59): without the model's thinking these chose the same

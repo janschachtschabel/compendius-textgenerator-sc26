@@ -52,6 +52,12 @@ def test_a_listing_cut_short_by_the_time_budget_is_incomplete(
         def remaining(self) -> float:
             return 0.0 if any(request.url.path.endswith("/references") for request in repo.requests) else 60.0
 
+        def branch(self) -> OnePage:  # part 3 runs on this budget beside part 1 (D93)
+            return self
+
+        def expire(self) -> None:
+            pass
+
     monkeypatch.setattr("app.service.Deadline", OnePage)
     result = service.generate(GenerateRequest(collection_id=OPTIK, parts=["collection"]))
     assert result.parts_status == {"collection": "incomplete"}

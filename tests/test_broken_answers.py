@@ -57,10 +57,13 @@ def asked(fake: FakeBApi) -> int:
     return len(fake.bodies)
 
 
+REASONS = ("fallback", "fallbacks", "articles_fallback", "hits_fallback")  # where a step of audit.llm names one
+
+
 @pytest.mark.parametrize("preset", LLM_PROFILES)
-@pytest.mark.parametrize("answer", BROKEN.values(), ids=BROKEN.keys())
+@pytest.mark.parametrize(("kind", "answer"), BROKEN.items(), ids=BROKEN.keys())
 def test_a_compendium_falls_back_whatever_the_model_answers(
-    client: TestClient, monkeypatch: pytest.MonkeyPatch, preset: str, answer: str
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, preset: str, kind: str, answer: str
 ) -> None:
     fake = answering(client, monkeypatch, answer)
 
@@ -71,7 +74,12 @@ def test_a_compendium_falls_back_whatever_the_model_answers(
 
     assert reply.status_code == 200, reply.text
     assert asked(fake) > 0, "the profile asked the model nothing: the test proves nothing"
-    assert set(reply.json()["parts_status"]) == {"world", "curricula"}
+    body = reply.json()
+    assert set(body["parts_status"]) == {"world", "curricula"}
+    steps = [step for step in body["audit"]["llm"].values() if isinstance(step, dict)]
+    assert any(step.get(field) for step in steps for field in REASONS), "no step named its fallback"
+    if kind != "prose":  # a refusal in prose is text to the writer: the service does not recognise one (D93)
+        assert not body["audit"]["llm"]["generation"]["sections"], "a broken answer stood in the text as a block"
 
 
 ENDPOINTS = {
@@ -82,31 +90,38 @@ ENDPOINTS = {
     "lehrplan": ("get", "/api/v2/lehrplan/search", {"q": "Optik", "mode": "topic"}),
 }
 ASKING = [  # the profiles that ask the model there: balanced makes its pairs with the rules (D57)
-    pytest.param(*endpoint, preset, id=f"{name}-{preset}")
-    for name, endpoint in ENDPOINTS.items()
+    pytest.param(name, preset, id=f"{name}-{preset}")
+    for name in ENDPOINTS
     for preset in LLM_PROFILES
     if not (name.startswith("qa") and preset == "balanced")
 ]
 
 
+def fell_back(endpoint: str, body: dict[str, Any]) -> bool:
+    """Whether the answer of ``endpoint`` names the fallback where that endpoint reports it."""
+    if endpoint.startswith("qa"):
+        return bool(body["method"] == "rule-based")
+    if endpoint == "entities":
+        return bool(body["llm"]["fallback"])
+    choice = body["article_choice"] if endpoint == "knowledge" else body["llm"]["article_choice"]
+    check = {} if endpoint == "knowledge" else body["llm"]["curriculum_check"] or {}
+    return any(step.get(field) for step in (choice, check) for field in REASONS)
+
+
 @pytest.mark.parametrize("answer", BROKEN.values(), ids=BROKEN.keys())
-@pytest.mark.parametrize(("method", "path", "fields", "preset"), ASKING)
+@pytest.mark.parametrize(("endpoint", "preset"), ASKING)
 def test_every_other_endpoint_falls_back_whatever_the_model_answers(
-    client: TestClient,
-    monkeypatch: pytest.MonkeyPatch,
-    answer: str,
-    method: str,
-    path: str,
-    fields: dict[str, Any],
-    preset: str,
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, answer: str, endpoint: str, preset: str
 ) -> None:
     fake = answering(client, monkeypatch, answer)
+    method, path, fields = ENDPOINTS[endpoint]
     sent = {**fields, "preset": preset}
 
     reply = client.get(path, params=sent) if method == "get" else client.post(path, json=sent)
 
     assert reply.status_code == 200, reply.text
     assert asked(fake) > 0, "the profile asked the model nothing: the test proves nothing"
+    assert fell_back(endpoint, reply.json()), "the answer named no fallback"
 
 
 def test_a_compendium_names_the_blocks_the_output_limit_cut(
