@@ -160,7 +160,7 @@ def test_with_plain_logs_uvicorn_s_own_process_writes_the_service_s_lines(
     logging.getLogger("uvicorn.error").warning("Child process [%d] died", 7)
 
     [line] = capsys.readouterr().err.splitlines()
-    assert line.split(" | ")[1:] == ["WARNING ", "uvicorn.error", "-", "Child process [7] died"]
+    assert line.split(" | ")[1:] == ["WARNING ", str(os.getpid()), "uvicorn.error", "-", "Child process [7] died"]
 
 
 @pytest.mark.parametrize("log_format", ["text", "json"])

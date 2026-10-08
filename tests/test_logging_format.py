@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import sys
 from logging.config import dictConfig
 
@@ -60,7 +61,7 @@ def test_log_lines_go_to_stderr_so_a_report_on_stdout_stays_readable(
     assert json.loads(written.out) == {"report": 1} and "Probe 3" in written.err
 
 
-def test_a_json_line_names_time_level_logger_request_and_message(
+def test_a_json_line_names_time_level_process_logger_request_and_message(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     configured(monkeypatch, "json")
@@ -69,8 +70,9 @@ def test_a_json_line_names_time_level_logger_request_and_message(
     [line] = lines_with("Probe", capsys)
     event = json.loads(line)
 
-    assert {key: event[key] for key in ("level", "logger", "request_id", "message")} == {
+    assert {key: event[key] for key in ("level", "pid", "logger", "request_id", "message")} == {
         "level": "WARNING",
+        "pid": os.getpid(),
         "logger": "app.probe",
         "request_id": "rid-15",
         "message": "Probe 1",
@@ -126,7 +128,13 @@ def test_uvicorn_s_lines_name_time_logger_and_request_in_the_plain_format_too(
 
     [line] = lines_with('"GET /x HTTP/1.1"', capsys)
 
-    assert line.split(" | ")[1:] == ["INFO    ", "uvicorn.access", "rid-21", '172.18.0.1:4711 - "GET /x HTTP/1.1" 401']
+    assert line.split(" | ")[1:] == [
+        "INFO    ",
+        str(os.getpid()),
+        "uvicorn.access",
+        "rid-21",
+        '172.18.0.1:4711 - "GET /x HTTP/1.1" 401',
+    ]
 
 
 def test_at_debug_the_transport_of_the_http_client_stays_quiet(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -140,12 +148,14 @@ def test_at_debug_the_transport_of_the_http_client_stays_quiet(monkeypatch: pyte
 
 
 def test_the_plain_line_stays_the_default(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    """The process is named: with two workers their lines interleave, and uvicorn names a worker that died by its pid
+    (logging review of 2026-10-08)."""
     configured(monkeypatch)
     logging.getLogger("app.probe").info("Probe 2")
 
     [line] = lines_with("Probe 2", capsys)
 
-    assert line.split(" | ")[1:] == ["INFO    ", "app.probe", "-", "Probe 2"]
+    assert line.split(" | ")[1:] == ["INFO    ", str(os.getpid()), "app.probe", "-", "Probe 2"]
 
 
 @pytest.mark.parametrize(("value", "expected"), [(None, "text"), ("", "text"), ("json", "json")])

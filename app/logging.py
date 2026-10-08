@@ -22,7 +22,9 @@ from contextvars import ContextVar
 from datetime import UTC, datetime
 from typing import Any
 
-_FORMAT = "%(asctime)s | %(levelname)-8s | %(name)s | %(request_id)s | %(message)s"
+# The process: with two workers their lines interleave, and uvicorn names a worker that died by its pid (logging
+# review of 2026-10-08)
+_FORMAT = "%(asctime)s | %(levelname)-8s | %(process)d | %(name)s | %(request_id)s | %(message)s"
 
 REQUEST_ID_HEADER = "X-Request-ID"
 MAX_REQUEST_ID_CHARS = 64  # a header is caller input; a log line must stay readable
@@ -74,6 +76,7 @@ class _JsonFormatter(logging.Formatter):
         event = {
             "time": moment.replace("+00:00", "Z"),
             "level": record.levelname,
+            "pid": record.process,
             "logger": record.name,
             "request_id": getattr(record, "request_id", NO_REQUEST),
             "message": record.getMessage(),
