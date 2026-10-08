@@ -121,6 +121,8 @@ def cmd_sync(args: argparse.Namespace) -> int:
             poll_s=POLL_SECONDS,
             trigger_file=trigger,
             alive=partial(mark_alive, Path(settings.zim_dir) / ALIVE_FILE),
+            name="ZIM-Sync",
+            expected=(SyncRunningError,),  # another run holds the lock: one WARNING (logging review)
         )
     except KeyboardInterrupt:
         log.info("Sync-Schleife beendet.")

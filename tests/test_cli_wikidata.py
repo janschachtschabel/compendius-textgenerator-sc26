@@ -185,9 +185,7 @@ def test_in_the_loop_the_sync_reports_in_log_records(
     tasks[0]()  # finds it current
 
     messages = [record.getMessage() for record in caplog.records if record.name == "app.cli_wikidata"]
-    assert messages[0].startswith("Wikidata-Index wird gebaut") and messages[-1].startswith(
-        "Wikidata-Index ist aktuell"
-    )
+    assert messages[0].startswith("Wikidata-Index fällig") and messages[-1].startswith("Wikidata-Index ist aktuell")
 
 
 def test_in_the_loop_a_dump_site_without_a_finished_run_is_asked_again_soon(

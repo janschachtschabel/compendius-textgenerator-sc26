@@ -77,7 +77,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
         if reason is None:
             say("GND-Index ist aktuell: vorhanden und aus der neuesten Ausgabe der DNB")
             return
-        say(f"GND-Index wird gebaut ({REASONS.get(reason, reason)}): zwei Abzüge der DNB laden, rund 65 MB")
+        say(f"GND-Index fällig ({REASONS.get(reason, reason)}): zwei Abzüge der DNB laden, rund 65 MB")
         meta = sync.run(reason)
         say(f"GND-Index {sync.index_path}: {_describe(meta)}")
 

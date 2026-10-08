@@ -74,6 +74,8 @@ def run_periodically(
     clock: Callable[[], float] = time.monotonic,
     sleep: Callable[[float], None] = time.sleep,
     alive: Callable[[], None] | None = None,
+    name: str = "job",
+    expected: tuple[type[Exception], ...] = (),
 ) -> None:
     """Run ``task`` now and then every ``interval``; a trigger file runs it early and is removed.
 
@@ -83,6 +85,10 @@ def run_periodically(
     retired archive may go (audit 2026-09-28, BE-12). ``alive`` is called when the loop starts and at least every
     ``ALIVE_EVERY`` while it waits; one that fails is logged and tried again an hour later. The loop returns once
     ``stop`` is set.
+
+    A failure names the job (``name``). One of the ``expected`` kinds - a source not reachable, a lock another run
+    holds - is one WARNING with its cause; any other is logged with its traceback. Every failure was "job failed" with
+    a traceback: 24 ERROR tracebacks a day of an outage at MEM or the DNB (logging review of 2026-10-08).
     """
     stop = stop or threading.Event()
     next_run = next_alive = clock()
@@ -107,9 +113,12 @@ def run_periodically(
                     wait = min(interval, max(result, timedelta(0)))
                 else:
                     wait = interval
+            except expected as exc:
+                wait = early
+                log.warning("%s did not run: %s: %s; next attempt in %s", name, type(exc).__name__, exc, wait)
             except Exception:
                 wait = early
-                log.exception("job failed; next attempt in %s", wait)
+                log.exception("%s failed; next attempt in %s", name, wait)
             next_run = clock() + wait.total_seconds()
         if stop.is_set():
             break

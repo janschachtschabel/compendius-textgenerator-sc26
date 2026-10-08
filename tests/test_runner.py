@@ -200,3 +200,42 @@ def test_a_sign_of_life_that_cannot_be_written_stops_nothing() -> None:
     run_periodically(task, timedelta(hours=2), poll_s=600, stop=stop, clock=clock, sleep=clock.sleep, alive=alive)
 
     assert runs == [1000.0, 8200.0]
+
+
+def test_a_failure_names_the_job_and_an_expected_one_comes_without_a_traceback(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Every failure was "job failed; next attempt in 1:00:00" with a traceback, also a source that was not reachable
+    or a lock another run held: 24 ERROR tracebacks a day of an outage at MEM or the DNB, without the job or the cause
+    in the message (logging review of 2026-10-08)."""
+    clock = FakeClock()
+    stop = threading.Event()
+    errors = iter([ConnectionError("MEM nicht erreichbar"), RuntimeError("kaputt")])
+
+    def task() -> None:
+        error = next(errors, None)
+        if error is None:
+            stop.set()
+            return
+        raise error
+
+    with caplog.at_level("INFO", logger="app.jobs.runner"):
+        run_periodically(
+            task,
+            timedelta(seconds=1000),
+            retry_after=timedelta(seconds=30),
+            poll_s=10,
+            stop=stop,
+            clock=clock,
+            sleep=clock.sleep,
+            name="Lehrplan-Harvest",
+            expected=(ConnectionError,),
+        )
+
+    expected, unexpected = [record for record in caplog.records if record.name == "app.jobs.runner"]
+    assert expected.levelname == "WARNING" and expected.exc_info is None
+    assert expected.getMessage() == (
+        "Lehrplan-Harvest did not run: ConnectionError: MEM nicht erreichbar; next attempt in 0:00:30"
+    )
+    assert unexpected.levelname == "ERROR" and unexpected.exc_info is not None
+    assert unexpected.getMessage() == "Lehrplan-Harvest failed; next attempt in 0:00:30"

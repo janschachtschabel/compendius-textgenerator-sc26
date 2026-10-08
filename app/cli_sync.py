@@ -32,6 +32,9 @@ RETRY_AFTER_FAILURE = timedelta(hours=1)
 SYNC_ERRORS = (ReleaseNotFoundError, DownloadError, LockHeldError, httpx.HTTPError, OSError, EOFError, zlib.error,
                ValueError, sqlite3.Error)  # fmt: skip
 BUILD_ERRORS = (OSError, EOFError, zlib.error, ValueError, sqlite3.Error)
+# What a loop expects to meet now and then - the source not reachable, a download cut short, another run holding the
+# lock, a release not out yet: one WARNING with the cause, no traceback (logging review of 2026-10-08)
+EXPECTED = (httpx.HTTPError, TransferError, LockHeldError, ReleaseNotFoundError)
 
 
 def fails_again(exc: BaseException) -> bool:
@@ -68,6 +71,8 @@ def run_sync(task: Callable[[], None], *, loop: bool, interval: str, name: str, 
                 retry_after=RETRY_AFTER_FAILURE,
                 poll_s=POLL_SECONDS,
                 alive=partial(mark_alive, alive),
+                name=name,
+                expected=EXPECTED,
             )
         except KeyboardInterrupt:  # Ctrl+C or a container stop; a run has written its status
             log.info("%s: Schleife beendet.", name)

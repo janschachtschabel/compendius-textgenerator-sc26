@@ -74,7 +74,7 @@ def cmd_sync(args: argparse.Namespace) -> int:
         if reason is None:
             say("Wikidata-Index ist aktuell: vorhanden, und kein neueres Wikipedia-Archiv braucht einen neueren Dump")
             return
-        say(f"Wikidata-Index wird gebaut ({REASONS.get(reason, reason)}): drei Dumps laden, rund 750 MB")
+        say(f"Wikidata-Index fällig ({REASONS.get(reason, reason)}): drei Dumps laden, rund 750 MB")
         meta = sync.run(reason)
         say(f"Wikidata-Index {sync.index_path}: {meta['articles']} Artikel, Dump vom {meta['dump'] or '?'}")
 

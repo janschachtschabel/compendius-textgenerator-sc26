@@ -12,6 +12,8 @@ from datetime import timedelta
 from functools import partial
 from pathlib import Path
 
+import httpx
+
 from app.jobs.runner import mark_alive, parse_interval, run_periodically, stop_on_sigterm
 from app.settings import Settings, get_settings
 from app.sources.lehrplan.harvest import (
@@ -132,6 +134,9 @@ def cmd_harvest(args: argparse.Namespace) -> int:
                 poll_s=POLL_SECONDS,
                 trigger_file=Path(settings.state_dir) / TRIGGER_FILE,
                 alive=partial(mark_alive, Path(settings.state_dir) / ALIVE_FILE),
+                name="Lehrplan-Harvest",
+                # MEM not reachable or another run under way: one WARNING with the cause (logging review)
+                expected=(SparqlError, HarvestRunningError, httpx.HTTPError),
             )
         except KeyboardInterrupt:  # Ctrl+C or a container stop; the harvest has written its status
             log.info("Harvest-Schleife beendet.")
