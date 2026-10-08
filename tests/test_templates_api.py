@@ -207,7 +207,9 @@ def test_if_match_star_writes_only_over_a_template_there_is(client: TestClient) 
     assert first.status_code == 412 and again.status_code == 200
 
 
-@pytest.mark.parametrize(("tags", "status"), [('W/"1"', 412), ("1", 412), ('"eins"', 412), ('"7", "1"', 200)])
+@pytest.mark.parametrize(
+    ("tags", "status"), [('W/"1"', 412), ("1", 412), ('"eins"', 412), ('"7", "1"', 200), ('"01"', 412)]
+)
 def test_if_match_compares_strong_tags_only(client: TestClient, tags: str, status: int) -> None:
     """RFC 9110: If-Match takes the strong comparison - a weak tag never matches; a list matches by any of its tags."""
     client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
@@ -215,3 +217,54 @@ def test_if_match_compares_strong_tags_only(client: TestClient, tags: str, statu
     answer = client.put("/api/v2/templates/mein", json=TEMPLATE, headers={**AUTH, "If-Match": tags})
 
     assert answer.status_code == status
+
+
+def test_a_template_made_again_after_a_delete_counts_its_version_on(client: TestClient) -> None:
+    """The version, which is the ETag, began again after a delete: a draft read before the delete matched the template
+    made anew and overwrote it (review of 2026-10-08)."""
+    client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
+    read = client.get("/api/v2/templates/mein")
+    client.delete("/api/v2/templates/mein", headers=AUTH)
+
+    anew = client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
+    stale = client.put("/api/v2/templates/mein", json=TEMPLATE, headers={**AUTH, "If-Match": read.headers["ETag"]})
+
+    assert anew.headers["ETag"] == '"2"' and stale.status_code == 412
+
+
+def test_the_version_of_a_new_template_is_the_services(client: TestClient) -> None:
+    """A version in the body of a new template was kept: one of 10,000,000,000 had an ETag If-Match never matched."""
+    answer = client.put("/api/v2/templates/mein", json={**TEMPLATE, "version": 10_000_000_000}, headers=AUTH)
+
+    assert answer.json()["version"] == 1 and answer.headers["ETag"] == '"1"'
+
+
+def test_if_match_over_several_header_lines_matches_by_any_of_them(client: TestClient) -> None:
+    client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
+
+    answer = client.put(
+        "/api/v2/templates/mein", json=TEMPLATE, headers=[*AUTH.items(), ("If-Match", '"99"'), ("If-Match", '"1"')]
+    )
+
+    assert answer.status_code == 200
+
+
+def test_a_delete_with_if_match_goes_through_only_over_that_version(client: TestClient) -> None:
+    """RFC 9110: a server evaluates If-Match before the method, a DELETE too; it deleted a newer edit (review of
+    2026-10-08)."""
+    client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)
+    client.put("/api/v2/templates/mein", json=TEMPLATE, headers=AUTH)  # version 2
+
+    stale = client.delete("/api/v2/templates/mein", headers={**AUTH, "If-Match": '"1"'})
+    current = client.delete("/api/v2/templates/mein", headers={**AUTH, "If-Match": '"2"'})
+
+    assert stale.status_code == 412 and "Version 2" in stale.json()["detail"]
+    assert current.status_code == 204 and client.get("/api/v2/templates/mein").status_code == 404
+
+
+def test_the_openapi_document_names_the_etag_of_a_template(client: TestClient) -> None:
+    paths = client.get("/openapi.json").json()["paths"]["/api/v2/templates/{template_id}"]
+
+    assert "ETag" in paths["get"]["responses"]["200"]["headers"]
+    assert "ETag" in paths["put"]["responses"]["200"]["headers"]
+    assert any(parameter["name"] == "if-match" for parameter in paths["delete"]["parameters"])

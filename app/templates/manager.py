@@ -118,6 +118,21 @@ def _stored_version(path: Path) -> int | None:
     return version if type(version) is int else None
 
 
+def _deleted_path(directory: Path, template_id: str) -> Path:
+    """Where the last version of a template deleted under ``template_id`` is kept (``_deleted_version``); no
+    ``*.json``, so no template is read from it."""
+    return directory / f".{template_id}.deleted"
+
+
+def _deleted_version(path: Path) -> int:
+    """The last version of the template deleted under an id, kept at ``path``, or 0. A template made anew counts on
+    from it: begun again at 1, a draft read before the delete matched it with If-Match (review of 2026-10-08)."""
+    try:
+        return int(path.read_text(encoding="utf-8").strip())
+    except (OSError, ValueError):
+        return 0
+
+
 def _write_whole(path: Path, text: str) -> None:
     """Put ``text`` at ``path`` in one step: a temporary file in the same directory, on the disk before it is renamed
     over the target. A write that fails leaves the old file as it was."""
@@ -201,8 +216,9 @@ class TemplateManager:
         raise TemplateNotFoundError(template_id)
 
     def save(self, template: Template, expected: Expected | None = None) -> Template:
-        """Store ``template`` as a custom one, its version one up. With ``expected`` only over that stored version:
-        compared under the same lock as the write, so no write can come between (F09)."""
+        """Store ``template`` as a custom one, its version one up; a new one counts on from one deleted under its id,
+        whatever version its body names. With ``expected`` only over that stored version: compared under the same
+        lock as the write, so no write can come between (F09)."""
         if self.custom_dir is None:
             raise RuntimeError("no custom template directory configured")
         if template.id in self._builtin:
@@ -213,13 +229,17 @@ class TemplateManager:
             current = _stored_version(path)
             if expected is not None and not expected.met_by(current):
                 raise VersionConflictError(template.id, current)
-            version = current + 1 if current is not None else max(template.version, 1)
+            version = (
+                current if current is not None else _deleted_version(_deleted_path(self.custom_dir, template.id))
+            ) + 1
             stored = template.model_copy(update={"version": version, "builtin": False})
             _write_whole(path, stored.model_dump_json(indent=2, exclude={"builtin"}))
         self._custom_cache = None  # this worker reads its own save at once
         return stored
 
-    def delete(self, template_id: str) -> bool:
+    def delete(self, template_id: str, expected: Expected | None = None) -> bool:
+        """Delete a custom template; with ``expected`` only in that stored version, compared under the lock (F09).
+        Its last version stays behind for a template made anew under its id (``_deleted_version``)."""
         if template_id in self._builtin:
             raise ValueError(f"built-in template '{template_id}' cannot be deleted")
         if self.custom_dir is None or not _TEMPLATE_ID.fullmatch(template_id):  # no file outside custom_dir (SE-09)
@@ -228,9 +248,14 @@ class TemplateManager:
         if not path.exists():
             return False
         with _locked(self.custom_dir):
+            current = _stored_version(path)
+            if expected is not None and not expected.met_by(current):
+                raise VersionConflictError(template_id, current)
             try:
                 path.unlink()
             except FileNotFoundError:  # deleted by another process meanwhile
                 return False
+            if current is not None:
+                _write_whole(_deleted_path(self.custom_dir, template_id), str(current))
         self._custom_cache = None
         return True

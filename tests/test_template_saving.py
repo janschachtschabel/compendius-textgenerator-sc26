@@ -23,7 +23,7 @@ import pytest
 
 from app.locks import LockHeldError
 from app.templates import manager as manager_module
-from app.templates.manager import TemplateManager, TemplateNotFoundError
+from app.templates.manager import Expected, TemplateManager, TemplateNotFoundError, VersionConflictError
 from app.templates.schema import Template, TemplateSlot
 
 WhileWriting = Callable[[str, Callable[[], None]], None]
@@ -131,6 +131,40 @@ def test_two_saves_at_once_count_to_different_versions(tmp_path: Path, while_wri
     last = max(versions, key=versions.__getitem__)
     stored = TemplateManager(custom_dir=tmp_path).get("mein")
     assert (stored.name, stored.version) == (last, 3)
+
+
+def test_two_saves_over_the_same_version_at_once_store_one(tmp_path: Path, while_writing: WhileWriting) -> None:
+    """If-Match (F09) is compared under the lock of the write: two editors who read version 1 and save at once, the
+    second while the first one writes, store one edit and refuse the other (review of 2026-10-08)."""
+    TemplateManager(custom_dir=tmp_path).save(template("Start"))  # version 1
+    first, second = TemplateManager(custom_dir=tmp_path), TemplateManager(custom_dir=tmp_path)
+    paused, resume = threading.Event(), threading.Event()
+
+    def hold() -> None:
+        paused.set()
+        resume.wait(10)
+
+    while_writing('"name": "Eins"', hold)
+    outcome: dict[str, object] = {}
+
+    def save(manager: TemplateManager, name: str) -> None:
+        try:
+            outcome[name] = manager.save(template(name), Expected(versions=frozenset({1}))).version
+        except VersionConflictError as exc:
+            outcome[name] = exc
+
+    one = threading.Thread(target=save, args=(first, "Eins"))
+    two = threading.Thread(target=save, args=(second, "Zwei"))
+    one.start()
+    assert paused.wait(10), "the first save reached its write"
+    two.start()
+    two.join(0.5)
+    resume.set()
+    one.join(10)
+    two.join(10)
+
+    assert outcome["Eins"] == 2 and isinstance(outcome["Zwei"], VersionConflictError)
+    assert TemplateManager(custom_dir=tmp_path).get("mein").name == "Eins"
 
 
 def test_another_worker_notices_a_save_within_the_same_clock_tick(tmp_path: Path) -> None:

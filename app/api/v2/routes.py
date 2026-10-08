@@ -20,6 +20,7 @@ from app.api.limits import rate_limited
 from app.api.responses import ADMIN_REFUSALS, PROFILE_REFUSALS, refusals
 from app.api.v2.routes_examples import (
     BUILTIN_TEMPLATES,
+    ETAG_HEADER,
     EXAMPLES,
     IF_MATCH_HELP,
     TEMPLATE_EXAMPLES,
@@ -157,7 +158,9 @@ def generate_compendium(
     return compendium
 
 
-_STRONG_TAG = re.compile(r'"([0-9]{1,9})"')
+# The tags this service gives: a version as a decimal without leading zeros, so "01" is no "1", as RFC 9110 compares
+# character by character; at most 18 digits, which int() reads at once (review of 2026-10-08)
+_STRONG_TAG = re.compile(r'"(0|[1-9][0-9]{0,17})"')
 
 
 def _etag(version: int) -> str:
@@ -165,28 +168,33 @@ def _etag(version: int) -> str:
     return f'"{version}"'
 
 
-def _expected(if_match: str | None) -> Expected | None:
+def _expected(if_match: list[str] | None) -> Expected | None:
     """What If-Match asks the stored template to be. RFC 9110 compares strongly: a weak tag never matches, and a tag
-    that names no version is none; a list matches by any of its tags."""
+    that names no version is none; a list matches by any of its tags, over one header line or several."""
     if if_match is None:
         return None
-    tags = [tag.strip() for tag in if_match.split(",")]
+    tags = [tag.strip() for line in if_match for tag in line.split(",")]
     if "*" in tags:
         return Expected(any_version=True)
     return Expected(versions=frozenset(int(found[1]) for tag in tags if (found := _STRONG_TAG.fullmatch(tag))))
 
 
-@admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409))
+@admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409, 412))
 def delete_template(
-    template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)], request: Request
+    template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)],
+    request: Request,
+    if_match: Annotated[list[str] | None, Header(description=IF_MATCH_HELP)] = None,
 ) -> None:
     """Delete a custom template (204).
 
     Built-in templates ship with the image and are refused (409); an unknown id is a 404. A compendium
-    request naming the deleted id answers 404 from then on, so check what still uses it first.
+    request naming the deleted id answers 404 from then on, so check what still uses it first. With ``If-Match``
+    only the version it names goes (412 otherwise), as RFC 9110 asks of every method (review of 2026-10-08).
     """
     try:
-        removed = request.app.state.templates.delete(template_id)
+        removed = request.app.state.templates.delete(template_id, _expected(if_match))
+    except VersionConflictError as exc:
+        raise HTTPException(status_code=412, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     if not removed:
@@ -215,7 +223,7 @@ def list_templates(request: Request) -> list[dict[str, Any]]:
     ]
 
 
-@router.get("/templates/{template_id}", responses=refusals(404))
+@router.get("/templates/{template_id}", responses={**refusals(404), 200: {"headers": {"ETag": ETAG_HEADER}}})
 def get_template(
     template_id: Annotated[
         str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP, openapi_examples=BUILTIN_TEMPLATES)
@@ -235,13 +243,17 @@ def get_template(
     return data
 
 
-@admin.put("/templates/{template_id}", summary="Template anlegen oder ersetzen", responses=refusals(409, 412, 413, 422))
+@admin.put(
+    "/templates/{template_id}",
+    summary="Template anlegen oder ersetzen",
+    responses={**refusals(409, 412, 413, 422), 200: {"headers": {"ETag": ETAG_HEADER}}},
+)
 def put_template(
     template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)],
     payload: Annotated[Template, Body(openapi_examples=TEMPLATE_EXAMPLES)],
     request: Request,
     response: Response,
-    if_match: Annotated[str | None, Header(description=IF_MATCH_HELP)] = None,
+    if_match: Annotated[list[str] | None, Header(description=IF_MATCH_HELP)] = None,
 ) -> dict[str, Any]:
     """Store a custom template under this id; the version counts up on every write.
 

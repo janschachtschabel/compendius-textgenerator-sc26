@@ -303,6 +303,10 @@ TEMPLATE_ID_HELP = (
     "a textbook) ship with the image and are read-only; a custom one has the id it was saved under - letters, "
     "digits, underscore and hyphen, up to 80 characters. GET /api/v2/templates lists them; an unknown one is a 404"
 )
+ETAG_HEADER: dict[str, Any] = {
+    "description": 'The version of the template as a strong entity tag, e.g. "3", for If-Match of the next write',
+    "schema": {"type": "string"},
+}
 IF_MATCH_HELP = (
     'The ETag of the read the change starts from, e.g. "3": the write goes through only over that version; "*" only '
     "over a template there is. Without the header the last write wins."
