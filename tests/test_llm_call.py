@@ -249,3 +249,20 @@ def test_a_call_the_breaker_held_back_writes_no_warning_of_its_own(caplog: pytes
     assert isinstance(skipped, LlmSkipped) and "ausgesetzt" in skipped.reason
     [record] = [record for record in caplog.records if "Baustein b" in record.getMessage()]
     assert record.levelno == logging.DEBUG
+
+
+def test_qa_pairs_skipped_for_time_write_no_warning(caplog: pytest.LogCaptureFixture) -> None:
+    """One QA call that failed was logged three times - by the call, by the QA writer, as the fallback of the request -
+    and a skip for time or budget only here, as a WARNING (logging review of 2026-10-08). The call logs a failure of
+    the b-api, the request its fallback."""
+    from app.synthesis import qa
+
+    client, _ = make_client(FakeBApi())
+    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    deadline = Deadline(0.0)
+
+    with caplog.at_level(logging.DEBUG):
+        skipped = qa.LlmQaWriter(client).pairs("Text", count=3, max_answer_length=300, budget=budget, deadline=deadline)
+
+    assert isinstance(skipped, LlmSkipped) and skipped.reason == TIME_UP
+    assert [record for record in caplog.records if record.levelno >= logging.WARNING] == []

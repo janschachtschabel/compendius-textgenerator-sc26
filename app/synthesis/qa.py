@@ -9,7 +9,6 @@ unusable answer falls back to the templates.
 
 from __future__ import annotations
 
-import logging
 import re
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
@@ -24,8 +23,6 @@ from app.llm.prompts import get_prompt
 from app.llm.usage import Usage
 from app.prose import split_sentences
 from app.synthesis.citations import neutralize
-
-log = logging.getLogger(__name__)
 
 MIN_SENTENCE_CHARS = 30
 MAX_FOCUS_TERMS = 12  # keywords of a material named as the focus of the pairs
@@ -179,7 +176,7 @@ class LlmQaWriter:
         if usage is not None:
             usage.count(answer, prompt.tag)
         if isinstance(answer, LlmSkipped):
-            log.warning("QA pairs from the LLM skipped: %s", answer.reason)
+            # Not logged here: the call logs a failure of the b-api, the request its fallback (logging review)
             return answer
         pairs = parse_pairs(
             answer.text,
