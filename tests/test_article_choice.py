@@ -15,6 +15,7 @@ from app.domain.models import ArticleSection, Paragraph, Source
 from app.domain.requests import GenerateRequest
 from app.knowledge.article_choice import (
     NAMED_TITLE_MISSING,
+    NO_NOTES,
     UNREADABLE,
     ArticleChoiceJob,
     ArticleChoiceReport,
@@ -193,6 +194,16 @@ def test_an_unreadable_hit_check_keeps_every_hit() -> None:
     corpus = [source("Optik", "primary"), source("Kernwaffe", "search")]
     gone, report = check_hits(ArticleChoiceJob(gateway.client, gateway.open_budget()), "Optik", corpus)
     assert gone == set() and report.fallback == UNREADABLE and report.calls == 1 and not report.answered
+
+
+@pytest.mark.parametrize("answer", ["{}", '{"zzz": 1, "p999": ["praxis", 0.8]}'], ids=["empty", "other keys"])
+def test_a_hit_check_answer_that_rates_no_article_is_a_fallback_not_a_decision(answer: str) -> None:
+    """2026-10-08: an object without a note for any article counted as the model keeping every hit, and the article
+    choice reported the LLM as used; the curriculum check counts such elements as left out."""
+    gateway = make_gateway(FakeBApi(answering(answer)))
+    corpus = [source("Optik", "primary"), source("Kernwaffe", "search")]
+    gone, report = check_hits(ArticleChoiceJob(gateway.client, gateway.open_budget()), "Optik", corpus)
+    assert gone == set() and report.fallback == NO_NOTES and report.calls == 1 and not report.answered
 
 
 def test_a_named_title_the_archive_lacks_is_the_reason_even_when_the_hit_check_answered() -> None:

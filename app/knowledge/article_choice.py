@@ -53,6 +53,7 @@ OUTPUT_TOKENS = 60
 NO_SUBJECT = "nicht angegeben"
 UNREADABLE = "Antwort nicht lesbar"
 INVALID_NUMBER = "Antwort ohne gültige Nummer"
+NO_NOTES = "Antwort ohne Note für einen Artikel"  # an object, but none of its keys names a listed article
 NAMED_TITLE_MISSING = "genannter Titel ist kein Artikel des Archivs"
 CHECKED_ORIGINS = frozenset({"search", "linked"})  # the side articles the hit check may drop (M25)
 HIT_OPENING_CHARS = 180  # as the M8 judge saw each article
@@ -200,7 +201,12 @@ def rate_articles(
     if notes is None:
         report.fallback = UNREADABLE
         return None
-    return {s.source_id: read_number(notes.get(a)) for a, s in alias.items()}
+    rated = {s.source_id: read_number(notes.get(a)) for a, s in alias.items()}
+    if not any(note in (0, 1, 2) for note in rated.values()):
+        # nothing decided: it kept every hit, as the rules do, and must not count as the model's choice (2026-10-08)
+        report.fallback = NO_NOTES
+        return None
+    return rated
 
 
 def choice_used(
