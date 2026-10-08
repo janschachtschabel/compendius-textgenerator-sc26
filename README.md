@@ -132,6 +132,12 @@ Abschnittsmarker von Teil 1.
   Überschrift heißt „Grundlagen (Kernphysik)“ (M71). Ohne KI findet eine Frage ihren Artikel über ihre Stichwörter
   (M73). Antworten von edu-sharing und b-api liest der Dienst nur bis zu einer Größe (F12). Gemessen und nicht gebaut:
   eine Passungsprüfung der Artikel, die die KI nennt (M72), ein Filter wiederholter Absätze in Materialtexten (M74).
+- Zeit, Tokens und kaputte Antworten (D93, Release 2.14.0): Gleichzeitige LLM-Aufrufe und Frist je Anfrage richten
+  sich nach dem Anbieter (OpenAI 20 und 300 s, academiccloud 2 und 600 s; `LLM_MAX_CONCURRENCY` und
+  `REQUEST_TIMEOUT_S` überschreiben). Teil 2 und Teil 3 entstehen neben Teil 1, und die KI-Zuordnung antwortet in
+  Zeilen statt in JSON (M77): `best-quality` braucht rund 5 s, `best-quality-generated` rund 4 s weniger (M78). Beim
+  Schreiben gilt JSON nicht als Text, und ein Satz, den das Ausgabelimit abschnitt, fällt weg. Gemessen und nicht
+  gebaut: ein Deckel für die KI-Prüfung von Teil 2 (M76: er strich nur bestätigte Lehrplanbezüge).
 
 ## Installation
 
@@ -1034,7 +1040,7 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | `LLM_VERBOSITY` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Bekannt sind `low`, `medium` und `high`; bei einem anderen Wert warnt der Start |
 | `LLM_TEMPERATURE` | `0.2` | Nur klassische Modelle; Reasoning-Modelle nutzen stattdessen die beiden Zeilen darüber |
 | `LLM_TIMEOUT_S` | `120` | Frist je einzelnem LLM-Aufruf |
-| `LLM_MAX_CONCURRENCY` | leer: je Anbieter, `openai` 20, `academiccloud` 2 | Gleichzeitige LLM-Aufrufe je Worker-Prozess (bei zwei Workern doppelt so viele); kein Schritt stellt mehr als 10 zugleich, mehr Plätze helfen, wenn Teil 2 neben Teil 1 läuft oder sich Anfragen einen Worker teilen (M75). Ein gesetzter Wert gilt für jeden Anbieter |
+| `LLM_MAX_CONCURRENCY` | leer: je Anbieter, `openai` 20, `academiccloud` 2 | Gleichzeitige LLM-Aufrufe je Worker-Prozess (bei zwei Workern doppelt so viele); die Zuordnung stellt etwa 6 bis 8 zugleich, das Schreiben 10, die Prüfung von Teil 2 bei breiten Themen bis 14 neben der Zuordnung, und Anfragen können sich einen Worker teilen (M75, D93). Ein gesetzter Wert gilt für jeden Anbieter |
 | `LLM_ATTEMPTS` | `3` | Versuche je Aufruf, bevor aufgegeben wird |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Anfrage in den Profilen `llm-free` und `balanced` (ein Kompendium; bei `/qa` Teil 1 und die Paare zusammen). Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500, `matcher=llm` bis rund 46.000 (M14). Parallele Aufrufe reservieren vorab ihren Höchstbedarf; was nicht mehr hineinpasst, wartet auf die laufenden (D39) |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | Kostenschutz je Anfrage in `best-quality`, `best-quality-generated` und `best-coverage-generated` (D59, D69): Neben der Zuordnung durch das LLM (im Median rund 26.000 Tokens) prüft das LLM dort jedes Lehrplanelement von Teil 2, 80 bis 90 Tokens je Element; 60.000 reichten für rund 400 Elemente (M32). Das breiteste Thema, Demokratie ohne Fach mit 382 Absätzen und 819 Elementen, brauchte mit Teil 1 und 2 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated` (M33). Gilt in jedem Endpunkt dieser Profile, auch in `/qa`, `/knowledge` und der Lehrplansuche |
