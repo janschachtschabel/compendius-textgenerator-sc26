@@ -115,6 +115,20 @@ def test_uvicorn_writes_its_access_and_error_lines_as_json_too(
     assert "RuntimeError: kaputt" in events[1]["exc"] and written.out == ""
 
 
+def test_uvicorn_s_lines_name_time_logger_and_request_in_the_plain_format_too(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """In the plain format uvicorn kept its own lines - its access line, its start, a worker that died - without time,
+    logger or request id, so grep for the id of a refused request found nothing (logging review of 2026-10-08)."""
+    configured(monkeypatch, uvicorn=True)
+    access = logging.getLogger("uvicorn.access")
+    in_a_request("rid-21", lambda: access.info('%s - "%s %s HTTP/%s" %d', "172.18.0.1:4711", "GET", "/x", "1.1", 401))
+
+    [line] = lines_with('"GET /x HTTP/1.1"', capsys)
+
+    assert line.split(" | ")[1:] == ["INFO    ", "uvicorn.access", "rid-21", '172.18.0.1:4711 - "GET /x HTTP/1.1" 401']
+
+
 def test_at_debug_the_transport_of_the_http_client_stays_quiet(monkeypatch: pytest.MonkeyPatch) -> None:
     """At LOG_LEVEL=DEBUG httpcore wrote twelve lines per outgoing request, every response header among them, so the
     session cookie edu-sharing hands the configured account (logging review of 2026-10-08); httpx was quiet already."""

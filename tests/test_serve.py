@@ -123,18 +123,22 @@ def started(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, log_format: str) ->
     return args
 
 
-def test_with_json_logs_uvicorn_s_own_process_writes_json_lines(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
-) -> None:
-    """uvicorn's parent process writes before any worker builds the app - its start, its stop, a worker that died -
-    and so never heard of LOG_FORMAT (review of 2026-10-08); the start command hands it a logging configuration."""
-    args = started(monkeypatch, tmp_path, "json")
+def uvicorn_configured(monkeypatch: pytest.MonkeyPatch, args: list[str]) -> None:
+    """Apply the start command's ``--log-config`` as uvicorn does, in the parent and in every worker."""
     config = json.loads(Path(args[args.index("--log-config") + 1]).read_text(encoding="utf-8"))
     for logger in (logging.getLogger(), *(logging.getLogger(name) for name in ("uvicorn", "uvicorn.access"))):
         monkeypatch.setattr(logger, "handlers", [])
         monkeypatch.setattr(logger, "propagate", logger.propagate)
         monkeypatch.setattr(logger, "level", logger.level)
-    dictConfig(config)  # as uvicorn applies --log-config, in the parent and in every worker
+    dictConfig(config)
+
+
+def test_with_json_logs_uvicorn_s_own_process_writes_json_lines(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """uvicorn's parent process writes before any worker builds the app - its start, its stop, a worker that died -
+    and so never heard of LOG_FORMAT (review of 2026-10-08); the start command hands it a logging configuration."""
+    uvicorn_configured(monkeypatch, started(monkeypatch, tmp_path, "json"))
 
     logging.getLogger("uvicorn.error").warning("Child process [%d] died", 7)
 
@@ -146,5 +150,31 @@ def test_with_json_logs_uvicorn_s_own_process_writes_json_lines(
     }
 
 
-def test_plain_logs_leave_uvicorn_its_own(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
-    assert "--log-config" not in started(monkeypatch, tmp_path, "text")
+def test_with_plain_logs_uvicorn_s_own_process_writes_the_service_s_lines(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """uvicorn's own lines - its start, its stop, a worker that died - had neither time nor logger in the plain format
+    (logging review of 2026-10-08); the start command hands uvicorn the service's format in both formats."""
+    uvicorn_configured(monkeypatch, started(monkeypatch, tmp_path, "text"))
+
+    logging.getLogger("uvicorn.error").warning("Child process [%d] died", 7)
+
+    [line] = capsys.readouterr().err.splitlines()
+    assert line.split(" | ")[1:] == ["WARNING ", "uvicorn.error", "-", "Child process [7] died"]
+
+
+@pytest.mark.parametrize("log_format", ["text", "json"])
+def test_uvicorn_names_a_dead_worker_whatever_log_level_says(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str], log_format: str
+) -> None:
+    """uvicorn logs a worker that died, its start and its stop at INFO; with LOG_FORMAT=json and LOG_WARNING they were
+    gone, and a crash looked like a clean restart (logging review of 2026-10-08). LOG_LEVEL governs the service's own
+    lines; uvicorn's stay at INFO, as in its own configuration."""
+    monkeypatch.setenv("LOG_LEVEL", "WARNING")
+    uvicorn_configured(monkeypatch, started(monkeypatch, tmp_path, log_format))
+
+    logging.getLogger("uvicorn.error").info("Child process [%d] died", 7)
+    logging.getLogger("app.probe").info("not shown")
+
+    written = capsys.readouterr().err
+    assert "Child process [7] died" in written and "not shown" not in written

@@ -17,7 +17,7 @@ import os
 import tempfile
 from pathlib import Path
 
-from app.logging import json_log_config
+from app.logging import uvicorn_log_config
 from app.settings import get_settings
 
 DEFAULT_DIR = "/tmp/prometheus"  # noqa: S108  # container-local, emptied at every start
@@ -48,10 +48,10 @@ def clear_metric_files(directory: Path) -> None:
             path.unlink(missing_ok=True)
 
 
-def write_log_config(level: str) -> Path:
-    """LOG_FORMAT=json for uvicorn's own process, as the file ``--log-config`` reads."""
+def write_log_config(level: str, format_: str) -> Path:
+    """The service's logging for uvicorn's own process and its workers, as the file ``--log-config`` reads."""
     path = Path(tempfile.gettempdir()) / LOG_CONFIG_FILE
-    path.write_text(json.dumps(json_log_config(level)), encoding="utf-8")
+    path.write_text(json.dumps(uvicorn_log_config(level, format_)), encoding="utf-8")
     return path
 
 
@@ -72,8 +72,7 @@ def main() -> None:
     directory = os.environ.get("PROMETHEUS_MULTIPROC_DIR") or DEFAULT_DIR
     clear_metric_files(Path(directory))
     settings = get_settings()
-    log_config = write_log_config(settings.log_level) if settings.log_format == "json" else None
-    command = uvicorn_command(settings.request_time_limit_s, log_config)
+    command = uvicorn_command(settings.request_time_limit_s, write_log_config(settings.log_level, settings.log_format))
     defaults = {name: value for name, value in UVICORN_DEFAULTS.items() if not os.environ.get(name, "").strip()}
     # exec: uvicorn takes over the process and receives the container's signals (clean shutdown)
     os.execvpe(command[0], command, {**os.environ, **defaults, "PROMETHEUS_MULTIPROC_DIR": directory})  # noqa: S606

@@ -92,35 +92,37 @@ def configure_logging(level: str = "INFO", format_: str = "text") -> None:
         handler.setFormatter(_JsonFormatter() if format_ == "json" else logging.Formatter(_FORMAT))
         handler.addFilter(_RequestIdFilter())
         root.addHandler(handler)
-    if format_ == "json":
-        # uvicorn sets up its loggers in every worker before the app is built, with plain lines of their own: the
-        # access line of every request and the traceback of an error stayed text between the JSON lines (review of
-        # 2026-10-08). They write through the root's handler instead
-        for name in UVICORN_LOGGERS:
-            uvicorn_logger = logging.getLogger(name)
-            uvicorn_logger.handlers.clear()
-            uvicorn_logger.propagate = True
+    # uvicorn sets up its loggers in every worker before the app is built, with lines of their own: without time,
+    # logger or request id, also as text between JSON lines (review of 2026-10-08). They write through the root's
+    # handler instead, at INFO whatever LOG_LEVEL says: uvicorn logs a worker that died at INFO
+    for name in UVICORN_LOGGERS:
+        uvicorn_logger = logging.getLogger(name)
+        uvicorn_logger.handlers.clear()
+        uvicorn_logger.propagate = True
+        uvicorn_logger.setLevel(logging.INFO)
     root.setLevel(level.upper())
     for name in QUIET_LOGGERS:
         logging.getLogger(name).setLevel(logging.WARNING)
 
 
-def json_log_config(level: str = "INFO") -> dict[str, Any]:
-    """LOG_FORMAT=json as uvicorn's ``--log-config``: its own process writes before any worker builds the app - the
-    start, the stop, a worker that died - and so never runs configure_logging."""
+def uvicorn_log_config(level: str = "INFO", format_: str = "text") -> dict[str, Any]:
+    """The service's logging as uvicorn's ``--log-config``: its own process writes before any worker builds the app -
+    the start, the stop, a worker that died - and so never runs configure_logging; the workers apply it before the
+    app is built."""
+    line = {"()": f"{__name__}._JsonFormatter"} if format_ == "json" else {"format": _FORMAT}
     return {
         "version": 1,
         "disable_existing_loggers": False,
-        "formatters": {"json": {"()": f"{__name__}._JsonFormatter"}},
+        "formatters": {"line": line},
         "filters": {"request_id": {"()": f"{__name__}._RequestIdFilter"}},
         "handlers": {
             "stderr": {
                 "class": "logging.StreamHandler",
                 "stream": "ext://sys.stderr",
-                "formatter": "json",
+                "formatter": "line",
                 "filters": ["request_id"],
             }
         },
-        "loggers": {name: {"handlers": [], "propagate": True} for name in UVICORN_LOGGERS},
+        "loggers": {name: {"handlers": [], "propagate": True, "level": "INFO"} for name in UVICORN_LOGGERS},
         "root": {"handlers": ["stderr"], "level": level.upper()},
     }
