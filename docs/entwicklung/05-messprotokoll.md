@@ -4035,3 +4035,40 @@ Die eine wirkt zwischen 0 und 0,2 nicht, die andere druckt bei der kleinsten Lä
 blinden Urteilen an den übrigen Themen, bevor einer gebaut wird: `MIN_CHAR_SIMILARITY` 0,1 (macro-F1 +0,022, 86
 gedruckte Wechsel in 50 Themen) und `MAX_MENTIONS` 16 (+0,013, 49 Korpora anders). `MAX_LOOKUPS` 80 verdoppelte das
 Akteursverzeichnis für rund 2 s je Anfrage, mit gemischten Namen. Rohdaten: `m80_schwellen.json`.
+
+## M81 Parallele Last und die Treffergrenze von Teil 2 (Audit vom 18.09., 08.10.2026)
+
+Zwei Punkte des Audits vom 18.09. waren noch offen: die Thread-Sicherheit von libzim unter Last (ein `libzim.Archive`
+je Archiv, von allen Threads eines Workers zugleich gelesen) und D-03, die Treffergrenze der Lehrplansuche.
+
+**Last.** `mc_lastprobe.py` stellt die 81 Themen von M65 als `llm-free` an den Entwicklungscontainer (2.15.0, zwei
+Worker, Wikipedia-Archiv vom Januar 2026 und Klexikon): einmal nacheinander, dann zweimal mit 20 Anfragen zugleich.
+
+| Durchgang | Dauer | Status | je Anfrage (Median, höchstens) | Texte anders als nacheinander |
+|---|---|---|---|---|
+| nacheinander | 598 s | 81 × 200 | 5,3 s, 34,8 s | – |
+| 20 parallel | 194 s | 81 × 200 | 31,9 s, 146,5 s | 0 |
+| 20 parallel | 193 s | 81 × 200 | 29,6 s, 191,3 s | 0 |
+
+Kein Text unterschied sich außer in `generated_at`, kein 429, kein Worker starb, das Log hat keine Fehlerzeile. Unter
+dieser Last liest libzim aus vielen Threads, ohne dass ein Text anders ausfällt; die Wartezeit wächst, weil die
+CPU-Arbeit die Worker teilt.
+
+**Treffergrenze.** Die Suche bewertet höchstens 20.000 Elemente; seit PE-05 bleiben die stärksten Rollen, innerhalb
+einer Rolle entschied die Reihenfolge des Harvests. `mc_teil2_grenze.py` misst am Cache des Containers (2.514
+Lehrpläne aus BY, SN, RP und BE): Von den 81 Themen erreicht keines die Grenze (höchstens 5.168 Treffer, Median 40). Von
+25 breiten Ein-Wort-Themen überschreitet sie nur „Arbeit“ mit 22.935 Treffern; behalten blieben 7.640 der 9.985
+bayerischen, 9.694 der 10.284 sächsischen und alle 2.666 aus Rheinland-Pfalz.
+
+Gebaut (`3c2632a`): Innerhalb einer Rolle kommen die Lehrpläne reihum dran. Mit dem neuen Code liefert die Suche für alle
+81 Themen dieselben Treffer in derselben Reihenfolge; wo sie kürzt, behalten mehr Lehrpläne Elemente:
+
+| Suchwort | Treffer | Lehrpläne mit Treffern | behalten vorher | behalten nachher | Zeit vorher | Zeit nachher |
+|---|---|---|---|---|---|---|
+| Arbeit | 22.935 | 1.878 | 1.762 | 1.778 | 0,64 s | 0,80 s |
+| ein | 69.629 | 2.305 | 1.600 | 2.303 | 0,68 s | 1,35 s |
+| und | 153.797 | 2.329 | 2.033 | 2.068 | 0,78 s | 2,04 s |
+
+„ein“ und „und“ zeigen den Grenzfall; als Nebenwort fallen sie vorher heraus (Häufigkeitsfilter, M58), nur ein so
+lautender Titel käme hierher. Die 81 Themen brauchen zusammen 1,66 s vorher und 1,76 s nachher. Rohdaten:
+`m81_lastprobe.json`, `m81_teil2_grenze.json`.

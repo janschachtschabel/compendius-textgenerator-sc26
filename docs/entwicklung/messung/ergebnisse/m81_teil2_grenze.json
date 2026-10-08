@@ -1,0 +1,769 @@
+{
+ "themen": 81,
+ "treffer_median": 40,
+ "treffer_max": 5168,
+ "themen_gekuerzt": [],
+ "themen_gleiche_treffer": 81,
+ "themen_sekunden": {
+  "alt": 1.655,
+  "neu": 1.764
+ },
+ "breit": {
+  "Deutschland": {
+   "treffer": 1674,
+   "alle_je_land": {
+    "BY": 986,
+    "RP": 238,
+    "SN": 450
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 986,
+     "RP": 238,
+     "SN": 450
+    },
+    "lehrplaene_behalten": 306,
+    "sekunden": 0.055
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 986,
+     "RP": 238,
+     "SN": 450
+    },
+    "lehrplaene_behalten": 306,
+    "sekunden": 0.063
+   },
+   "lehrplaene_alle": 306,
+   "gleich": true
+  },
+  "Sprache": {
+   "treffer": 11837,
+   "alle_je_land": {
+    "BY": 8239,
+    "RP": 1569,
+    "SN": 2029
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 8239,
+     "RP": 1569,
+     "SN": 2029
+    },
+    "lehrplaene_behalten": 1516,
+    "sekunden": 0.331
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 8239,
+     "RP": 1569,
+     "SN": 2029
+    },
+    "lehrplaene_behalten": 1516,
+    "sekunden": 0.445
+   },
+   "lehrplaene_alle": 1516,
+   "gleich": true
+  },
+  "Kunst": {
+   "treffer": 2734,
+   "alle_je_land": {
+    "BY": 1757,
+    "RP": 261,
+    "SN": 716
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 1757,
+     "RP": 261,
+     "SN": 716
+    },
+    "lehrplaene_behalten": 532,
+    "sekunden": 0.073
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 1757,
+     "RP": 261,
+     "SN": 716
+    },
+    "lehrplaene_behalten": 532,
+    "sekunden": 0.096
+   },
+   "lehrplaene_alle": 532,
+   "gleich": true
+  },
+  "Musik": {
+   "treffer": 3994,
+   "alle_je_land": {
+    "BY": 2307,
+    "RP": 686,
+    "SN": 1001
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 2307,
+     "RP": 686,
+     "SN": 1001
+    },
+    "lehrplaene_behalten": 476,
+    "sekunden": 0.103
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 2307,
+     "RP": 686,
+     "SN": 1001
+    },
+    "lehrplaene_behalten": 476,
+    "sekunden": 0.15
+   },
+   "lehrplaene_alle": 476,
+   "gleich": true
+  },
+  "Wasser": {
+   "treffer": 2309,
+   "alle_je_land": {
+    "BY": 1256,
+    "RP": 143,
+    "SN": 910
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 1256,
+     "RP": 143,
+     "SN": 910
+    },
+    "lehrplaene_behalten": 421,
+    "sekunden": 0.062
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 1256,
+     "RP": 143,
+     "SN": 910
+    },
+    "lehrplaene_behalten": 421,
+    "sekunden": 0.088
+   },
+   "lehrplaene_alle": 421,
+   "gleich": true
+  },
+  "Energie": {
+   "treffer": 2936,
+   "alle_je_land": {
+    "BY": 1668,
+    "RP": 340,
+    "SN": 928
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 1668,
+     "RP": 340,
+     "SN": 928
+    },
+    "lehrplaene_behalten": 385,
+    "sekunden": 0.08
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 1668,
+     "RP": 340,
+     "SN": 928
+    },
+    "lehrplaene_behalten": 385,
+    "sekunden": 0.112
+   },
+   "lehrplaene_alle": 385,
+   "gleich": true
+  },
+  "Mensch": {
+   "treffer": 7436,
+   "alle_je_land": {
+    "BY": 5436,
+    "RP": 842,
+    "SN": 1158
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 5436,
+     "RP": 842,
+     "SN": 1158
+    },
+    "lehrplaene_behalten": 1185,
+    "sekunden": 0.219
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 5436,
+     "RP": 842,
+     "SN": 1158
+    },
+    "lehrplaene_behalten": 1185,
+    "sekunden": 0.309
+   },
+   "lehrplaene_alle": 1185,
+   "gleich": true
+  },
+  "Natur": {
+   "treffer": 3337,
+   "alle_je_land": {
+    "BY": 2212,
+    "RP": 391,
+    "SN": 734
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 2212,
+     "RP": 391,
+     "SN": 734
+    },
+    "lehrplaene_behalten": 637,
+    "sekunden": 0.087
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 2212,
+     "RP": 391,
+     "SN": 734
+    },
+    "lehrplaene_behalten": 637,
+    "sekunden": 0.12
+   },
+   "lehrplaene_alle": 637,
+   "gleich": true
+  },
+  "Geschichte": {
+   "treffer": 3604,
+   "alle_je_land": {
+    "BY": 2294,
+    "RP": 526,
+    "SN": 784
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 2294,
+     "RP": 526,
+     "SN": 784
+    },
+    "lehrplaene_behalten": 774,
+    "sekunden": 0.104
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 2294,
+     "RP": 526,
+     "SN": 784
+    },
+    "lehrplaene_behalten": 774,
+    "sekunden": 0.165
+   },
+   "lehrplaene_alle": 774,
+   "gleich": true
+  },
+  "Gesellschaft": {
+   "treffer": 4811,
+   "alle_je_land": {
+    "BY": 3080,
+    "RP": 856,
+    "SN": 875
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 3080,
+     "RP": 856,
+     "SN": 875
+    },
+    "lehrplaene_behalten": 948,
+    "sekunden": 0.14
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 3080,
+     "RP": 856,
+     "SN": 875
+    },
+    "lehrplaene_behalten": 948,
+    "sekunden": 0.188
+   },
+   "lehrplaene_alle": 948,
+   "gleich": true
+  },
+  "Religion": {
+   "treffer": 3198,
+   "alle_je_land": {
+    "BY": 2538,
+    "RP": 307,
+    "SN": 353
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 2538,
+     "RP": 307,
+     "SN": 353
+    },
+    "lehrplaene_behalten": 429,
+    "sekunden": 0.087
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 2538,
+     "RP": 307,
+     "SN": 353
+    },
+    "lehrplaene_behalten": 429,
+    "sekunden": 0.12
+   },
+   "lehrplaene_alle": 429,
+   "gleich": true
+  },
+  "Kultur": {
+   "treffer": 5405,
+   "alle_je_land": {
+    "BY": 3475,
+    "RP": 1051,
+    "SN": 879
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 3475,
+     "RP": 1051,
+     "SN": 879
+    },
+    "lehrplaene_behalten": 955,
+    "sekunden": 0.157
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 3475,
+     "RP": 1051,
+     "SN": 879
+    },
+    "lehrplaene_behalten": 955,
+    "sekunden": 0.204
+   },
+   "lehrplaene_alle": 955,
+   "gleich": true
+  },
+  "Leben": {
+   "treffer": 14851,
+   "alle_je_land": {
+    "BY": 10137,
+    "RP": 1725,
+    "SN": 2989
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 10137,
+     "RP": 1725,
+     "SN": 2989
+    },
+    "lehrplaene_behalten": 1645,
+    "sekunden": 0.523
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 10137,
+     "RP": 1725,
+     "SN": 2989
+    },
+    "lehrplaene_behalten": 1645,
+    "sekunden": 0.622
+   },
+   "lehrplaene_alle": 1645,
+   "gleich": true
+  },
+  "Arbeit": {
+   "treffer": 22935,
+   "alle_je_land": {
+    "BY": 9985,
+    "RP": 2666,
+    "SN": 10284
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 7640,
+     "RP": 2666,
+     "SN": 9694
+    },
+    "lehrplaene_behalten": 1762,
+    "sekunden": 0.635
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 7640,
+     "RP": 2666,
+     "SN": 9694
+    },
+    "lehrplaene_behalten": 1778,
+    "sekunden": 0.802
+   },
+   "lehrplaene_alle": 1878,
+   "gleich": false
+  },
+  "Bewegung": {
+   "treffer": 4351,
+   "alle_je_land": {
+    "BY": 2712,
+    "RP": 551,
+    "SN": 1088
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 2712,
+     "RP": 551,
+     "SN": 1088
+    },
+    "lehrplaene_behalten": 677,
+    "sekunden": 0.135
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 2712,
+     "RP": 551,
+     "SN": 1088
+    },
+    "lehrplaene_behalten": 677,
+    "sekunden": 0.172
+   },
+   "lehrplaene_alle": 677,
+   "gleich": true
+  },
+  "Text": {
+   "treffer": 17681,
+   "alle_je_land": {
+    "BY": 9989,
+    "RP": 3544,
+    "SN": 4148
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 9989,
+     "RP": 3544,
+     "SN": 4148
+    },
+    "lehrplaene_behalten": 1434,
+    "sekunden": 0.502
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 9989,
+     "RP": 3544,
+     "SN": 4148
+    },
+    "lehrplaene_behalten": 1434,
+    "sekunden": 0.703
+   },
+   "lehrplaene_alle": 1434,
+   "gleich": true
+  },
+  "Zahl": {
+   "treffer": 3543,
+   "alle_je_land": {
+    "BY": 1685,
+    "RP": 529,
+    "SN": 1329
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 1685,
+     "RP": 529,
+     "SN": 1329
+    },
+    "lehrplaene_behalten": 657,
+    "sekunden": 0.102
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 1685,
+     "RP": 529,
+     "SN": 1329
+    },
+    "lehrplaene_behalten": 657,
+    "sekunden": 0.144
+   },
+   "lehrplaene_alle": 657,
+   "gleich": true
+  },
+  "Welt": {
+   "treffer": 9243,
+   "alle_je_land": {
+    "BY": 5724,
+    "RP": 1469,
+    "SN": 2050
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 5724,
+     "RP": 1469,
+     "SN": 2050
+    },
+    "lehrplaene_behalten": 1557,
+    "sekunden": 0.297
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 5724,
+     "RP": 1469,
+     "SN": 2050
+    },
+    "lehrplaene_behalten": 1557,
+    "sekunden": 0.387
+   },
+   "lehrplaene_alle": 1557,
+   "gleich": true
+  },
+  "Zeit": {
+   "treffer": 9118,
+   "alle_je_land": {
+    "BY": 5144,
+    "RP": 1002,
+    "SN": 2972
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 5144,
+     "RP": 1002,
+     "SN": 2972
+    },
+    "lehrplaene_behalten": 1602,
+    "sekunden": 0.258
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 5144,
+     "RP": 1002,
+     "SN": 2972
+    },
+    "lehrplaene_behalten": 1602,
+    "sekunden": 0.341
+   },
+   "lehrplaene_alle": 1602,
+   "gleich": true
+  },
+  "Raum": {
+   "treffer": 4025,
+   "alle_je_land": {
+    "BY": 2164,
+    "RP": 762,
+    "SN": 1099
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 2164,
+     "RP": 762,
+     "SN": 1099
+    },
+    "lehrplaene_behalten": 898,
+    "sekunden": 0.109
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 2164,
+     "RP": 762,
+     "SN": 1099
+    },
+    "lehrplaene_behalten": 898,
+    "sekunden": 0.154
+   },
+   "lehrplaene_alle": 898,
+   "gleich": true
+  },
+  "Körper": {
+   "treffer": 3975,
+   "alle_je_land": {
+    "BY": 2578,
+    "RP": 366,
+    "SN": 1031
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 2578,
+     "RP": 366,
+     "SN": 1031
+    },
+    "lehrplaene_behalten": 971,
+    "sekunden": 0.114
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 2578,
+     "RP": 366,
+     "SN": 1031
+    },
+    "lehrplaene_behalten": 971,
+    "sekunden": 0.16
+   },
+   "lehrplaene_alle": 971,
+   "gleich": true
+  },
+  "Umwelt": {
+   "treffer": 3342,
+   "alle_je_land": {
+    "BY": 1934,
+    "RP": 470,
+    "SN": 938
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 1934,
+     "RP": 470,
+     "SN": 938
+    },
+    "lehrplaene_behalten": 937,
+    "sekunden": 0.093
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 1934,
+     "RP": 470,
+     "SN": 938
+    },
+    "lehrplaene_behalten": 937,
+    "sekunden": 0.127
+   },
+   "lehrplaene_alle": 937,
+   "gleich": true
+  },
+  "Technik": {
+   "treffer": 8712,
+   "alle_je_land": {
+    "BY": 4735,
+    "RP": 1175,
+    "SN": 2802
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 4735,
+     "RP": 1175,
+     "SN": 2802
+    },
+    "lehrplaene_behalten": 1363,
+    "sekunden": 0.234
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 4735,
+     "RP": 1175,
+     "SN": 2802
+    },
+    "lehrplaene_behalten": 1363,
+    "sekunden": 0.335
+   },
+   "lehrplaene_alle": 1363,
+   "gleich": true
+  },
+  "Medien": {
+   "treffer": 6839,
+   "alle_je_land": {
+    "BY": 4365,
+    "RP": 1303,
+    "SN": 1171
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 4365,
+     "RP": 1303,
+     "SN": 1171
+    },
+    "lehrplaene_behalten": 1080,
+    "sekunden": 0.186
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 4365,
+     "RP": 1303,
+     "SN": 1171
+    },
+    "lehrplaene_behalten": 1080,
+    "sekunden": 0.278
+   },
+   "lehrplaene_alle": 1080,
+   "gleich": true
+  },
+  "Gesundheit": {
+   "treffer": 2787,
+   "alle_je_land": {
+    "BY": 1884,
+    "RP": 209,
+    "SN": 694
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 1884,
+     "RP": 209,
+     "SN": 694
+    },
+    "lehrplaene_behalten": 513,
+    "sekunden": 0.083
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 1884,
+     "RP": 209,
+     "SN": 694
+    },
+    "lehrplaene_behalten": 513,
+    "sekunden": 0.103
+   },
+   "lehrplaene_alle": 513,
+   "gleich": true
+  },
+  "ein": {
+   "treffer": 69629,
+   "alle_je_land": {
+    "BY": 37098,
+    "RP": 9065,
+    "SN": 23466
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 17945,
+     "RP": 713,
+     "SN": 1342
+    },
+    "lehrplaene_behalten": 1600,
+    "sekunden": 0.677
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 13829,
+     "RP": 2306,
+     "SN": 3865
+    },
+    "lehrplaene_behalten": 2303,
+    "sekunden": 1.35
+   },
+   "lehrplaene_alle": 2305,
+   "gleich": false
+  },
+  "und": {
+   "treffer": 153797,
+   "alle_je_land": {
+    "BY": 79744,
+    "RP": 20021,
+    "SN": 54032
+   },
+   "alt": {
+    "behalten_je_land": {
+     "BY": 11919,
+     "RP": 2841,
+     "SN": 5240
+    },
+    "lehrplaene_behalten": 2033,
+    "sekunden": 0.779
+   },
+   "neu": {
+    "behalten_je_land": {
+     "BY": 11884,
+     "RP": 2782,
+     "SN": 5334
+    },
+    "lehrplaene_behalten": 2068,
+    "sekunden": 2.038
+   },
+   "lehrplaene_alle": 2329,
+   "gleich": false
+  }
+ }
+}
