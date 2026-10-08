@@ -8,12 +8,13 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 from fastapi import Depends, FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 
-from app import __version__
+from app import __version__, revision
 from app.api.active_archives import FollowActiveArchives
 from app.api.body_limit import BodySizeLimit
 from app.api.docs import docs_router
@@ -180,6 +181,39 @@ def log_defaults(settings: Settings, service: CompendiumService, templates: Temp
         )
 
 
+def log_start(app: FastAPI, settings: Settings, service: CompendiumService) -> None:
+    """One line with what this worker runs: the version and the commit, so the log of an error names the code that
+    wrote it, and what is there - a first start says that part 2 has no cache yet or /entities no index (logging
+    review of 2026-10-08). Secrets only as set or not, the keys by their number."""
+    registry, required = app.state.registry, app.state.required_ids
+    missing = registry.has_ids(required)
+    if missing:
+        log.warning("required archives missing: %s; /ready answers 503 until the sync has them", ", ".join(missing))
+    curricula = service.curricula
+    cache = "off" if curricula is None else curricula.store.state
+    if curricula is not None and cache == "ok":
+        cache += f" (harvested {curricula.store.meta().get('harvested_at', '?')})"
+    log.info(
+        "Kompendium-API %s (revision %s) started: archives %d (required %d of %d), LLM %s, embeddings %s, ner %s, "
+        "lehrplan cache %s, wikidata index %s, gnd index %s, edu-sharing %s, API_KEYS %s, METRICS_TOKEN %s, admin %s",
+        __version__,
+        revision() or "local",
+        len(registry.archives),
+        len(required) - len(missing),
+        len(required),
+        f"{settings.b_api_provider} {settings.b_api_model}" if service.llm is not None else "off",
+        "yes" if app.state.matching["embeddings"] else "no",
+        "yes" if app.state.entities["ner"] else "no",
+        cache,
+        "ready" if app.state.wikidata.available else "missing",
+        "ready" if app.state.gnd.available else "missing",
+        urlparse(settings.edu_sharing_base_url).hostname if service.collections is not None else "off",
+        len(settings.api_key_list) or "not set",
+        "set" if settings.metrics_token else "not set",
+        "on" if settings.admin_token else "off",
+    )
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """Build the application; nothing happens at import time."""
     settings = settings or get_settings()
@@ -276,5 +310,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     # Added last, so it runs outermost: it names the request, times all of it, and answers an error nothing else
     # handled (app/api/request_log.py)
     app.add_middleware(RequestLog, routes=app.routes)
-
+    log_start(app, settings, service)
     return app
