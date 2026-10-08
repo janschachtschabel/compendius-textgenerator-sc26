@@ -65,7 +65,8 @@ class Beside:
 
 def _log_dropped(context: contextvars.Context, error: BaseException, job: Future[Any]) -> None:
     """The error of a job its failed caller dropped, logged in the job's context so the line names its request; the
-    caller's own error, raised from a job, it logs itself."""
+    caller's own error, raised from a job, it logs itself, and an error of the same kind the job met where the caller
+    did: an unknown collection fails the preparation and part 3, which reads it beside (review of 2026-10-08)."""
     failure = None if job.cancelled() else job.exception()
-    if failure is not None and failure is not error:
+    if failure is not None and failure is not error and type(failure) is not type(error):
         context.run(log.warning, "a job beside a failed request failed as well: %r", failure, exc_info=failure)

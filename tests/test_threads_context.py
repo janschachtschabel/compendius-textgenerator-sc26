@@ -109,6 +109,21 @@ def test_the_error_of_a_job_a_failed_caller_dropped_is_logged_with_its_request(
     assert record.request_id == "rid-14"  # type: ignore[attr-defined]
 
 
+def test_a_job_that_met_the_callers_kind_of_error_is_not_logged_as_another(caplog: pytest.LogCaptureFixture) -> None:
+    """An unknown collection fails the preparation of the request and part 3, which reads the same collection beside
+    it: every such 404 logged the job's not-found again as a dropped failure, with its traceback (review of
+    2026-10-08)."""
+
+    def not_found() -> None:
+        raise LookupError("Sammlung nicht gefunden")
+
+    with caplog.at_level(logging.WARNING), pytest.raises(LookupError), Beside(workers=1) as beside:
+        beside.start(not_found).exception()  # the job has failed before the caller does
+        raise LookupError("Sammlung nicht gefunden")
+
+    assert not [record for record in caplog.records if "failed as well" in record.getMessage()]
+
+
 def test_the_error_a_failed_caller_raised_itself_is_not_logged_twice(caplog: pytest.LogCaptureFixture) -> None:
     def failing() -> None:
         raise RuntimeError("kaputt")
