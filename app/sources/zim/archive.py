@@ -104,6 +104,7 @@ class ZimArchive:
         self._cache: OrderedDict[str, ParsedArticle] = OrderedDict()  # LRU of parsed articles
         self._cache_chars: dict[str, int] = {}  # HTML characters of each cached article
         self._cache_lock = threading.Lock()  # one archive serves all request threads
+        self._refusals: set[tuple[str, str]] = set()  # kinds of lookup and error classes logged as a WARNING
         self._titles: OrderedDict[str, str | None] = OrderedDict()  # LRU of resolved link names
 
     def _meta(self, key: str) -> str:
@@ -138,7 +139,7 @@ class ZimArchive:
                     if has(candidate):
                         return get(candidate)
                 except Exception as exc:  # libzim raises on odd input; try the next variant
-                    log.debug("lookup of %r failed: %s", candidate, exc)
+                    self._refused("lookup", candidate, exc)
         return None
 
     def has(self, identifier: str) -> bool:
@@ -219,7 +220,7 @@ class ZimArchive:
             results = searcher.suggest(prefix)
             return [str(self._archive.get_entry_by_path(p).title) for p in results.getResults(0, limit)]
         except Exception as exc:
-            log.debug("suggestion failed for %r: %s", prefix, exc)
+            self._refused("suggestion", prefix, exc)
             return []
 
     def search(self, query: str, limit: int = 10) -> list[str]:
@@ -230,8 +231,20 @@ class ZimArchive:
             results = searcher.search(Query().set_query(query))
             return [str(self._archive.get_entry_by_path(p).title) for p in results.getResults(0, limit)]
         except Exception as exc:
-            log.debug("search failed for %r: %s", query, exc)
+            self._refused("search", query, exc)
             return []
+
+    def _refused(self, what: str, query: str, exc: Exception) -> None:
+        """A lookup, suggestion or search libzim refused. Odd input - a lone surrogate, the only one among odd inputs
+        that raised on the Klexikon archive - is a detail; any other error may be a damaged index, which made every
+        topic a 404 without a line at INFO: a WARNING once per kind and error class (logging review of 2026-10-08)."""
+        first = False
+        if not isinstance(exc, UnicodeError):
+            with self._cache_lock:
+                first = (what, type(exc).__name__) not in self._refusals
+                self._refusals.add((what, type(exc).__name__))
+        level = logging.WARNING if first else logging.DEBUG
+        log.log(level, "%s: %s of %r failed: %s: %s", self.file_name, what, query[:100], type(exc).__name__, exc)
 
     # -- conversion ----------------------------------------------------------------------------
     def url_for(self, path: str) -> str:
