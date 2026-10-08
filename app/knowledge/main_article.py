@@ -147,7 +147,13 @@ def choose_main_article(
             keyed = resolve_by_keywords(
                 registry, found.normalized.topic, context=found.context, query=found.normalized.query, terms=terms
             )
-            resolution = keyed or resolution
+            if keyed is not None:
+                # the rules' reading of a question, not a title it names: unsure, with what the rules guessed beside it,
+                # which was better in 5 of 60 questions (M73; shown as sure before, review of 2026-10-08)
+                guessed = [title for title in (resolution.title, *keyed.alternatives) if title and title != keyed.title]
+                resolution = keyed.model_copy(
+                    update={"confident": False, "alternatives": list(dict.fromkeys(guessed))[:8]}
+                )
         if articles is not None and overview is not None:
             # the overview took the rules' place: where they missed the topic, or where the chooser rejected all (A01)
             chose = chooser is not None and chooser.report.offered > 0 and not chooser.report.rejected

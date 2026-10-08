@@ -8,7 +8,9 @@ from typing import Any
 import pytest
 
 from app.compendium.errors import TopicNotFoundError
+from app.domain.models import Resolution
 from app.domain.requests import GenerateRequest
+from app.knowledge import main_article
 from app.knowledge import question as question_module
 from app.knowledge.question import MAX_KEYWORDS, keywords, resolve_by_keywords
 from app.service import CompendiumService
@@ -109,3 +111,25 @@ def test_no_more_keywords_are_tried_than_a_question_names(
     resolve_by_keywords(service.registry, planets)
 
     assert len(keywords(planets)) > MAX_KEYWORDS and len(tried) == MAX_KEYWORDS
+
+
+def test_the_article_of_a_keyword_is_shown_as_a_guess_beside_what_the_rules_guessed(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """M73: of 60 questions 2 articles were foreign and 5 better before; the review page showed a keyword's article as
+    an exact title, sure, and no unsure hit to check (review of 2026-10-08)."""
+    question = "Wie entsteht ein Regenbogen und warum ist er gekrümmt?"
+    real = main_article.resolve_topic
+
+    def rules(registry: Any, topic: str, **options: Any) -> Resolution:
+        if topic != question:
+            return real(registry, topic, **options)
+        return Resolution(
+            query=topic, normalized=topic, title="Optik", path="Optik", method="search"
+        )  # a full-text hit
+
+    monkeypatch.setattr(main_article, "resolve_topic", rules)
+
+    resolution = service.prepare(GenerateRequest(topic=question, parts=["world"], preset="llm-free")).resolution
+
+    assert (resolution.title, resolution.confident, resolution.alternatives[:1]) == ("Regenbogen", False, ["Optik"])
