@@ -122,6 +122,9 @@ CONTENT_ABOUT_COOKIES = [
     "In den Datenschutzeinstellungen des Browsers kann man Cookies von Drittanbietern blockieren.",
     "Cookies speichern Informationen auf einem Endgerät, etwa die gewählte Sprache einer Seite.",
     "Cookies sind kleine Textdateien. Ihre Aufgabe ist es, Einstellungen einer Seite zu speichern.",
+    # the verb before "wir" in a lesson, the order of the notice M74 found (review of 2026-10-08)
+    "Im Unterricht nutzen wir die Entwicklertools des Browsers, um die Cookies einer Website anzusehen.",
+    "Heute setzen wir uns mit der Frage auseinander, was Cookies über uns verraten.",
 ]
 CONSENT_NOTICES = [
     # LEIFIphysik, 2026-10-04, from the text the repository extracted

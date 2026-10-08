@@ -67,7 +67,12 @@ _SITE = r"(?:wir|we|(?:diese|unsere)[nrs]? (?:web)?(?:seite|site)|this (?:web)?s
 _SITE_USES_COOKIES = re.compile(
     rf"\b{_SITE}\b[^.!?]{{0,40}}?\b(?:nutz|verwend|setz|einsetz|benutz|use|using)\w*[^.!?]{{0,60}}?\bcookie"
     rf"|\b{_SITE}\b[^.!?]{{0,40}}?\bcookies\b[^.!?]{{0,40}}?\b(?:verwendet|genutzt|gesetzt|eingesetzt|benutzt|used)\b"
-    rf"|\b(?:nutz|verwend|setz|benutz)\w*\s+{_SITE}\b[^.!?]{{0,60}}?\bcookie",  # "Derzeit verwenden wir ... Cookies"
+    # The verb before its subject (M74): "Daher verwendet diese Website Cookies"; "wir" only with the place of the
+    # site, "Derzeit verwenden wir auf unserer Website keine Cookies" - a lesson says "nutzen wir die Entwicklertools
+    # des Browsers, um die Cookies … anzusehen" (review of 2026-10-08)
+    rf"|\b(?:nutz|verwend|setz|benutz)\w*\s+(?:diese|unsere)[nrs]? (?:web)?(?:seite|site)\b[^.!?]{{0,60}}?\bcookie"
+    rf"|\b(?:nutz|verwend|setz|benutz)\w*\s+(?:wir|we)\b[^.!?]{{0,40}}?\b(?:auf|on) "
+    rf"(?:unsere[rm]?|diese[rm]?|our|this) (?:web)?(?:seite|site)\b[^.!?]{{0,60}}?\bcookie",
     re.IGNORECASE,
 )
 # the polite form of a dialog, so case matters: "Ihre Auswahl", not "Ihre Schülerinnen" or "Ihre Aufgabe"
