@@ -146,6 +146,12 @@ Abschnittsmarker von Teil 1.
   gemessen und belassen (WA-02, M80). Ein Review aller Änderungen des Tages fand 5 schwere und rund 25 kleinere
   Befunde, alle behoben; dazu verwirft ein unerwarteter Fehler in Teil 2 oder 3 Teil 1 nicht mehr.
 
+- Audit-Reste und Logging (D95, Release 2.16.0): Über der Treffergrenze der Lehrplansuche kommen die Lehrpläne einer
+  Rolle reihum dran (D-03, M81), `uvicorn` ohne das Extra `standard` (DEP-02), libzim unter Last geprüft (M81). Eine
+  Prüfung des Loggings ([Bericht](docs/audits/2026-10-08-logging.md)): je Anfrage eine Zeile mit Status und Dauer, je
+  Kompendium eine mit KI-Anteil und Rückfällen nach Ursache, Startzeilen mit Version, der Schutzschalter und die
+  Updater melden sich mit Grund, ein Fehler steht einmal im Log; das Log geht nach stderr (docs/betrieb.md, „Logs“).
+
 ## Installation
 
 Für eine Maschine, auf der nur Debian 13 liegt, führt [docs/installation.md](docs/installation.md) von

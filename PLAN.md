@@ -1162,7 +1162,9 @@ wird auf die neuen Modi umgestellt (Regelmodus 0, Hybridszenarien).
 ZIM-Stand, Harvest-Alter. **Stand 2026-09-18:** `/metrics` umgesetzt (D31) mit Latenz, LLM-Tokens,
 ZIM-Stand und Harvest-Alter, dazu Alarmregeln; die Cache-Trefferquote fehlt, weil es den Ergebnis-Cache
 noch nicht gibt. Request-IDs sind seit Fassung v17 umgesetzt (OPS-03), JSON-Logs seit D94 (`LOG_FORMAT=json`,
-ein JSON-Objekt je Zeile mit Zeit, Stufe, Logger, Anfrage-ID, Meldung und Traceback).
+ein JSON-Objekt je Zeile mit Zeit, Stufe, Logger, Anfrage-ID, Meldung und Traceback); seit D95 je Anfrage eine Zeile
+mit Status und Dauer, je Kompendium eine mit KI-Anteil und Rückfällen, die Prozess-ID in jeder Zeile und das Log auf
+stderr (docs/betrieb.md, Abschnitt „Logs“).
 
 **Sicherheit.** Admin-Endpunkte hinter `ADMIN_TOKEN`; Download-URLs nur von Kiwix-Hosts;
 Dateinamen ohne Pfadanteile; edu-sharing-Zugangsdaten als Secret; keine Nutzereingaben in
@@ -2275,6 +2277,20 @@ API.
   den Altbefunden der Prüfer: Ein unerwarteter Fehler in Teil 2 oder 3 verwirft Teil 1 nicht mehr, „im 18. Jh.“ ist
   ein Satz, tief verschachteltes JSON bricht keine Wissens-Anfrage, der JSON-Leser der Antworten ist linear. Offen bei
   Jan: die beiden Werte von M80 zum blinden Urteil, `MAX_LOOKUPS`, die Antwortgrenzen (gemessen an einer Sammlung).
+- **D95 (2026-10-08)** Die letzten Audit-Befunde und eine Prüfung des Loggings (Jan: „offene audit befunde lösen“,
+  „prüfen wie gut und vollständig das logging app ist und ob es nachbesserungen braucht - wenn ja selbstständig
+  umsetzen“). Aus dem Audit vom 18.09.: Über der Treffergrenze der Lehrplansuche kommen die Lehrpläne innerhalb einer
+  Rolle reihum dran (D-03; M81: keines der 81 Themen erreicht die Grenze, „Arbeit“ behält 1.778 statt 1.762 von 1.878
+  Lehrplänen); `uvicorn` ohne das Extra `standard` (DEP-02); die README der Messskripte sagt, wie man nachmisst (T-02);
+  libzim unter Last geprüft (M81: 162 parallele Anfragen, kein Text anders als nacheinander); API-02 und M-03 sind durch
+  AP-01 und WA-06 entschieden, die Wartezeiten von T-04 nachgeprüft. Damit ist aus den Audits nichts mehr offen außer
+  dem, was bei Jan liegt. Das Logging prüften drei unabhängige Prüfer (29 verschiedene Befunde,
+  [Bericht](docs/audits/2026-10-08-logging.md)); alle sind behoben, jeder mit zuerst rotem Test, bis auf vier, die mit
+  Grund im Bericht stehen. Am wichtigsten: uvicorns Zeilen tragen auch im Format `text` Zeit, Logger und Anfrage-ID,
+  jede Anfrage schreibt eine Zeile mit Status und Dauer (Proben nicht), jedes Kompendium eine mit Profil, KI-Anteil
+  und Rückfällen nach Ursache (WARNING bei Zeit oder Budget), der Schutzschalter meldet seine Wechsel statt jedes
+  Aufrufs, ein unerwarteter Fehler steht einmal mit seiner Ursache im Log, jede Antwort mit 5xx nennt ihre Ursache, die
+  Updater melden Fehlschläge mit Namen und Ursache, Downloads ihren Fortschritt, und das Log geht nach stderr.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

@@ -11,6 +11,43 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 Noch nichts.
 
+## 2.16.0 – 2026-10-08
+
+Die letzten Audit-Befunde und eine Prüfung des Loggings mit allen Befunden behoben (D95; M81;
+[Bericht](docs/audits/2026-10-08-logging.md)).
+
+- **Neu:** Jede Anfrage schreibt eine Zeile mit Methode, Pfad, Status, Dauer und Client, auch wenn der Aufrufer schon
+  gegangen ist; eine Anfrage, die etwas erzeugt, nennt auch ihren Start. Proben, die antworten, schreiben keine; uvicorn
+  schreibt keine eigene Zugriffszeile mehr.
+- **Neu:** Jedes Kompendium schreibt eine Zeile mit Profil, Teilen, KI-Stufen, Aufrufen, Tokens, Rückfällen je Stufe und
+  Ursache (Zeit, Budget, b-api, andere) und Dauer; eine WARNING, wenn Zeit oder Budget KI-Arbeit abschnitten oder das
+  gewünschte LLM fehlte.
+- **Neu:** Jeder Worker nennt beim Start Version, Revision und was er mitbringt; jede Updater-Schleife Job, Version und
+  Revision. Jede Zeile nennt die Prozess-ID, im JSON als `pid`, und trägt dort die Felder ihres Ereignisses.
+- **Geändert:** Das Log geht nach stderr; ein einmaliger Befehl druckt seinen Bericht weiter auf stdout. uvicorns
+  Zeilen tragen auch im Format `text` Zeit, Logger und Anfrage-ID und bleiben unabhängig von `LOG_LEVEL` auf `INFO`;
+  ein unbekanntes `LOG_LEVEL` hält den Start an, `WARN` gilt als `WARNING`.
+- **Geändert:** Über der Treffergrenze der Lehrplansuche (20.000) kommen die Lehrpläne innerhalb einer Rolle reihum dran
+  (Audit 2026-09-18, D-03); unterhalb bleibt jede Suche gleich (M81).
+- **Behoben (Logging):** Der Schutzschalter der b-api meldet Öffnen, Probe und Wiederanlauf einmal statt jeden Aufruf,
+  Wiederholungen mit ihrer Wartezeit. Ein unerwarteter Fehler steht einmal im Log, mit Typ und Meldung in der ersten
+  Zeile und ohne doppelte Rahmen. Jede Antwort mit 5xx nennt ihre Ursache. Bei `DEBUG` schreibt httpcore keine
+  Antwortköpfe mehr (das Sitzungs-Cookie des edu-sharing-Kontos stand darin). Unlesbare Materialtexte ergeben eine
+  Zeile je Anfrage, ein unlesbarer Lehrplan-Cache eine je Datei, ein gescheiterter Statusabschnitt eine bei Beginn und
+  Ende, ein gescheiterter QA-Aufruf eine statt drei. Fehlerseiten bleiben in einer Zeile, ein Transportfehler vor dem
+  Ende der Frist geht nicht verloren, Fehler von libzim werden sichtbar. Die Updater melden Fehlschläge mit Namen und
+  Ursache (erwartbare ohne Traceback), der ZIM-Sync einen Lauf mit Fehlern als WARNING mit dem nächsten Lauf, ein
+  Download Start, Fortschritt und Ende; Sync- und Harvest-Anfragen über die API und abgelehnte Template-Schreibvorgänge
+  stehen im Log. Ein Stopp während eines Harvests zählt nicht mehr als gescheiterter Harvest.
+- **Abhängigkeiten:** `uvicorn` ohne das Extra `standard`, `uvloop` und `httptools` direkt erklärt; `watchfiles` und
+  `websockets` sind nicht mehr im Image (Audit 2026-09-18, DEP-02).
+- **Doku:** Abschnitt „Logs“ in docs/betrieb.md (was wo steht, wie man liest und filtert, vor einem Update sichern); die
+  Messskripte sagen, wie man nachmisst (T-02); die Audits vom 18.09. und 27.09. nennen den Stand ihrer letzten Punkte.
+- **[Betrieb](docs/betrieb.md#updates):** Keine neue Einstellung. Wer das Log über stdout auswertet statt über
+  `docker compose logs`, liest jetzt stderr.
+- **Gemessen:** M81, libzim unter paralleler Last (162 Anfragen zu 20 zugleich, kein Text anders als nacheinander) und
+  die Treffergrenze von Teil 2.
+
 ## 2.15.0 – 2026-10-08
 
 Offene Befunde der Audits behoben und ein Review aller Änderungen des Tages mit allen Befunden behoben (D94; M80).
