@@ -9,6 +9,10 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+Noch nichts.
+
+## 2.15.0 – 2026-10-08
+
 Offene Befunde der Audits behoben und ein Review aller Änderungen des Tages mit allen Befunden behoben (D94; M80).
 
 - **Neu:** Die KI-Prüfung von Teil 2 rechnet aus einem eigenen Budget, `LLM_MAX_TOKENS_CURRICULUM_CHECK` (400.000 Tokens
