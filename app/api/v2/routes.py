@@ -101,9 +101,10 @@ def generate_compendium(
 
     The LLM steps of a request spend from one token budget and one deadline: LLM_MAX_TOKENS_PER_REQUEST (60,000)
     in llm-free and balanced, LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY (180,000) in the three best-* profiles
-    (D59), and REQUEST_TIMEOUT_S. What the budget, the time or an unavailable b-api leaves undone the rules do, and
-    ``audit.llm`` says what really ran. Without ``world`` there is no part 1, no matching and no writing: only the
-    article choice and, in the three best-* profiles, the check of part 2 can call on the LLM.
+    (D59), and REQUEST_TIMEOUT_S; the check of part 2 spends from a budget of its own beside it,
+    LLM_MAX_TOKENS_CURRICULUM_CHECK (400,000, D94). What the budget, the time or an unavailable b-api leaves undone
+    the rules do, and ``audit.llm`` says what really ran. Without ``world`` there is no part 1, no matching and no
+    writing: only the article choice and, in the three best-* profiles, the check of part 2 can call on the LLM.
 
     **The switches**, each defaulting to the profile's:
 

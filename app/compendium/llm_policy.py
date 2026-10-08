@@ -72,7 +72,8 @@ class LlmPolicy:
         instead.
 
         ``subjects`` are the ones the elements were narrowed to, as the request named them. The check appends what it
-        did to ``reports``; it spends from the request's budget and time like the other LLM steps.
+        did to ``reports``; it spends from ``budget``, which the callers open for the check alone (D94), and from the
+        request's time like the other LLM steps.
         """
         if self.llm is None:  # refused before any work (llm_switches); here only for a caller that skipped that
             return None, "LLM nicht konfiguriert (LLM_ENABLED, B_API_KEY); Regelmodus verwendet"

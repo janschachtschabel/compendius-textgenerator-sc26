@@ -50,7 +50,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "meisten für die Zuordnung (M52). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil "
             "best-quality-generated. Mit curricula in parts bewertet das LLM auch jedes Lehrplanelement "
             "(curriculum_check llm, M32). Budget je Anfrage: 180.000 Tokens statt 60.000 "
-            "(LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59)."
+            "(LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59), die Prüfung von Teil 2 aus eigenen 400.000 "
+            "(LLM_MAX_TOKENS_CURRICULUM_CHECK, D94)."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "best-quality"},
     },
@@ -139,7 +140,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "Stichwortregeln finden die Elemente, das LLM liest jedes mit Bereich und Lehrplan und bewertet es: passt, "
             "streift das Thema, passt nicht - was nicht passt, fällt heraus. 74 bis 79 % der gelisteten Elemente "
             "passen, keins, das zwei Gutachter passend nannten, ging verloren; rund 80 Tokens je Element, im Median "
-            "7.800 bis 9.600 Tokens und 6 s mehr (M32), aus 180.000 Tokens je Anfrage (D59). Jeder Block nennt "
+            "7.800 bis 9.600 Tokens und 6 s mehr (M32), aus einem eigenen Budget von 400.000 Tokens je Anfrage "
+            "(LLM_MAX_TOKENS_CURRICULUM_CHECK, D94). Jeder Block nennt "
             "Lehrplan, Land, Bildungsstufe, Schulart und Klasse; audit.llm.curriculum_check sagt, was das LLM tat."
         ),
         "value": {"topic": "Optik", "subject": "Physik", "parts": ["curricula"], "preset": "best-quality"},

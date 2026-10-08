@@ -72,7 +72,8 @@ SEARCH_PRESET_HELP = (
     "the question costs about 3.6 s and 480 tokens (M39).\n"
     "- **best-quality**: balanced, and the LLM rates every element the rules found and drops what does not fit "
     "(curriculum_check llm); with mode=topic it also checks a sure article choice of a word with several meanings "
-    "(D61). It spends from LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, 180,000 tokens per request.\n"
+    "(D61). The check spends from a budget of its own, 400,000 tokens per request (LLM_MAX_TOKENS_CURRICULUM_CHECK, "
+    "D94).\n"
     "- **best-quality-generated** and **best-coverage-generated**: here the same as best-quality; they differ only in "
     "part 1 of a compendium.\n\n"
     "A profile that needs the LLM for this search - the three best-* profiles always, balanced with mode=topic - is a "
@@ -249,9 +250,9 @@ def lehrplan_search(
     - ``best-quality``: balanced, and the LLM rates every element the rules found and drops what does not fit; the
       others carry its rating in ``note``. With ``mode=topic`` it also checks a sure article choice of a word with
       several meanings (D61). It reads all hits, not only the first ``limit`` ones: 80 to 90 tokens per
-      element, from 180,000 tokens per request (LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59) - Demokratie without a
-      subject, 819 hits, took 75,016 tokens (M33). What the budget or the time leaves unrated keeps the rules'
-      decision.
+      element, from a budget of its own, 400,000 tokens per request (LLM_MAX_TOKENS_CURRICULUM_CHECK, D94) -
+      Demokratie without a subject, 819 hits, took 75,016 tokens (M33). What the budget or the time leaves unrated
+      keeps the rules' decision.
     - ``best-quality-generated`` and ``best-coverage-generated``: here the same as best-quality; they differ only in
       part 1 of a compendium.
 
