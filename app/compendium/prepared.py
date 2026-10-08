@@ -19,6 +19,7 @@ from app.matching.lexicon import HeadingLexicon
 from app.matching.llm_assignment import LlmAssignmentReport
 from app.matching.policy import AssignmentResult
 from app.sources.wlo.models import CollectionInfo
+from app.sources.wlo.tree import TreeContext
 from app.synthesis.extraction import ExtractionReport
 from app.synthesis.writer import WrittenSections
 from app.templates.schema import Template
@@ -50,6 +51,8 @@ class PreparedTopic:
     side_articles: int = 0  # full-text hits and linked sub-articles build_corpus added, before any check
     node_article: NodeArticleReport | None = None  # how the article of a material was found (D47)
     material: str | None = None  # the material's own article beside the topic's, for the corpus (D47)
+    tree: TreeContext | None = None  # where the collection whose title is the topic stands in its topic tree (M71)
+    stand_in: str | None = None  # what the rules resolved in place of a neutral title (M71)
     # the archives this request reads from start to end, whatever a reload does meanwhile (audit 2026-09-29, A10)
     registry: ZimRegistry | None = None
     asked_topic: str = ""  # the topic every prompt hears (D72), set by CompendiumService.prepare

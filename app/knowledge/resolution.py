@@ -62,10 +62,11 @@ def resolve_topic(
     *,
     thorough: bool = False,
     overview: str | None = None,
+    leading: bool = False,
 ) -> Resolution:
     """The article for a topic over the archives of ``registry``; see ``_Resolver.resolve_topic``."""
     return _Resolver(registry).resolve_topic(
-        topic, context, query, terms, chooser, thorough=thorough, overview=overview
+        topic, context, query, terms, chooser, thorough=thorough, overview=overview, leading=leading
     )
 
 
@@ -86,6 +87,7 @@ class _Resolver:
         *,
         thorough: bool = False,
         overview: str | None = None,
+        leading: bool = False,
     ) -> Resolution:
         """The article for a topic: exact title, inflected form, genitive phrase, then suggestions and hits.
 
@@ -104,9 +106,11 @@ class _Resolver:
         ``overview`` is the overview article the LLM named for the topic (D63): it replaces the rules' article where
         they missed the topic (``misses_topic``), and then the chooser is not asked. Where the chooser finds that no
         candidate fits (A01), the overview takes the rules' place as well, and without one the topic has no article.
+        With ``leading`` the overview replaces the rules' article wherever the archive has it: the topic is a stand-in
+        for one the model heard in full (a collection with a neutral title, M71).
         """
         resolution = self._resolve_by_rules(topic, context, query, terms)
-        if overview is not None and misses_topic(resolution) and self._take_overview(resolution, overview):
+        if overview is not None and (leading or misses_topic(resolution)) and self._take_overview(resolution, overview):
             return resolution
         if chooser is None or not resolution.resolved:
             return resolution

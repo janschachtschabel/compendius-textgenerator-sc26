@@ -105,6 +105,7 @@
    "fallback": null,
    "tokens": 24
   },
+  "topic_tree": null,
   "article_choice": {
    "requested": "llm",
    "used": "llm",

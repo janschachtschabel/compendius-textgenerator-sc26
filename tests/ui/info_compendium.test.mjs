@@ -106,3 +106,29 @@ test('the cost names the tokens the model read from the prompt cache, and none w
   assert.equal(fact(cached, 'Kosten', 'davon aus dem Prompt-Cache'), '50.936');
   assert.equal(fact(uncached, 'Kosten', 'davon aus dem Prompt-Cache'), null);
 });
+
+test('a collection whose title names nothing shows its place in the tree and what stood in for it (D92)', () => {
+  const section = info('compendium_topic', (answer) => {
+    answer.audit.topic_tree = { path: ['Physik-Themen', 'Kernphysik'], children: ['Kernspaltung'], materials: ['Was ist ein Isotop?', 'Halbwertszeit'], neighbours: ['Teilchenphysik'], missing: [], stand_in: 'Kernphysik' };
+  });
+
+  assert.equal(fact(section, 'Thema und Artikel', 'Ort im Themenbaum'), 'Physik-Themen › Kernphysik');
+  assert.equal(fact(section, 'Thema und Artikel', 'Steht für'), '„Kernphysik“ (der Titel nennt keinen Gegenstand)');
+  assert.equal(fact(section, 'Thema und Artikel', 'Von der KI gehört'), 'Untersammlungen: 1, Materialtitel: 2, Nachbarsammlungen als nicht gemeint: 1');
+  assert.equal(fact(section, 'Thema und Artikel', 'Nicht gelesen'), null);
+});
+
+test('a part of the tree the repository did not give is named, and a missing path is no top level', () => {
+  const section = info('compendium_topic', (answer) => {
+    answer.audit.topic_tree = { path: [], children: [], materials: [], neighbours: [], missing: ['path', 'neighbours'], stand_in: 'Physik' };
+  });
+
+  assert.equal(fact(section, 'Thema und Artikel', 'Ort im Themenbaum'), null);
+  assert.equal(fact(section, 'Thema und Artikel', 'Nicht gelesen'), 'Sammlungen darüber, Nachbarsammlungen');
+  assert.equal(fact(section, 'Thema und Artikel', 'Von der KI gehört'), null);
+});
+
+test('without a collection as the topic there is no place in a tree', () => {
+  const section = info('compendium_topic');
+  assert.equal(fact(section, 'Thema und Artikel', 'Ort im Themenbaum'), null);
+});

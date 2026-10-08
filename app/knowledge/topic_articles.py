@@ -56,16 +56,18 @@ class TopicArticlesReport(Usage):
 
 
 def ask_topic_articles(
-    job: ArticleChoiceJob, archive: ZimArchive, topic: str, subjects: Sequence[str] = ()
+    job: ArticleChoiceJob, archive: ZimArchive, topic: str, subjects: Sequence[str] = (), context: str = ""
 ) -> TopicArticlesReport:
     """Ask the model for the articles of ``topic`` and look them up in ``archive``, the leading one.
 
     ``subjects`` are the labels of the request's subjects: the model hears them after the topic, as the rules and the
-    choice of an unsure article do, so "Baum" in Informatik names data structures, not trees.
+    choice of an unsure article do, so "Baum" in Informatik names data structures, not trees. ``context`` follows the
+    topic after a dash: the place of a collection in its topic tree (M71, ``collection_context.describe``).
     """
     report = TopicArticlesReport()
     prompt = get_prompt("topic_articles")
-    heard = f"{topic} (Fach: {', '.join(subjects)})" if subjects else topic
+    heard = f"{topic} – {context}" if context else topic
+    heard = f"{heard} (Fach: {', '.join(subjects)})" if subjects else heard
     answer = budgeted_chat(
         job.client,
         prompt.render(topic=heard, count=MAX_NAMED),
@@ -74,6 +76,7 @@ def ask_topic_articles(
         what="Artikel des Themas",
         prompt=prompt.id,
         deadline=job.deadline,
+        caller_text=heard,  # the topic as asked and the titles of the repository, reserved by their bytes (SE-20)
     )
     report.count(answer, prompt.tag)
     if isinstance(answer, LlmSkipped):

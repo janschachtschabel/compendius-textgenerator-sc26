@@ -14,6 +14,7 @@ from app.compendium.prepared import Made
 from app.compose.assembler import Switches, build_frontmatter, render_markdown
 from app.domain.models import AuditReport, CollectionPart, Compendium, CurriculaPart, Section, SectionStatus
 from app.domain.requests import GenerateRequest
+from app.knowledge.collection_context import tree_block
 from app.knowledge.node_article import node_block
 from app.matching.registry import LLM_MATCHER
 from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN, without_model_knowledge_label
@@ -171,6 +172,7 @@ def assemble(
         llm=llm_audit,
         knowledge=prepared.knowledge,
         node_article=node_block(node_report) if node_report is not None else None,
+        topic_tree=tree_block(prepared.tree, prepared.stand_in) if prepared.tree is not None else None,
         chunks_truncated=prepared.chunks_truncated,
         parts_status=status,
         regenerated=world.regenerated,

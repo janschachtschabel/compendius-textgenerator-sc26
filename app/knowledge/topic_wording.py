@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from app.knowledge.article_choice import UNREADABLE, ArticleChoiceJob, read_object
+from app.knowledge.collection_context import is_neutral
 from app.knowledge.node_article import PROMPT_CHARS, TITLE_CHARS
 from app.llm.call import LlmSkipped, budgeted_chat
 from app.llm.prompts import get_prompt
@@ -31,6 +32,7 @@ LONG = "länger als ein Thema"
 SENTENCE = "ein Satz oder eine Frage"
 METADATA = "Metadaten eines Knotens ohne Thema"
 TOO_LONG_ANSWER = "Antwort länger als ein Thema"
+NEUTRAL_ANSWER = "Antwort nennt keinen Gegenstand"
 # A question, an exclamation, or a word of two lower-case letters or more ending a sentence: "funktioniert." - not an
 # ordinal ("19. Jahrhundert") and not an abbreviation of one ("St. Petersburg", "Dr. Faustus")
 _SENTENCE = re.compile(r"[?!]|[a-zäöüß]{2}\.(?:\s+[A-ZÄÖÜ]|\s*$)")
@@ -94,11 +96,13 @@ def metadata_input(info: Metadata) -> str:
     )
 
 
-def wording_request(topic: str | None, beside: Metadata | None) -> WordingRequest | None:
+def wording_request(topic: str | None, beside: Metadata | None, place: str = "") -> WordingRequest | None:
     """What a writing profile lets the model word, or ``None`` where the topic stands as asked.
 
     ``beside`` is the node of the request or, without one, the collection of part 3: it stands in for a missing topic
-    and shows how a topic that is a text is meant.
+    and shows how a topic that is a text is meant. ``place`` is where such a collection stands in its topic tree
+    (``collection_context.describe``); the model hears it after the metadata, which made its wording fit better
+    (M71: 3.8 instead of 3.4-3.5 of 5 for neutral titles, 4.7 instead of 4.4 for titles naming their subject matter).
     """
     noun = None if beside is None else ("Material" if _kind(beside) == "material" else "Sammlung")
     if topic:
@@ -113,7 +117,8 @@ def wording_request(topic: str | None, beside: Metadata | None) -> WordingReques
         )
     if beside is None or noun is None:
         return None
-    return WordingRequest(source=noun, reason=METADATA, text=metadata_input(beside))
+    text = metadata_input(beside) + (f"\nLage im Themenbaum: {place}" if place else "")
+    return WordingRequest(source=noun, reason=METADATA, text=text)
 
 
 def word_topic(job: ArticleChoiceJob, text: str, report: TopicWordingReport) -> str | None:
@@ -141,6 +146,9 @@ def word_topic(job: ArticleChoiceJob, text: str, report: TopicWordingReport) -> 
     worded = " ".join(worded.strip(_QUOTES).split())
     if len(worded.split()) > ANSWER_WORDS or len(worded) > ANSWER_CHARS:
         report.fallback = TOO_LONG_ANSWER
+        return None
+    if is_neutral(worded):  # "Anwendungen" for a collection of that name: the topic of before says more (M71)
+        report.fallback = NEUTRAL_ANSWER
         return None
     report.topic = worded
     return worded

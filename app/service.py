@@ -35,6 +35,7 @@ from app.knowledge.article_choice import (
     ArticleChoiceJob,
     check_hits,
 )
+from app.knowledge.collection_context import describe, shown_topic
 from app.knowledge.corpus_sources import NODE_ORIGIN, build_corpus
 from app.knowledge.curriculum_check import CurriculumCheckReport
 from app.knowledge.main_article import choose_main_article
@@ -55,6 +56,7 @@ from app.sources.wlo.part import (
     collection_topic,
     node_topic,
 )
+from app.sources.wlo.tree import TreeContext
 from app.sources.zim.registry import ZimRegistry
 from app.synthesis.facets import FacetCatalog
 from app.synthesis.writer import SectionWriter
@@ -145,6 +147,11 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         if collection is not None:
             derived.append(collection_topic(collection))
         needs_corpus = self._needs_corpus(request)
+
+        def place(whole: bool) -> TreeContext | None:
+            """Where the collection whose title is the topic stands in its topic tree (M71)."""
+            return self.collection_tree(node_info, collection, request.repository, remaining=remaining, content=whole)
+
         # One view of the archives for the whole request: a reload between its steps left sources and snapshot
         # naming different files (audit 2026-09-29, A10)
         registry = (registry or self.registry).view()
@@ -156,6 +163,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             subject=request.subject,
             node=node_info,
             job=choice if needs_corpus else None,
+            place=place,
         )
         resolution = chosen.resolution
         if not resolution.resolved and needs_corpus:
@@ -176,6 +184,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             articles=chosen.articles,
             node_article=chosen.node,
             material=chosen.material,
+            tree=chosen.tree,
+            stand_in=chosen.stand_in,
             knowledge=knowledge_failure,  # a repository that failed on the probe is not asked again
             registry=registry,
             preserved=preserved,
@@ -193,14 +203,17 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         wording: ArticleChoiceJob | None,
     ) -> None:
         """The topic every prompt hears (D72; Jan: "eine verfälschung des themas ist generell nicht gut"): the topic as
-        asked, for a material without a topic its article (D47), for a collection its title. A writing profile lets
-        the model word the topic of a text in its place, of a node's metadata without a topic among them
-        (``wording_request``); without its answer the topic stays."""
+        asked, for a material without a topic its article (D47), for a collection its title - one that names no
+        subject matter with what stands in for it, "Grundlagen (Kernphysik)" (M71). A writing profile lets the model
+        word the topic of a text in its place, of a node's metadata without a topic among them, a collection's with
+        its place in the topic tree (``wording_request``); without its answer the topic stays."""
         if request.topic or prepared.node_article is None:
-            prepared.asked_topic = topic_as_asked(prepared.normalized)
+            prepared.asked_topic = shown_topic(topic_as_asked(prepared.normalized), prepared.stand_in)
         else:
             prepared.asked_topic = prepared.title
-        wanted = wording_request(request.topic, beside) if wording is not None else None
+        tree = prepared.tree
+        place = describe(tree, self.subjects.labels_of(prepared.subjects)) if tree is not None else ""
+        wanted = wording_request(request.topic, beside, place) if wording is not None else None
         if wanted is None or wording is None:
             return
         prepared.wording = TopicWordingReport(source=wanted.source, reason=wanted.reason)

@@ -25,6 +25,7 @@ from app.knowledge.article_choice import (
     ArticleChoiceReport,
     LlmArticleChooser,
 )
+from app.knowledge.collection_context import describe, is_neutral, stand_in
 from app.knowledge.node_article import NodeArticleReport, ask_topic, ranked_entities, rule_article
 from app.knowledge.question import resolve_by_keywords
 from app.knowledge.resolution import CHOSEN_BY_LLM, GUESSED, resolve_topic
@@ -34,6 +35,7 @@ from app.knowledge.topic_wording import needs_wording
 from app.sources.lehrplan.subjects import SubjectCatalog
 from app.sources.wlo.models import NodeInfo
 from app.sources.wlo.part import CollectionTopic, DerivedTopic, derive_topic
+from app.sources.wlo.tree import TreeContext
 from app.sources.zim.registry import ZimRegistry
 
 
@@ -48,6 +50,8 @@ class MainArticle:
     node: NodeArticleReport | None = None  # how a material's article was found (D47)
     material: str | None = None  # the material's own article beside the topic's, for the corpus
     articles: TopicArticlesReport | None = None  # the overview and the parts the LLM named for a topic (D63)
+    tree: TreeContext | None = None  # where the collection whose title is the topic stands in its topic tree (M71)
+    stand_in: str | None = None  # what the rules resolved in place of a neutral title (M71)
 
 
 def choose_main_article(
@@ -59,11 +63,25 @@ def choose_main_article(
     subject: str | None = None,
     node: NodeInfo | None = None,
     job: ArticleChoiceJob | None = None,
+    place: Callable[[bool], TreeContext | None] | None = None,
 ) -> MainArticle:
-    """The article for the topic, the node and the collection of a request; ``job`` is article_choice=llm."""
+    """The article for the topic, the node and the collection of a request; ``job`` is article_choice=llm.
+
+    ``place`` reads where the collection whose title is the topic stands in its topic tree (M71), given ``True`` with
+    its sub-collections, materials and neighbours. It is read where a collection's title is the topic, and only where
+    it serves: the question N hears it after the title, and a title that names no subject matter ("Grundlagen")
+    stands for the nearest informative collection above it, which the rules resolve in its place; for such a title the
+    overview N names leads."""
     found = derive_topic(topic, derived, subject, is_subject=catalog.knows)
     terms = catalog.context_terms_of(found.subjects)
+    labels = catalog.labels_of(found.subjects)
     around = [word for entry in derived for word in entry.context]  # the words the node and the collection bring
+    neutral = is_neutral(found.normalized.topic)
+    tree = None
+    if place is not None and not topic and (node is None or node.kind != "material") and (job is not None or neutral):
+        tree = place(job is not None)
+    stand = stand_in(found.normalized.topic, tree, labels, is_subject=catalog.knows)
+    resolved = stand or found.normalized.topic  # what the rules resolve
 
     def by_rules(title: str) -> Resolution:
         normalized = normalize_topic(title, is_subject=catalog.knows)
@@ -88,32 +106,36 @@ def choose_main_article(
         normalized = found.normalized
         if report is not None and not topic and resolution.resolved:  # the material's topic is the article found
             normalized = replace(normalized, topic=resolution.normalized)
-        return MainArticle(normalized, found.subjects, resolution, choice, report, material, articles)
+        return MainArticle(
+            normalized, found.subjects, resolution, choice, report, material, articles, tree=tree, stand_in=stand
+        )
 
     def the_articles() -> TopicArticlesReport | None:
         """With a job, the question N for the request's topic (D63), which hears its subjects too."""
         leading = registry.primary_archive
         if job is None or leading is None:
             return None
-        return ask_topic_articles(job, leading, found.normalized.topic, catalog.labels_of(found.subjects))
+        place = describe(tree, labels) if tree is not None else ""
+        return ask_topic_articles(job, leading, found.normalized.topic, labels, place)
 
     def the_topic() -> tuple[Resolution, ArticleChoiceReport | None, TopicArticlesReport | None]:
         """The rules, and with a job the question N (D63) and the choice among the rules' candidates (D35).
 
         Where the rules missed the topic the first title N found replaces their article: the overview, or the first
         part when the archive lacks the overview, as measured (M37, M39)."""
-        chooser = LlmArticleChooser(job, found.normalized.topic, catalog.labels_of(found.subjects)) if job else None
+        chooser = LlmArticleChooser(job, resolved, labels) if job else None
         articles = the_articles()
         overview = articles.found[0] if articles is not None and articles.found else None
         resolution = resolve_topic(
             registry,
-            found.normalized.topic,
+            resolved,
             context=found.context,
             query=found.normalized.query,
             terms=terms,
             chooser=chooser,
             thorough=job is not None and job.thorough,
             overview=overview,
+            leading=tree is not None and neutral,
         )
         if (
             job is None

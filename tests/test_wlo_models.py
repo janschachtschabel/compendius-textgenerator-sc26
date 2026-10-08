@@ -143,6 +143,26 @@ def test_a_reference_without_an_original_falls_back_to_its_own_id() -> None:
     assert ref.original_id is None and ref.node_id == ref.id
 
 
+PARENT = "0b3a729c-b006-499c-8da9-251657fbe52b"
+
+
+def test_a_collection_and_a_node_name_the_collection_above_them() -> None:
+    """The place in the topic tree (M71): "Grundlagen" under "Kernphysik" says what it is about only with its parent."""
+    props = {"cm:title": ["Grundlagen"], "virtual:primaryparent_nodeid": [PARENT]}
+    collection = parse_collection({"collection": {"ref": {"id": "c"}, "title": "Grundlagen", "properties": props}})
+    node = parse_node({"node": {"ref": {"id": "n"}, "aspects": ["ccm:collection"], "properties": props}})
+    by_field = parse_node({"node": {"ref": {"id": "n"}, "parent": {"id": PARENT}, "properties": {}}})
+
+    assert collection.parent_id == node.parent_id == by_field.parent_id == PARENT
+    assert parse_collection(_load("collection_optik.json")).parent_id == ""  # the fixture names none
+    assert parse_node({"node": {"ref": {"id": "n"}, "parent": {"id": "../x"}, "properties": {}}}).parent_id == ""
+    # an id goes into the path of the next read: spaces around it come off
+    assert (
+        parse_node({"node": {"ref": {"id": "n"}, "parent": {"id": PARENT + "\n"}, "properties": {}}}).parent_id
+        == PARENT
+    )
+
+
 def test_a_node_id_with_a_line_break_after_it_is_none() -> None:
     """The pattern ended in "$", which matches before a final line break: such an id passed the check and failed the
     request with a 500 when it went into a URL (review 2026-10-08)."""

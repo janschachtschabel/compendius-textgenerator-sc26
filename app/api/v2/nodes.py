@@ -20,6 +20,7 @@ from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS
 from app.domain.models import NodeInput
 from app.domain.requests import NODE_ID_PATTERN, REPOSITORY_HELP
+from app.knowledge.collection_context import is_neutral, stand_in
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import node_block
 from app.sources.wlo.part import derive_topic, node_topic
@@ -33,7 +34,8 @@ STAGING_COLLECTION = "9e7ae956-e9df-430f-bace-f3db4b910013"  # the collection "O
 
 class NodePreview(NodeInput):
     topic: str | None = Field(
-        description="The topic a request with this node alone resolves without the LLM: a collection's title; for a "
+        description="The topic a request with this node alone resolves without the LLM: a collection's title, for a "
+        'title that names no subject matter ("Grundlagen") the nearest collection above it that does (M71); for a '
         "material the article the rules find in its title and description (D47), null when they find none or no "
         "archive is loaded. With article_choice llm the LLM names a material's article instead, and a topic sent "
         "along leads"
@@ -109,6 +111,11 @@ def read_node(
     info, node = service.read_node(node_id, repository)
     found = derive_topic(None, [node_topic(info)], is_subject=service.subjects.knows)
     topic: str | None = found.normalized.topic
+    title = found.normalized.topic
+    if info.kind == "collection" and is_neutral(title):  # it stands for the collection above it (M71)
+        tree = service.collection_tree(info, None, repository, content=False)
+        labels = service.subjects.labels_of(found.subjects)
+        topic = stand_in(title, tree, labels, is_subject=service.subjects.knows) or title
     node_article: dict[str, Any] | None = None
     if info.kind == "material":  # its title is often a format; the rules look for the article (D47)
         topic = None

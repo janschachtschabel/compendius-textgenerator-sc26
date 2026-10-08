@@ -24,6 +24,7 @@ from app.sources.wlo.models import CollectionInfo, NodeInfo
 from app.sources.wlo.overview import PART_HEADING as COLLECTION_HEADING
 from app.sources.wlo.part import CollectionBuilder, CollectionOptions, node_input
 from app.sources.wlo.repository import repository_root
+from app.sources.wlo.tree import TreeContext, read_tree
 
 log = logging.getLogger(__name__)
 
@@ -67,6 +68,32 @@ class RepositoryReading:
         info = builder.node(node_id, remaining=remaining)
         return info, node_input(info, root)
 
+    def collection_tree(
+        self,
+        node: NodeInfo | None,
+        collection: CollectionInfo | None,
+        repository: str | None = None,
+        *,
+        remaining: Remaining | None = None,
+        content: bool = True,
+    ) -> TreeContext | None:
+        """Where the collection that gives a topic stands in its topic tree (M71): the node when it is a collection,
+        read from its repository without credentials as the node itself (D45, A02), else the collection of part 3 with
+        the account that reads part 3; ``None`` for a material. The path above it always, its sub-collections,
+        materials and neighbours only with ``content``."""
+        if node is not None:
+            if node.kind != "collection":
+                return None
+            builder = self._reader_without_account(self._node_repository(repository)[0])
+            found = (node.node_id, node.parent_id, node.subject_labels)
+        elif collection is not None and self.collections is not None:
+            builder = self.collections
+            found = (collection.id, collection.parent_id, collection.subject_labels)
+        else:
+            return None
+        collection_id, parent_id, subjects = found
+        return read_tree(builder, collection_id, parent_id, subjects, remaining=remaining, content=content)
+
     def collection_from_node(self, request: GenerateRequest, remaining: Remaining | None = None) -> GenerateRequest:
         """The request with a collection named as node_id standing for collection_id as well, so it gets part 3 (D77;
         Jan, 2026-10-02: one id for a collection, whichever field carries it). Only where part 3 is asked for and
@@ -96,6 +123,16 @@ class RepositoryReading:
         # 2026-10-03, F11)
         if self.collections is not None and base and urlsplit(root).hostname == urlsplit(base).hostname:
             return root, self.collections
+        return root, self._reader_without_account(root)
+
+    def _reader_without_account(self, root: str) -> CollectionBuilder:
+        """A reader of the repository at ``root`` that holds no credentials, kept per root: for any other repository,
+        and for the configured one where its reader has an account; without one, that reader itself."""
+        shared = self.collections  # the same cache and cache time as the configured repository
+        base = self.settings.edu_sharing_base_url.rstrip("/")
+        configured = shared is not None and base and urlsplit(root).hostname == urlsplit(base).hostname
+        if shared is not None and configured and shared.client.scope == shared.client.public_scope:
+            return shared
         with self._foreign_lock:
             builder = self._foreign.get(root)
             if builder is None:
@@ -103,11 +140,10 @@ class RepositoryReading:
                 client = EduSharingClient(
                     root, timeout_s=self.settings.edu_sharing_timeout_s, transport=self.repository_transport
                 )
-                shared = self.collections  # the same cache and cache time as the configured repository
                 options = shared.options if shared is not None else CollectionOptions()
                 builder = CollectionBuilder(client=client, cache=shared.cache if shared else None, options=options)
                 self._foreign[root] = builder
-        return root, builder
+        return builder
 
     def close(self) -> None:
         """Close the clients of other repositories; the configured one belongs to the app (``close_clients``)."""

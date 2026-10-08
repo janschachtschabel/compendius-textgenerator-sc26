@@ -176,20 +176,23 @@ class EduSharingClient:
         """All materials referenced by the collection; see ``listing``."""
         return self.listing(collection_id, remaining=remaining).refs
 
-    def listing(self, collection_id: str, *, remaining: Remaining | None = None) -> ReferenceListing:
+    def listing(
+        self, collection_id: str, *, remaining: Remaining | None = None, limit: int | None = None
+    ) -> ReferenceListing:
         """The materials referenced by the collection, page by page until the reported total is reached, and why the
         listing ended before it if it did (``ReferenceListing.cut``).
 
         ``remaining`` gives the seconds left of the caller's time budget: once it is spent, the listing ends after the
         last page that came in time. When not one page came, ``TimeUpError``: an empty list would read as an empty
-        collection.
+        collection. With ``limit``, the first ``limit`` materials, from pages of at most that size.
         """
         path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}/children/references"
         refs: list[MaterialRef] = []
         seen: set[str] = set()
         skip = 0
+        size = min(self._page_size, limit) if limit else self._page_size
         for _page in range(MAX_PAGES):
-            params = {"maxItems": self._page_size, "skipCount": skip, "propertyFilter": "-all-"}
+            params = {"maxItems": size, "skipCount": skip, "propertyFilter": "-all-"}
             try:
                 payload = self._get(path, params, remaining=remaining)
             except TimeUpError:
@@ -213,7 +216,9 @@ class EduSharingClient:
             if total is not None and not isinstance(total, int):
                 raise MalformedAnswerError("pagination.total")
             skip += len(items)
-            if not items or len(items) < self._page_size or (total is not None and skip >= total):
+            if limit and len(refs) >= limit:
+                return ReferenceListing(refs[:limit])
+            if not items or len(items) < size or (total is not None and skip >= total):
                 return ReferenceListing(refs)
             if len(refs) == known:  # a full page without a new id: the repository ignores skipCount
                 log.warning(

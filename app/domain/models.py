@@ -258,6 +258,14 @@ class AuditReport(BaseModel):
         "article beside a topic sent along and whether it joined the corpus (added), why the LLM did not decide "
         "(fallback) and its tokens; null without a material",
     )
+    topic_tree: dict[str, Any] | None = Field(
+        None,
+        description="Where the collection whose title is the topic stands in its topic tree (M71): the collections "
+        "above it (path, the nearest last); where the LLM heard them, its sub-collections (children), the titles of "
+        "its first materials and its neighbours, named to it as not meant; the parts the repository did not give "
+        "(missing); what the rules resolved in place of a title that names no subject matter (stand_in). Null where a "
+        "topic was sent along, a material gave the topic, or nothing needed the tree",
+    )
     parts_status: dict[str, str] = Field(
         default_factory=dict, description="Per requested part: ok, empty, incomplete or unavailable"
     )

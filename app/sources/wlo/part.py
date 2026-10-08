@@ -42,8 +42,9 @@ log = logging.getLogger(__name__)
 # Part of the cache keys of records: bump it when a cached record gains or changes a field, so entries written
 # by an earlier version are not read (they expire by their TTL). 2: MaterialRef with licence version and authors.
 # 3: every key names the repository and the account it was read with (audit 2026-09-29, A03); the key of a material
-# text (knowledge.py) changed its shape with it, so no text of an earlier version is read either.
-CACHE_FORMAT = 3
+# text (knowledge.py) changed its shape with it, so no text of an earlier version is read either. 4: a collection and a
+# node name the collection above them (M71).
+CACHE_FORMAT = 4
 UNAVAILABLE_TEXT = "*Der Sammlungsüberblick konnte nicht erstellt werden: {error}*"
 SUB_UNREADABLE = "eine Untersammlung war nicht lesbar"
 
@@ -194,6 +195,22 @@ class CollectionBuilder:
             return listing
         self._remember(key, {"refs": [dataclasses.asdict(ref) for ref in listing.refs], "cut": listing.cut})
         return listing
+
+    def first_materials(self, collection_id: str, count: int, *, remaining: Remaining | None = None) -> tuple[str, ...]:
+        """The titles of the first ``count`` materials of a collection (M71): from its cached listing, else from one
+        short page, kept apart from the listing - it is not the whole of it."""
+        listed = self.cache.get(self._key("listing", collection_id)) if self.cache is not None else None
+        if isinstance(listed, dict) and isinstance(listed.get("refs"), list):
+            titles = tuple(str(item.get("title") or "") for item in listed["refs"][:count] if isinstance(item, dict))
+            return tuple(title for title in titles if title.strip())
+        key = self._key(f"first-{count}", collection_id)
+        cached = self.cache.get(key) if self.cache is not None else None
+        if isinstance(cached, list):
+            return tuple(str(title) for title in cached)
+        refs = self.client.listing(collection_id, remaining=remaining, limit=count).refs
+        titles = tuple(ref.title for ref in refs if ref.title.strip())
+        self._remember(key, list(titles))
+        return titles
 
     def subcollections(self, collection_id: str, *, remaining: Remaining | None = None) -> list[SubCollection]:
         key = self._key("subcollections", collection_id)

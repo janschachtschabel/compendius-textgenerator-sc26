@@ -101,6 +101,7 @@ class CollectionInfo:
     collection_type: str
     modified_at: str
     is_topic_page: bool
+    parent_id: str = ""  # the collection above it in the topic tree (M71); empty at the root or when unnamed
 
 
 @dataclass(frozen=True)
@@ -116,6 +117,7 @@ class NodeInfo:
     subject_labels: tuple[str, ...]
     educational_contexts: tuple[str, ...]
     url: str  # the material's own address (ccm:wwwurl); empty for a collection
+    parent_id: str = ""  # the node above it: for a collection the one above it in the topic tree (M71)
 
 
 def json_object(value: Any, field: str, *, required: bool = False) -> Mapping[str, Any]:
@@ -208,6 +210,7 @@ def parse_collection(payload: Mapping[str, Any]) -> CollectionInfo:
         collection_type=_first(props, "ccm:collectiontype"),
         modified_at=str(node.get("modifiedAt") or ""),
         is_topic_page=bool(_values(props, "ccm:page_config_ref")),
+        parent_id=_parent_id(node, props),
     )
 
 
@@ -225,7 +228,18 @@ def parse_node(payload: Mapping[str, Any]) -> NodeInfo:
         subject_labels=_labels(props, "ccm:taxonid"),
         educational_contexts=_labels(props, "ccm:educationalcontext"),
         url=_first(props, "ccm:wwwurl", verbatim=True),
+        parent_id=_parent_id(node, props),
     )
+
+
+def _parent_id(node: Mapping[str, Any], props: Mapping[str, Any]) -> str:
+    """The node above: the repository's primary parent, else the ``parent`` field - only a node id, as it goes into
+    the paths of later reads."""
+    named = _first(props, "virtual:primaryparent_nodeid", verbatim=True).strip()
+    if not named:
+        parent = node.get("parent")
+        named = str(parent.get("id") or "").strip() if isinstance(parent, Mapping) else ""
+    return named if NODE_ID.match(named) else ""
 
 
 def _keywords(props: Mapping[str, Any]) -> tuple[str, ...]:

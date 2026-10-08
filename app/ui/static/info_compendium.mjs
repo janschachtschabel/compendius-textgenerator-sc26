@@ -3,7 +3,7 @@
 // findings of the lint and the technical details - each part folded, so the text stays the first thing to read.
 
 import { h, link } from './dom.mjs';
-import { facts, infoPart, nodeArticleFacts, resolutionFacts, technical } from './panels.mjs';
+import { facts, infoPart, nodeArticleFacts, resolutionFacts, technical, treeFacts } from './panels.mjs';
 import { shares } from './provenance.mjs';
 import { stepsAccount } from './steps.mjs';
 import { formatDuration, formatNumber } from './stats.mjs';
@@ -39,6 +39,7 @@ function topic(answer, run) {
       ['Fächer des Knotens', node?.subjects],
       ['Stufen des Knotens', node?.educational_contexts],
       ...nodeArticleFacts(answer.audit?.node_article, answer, run.request.body),
+      ...treeFacts(answer.audit?.topic_tree),
       ['Wissens-Sammlung', knowledge(answer.audit?.knowledge)],
     ]),
   );

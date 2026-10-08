@@ -90,6 +90,27 @@ export function nodeArticleFacts(block, answer, sent) {
   ];
 }
 
+const TREE_PARTS = { path: 'Sammlungen darüber', children: 'Untersammlungen', materials: 'Materialien', neighbours: 'Nachbarsammlungen' };
+
+/** Where the collection whose title is the topic stands in its topic tree (D92, M71), as facts(), from the block of
+ * app/knowledge/collection_context.py: the collections above it, what the model heard of its content and its
+ * neighbours, what stood in for a title that names no subject matter, and the parts the repository did not give.
+ * None where no collection gave the topic. */
+export function treeFacts(block) {
+  if (!block) return [];
+  const heard = [
+    ['Untersammlungen', block.children?.length],
+    ['Materialtitel', block.materials?.length],
+    ['Nachbarsammlungen als nicht gemeint', block.neighbours?.length],
+  ].filter(([, count]) => count);
+  return [
+    ['Ort im Themenbaum', block.path?.length ? block.path.join(' › ') : block.missing?.includes('path') ? null : 'oberste Ebene unter dem Fachportal'],
+    ['Steht für', block.stand_in ? `„${block.stand_in}“ (der Titel nennt keinen Gegenstand)` : null],
+    ['Von der KI gehört', heard.length ? heard.map(([what, count]) => `${what}: ${count}`).join(', ') : null],
+    ['Nicht gelesen', (block.missing ?? []).map((part) => TREE_PARTS[part] ?? part)],
+  ];
+}
+
 /** What someone reporting a finding needs: the request as sent, the id the server logged it under, and more. */
 export function technical(run, extra = []) {
   const sent = run.request.body ?? run.request.query;

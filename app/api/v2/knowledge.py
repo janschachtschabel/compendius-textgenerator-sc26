@@ -36,6 +36,7 @@ from app.domain.requests import (
     RequestModel,
 )
 from app.knowledge.article_choice import choice_block
+from app.knowledge.collection_context import tree_block
 from app.knowledge.node_article import node_block
 from app.llm.deadline import Deadline
 from app.templates.schema import TEMPLATE_ID_PATTERN
@@ -146,6 +147,11 @@ class KnowledgeResponse(BaseModel):
         None,
         description="How the article of a material node was found (D47), as in the audit of a compendium; null "
         "without a material",
+    )
+    topic_tree: dict[str, Any] | None = Field(
+        None,
+        description="Where the collection whose title is the topic stands in its topic tree (M71), as in the audit of "
+        "a compendium; null where no collection gave the topic or nothing needed the tree",
     )
     article_choice: dict[str, Any] | None = Field(
         None,
@@ -351,6 +357,7 @@ def knowledge(
         article_choice=_choice(prepared, requested, note),
         node=prepared.node,
         node_article=node_block(prepared.node_article) if prepared.node_article is not None else None,
+        topic_tree=tree_block(prepared.tree, prepared.stand_in) if prepared.tree is not None else None,
     )
 
 
