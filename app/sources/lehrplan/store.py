@@ -266,26 +266,30 @@ class LehrplanStore:
 
         ``subject_terms`` are lowercase substrings of the curriculum's subject labels and title
         ("physik", "natur und technik"); with none given all subjects are searched. Past ``limit`` the nodes of the
-        roles ``role_order`` names first stay; they went in the order they were written before, the states harvested
-        last out first (audit 2026-09-28, PE-05). A cache SQLite cannot read raises ``LehrplanCacheError``, so callers
-        can say so instead of reporting zero matches.
+        roles ``role_order`` names first stay (audit 2026-09-28, PE-05), and within a role the curricula take turns:
+        in the order the rows were written, the curricula harvested last lost theirs first (audit 2026-09-18, D-03).
+        The hits come by role, then as written, so a search within its limit answers as before. A cache SQLite
+        cannot read raises ``LehrplanCacheError``, so callers can say so instead of reporting zero matches.
         """
         words = self._searchable(keywords)
         if not words:
             return []
-        where, params = self._where(words, subject_terms)
+        where, where_params = self._where(words, subject_terms)
         ranks = "".join(" WHEN instr(',' || node.rollen || ',', ?) > 0 THEN ?" for _ in role_order)
-        order = f"CASE{ranks} ELSE {len(role_order)} END, node.id" if role_order else "node.id"
+        rank = f"CASE{ranks} ELSE {len(role_order)} END" if role_order else "0"
         sql = (
-            "SELECT node.iri, node.label, node.rollen, node.parent_iri, node.parent_label, node.jahrgangsstufen,"
-            " node.depth, lehrplan.iri AS lp_iri, lehrplan.label AS lp_label, lehrplan.bundesland_code,"
-            " lehrplan.bundesland, lehrplan.schularten, lehrplan.schulfaecher,"
-            " lehrplan.jahrgangsstufen AS lp_jahrgangsstufen, lehrplan.schulstufen"
+            "WITH found AS (SELECT node.iri, node.label, node.rollen, node.parent_iri, node.parent_label,"  # noqa: S608 - own fragments, every value bound
+            " node.jahrgangsstufen, node.depth, lehrplan.iri AS lp_iri, lehrplan.label AS lp_label,"
+            " lehrplan.bundesland_code, lehrplan.bundesland, lehrplan.schularten, lehrplan.schulfaecher,"
+            " lehrplan.jahrgangsstufen AS lp_jahrgangsstufen, lehrplan.schulstufen, node.id AS node_id,"
+            f" {rank} AS role_rank"
             + where
-            + f" ORDER BY {order} LIMIT ?"
+            + "), kept AS (SELECT *, ROW_NUMBER() OVER (PARTITION BY lp_iri, role_rank ORDER BY node_id) AS turn"
+            " FROM found ORDER BY role_rank, turn, node_id LIMIT ?)"
+            " SELECT * FROM kept ORDER BY role_rank, node_id"
         )
-        params += [value for rank, role in enumerate(role_order) for value in (f",{role},", rank)]
-        params.append(int(limit))
+        params = [value for position, role in enumerate(role_order) for value in (f",{role},", position)]
+        params += [*where_params, int(limit)]
         folded = [word.casefold() for word in words]
         try:
             return self._hits(sql, params, folded)

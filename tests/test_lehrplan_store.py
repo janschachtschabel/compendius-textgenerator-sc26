@@ -181,3 +181,37 @@ def test_a_cut_search_keeps_the_strongest_roles_and_counts_every_hit(tmp_path: P
 
     assert result.matches[0].hit.iri == "n:3"  # the themenbereich survives the cut
     assert (result.total_hits, result.cut_hits, len(result.matches)) == (3, 1, 2)
+
+
+def _two_curricula(path: Path) -> LehrplanStore:
+    """Three elements about optics in the curriculum written first, one in the one written after it."""
+    writer = LehrplanWriter(path)
+    writer.add_lehrplan(PHYSIK)
+    writer.add_nodes(PHYSIK.iri, [_node(f"n:{number}", f"Optik {number}", ["inhalt"]) for number in (1, 2, 3)])
+    writer.add_lehrplan(CHEMIE)
+    writer.add_nodes(CHEMIE.iri, [_node("n:9", "Optik der Farben", ["inhalt"])])
+    writer.set_meta({"harvested_at": "2026-10-08T10:00:00+00:00", "endpoint": "https://sparql.test/"})
+    writer.commit()
+    return LehrplanStore(path)
+
+
+@pytest.mark.parametrize("role_order", [("inhalt",), ()])
+def test_a_cut_search_takes_the_curricula_in_turns(tmp_path: Path, role_order: tuple[str, ...]) -> None:
+    """D-03 (audit 2026-09-18): within a role the rows past the limit went in the order they were written, so the
+    curricula harvested last lost their elements first. Measured on 08.10.2026: "Arbeit" hit 22,935 elements, and the
+    cut took 2,345 of Bavaria's 9,985 and none of Rhineland-Palatinate's 2,666; more states and school types make such
+    cuts likelier. A cut takes the elements of every curriculum in turns."""
+    store = _two_curricula(tmp_path / "lehrplan.db")
+
+    hits = store.search(["Optik"], limit=2, role_order=role_order)
+
+    assert sorted(hit.iri for hit in hits) == ["n:1", "n:9"]
+
+
+def test_a_search_within_its_limit_keeps_the_order_the_curricula_were_written(tmp_path: Path) -> None:
+    """Without a cut the turns change nothing: the hits come by role, then as they were written."""
+    store = _two_curricula(tmp_path / "lehrplan.db")
+
+    hits = store.search(["Optik"], limit=10, role_order=("inhalt",))
+
+    assert [hit.iri for hit in hits] == ["n:1", "n:2", "n:3", "n:9"]
