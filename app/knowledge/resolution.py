@@ -63,10 +63,11 @@ def resolve_topic(
     thorough: bool = False,
     overview: str | None = None,
     leading: bool = False,
+    guess: bool = True,
 ) -> Resolution:
     """The article for a topic over the archives of ``registry``; see ``_Resolver.resolve_topic``."""
     return _Resolver(registry).resolve_topic(
-        topic, context, query, terms, chooser, thorough=thorough, overview=overview, leading=leading
+        topic, context, query, terms, chooser, thorough=thorough, overview=overview, leading=leading, guess=guess
     )
 
 
@@ -88,8 +89,10 @@ class _Resolver:
         thorough: bool = False,
         overview: str | None = None,
         leading: bool = False,
+        guess: bool = True,
     ) -> Resolution:
-        """The article for a topic: exact title, inflected form, genitive phrase, then suggestions and hits.
+        """The article for a topic: exact title, inflected form, genitive phrase, then suggestions and hits; without
+        ``guess`` it stops before them, where only an article the topic names counts (a keyword of a question, M73).
 
         ``terms`` are the words of the request's subject (``config/subjects.yaml``, ``kontext``); without them
         the words of ``context`` count, school words like "Klasse" left out. They pick the meaning of a
@@ -109,7 +112,7 @@ class _Resolver:
         With ``leading`` the overview replaces the rules' article wherever the archive has it: the topic is a stand-in
         for one the model heard in full (a collection with a neutral title, M71).
         """
-        resolution = self._resolve_by_rules(topic, context, query, terms)
+        resolution = self._resolve_by_rules(topic, context, query, terms, guess=guess)
         if overview is not None and (leading or misses_topic(resolution)) and self._take_overview(resolution, overview):
             return resolution
         if chooser is None or not resolution.resolved:
@@ -215,7 +218,7 @@ class _Resolver:
         resolution.method, resolution.confident = CHOSEN_BY_LLM, False
 
     def _resolve_by_rules(
-        self, topic: str, context: Sequence[str], query: str | None, terms: Sequence[str]
+        self, topic: str, context: Sequence[str], query: str | None, terms: Sequence[str], *, guess: bool = True
     ) -> Resolution:
         resolution = Resolution(query=query or topic, normalized=topic, context=list(context))
         stems = disambiguation_stems(terms) if terms else disambiguation_stems(context)
@@ -229,14 +232,14 @@ class _Resolver:
             head, tail = genitive
             if head.lower() in ASPECT_WORDS:
                 # "Ursachen der Französischen Revolution": the article is the revolution, a guess at the request
-                inner = self._resolve_by_rules(nominative(tail), context, query or topic, terms)
+                inner = self._resolve_by_rules(nominative(tail), context, query or topic, terms, guess=guess)
                 if inner.resolved:
                     method = "variant" if inner.method == "title" else inner.method
                     return inner.model_copy(update={"normalized": topic, "method": method, "confident": False})
             elif self._resolve_compound(head, tail, resolution):
                 return resolution
         lead = self.primary_archive
-        if lead is None:
+        if lead is None or not guess:
             return resolution
         suggestions = [t for t in lead.suggest(topic, 10) if "(begriffsklärung)" not in t.lower()]
         hits = lead.search(topic, 5)

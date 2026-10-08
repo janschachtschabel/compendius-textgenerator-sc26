@@ -3,12 +3,16 @@ found "Mond" for the rainbow; its keywords, tried in the order it names them, fi
 
 from __future__ import annotations
 
+from typing import Any
+
 import pytest
 
 from app.compendium.errors import TopicNotFoundError
 from app.domain.requests import GenerateRequest
-from app.knowledge.question import keywords
+from app.knowledge import question as question_module
+from app.knowledge.question import MAX_KEYWORDS, keywords, resolve_by_keywords
 from app.service import CompendiumService
+from app.sources.zim.archive import ZimArchive
 
 
 @pytest.mark.parametrize(
@@ -64,3 +68,44 @@ def test_runs_are_tried_down_to_two_words_and_a_pronoun_is_no_keyword() -> None:
     ]
     assert "Weimarer Republik" in keywords("Weimarer Republik Krisenjahre")
     assert keywords("Ich möchte mit meiner Klasse über Vulkane sprechen")[0] == "Vulkane"
+
+
+def test_a_keyword_is_looked_up_by_its_title_without_suggestions_or_a_full_text_search(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Only a keyword that names an article counts; its suggestions and full-text hits were sought and thrown away,
+    2,851 searches for one topic of 299 characters (review of 2026-10-08)."""
+    asked: list[str] = []
+    for name in ("suggest", "search"):
+        original = getattr(ZimArchive, name)
+
+        def spy(archive: ZimArchive, *args: Any, _original: Any = original, _name: str = name) -> Any:
+            asked.append(_name)
+            return _original(archive, *args)
+
+        monkeypatch.setattr(ZimArchive, name, spy)
+
+    resolution = resolve_by_keywords(service.registry, "Welche Rolle spielen Zauberwürfelfabriken beim Regenbogen?")
+
+    assert resolution is not None and resolution.title == "Regenbogen" and asked == []
+
+
+def test_no_more_keywords_are_tried_than_a_question_names(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The 60 questions of M73 name at most 15 keywords; a list of capitalised words makes hundreds."""
+    planets = (
+        "Planeten Sonnensystem Merkur Venus Erde Mars Jupiter Saturn Uranus Neptun Zwergplaneten Pluto Ceres Monde"
+    )
+    tried: list[str] = []
+    original = question_module.resolve_topic
+
+    def counting(registry: Any, word: str, **options: Any) -> Any:
+        tried.append(word)
+        return original(registry, word, **options)
+
+    monkeypatch.setattr(question_module, "resolve_topic", counting)
+
+    resolve_by_keywords(service.registry, planets)
+
+    assert len(keywords(planets)) > MAX_KEYWORDS and len(tried) == MAX_KEYWORDS

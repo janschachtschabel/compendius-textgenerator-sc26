@@ -47,6 +47,9 @@ _GENERIC = frozenset(
 _LETTERS = frozenset("abcdefghijklmnopqrstuvwxyzäöüß-")
 _DECLINED = ("en", "em", "er", "es", "e")
 MIN_STEM = 4  # a noun stripped of its ending keeps at least this many letters ("Krieg", not "Kri")
+# The 60 questions of M73 name at most 15 keywords; a list of capitalised words made hundreds, the forms of its
+# first run first (review of 2026-10-08)
+MAX_KEYWORDS = 50
 
 
 def keywords(text: str) -> list[str]:
@@ -76,9 +79,10 @@ def resolve_by_keywords(
     terms: Sequence[str] = (),
 ) -> Resolution | None:
     """The article of the first keyword of ``text`` that names one exactly (``EXACT``), else ``None``; the resolution
-    keeps ``query``, what was asked."""
-    for word in keywords(text):
-        resolution = resolve_topic(registry, word, context=context, query=query, terms=terms)
+    keeps ``query``, what was asked. A keyword is looked up by its title and its forms only: a suggestion or a
+    full-text hit would not count, and the searches cost 2,851 for one long topic (review of 2026-10-08)."""
+    for word in keywords(text)[:MAX_KEYWORDS]:
+        resolution = resolve_topic(registry, word, context=context, query=query, terms=terms, guess=False)
         if resolution.resolved and resolution.method in EXACT:
             return resolution
     return None
