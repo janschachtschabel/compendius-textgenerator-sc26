@@ -8,6 +8,7 @@ long as it stayed cached (audit 2026-09-27, KO-03).
 from __future__ import annotations
 
 import json
+import time
 from typing import Any
 
 import httpx
@@ -45,6 +46,31 @@ def test_read_number_reads_an_int_or_up_to_three_ascii_digits(value: Any, number
 )
 def test_read_object_has_no_object_where_json_cannot_read_one(text: str) -> None:
     assert read_object(text) is None
+
+
+@pytest.mark.parametrize(
+    ("text", "data"),
+    [
+        ('Antwort: {"wahl": 2} - fertig', {"wahl": 2}),
+        ('{"a": 1} und {"b": 2}', None),  # from the first brace to the last one: no object JSON reads
+        ("{ohne Ende", None),
+        ('Ende} vor {"a": 1}', {"a": 1}),
+    ],
+)
+def test_read_object_reads_from_the_first_opening_brace_to_the_last_closing_one(
+    text: str, data: dict[str, Any] | None
+) -> None:
+    assert read_object(text) == data
+
+
+def test_a_long_run_of_opening_braces_costs_no_time() -> None:
+    """The pattern {.*} was tried from every brace of a run without a closing one: 0.23 s for 20,000 (review of
+    2026-10-08, pre-existing); answers are short, the reader of every JSON object of the LLM need not be."""
+    started = time.perf_counter()
+
+    assert read_object("{" * 200_000) is None
+
+    assert time.perf_counter() - started < 0.5
 
 
 @pytest.mark.parametrize(

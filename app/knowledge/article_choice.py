@@ -59,7 +59,6 @@ CHECKED_ORIGINS = frozenset({"search", "linked"})  # the side articles the hit c
 HIT_OPENING_CHARS = 180  # as the M8 judge saw each article
 HIT_OUTPUT_TOKENS_PER_ARTICLE = 12
 HIT_SEED = 20260923  # the order of the articles in the call, fixed per topic as measured
-_JSON = re.compile(r"\{.*\}", re.DOTALL)
 # A number in an answer: "²" and "①" are digits to str.isdigit, and int() refuses them (audit 2026-09-27,
 # KO-03)
 _NUMBER = re.compile("[0-9]{1,3}")
@@ -269,12 +268,14 @@ def choice_block(audit: ChoiceAudit) -> dict[str, Any]:
 
 
 def read_object(text: str) -> dict[str, Any] | None:
-    """The first JSON object in a model's answer, or ``None`` when there is none."""
-    match = _JSON.search(text)
-    if match is None:
+    """The JSON object in a model's answer, from its first opening brace to its last closing one, or ``None`` when
+    there is none. Found by position: the pattern of before, tried from every brace of a run, took 0.23 s for 20,000
+    braces without a closing one (review of 2026-10-08)."""
+    start, end = text.find("{"), text.rfind("}")
+    if start == -1 or end < start:
         return None
     try:
-        data = json.loads(match.group(0))
+        data = json.loads(text[start : end + 1])
     except (ValueError, RecursionError):  # also a number of over 4,300 digits and a nesting too deep to read
         return None
     return data if isinstance(data, dict) else None
