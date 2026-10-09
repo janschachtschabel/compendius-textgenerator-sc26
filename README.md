@@ -160,6 +160,8 @@ Abschnittsmarker von Teil 1.
 - Quellen (D99, M84): Der Dienst bleibt bei Wikipedia und Klexikon; Wikibooks, Wikiversity, Wiktionary, Wikisource,
   Wikiquote, Wikivoyage und Gutenberg brachten keinen passenden Text, und die Wikipedia-Ausgabe 2026-10 (18,6 GB)
   braucht mindestens 50 GB Platte.
+- Klexikon-Zwilling (D100, M85, Release 2.18.2): Der Zwilling kommt nur noch über den exakten Titel des Hauptartikels;
+  über einen Alias kam oft eine andere Bedeutung, etwa Flüsse bei „Elektrischer Strom“.
 
 ## Installation
 

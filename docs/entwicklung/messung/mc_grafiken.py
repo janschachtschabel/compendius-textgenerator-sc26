@@ -1336,8 +1336,8 @@ def quellen_empfehlung() -> None:
         f"In den wörtlichen Profilen setzten Wiktionary, Wikiquote und Wikisource {mixed} Absätze aus Tabellen, "
         f"Zitaten und Listen in den Text; mit allen sechs Archiven fielen {lost['standard'] - lost['alle']} "
         f"Absätze der Wikipedia weg und {-blocks('alle')} Bausteine blieben leer.",
-        "Schon heute holt der Klexikon-Zwilling über einen Alias falsche Absätze: Flüsse bei „Elektrischer Strom“, "
-        "Gefängniszellen bei „Zelle (Biologie)“; das wird gesondert gemessen.",
+        "Der Klexikon-Zwilling holte über einen Alias falsche Absätze: Flüsse bei „Elektrischer Strom“, "
+        "Gefängniszellen bei „Zelle (Biologie)“; seit D100 kommt er nur noch über den exakten Titel (M85).",
     )
     badges = {"nutzen": (FITS, PAPER), "nicht nutzen": (UNFIT, PAPER), "nicht nötig": (GRID, INK),
               "ungeeignet": (GRID, INK), "offen": (TINT[LLM], INK)}

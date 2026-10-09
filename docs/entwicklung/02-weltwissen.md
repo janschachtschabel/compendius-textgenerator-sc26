@@ -84,13 +84,13 @@ erster Stelle und 58 bis 78 Mal irgendwo unter den bis zu zehn Artikeln, je nach
    `rule-based`): Nur bei einer unsicheren Auflösung wählt das LLM (seit D44 `gpt-6-luna`, gemessen mit `gpt-5.6-luna`)
    unter den Kandidaten der Regeln oder nennt
    einen Wikipedia-Titel, der nur zählt, wenn das Archiv ihn als Artikel hat.
-7. **Korpus bauen:** Hauptartikel, derselbe Artikel aus Klexikon, verlinkte Unterartikel (gereiht nach Themenwort
-   im Titel, Treffer in den Überschriften und Häufigkeit der Erwähnung; Jahre, Länder oder Maßeinheiten stehen auf
-   einer Sperrliste) und Volltexttreffer je Baustein, die das Thema nennen und mit dem Hauptartikel verlinkt sind
-   (D48). Höchstens 12 Artikel und 400 Absätze. Artikel ohne das Themenwort im Titel geben nur Absätze ab, die das
-   Thema nennen. Mit `article_choice=llm` benotet das LLM alle Korpusartikel in einem Aufruf, und Volltexttreffer und
-   verlinkte Unterartikel mit der Note 0 fallen heraus. Mit `topic` und einem Material (`node_id`) kommt der Artikel
-   des Materials dazu, wenn er mit dem Hauptartikel verlinkt ist (D47).
+7. **Korpus bauen:** Hauptartikel, derselbe Artikel aus Klexikon (seit D100 nur über den exakten Titel, M85), verlinkte
+   Unterartikel (gereiht nach Themenwort im Titel, Treffer in den Überschriften und Häufigkeit der Erwähnung; Jahre,
+   Länder oder Maßeinheiten stehen auf einer Sperrliste) und Volltexttreffer je Baustein, die das Thema nennen und mit
+   dem Hauptartikel verlinkt sind (D48). Höchstens 12 Artikel und 400 Absätze. Artikel ohne das Themenwort im Titel
+   geben nur Absätze ab, die das Thema nennen. Mit `article_choice=llm` benotet das LLM alle Korpusartikel in einem
+   Aufruf, und Volltexttreffer und verlinkte Unterartikel mit der Note 0 fallen heraus. Mit `topic` und einem Material
+   (`node_id`) kommt der Artikel des Materials dazu, wenn er mit dem Hauptartikel verlinkt ist (D47).
 
 | Gemessen an zehn Themen | Alter Dienst, bester Fall | Neuer Dienst |
 |---|---|---|

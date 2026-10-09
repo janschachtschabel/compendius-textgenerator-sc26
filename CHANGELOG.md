@@ -9,6 +9,12 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+- **Behoben (D100, M85):** Der Zwilling eines Themas aus einem weiteren Archiv, praktisch das Klexikon, kommt nur noch
+  über den exakten Titel des Hauptartikels, eine Weiterleitung dieses Titels eingeschlossen, nicht mehr über dessen
+  Aliasse. Über einen Alias kam oft eine andere Bedeutung, deren erster Absatz unter „Themendefinition“ stand: Flüsse
+  bei „Elektrischer Strom“, Gefängniszellen bei „Zelle (Biologie)“. An den 59 Gold-Anfragen fielen die unpassenden
+  Klexikon-Absätze von 12 auf 2 (`llm-free`) und von 13 und 10 auf 2 (`balanced`, zwei Läufe), an 35 zurückgehaltenen
+  von 10 auf 2 und von 7 auf 1; vier passende Zwillinge (6 Absätze) fallen weg. Keine neue Einstellung.
 - **Quellen (D99, M84):** Weitere deutsche Archive von Kiwix brachten keinen passenden Text; der Dienst bleibt bei
   Wikipedia und Klexikon. `config/zim_subscriptions.yaml` nennt `extended` (Wikibooks und Wikiversity) nicht empfohlen
   und die Größen mit der Wikipedia-Ausgabe 2026-10 (`standard` rund 18,7 GB, `extended` rund 22,8 GB).

@@ -4384,8 +4384,8 @@ Schule und stammt von gutenberg2zim, nicht von mwoffliner, dessen HTML der Parse
 des Hauptartikels. Bei „Elektrischer Strom“ ist das die Klexikon-Seite *Strom*, die mit Flüssen beginnt; ihr erster
 Absatz („Im Alltag gibt es viele verschiedene Ströme. Im Mittelalter bedeutete der Ausdruck Strom …“) steht im Standard
 unter „Themendefinition“. Bei „Zelle (Biologie)“ steht dort der Anfang der Klexikon-Seite *Zelle*, der mit Gefängnis-
-und Klosterzellen beginnt. Beide Seiten sind keine Begriffsklärungen, deshalb hält die Prüfung sie nicht auf. Nicht
-behoben; eine Änderung wäre erst zu messen.
+und Klosterzellen beginnt. Beide Seiten sind keine Begriffsklärungen, deshalb hält die Prüfung sie nicht auf. Gemessen
+in M85, behoben mit D100 (Release 2.18.2).
 
 **Nebenbefund: die Wikipedia vom Oktober.** Kiwix bietet seit dem 01.10.2026 eine neue deutsche Wikipedia ohne Bilder
 (`wikipedia_de_all_nopic_2026-10`, rund 18,6 statt 14,6 GB, 5,15 statt 5,04 Millionen Einträge), gebaut mit mwoffliner
@@ -4406,3 +4406,62 @@ entfernen sofern die empfehlung ergibt nicht benutzen“. Die sechs gemessenen A
 der Entwicklungsrechner nicht, für zwei Ausgaben fehlt dort der Platz; Jan prüft sie online auf dem Testserver. Die
 Januar-Ausgabe bleibt die des Entwicklungscontainers und Grundlage der Messungen. Die Empfehlung je Quelle zeigt
 `bilder/quellen_empfehlung.svg`, gezeichnet von `mc_grafiken.py` aus denselben Rohdaten.
+
+## M85 Klexikon-Zwillinge über einen Alias (D100, 09.10.2026)
+
+Jan nach M84: „den klexikon fehler sollten wir uns auch nochmal anschauen“. Gemessen in einer eigenen Sitzung am Stand
+`3ea546e`, gebaut als D100.
+
+**Aufbau.** `mc_klexikon_zwillinge.py` schickt jede der 59 Anfragen von `eval/artikelwahl/hauptartikel.yaml` durch
+`service.generate` (Teil 1), einmal je Variante des Zwillingsschritts: *heute* (der Titel oder einer der ersten zwei
+Aliasse des Hauptartikels, der Stand vor D100), *titel* (nur der Titel; eine Weiterleitung im Klexikon gilt), *anfang*
+(ein Alias nur, wenn der erste Absatz des Zwillings alle Wörter des Titels nennt), *teilwort* (ein Alias, der den Titel
+nur kürzt, nur unter derselben Bedingung) und *kurzform* (ein Alias, der den Titel nur kürzt, nie). `llm-free` einmal,
+`balanced` zweimal mit `gpt-6-luna` über OpenAI direkt; jede Antwort ist je Frage gespeichert, alle Varianten einer
+Anfrage hören dieselben Antworten (71.919 Tokens für alle Läufe). Als Gegenprobe die 35 Anfragen der beiden anderen
+Goldsätze, an denen nichts abgestimmt wurde. Gedruckt heißt: die Belege der Inhaltsbausteine. Claude ordnete alle 67
+verschiedenen gedruckten Klexikon-Absätze ein (passt, teilweise, daneben), ein zweiter Gutachter ohne Vorwissen ebenso:
+gleich bei 65 von 67, Cohens κ 0,95; die Schlüsse gelten mit beiden Urteilen.
+
+| 59 Anfragen | `llm-free`: passt / teilweise / daneben | `balanced` Lauf 1 | `balanced` Lauf 2 | gefüllte Bausteine (`llm-free` / Lauf 1 / Lauf 2) |
+|---|---|---|---|---|
+| heute (vor D100) | 49 / 4 / 12 | 39 / 3 / 13 | 40 / 3 / 10 | 349 / 373 / 376 |
+| **titel (D100)** | 43 / 0 / 2 | 33 / 0 / 2 | 34 / 0 / 2 | 350 / 372 / 373 |
+| anfang | 43 / 3 / 2 | 33 / 3 / 2 | 34 / 3 / 2 | 350 / 372 / 373 |
+| teilwort | 45 / 3 / 2 | 35 / 3 / 2 | 36 / 3 / 2 | 350 / 372 / 374 |
+| kurzform | 45 / 0 / 2 | 35 / 0 / 2 | 36 / 0 / 2 | 350 / 372 / 374 |
+
+**Heute.** 13 der 59 Anfragen nehmen ihren Zwilling über einen Alias, in beiden Profilen. Sechs davon setzen einen
+Absatz über etwas anderes unter „Themendefinition“: Flüsse (*Strom*) bei „Elektrischer Strom“, „Strom“ und „Strom
+(Physik)“, Arbeitsplätze (*Arbeit*) bei „Arbeit (Physik)“, Grammatik (*Satz*) bei „Satz (Mathematik)“, die Pflanze
+(*Baum*) bei „Baum (Datenstruktur)“; drei weitere (*Zelle*) beginnen mit Gefängnis- und Klosterzellen. In `llm-free`
+stammen 14 der 16 unpassenden Klexikon-Absätze von Alias-Zwillingen, die übrigen 2 von *Welle*, einem Zwilling mit genau
+dem Titel, der mit Bauteilen der Technik beginnt. Ein Zwilling druckt meist nur seinen ersten Absatz, und der steht
+unter „Themendefinition“ (43 der 65). Von den 13 Alias-Zwillingen passen 4: *Satz* zu „Satz (Grammatik)“, *Strom* zu
+„Strom (Gewässer)“, *DNA* und *Klimawandel* zu „Globale Erwärmung“.
+
+**Die Varianten.** *titel* nimmt alle unpassenden Alias-Absätze heraus und kostet die 4 passenden Alias-Zwillinge (6
+Absätze); *kurzform* behält *DNA* und *Klimawandel*, braucht aber eine Wortregel; *anfang* behält den Anfang von
+*Zelle*, der „Biologie“ nennt, und verliert *DNA* und *Klimawandel*. Die Bausteine, die wegfallen, trugen nur
+Unpassendes (Berufe unter „Beruf & Wirtschaft“ bei „Arbeit (Physik)“, Kommaregeln unter „Regularien“ bei „Satz
+(Mathematik)“); in `llm-free` geht der frei gewordene Platz an einen weiteren Unterartikel der Wikipedia, drei Bausteine
+füllen sich neu. An den 20 gewöhnlichen Themen drucken *titel* und *kurzform* 18 Klexikon-Absätze, alle passend (heute
+20, darunter die Flüsse und die Gefängniszellen).
+
+**Gegenprobe, 35 zurückgehaltene Anfragen.** Alias-Zwillinge kamen bei 7 (`llm-free`) und 6 (`balanced`) Anfragen,
+keiner druckte einen passenden Absatz (*Feld* als Fläche zu „Feld (Physik)“, *Bus* als Fahrzeug zu „Bus
+(Datenverarbeitung)“, *Satz* der Grammatik zu „Satz (Musikstück)“, Baumstämme zu „Stamm (Biologie)“). *titel* senkt die
+unpassenden Absätze von 10 auf 2 und von 7 auf 1; die passenden bleiben (8 und 7). *kurzform* hat dort zwei Lücken:
+„Gewicht“ gilt als anderer Name für „Masse (Physik)“, und der Alias „Satz“ kommt beim Hauptartikel „Tonsatz“ des LLM
+durch, weil die Wortprüfung Komposita nicht sieht (3 unpassende in `balanced`).
+
+**Entscheidung (D100):** *titel*. Eine Zeile in `_add_twins` statt einer Wortregel, alle unpassenden Alias-Absätze in
+beiden Profilen weg, am Gold wie an der Gegenprobe; der Preis sind 4 passende Zwillinge an den 59 Anfragen. Offen
+bleiben die Fehler über den exakten Titel: *Welle* (2 Gold-Anfragen) und Weiterleitungen des Klexikons auf eine breitere
+Seite (*Treibhauseffekt* auf *Klimawandel*, Gegenprobe).
+
+Rohdaten: `m85_klexikon_zwillinge.txt` (die Tabellen aller fünf Läufe, mit den Anfragen, die eine Variante ändert),
+`m85_urteil.json` und `m85_urteil_zweitgutachter.json` (die Urteile je Absatz, über eine Kennung aus Hauptartikel,
+Klexikon-Seite und Text); Auswertung `mc_klexikon_zwillinge_auswertung.py`, Übereinstimmung
+`mc_klexikon_zwillinge_uebereinstimmung.py`. Die Läufe mit den gedruckten Absätzen (57 MB) und der Bogen mit den Texten
+bleiben außerhalb des Repositorys.

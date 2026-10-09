@@ -1012,8 +1012,8 @@ Passung 4,56 und Nutzen 4,31.
     - Die Wikipedia aktuell halten: Die Ausgabe 2026-10 (18,6 GB, mwoffliner 2.0.1) las der Parser bei drei Stichproben
       gleich. Der `zim-updater` holt sie von selbst; geprüft wird sie online auf dem Testserver, und der Betrieb braucht
       jetzt mindestens 50 GB Platte.
-    - Den Klexikon-Zwilling über einen Alias erst nachmessen, dann ändern; ein Archiv aus ZUM-Unterrichten oder dem
-      MiniKlexikon wäre eine eigene Messung.
+    - Den Klexikon-Zwilling nur über den exakten Titel nehmen: gemessen in M85, gebaut als D100 (Release 2.18.2); ein
+      Archiv aus ZUM-Unterrichten oder dem MiniKlexikon wäre eine eigene Messung.
 
     **Beobachtungen:**
 
@@ -1024,7 +1024,8 @@ Passung 4,56 und Nutzen 4,31.
       Deklinationstabellen, Zitaten und Listen in den Text; mit allen sechs Archiven fielen 41 Absätze der Wikipedia
       weg, und drei Bausteine blieben leer. Das gemischte Schriftbild entstünde also schon mit deutschen Archiven.
     - Das Klexikon trägt (passender Zwilling bei 15 von 40 Themen, 20 Absätze im Text), holt aber über einen Alias auch
-      falsche Absätze: Flüsse bei „Elektrischer Strom“, Gefängniszellen bei „Zelle (Biologie)“.
+      falsche Absätze: Flüsse bei „Elektrischer Strom“, Gefängniszellen bei „Zelle (Biologie)“. Seit D100 kommt der
+      Zwilling nur noch über den exakten Titel (M85).
 
     ![Mehrwert weiterer Kiwix-Archive für die Kompendien (M84)](bilder/kiwix_quellen.svg)
 

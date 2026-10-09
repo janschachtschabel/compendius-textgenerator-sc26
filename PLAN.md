@@ -2344,6 +2344,15 @@ API.
   dem Testserver, lokal fehlt der Platz für zwei Ausgaben. Weil beim Update zwei Ausgaben dieser Größe nebeneinander
   liegen, braucht der Betrieb jetzt mindestens 50 GB Platte. Offen: der Klexikon-Zwilling über einen Alias („Strom“,
   „Zelle“; eigene Messung) und ein Archiv aus ZUM-Unterrichten oder dem MiniKlexikon.
+- **D100 (2026-10-09)** Der Klexikon-Zwilling kommt nur noch über den exakten Titel des Hauptartikels (Jan nach M85:
+  „klexikon fehler bitte mit better coding workflow skill wie empfohlen fixen“). Über einen Alias nahm der Dienst oft
+  eine andere Bedeutung, deren erster Absatz unter „Themendefinition“ stand: Flüsse bei „Elektrischer Strom“,
+  Gefängniszellen bei „Zelle (Biologie)“, Arbeitsplätze bei „Arbeit (Physik)“, Grammatik bei „Satz (Mathematik)“. M85
+  maß vier Varianten in `llm-free` und `balanced`: Nur der Titel senkte die unpassenden Klexikon-Absätze an den 59
+  Gold-Anfragen von 12 auf 2 (`balanced`: 13 und 10 auf 2), an 35 zurückgehaltenen von 10 auf 2 und von 7 auf 1; er
+  kostet 4 passende Zwillinge (6 Absätze) und an den zurückgehaltenen keinen. Eine Weiterleitung des Titels im Klexikon
+  gilt weiter. Die übrigen 2 unpassenden Absätze stammen von *Welle*, einer Seite mit genau dem Titel und mehreren
+  Bedeutungen; das wäre eine eigene Messung. Eine Zeile in `_add_twins`, Release 2.18.2.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
