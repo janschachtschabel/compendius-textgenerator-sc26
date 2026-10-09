@@ -4399,3 +4399,10 @@ Volume `zim`, geplant sind 40 GB.
 Rohdaten: `m84_kiwix_quellen.json` (Titel, Zahlen und Überschriften, ohne Text), die Einordnung `m84_einordnung.yaml`;
 die Grafik `bilder/kiwix_quellen.svg` zeichnet `mc_grafiken.py`. Die Anfänge der Seiten und der gedruckten Absätze
 bleiben außerhalb des Repositorys.
+
+**Nach der Messung (D99).** Jan: „empfehlungen bitte umsetzen. nicht mehr benötigte archive nach den tests wieder
+entfernen sofern die empfehlung ergibt nicht benutzen“. Die sechs gemessenen Archive sind gelöscht (6,8 GB);
+`mc_kiwix_laden.py` lädt dieselben Ausgaben wieder, solange Kiwix sie anbietet. Die Oktober-Ausgabe der Wikipedia lädt
+der Entwicklungsrechner nicht, für zwei Ausgaben fehlt dort der Platz; Jan prüft sie online auf dem Testserver. Die
+Januar-Ausgabe bleibt die des Entwicklungscontainers und Grundlage der Messungen. Die Empfehlung je Quelle zeigt
+`bilder/quellen_empfehlung.svg`, gezeichnet von `mc_grafiken.py` aus denselben Rohdaten.

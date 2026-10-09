@@ -12,7 +12,8 @@ Wiktionary, Wikisource, Wikiquote and Wikivoyage:
    the pages of the further archives in the corpus, their paragraphs and the paragraphs the text prints from them.
 
 The output holds titles, counts and headings, no text; the beginnings of the pages and of the printed paragraphs go
-to the pool, which stays outside the repository (for the labels in m84_einordnung.yaml).
+to the pool, which stays outside the repository (for the labels in m84_einordnung.yaml). The six further archives
+were deleted after M84 (D99); mc_kiwix_laden.py fetches them again into kompendium-test/data/zusatz/.
 
 Usage: python mc_kiwix_quellen.py <out.json> <pool.json>
 """
@@ -44,8 +45,8 @@ EXTRA_DATA = DATA / "zusatz"
 ARCHIVES = {
     "wikipedia": DATA / "wikipedia_de_all_nopic_2026-01.zim",
     "klexikon": DATA / "klexikon_de_all_maxi_2026-08.zim",
-    "wikibooks": DATA / "wikibooks_de_all_nopic_2026-01.zim",
-    "wikiversity": DATA / "wikiversity_de_all_nopic_2026-07.zim",
+    "wikibooks": EXTRA_DATA / "wikibooks_de_all_nopic" / "wikibooks_de_all_nopic_2026-01.zim",
+    "wikiversity": EXTRA_DATA / "wikiversity_de_all_nopic" / "wikiversity_de_all_nopic_2026-07.zim",
     "wiktionary": EXTRA_DATA / "wiktionary_de_all_nopic" / "wiktionary_de_all_nopic_2026-07.zim",
     "wikisource": EXTRA_DATA / "wikisource_de_all_nopic" / "wikisource_de_all_nopic_2026-09.zim",
     "wikiquote": EXTRA_DATA / "wikiquote_de_all_nopic" / "wikiquote_de_all_nopic_2026-07.zim",

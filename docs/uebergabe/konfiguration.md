@@ -143,7 +143,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
 | `ZIM_DIR` | `/data/zim` | wie Vorgabe | Verzeichnis der Archive; Compose setzt `/data/zim` |
-| `ZIM_PROFILE` | `standard` | wie Vorgabe | Archivbündel: `compact` (1,4 GB), `standard` (14,7 GB), `extended` (rund 18 GB) |
+| `ZIM_PROFILE` | `standard` | wie Vorgabe | Archivbündel: `compact` (1,4 GB), `standard` (18,7 GB mit der Wikipedia 2026-10, vorher 14,7 GB), `extended` (22,8 GB; nicht empfohlen, D99) |
 | `ZIM_REQUIRED` | leer | wie Vorgabe | Pflichtarchive für `/ready`; leer leitet sie aus dem Profil ab |
 | `ZIM_PATHS` | leer | wie Vorgabe | feste Archivpfade statt `ZIM_DIR`, nur für die Entwicklung |
 | `ZIM_BOOTSTRAP_DOWNLOAD` | `true` | wie Vorgabe | lädt beim Erststart die fehlenden Pflichtarchive; `false`, wenn sie von Hand kommen |

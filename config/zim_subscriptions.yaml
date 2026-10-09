@@ -5,8 +5,8 @@ version: 1
 
 profiles:
   compact: "Entwicklung, CI, kleine Hosts: Wikipedia-Top-Artikel und Klexikon (ca. 1,4 GB)"
-  standard: "Produktion zum Start: vollständige deutsche Wikipedia ohne Bilder und Klexikon (ca. 14,1 GB)"
-  extended: "standard plus Wikibooks und Wikiversity (ca. 18,1 GB)"
+  standard: "Produktion zum Start: vollständige deutsche Wikipedia ohne Bilder und Klexikon (ca. 18,7 GB mit der Ausgabe 2026-10)"
+  extended: "standard plus Wikibooks und Wikiversity (ca. 22,8 GB); nicht empfohlen, kein Mehrwert in M11 und M84 (D99)"
 
 subscriptions:
   - id: wikipedia_de_all_nopic

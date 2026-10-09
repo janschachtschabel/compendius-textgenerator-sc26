@@ -269,7 +269,7 @@ gefragt.
 |---|---|---|
 | Anfrage: `max_articles` | 1 bis 50 | `CORPUS_MAX_ARTICLES` = 12; Hauptartikel und Klexikon-Zwilling immer |
 | Umgebung: `CORPUS_MAX_CHUNKS` | 20 bis 5.000 Absätze | 400 |
-| Umgebung: `ZIM_PROFILE` | `compact` (Top-Artikel, 1,4 GB), `standard` (ganze Wikipedia und Klexikon), `extended` (dazu Wikibooks und Wikiversity) | `standard` |
+| Umgebung: `ZIM_PROFILE` | `compact` (Top-Artikel, 1,4 GB), `standard` (ganze Wikipedia und Klexikon), `extended` (dazu Wikibooks und Wikiversity; nicht empfohlen, D99) | `standard` |
 | Anfrage: `knowledge_collection_id` | nodeId einer Sammlung | keine |
 | Anfrage: `knowledge_fulltext` | `true`, `false` | `false`: nur die Beschreibungen |
 | Anfrage: `knowledge_depth` | 0 bis 5 Ebenen Untersammlungen | 0: nur die Sammlung |
@@ -298,9 +298,10 @@ gpt-5.6-luna: 1,7 s und 930).
   es zu mild (6 von 16). Die Verlinkung mit dem Hauptartikel trennt besser als jeder dieser Filter und fängt, was
   gpt-6-luna übersieht: Als Prüfer erkennt es nur 7 der 14 unpassenden Treffer (M25; gpt-5.6-luna 11 von 16).
 - Die zwei Bausteine, die mit der Trefferprüfung leer werden, trugen bei „Atommodell“ nur Absätze aus *Kernwaffe*.
-- Wikibooks und Wikiversity (`extended`) bringen nichts: Mit ihrer Volltextsuche kam in 20 Themen ein gefüllter
-  Baustein dazu (mit Trefferprüfung drei), und aus guten Unterrichtsseiten wie *Physikunterricht/ Optik* druckte der
-  Standard keinen Absatz (M11).
+- Wikibooks und Wikiversity (`extended`) bringen nichts: Mit ihrer Volltextsuche kam in 20 Themen ein gefüllter Baustein
+  dazu (mit Trefferprüfung drei), und aus guten Unterrichtsseiten wie *Physikunterricht/ Optik* druckte der Standard
+  keinen Absatz (M11). Dasselbe gilt für Wiktionary, Wikisource, Wikiquote und Wikivoyage: Sie mischten Tabellen, Zitate
+  und Listen in den Text (M84, D99, Punkt 16).
 
 ## Schritt 3: Absätze zuordnen
 
@@ -453,12 +454,12 @@ ZIM_PROFILE=standard
 CORPUS_MAX_ARTICLES=12
 ```
 
-Ergebnis: 87 von 94 Hauptartikeln (M35), 12 von 352 gedruckten Absätzen aus unpassenden Artikeln (M25), macro-F1 0,45, Teil 1
-und 2 in 1,6 s ohne Tokens (M27), QA-Paare aus den Regeln über den spaCy-Parse, 58 von 95 mangelfrei in 0,3 s je Text
-(M34). Bei einem Material ohne `topic` trifft sie den Hauptartikel mit F1 0,56 bis 0,63; findet sie keinen, fragt der
-404 nach einem `topic`. Keine andere lokale Einstellung war besser: Die übrigen Verfahren verlieren in kleinen
-Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden. `/entities` erkennt mit `ner`
-(spaCy) und `dictionary` (Artikeltitel der Archive): an 40 Materialtexten F1 0,38 bei einer Präzision von 0,29 und
+Ergebnis: 87 von 94 Hauptartikeln (M35), 12 von 352 gedruckten Absätzen aus unpassenden Artikeln (M25), macro-F1 0,45,
+Teil 1 und 2 in 1,6 s ohne Tokens (M27), QA-Paare aus den Regeln über den spaCy-Parse, 58 von 95 mangelfrei in 0,3 s je
+Text (M34). Bei einem Material ohne `topic` trifft sie den Hauptartikel mit F1 0,56 bis 0,63; findet sie keinen, fragt
+der 404 nach einem `topic`. Keine andere lokale Einstellung war besser: Die übrigen Verfahren verlieren in kleinen
+Bausteinen, weitere Archive von Kiwix bringen nichts (M11, M84), schwerere Modelle schaden. `/entities` erkennt mit
+`ner` (spaCy) und `dictionary` (Artikeltitel der Archive): an 40 Materialtexten F1 0,38 bei einer Präzision von 0,29 und
 einem Recall von 0,55, in rund 0,25 s (M36); allein kommt `ner` auf 0,30, `dictionary` auf 0,35.
 
 ### `balanced`: Zeit und Kosten optimiert bei guter Qualität
@@ -999,38 +1000,38 @@ Passung 4,56 und Nutzen 4,31.
     (d, g) oder mit weniger bestätigten Lehrplanbezügen (f).
 
 16. **Weitere Kiwix-Archive als Quellen** (Jan, 09.10.2026: „ob man das hinzufügen weiterer kiwix zum quellen die
-    qualität verbessern kann … primär um deutsche quellen“, dann „prüfen könnte man die quellen der wiki famlie …
-    projekt gutenberg“): gemessen in M84; entschieden ist nichts.
+    qualität verbessern kann … primär um deutsche quellen“; nach M84: „empfehlungen bitte umsetzen“): entschieden als
+    D99, gemessen in M84.
+
+    ![Quellen des Kompendiums: Empfehlung (D99, M84)](bilder/quellen_empfehlung.svg)
+
+    **Empfehlungen, kurz:**
+
+    - Bei Wikipedia und Klexikon bleiben (Profil `standard`). Wikibooks, Wikiversity, Wiktionary, Wikisource, Wikiquote,
+      Wikivoyage und Projekt Gutenberg nicht aufnehmen; `extended` bleibt einstellbar, ist aber nicht empfohlen.
+    - Die Wikipedia aktuell halten: Die Ausgabe 2026-10 (18,6 GB, mwoffliner 2.0.1) las der Parser bei drei Stichproben
+      gleich. Der `zim-updater` holt sie von selbst; geprüft wird sie online auf dem Testserver, und der Betrieb braucht
+      jetzt mindestens 50 GB Platte.
+    - Den Klexikon-Zwilling über einen Alias erst nachmessen, dann ändern; ein Archiv aus ZUM-Unterrichten oder dem
+      MiniKlexikon wäre eine eigene Messung.
+
+    **Beobachtungen:**
+
+    - Kein weiteres Archiv bringt passenden Text. Über den gleichen Titel, den Weg in den Korpus, kommen Wikibooks und
+      Wikiversity bei je 1 von 40 Themen, die anderen nur mit Wörterbucheinträgen, Zitatlisten, Linklisten und einem
+      Reiseführer; für die 11 Aspektthemen fand die Suche in keinem eine passende Seite.
+    - In den wörtlichen Profilen schaden sie: Wiktionary, Wikiquote und Wikisource setzten 26 Absätze aus
+      Deklinationstabellen, Zitaten und Listen in den Text; mit allen sechs Archiven fielen 41 Absätze der Wikipedia
+      weg, und drei Bausteine blieben leer. Das gemischte Schriftbild entstünde also schon mit deutschen Archiven.
+    - Das Klexikon trägt (passender Zwilling bei 15 von 40 Themen, 20 Absätze im Text), holt aber über einen Alias auch
+      falsche Absätze: Flüsse bei „Elektrischer Strom“, Gefängniszellen bei „Zelle (Biologie)“.
 
     ![Mehrwert weiterer Kiwix-Archive für die Kompendien (M84)](bilder/kiwix_quellen.svg)
 
-    **Angebot.** Auf Deutsch hat Kiwix neben Wikipedia und Klexikon sechs Projekte der Wiki-Familie und Projekt
-    Gutenberg mit Text zu Schulthemen. Die Teilarchive der Wikipedia stecken schon in `wikipedia_de_all`, der Rest des
-    Katalogs ist fachfremd, Satire oder Video. Ein deutsches Lehr-Wiki wie ZUM-Unterrichten oder das MiniKlexikon gibt
-    es dort nicht.
-
-    **Mehrwert, gemessen.** Kein Archiv bringt passenden Text in nennenswertem Umfang. Über den gleichen Titel, den Weg
-    in den Korpus, kommen Wikibooks und Wikiversity bei je einem von 40 Themen; Wiktionary (20), Wikiquote (10),
-    Wikisource (2) und Wikivoyage (1) treffen öfter, aber nur mit Wörterbucheinträgen, Zitatlisten, Linklisten zu
-    Quelltexten und einem Reiseführer. Eine Volltextsuche fände für die elf Aspektthemen von M82 in keinem weiteren
-    Archiv eine passende Seite, für die 26 Sammelthemen drei in Wikibooks und eine in Wikiversity; das Klexikon, schon
-    heute dabei, hat 28 bei 13 Themen. Im Ablauf mit den Regeln setzten Wiktionary, Wikiquote und Wikisource 26 Absätze
-    in den Text (Deklinationstabellen, Zitate, Listen) und verdrängten Absätze der Wikipedia; mit allen sechs Archiven
-    druckte Teil 1 der 20 Themen 16 Absätze und drei Bausteine weniger. Das gemischte Schriftbild, das Jan vermeiden
-    will, entstünde in den wörtlichen Profilen (`llm-free`, `balanced`, `best-quality`) also schon mit deutschen
-    Archiven. Die Profile mit LLM sind nicht gemessen; die Zwillinge kämen dort genauso in den Korpus.
-
-    **Gutenberg.** 11 GB, ganze Bücher, kein Volltextindex: Der Dienst fände darin nur Buchtitel. Nicht gemessen, nicht
-    empfohlen.
-
-    **Empfehlung.** Bei Wikipedia und Klexikon bleiben (Profil `standard`); `extended` mit Wikibooks und Wikiversity
-    bleibt einstellbar, bringt aber nichts. Mehr Qualität kommt auf anderen Wegen: aus einer aktuellen Wikipedia (die
-    Ausgabe vom 01.10.2026 liest der Parser gleich, der `zim-updater` holt sie von selbst), aus einem genaueren
-    Klexikon-Zwilling (über einen Alias landen heute Absätze über Flüsse bei „Elektrischer Strom“ und über
-    Gefängniszellen bei „Zelle (Biologie)“; erst messen, dann ändern) und bei Aspektthemen aus den schreibenden Profilen
-    (M82: Passung 3,8 in `best-quality-generated`, 5,0 in `best-coverage-generated`). Ob ein Archiv aus ZUM-Unterrichten
-    oder dem MiniKlexikon hülfe, wäre eine eigene Messung; bauen müsste es openZIM, das Wünsche für neue Archive
-    annimmt, oder der Betrieb selbst.
+    **Umgesetzt:** Manifest, README, Installation, Übergabe und Betrieb nennen `extended` nicht empfohlen und die Größen
+    der Ausgabe 2026-10; die sechs gemessenen Archive sind gelöscht (`mc_kiwix_laden.py` holt sie für eine
+    Wiederholung). Lokal bleibt die Januar-Ausgabe der Wikipedia, weil für zwei Ausgaben der Platz fehlt. Katalog,
+    Gutenberg und alle Zahlen: M84.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

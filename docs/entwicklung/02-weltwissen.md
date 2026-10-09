@@ -12,11 +12,11 @@ Für Wikipedia gibt es vier Zugänge. Zahlen für die deutsche Wikipedia, Stand 
 | | Live-API (MediaWiki) | XML-Dump (Wikimedia) | HTML-Dump (Wikimedia Enterprise) | Kiwix-ZIM |
 |---|---|---|---|---|
 | Inhalt | JSON je Anfrage | Wikitext in XML, bz2-gepackt | gerendertes HTML als NDJSON, tar.gz | gerendertes HTML, komprimiert, mit Titel- und Volltextindex |
-| Größe | – | 7,96 GB gepackt (Multistream-Variante 8,25 GB), entpackt hochgerechnet rund 32 GB | 33 GB gepackt | 14,6 GB (13,6 GiB) ohne Bilder, 5,04 Mio. Einträge |
+| Größe | – | 7,96 GB gepackt (Multistream-Variante 8,25 GB), entpackt hochgerechnet rund 32 GB | 33 GB gepackt | 14,6 GB (13,6 GiB) ohne Bilder, 5,04 Mio. Einträge; die Ausgabe 2026-10 18,6 GB, 5,15 Mio. |
 | Sofort nutzbar? | ja, je Artikel ein Netzaufruf | nein: entpacken oder streamen, Wikitext parsen, Vorlagen bleiben unaufgelöst | nein: importieren | ja: libzim liest direkt, wahlfreier Zugriff |
 | Suche | über die API | selbst bauen | selbst bauen | eingebaut: Titelvorschlag im Median 3 ms, Volltextsuche unter 1 ms (23.09., Datei im Speicher des Betriebssystems) |
-| Aktualität | live | zweimal im Monat | öffentliche Reihe endet am 20.03.2025 | wie Kiwix baut; das deutsche Archiv ohne Bilder ist vom 15.01.2026 |
-| Weitere Quellen | je Projekt eine eigene API | nur Wikimedia-Projekte; kein Klexikon | nur Wikimedia-Projekte | Wikipedia, Klexikon, Wikibooks, Wikiversity und viele mehr aus einem Katalog, im selben Format |
+| Aktualität | live | zweimal im Monat | öffentliche Reihe endet am 20.03.2025 | wie Kiwix baut; das deutsche Archiv ohne Bilder ist vom 15.01.2026, das nächste vom 01.10.2026 |
+| Weitere Quellen | je Projekt eine eigene API | nur Wikimedia-Projekte; kein Klexikon | nur Wikimedia-Projekte | Wikipedia, Klexikon, Wikibooks, Wikiversity und viele mehr aus einem Katalog, im selben Format; genutzt werden Wikipedia und Klexikon (D99) |
 | Risiko zur Laufzeit | Sperren (403), Drosselung (429), Netz | keins | keins | keins |
 
 Die entpackte Größe des XML-Dumps ist hochgerechnet: 541 bz2-Blöcke an 16 Stellen der Multistream-Datei wurden
@@ -31,7 +31,8 @@ weiterhin.
 - **Der Index trägt die Artikelwahl.** Titel, Weiterleitungen, Vorschläge und Volltextsuche liefert das Archiv mit;
   darauf bauen Begriffsklärung, Unterartikel und die Suche je Baustein auf.
 - **Eine Stelle, viele Quellen.** Kiwix pflegt Wikipedia, Klexikon, Wikibooks, Wikiversity und weitere Archive in
-  einem Format und einem Katalog. Welche der Dienst nutzt, legt ein Abo-Manifest fest.
+  einem Format und einem Katalog. Welche der Dienst nutzt, legt ein Abo-Manifest fest. Genutzt werden Wikipedia und
+  Klexikon; die übrigen deutschen Archive brachten keinen passenden Text (M11, M84, D99).
 - **Betriebssicher.** Zur Anfragezeit kein Netz, keine Sperren, keine Drosselung. Neue Archive lädt ein Sidecar mit
   Prüfsumme herunter und schaltet ohne Neustart um.
 - **Reproduzierbar.** Archivdatum und UUID stehen im Vorspann jedes Kompendiums (`sources_snapshot`); jede
@@ -40,8 +41,8 @@ weiterhin.
 
 **Der Preis:**
 
-- 14,6 GB für Wikipedia, dazu Klexikon (135 MB). Ein Volume von 40 GB lässt Platz, ein neues Archiv neben dem
-  alten zu laden.
+- 14,6 GB für Wikipedia (Ausgabe 2026-01; die Ausgabe 2026-10 hat 18,6 GB), dazu Klexikon (135 MB). Ein Volume von 40 GB
+  lässt Platz, ein neues Archiv neben dem alten zu laden: beim Wechsel auf 2026-10 rund 33 GB.
 - Die Aktualität hängt am Kiwix-Bau. Für Schulwissen reicht ein Stand von einigen Monaten; tagesaktuelle Ereignisse
   fehlen.
 - Keine Bilder (Variante `nopic`).
@@ -250,7 +251,9 @@ aus Wikibooks, bei zweien alle drei. Das deckt sich mit dem gemischten Bild aus 
 deshalb nicht übernommen; die Profile `standard` und `extended` bleiben, wie sie sind. M84 (09.10.2026) bestätigt das
 mit Release 2.18.1 und prüft dazu Wiktionary, Wikisource, Wikiquote und Wikivoyage: Keines bringt passenden Text, und im
 Ablauf setzten Wiktionary, Wikiquote und Wikisource Deklinationstabellen, Zitate und Linklisten in den Text
-(Entscheidungsvorlage, Punkt 16).
+(Entscheidungsvorlage, Punkt 16). Entschieden als D99: Der Dienst bleibt bei Wikipedia und Klexikon.
+
+![Quellen des Kompendiums: Empfehlung (D99, M84)](bilder/quellen_empfehlung.svg)
 
 **Offen:** ein LLM-Vorschlag, wenn die Regeln gar keinen Artikel finden (bisher ein 404 mit Alternativen); die
 didaktischen Seiten aus Wikibooks und Wikiversity gezielt für Praxis und Bildung nutzen, etwa mit `matcher=llm` (nicht

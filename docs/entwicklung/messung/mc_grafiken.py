@@ -3,13 +3,12 @@ old and new service (01-alt-und-neu.md), and methods, measurements and profiles 
 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
 prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
-text_schalter.svg, kombinationen.svg and kiwix_quellen.svg (page 07), qualitaet_zeit_kosten.svg and
-alt_neu_teile.svg (page 01),
-profile_matrix.svg, profilvergleich.svg, profiluebersicht.svg (pages 07 and 09), and endpunkte.svg,
-profile_verlauf.svg and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their
-source: the text
-switches (measured on 2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1,
-05-messprotokoll.md). No chart library, so the files render on GitHub, in Confluence and in a browser alike.
+text_schalter.svg, kombinationen.svg, kiwix_quellen.svg and quellen_empfehlung.svg (page 07, the last also on
+page 02), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), profile_matrix.svg, profilvergleich.svg,
+profiluebersicht.svg (pages 07 and 09), and endpunkte.svg, profile_verlauf.svg and one verfahren_*.svg per step
+(page 09). Numbers no raw file holds are written here with their source: the text switches (measured on
+2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1, 05-messprotokoll.md). No chart
+library, so the files render on GitHub, in Confluence and in a browser alike.
 Rounding half up, German number format.
 
 Usage: python mc_grafiken.py <ergebnisse-dir> <bilder-dir>
@@ -20,6 +19,7 @@ from __future__ import annotations
 import json
 import math
 import sys
+import textwrap
 from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 
@@ -1270,8 +1270,113 @@ def kiwix_quellen() -> None:
     svg.save("kiwix_quellen.svg")
 
 
+def quellen_empfehlung() -> None:
+    """The recommendation per source after M84 (D99, pages 02 and 07): use, do not use, not needed or open, each with
+    its measured reason, and three observations. Counts come from m84_kiwix_quellen.json and m84_einordnung.yaml; the
+    sizes, the TED count and the Gutenberg index from the Kiwix catalog of 2026-10-09 (M84)."""
+    data = load("m84_kiwix_quellen.json")
+    labels = yaml.safe_load((DIR / "m84_einordnung.yaml").read_text(encoding="utf-8"))
+    same, search, flow = data["abdeckung"]["gleicher_titel"], data["abdeckung"]["volltextsuche"], data["ablauf"]
+    further = ("wikibooks", "wikiversity", "wiktionary", "wikisource", "wikiquote", "wikivoyage")
+    topics = len(same)
+
+    def found(name: str, kind: str | None = None) -> int:
+        pages = [title for title, row in same.items() if row[name] and not row[name]["begriffsklaerung"]]
+        return len(pages) if kind is None else sum(labels["gleicher_titel"][name][title] == kind for title in pages)
+
+    def printed(run: str, name: str) -> int:
+        return sum(p["gedruckt"] for r in flow[run].values() for p in r["seiten"] if p["projekt"] == name)
+
+    def total(run: str, key: str) -> int:
+        return sum(r[key] for r in flow[run].values())
+
+    def blocks(run: str) -> int:
+        return total(run, "bausteine_gefuellt") - total("standard", "bausteine_gefuellt")
+
+    def fits(key: str, row: dict) -> bool:
+        hits = [(name, hit["titel"]) for name in further for hit in row[name] if hit["behalten"]]
+        return any(labels["volltextsuche"][name][key][title] == "passend" for name, title in hits)
+
+    mixed = sum(printed(name, name) for name in ("wiktionary", "wikiquote", "wikisource"))
+    lost = {run: total(run, "gedruckt") - sum(printed(run, n) for n in ("klexikon", *further))
+            for run in ("standard", "alle")}
+    aspects = [key for key in search if key.startswith("aspekt:")]
+    aspect_fit = sum(fits(key, search[key]) for key in aspects)
+    assert found("wikibooks") == found("wikiversity"), "the row says „je“"
+    tables = f"{printed('wiktionary', 'wiktionary')} Absätze Deklinationstabellen und Beispielsätze im Text"
+    rows = (
+        ("Wikipedia, alle Artikel", "nutzen",
+         "Leitquelle; aktuell halten: Ausgabe 2026-10 (18,6 GB) liest der Parser gleich, Test online"),
+        ("Klexikon", "nutzen",
+         f"einfache Sprache; passender Zwilling bei {found('klexikon', 'passend')} von {topics} Themen, "
+         f"{printed('standard', 'klexikon')} Absätze im Text"),
+        ("Wikibooks, Wikiversity", "nicht nutzen",
+         f"gleicher Titel bei je {found('wikibooks')} von {topics} Themen; Suche trifft Kurse, Quiz, "
+         "Druckfassungen, Ungarisch"),
+        ("Wiktionary", "nicht nutzen",
+         f"Wörterbuch: {tables}, {signed(blocks('wiktionary'), 'Baustein', 'Bausteine')}"),
+        ("Wikiquote", "nicht nutzen",
+         f"Zitatlisten: {printed('wikiquote', 'wikiquote')} Zitate im Text, "
+         f"{signed(blocks('wikiquote'), 'Baustein', 'Bausteine')}"),
+        ("Wikisource", "nicht nutzen",
+         f"historische Texte und Linklisten: {printed('wikisource', 'wikisource')} Listenzeilen im Text"),
+        ("Wikivoyage", "nicht nutzen",
+         f"Reiseführer: gleicher Titel bei {found('wikivoyage')} von {topics} Themen, im Text nichts"),
+        ("Projekt Gutenberg", "nicht nutzen", "11 GB ganze Bücher ohne Volltextindex: der Dienst fände nur Buchtitel"),
+        ("Teilarchive der Wikipedia", "nicht nötig",
+         "Chemie, Physik, Geschichte und andere stecken in der vollen Wikipedia"),
+        ("übriger Katalog", "ungeeignet", "240 TED-Videos, fachfremde Wikis, Satire"),
+        ("ZUM-Unterrichten, MiniKlexikon", "offen",
+         "nicht bei Kiwix; ob ein eigenes Archiv hülfe, wäre eine eigene Messung"),
+    )
+    observations = (
+        "Kein weiteres Archiv bringt passenden Text: Über den gleichen Titel kommen nur Wörterbuch, Zitate, Linklisten "
+        f"und Reiseführer, und für {aspect_fit or 'keines'} der {len(aspects)} Aspektthemen fand die Suche eine "
+        "passende Seite.",
+        f"In den wörtlichen Profilen setzten Wiktionary, Wikiquote und Wikisource {mixed} Absätze aus Tabellen, "
+        f"Zitaten und Listen in den Text; mit allen sechs Archiven fielen {lost['standard'] - lost['alle']} "
+        f"Absätze der Wikipedia weg und {-blocks('alle')} Bausteine blieben leer.",
+        "Schon heute holt der Klexikon-Zwilling über einen Alias falsche Absätze: Flüsse bei „Elektrischer Strom“, "
+        "Gefängniszellen bei „Zelle (Biologie)“; das wird gesondert gemessen.",
+    )
+    badges = {"nutzen": (FITS, PAPER), "nicht nutzen": (UNFIT, PAPER), "nicht nötig": (GRID, INK),
+              "ungeeignet": (GRID, INK), "offen": (TINT[LLM], INK)}
+    width, row_h, top = 1000, 27, 96
+    badge_x, reason_x = 262, 384
+    rule_y = top + len(rows) * row_h + 8
+    wrapped = [textwrap.wrap(text, int((width - 64) / (12 * CHAR_WIDTH))) for text in observations]
+    height = rule_y + 40 + sum(len(lines) * 17 + 6 for lines in wrapped) + 34
+    svg = Svg(width, height, "Quellen des Kompendiums: Empfehlung")
+    svg.text(24, 30, "Quellen des Kompendiums: Empfehlung (D99, M84)", 17, weight="600")
+    svg.text(24, 52, "Was der Dienst aus den deutschen Archiven von Kiwix nutzt, und warum", 12, MUTED,
+             limit=width - 48)
+    for x, head in ((24, "Quelle"), (badge_x, "Empfehlung"), (reason_x, "Grund, gemessen in M84")):
+        svg.text(x, top - 10, head, 11.5, MUTED, weight="600")
+    svg.line(20, top - 4, width - 20, top - 4, GRID)
+    for number, (source, verdict, reason) in enumerate(rows):
+        y = top + number * row_h
+        fill, ink = badges[verdict]
+        svg.text(24, y + 17, source, 12.5, INK, weight="600" if verdict == "nutzen" else "normal", limit=badge_x - 34)
+        svg.rect(badge_x, y + 4, 106, 19, fill, 9.5)
+        svg.text(badge_x + 53, y + 17.5, verdict, 11, ink, "middle", "600")
+        svg.text(reason_x, y + 17, reason, 11.5, INK, limit=width - reason_x - 20)
+    svg.line(20, rule_y, width - 20, rule_y, GRID)
+    svg.text(24, rule_y + 26, "Beobachtungen", 13, INK, weight="600")
+    y = rule_y + 46
+    for lines in wrapped:
+        svg.circle(30, y - 4, 2.5, MUTED)
+        for line in lines:
+            svg.text(40, y, line, 12, INK, limit=width - 64)
+            y += 17
+        y += 6
+    svg.text(24, y + 14, "Empfehlung entschieden als D99 (Jan, 09.10.2026); Einordnung der Seiten: Claude, ein "
+             "Gutachter, ungeprüft (m84_einordnung.yaml).", 10.5, MUTED, limit=width - 48)
+    svg.save("quellen_empfehlung.svg")
+
+
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
               kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile,
-              profilvergleich, profiluebersicht, endpunkte, profile_verlauf, kiwix_quellen):
+              profilvergleich, profiluebersicht, endpunkte, profile_verlauf, kiwix_quellen,
+              quellen_empfehlung):
     chart()

@@ -52,12 +52,13 @@ Archivprofil `standard` (vollständige deutsche Wikipedia ohne Bilder und Klexik
 | CPU | 2 vCPU | 4 vCPU | Die API rechnet mit 2 Workern im Mittel auf rund einem Kern, in Spitzen auf bis zu vier: fünf gleichzeitige Kompendien dauerten mit 2, 4 und 16 vCPU gleich lang. Die übrigen Kerne sind für die Sidecars (der Neubau des Wikidata-Index dauert auf dem Server rund acht Minuten) und einen dritten Worker |
 | RAM | 6 GB | 8 GB | API nach dem Aufwärmen 3,4 GiB, höher stieg sie in 47 Anfragen nicht; Sidecars zusammen rund 0,4 GiB im Leerlauf, beim Bau ihrer Indexe mehr (nicht gemessen); dazu das System |
 | Grenze `API_MEMORY` | `4g` | `6g`, die Vorgabe | 4 GiB trugen alle 47 Anfragen, waren aber mit Seiten-Cache voll; 6g lässt Luft für Spitzen, etwa ein großes `existing_markdown` (bis 13 MB je Anfrage). Seit dem 29.09.2026 die Vorgabe in `docker-compose.yml`, vorher 4g |
-| Platte | 45 GB | 60 GB, SSD | Daten 16,5 GB im Betrieb, rund 32 GB beim Update der Wikipedia (altes und neues Archiv 24 Stunden nebeneinander), dazu System und Docker |
+| Platte | 50 GB | 60 GB, SSD | Daten 16,5 GB im Betrieb, mit der Wikipedia-Ausgabe 2026-10 (18,6 GB) rund 20,5 GB; beim Update der Wikipedia liegen altes und neues Archiv 24 Stunden nebeneinander: rund 33 GB beim Wechsel auf 2026-10, bis rund 38 GB bei zwei Ausgaben dieser Größe; dazu System und Docker (D99) |
 | Netz | – | – | eingehend nur der Port der API (8000, besser hinter einem Reverse-Proxy mit TLS); ausgehend siehe [Netz](#netz) |
 
 Mehr gleichzeitige Anfragen: je weiterer Worker (`WEB_CONCURRENCY`) rund 1,7 GiB mehr, also `WEB_CONCURRENCY=3` mit
-`API_MEMORY=8g`, 12 GB RAM und 4 vCPU. Das Archivprofil `compact` (1,4 GB statt 14,7 GB) senkt Platte und
-Grundbedarf, enthält aber nur die meistgelesenen Artikel der Wikipedia; gemessen ist es hier nicht.
+`API_MEMORY=8g`, 12 GB RAM und 4 vCPU. Das Archivprofil `compact` (1,4 GB statt 14,7 GB, mit der Wikipedia 2026-10 statt
+18,7 GB) senkt Platte und Grundbedarf, enthält aber nur die meistgelesenen Artikel der Wikipedia; gemessen ist es hier
+nicht.
 
 ### Lastmessung vom 29.09.2026
 

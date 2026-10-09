@@ -157,6 +157,9 @@ Abschnittsmarker von Teil 1.
 - b-api-Routing (D97, D98, Releases 2.18.0 und 2.18.1): `B_API_PROVIDER=router` fragt den Router der b-api mit
   einer vorab angelegten Route (`B_API_ROUTE`); was der Router nicht heilen lässt, hält die Aufrufe mit dem Grund
   zurück, und `/health` nennt ihn unter `components.llm.reason` (Abschnitt „b-api-Routing“, M83).
+- Quellen (D99, M84): Der Dienst bleibt bei Wikipedia und Klexikon; Wikibooks, Wikiversity, Wiktionary, Wikisource,
+  Wikiquote, Wikivoyage und Gutenberg brachten keinen passenden Text, und die Wikipedia-Ausgabe 2026-10 (18,6 GB)
+  braucht mindestens 50 GB Platte.
 
 ## Installation
 
@@ -167,7 +170,7 @@ Docker bis zum ersten Kompendium. Kurzfassung, wenn Docker schon läuft:
 git clone https://github.com/janschachtschabel/compendius-textgenerator-sc26.git && cd compendius-textgenerator-sc26
 cp .env.example .env          # läuft unverändert und ohne LLM; ZIM_PROFILE wählt die Archivgröße
 docker compose build
-docker compose up -d          # der Updater lädt die Archive des Profils (standard: rund 14,1 GB)
+docker compose up -d          # der Updater lädt die Archive des Profils (standard: rund 18,7 GB)
 curl -sS http://127.0.0.1:8000/ready
 ```
 
@@ -216,7 +219,8 @@ Hugging-Face-ID mit `HF_HUB_OFFLINE=1` und `uv run --extra embeddings`).
 ## ZIM-Archive betreiben
 
 Welche Archive ein Profil braucht, steht in `config/zim_subscriptions.yaml` (`compact` für
-Entwicklung und CI, `standard` für die Produktion, `extended` mit Wikibooks und Wikiversity).
+Entwicklung und CI, `standard` für die Produktion, `extended` mit Wikibooks und Wikiversity). `extended` ist
+nicht empfohlen: Weitere Archive von Kiwix brachten in M11 und M84 keinen passenden Text (D99).
 Die Archiv-ID ist Katalogname plus Flavour, zum Beispiel `wikipedia_de_all_nopic`.
 
 Der Sync-Job pflegt das Verzeichnis `ZIM_DIR`: Er übernimmt vorhandene Dateien, von einem Archiv den
@@ -242,7 +246,7 @@ uv run compendium zim sync --offline               # nur lokale Dateien überneh
 ```
 
 Erststart: Mit `ZIM_BOOTSTRAP_DOWNLOAD=true` lädt der Updater die Pflichtarchive des
-Profils selbst (Profil `standard` rund 14,1 GB). Alternativ werden die Dateien einmalig in
+Profils selbst (Profil `standard` rund 18,7 GB). Alternativ werden die Dateien einmalig in
 `ZIM_DIR` kopiert; der nächste Sync übernimmt sie. `GET /ready` antwortet erst mit 200, wenn
 alle Pflichtarchive vorliegen.
 
@@ -970,9 +974,9 @@ Diese vier liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 |---|---|---|
 | `ZIM_DIR` | `/data/zim` | Verzeichnis mit `active.json`, vom Sync-Job gepflegt |
 | `ZIM_PATHS` | leer | Statt des Verzeichnisses explizite Pfade, durch Komma getrennt — für die Entwicklung. Gesetzt hat es Vorrang vor `ZIM_DIR` |
-| `ZIM_PROFILE` | `standard` | Welches Archivbündel gilt: `compact`, `standard` oder `extended` (`config/zim_subscriptions.yaml`) |
+| `ZIM_PROFILE` | `standard` | Welches Archivbündel gilt: `compact`, `standard` oder `extended` (`config/zim_subscriptions.yaml`); `extended` ist nicht empfohlen (D99) |
 | `ZIM_REQUIRED` | leer | Pflichtarchive für `/ready`; leer leitet sie aus `config/zim_subscriptions.yaml` für `ZIM_PROFILE` ab |
-| `ZIM_BOOTSTRAP_DOWNLOAD` | `true` | Lädt beim ersten Start die fehlenden Pflichtarchive des Profils — `compact` rund 1,4 GB, `standard` rund 14,1 GB, `extended` rund 18,1 GB. Erst danach meldet `/ready` den Dienst bereit. `false` lässt das Volume, wie es ist; dann müssen die Archive von Hand hinein |
+| `ZIM_BOOTSTRAP_DOWNLOAD` | `true` | Lädt beim ersten Start die fehlenden Pflichtarchive des Profils — `compact` rund 1,4 GB, `standard` rund 18,7 GB, `extended` rund 22,8 GB (Ausgaben vom Oktober 2026). Erst danach meldet `/ready` den Dienst bereit. `false` lässt das Volume, wie es ist; dann müssen die Archive von Hand hinein |
 | `ZIM_SYNC_INTERVAL` | `30d` | Wie oft der Sync-Job (`compendium zim sync --loop` im Updater-Sidecar) den Katalog prüft. Mindestens `1m`; kürzer startet der Sidecar nicht, denn `0s` ließ ihn ohne Pause laufen |
 | `ZIM_RETENTION_HOURS` | `24` | Wie lange ein ersetztes Archiv nach dem Umschalten liegen bleibt, bevor es gelöscht wird; für das Ende der Frist setzt der Sync-Job einen Lauf an |
 | `ZIM_CATALOG_URL` | leer | OPDS-Katalog für den Sync-Job; leer nimmt den eingebauten Kiwix-Katalog (`https://opds.library.kiwix.org/catalog/v2/entries`) |

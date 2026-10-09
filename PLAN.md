@@ -2332,6 +2332,18 @@ API.
   ohne Routing (404) sagt das. Der Name des antwortenden Modells kommt bereinigt und höchstens 32-mal je Worker ins Log,
   der Familienhinweis nur bei `unsupported_parameter`. Dazu die Doku: Wiederholung, Stopps, Rückweg, was `/health` bei
   Erfolg zeigt, und die Zeiten der Antworten des Routers in M83.
+- **D99 (2026-10-09)** Quellen: bei Wikipedia und Klexikon bleiben (Jan nach M84: „empfehlungen bitte umsetzen. nicht
+  mehr benötigte archive nach den tests wieder entfernen sofern die empfehlung ergibt nicht benutzen“). Kein weiteres
+  deutsches Archiv von Kiwix bringt den Kompendien passenden Text: Wikibooks und Wikiversity treffen über den gleichen
+  Titel 1 von 40 Themen, Wiktionary, Wikiquote, Wikisource und Wikivoyage nur mit Wörterbucheinträgen, Zitaten,
+  Linklisten und einem Reiseführer; im Ablauf mit den Regeln setzten sie Tabellen, Zitate und Listen in den Text und
+  verdrängten Absätze der Wikipedia. Projekt Gutenberg hat keinen Volltextindex. Das Profil `extended` bleibt
+  einstellbar, das Manifest nennt es nicht empfohlen; die sechs gemessenen Archive sind wieder gelöscht
+  (`mc_kiwix_laden.py` holt sie für eine Wiederholung). Die Wikipedia bleibt über den `zim-updater` aktuell: Die Ausgabe
+  2026-10 (18,6 statt 14,6 GB, mwoffliner 2.0.1) las der Parser bei drei Stichproben gleich; geprüft wird sie online auf
+  dem Testserver, lokal fehlt der Platz für zwei Ausgaben. Weil beim Update zwei Ausgaben dieser Größe nebeneinander
+  liegen, braucht der Betrieb jetzt mindestens 50 GB Platte. Offen: der Klexikon-Zwilling über einen Alias („Strom“,
+  „Zelle“; eigene Messung) und ein Archiv aus ZUM-Unterrichten oder dem MiniKlexikon.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

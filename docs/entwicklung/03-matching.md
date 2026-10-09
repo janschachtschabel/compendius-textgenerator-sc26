@@ -366,10 +366,11 @@ Verfahren bleiben bei 0,43 bis 0,45. Beim Standard gelingen große Bausteine, kl
 - **Mehr und geprüftes Gold.** Kleine Bausteine haben nur 2 bis 18 Belege; ihre Werte schwanken stark. Eine
   redaktionelle Prüfung der Labels steht aus.
 - **Abdeckung statt eines anderen lokalen Rankers.** Enzyklopädische Artikel enthalten zu Beruf, Bildung oder Praxis
-  wenig. Mehr versprechen Quellen, die solche Inhalte haben. Wikibooks und Wikiversity über ihre Volltextsuche
-  brachten in M11 fast nichts: +1 gefüllter Baustein in 20 Themen. Aus guten Unterrichtsseiten wie
-  *Physikunterricht/ Optik* oder *Kurs:Optik* druckte der Standard keinen Absatz, dafür aus Randtreffern wie
-  *Arbeiten mit .NET*. Materialien einer Wissens-Sammlung bleiben der aussichtsreichere Weg.
+  wenig. Mehr versprechen Quellen, die solche Inhalte haben. Wikibooks und Wikiversity über ihre Volltextsuche brachten
+  in M11 fast nichts: +1 gefüllter Baustein in 20 Themen. Aus guten Unterrichtsseiten wie *Physikunterricht/ Optik* oder
+  *Kurs:Optik* druckte der Standard keinen Absatz, dafür aus Randtreffern wie *Arbeiten mit .NET*. M84 fand auch in
+  Wiktionary, Wikisource, Wikiquote und Wikivoyage keinen passenden Text (D99). Materialien einer Wissens-Sammlung
+  bleiben der aussichtsreichere Weg.
 - **Schärfere Bausteinbeschreibungen (M12):** lokal kein Gewinn (0,448 statt 0,447), mit dem LLM +0,013 innerhalb der
   Streuung; nicht übernommen.
 - **Schon verworfen, weil gemessen schlechter oder nicht besser:** am 18.09.2026 gelernte Zuordnung per

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="595" viewBox="0 0 1000 595" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Quellen des Kompendiums: Empfehlung"><title>Quellen des Kompendiums: Empfehlung</title><rect width="1000" height="595" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Quellen des Kompendiums: Empfehlung (D99, M84)</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Was der Dienst aus den deutschen Archiven von Kiwix nutzt, und warum</text>
+<text x="24.0" y="86.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Quelle</text>
+<text x="262.0" y="86.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Empfehlung</text>
+<text x="384.0" y="86.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Grund, gemessen in M84</text>
+<line x1="20.0" y1="92.0" x2="980.0" y2="92.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="113.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Wikipedia, alle Artikel</text>
+<rect x="262.0" y="100.0" width="106.0" height="19.0" rx="9.5" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="315.0" y="113.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">nutzen</text>
+<text x="384.0" y="113.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Leitquelle; aktuell halten: Ausgabe 2026-10 (18,6 GB) liest der Parser gleich, Test online</text>
+<text x="24.0" y="140.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Klexikon</text>
+<rect x="262.0" y="127.0" width="106.0" height="19.0" rx="9.5" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="315.0" y="140.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">nutzen</text>
+<text x="384.0" y="140.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">einfache Sprache; passender Zwilling bei 15 von 40 Themen, 20 Absätze im Text</text>
+<text x="24.0" y="167.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wikibooks, Wikiversity</text>
+<rect x="262.0" y="154.0" width="106.0" height="19.0" rx="9.5" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="315.0" y="167.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">nicht nutzen</text>
+<text x="384.0" y="167.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">gleicher Titel bei je 1 von 40 Themen; Suche trifft Kurse, Quiz, Druckfassungen, Ungarisch</text>
+<text x="24.0" y="194.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wiktionary</text>
+<rect x="262.0" y="181.0" width="106.0" height="19.0" rx="9.5" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="315.0" y="194.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">nicht nutzen</text>
+<text x="384.0" y="194.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wörterbuch: 17 Absätze Deklinationstabellen und Beispielsätze im Text, −1 Baustein</text>
+<text x="24.0" y="221.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wikiquote</text>
+<rect x="262.0" y="208.0" width="106.0" height="19.0" rx="9.5" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="315.0" y="221.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">nicht nutzen</text>
+<text x="384.0" y="221.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Zitatlisten: 5 Zitate im Text, −1 Baustein</text>
+<text x="24.0" y="248.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wikisource</text>
+<rect x="262.0" y="235.0" width="106.0" height="19.0" rx="9.5" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="315.0" y="248.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">nicht nutzen</text>
+<text x="384.0" y="248.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">historische Texte und Linklisten: 4 Listenzeilen im Text</text>
+<text x="24.0" y="275.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wikivoyage</text>
+<rect x="262.0" y="262.0" width="106.0" height="19.0" rx="9.5" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="315.0" y="275.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">nicht nutzen</text>
+<text x="384.0" y="275.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Reiseführer: gleicher Titel bei 1 von 40 Themen, im Text nichts</text>
+<text x="24.0" y="302.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">Projekt Gutenberg</text>
+<rect x="262.0" y="289.0" width="106.0" height="19.0" rx="9.5" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="315.0" y="302.5" font-size="11" fill="#ffffff" text-anchor="middle" font-weight="600">nicht nutzen</text>
+<text x="384.0" y="302.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">11 GB ganze Bücher ohne Volltextindex: der Dienst fände nur Buchtitel</text>
+<text x="24.0" y="329.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">Teilarchive der Wikipedia</text>
+<rect x="262.0" y="316.0" width="106.0" height="19.0" rx="9.5" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<text x="315.0" y="329.5" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">nicht nötig</text>
+<text x="384.0" y="329.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Chemie, Physik, Geschichte und andere stecken in der vollen Wikipedia</text>
+<text x="24.0" y="356.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">übriger Katalog</text>
+<rect x="262.0" y="343.0" width="106.0" height="19.0" rx="9.5" fill="#dde2e8" stroke="none" stroke-width="1"/>
+<text x="315.0" y="356.5" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">ungeeignet</text>
+<text x="384.0" y="356.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">240 TED-Videos, fachfremde Wikis, Satire</text>
+<text x="24.0" y="383.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">ZUM-Unterrichten, MiniKlexikon</text>
+<rect x="262.0" y="370.0" width="106.0" height="19.0" rx="9.5" fill="#f2c28f" stroke="none" stroke-width="1"/>
+<text x="315.0" y="383.5" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">offen</text>
+<text x="384.0" y="383.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">nicht bei Kiwix; ob ein eigenes Archiv hülfe, wäre eine eigene Messung</text>
+<line x1="20.0" y1="401.0" x2="980.0" y2="401.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="427.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="600">Beobachtungen</text>
+<circle cx="30.0" cy="443.0" r="2.5" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="40.0" y="447.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">Kein weiteres Archiv bringt passenden Text: Über den gleichen Titel kommen nur Wörterbuch, Zitate, Linklisten und Reiseführer, und für</text>
+<text x="40.0" y="464.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">keines der 11 Aspektthemen fand die Suche eine passende Seite.</text>
+<circle cx="30.0" cy="483.0" r="2.5" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="40.0" y="487.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">In den wörtlichen Profilen setzten Wiktionary, Wikiquote und Wikisource 26 Absätze aus Tabellen, Zitaten und Listen in den Text; mit allen</text>
+<text x="40.0" y="504.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">sechs Archiven fielen 41 Absätze der Wikipedia weg und 3 Bausteine blieben leer.</text>
+<circle cx="30.0" cy="523.0" r="2.5" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="40.0" y="527.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">Schon heute holt der Klexikon-Zwilling über einen Alias falsche Absätze: Flüsse bei „Elektrischer Strom“, Gefängniszellen bei „Zelle</text>
+<text x="40.0" y="544.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">(Biologie)“; das wird gesondert gemessen.</text>
+<text x="24.0" y="581.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Empfehlung entschieden als D99 (Jan, 09.10.2026); Einordnung der Seiten: Claude, ein Gutachter, ungeprüft (m84_einordnung.yaml).</text></svg>

@@ -9,7 +9,12 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
-Noch nichts.
+- **Quellen (D99, M84):** Weitere deutsche Archive von Kiwix brachten keinen passenden Text; der Dienst bleibt bei
+  Wikipedia und Klexikon. `config/zim_subscriptions.yaml` nennt `extended` (Wikibooks und Wikiversity) nicht empfohlen
+  und die Größen mit der Wikipedia-Ausgabe 2026-10 (`standard` rund 18,7 GB, `extended` rund 22,8 GB).
+- **Doku:** Mindestens 50 GB Platte statt 35 oder 45 GB, weil beim Update zwei Wikipedia-Ausgaben von je bis zu 18,6 GB
+  nebeneinander liegen (installation.md, Übergabe, betrieb.md); Entscheidungsvorlage Punkt 16 mit den Grafiken
+  `quellen_empfehlung.svg` und `kiwix_quellen.svg`.
 
 ## 2.18.1 – 2026-10-09
 
