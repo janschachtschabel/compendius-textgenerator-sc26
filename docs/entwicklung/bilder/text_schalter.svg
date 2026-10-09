@@ -2,7 +2,7 @@
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Text bauen: Zeit und Tokens der Schalter</text>
 <text x="230.0" y="62.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Zeit je Kompendium</text>
 <text x="500.0" y="62.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Tokens je Kompendium</text>
-<text x="218.0" y="89.0" font-size="12.5" fill="#1f2933" text-anchor="end" font-weight="normal">extraktiv (Standard)</text>
+<text x="218.0" y="89.0" font-size="12.5" fill="#1f2933" text-anchor="end" font-weight="normal">extraktiv (ohne LLM)</text>
 <rect x="230.0" y="76.0" width="7.5" height="16.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="243.5" y="89.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1,1 s</text>
 <rect x="500.0" y="76.0" width="0.0" height="16.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>

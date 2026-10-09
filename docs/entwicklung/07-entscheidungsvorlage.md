@@ -169,19 +169,20 @@ Server plus die Schritte des LLM; die Güte aus M30, M32, M34 und M36.
 
 ![Ablauf von Teil 1](bilder/prozess.svg)
 
-Dieselben Schritte mit allen Optionen, ihrer Güte, Zeit und ihren Tokens; die Quadrate zeigen, welches Profil welche
-Option nutzt:
+Dieselben Schritte mit allen Optionen, ihrer Güte, Zeit und ihren Tokens, im Stand von Release 2.2.2 mit den vier
+Profilen vor D69 (die heutigen Werte je Schritt auf [Methoden, Messwerte und Profile](09-methoden-und-profile.md)); die
+Quadrate zeigen, welches Profil welche Option nutzt:
 
 ![Jeder Schritt mit seinen Optionen](bilder/prozess_optionen.svg)
 
-Teil 2 (Lehrplanbezüge) und Teil 3 (Sammlungsüberblick) laufen daneben; ein LLM prüft nur in den
-`best-quality`-Profilen die Lehrplanelemente von Teil 2 (D58). Die Schritte 1 bis 4 laufen bei jeder Anfrage,
-Schritt 5 nur auf Wunsch. Ein LLM steht nur bereit, wenn es konfiguriert ist: `LLM_ENABLED=true` und `B_API_KEY`,
-Modell `gpt-6-luna` (`B_API_MODEL`, seit D44). Die LLM-Zahlen seit M19 stammen, wo nicht anders genannt, von
-`gpt-6-luna`, ältere wie die der Text-Schalter vom 18. und 19.09.2026 von `gpt-5.6-luna`; `gpt-6-luna` erreicht
-dieselbe Güte mit gleich bis 12 % mehr Tokens zum halben Preis je Token, antwortet aber je Aufruf ein Viertel bis drei
-Viertel langsamer (M19). Ohne LLM oder bei einem Ausfall der b-api laufen alle Schritte regelbasiert, und das Audit
-der Antwort nennt den tatsächlich genutzten Weg.
+Teil 2 (Lehrplanbezüge) und Teil 3 (Sammlungsüberblick) laufen daneben; ein LLM prüft nur in den `best-quality`-Profilen
+die Lehrplanelemente von Teil 2 (D58). Die Schritte 1 bis 4 laufen bei jeder Anfrage, Schritt 5 in den beiden
+schreibenden Profilen, seit D82 also auch ohne Angabe eines Profils. Ein LLM steht nur bereit, wenn es konfiguriert ist:
+`LLM_ENABLED=true` und `B_API_KEY`, Modell `gpt-6-luna` (`B_API_MODEL`, seit D44). Die LLM-Zahlen seit M19 stammen, wo
+nicht anders genannt, von `gpt-6-luna`, ältere wie die der Text-Schalter vom 18. und 19.09.2026 von `gpt-5.6-luna`;
+`gpt-6-luna` erreicht dieselbe Güte mit gleich bis 12 % mehr Tokens zum halben Preis je Token, antwortet aber je Aufruf
+ein Viertel bis drei Viertel langsamer (M19). Ohne LLM oder bei einem Ausfall der b-api laufen alle Schritte
+regelbasiert, und das Audit der Antwort nennt den tatsächlich genutzten Weg.
 
 ## Schritt 1: Hauptartikel finden
 
@@ -376,19 +377,19 @@ drei Schalter auf.
 | `extraction` | `rule-based`, `llm` | `rule-based` in allen Profilen | `llm`: Das LLM wählt je Baustein Sätze aus bis zu acht Kandidatenabsätzen (`LLM_EXTRACTION_CANDIDATES`); der Wortlaut bleibt der der Quelle. |
 | `generation` | `rule-based`, `llm-fast`, `llm` | `llm` in `best-quality-generated` und `best-coverage-generated`, sonst `rule-based` | `llm-fast`: Das LLM schreibt Themendefinition und Querschnitt & Bezüge neu (`LLM_FAST_SECTIONS`); `llm`: alle Inhaltsbausteine. |
 | `enrichment` | `sources-only`, `model-knowledge`, `model-knowledge-full` | `model-knowledge` in `best-quality-generated`, `model-knowledge-full` in `best-coverage-generated`, sonst `sources-only` | `model-knowledge`: Das schreibende LLM darf eigenes Wissen ergänzen, ohne Belegnummer und im Markup gekennzeichnet, sichtbar als `[Modellwissen]` nur mit `model_knowledge_label` (D56, D76); nur mit `generation` `llm` oder `llm-fast`. `model-knowledge-full` (D69): Das LLM schreibt jeden Inhaltsbaustein vollständig über das angefragte Thema, Belege nur, wo sie es treffen, sonst Modellwissen, auch ohne Belege; die Ziellänge ist Untergrenze. |
-| `target_length` | 2.000 bis 60.000 Zeichen | 12.000 | steuert die Länge über Budgets je Baustein; eine Richtgröße, keine Obergrenze |
+| `target_length` | 2.000 bis 60.000 Zeichen | 30.000 in jedem Profil (D70, bis dahin 12.000) | steuert die Länge über Budgets je Baustein; eine Richtgröße, keine Obergrenze |
 | `empty_slot_policy` | `omit`, `note` | aus dem Template, bei SC26 `omit` | leere Bausteine weglassen oder mit Hinweis zeigen |
 
 **Kombinierbar:** `extraction` und `generation` lassen sich zusammen einschalten, `enrichment` wirkt nur mit
 `generation`. Alle LLM-Schalter teilen sich das Budget je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST`, 60.000, in den
-`best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, 180.000, D59) und das Tagesbudget
-(`LLM_DAILY_TOKEN_BUDGET`, 2 Mio.). Ein geschriebener Satz bleibt nur, wenn er eine gültige Belegnummer trägt und
-mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er gestrichen
+`best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, 180.000, D59) und, wenn gesetzt, ein Tagesbudget
+(`LLM_DAILY_TOKEN_BUDGET`; die Vorgabe 0 setzt keine Grenze, D67). Ein geschriebener Satz bleibt nur, wenn er eine
+gültige Belegnummer trägt und mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er gestrichen
 (`LLM_UNSUPPORTED_SENTENCES=drop`) oder als Schlussfolgerung markiert (`mark`).
 
 | Schalter | Zeit | Tokens | Güte |
 |---|---|---|---|
-| extraktiv (Standard) | 1,1 s auf dem Server, samt Akteuren, Quellen, Glossar | 0 | jeder Satz wörtlich im zitierten Absatz (432 von 432) |
+| extraktiv (ohne LLM) | 1,1 s auf dem Server, samt Akteuren, Quellen, Glossar | 0 | jeder Satz wörtlich im zitierten Absatz (432 von 432) |
 | `extraction=llm` | rund 11 s | 14.000 bis 22.400 | 14 richtige Absätze mehr bei gleicher Präzision (59 %) gegenüber derselben Konfiguration ohne LLM; kleine Bausteine oft falsch |
 | `generation=llm-fast` | 9 bis 15 s | 2.300 bis 4.000 | flüssiger Einstieg; Belegprüfung |
 | `generation=llm` | 16 bis 20 s | 10.500 bis 14.500 | flüssiger Text; Belegprüfung, im Median 73 % der Inhaltswörter im zitierten Absatz |
@@ -413,27 +414,31 @@ mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er 
 
 ## Kosten und Kapazität
 
-| Profil | Tokens je Kompendium mit Teil 2, Median (Spanne), M45 | Kompendien je Tag bei 2 Mio. Tokens |
-|---|---|---|
-| `llm-free` | 0 | ohne Grenze |
-| `balanced` | 576 (495 bis 663) | rund 3.500 |
-| `balanced` mit `generation=llm-fast` | rund 2.900 bis 4.600 (addiert) | rund 440 bis 700 |
-| `best-quality` | 49.019 (17.357 bis 65.116) | rund 41 |
-| `best-quality-generated` | 60.357 (44.639 bis 134.766) | rund 33 |
-| `best-coverage-generated` | Teil 1 allein 98.707 (62.999 bis 99.236), M47 | rund 20 |
+| Profil | Tokens je Kompendium mit Teil 1 und 2, Median (Spanne), M82 | Zeit, Median | Kompendien je Million Tokens |
+|---|---|---|---|
+| `llm-free` | 0 | 2,6 s | ohne Grenze |
+| `balanced` | 314 (307 bis 1.234) | 4,6 s | rund 3.200 |
+| `balanced` mit `generation=llm-fast` | rund 2.900 bis 4.600 (M45, addiert) | – | rund 220 bis 340 |
+| `best-quality` | 59.335 (29.663 bis 73.304) | 12,6 s | rund 17 |
+| `best-quality-generated` (Standard) | 63.117 (48.758 bis 92.436) | 23,2 s | rund 16 |
+| `best-coverage-generated` | 87.225 (63.683 bis 115.269) | 27,3 s | rund 11 |
 
-M45 maß jedes LLM-Profil auf sechs eigenen Themen; die Zeile mit `llm-fast` ist addiert. Große Themen kosten mehr:
-Wikinger mit 400 Absätzen brauchte in `best-quality` 65.116 Tokens, Transistor in `best-quality-generated` 134.766;
-M27 maß vor D58 und D63 noch 26.267 und 35.376. Mit Teil 2 kommt die Prüfung der Lehrplanelemente dazu:
-Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in `best-quality` und 152.197 in
-`best-quality-generated` (M33). Eine Anfrage dieser Profile darf bis 180.000 Tokens ausgeben (D59), die der anderen
-60.000; die Grenze schützt vor Ausreißern, die meisten Anfragen bleiben weit darunter. Das Tagesbudget gilt für alle
-Anfragen und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück.
+M82 maß jedes Profil an den neun Themen von M52 mit Release 2.17.0, nachts im Einmal-Container. Am Nachmittag des
+08.10. (M78, nach D93) waren es 313 Tokens und 4,4 s in `balanced`, 56.700 und 15,1 s in `best-quality`, 67.900 und
+29,8 s in `best-quality-generated` und 91.800 und 36,7 s in `best-coverage-generated`, vor D93 (M75) 320 und 5,1 s,
+48.500 und 20,4 s, 75.600 und 33,9 s und 90.100 und 37,3 s; M45 (Release 2.2.2) maß jedes LLM-Profil auf sechs eigenen
+Themen, 576, 49.019 und 60.357 Tokens. Die Tokens folgen der Größe des Korpus, die von Lauf zu Lauf streut; wohin Zeit
+und Tokens gehen und was sich daran sparen ließ: Punkt 15.
 
-Stand M78 (08.10.2026, nach D93, Teil 1 und 2, die neun Themen von M52, Median): `balanced` 313 Tokens und 4,4 s,
-`best-quality` 56.700 und 15,1 s, `best-quality-generated` 67.900 und 29,8 s, `best-coverage-generated` 91.800 und
-36,7 s; die Tokens folgen der Größe des Korpus, die von Lauf zu Lauf streut. Vor D93 (M75): 320 und 5,1 s, 48.500 und
-20,4 s, 75.600 und 33,9 s, 90.100 und 37,3 s. Wohin Zeit und Tokens gehen und was sich daran sparen ließ: Punkt 15.
+Große Themen kosten mehr: Wikinger mit 400 Absätzen brauchte in `best-quality` 65.116 Tokens, Transistor in
+`best-quality-generated` 134.766 (M45); M27 maß vor D58 und D63 noch 26.267 und 35.376. Mit Teil 2 kommt die Prüfung
+der Lehrplanelemente dazu: Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in `best-quality`
+und 152.197 in `best-quality-generated` (M33), seit D93 140.600 in `best-quality-generated` und 160.900 in
+`best-coverage-generated` (M79). Eine Anfrage dieser Profile darf bis 180.000 Tokens ausgeben (D59), die der anderen
+60.000, die Prüfung von Teil 2 dazu bis 400.000 aus einem eigenen Budget (D94); die Grenzen schützen vor Ausreißern,
+die meisten Anfragen bleiben weit darunter. Ein Tagesbudget (`LLM_DAILY_TOKEN_BUDGET`) gilt, wenn gesetzt, für alle
+Anfragen und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück. Die
+Vorgabe 0 setzt keine Grenze (D67).
 
 ## Die Empfehlungen im Einzelnen
 
@@ -544,8 +549,9 @@ Passung 4,56 und Nutzen 4,31.
 
 ## Zu entscheiden
 
-1. **Vorgabe im Betrieb:** entschieden (D53): `balanced`. Vor dem nächsten Deployment brauchen die Server
-   `LLM_ENABLED`, den Produktivschlüssel in `B_API_KEY` und ein Tagesbudget, sonst `PRESET_DEFAULT=llm-free`.
+1. **Vorgabe im Betrieb:** entschieden (D53): `balanced`, seit D82 `best-quality-generated`; ohne LLM läuft eine
+   Anfrage ohne Profil mit `llm-free` (D68). Vor dem nächsten Deployment brauchen die Server `LLM_ENABLED` und den
+   Produktivschlüssel in `B_API_KEY`.
 2. **Beste Qualität als eigener Weg:** entschieden (D53) als Profil `best-quality`, rund 26.000 Tokens und 14 s je
    Kompendium (M27).
 3. **Lesefassung:** entschieden (D53) als Profil `best-quality-generated`; gemessen in M28: Der geschriebene Text liest

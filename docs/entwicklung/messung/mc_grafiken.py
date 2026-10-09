@@ -105,36 +105,37 @@ class Svg:
 
 
 def prozess() -> None:
-    """Teil 1 from the request to the document, with the switch, its default and the time of every step."""
+    """Teil 1 from the request to the document, with the switch, the profiles that use it and the time of every step
+    (release 2.17.0, M82)."""
     steps = [
         ("1", "Hauptartikel finden", "Thema bereinigen, im Archivindex auflösen", False,
-         ["Schalter article_choice: rule-based oder llm",
-          "llm-free: rule-based; die übrigen Profile (Standard balanced): llm",
-          "Zeit: rund 0,03 s; LLM nur bei unsicheren Themen, +1,0 bis 2,7 s"]),
+         ["Schalter article_choice: rule-based, llm oder llm-thorough",
+          "llm-free: rule-based; balanced: llm; die übrigen: llm-thorough",
+          "Zeit: rund 0,03 s; mit LLM Frage N, rund 2 s, 310 Tokens (M82)"]),
         ("2", "Korpus bauen", "bis 12 Artikel, höchstens 400 Absätze", False,
          ["Einstellungen: max_articles (12), ZIM_PROFILE (standard)",
-          "Trefferprüfung durch das LLM, wenn article_choice=llm",
-          "Zeit: 0,9 s auf dem Server; Trefferprüfung +1,5 bis 2,4 s (M27)"]),
+          "mit LLM die Artikel aus Übersicht und Teilen des Themas (N, D63)",
+          "Zeit: 0,9 s auf dem Server (M45); N zählt zu Schritt 1"]),
         ("3", "Absätze zuordnen", "10 Inhaltsbausteine des Templates SC26", False,
          ["Schalter matcher: hybrid_light, bm25, char_tfidf, lexicon_only, llm",
-          "llm-free, balanced: hybrid_light; best-quality und -generated: llm",
-          "Zeit: 0,3 s; llm rund 11 s, rund 170 Tokens je Absatz (M27)"]),
+          "llm-free, balanced: hybrid_light; ab best-quality: llm",
+          "Zeit: 0,2 bis 0,7 s; llm rund 10 s, rund 160 Tokens je Absatz (M82)"]),
         ("4", "Text bauen", "Absätze wörtlich, mit Belegnummer", False,
          ["Schalter extraction: rule-based oder llm; Länge: target_length",
-          "alle Profile: rule-based, 12.000 Zeichen",
+          "alle Profile: rule-based, 30.000 Zeichen (D70)",
           "Zeit: 1,1 s auf dem Server; llm rund 11 s"]),
-        ("5", "Umformulieren (optional)", "LLM schreibt Bausteine neu, Belegprüfung", True,
+        ("5", "Umformulieren (je Profil)", "LLM schreibt Bausteine neu, Belegprüfung", True,
          ["Schalter generation: rule-based, llm-fast, llm; dazu enrichment",
-          "best-quality-generated: llm und model-knowledge; sonst rule-based",
-          "Zeit: llm rund 8,8 s, 4.300 bis 11.600 Tokens mehr (M27)"]),
+          "best-quality-generated (Standard), best-coverage-generated: llm",
+          "Zeit: llm rund 10 s, im Median rund 19.000 Tokens mehr (M82)"]),
         ("6", "Zusammensetzen", "mit Teil 2 Lehrpläne und Teil 3 Sammlung", False,
-         ["Teil 2: 0,24 s; Teil 3: 0,16 s aus dem Zwischenspeicher",
+         ["Teil 2 und 3 neben Teil 1 (D93); die LLM-Prüfung von Teil 2 2,5 s",
           "Ergebnis: Markdown und JSON, mit Vorspann und Audit",
-          "Teil 1 ohne LLM: 1,2 bis 2,0 s"]),
+          "ohne LLM 2,6 s, im Standard 23 s je Kompendium (M82, Teil 1 und 2)"]),
     ]
     llm_steps = {"1", "2", "3", "4", "5"}
     top, row, box_h = 92, 96, 70
-    svg = Svg(840, top + row * len(steps) + 40, "Ablauf von Teil 1 mit Schaltern, Standardwerten und Zeiten")
+    svg = Svg(840, top + row * len(steps) + 40, "Ablauf von Teil 1 mit Schaltern, Profilen und Zeiten")
     svg.text(24, 30, "Teil 1 · Weltwissen: vom Thema zum Kompendium", 17, weight="600")
     svg.rect(24, 44, 300, 30, PANEL, 6, GRID)
     svg.text(174, 64, "Anfrage: topic oder collection_id", 12, MUTED, "middle", limit=290)
@@ -347,7 +348,7 @@ def zuordnung_guete_zeit() -> None:
     selectable = [("lexicon_only", "lexicon_only", "lexicon_only", -8, 22, "start"),
                   ("bm25", "bm25", "bm25", 10, 5, "start"),
                   ("char_tfidf", "char_tfidf", "char_tfidf", 12, 18, "start"),
-                  ("hybrid_light", "hybrid_light + M2V", "hybrid_light (Standard)", 12, -8, "start")]
+                  ("hybrid_light", "hybrid_light + M2V", "hybrid_light (llm-free, balanced)", 12, -8, "start")]
     others = [("Model2Vec allein", "Model2Vec allein", -8, -8, "end"),
               ("BM25 + Model2Vec", "BM25 + Model2Vec", 6, -10, "start"),
               ("MiniLM-Satzvektoren allein", "MiniLM", 10, 4, "start"),
@@ -453,7 +454,7 @@ def span_bar(svg: Svg, x: float, y: float, scale: float, low: float, high: float
 def text_schalter() -> None:
     """Time and tokens of the text switches; measured on 2026-09-18 and 19 (02-weltwissen.md, PLAN.md)."""
     options = [  # label, seconds (low, high), tokens (low, high), llm
-        ("extraktiv (Standard)", (1.1, 1.1), (0, 0), False),  # M1: building the text on the server
+        ("extraktiv (ohne LLM)", (1.1, 1.1), (0, 0), False),  # M1: building the text on the server
         ("generation=llm-fast", (9, 15), (2_300, 4_000), True),
         ("extraction=llm", (11, 11), (14_000, 22_400), True),  # time: Optik; tokens: the ten gold topics
         ("generation=llm", (16, 20), (10_500, 14_500), True),
@@ -599,7 +600,7 @@ def qualitaet_zeit_kosten() -> None:
         ("alter Dienst, bester Fall", OLD, 35.0, 7_913, 55, None, (21, "21 %"), None),  # M2; M17 first term
         ("llm-free", LOCAL, zeit["llm-free"][0], m45("compendium", "llm-free", "tokens"),
          87, (0.45, "0,45"), (100, "100 %"), (2.5, "2,5¹")),  # M35; M27 (gold pool); M3; M28
-        ("balanced (Standard)", BALANCED, zeit["balanced"][0],
+        ("balanced", BALANCED, zeit["balanced"][0],
          m45("compendium", "balanced", "tokens"), 91, (0.50, "0,50²"), (100, "100 %"), (2.5, "2,5¹")),  # M35/M39
         ("best-quality", LLM, zeit["best-quality"][0],
          m45("compendium", "best-quality", "tokens"), 93, (0.70, "0,70"), (100, "100 %"), (2.5, "2,5")),  # M19; M28
@@ -716,8 +717,7 @@ def profile_matrix() -> None:
     for index, profile in enumerate(PROFILES):
         x = 24 + label_w + index * cell_w
         svg.rect(x + 2, top - 26, cell_w - 4, 20, PROFILE_COLOR[profile], 3)
-        svg.text(x + cell_w / 2, top - 12, profile + (" (Standard)" if profile == "balanced" else ""), 12, PAPER,
-                 "middle", "600")
+        svg.text(x + cell_w / 2, top - 12, profile, 12, PAPER, "middle", "600")
     for number, (step, cells) in enumerate(rows):
         y = top + number * row_h
         svg.text(24 + label_w - 12, y + 24, step, 12, INK, "end", "600", limit=label_w - 14)

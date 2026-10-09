@@ -7,7 +7,7 @@
 <rect x="216.0" y="70.0" width="210.0" height="20.0" rx="3" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="321.0" y="84.0" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">llm-free</text>
 <rect x="430.0" y="70.0" width="210.0" height="20.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
-<text x="535.0" y="84.0" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">balanced (Standard)</text>
+<text x="535.0" y="84.0" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">balanced</text>
 <rect x="644.0" y="70.0" width="210.0" height="20.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
 <text x="749.0" y="84.0" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">best-quality</text>
 <rect x="858.0" y="70.0" width="210.0" height="20.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
