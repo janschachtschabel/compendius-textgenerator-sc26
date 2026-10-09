@@ -8,6 +8,9 @@ made again with the paragraphs and characters of every block times 1, 2, 4 and 1
 the labelled paragraphs, as M44 counts them (app/matching/eval); a printed paragraph without a label counts in
 neither. A wrong one is either in another block than its label's or labelled for none at all (``nicht_hinein``).
 
+From release 2.19.0 the service widens the budgets itself (BLOCK_BUDGET_FACTOR, default 10, D102); to measure the
+factors as M86 did, start the container with -e BLOCK_BUDGET_FACTOR=1.
+
 In the one-off container with OpenAI direct (M86), the budgets of a request raised so that none of them steps in:
   cat mc_openai_direkt.py mc_budget_gold.py | docker compose run --rm --no-deps -T -v <repo>/eval/gold:/gold \\
       -v <ordner>:/out -e LLM_ENABLED=true -e B_API_KEY=direct -e B_API_BASE_URL=https://b-api.invalid \\

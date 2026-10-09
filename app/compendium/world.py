@@ -7,6 +7,7 @@ A mixin of CompendiumService (app/service.py) on top of LlmPolicy: it reads the 
 
 from __future__ import annotations
 
+import math
 import time
 from collections.abc import Mapping, Sequence
 
@@ -44,29 +45,37 @@ class WorldBuilding(LlmPolicy):
         *,
         budget: RequestBudget | None = None,
         deadline: Deadline | None = None,
+        budget_factor: float | None = None,
     ) -> Matched:
         """Score and assign the prepared chunks with one matching strategy.
 
         ``llm`` runs the default strategy and lets the model decide on top (D34); ``budget`` and ``deadline`` bound
-        its calls, and a budget of its own is opened when none is given (evaluation).
+        its calls, and a budget of its own is opened when none is given (evaluation). ``budget_factor`` widens the
+        blocks' budgets for the cut, BLOCK_BUDGET_FACTOR when none is given (D102).
         """
+        factor = self.settings.block_budget_factor if budget_factor is None else budget_factor
         name = matcher_name or LOCAL_MATCHER
         if name == LLM_MATCHER:
-            return self._match_with_llm(prepared, target_length, budget, deadline)
+            return self._match_with_llm(prepared, target_length, budget, deadline, factor)
         started = time.perf_counter()
         matcher = get_matcher(name, self.settings.model2vec_path)
         fused = matcher.score(prepared.template.slots, prepared.chunks)
         fused = smooth_sections(fused, prepared.chunks, self.settings.policy_section_smoothing)
-        assignment = self._assign(prepared, fused, target_length)
+        assignment = self._assign(prepared, fused, target_length, factor)
         duration_ms = int((time.perf_counter() - started) * 1000)
         return Matched(matcher=name, assignment=assignment, duration_ms=duration_ms)
 
     def _match_with_llm(
-        self, prepared: PreparedTopic, target_length: int, budget: RequestBudget | None, deadline: Deadline | None
+        self,
+        prepared: PreparedTopic,
+        target_length: int,
+        budget: RequestBudget | None,
+        deadline: Deadline | None,
+        factor: float,
     ) -> Matched:
         """matcher=llm: the local strategy decides first; without a usable LLM its result is the answer."""
         started = time.perf_counter()
-        base = self.match(prepared, LOCAL_MATCHER, target_length)
+        base = self.match(prepared, LOCAL_MATCHER, target_length, budget_factor=factor)
         if self.llm is None or self.llm_unavailable() is not None:
             return base
         job = AssignmentJob(
@@ -76,7 +85,7 @@ class WorldBuilding(LlmPolicy):
             concurrency=self.llm.options.concurrency,
             deadline=deadline,
         )
-        template = scale_budgets(prepared.template, target_length)
+        template = widen_budgets(scale_budgets(prepared.template, target_length), factor)
         assignment, report = assign_with_llm(template, prepared.chunks, prepared.sources_by_id, base.assignment, job)
         duration_ms = int((time.perf_counter() - started) * 1000)
         matcher = LLM_MATCHER if report.answered else base.matcher
@@ -87,9 +96,10 @@ class WorldBuilding(LlmPolicy):
         prepared: PreparedTopic,
         scores: dict[str, list[ScoredChunk]],
         target_length: int,
+        factor: float,
     ) -> AssignmentResult:
         return assign(
-            scale_budgets(prepared.template, target_length),
+            widen_budgets(scale_budgets(prepared.template, target_length), factor),
             prepared.chunks,
             scores,
             prepared.sources_by_id,
@@ -107,13 +117,15 @@ class WorldBuilding(LlmPolicy):
         deadline: Deadline,
         timings: dict[str, int],
         shared_budget: RequestBudget | None = None,
+        budget_factor: float | None = None,
     ) -> WorldPart:
         """Part 1: match the chunks (with matcher=llm the model assigns them, D34), let the LLM choose sentences and
         write blocks as the switches ask (D33).
 
         ``requested`` holds the extraction, the generation and the enrichment switch; without a usable LLM
         the first two run rule-based and nothing is enriched. ``shared_budget`` is the request's budget when the
-        article choice opened it already or the caller brought one (/qa).
+        article choice opened it already or the caller brought one (/qa); ``budget_factor`` overrides
+        BLOCK_BUDGET_FACTOR for the cut (D102).
         """
         extraction_wanted, generation_wanted = requested.extraction, requested.generation
         enrichment_wanted = requested.enrichment
@@ -127,7 +139,14 @@ class WorldBuilding(LlmPolicy):
         llm = self.llm if wants_llm and llm_note is None else None
         # one budget for all LLM work of the request
         budget = (shared_budget or llm.open_budget()) if llm is not None else None
-        matched = self.match(prepared, request.matcher, request.target_length, budget=budget, deadline=deadline)
+        matched = self.match(
+            prepared,
+            request.matcher,
+            request.target_length,
+            budget=budget,
+            deadline=deadline,
+            budget_factor=budget_factor,
+        )
         timings["match"] = matched.duration_ms
         lap = Stopwatch(timings).lap
 
@@ -246,6 +265,30 @@ class WorldBuilding(LlmPolicy):
             raise UnplacedSectionsError(unplaced, template.id, ids)
         content = {slot.id for slot in template.content_slots()}
         return {slot_id: section for slot_id, section in keep.items() if slot_id in content}
+
+
+def widen_budgets(template: Template, factor: float) -> Template:
+    """The content blocks' budgets times ``factor`` for the cut of the assignment (BLOCK_BUDGET_FACTOR, D102): the
+    paragraphs a block keeps, rounded up, and the characters at which a block with enough paragraphs stops.
+
+    Only the cut sees them; the writer hears the target length of ``scale_budgets``. M86 measured 1, 2, 4 and 10: the
+    precision of what is printed stayed at every factor, the recall grew until every assigned paragraph was printed.
+    """
+    if factor == 1:
+        return template
+    widened: list[TemplateSlot] = []
+    for slot in template.slots:
+        if slot.is_generated:
+            widened.append(slot)
+            continue
+        budget = slot.budget.model_copy(
+            update={
+                "max_chunks": math.ceil(slot.budget.max_chunks * factor),
+                "target_chars": math.ceil(slot.budget.target_chars * factor),
+            }
+        )
+        widened.append(slot.model_copy(update={"budget": budget}))
+    return template.model_copy(update={"slots": widened})
 
 
 def scale_budgets(template: Template, target_length: int) -> Template:

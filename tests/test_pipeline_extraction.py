@@ -163,7 +163,10 @@ def test_a_block_where_no_offered_passage_fits_stays_empty(
         return first_sentences(body)
 
     monkeypatch.setattr(service, "llm", make_gateway(FakeBApi(nothing_for_the_definition)))
-    result = service.generate(GenerateRequest(topic="Optik", extraction="llm", parts=["world"]))
+    # The template's budgets: with the tenfold one more passages repeat sentences an earlier block printed, and
+    # Querschnitt empties as well (D102)
+    request = GenerateRequest(topic="Optik", extraction="llm", parts=["world"])
+    result = service.generate(request, block_budget_factor=1)
     definition = next(s for s in result.sections if s.slot_id == "sc26_1")
     assert definition.status is SectionStatus.EMPTY and definition.text == ""
     assert result.audit.llm is not None and result.audit.llm["extraction"]["emptied"] == ["sc26_1"]

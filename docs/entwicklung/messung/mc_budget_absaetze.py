@@ -3,10 +3,11 @@ printed at any factor, judged once by blind raters: does it treat the topic aske
 block?
 
 The runs of mc_kompendium_profil.py --budgets --fixed-corpus print nested sets: what factor 1 prints, every larger
-factor prints too. So each paragraph is judged once and counted for every run that printed it; the paragraphs a factor
-adds to the one before tell whether the budget lets in worse ones. A paragraph is its topic, its block and its text
-without citation numbers; one printed by both profiles is judged once. The order within a block is shuffled, so its
-place does not betray the factor that first printed it.
+factor prints too; the evidence rows of mc_budget_belege.py (best-quality-generated) nest the same way. So each
+paragraph is judged once and counted for every run that printed it; the paragraphs a factor adds to the one before
+tell whether the budget lets in worse ones. A paragraph is its topic, its block and its text without citation
+numbers; one printed by both profiles is judged once. The order within a block is shuffled, so its place does not
+betray the factor that first printed it.
 
 Usage:
   python mc_budget_absaetze.py boegen <folder> <runs.json> [<runs.json> ...] [--seed=86]
@@ -57,7 +58,10 @@ Eintrag je Absatz-Kennung, ohne weiteren Text:
 
 
 def printed(run: dict) -> list[tuple[str, str]]:
-    """The paragraphs of a run's text: (block title, text without citation numbers), in print order."""
+    """The paragraphs of a run's text: (block title, text without citation numbers), in print order; for the evidence
+    of mc_budget_belege.py the paragraphs the writer gets."""
+    if "belege" in run:
+        return [(block, " ".join(text.split())) for block, texts in run["belege"].items() for text in texts]
     found = []
     for block in re.split(r"(?m)^### ", run["text"]):
         title, _, body = block.strip().partition("\n")
@@ -74,7 +78,8 @@ def unit(topic: str, block: str, text: str) -> str:
 
 
 def load_runs(paths: list[str]) -> list[dict]:
-    return [run for path in paths for run in json.loads(Path(path).read_text(encoding="utf-8")) if "text" in run]
+    runs = (run for path in paths for run in json.loads(Path(path).read_text(encoding="utf-8")))
+    return [run for run in runs if "text" in run or "belege" in run]
 
 
 def blocks() -> dict[str, dict]:

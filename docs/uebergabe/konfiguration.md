@@ -100,7 +100,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LLM_MAX_CONCURRENCY` | leer: `openai` 20, `academiccloud` 2, `router` 20 | wie Vorgabe | gleichzeitige LLM-Aufrufe je Worker-Prozess; ein gesetzter Wert gilt für jeden Anbieter |
 | `LLM_ATTEMPTS` | `3` | wie Vorgabe | Versuche je Aufruf |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | wie Vorgabe | Tokens je Anfrage in `llm-free` und `balanced` |
-| `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | wie Vorgabe | Tokens je Anfrage in den drei Profilen ab `best-quality` |
+| `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `200000` | wie Vorgabe | Tokens je Anfrage in den drei Profilen ab `best-quality` |
 | `LLM_MAX_TOKENS_CURRICULUM_CHECK` | `400000` | wie Vorgabe | Tokens der KI-Prüfung von Teil 2 je Anfrage, neben denen der Anfrage (D94); was darüber hinausgeht, bleibt ungeprüft stehen |
 | `LLM_DAILY_TOKEN_BUDGET` | `0` | wie Vorgabe | Tokens je Tag für alle Worker; `0` setzt keine Grenze (D67), gezählt wird trotzdem. Eine Zahl kappt den Tag: 2.000.000 reichen für 25 bis 40 Kompendien mit `best-quality` oder rund 3.500 mit `balanced`. Ohne Grenze gehören `API_KEYS` gesetzt. Bis Release 2.5.0 hieß `0` ein leeres Budget: kein LLM-Aufruf, jeder Schritt fällt auf die Regeln zurück |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | wie Vorgabe | Sätze ohne deckenden Beleg: `drop` verwirft, `mark` kennzeichnet sie |
@@ -121,6 +121,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `POLICY_SECTION_SMOOTHING` | `0.5` | wie Vorgabe | Anteil des Abschnittsmittels an jedem Score; `0` schaltet es ab |
 | `CORPUS_MAX_ARTICLES` | `12` | wie Vorgabe | Artikel je Kompendium; Thema und Klexikon-Zwilling sind immer dabei |
 | `CORPUS_MAX_CHUNKS` | `400` | wie Vorgabe | Absätze je Kompendium |
+| `BLOCK_BUDGET_FACTOR` | `10` | wie Vorgabe | vervielfacht beim Zuschnitt das Budget jedes Bausteins, Absätze und Zeichen (D102, M86); `1` hält die Budgets der Vorlage |
 
 ### edu-sharing: Teil 3, Materialien, Knoten
 

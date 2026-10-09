@@ -2359,6 +2359,18 @@ API.
   sucht aber schlecht (M24); `multilingual-e5-small` bräuchte auf dem Entwicklungsrechner ohne GPU 11 Tage, nur für die
   Artikelanfänge 1,2 Tage, `bge-m3` rund 4 Monate, und das bei jeder neuen Ausgabe der Wikipedia. Eine Einbettungs-API
   mit Workern kostete Geld. Jan baut ein besseres Model2Vec-Modell und misst es später im Ablauf des Dienstes.
+- **D102 (2026-10-09)** Das Bausteinbudget wächst beim Zuschnitt mit `BLOCK_BUDGET_FACTOR`, Vorgabe 10, und die
+  `best-quality`-Profile dürfen 200.000 statt 180.000 Tokens je Anfrage brauchen (Jan nach M86: „bei llm free
+  steigt die fehlerquote nicht. bei balanced scheint sie leicht zu steigen. der tokenanstieg scheint zwar spürbar
+  zu sein aber sich in grenzen zu halten … wahrscheinlich sollten wir das 10 fachebudget als default wert
+  setzen“; „du kannst die default token grenze auf 200000 setzen“). Ein env-Parameter für das Budget gab es
+  nicht, es stand nur in der Vorlage; Jan wählte eine neue Einstellung statt höherer Zahlen in `sc26`. Der Faktor
+  gilt wie gemessen für die Absätze, die ein Baustein behält (aufgerundet), und für die Zeichen, ab denen er
+  schließt, nach den Regeln wie nach dem LLM; die Ziellänge des Schreibers bleibt. `/qa` baut seinen Teil 1
+  weiter mit den Budgets der Vorlage: Die Paare lesen den ganzen Teil 1 und reservieren ihn nach Bytes, und im
+  Test fielen sie mit dem Zehnfachen auf die Regeln zurück. Am breitesten Thema, Demokratie, brauchte Teil 1
+  bei ×10 in `best-quality-generated` 109.100 und in `best-coverage-generated` 132.100 Tokens, in keinem
+  Profil mehr Zeit; `best-quality` druckte dort 105.000 statt 15.500 Zeichen. Release 2.19.0.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

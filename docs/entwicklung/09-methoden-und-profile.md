@@ -34,7 +34,8 @@ wird ein Profil mit
 | Material als Eingang (`node_id` ohne `topic`) | Regeln über Titel und Beschreibung | das LLM nennt den Artikel | wie `balanced` | wie `balanced` | wie `balanced` | D45, D47 |
 | Teil 3: Sammlungsüberblick | edu-sharing zur Anfragezeit, kein LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` | – |
 | Ziellänge von Teil 1 (`target_length`) | 30.000 Zeichen, eine Richtgröße: der wörtliche Text wird so lang, wie die Quellen tragen | wie `llm-free` | wie `llm-free` | 30.000 | 30.000 als Untergrenze | D69, D70 |
-| Budget je Anfrage (D59) | 60.000 Tokens | 60.000 | 180.000 | 180.000 | 180.000 | D59 |
+| Budget je Anfrage (D59, D102) | 60.000 Tokens | 60.000 | 200.000 | 200.000 | 200.000 | D59, D102 |
+| Bausteinbudget (`BLOCK_BUDGET_FACTOR`) | das Zehnfache der Vorlage, Absätze und Zeichen | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` | D102, M86 |
 
 ### Die fünf Profile im Überblick: Güte, Zeit und Kosten (M82)
 

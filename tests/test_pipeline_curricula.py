@@ -52,7 +52,7 @@ def test_generate_appends_part_two_from_the_cache(service: CompendiumService, se
 def test_world_only_leaves_part_two_out(service: CompendiumService) -> None:
     result = service.generate(GenerateRequest(topic="Optik", parts=["world"]))
     assert result.curricula is None
-    assert "Teil 2" not in result.markdown
+    assert "## Teil 2 ·" not in result.markdown  # a paragraph may name a "Teil 2" of its own (an exam, D102)
     assert result.frontmatter["parts"] == ["world"]
 
 

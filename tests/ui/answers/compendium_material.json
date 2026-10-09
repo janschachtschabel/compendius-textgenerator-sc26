@@ -34,7 +34,7 @@
   "extraction": "rule-based",
   "generation": "llm",
   "enrichment": "model-knowledge",
-  "generated_at": "2026-10-08T12:38:29+00:00",
+  "generated_at": "2026-10-09T14:37:36+00:00",
   "frontmatter": {
    "kompendium_version": 2,
    "topic": "Optik",
@@ -57,7 +57,7 @@
     "world",
     "curricula"
    ],
-   "generated_at": "2026-10-08T12:38:29+00:00",
+   "generated_at": "2026-10-09T14:37:36+00:00",
    "extraction": "rule-based",
    "generation": "llm",
    "enrichment": "model-knowledge",
@@ -73,7 +73,7 @@
      "file": "wikipedia_de_sample_2026-01.zim",
      "project": "wikipedia",
      "date": "2026-01-15",
-     "uuid": "ffebe244-8db0-63a4-b747-1adcd66bd5a4",
+     "uuid": "2a28fd6b-84ec-3d27-c676-0f76d5d2fcdf",
      "articles": 15,
      "fulltext_index": true
     },
@@ -82,7 +82,7 @@
      "file": "klexikon_de_sample_2026-08.zim",
      "project": "klexikon",
      "date": "2026-08-07",
-     "uuid": "3051be1c-7caf-c0b1-0883-f324a30ef2f4",
+     "uuid": "3d8c183c-1b8c-6bf4-ec69-3d8fdc96d651",
      "articles": 8,
      "fulltext_index": true
     }
@@ -94,7 +94,7 @@
     "prompts": [
      "curriculum_check@v1",
      "node_topic@v1",
-     "paragraph_assignment@v2",
+     "paragraph_assignment@v3",
      "section_enrichment@v4",
      "topic_wording@v1"
     ],
@@ -188,7 +188,7 @@
     "slot_id": "sc26_3",
     "slot_key": "fachinhalte",
     "title": "3 · Fachinhalte",
-    "text": "Die Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική \\[τέχνη\\] optikḗ \\[téchnē\\]: „Lehre vom Sehen“), auch Lehre vom [1]. <!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->",
+    "text": "Die Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική \\[τέχνη\\] optikḗ \\[téchnē\\]: „Lehre vom Sehen“), auch Lehre vom [1]. Es werden zwei klassische Zugänge zur Lichtausbreitung unterschieden: Die Wellenoptik und die geometrische Optik [2]. Eine wichtige Teildisziplin der Optik ist die Quantenoptik, die sich mit den Wechselwirkungen von Licht und Materie beschäftigt [3]. Daneben sind die nichtlineare Optik (bei der das Licht im Gegensatz zur linearen Optik das umgebende Medium beeinflusst und dadurch zusätzliche Effekte [4]. In der geometrischen Optik wird Licht durch idealisierte Strahlen angenähert [5]. Als Wellenoptik wird der Bereich der Optik bezeichnet, der von der Wellennatur des Lichts handelt [6]. Die Optik ist die Lehre vom Licht [7]. Mit der Optik haben viele Dinge zu tun, zum Beispiel unsere Brillen [8]. Je nachdem, wie man Linsen in einem Rohr anordnet, entsteht ein Mikroskop oder ein Teleskop, also ein Fernrohr [9]. Auch ein Regenbogen ist eine optische Erscheinung [10]. Licht ist aber noch viel mehr [11]. <!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->",
     "citations": [
      {
       "number": 1,
@@ -198,17 +198,192 @@
       "source_url": "https://de.wikipedia.org/wiki/Optik",
       "section_heading": "Einleitung",
       "snippet": "Die Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική [τέχνη] optikḗ [téchnē]: „Lehre vom Sehen“), auch Lehre vom Licht genannt, ist ein Gebiet der Physik und beschäftigt sich m"
+     },
+     {
+      "number": 2,
+      "source_id": "wikipedia:Optik",
+      "chunk_id": "wikipedia:Optik:c001",
+      "source_title": "Optik",
+      "source_url": "https://de.wikipedia.org/wiki/Optik",
+      "section_heading": "Teilbereiche der Optik",
+      "snippet": "Es werden zwei klassische Zugänge zur Lichtausbreitung unterschieden: Die Wellenoptik und die geometrische Optik. Grundlage der Wellenoptik ist die Wellennatur des Lichts. Die Gesetzmäßigkeiten der geometrischen Optik ge"
+     },
+     {
+      "number": 3,
+      "source_id": "wikipedia:Optik",
+      "chunk_id": "wikipedia:Optik:c002",
+      "source_title": "Optik",
+      "source_url": "https://de.wikipedia.org/wiki/Optik",
+      "section_heading": "Teilbereiche der Optik",
+      "snippet": "Eine wichtige Teildisziplin der Optik ist die Quantenoptik, die sich mit den Wechselwirkungen von Licht und Materie beschäftigt. Dabei spielt besonders der gequantelte Charakter des Lichts eine bedeutende Rolle."
+     },
+     {
+      "number": 4,
+      "source_id": "wikipedia:Optik",
+      "chunk_id": "wikipedia:Optik:c003",
+      "source_title": "Optik",
+      "source_url": "https://de.wikipedia.org/wiki/Optik",
+      "section_heading": "Teilbereiche der Optik",
+      "snippet": "Daneben sind die nichtlineare Optik (bei der das Licht im Gegensatz zur linearen Optik das umgebende Medium beeinflusst und dadurch zusätzliche Effekte bewirkt) und die Fourieroptik von theoretischem und technischem Inte"
+     },
+     {
+      "number": 5,
+      "source_id": "wikipedia:Optik",
+      "chunk_id": "wikipedia:Optik:c004",
+      "source_title": "Optik",
+      "source_url": "https://de.wikipedia.org/wiki/Optik",
+      "section_heading": "Teilbereiche der Optik > Geometrische Optik",
+      "snippet": "In der geometrischen Optik wird Licht durch idealisierte Strahlen angenähert. Der Weg des Lichtes, etwa durch ein optisches Instrument, wird durch Verfolgen des Strahlenverlaufs konstruiert. Das snelliussche Brechungsges"
+     },
+     {
+      "number": 6,
+      "source_id": "wikipedia:Optik",
+      "chunk_id": "wikipedia:Optik:c005",
+      "source_title": "Optik",
+      "source_url": "https://de.wikipedia.org/wiki/Optik",
+      "section_heading": "Teilbereiche der Optik > Wellenoptik",
+      "snippet": "Als Wellenoptik wird der Bereich der Optik bezeichnet, der von der Wellennatur des Lichts handelt. Sie erklärt Phänomene, die durch die geometrische Optik nicht erklärt werden können, da bei ihnen die Welleneigenschaft d"
+     },
+     {
+      "number": 7,
+      "source_id": "klexikon:Optik",
+      "chunk_id": "klexikon:Optik:c000",
+      "source_title": "Optik",
+      "source_url": "https://klexikon.zum.de/wiki/Optik",
+      "section_heading": "Einleitung",
+      "snippet": "Die Optik ist die Lehre vom Licht. Sie ist eine Wissenschaft und gehört zur Physik. Das griechische Wort „optikós“ entspricht in etwa unserem Wort „Sehen“."
+     },
+     {
+      "number": 8,
+      "source_id": "klexikon:Optik",
+      "chunk_id": "klexikon:Optik:c001",
+      "source_title": "Optik",
+      "source_url": "https://klexikon.zum.de/wiki/Optik",
+      "section_heading": "Einleitung",
+      "snippet": "Mit der Optik haben viele Dinge zu tun, zum Beispiel unsere Brillen. Optiker messen, wie gut jemand noch sehen kann, und suchen dann die passenden Linsen für die Brille aus. Diese Linsen aus Glas oder Plastik unterstütze"
+     },
+     {
+      "number": 9,
+      "source_id": "klexikon:Optik",
+      "chunk_id": "klexikon:Optik:c002",
+      "source_title": "Optik",
+      "source_url": "https://klexikon.zum.de/wiki/Optik",
+      "section_heading": "Einleitung",
+      "snippet": "Je nachdem, wie man Linsen in einem Rohr anordnet, entsteht ein Mikroskop oder ein Teleskop, also ein Fernrohr. Die Form der Linsen und die Art, wie sie zueinander stehen, gehören ebenfalls zur Optik."
+     },
+     {
+      "number": 10,
+      "source_id": "klexikon:Optik",
+      "chunk_id": "klexikon:Optik:c003",
+      "source_title": "Optik",
+      "source_url": "https://klexikon.zum.de/wiki/Optik",
+      "section_heading": "Einleitung",
+      "snippet": "Auch ein Regenbogen ist eine optische Erscheinung. In den winzigen Wassertröpfchen wird das Licht umgelenkt. So erscheinen in einer Reihe violett, blau, grün, gelb und rot. Man spricht vom Farbspektrum oder von den Spekt"
+     },
+     {
+      "number": 11,
+      "source_id": "klexikon:Optik",
+      "chunk_id": "klexikon:Optik:c004",
+      "source_title": "Optik",
+      "source_url": "https://klexikon.zum.de/wiki/Optik",
+      "section_heading": "Einleitung",
+      "snippet": "Licht ist aber noch viel mehr. Deshalb gehört auch die atomare Strahlung zur Optik, ebenso die Röntgenstrahlen. Auch die Wärmestrahlung eines Feuers gehört zur Optik, ebenso wie die Strahlung eines Mikrowellenofens. Soga"
      }
     ],
-    "facets": {},
+    "facets": {
+     "Bildungsstufe": [
+      "Primar",
+      "Sek I"
+     ]
+    },
     "chunk_ids": [
-     "wikipedia:Optik:c000"
+     "wikipedia:Optik:c000",
+     "wikipedia:Optik:c001",
+     "wikipedia:Optik:c002",
+     "wikipedia:Optik:c003",
+     "wikipedia:Optik:c004",
+     "wikipedia:Optik:c005",
+     "klexikon:Optik:c000",
+     "klexikon:Optik:c001",
+     "klexikon:Optik:c002",
+     "klexikon:Optik:c003",
+     "klexikon:Optik:c004"
     ],
     "status": "ki-generiert",
     "matching": {
      "candidates": [
       {
        "chunk_id": "wikipedia:Optik:c000",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "wikipedia:Optik:c001",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "wikipedia:Optik:c002",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "wikipedia:Optik:c003",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "wikipedia:Optik:c004",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "wikipedia:Optik:c005",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "klexikon:Optik:c000",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "klexikon:Optik:c001",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "klexikon:Optik:c002",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "klexikon:Optik:c003",
+       "score": 0.8,
+       "reasons": [
+        "LLM-Zuordnung (Sicherheit 0.80)"
+       ]
+      },
+      {
+       "chunk_id": "klexikon:Optik:c004",
        "score": 0.8,
        "reasons": [
         "LLM-Zuordnung (Sicherheit 0.80)"
@@ -250,10 +425,10 @@
     "slot_id": "sc26_5",
     "slot_key": "entwicklung_ausblick",
     "title": "5 · Entwicklung & Ausblick",
-    "text": "Mit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11 [2]. Der arabische Gelehrte Ibn Al-Haitham (996–1038) schrieb über das Sehen, die Refraktion (Augenoptik) und die Reflexion in seinem Buch „Schatz der Optik“ [3]. <!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->",
+    "text": "Mit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11 [12]. Der arabische Gelehrte Ibn Al-Haitham (996–1038) schrieb über das Sehen, die Refraktion (Augenoptik) und die Reflexion in seinem Buch „Schatz der Optik“ [13]. <!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->",
     "citations": [
      {
-      "number": 2,
+      "number": 12,
       "source_id": "wikipedia:Optik",
       "chunk_id": "wikipedia:Optik:c011",
       "source_title": "Optik",
@@ -262,7 +437,7 @@
       "snippet": "Mit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11. Jahrhundert verbunden. Einige dieser Linsen können sich in der Abbildungsqualität mit heutigen Linsen messen. Die Herku"
      },
      {
-      "number": 3,
+      "number": 13,
       "source_id": "wikipedia:Optik",
       "chunk_id": "wikipedia:Optik:c012",
       "source_title": "Optik",
@@ -437,7 +612,7 @@
     "slot_id": "sc26_12",
     "slot_key": "quellen",
     "title": "12 · Quellen",
-    "text": "Die Inhalte von Teil 1 stammen aus folgenden freien Wissensbeständen:\n\n- **[Optik](https://de.wikipedia.org/wiki/Optik)** — Wikipedia, Nachschlagewerk, Stand des Archivs 2026-01-15\n  - TULLU: Titel „Optik“ · Urheber Wikipedia-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://de.wikipedia.org/wiki/Optik · Ursprungsort Wikipedia\n  - Archiv: `wikipedia_de_sample_2026-01.zim` · Eintrag `Optik`\n- **[Optik](https://klexikon.zum.de/wiki/Optik)** — Klexikon, Nachschlagewerk (einfache Sprache), Stand des Archivs 2026-08-07\n  - TULLU: Titel „Optik“ · Urheber Klexikon-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://klexikon.zum.de/wiki/Optik · Ursprungsort Klexikon\n  - Archiv: `klexikon_de_sample_2026-08.zim` · Eintrag `Optik`\n\n### Belegstellen\n\n| Beleg | Quelle | Abschnitt | Textauszug |\n| :---: | :--- | :--- | :--- |\n| [1] | [Optik](https://de.wikipedia.org/wiki/Optik) | Einleitung | Die Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική \\[τέχνη\\] optikḗ \\[téchnē\\]: „Lehre vom Sehe… |\n| [2] | [Optik](https://de.wikipedia.org/wiki/Optik) | Geschichte der Sehhilfen | Mit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11. Jahrhundert verbunden. Einige dieser… |\n| [3] | [Optik](https://de.wikipedia.org/wiki/Optik) | Geschichte der Sehhilfen | Der arabische Gelehrte Ibn Al-Haitham (996–1038) schrieb über das Sehen, die Refraktion (Augenoptik) und die Reflexion in seinem Buch „Sc… |\n\n### Weiterführende Quellen aus den Artikeln\n\n- Friedrich Wilhelm Barfuß: Populäres Lehrbuch der Optik, Katoptrik und Dioptrik. 2. Auflage. 1860 (Digitalisat in der Google-Buchsuche).\n- Joachim Rienitz: Historisch-physikalische Entwicklungslinien optischer Instrumente. Von der Magie zur partiellen Kohärenz. Pabst, Lengerich 1999, ISBN 3-934252-13-3.\n- Ludwig Bergmann, Clemens Schaefer: Optik. 10. Auflage. De Gruyter, Berlin 2004, ISBN 3-11-017081-7 (Lehrbuch der Experimentalphysik. Band 3).\n- Max Born, Emil Wolf: Principles of Optics. 7. Auflage. Cambridge University Press, Cambridge 1999, ISBN 0-521-64222-1.\n- Heinz Haferkorn: Optik. 4. Auflage. Wiley-VCH, Weinheim 2003, ISBN 3-527-40372-8.\n- Eugene Hecht: Optik. 4. Auflage. Oldenbourg, München 2005, ISBN 3-486-27359-0.\n- Dietrich Kühlke: Optik. 2. Auflage. Deutsch, Frankfurt am Main 2004, ISBN 3-8171-1741-8.\n- Gerd Litfin: Technische Optik in der Praxis. 3. Auflage. Springer-Verlag Berlin Heidelberg, ISBN 3-540-21884-X.\n- Olivier Darrigol: A History of Optics: From Greek Antiquity to the Nineteenth Century. Oxford University Press, 2012. ISBN 978-0-19-964437-7\n- Wikibooks: Optik – Lern- und Lehrmaterialien\n- Wiktionary: Optik – Bedeutungserklärungen, Wortherkunft, Synonyme, Übersetzungen\n- Wikibooks: Formelsammlung Optik – Lern- und Lehrmaterialien\n- Wikibooks: Digitale bildgebende Verfahren – Lern- und Lehrmaterialien\n- Commons: Optik – Sammlung von Bildern, Videos und Audiodateien\n- Normdaten (Sachbegriff): GND: 4043650-0 – LCCN: sh85095181 – NDL: 00566143\n\n> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen (CC BY-SA 4.0); Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.",
+    "text": "Die Inhalte von Teil 1 stammen aus folgenden freien Wissensbeständen:\n\n- **[Optik](https://de.wikipedia.org/wiki/Optik)** — Wikipedia, Nachschlagewerk, Stand des Archivs 2026-01-15\n  - TULLU: Titel „Optik“ · Urheber Wikipedia-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://de.wikipedia.org/wiki/Optik · Ursprungsort Wikipedia\n  - Archiv: `wikipedia_de_sample_2026-01.zim` · Eintrag `Optik`\n- **[Optik](https://klexikon.zum.de/wiki/Optik)** — Klexikon, Nachschlagewerk (einfache Sprache), Stand des Archivs 2026-08-07\n  - TULLU: Titel „Optik“ · Urheber Klexikon-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://klexikon.zum.de/wiki/Optik · Ursprungsort Klexikon\n  - Archiv: `klexikon_de_sample_2026-08.zim` · Eintrag `Optik`\n\n### Belegstellen\n\n| Beleg | Quelle | Abschnitt | Textauszug |\n| :---: | :--- | :--- | :--- |\n| [1] | [Optik](https://de.wikipedia.org/wiki/Optik) | Einleitung | Die Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική \\[τέχνη\\] optikḗ \\[téchnē\\]: „Lehre vom Sehe… |\n| [2] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik | Es werden zwei klassische Zugänge zur Lichtausbreitung unterschieden: Die Wellenoptik und die geometrische Optik. Grundlage der Wellenopt… |\n| [3] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik | Eine wichtige Teildisziplin der Optik ist die Quantenoptik, die sich mit den Wechselwirkungen von Licht und Materie beschäftigt. Dabei sp… |\n| [4] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik | Daneben sind die nichtlineare Optik (bei der das Licht im Gegensatz zur linearen Optik das umgebende Medium beeinflusst und dadurch zusät… |\n| [5] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik > Geometrische Optik | In der geometrischen Optik wird Licht durch idealisierte Strahlen angenähert. Der Weg des Lichtes, etwa durch ein optisches Instrument, w… |\n| [6] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik > Wellenoptik | Als Wellenoptik wird der Bereich der Optik bezeichnet, der von der Wellennatur des Lichts handelt. Sie erklärt Phänomene, die durch die g… |\n| [7] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Die Optik ist die Lehre vom Licht. Sie ist eine Wissenschaft und gehört zur Physik. Das griechische Wort „optikós“ entspricht in etwa uns… |\n| [8] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Mit der Optik haben viele Dinge zu tun, zum Beispiel unsere Brillen. Optiker messen, wie gut jemand noch sehen kann, und suchen dann die … |\n| [9] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Je nachdem, wie man Linsen in einem Rohr anordnet, entsteht ein Mikroskop oder ein Teleskop, also ein Fernrohr. Die Form der Linsen und d… |\n| [10] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Auch ein Regenbogen ist eine optische Erscheinung. In den winzigen Wassertröpfchen wird das Licht umgelenkt. So erscheinen in einer Reihe… |\n| [11] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Licht ist aber noch viel mehr. Deshalb gehört auch die atomare Strahlung zur Optik, ebenso die Röntgenstrahlen. Auch die Wärmestrahlung e… |\n| [12] | [Optik](https://de.wikipedia.org/wiki/Optik) | Geschichte der Sehhilfen | Mit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11. Jahrhundert verbunden. Einige dieser… |\n| [13] | [Optik](https://de.wikipedia.org/wiki/Optik) | Geschichte der Sehhilfen | Der arabische Gelehrte Ibn Al-Haitham (996–1038) schrieb über das Sehen, die Refraktion (Augenoptik) und die Reflexion in seinem Buch „Sc… |\n\n### Weiterführende Quellen aus den Artikeln\n\n- Friedrich Wilhelm Barfuß: Populäres Lehrbuch der Optik, Katoptrik und Dioptrik. 2. Auflage. 1860 (Digitalisat in der Google-Buchsuche).\n- Joachim Rienitz: Historisch-physikalische Entwicklungslinien optischer Instrumente. Von der Magie zur partiellen Kohärenz. Pabst, Lengerich 1999, ISBN 3-934252-13-3.\n- Ludwig Bergmann, Clemens Schaefer: Optik. 10. Auflage. De Gruyter, Berlin 2004, ISBN 3-11-017081-7 (Lehrbuch der Experimentalphysik. Band 3).\n- Max Born, Emil Wolf: Principles of Optics. 7. Auflage. Cambridge University Press, Cambridge 1999, ISBN 0-521-64222-1.\n- Heinz Haferkorn: Optik. 4. Auflage. Wiley-VCH, Weinheim 2003, ISBN 3-527-40372-8.\n- Eugene Hecht: Optik. 4. Auflage. Oldenbourg, München 2005, ISBN 3-486-27359-0.\n- Dietrich Kühlke: Optik. 2. Auflage. Deutsch, Frankfurt am Main 2004, ISBN 3-8171-1741-8.\n- Gerd Litfin: Technische Optik in der Praxis. 3. Auflage. Springer-Verlag Berlin Heidelberg, ISBN 3-540-21884-X.\n- Olivier Darrigol: A History of Optics: From Greek Antiquity to the Nineteenth Century. Oxford University Press, 2012. ISBN 978-0-19-964437-7\n- Wikibooks: Optik – Lern- und Lehrmaterialien\n- Wiktionary: Optik – Bedeutungserklärungen, Wortherkunft, Synonyme, Übersetzungen\n- Wikibooks: Formelsammlung Optik – Lern- und Lehrmaterialien\n- Wikibooks: Digitale bildgebende Verfahren – Lern- und Lehrmaterialien\n- Commons: Optik – Sammlung von Bildern, Videos und Audiodateien\n- Normdaten (Sachbegriff): GND: 4043650-0 – LCCN: sh85095181 – NDL: 00566143\n\n> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen (CC BY-SA 4.0); Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.",
     "citations": [],
     "facets": {
      "Zugang": [
@@ -608,7 +783,7 @@
     "lead": "Die Optik ist die Lehre vom Licht. Sie ist eine Wissenschaft und gehört zur Physik. Das griechische Wort „optikós“ entspricht in etwa unserem Wort „Sehen“. Mit der Optik haben viele Dinge zu tun, zum Beispiel unsere Brillen. Optiker messen, wie gut jemand noch sehen kann, und suchen dann die passenden Linsen für die Brille aus. Diese Linsen aus Glas oder Plastik unterstützen die Linse in unserem…"
    }
   ],
-  "markdown": "---\nkompendium_version: 2\ntopic: Optik\ntopic_resolution:\n  query: Stationsarbeit zur Optik\n  normalized: Optik\n  context: []\n  title: Optik\n  path: Optik\n  project: wikipedia\n  alternatives: []\n  method: title\n  confident: true\ntemplate:\n  id: sc26\n  version: 1\nparts:\n- world\n- curricula\ngenerated_at: '2026-10-08T12:38:29+00:00'\nextraction: rule-based\ngeneration: llm\nenrichment: model-knowledge\nmatcher: llm\nai_disclosure: KI-generierter Text zum angefragten Thema aus belegten Quellen und\n  aus Modellwissen ohne Quellenbeleg (Kennzeichnung je Abschnitt und je Satz) nach\n  Art. 50 EU AI Act\nreview:\n  status: ki-generiert\n  interval_months: 12\nsources_snapshot:\n- id: wikipedia_de_sample\n  file: wikipedia_de_sample_2026-01.zim\n  project: wikipedia\n  date: '2026-01-15'\n  uuid: ffebe244-8db0-63a4-b747-1adcd66bd5a4\n  articles: 15\n  fulltext_index: true\n- id: klexikon_de_sample\n  file: klexikon_de_sample_2026-08.zim\n  project: klexikon\n  date: '2026-08-07'\n  uuid: 3051be1c-7caf-c0b1-0883-f324a30ef2f4\n  articles: 8\n  fulltext_index: true\nlicense: Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA\n  4.0); TULLU je Quelle in Baustein 12\nllm:\n  provider: openai\n  model: gpt-5.6-luna\n  prompts:\n  - curriculum_check@v1\n  - node_topic@v1\n  - paragraph_assignment@v2\n  - section_enrichment@v4\n  - topic_wording@v1\n  extraction:\n    sections: []\n    emptied: []\n    fallbacks: {}\n  generation:\n    sections:\n    - sc26_1\n    - sc26_2\n    - sc26_3\n    - sc26_4\n    - sc26_5\n    - sc26_7\n    - sc26_8\n    - sc26_9\n    - sc26_10\n    - sc26_11\n    fallbacks: {}\n  matching:\n    paragraphs: 24\n    answered: 24\n    fallback_paragraphs: 0\n    fallbacks: {}\n  curriculum_check:\n    rated: 1\n    dropped: 0\n    fallback: null\n  topic_wording:\n    topic: Optik\n    reason: Metadaten eines Knotens ohne Thema\n    fallback: null\n  enrichment:\n    mode: model-knowledge\n    marked_sentences: 10\n    hinweis: Sätze, die im Markup Evidenzgrad=Modellwissen tragen, stammen aus dem\n      Wissen des Sprachmodells, nicht aus den aufgeführten Quellen, und sind nicht\n      belegt.\n---\n\n# Kompendium: Optik\n\n## Teil 1 · Weltwissen\n\n### 1 · Themendefinition\n<!-- kompendium:section id=sc26_1 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 2 · Gliederung & Systematik\n<!-- kompendium:section id=sc26_2 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 3 · Fachinhalte\n<!-- kompendium:section id=sc26_3 status=ki-generiert hash=138ad46e1528 -->\n\nDie Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική \\[τέχνη\\] optikḗ \\[téchnē\\]: „Lehre vom Sehen“), auch Lehre vom [1]. <!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 4 · Gesellschaftlicher Kontext\n<!-- kompendium:section id=sc26_4 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 5 · Entwicklung & Ausblick\n<!-- kompendium:section id=sc26_5 status=ki-generiert facets=\"Zeitbezug=historisch; Evidenzgrad=belegt|Modellwissen\" hash=09b42652e8de -->\n\nMit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11 [2]. Der arabische Gelehrte Ibn Al-Haitham (996–1038) schrieb über das Sehen, die Refraktion (Augenoptik) und die Reflexion in seinem Buch „Schatz der Optik“ [3]. <!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 6 · Akteure\n<!-- kompendium:section id=sc26_6 status=maschinell-generiert facets=\"Akteursfunktion=Wissenschaft & Entwicklung\" hash=c6231de8df54 -->\n\nAkteure aus den herangezogenen Artikeln, nach Kaskadentyp; Namen verweisen auf den Quellartikel.\n\n#### Person\n\n- **[Ernst Abbe](https://de.wikipedia.org/wiki/Ernst_Abbe)** — Ernst Karl Abbe \\[ˈabə\\] (\\* 23. Januar 1840 in Eisenach, Sachsen-Weimar-Eisenach; † 14. Januar 1905 in Jena, Sachsen-Weimar-Eisenach; auch Ernst Carl Abbe) war ein deutscher Physiker, Statistiker, Optiker, Industrieller und Sozialreformer.\n\n### 7 · Beruf & Wirtschaft\n<!-- kompendium:section id=sc26_7 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 8 · Bildung\n<!-- kompendium:section id=sc26_8 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 9 · Regularien & Rahmensetzung\n<!-- kompendium:section id=sc26_9 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 10 · Praxis\n<!-- kompendium:section id=sc26_10 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 11 · Querschnitt & Bezüge\n<!-- kompendium:section id=sc26_11 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 12 · Quellen\n<!-- kompendium:section id=sc26_12 status=maschinell-generiert facets=\"Zugang=frei; Vertrauensgrad=hoch\" hash=350cca59e891 -->\n\nDie Inhalte von Teil 1 stammen aus folgenden freien Wissensbeständen:\n\n- **[Optik](https://de.wikipedia.org/wiki/Optik)** — Wikipedia, Nachschlagewerk, Stand des Archivs 2026-01-15\n  - TULLU: Titel „Optik“ · Urheber Wikipedia-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://de.wikipedia.org/wiki/Optik · Ursprungsort Wikipedia\n  - Archiv: `wikipedia_de_sample_2026-01.zim` · Eintrag `Optik`\n- **[Optik](https://klexikon.zum.de/wiki/Optik)** — Klexikon, Nachschlagewerk (einfache Sprache), Stand des Archivs 2026-08-07\n  - TULLU: Titel „Optik“ · Urheber Klexikon-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://klexikon.zum.de/wiki/Optik · Ursprungsort Klexikon\n  - Archiv: `klexikon_de_sample_2026-08.zim` · Eintrag `Optik`\n\n### Belegstellen\n\n| Beleg | Quelle | Abschnitt | Textauszug |\n| :---: | :--- | :--- | :--- |\n| [1] | [Optik](https://de.wikipedia.org/wiki/Optik) | Einleitung | Die Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική \\[τέχνη\\] optikḗ \\[téchnē\\]: „Lehre vom Sehe… |\n| [2] | [Optik](https://de.wikipedia.org/wiki/Optik) | Geschichte der Sehhilfen | Mit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11. Jahrhundert verbunden. Einige dieser… |\n| [3] | [Optik](https://de.wikipedia.org/wiki/Optik) | Geschichte der Sehhilfen | Der arabische Gelehrte Ibn Al-Haitham (996–1038) schrieb über das Sehen, die Refraktion (Augenoptik) und die Reflexion in seinem Buch „Sc… |\n\n### Weiterführende Quellen aus den Artikeln\n\n- Friedrich Wilhelm Barfuß: Populäres Lehrbuch der Optik, Katoptrik und Dioptrik. 2. Auflage. 1860 (Digitalisat in der Google-Buchsuche).\n- Joachim Rienitz: Historisch-physikalische Entwicklungslinien optischer Instrumente. Von der Magie zur partiellen Kohärenz. Pabst, Lengerich 1999, ISBN 3-934252-13-3.\n- Ludwig Bergmann, Clemens Schaefer: Optik. 10. Auflage. De Gruyter, Berlin 2004, ISBN 3-11-017081-7 (Lehrbuch der Experimentalphysik. Band 3).\n- Max Born, Emil Wolf: Principles of Optics. 7. Auflage. Cambridge University Press, Cambridge 1999, ISBN 0-521-64222-1.\n- Heinz Haferkorn: Optik. 4. Auflage. Wiley-VCH, Weinheim 2003, ISBN 3-527-40372-8.\n- Eugene Hecht: Optik. 4. Auflage. Oldenbourg, München 2005, ISBN 3-486-27359-0.\n- Dietrich Kühlke: Optik. 2. Auflage. Deutsch, Frankfurt am Main 2004, ISBN 3-8171-1741-8.\n- Gerd Litfin: Technische Optik in der Praxis. 3. Auflage. Springer-Verlag Berlin Heidelberg, ISBN 3-540-21884-X.\n- Olivier Darrigol: A History of Optics: From Greek Antiquity to the Nineteenth Century. Oxford University Press, 2012. ISBN 978-0-19-964437-7\n- Wikibooks: Optik – Lern- und Lehrmaterialien\n- Wiktionary: Optik – Bedeutungserklärungen, Wortherkunft, Synonyme, Übersetzungen\n- Wikibooks: Formelsammlung Optik – Lern- und Lehrmaterialien\n- Wikibooks: Digitale bildgebende Verfahren – Lern- und Lehrmaterialien\n- Commons: Optik – Sammlung von Bildern, Videos und Audiodateien\n- Normdaten (Sachbegriff): GND: 4043650-0 – LCCN: sh85095181 – NDL: 00566143\n\n> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen (CC BY-SA 4.0); Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.\n\n### 13 · Glossar\n<!-- kompendium:section id=sc26_13 status=maschinell-generiert hash=09efa59108c3 -->\n\nBegriffe rund um **Optik** mit der jeweils ersten Definitionsaussage aus dem Artikel. Das Glossar ist der einzige Ort für Definitionen im Kompendium.\n\n| Begriff | Definition | Relation | Beleg |\n| :--- | :--- | :--- | :--- |\n| **Optik** | Die Optik, auch Lehre vom Licht genannt, ist ein Gebiet der Physik und beschäftigt sich mit der Ausbreitung von Licht sowie dessen Wechselwirkung mit Materie, insbesondere im Zusammenhang mit optischen Abbildungen. | `skos:prefLabel` | [Optik](https://de.wikipedia.org/wiki/Optik) |\n| **Lehre vom Licht** | Alternativbezeichnung für Optik. | `skos:altLabel` | [Optik](https://de.wikipedia.org/wiki/Optik) |\n\n\n## Teil 2 · Lehrplanbezüge\n\nLehrplanbezüge liegen strukturiert für Sachsen vor (MEM-Triplestore der FWU, Stand 2026-09-17; 1 Lehrpläne). Die Abdeckung wächst mit den Veröffentlichungen von MEM.\n\n1 Lehrplanelemente in 1 Lehrplänen aus 1 Ländern; Stichwörter: Optik, Lehre vom Licht; Fach: biologie, natur und technik, naturwissenschaften, physik.\n\n| Bundesland | Primarstufe | Sekundarstufe I | Sekundarstufe II |\n|---|---:|---:|---:|\n| Sachsen | 0 | 1 | 0 |\n\n### Sekundarstufe I\n\n#### Sachsen\n\n[*Lehrplan: Gymnasium Physik*](https://lp-sachsen.org/resource/522) · Sachsen · Sekundarstufe I · Gymnasium · Klassenstufe 7\n<!-- f: Bundesland=Sachsen; Bildungsstufe=Sek I; Klassenstufe=7; Schulart=Gymnasium; Lehrplan=https://lp-sachsen.org/resource/522; Lehrplantitel=Gymnasium Physik -->\n\n**Lernbereich 2: Optik**\n\n- „Lichtbrechung an Linsen“ (Kompetenz) · [Lehrplanelement](https://lp-sachsen.org/resource/7053)\n<!-- /f -->\n",
+  "markdown": "---\nkompendium_version: 2\ntopic: Optik\ntopic_resolution:\n  query: Stationsarbeit zur Optik\n  normalized: Optik\n  context: []\n  title: Optik\n  path: Optik\n  project: wikipedia\n  alternatives: []\n  method: title\n  confident: true\ntemplate:\n  id: sc26\n  version: 1\nparts:\n- world\n- curricula\ngenerated_at: '2026-10-09T14:37:36+00:00'\nextraction: rule-based\ngeneration: llm\nenrichment: model-knowledge\nmatcher: llm\nai_disclosure: KI-generierter Text zum angefragten Thema aus belegten Quellen und\n  aus Modellwissen ohne Quellenbeleg (Kennzeichnung je Abschnitt und je Satz) nach\n  Art. 50 EU AI Act\nreview:\n  status: ki-generiert\n  interval_months: 12\nsources_snapshot:\n- id: wikipedia_de_sample\n  file: wikipedia_de_sample_2026-01.zim\n  project: wikipedia\n  date: '2026-01-15'\n  uuid: 2a28fd6b-84ec-3d27-c676-0f76d5d2fcdf\n  articles: 15\n  fulltext_index: true\n- id: klexikon_de_sample\n  file: klexikon_de_sample_2026-08.zim\n  project: klexikon\n  date: '2026-08-07'\n  uuid: 3d8c183c-1b8c-6bf4-ec69-3d8fdc96d651\n  articles: 8\n  fulltext_index: true\nlicense: Teil 1 enthält Inhalte aus Kiwix-Archiven freier Wissensprojekte (CC BY-SA\n  4.0); TULLU je Quelle in Baustein 12\nllm:\n  provider: openai\n  model: gpt-5.6-luna\n  prompts:\n  - curriculum_check@v1\n  - node_topic@v1\n  - paragraph_assignment@v3\n  - section_enrichment@v4\n  - topic_wording@v1\n  extraction:\n    sections: []\n    emptied: []\n    fallbacks: {}\n  generation:\n    sections:\n    - sc26_1\n    - sc26_2\n    - sc26_3\n    - sc26_4\n    - sc26_5\n    - sc26_7\n    - sc26_8\n    - sc26_9\n    - sc26_10\n    - sc26_11\n    fallbacks: {}\n  matching:\n    paragraphs: 24\n    answered: 24\n    fallback_paragraphs: 0\n    fallbacks: {}\n  curriculum_check:\n    rated: 1\n    dropped: 0\n    fallback: null\n  topic_wording:\n    topic: Optik\n    reason: Metadaten eines Knotens ohne Thema\n    fallback: null\n  enrichment:\n    mode: model-knowledge\n    marked_sentences: 10\n    hinweis: Sätze, die im Markup Evidenzgrad=Modellwissen tragen, stammen aus dem\n      Wissen des Sprachmodells, nicht aus den aufgeführten Quellen, und sind nicht\n      belegt.\n---\n\n# Kompendium: Optik\n\n## Teil 1 · Weltwissen\n\n### 1 · Themendefinition\n<!-- kompendium:section id=sc26_1 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 2 · Gliederung & Systematik\n<!-- kompendium:section id=sc26_2 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 3 · Fachinhalte\n<!-- kompendium:section id=sc26_3 status=ki-generiert facets=\"Bildungsstufe=Primar|Sek I\" hash=0c42099333aa -->\n\nDie Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική \\[τέχνη\\] optikḗ \\[téchnē\\]: „Lehre vom Sehen“), auch Lehre vom [1]. Es werden zwei klassische Zugänge zur Lichtausbreitung unterschieden: Die Wellenoptik und die geometrische Optik [2]. Eine wichtige Teildisziplin der Optik ist die Quantenoptik, die sich mit den Wechselwirkungen von Licht und Materie beschäftigt [3]. Daneben sind die nichtlineare Optik (bei der das Licht im Gegensatz zur linearen Optik das umgebende Medium beeinflusst und dadurch zusätzliche Effekte [4]. In der geometrischen Optik wird Licht durch idealisierte Strahlen angenähert [5]. Als Wellenoptik wird der Bereich der Optik bezeichnet, der von der Wellennatur des Lichts handelt [6]. Die Optik ist die Lehre vom Licht [7]. Mit der Optik haben viele Dinge zu tun, zum Beispiel unsere Brillen [8]. Je nachdem, wie man Linsen in einem Rohr anordnet, entsteht ein Mikroskop oder ein Teleskop, also ein Fernrohr [9]. Auch ein Regenbogen ist eine optische Erscheinung [10]. Licht ist aber noch viel mehr [11]. <!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 4 · Gesellschaftlicher Kontext\n<!-- kompendium:section id=sc26_4 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 5 · Entwicklung & Ausblick\n<!-- kompendium:section id=sc26_5 status=ki-generiert facets=\"Zeitbezug=historisch; Evidenzgrad=belegt|Modellwissen\" hash=860a75ff1cda -->\n\nMit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11 [12]. Der arabische Gelehrte Ibn Al-Haitham (996–1038) schrieb über das Sehen, die Refraktion (Augenoptik) und die Reflexion in seinem Buch „Schatz der Optik“ [13]. <!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 6 · Akteure\n<!-- kompendium:section id=sc26_6 status=maschinell-generiert facets=\"Akteursfunktion=Wissenschaft & Entwicklung\" hash=c6231de8df54 -->\n\nAkteure aus den herangezogenen Artikeln, nach Kaskadentyp; Namen verweisen auf den Quellartikel.\n\n#### Person\n\n- **[Ernst Abbe](https://de.wikipedia.org/wiki/Ernst_Abbe)** — Ernst Karl Abbe \\[ˈabə\\] (\\* 23. Januar 1840 in Eisenach, Sachsen-Weimar-Eisenach; † 14. Januar 1905 in Jena, Sachsen-Weimar-Eisenach; auch Ernst Carl Abbe) war ein deutscher Physiker, Statistiker, Optiker, Industrieller und Sozialreformer.\n\n### 7 · Beruf & Wirtschaft\n<!-- kompendium:section id=sc26_7 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 8 · Bildung\n<!-- kompendium:section id=sc26_8 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 9 · Regularien & Rahmensetzung\n<!-- kompendium:section id=sc26_9 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 10 · Praxis\n<!-- kompendium:section id=sc26_10 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 11 · Querschnitt & Bezüge\n<!-- kompendium:section id=sc26_11 status=ki-generiert hash=a4105d81e7c0 -->\n\n<!-- f: Evidenzgrad=Modellwissen -->Dieser Satz behauptet etwas ohne jeden Beleg.<!-- /f -->\n\n### 12 · Quellen\n<!-- kompendium:section id=sc26_12 status=maschinell-generiert facets=\"Zugang=frei; Vertrauensgrad=hoch\" hash=6bc3e34e9d32 -->\n\nDie Inhalte von Teil 1 stammen aus folgenden freien Wissensbeständen:\n\n- **[Optik](https://de.wikipedia.org/wiki/Optik)** — Wikipedia, Nachschlagewerk, Stand des Archivs 2026-01-15\n  - TULLU: Titel „Optik“ · Urheber Wikipedia-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://de.wikipedia.org/wiki/Optik · Ursprungsort Wikipedia\n  - Archiv: `wikipedia_de_sample_2026-01.zim` · Eintrag `Optik`\n- **[Optik](https://klexikon.zum.de/wiki/Optik)** — Klexikon, Nachschlagewerk (einfache Sprache), Stand des Archivs 2026-08-07\n  - TULLU: Titel „Optik“ · Urheber Klexikon-Autorinnen und -Autoren · Lizenz CC BY-SA 4.0 · Link https://klexikon.zum.de/wiki/Optik · Ursprungsort Klexikon\n  - Archiv: `klexikon_de_sample_2026-08.zim` · Eintrag `Optik`\n\n### Belegstellen\n\n| Beleg | Quelle | Abschnitt | Textauszug |\n| :---: | :--- | :--- | :--- |\n| [1] | [Optik](https://de.wikipedia.org/wiki/Optik) | Einleitung | Die Optik (von altgriechisch ὀπτικός optikós „zum Sehen gehörend, das Sehen betreffend“ – ὀπτική \\[τέχνη\\] optikḗ \\[téchnē\\]: „Lehre vom Sehe… |\n| [2] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik | Es werden zwei klassische Zugänge zur Lichtausbreitung unterschieden: Die Wellenoptik und die geometrische Optik. Grundlage der Wellenopt… |\n| [3] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik | Eine wichtige Teildisziplin der Optik ist die Quantenoptik, die sich mit den Wechselwirkungen von Licht und Materie beschäftigt. Dabei sp… |\n| [4] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik | Daneben sind die nichtlineare Optik (bei der das Licht im Gegensatz zur linearen Optik das umgebende Medium beeinflusst und dadurch zusät… |\n| [5] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik > Geometrische Optik | In der geometrischen Optik wird Licht durch idealisierte Strahlen angenähert. Der Weg des Lichtes, etwa durch ein optisches Instrument, w… |\n| [6] | [Optik](https://de.wikipedia.org/wiki/Optik) | Teilbereiche der Optik > Wellenoptik | Als Wellenoptik wird der Bereich der Optik bezeichnet, der von der Wellennatur des Lichts handelt. Sie erklärt Phänomene, die durch die g… |\n| [7] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Die Optik ist die Lehre vom Licht. Sie ist eine Wissenschaft und gehört zur Physik. Das griechische Wort „optikós“ entspricht in etwa uns… |\n| [8] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Mit der Optik haben viele Dinge zu tun, zum Beispiel unsere Brillen. Optiker messen, wie gut jemand noch sehen kann, und suchen dann die … |\n| [9] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Je nachdem, wie man Linsen in einem Rohr anordnet, entsteht ein Mikroskop oder ein Teleskop, also ein Fernrohr. Die Form der Linsen und d… |\n| [10] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Auch ein Regenbogen ist eine optische Erscheinung. In den winzigen Wassertröpfchen wird das Licht umgelenkt. So erscheinen in einer Reihe… |\n| [11] | [Optik](https://klexikon.zum.de/wiki/Optik) | Einleitung | Licht ist aber noch viel mehr. Deshalb gehört auch die atomare Strahlung zur Optik, ebenso die Röntgenstrahlen. Auch die Wärmestrahlung e… |\n| [12] | [Optik](https://de.wikipedia.org/wiki/Optik) | Geschichte der Sehhilfen | Mit der Entstehungsgeschichte von Sehhilfen sind die auf Gotland gefundenen Visby-Linsen aus dem 11. Jahrhundert verbunden. Einige dieser… |\n| [13] | [Optik](https://de.wikipedia.org/wiki/Optik) | Geschichte der Sehhilfen | Der arabische Gelehrte Ibn Al-Haitham (996–1038) schrieb über das Sehen, die Refraktion (Augenoptik) und die Reflexion in seinem Buch „Sc… |\n\n### Weiterführende Quellen aus den Artikeln\n\n- Friedrich Wilhelm Barfuß: Populäres Lehrbuch der Optik, Katoptrik und Dioptrik. 2. Auflage. 1860 (Digitalisat in der Google-Buchsuche).\n- Joachim Rienitz: Historisch-physikalische Entwicklungslinien optischer Instrumente. Von der Magie zur partiellen Kohärenz. Pabst, Lengerich 1999, ISBN 3-934252-13-3.\n- Ludwig Bergmann, Clemens Schaefer: Optik. 10. Auflage. De Gruyter, Berlin 2004, ISBN 3-11-017081-7 (Lehrbuch der Experimentalphysik. Band 3).\n- Max Born, Emil Wolf: Principles of Optics. 7. Auflage. Cambridge University Press, Cambridge 1999, ISBN 0-521-64222-1.\n- Heinz Haferkorn: Optik. 4. Auflage. Wiley-VCH, Weinheim 2003, ISBN 3-527-40372-8.\n- Eugene Hecht: Optik. 4. Auflage. Oldenbourg, München 2005, ISBN 3-486-27359-0.\n- Dietrich Kühlke: Optik. 2. Auflage. Deutsch, Frankfurt am Main 2004, ISBN 3-8171-1741-8.\n- Gerd Litfin: Technische Optik in der Praxis. 3. Auflage. Springer-Verlag Berlin Heidelberg, ISBN 3-540-21884-X.\n- Olivier Darrigol: A History of Optics: From Greek Antiquity to the Nineteenth Century. Oxford University Press, 2012. ISBN 978-0-19-964437-7\n- Wikibooks: Optik – Lern- und Lehrmaterialien\n- Wiktionary: Optik – Bedeutungserklärungen, Wortherkunft, Synonyme, Übersetzungen\n- Wikibooks: Formelsammlung Optik – Lern- und Lehrmaterialien\n- Wikibooks: Digitale bildgebende Verfahren – Lern- und Lehrmaterialien\n- Commons: Optik – Sammlung von Bildern, Videos und Audiodateien\n- Normdaten (Sachbegriff): GND: 4043650-0 – LCCN: sh85095181 – NDL: 00566143\n\n> **Lizenz- und Attributionshinweis:** Teil 1 übernimmt Absätze aus den oben genannten Quellen (CC BY-SA 4.0); Urheber, Lizenz und Link stehen je Quelle in der Liste. Die Texte wurden ausgewählt, gekürzt und neu gegliedert; die Belegstellen nennen die Herkunft jedes Absatzes. Teil 1 steht unter CC BY-SA 4.0.\n\n### 13 · Glossar\n<!-- kompendium:section id=sc26_13 status=maschinell-generiert hash=09efa59108c3 -->\n\nBegriffe rund um **Optik** mit der jeweils ersten Definitionsaussage aus dem Artikel. Das Glossar ist der einzige Ort für Definitionen im Kompendium.\n\n| Begriff | Definition | Relation | Beleg |\n| :--- | :--- | :--- | :--- |\n| **Optik** | Die Optik, auch Lehre vom Licht genannt, ist ein Gebiet der Physik und beschäftigt sich mit der Ausbreitung von Licht sowie dessen Wechselwirkung mit Materie, insbesondere im Zusammenhang mit optischen Abbildungen. | `skos:prefLabel` | [Optik](https://de.wikipedia.org/wiki/Optik) |\n| **Lehre vom Licht** | Alternativbezeichnung für Optik. | `skos:altLabel` | [Optik](https://de.wikipedia.org/wiki/Optik) |\n\n\n## Teil 2 · Lehrplanbezüge\n\nLehrplanbezüge liegen strukturiert für Sachsen vor (MEM-Triplestore der FWU, Stand 2026-09-17; 1 Lehrpläne). Die Abdeckung wächst mit den Veröffentlichungen von MEM.\n\n1 Lehrplanelemente in 1 Lehrplänen aus 1 Ländern; Stichwörter: Optik, Lehre vom Licht; Fach: biologie, natur und technik, naturwissenschaften, physik.\n\n| Bundesland | Primarstufe | Sekundarstufe I | Sekundarstufe II |\n|---|---:|---:|---:|\n| Sachsen | 0 | 1 | 0 |\n\n### Sekundarstufe I\n\n#### Sachsen\n\n[*Lehrplan: Gymnasium Physik*](https://lp-sachsen.org/resource/522) · Sachsen · Sekundarstufe I · Gymnasium · Klassenstufe 7\n<!-- f: Bundesland=Sachsen; Bildungsstufe=Sek I; Klassenstufe=7; Schulart=Gymnasium; Lehrplan=https://lp-sachsen.org/resource/522; Lehrplantitel=Gymnasium Physik -->\n\n**Lernbereich 2: Optik**\n\n- „Lichtbrechung an Linsen“ (Kompetenz) · [Lehrplanelement](https://lp-sachsen.org/resource/7053)\n<!-- /f -->\n",
   "parts_status": {
    "world": "ok",
    "curricula": "ok"
@@ -617,15 +792,15 @@
    "preset": "best-quality-generated",
    "matcher": "llm",
    "timings_ms": {
-    "resolve": 16,
-    "corpus": 9,
-    "segment": 2,
-    "match": 85,
-    "synthesize": 43,
-    "curricula": 59,
-    "assemble": 4
+    "resolve": 9,
+    "corpus": 5,
+    "segment": 0,
+    "match": 48,
+    "synthesize": 25,
+    "curricula": 33,
+    "assemble": 3
    },
-   "duration_ms": 165,
+   "duration_ms": 94,
    "lint": [
     {
      "rule": "facet-required",
@@ -642,10 +817,10 @@
    ],
    "chunks_total": 25,
    "chunks_truncated": 0,
-   "chunks_assigned": 3,
+   "chunks_assigned": 13,
    "sections_filled": 13,
    "sections_empty": 0,
-   "citations": 3,
+   "citations": 13,
    "llm_tokens": {
     "prompt": 280,
     "completion": 56,

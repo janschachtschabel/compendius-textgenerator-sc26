@@ -18,6 +18,9 @@ questions that build the corpus - the article choice and the articles the LLM na
 gives their answer to the topic's other runs, so the factors compare on one corpus; the answer's tokens count in
 every run, and the assignment and the writing stay fresh.
 
+From release 2.19.0 the service widens the budgets itself (BLOCK_BUDGET_FACTOR, default 10, D102); to measure the
+factors as M86 did, start the container with -e BLOCK_BUDGET_FACTOR=1.
+
 Usage (from the project folder): python mc_kompendium_profil.py <out.json> --variants=bcg,bcg-hl,bqg <topic> [...]
 
 In the one-off container with OpenAI direct (M82; the archives from ZIM_PATHS of the container):

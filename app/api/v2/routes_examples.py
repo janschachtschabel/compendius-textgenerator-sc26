@@ -49,8 +49,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "mit eigenem Artikel, 3,8 bei Sammelthemen, 1,7 bei Themen mit Aspekt; Teil 1 16 s und 59.900 Tokens, die "
             "meisten für die Zuordnung (M52). Der Text bleibt wörtlich; lesbar formuliert ihn das Profil "
             "best-quality-generated. Mit curricula in parts bewertet das LLM auch jedes Lehrplanelement "
-            "(curriculum_check llm, M32). Budget je Anfrage: 180.000 Tokens statt 60.000 "
-            "(LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59), die Prüfung von Teil 2 aus eigenen 400.000 "
+            "(curriculum_check llm, M32). Budget je Anfrage: 200.000 Tokens statt 60.000 "
+            "(LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY, D59, D102), die Prüfung von Teil 2 aus eigenen 400.000 "
             "(LLM_MAX_TOKENS_CURRICULUM_CHECK, D94)."
         ),
         "value": {"topic": "Physik: Linse", "parts": ["world"], "preset": "best-quality"},

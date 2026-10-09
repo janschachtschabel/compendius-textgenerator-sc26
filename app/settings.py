@@ -145,6 +145,16 @@ class Settings(BaseSettings):
     facets_visible: bool = Field(False, description="Render visible [Facette: Wert] labels in Markdown")
     corpus_max_articles: int = Field(12, ge=1, le=50, description="Maximum articles per compendium corpus")
     corpus_max_chunks: int = Field(400, ge=20, le=5000, description="Maximum chunks per compendium corpus")
+    block_budget_factor: float = Field(
+        10.0,
+        ge=1.0,
+        le=100.0,
+        description="Multiplies every content block's budget when the assignment is cut (D102): the paragraphs a "
+        "block keeps (max_chunks of the template, rounded up) and the characters at which a block with enough "
+        "paragraphs stops. The writer's target length stays the request's. M86 measured 1, 2, 4 and 10: the "
+        "precision of what is printed stayed, the recall grew until every assigned paragraph was printed (from 30); "
+        "1 keeps the templates' budgets",
+    )
     model2vec_path: str = Field("", description="Local Model2Vec model path; empty disables the embedding matcher")
     spacy_model: str = Field(
         "",
@@ -266,13 +276,13 @@ class Settings(BaseSettings):
         "the pairs of /qa together; both switches on llm spend up to about 37,000 tokens (D33)",
     )
     llm_max_tokens_per_request_best_quality: int = Field(
-        180_000,
+        200_000,
         ge=100,
         description="Budget guard per request in the profiles best-quality, best-quality-generated and "
-        "best-coverage-generated (D59, D69): article choice, matcher llm and the writing; the check of part 2 has its "
-        "own (LLM_MAX_TOKENS_CURRICULUM_CHECK, D94). On the widest topic, Demokratie with about 400 paragraphs, a "
-        "compendium with both parts took 140,600 tokens in best-quality-generated and 160,900 in "
-        "best-coverage-generated, the check 66,200 of them (M79)",
+        "best-coverage-generated (D59, D69, D102): article choice, matcher llm and the writing; the check of part 2 "
+        "has its own (LLM_MAX_TOKENS_CURRICULUM_CHECK, D94). On the widest topic, Demokratie with about 400 "
+        "paragraphs, part 1 took 109,100 tokens in best-quality-generated and 132,100 in best-coverage-generated with "
+        "the tenfold block budget (M86; 74,200 and 96,000 with the template's)",
     )
     llm_max_tokens_curriculum_check: int = Field(
         400_000,

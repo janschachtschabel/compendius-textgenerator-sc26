@@ -288,10 +288,17 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         lap("segment")
 
     def generate(
-        self, request: GenerateRequest, *, deadline: Deadline | None = None, budget: RequestBudget | None = None
+        self,
+        request: GenerateRequest,
+        *,
+        deadline: Deadline | None = None,
+        budget: RequestBudget | None = None,
+        block_budget_factor: float | None = None,
     ) -> Compendium:
         """The compendium of a request. ``deadline`` and ``budget`` let a caller spend one time and one token budget
         over more than the compendium, as /qa does for part 1 and its pairs; without them the request opens its own.
+        ``block_budget_factor`` sets the factor on the blocks' budgets for this compendium in place of
+        BLOCK_BUDGET_FACTOR, as /qa does to keep the templates' budgets (D102).
 
         Parts 2 and 3 are made beside part 1, which waits on the model longest (M75): part 3 needs nothing of the
         topic and starts at once, part 2 once the topic is prepared. A request that fails does not wait for them, and
@@ -319,7 +326,7 @@ class CompendiumService(RepositoryReading, WorldBuilding):
             requested = Requested.of(request)
             timings = dict(prepared.timings)
             if "world" in request.parts:
-                world = self._world_part(prepared, request, requested, deadline, timings, budget)
+                world = self._world_part(prepared, request, requested, deadline, timings, budget, block_budget_factor)
             else:  # no matching, no synthesis, no LLM work
                 world = WorldPart.skipped()
             # each part's own time; the request's whole time is the audit's duration_ms
