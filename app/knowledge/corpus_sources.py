@@ -105,23 +105,23 @@ class _CorpusBuilder:
         return _Draft(archive, primary, max_articles, [primary], {(primary.project, primary.title.lower())})
 
     def _add_twins(self, draft: _Draft) -> None:
-        """Same topic in the other archives (e.g. Klexikon in simple language)."""
+        """Same topic in the other archives (e.g. Klexikon in simple language): the article of the main article's own
+        title, a redirect of it included. An alias brought another meaning too often - Klexikon's *Strom* starts with
+        rivers, *Zelle* with prison cells - and its first paragraph went to the topic definition (D100, M85)."""
         primary = draft.primary
         for archive in self.archives:
             if archive is draft.archive:
                 continue
-            for candidate in [primary.title, *primary.aliases[:2]]:
-                found = archive.read(candidate)
-                if found is None or archive.parse(found).is_disambiguation:
-                    continue
-                key = (archive.project, found.title.lower())
-                if key in draft.seen:
-                    break
-                draft.seen.add(key)
-                twin = archive.to_source(found, is_primary=False)
-                twin.origin = "same_topic"
-                draft.sources.append(twin)
-                break
+            found = archive.read(primary.title)
+            if found is None or archive.parse(found).is_disambiguation:
+                continue
+            key = (archive.project, found.title.lower())
+            if key in draft.seen:
+                continue
+            draft.seen.add(key)
+            twin = archive.to_source(found, is_primary=False)
+            twin.origin = "same_topic"
+            draft.sources.append(twin)
 
     def _add_linked(self, draft: _Draft) -> None:
         """Related sub-articles via ranked internal links of the primary article."""
