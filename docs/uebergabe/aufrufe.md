@@ -1,6 +1,6 @@
 # Aufrufe: alter und neuer Dienst
 
-[Übergabe](README.md) · Stand 09.10.2026 · Release 2.19.0
+[Übergabe](README.md) · Stand 09.10.2026 · Release 2.20.0
 
 Diese Seite zeigt, wie die aufrufenden Systeme vom alten Dienst (`/api/v1`) auf den neuen (`/api/v2`) umsteigen: die
 Aufrufe vorher und nachher, die Profile, die Wahl der drei Teile und wie man aus der Antwort nur den fertigen Text

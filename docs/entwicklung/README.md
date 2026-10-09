@@ -1,6 +1,6 @@
 # Kompendium-Dienst SC26: Entwicklung und Methoden
 
-Stand 09.10.2026 · neuer Dienst Release 2.19.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
+Stand 09.10.2026 · neuer Dienst Release 2.20.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
 alter Dienst v0.2.0 (`alterCode/compendious`) · was seit v2.0.0 dazukam, steht unter „Die wichtigsten
 Entscheidungen“ und im Entwicklungsweg; die Messwerte der Profile und Funktionen gelten für Release 2.17.0 (M82)
 

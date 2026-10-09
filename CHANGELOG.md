@@ -9,9 +9,16 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+Noch nichts.
+
+## 2.20.0 – 2026-10-09
+
+Die Satzauswahl der KI als Kästchen beim Profil der Prüfansicht (D103); dazu M89 und M90.
+
 - **Neu (D103):** Die Prüfansicht hat direkt unter dem Profil das Kästchen „KI wählt die Sätze“ (`extraction=llm`).
   Es gilt für jedes Profil, im Vergleich für beide, und steht nicht mehr unter „Erweitert“; ohne KI auf dem Server
   ist es gesperrt. Am Dienst ändert sich nichts.
+- **[Betrieb](docs/betrieb.md#updates):** Keine neue Einstellung.
 - **Doku (M89, M90):** Die Satzauswahl der KI (`extraction=llm`) beim zehnfachen Bausteinbudget in `balanced` und
   `best-quality` an neun Themen und am Gold gemessen: kürzer, lesbarer, fehlerärmer, aber weniger nützlich, für rund
   31.000 bis 33.000 Tokens mehr; Entscheidungsvorlage Punkt 19. Wikibooks und Wikiversity bei ×1 und ×10 an 100
