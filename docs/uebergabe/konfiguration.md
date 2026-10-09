@@ -1,6 +1,6 @@
 # Konfiguration
 
-[Übergabe](README.md) · Stand 09.10.2026 · Release 2.17.0
+[Übergabe](README.md) · Stand 09.10.2026 · Release 2.18.0
 
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu vier, die Compose selbst auswertet
@@ -19,7 +19,7 @@ openssl rand -hex 32   # je Schlüssel und Token einmal
 ```
 
 ```dotenv
-# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.17.0 baut :2.17.0 und :2.17, wie auf GitHub).
+# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.18.0 baut :2.18.0 und :2.18, wie auf GitHub).
 # Mindestens 2.6.0 nehmen: 2.5.0 liest LLM_DAILY_TOKEN_BUDGET=0 aus .env.example als leeres Tagesbudget.
 IMAGE=<registry>/<pfad>/compendious-text-fastapi:<version>
 
@@ -71,7 +71,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.17.0`** | Compose: Image aller fünf Container |
+| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.18.0`** | Compose: Image aller fünf Container |
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen 3,4 GiB Prozesse mit 2 Workern, dazu Seiten-Cache |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 1,7 GiB, mit 3 Workern `API_MEMORY=8g` |
 | `API_STOP_GRACE_PERIOD` | `630s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; deckt academiccloud (600 s) und OpenAI (300 s), über `REQUEST_TIMEOUT_S` plus 15 s halten |
@@ -88,8 +88,9 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LLM_ENABLED` | `false` | **`true`** | Hauptschalter; ohne LLM laufen Anfragen ohne Profil mit `llm-free`, und eine, die selbst ein anderes Profil nennt, ist ein 503 (D68) |
 | `B_API_KEY` | leer | **Schlüssel der b-api** | geheim, nur in der `.env` |
 | `B_API_BASE_URL` | leer | wie Vorgabe | leer: die b-api zum Repository (Staging oder Produktion); ein eigener Wert wird befolgt |
-| `B_API_PROVIDER` | `openai` | wie Vorgabe | Anbieterprofil der b-api |
-| `B_API_MODEL` | `gpt-6-luna` | wie Vorgabe | Modell; `/health` meldet, ob die b-api es führt |
+| `B_API_PROVIDER` | `openai` | wie Vorgabe | Anbieterprofil der b-api; `router` nutzt das Routing der b-api über eine vorab angelegte Route (D97) |
+| `B_API_MODEL` | `gpt-6-luna` | wie Vorgabe | Modell; `/health` meldet, ob die b-api es führt. Mit `router` die Modellfamilie der Route |
+| `B_API_ROUTE` | leer | leer, oder die Route der b-api | nur mit `B_API_PROVIDER=router`: Name der Route, leer eine Route, die wie `B_API_MODEL` heißt; anlegen müssen sie Administratoren der b-api |
 | `B_API_RESPONSE_CACHE` | `false` | wie Vorgabe | aus: jeder LLM-Aufruf wird neu beantwortet, statt dass die b-api eine wortgleiche Anfrage aus ihrem Speicher wiederholt (D70); das Prompt-Caching des Anbieters bleibt |
 | `LLM_REASONING_EFFORT` | `low` | wie Vorgabe | Denkaufwand von Reasoning-Modellen für jede Frage, die `LLM_REASONING_EFFORTS` nicht nennt |
 | `LLM_REASONING_EFFORTS` | `topic_articles=none,article_choice=none,curriculum_check=none,topic_wording=none,qa_pairs=none` | wie Vorgabe | Fragen mit eigenem Denkaufwand; die fünf ausgelieferten antworteten ohne Denken gleich gut in der halben Zeit (D81) |
