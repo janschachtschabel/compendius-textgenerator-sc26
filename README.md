@@ -650,7 +650,7 @@ die Absätze der Policy (`audit.llm.extraction.fallbacks`). Je Baustein geht ein
 der Vorlage), aufgefüllt bis `LLM_EXTRACTION_CANDIDATES`, und die Auswahl schließt beim Zeichenbudget der Vorlage. Jeder
 gedruckte Satz steht wörtlich in seinem Absatz und trägt dessen Belegnummer. Der Schalter gilt in jedem Profil; in
 keinem ist er voreingestellt, `best-coverage-generated` schreibt mit `generation`. Mit dem zehnfachen Bausteinbudget
-(M89, neun Themen) kostet er in `balanced` rund 33.000 Tokens und 6 s mehr; die Texte werden ein Drittel so lang,
+(M89, neun Themen) kostet er in `balanced` rund 33.000 Tokens und 8 bis 9 s mehr; die Texte werden ein Drittel so lang,
 lesbarer und fehlerärmer, aber weniger nützlich (Nutzen 3,1 statt 3,8).
 
 **Zuordnung durch das LLM (`matcher: llm`, D34).** Statt der Policy kann das LLM jeden Absatz einem Baustein

@@ -4948,6 +4948,12 @@ Schalter; eine Anfrage kann ihn in jedem setzen, die Prüfansicht seit D103 mit 
 | `best-quality` | 16,8 s | 40.523 | 53.324 | 7 | 128 |
 | `best-quality` mit `extraction=llm` | 22,3 s | 71.386 (35.499) | 23.222 | 9 | 55 |
 
+Die Zeit der ganzen Anfrage unterschätzt die Satzauswahl: Die Varianten ohne sie liefen je Thema zuerst und stellten die
+Korpusfragen (N und Artikelwahl, im Median 2,5 s, bei Optik 17 s als erste Frage des Containers); die Varianten mit ihr
+bekamen deren Antworten aus dem festen Korpus. Darum war `balanced` mit Auswahl bei Optik, Photosynthese und Philosophen
+der Aufklärung sogar schneller. Die Satzauswahl selbst dauerte 6,6 bis 13,8 s, im Median 9,4 s in `balanced` und 8,2 s
+in `best-quality`; ohne die Korpusfragen ist eine Anfrage mit ihr rund 8 und 9 s länger.
+
 **Güte**, Mittel zweier blinder Gutachter über die neun Themen (Noten 1 bis 5); Fehler als Summe beider Gutachter über
 die neun Texte:
 
@@ -4977,8 +4983,8 @@ die neun Texte:
 - **Passung und Precision:** `balanced` 3,22 auf 3,06, `best-quality` 3,56 auf 3,78; die Aspektthemen bleiben in allen
   vier Varianten bei 1,5 bis 2,0. Am Gold steigt die Precision nach den Regeln von 0,64 auf 0,70 und fällt nach dem LLM
   von 0,77 auf 0,72; bei ×1 bringt die Auswahl keine besseren Absätze (0,64 auf 0,59), wie am 19.09.
-- **Kosten:** rund 33.000 Tokens mehr in `balanced` (das Hundertfache seiner Tokens), rund 31.000 in `best-quality`, je
-  rund 6 s.
+- **Kosten:** rund 33.000 Tokens mehr in `balanced` (das Hundertfache seiner Tokens), rund 31.000 in `best-quality`,
+  dazu rund 8 bis 9 s (die Satzauswahl selbst im Median 9,4 und 8,2 s).
 
 **Schluss.** Beim zehnfachen Bausteinbudget macht die Satzauswahl der KI die Texte kürzer, lesbarer und fehlerärmer,
 aber weniger nützlich, für ein Vielfaches an Tokens; sie nimmt einen Teil von D102 zurück. Für keines der beiden Profile

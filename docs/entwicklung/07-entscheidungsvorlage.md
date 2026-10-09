@@ -442,7 +442,7 @@ gestrichen (`LLM_UNSUPPORTED_SENTENCES=drop`) oder als Schlussfolgerung markiert
 |---|---|---|---|
 | extraktiv (ohne LLM) | 1,1 s auf dem Server, samt Akteuren, Quellen, Glossar | 0 | jeder Satz wörtlich im zitierten Absatz (432 von 432) |
 | `extraction=llm` | rund 11 s | 14.000 bis 22.400 | 14 richtige Absätze mehr bei gleicher Präzision (59 %) gegenüber derselben Konfiguration ohne LLM; kleine Bausteine oft falsch |
-| `extraction=llm` beim zehnfachen Bausteinbudget (M89) | rund 6 s mehr | rund 31.000 bis 33.000 mehr | Texte ein Drittel so lang, lesbarer, weniger Fehler, aber Nutzen 3,1 statt 3,8 (`balanced`) und 3,4 statt 4,2 (`best-quality`); Punkt 19 |
+| `extraction=llm` beim zehnfachen Bausteinbudget (M89) | rund 8 bis 9 s mehr | rund 31.000 bis 33.000 mehr | Texte ein Drittel so lang, lesbarer, weniger Fehler, aber Nutzen 3,1 statt 3,8 (`balanced`) und 3,4 statt 4,2 (`best-quality`); Punkt 19 |
 | `generation=llm-fast` | 9 bis 15 s | 2.300 bis 4.000 | flüssiger Einstieg; Belegprüfung |
 | `generation=llm` | 16 bis 20 s | 10.500 bis 14.500 | flüssiger Text; Belegprüfung, im Median 73 % der Inhaltswörter im zitierten Absatz |
 | beide auf `llm` | 18 s (Optik) | 27.205 (Optik) bis rund 37.000 | |
@@ -1242,8 +1242,10 @@ Passung 4,56 und Nutzen 4,31.
     - **Lesbarkeit und Fehler:** etwas lesbarer, weniger Fehler, vor allem weil weniger Text dasteht.
     - **Bausteine:** Die Auswahl füllt mehr Bausteine (im Median 9 statt 6 und 7), weil sie auch die nächstbesten
       Absätze eines Bausteins bekommt, dem die Zuordnung keinen gab; die Vollständigkeit steigt dadurch kaum.
-    - **Kosten:** rund 33.000 Tokens mehr in `balanced` (das Hundertfache), rund 31.000 in `best-quality`, je rund 6 s;
-      keine Anfrage kam an die ausgelieferten Grenzen, keine fiel zurück.
+    - **Kosten:** rund 33.000 Tokens mehr in `balanced` (das Hundertfache), rund 31.000 in `best-quality`, dazu rund 8
+      bis 9 s (die Satzauswahl selbst im Median 9,4 und 8,2 s; die Dauer in der Tabelle steigt nur um 6 s, weil die
+      Varianten ohne Auswahl zuerst liefen und die Korpusfragen stellten); keine Anfrage kam an die ausgelieferten
+      Grenzen, keine fiel zurück.
 
     **Empfehlung:** In keinem Profil voreinstellen; der Schalter bleibt für Anfragen und die Prüfansicht. Soll die
     Auswahl die Länge von D102 halten, müsste sie beim Zeichenbudget mal `BLOCK_BUDGET_FACTOR` schließen; ob sie dann

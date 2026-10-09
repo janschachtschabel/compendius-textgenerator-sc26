@@ -14,6 +14,8 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
   Die Entscheidungsvorlage beginnt mit einer Zusammenfassung zu Bausteinbudget, Quellen und Profil im Betrieb (Punkt 20)
   und zeigt die Grafiken `satzauswahl.svg`, `zusatzquellen_budget.svg` und `profiluebersicht_x10.svg`. Am Dienst ändert
   sich nichts.
+- **Doku (M89):** Die Zeit der Satzauswahl ist berichtigt: rund 8 bis 9 s mehr je Anfrage statt 6 s; die Varianten ohne
+  sie hatten die Korpusfragen zuerst gestellt.
 
 ## 2.20.0 – 2026-10-09
 
