@@ -92,15 +92,15 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <body>
 <main>
 <header class="page-head">
-<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.18.2 · Stand 09.10.2026</p>
+<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.19.0 · Stand 09.10.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
 Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens, welches der fünf Profile welche
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>aab1df9</code> · Zahlen:
-<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M87</p>
+<code>compendius-textgenerator-sc26</code>, Commit <code>1886afc</code> · Zahlen:
+<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M88</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
 <div class="toc-group"><p class="toc-head"><a href="#seite-09"><span class="num">09</span>Methoden, Messwerte und Profile</a></p><ol><li><a href="#die-fuenf-profile-und-ihre-methoden">Die fünf Profile und ihre Methoden</a></li><li><a href="#1-artikelwahl-den-hauptartikel-finden">1. Artikelwahl: den Hauptartikel finden</a></li><li><a href="#2-korpusbau-welche-artikel-neben-den-hauptartikel-kommen">2. Korpusbau: welche Artikel neben den Hauptartikel kommen</a></li><li><a href="#3-zuordnung-die-absaetze-auf-die-bausteine-verteilen">3. Zuordnung: die Absätze auf die Bausteine verteilen</a></li><li><a href="#4-text-von-teil-1-woertlich-oder-geschrieben">4. Text von Teil 1: wörtlich oder geschrieben</a></li><li><a href="#5-lehrplanschnipsel-auswaehlen-teil-2">5. Lehrplanschnipsel auswählen (Teil 2)</a></li><li><a href="#6-qa-paare-erzeugen">6. QA-Paare erzeugen</a></li><li><a href="#7-entitaeten-ermitteln">7. Entitäten ermitteln</a></li><li><a href="#messbedingungen-und-grenzen">Messbedingungen und Grenzen</a></li></ol></div>
@@ -1137,13 +1137,22 @@ wird ein Profil mit
 <td>D69, D70</td>
 </tr>
 <tr>
-<td>Budget je Anfrage (D59)</td>
+<td>Budget je Anfrage (D59, D102)</td>
 <td>60.000 Tokens</td>
 <td>60.000</td>
-<td>180.000</td>
-<td>180.000</td>
-<td>180.000</td>
-<td>D59</td>
+<td>200.000</td>
+<td>200.000</td>
+<td>200.000</td>
+<td>D59, D102</td>
+</tr>
+<tr>
+<td>Bausteinbudget (<code>BLOCK_BUDGET_FACTOR</code>)</td>
+<td>das Zehnfache der Vorlage, Absätze und Zeichen</td>
+<td>wie <code>llm-free</code></td>
+<td>wie <code>llm-free</code></td>
+<td>wie <code>llm-free</code></td>
+<td>wie <code>llm-free</code></td>
+<td>D102, M86</td>
 </tr>
 </tbody>
 </table></div>
@@ -3178,7 +3187,7 @@ daneben die Messungen, aus denen eine Methode gewählt oder verworfen wurde.</li
 <div class="doc-head"><p class="doc-label">Seite 07 der Entwicklungsdoku</p><a class="to-top" href="#inhalt">Inhalt ↑</a></div>
 <h2 class="doc-title" id="seite-07-titel">Entscheidungsvorlage: Verfahren und Schalter von Teil 1</h2>
 <p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 09.10.2026, Release 2.17.0 · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis
-M87; Rohdaten und Zusammenfassungen in <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/messung/ergebnisse/README.md" target="_blank" rel="noopener">messung/ergebnisse</a>; Methoden und Werte von
+M88; Rohdaten und Zusammenfassungen in <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/messung/ergebnisse/README.md" target="_blank" rel="noopener">messung/ergebnisse</a>; Methoden und Werte von
 <code>/entities</code>: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/08-entitaeten-und-kennungen.md" target="_blank" rel="noopener">Entitäten und Kennungen</a>; alle Schritte mit ihren Methoden, Güte, Zeit
 und Tokens je Profil: <a href="#seite-09">Methoden, Messwerte und Profile</a></p>
 <p>Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
@@ -3401,15 +3410,23 @@ sonst ist die Anfrage ein 503. Die Profile wählen auch das Verfahren der QA-Paa
 <td>wie <code>balanced</code></td>
 </tr>
 <tr>
-<td>Budget je Anfrage (D59)</td>
+<td>Budget je Anfrage (D59, D102)</td>
 <td>60.000</td>
 <td>60.000</td>
-<td>180.000</td>
-<td>180.000</td>
-<td>180.000</td>
+<td>200.000</td>
+<td>200.000</td>
+<td>200.000</td>
 </tr>
 <tr>
-<td>Kompendien je Million Tokens (M82)</td>
+<td>Bausteinbudget beim Zuschnitt (<code>BLOCK_BUDGET_FACTOR</code>, D102)</td>
+<td>das Zehnfache der Vorlage</td>
+<td>wie <code>llm-free</code></td>
+<td>wie <code>llm-free</code></td>
+<td>wie <code>llm-free</code></td>
+<td>wie <code>llm-free</code></td>
+</tr>
+<tr>
+<td>Kompendien je Million Tokens (M82, vor D102)</td>
 <td>ohne Grenze</td>
 <td>rund 3.200</td>
 <td>rund 17</td>
@@ -4011,9 +4028,9 @@ Gutachtern falsch (M31).</p>
 <p><code>/knowledge</code>, <code>/qa</code>, <code>/lehrplan/search</code> und seit D62 <code>/entities</code> nehmen <code>preset</code> wie das Kompendium; ohne es gilt
 <code>PRESET_DEFAULT</code>. Bei <code>/qa</code> wählt es nur das Verfahren der Paare, Teil 1 eines Themas entsteht immer ohne LLM (D55);
 bei <code>/entities</code> die Wege der Erkennung (<code>methods</code>). <code>/nodes</code> und der Sammlungsüberblick kennen kein LLM und kein
-Profil. Die drei Profile ab <code>best-quality</code> rechnen in jedem Endpunkt mit 180.000 Tokens je Anfrage, die anderen mit
-60.000 (D59). Zeiten und Tokens: M45, ohne LLM auf dem Server, mit LLM im Entwicklungscontainer, das Kompendium als
-Server plus die Schritte des LLM; die Güte aus M30, M32, M34 und M36.</p>
+Profil. Die drei Profile ab <code>best-quality</code> rechnen in jedem Endpunkt mit 200.000 Tokens je Anfrage, die anderen mit
+60.000 (D59, D102). Zeiten und Tokens: M45, ohne LLM auf dem Server, mit LLM im Entwicklungscontainer, das Kompendium
+als Server plus die Schritte des LLM; die Güte aus M30, M32, M34 und M36.</p>
 <h3 id="der-ablauf">Der Ablauf</h3>
 <figure class="chart" role="group" aria-label="Ablauf von Teil 1"><svg xmlns="http://www.w3.org/2000/svg" width="840" height="708" viewBox="0 0 840 708" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Ablauf von Teil 1 mit Schaltern, Profilen und Zeiten"><title>Ablauf von Teil 1 mit Schaltern, Profilen und Zeiten</title><rect width="840" height="708" fill="#ffffff"/>
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Teil 1 · Weltwissen: vom Thema zum Kompendium</text>
@@ -4687,6 +4704,10 @@ gpt-6-luna übersieht: Als Prüfer erkennt es nur 7 der 14 unpassenden Treffer (
 dazu (mit Trefferprüfung drei), und aus guten Unterrichtsseiten wie <em>Physikunterricht/ Optik</em> druckte der Standard
 keinen Absatz (M11). Dasselbe gilt für Wiktionary, Wikisource, Wikiquote und Wikivoyage: Sie mischten Tabellen, Zitate
 und Listen in den Text (M84, D99, Punkt 16).</li>
+<li>Die Artikel, die N nennt, haben selten eine andere Bedeutung: 16 von 3.309 an den 100 Anfragen von M82, 61 von
+12.447 gedruckten Absätzen (M88). Sie kommen über Weiterleitungen, gleichnamige Artikel, die Übersicht ohne
+Klammerzusatz oder weil N selbst ein anderes Fach nennt; den Artikelanfang oder die Verlinkung zu prüfen kostete 16-
+bis 86-mal so viele passende Artikel (Punkt 18).</li>
 </ul>
 <h3 id="schritt-3-absaetze-zuordnen">Schritt 3: Absätze zuordnen</h3>
 <p>Jeder Absatz des Korpus kommt in höchstens einen der zehn Inhaltsbausteine des Templates SC26 oder in keinen. Die
@@ -4750,7 +4771,12 @@ drei übrigen Bausteine (Akteure, Quellen, Glossar) erzeugt der Dienst selbst.</
 <tr>
 <td>Umgebung: <code>LLM_MAX_TOKENS_PER_REQUEST</code>, <code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY</code></td>
 <td>Tokens je Anfrage in <code>llm-free</code> und <code>balanced</code>, in den <code>best-quality</code>-Profilen</td>
-<td>60.000: vier Stapel zugleich, weitere warten (D39); 180.000 (D59): rund dreimal so viele</td>
+<td>60.000: vier Stapel zugleich, weitere warten (D39); 200.000 (D59, D102): gut dreimal so viele</td>
+</tr>
+<tr>
+<td>Umgebung: <code>BLOCK_BUDGET_FACTOR</code></td>
+<td>Faktor auf die Absätze, die ein Baustein beim Zuschnitt behält, und die Zeichen, ab denen er schließt; 1 bis 100</td>
+<td>10 (D102): am Gold Recall 0,56 und 0,69 statt 0,16 und 0,22, Precision gleich (M86)</td>
 </tr>
 </tbody>
 </table></div>
@@ -5042,8 +5068,8 @@ wie die Regeln; die Policy liegt auch bei ihren sicheren Absätzen zu 39 % falsc
 <li><strong>Mögliche Vereinfachung ohne Qualitätsverlust:</strong> BM25 mit Model2Vec erreicht 0,43 (alle Absätze 0,44) in 0,05 statt
 0,30 s. Als Strategie ist das nicht wählbar.</li>
 <li><strong>Das Budget je Baustein verwirft gute Absätze.</strong> Mit doppeltem bis zehnfachem Budget bleibt die Precision des
-Gedruckten am Gold gleich (Regeln 0,64, LLM 0,75 bis 0,77), der Recall steigt von 0,16 auf 0,56 und von 0,21 auf
-0,66 (M86, Punkt 17).</li>
+Gedruckten am Gold gleich (Regeln 0,64, LLM 0,75 bis 0,77), der Recall steigt von 0,16 auf 0,56 und von 0,21 auf 0,66
+(M86, Punkt 17). Seit D102 gilt darum das Zehnfache (<code>BLOCK_BUDGET_FACTOR</code>).</li>
 </ul>
 <h3 id="schritt-4-text-bauen-und-optional-umformulieren">Schritt 4: Text bauen und optional umformulieren</h3>
 <p>Der Text entsteht immer erst extraktiv: Je Baustein übernimmt der Dienst die zugeordneten Absätze wörtlich, ihre
@@ -5063,7 +5089,7 @@ drei Schalter auf.</p>
 <td><code>extraction</code></td>
 <td><code>rule-based</code>, <code>llm</code></td>
 <td><code>rule-based</code> in allen Profilen</td>
-<td><code>llm</code>: Das LLM wählt je Baustein Sätze aus bis zu acht Kandidatenabsätzen (<code>LLM_EXTRACTION_CANDIDATES</code>); der Wortlaut bleibt der der Quelle.</td>
+<td><code>llm</code>: Das LLM wählt je Baustein Sätze aus den Absätzen, die ihm die Zuordnung gibt, aufgefüllt mit den nächstbesten bis acht (<code>LLM_EXTRACTION_CANDIDATES</code>); der Wortlaut bleibt der der Quelle. Die Auswahl schließt beim Zeichenbudget der Vorlage, ohne <code>BLOCK_BUDGET_FACTOR</code>; mit dessen Vorgabe 10 bekommt sie bis zu zehnmal so viele Kandidaten (D102, nicht gemessen).</td>
 </tr>
 <tr>
 <td><code>generation</code></td>
@@ -5093,10 +5119,10 @@ drei Schalter auf.</p>
 </table></div>
 <p><strong>Kombinierbar:</strong> <code>extraction</code> und <code>generation</code> lassen sich zusammen einschalten, <code>enrichment</code> wirkt nur mit
 <code>generation</code>. Alle LLM-Schalter teilen sich das Budget je Anfrage (<code>LLM_MAX_TOKENS_PER_REQUEST</code>, 60.000, in den
-<code>best-quality</code>-Profilen <code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY</code>, 180.000, D59) und, wenn gesetzt, ein Tagesbudget
-(<code>LLM_DAILY_TOKEN_BUDGET</code>; die Vorgabe 0 setzt keine Grenze, D67). Ein geschriebener Satz bleibt nur, wenn er eine
-gültige Belegnummer trägt und mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er gestrichen
-(<code>LLM_UNSUPPORTED_SENTENCES=drop</code>) oder als Schlussfolgerung markiert (<code>mark</code>).</p>
+<code>best-quality</code>-Profilen <code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY</code>, 200.000, D59, D102) und, wenn gesetzt, ein
+Tagesbudget (<code>LLM_DAILY_TOKEN_BUDGET</code>; die Vorgabe 0 setzt keine Grenze, D67). Ein geschriebener Satz bleibt nur, wenn
+er eine gültige Belegnummer trägt und mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er
+gestrichen (<code>LLM_UNSUPPORTED_SENTENCES=drop</code>) oder als Schlussfolgerung markiert (<code>mark</code>).</p>
 <div class="table-wrap"><table style="min-width: 750px">
 <thead>
 <tr>
@@ -5251,14 +5277,15 @@ Thema (M31).</li>
 Themen, 576, 49.019 und 60.357 Tokens. Die Tokens folgen der Größe des Korpus, die von Lauf zu Lauf streut; wohin Zeit
 und Tokens gehen und was sich daran sparen ließ: Punkt 15.</p>
 <p>Große Themen kosten mehr: Wikinger mit 400 Absätzen brauchte in <code>best-quality</code> 65.116 Tokens, Transistor in
-<code>best-quality-generated</code> 134.766 (M45); M27 maß vor D58 und D63 noch 26.267 und 35.376. Mit Teil 2 kommt die Prüfung
-der Lehrplanelemente dazu: Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in <code>best-quality</code>
-und 152.197 in <code>best-quality-generated</code> (M33), seit D93 140.600 in <code>best-quality-generated</code> und 160.900 in
-<code>best-coverage-generated</code> (M79). Eine Anfrage dieser Profile darf bis 180.000 Tokens ausgeben (D59), die der anderen
-60.000, die Prüfung von Teil 2 dazu bis 400.000 aus einem eigenen Budget (D94); die Grenzen schützen vor Ausreißern,
-die meisten Anfragen bleiben weit darunter. Ein Tagesbudget (<code>LLM_DAILY_TOKEN_BUDGET</code>) gilt, wenn gesetzt, für alle
-Anfragen und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück. Die
-Vorgabe 0 setzt keine Grenze (D67).</p>
+<code>best-quality-generated</code> 134.766 (M45); M27 maß vor D58 und D63 noch 26.267 und 35.376. Mit Teil 2 kommt die Prüfung der
+Lehrplanelemente dazu: Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in <code>best-quality</code> und
+152.197 in <code>best-quality-generated</code> (M33), seit D93 140.600 in <code>best-quality-generated</code> und 160.900 in
+<code>best-coverage-generated</code> (M79). Mit dem zehnfachen Bausteinbudget (D102) brauchte Teil 1 von Demokratie 109.100 Tokens
+in <code>best-quality-generated</code> und 132.100 in <code>best-coverage-generated</code> (M86). Eine Anfrage dieser Profile darf bis 200.000
+Tokens ausgeben (D59, D102), die der anderen 60.000, die Prüfung von Teil 2 dazu bis 400.000 aus einem eigenen Budget
+(D94); die Grenzen schützen vor Ausreißern, die meisten Anfragen bleiben weit darunter. Ein Tagesbudget
+(<code>LLM_DAILY_TOKEN_BUDGET</code>) gilt, wenn gesetzt, für alle Anfragen und Worker zusammen; ist es aufgebraucht, fallen
+LLM-Schalter bis zum nächsten Tag auf die Regeln zurück. Die Vorgabe 0 setzt keine Grenze (D67).</p>
 <h3 id="die-empfehlungen-im-einzelnen">Die Empfehlungen im Einzelnen</h3>
 <h4><code>llm-free</code>: das Optimum ohne Sprachmodell</h4>
 <p>Anfrage: <code>{&quot;topic&quot;: &quot;Optik&quot;, &quot;preset&quot;: &quot;llm-free&quot;}</code>; ein Dienst ohne LLM stellt es als Vorgabe ein:</p>
@@ -5293,10 +5320,10 @@ gilt auch dort dieses Profil, auf einem Server ohne LLM also ein 503. Wer einen 
 (gpt-5.6-luna, 18.09.2026).</p>
 <h4><code>best-quality</code></h4>
 <p>Anfrage: <code>{&quot;topic&quot;: &quot;Optik&quot;, &quot;preset&quot;: &quot;best-quality&quot;}</code>, mit konfiguriertem LLM wie oben. Das Profil rechnet
-mit einem eigenen, größeren Budget je Anfrage (D59), ausgeliefert:</p>
-<pre><code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY=180000   # rund dreimal so viele Stapel der Zuordnung zugleich wie bei
-                                                 # 60.000 und Platz für die Prüfung aller Lehrplanelemente,
-                                                 # auch beim breitesten Thema (M33)
+mit einem eigenen, größeren Budget je Anfrage (D59, D102), ausgeliefert:</p>
+<pre><code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY=200000   # rund dreimal so viele Stapel der Zuordnung zugleich wie bei
+                                                 # 60.000 und Platz für das zehnfache Bausteinbudget, auch beim
+                                                 # breitesten Thema (D102, M86)
 </code></pre>
 <p>Ergebnis: 93 von 94 Hauptartikeln - das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (M35, D61) -,
 macro-F1 0,70 (M19, gpt-6-luna), Teil 1 und 2 rund 14 s (11 bis 16 s), im Median 26.267 Tokens, rund 170 je Absatz
@@ -5393,12 +5420,12 @@ nennen („Wer war Immanuel Kant?“ zu Ernst Abbe).</p>
 </li>
 <li>
 <p><strong>Budget je Anfrage für <code>best-quality</code>:</strong> entschieden (D59, Jan): Die beiden <code>best-quality</code>-Profile (seit D69 auch
-<code>best-coverage-generated</code>) rechnen mit
-180.000 Tokens je Anfrage (<code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY</code>), in jedem Endpunkt, auch in der
-Lehrplansuche, die seither die Profile nimmt; <code>llm-free</code> und <code>balanced</code> bleiben bei 60.000. Jan wollte zuerst
-120.000; damit prüfte das Kompendium mit Teil 1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze,
-819 Elemente) nur 579 Elemente. Ohne Grenze brauchte es 137.398 Tokens in <code>best-quality</code> und 152.197 in
-<code>best-quality-generated</code> (M33); Jan gab frei, das Budget zu erhöhen, und bei 180.000 prüften beide alle 819.</p>
+<code>best-coverage-generated</code>) rechnen mit 180.000 Tokens je Anfrage, seit D102 mit 200.000
+(<code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY</code>), in jedem Endpunkt, auch in der Lehrplansuche, die seither die Profile
+nimmt; <code>llm-free</code> und <code>balanced</code> bleiben bei 60.000. Jan wollte zuerst 120.000; damit prüfte das Kompendium mit Teil
+1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze, 819 Elemente) nur 579 Elemente. Ohne Grenze
+brauchte es 137.398 Tokens in <code>best-quality</code> und 152.197 in <code>best-quality-generated</code> (M33); Jan gab frei, das Budget
+zu erhöhen, und bei 180.000 prüften beide alle 819.</p>
 </li>
 <li>
 <p><strong>Sammel- und Mischthemen („deutsche Dichter“):</strong> entschieden und gebaut (D63; Jan, 26. und 27.09.2026): <code>llm-free</code>
@@ -6396,7 +6423,8 @@ kompendiale texte umfangreich und vollständig sind“; nach den ersten Zahlen: 
 dagegen sprechen könnte … vielleicht kann man dann mit einem f1 sagen wo die verbesserungen gesättigt sind“):
 gemessen in M86 mit dem Faktor 1, 2, 4 und 10 auf die Absätze und Zeichen je Baustein an vier Themen in <code>llm-free</code>,
 <code>balanced</code> und <code>best-quality-generated</code>, dazu am Gold der Zuordnung bis ×1000 und mit einem Urteil zu jedem
-gedruckten Absatz; zu entscheiden.</p>
+gedruckten Absatz und jedem Beleg des Schreibers; entschieden (D102, Jan): das Zehnfache als Vorgabe seit
+Release 2.19.0.</p>
 <figure class="chart" role="group" aria-label="Bausteinbudget ×1 bis ×10: Text, Belege, Kosten und Noten (M86)"><svg xmlns="http://www.w3.org/2000/svg" width="1060" height="550" viewBox="0 0 1060 550" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Bausteinbudget mal 1, 2, 4 und 10: Text, Belege, Kosten und Noten (M86)"><title>Bausteinbudget mal 1, 2, 4 und 10: Text, Belege, Kosten und Noten (M86)</title><rect width="1060" height="550" fill="#ffffff"/>
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Bausteinbudget ×1 bis ×10: Text, Belege, Kosten und Noten (M86)</text>
 <text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Median über vier Themen je Profil, ×1 = Vorlage sc26; die Achse des Faktors ist linear, ein gleichmäßiger Zuwachs wäre eine Gerade</text>
@@ -6763,6 +6791,13 @@ gedruckten Absatz; zu entscheiden.</p>
 <td>25,9 s</td>
 </tr>
 <tr>
+<td><code>best-quality-generated</code>: Belege daneben, Summe der Themen</td>
+<td>3 (3 %)</td>
+<td>4 (2 %)</td>
+<td>11 (3 %)</td>
+<td>17,5 (3 %)</td>
+</tr>
+<tr>
 <td>Gold der Zuordnung: F1 der Regeln und des LLM</td>
 <td>0,26 und 0,35</td>
 <td>0,34 und 0,46</td>
@@ -6773,18 +6808,21 @@ gedruckten Absatz; zu entscheiden.</p>
 </table></div>
 <p><strong>Was dagegen sprechen könnte, gemessen:</strong></p>
 <ul>
-<li><strong>Kosten:</strong> Mehr Tokens braucht mehr Budget nur in <code>best-quality-generated</code>: 7 % bei ×2, 19 % bei ×4, 33 % bei
-×10. Es wächst die Eingabe, kaum die Ausgabe; der teuerste Lauf brauchte 103.400 der erlaubten 180.000 Tokens.
-<code>llm-free</code> braucht keine, <code>balanced</code> gleich bleibend rund 310. Nicht gemessen: <code>/qa</code> schreibt seine Paare aus
-einem Teil 1 von <code>llm-free</code>; mit ×4 wäre dieser Text rund doppelt so lang, und die Paare des LLM (<code>best-quality</code>,
-M82: 3.234 Tokens je Thema) würden entsprechend teurer.</li>
+<li><strong>Kosten:</strong> Mehr Tokens braucht mehr Budget nur in den schreibenden Profilen, in <code>best-quality-generated</code> 7 % bei
+×2, 19 % bei ×4, 33 % bei ×10. Es wächst die Eingabe, kaum die Ausgabe; der teuerste Lauf brauchte 103.400 der
+damals erlaubten 180.000 Tokens. Am breitesten Thema, Demokratie, brauchte Teil 1 bei ×10 109.100 Tokens in
+<code>best-quality-generated</code> und 132.100 in <code>best-coverage-generated</code>, <code>best-quality</code> so viele wie bei ×1 (M86, nach
+der Messung). <code>llm-free</code> braucht keine, <code>balanced</code> gleich bleibend rund 310. <code>/qa</code> schreibt seine Paare aus einem
+Teil 1 von <code>llm-free</code>; mit dem Zehnfachen fielen sie im Test auf die Regeln zurück, weil sie den ganzen Teil 1
+lesen, und <code>/qa</code> bleibt bei den Budgets der Vorlage (D102).</li>
 <li><strong>Dauer:</strong> In keinem Profil länger (Tabelle): Das Budget greift erst nach Artikelwahl und Zuordnung, und der
 Schreiber schreibt die Bausteine nebeneinander.</li>
 <li><strong>Präzision, unpassende Absätze:</strong> Am Gold bleibt die Precision bei jedem Faktor (Regeln 0,62 bis 0,66, LLM 0,78
 bis 0,82), auch der Anteil der Absätze, die nicht hineingehören (10 bis 14 und 4 bis 7 %). Im Text von <code>balanced</code>
 bleibt der Anteil daneben bis ×4 bei 2 bis 3 %; ×10 bringt mehr Absätze am Rand und unter den neuen 8 % daneben,
 vor allem beim Aspektthema und bei Optik. Die Zahl unpassender Absätze wächst mit der Länge, ihr Anteil bis ×4
-nicht.</li>
+nicht. Die Belege, die der Schreiber von <code>best-quality-generated</code> liest, sind bei jedem Faktor zu 2 bis 3 %
+daneben, auch die neuen bei ×10, alle beim Aspektthema (M86, nach der Messung).</li>
 <li><strong>Länge und Lesbarkeit:</strong> Die wörtlichen Texte werden länger und etwas schwerer lesbar (<code>balanced</code> 3,0 auf 2,4 bis
 ×4, danach gleich). Bei ×10 ist <code>balanced</code> im Median 44.900 Zeichen lang, beim Aspektthema 62.400, deutlich über
 der Ziellänge. <code>best-quality-generated</code> hält Länge und Lesbarkeit.</li>
@@ -6983,109 +7021,249 @@ bis ×4 am Ende, die von <code>best-quality-generated</code> steigt bis ×10.</p
 <text x="24.0" y="384.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Gold der Zuordnung: zehn Themen, 597 gelabelte Absätze; gezählt sind die gedruckten Absätze mit Label. Precision: im richtigen Baustein; Recall: von den gelabelten gedruckt.</text>
 <text x="24.0" y="400.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Jedes Thema einmal zugeordnet, dann je Faktor neu zugeschnitten (Absätze und Zeichen je Baustein mal dem Faktor). Ab ×30 ist alles Zugeordnete gedruckt.</text>
 <text x="24.0" y="416.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Anteil am möglichen F1-Gewinn (von ×1 bis zur Sättigung): ×2 21 und 24 %, ×4 49 und 50 %, ×10 82 und 85 %, ×20 98 %. LLM: gpt-6-luna, 227.679 Tokens.</text></svg><figcaption>Bausteinbudget am Gold der Zuordnung: Precision, Recall und F1 (M86)</figcaption></figure>
-<figure class="chart" role="group" aria-label="Bausteinbudget: passende und unpassende Absätze im Text (M86)"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="488" viewBox="0 0 960 488" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Bausteinbudget: passende und unpassende Absätze im Text (M86)"><title>Bausteinbudget: passende und unpassende Absätze im Text (M86)</title><rect width="960" height="488" fill="#ffffff"/>
-<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Bausteinbudget: passende und unpassende Absätze im Text (M86)</text>
-<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Wörtliche Profile, vier Themen: die gedruckten Absätze je Faktor nach ihrem Bezug zum angefragten Thema</text>
+<figure class="chart" role="group" aria-label="Bausteinbudget: passende und unpassende Absätze im Text von llm-free und balanced und in den Belegen von best-quality-generated (M86)"><svg xmlns="http://www.w3.org/2000/svg" width="1170" height="488" viewBox="0 0 1170 488" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Bausteinbudget: passende und unpassende Absätze (M86)"><title>Bausteinbudget: passende und unpassende Absätze (M86)</title><rect width="1170" height="488" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Bausteinbudget: passende und unpassende Absätze (M86)</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Vier Themen: die Absätze je Faktor nach ihrem Bezug zum angefragten Thema, wörtlich gedruckt oder als Beleg für den Schreiber</text>
 <rect x="24.0" y="64.0" width="12.0" height="12.0" rx="2" fill="#3a8f5c" stroke="none" stroke-width="1"/>
 <text x="42.0" y="74.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">zum Thema</text>
 <rect x="124.5" y="64.0" width="12.0" height="12.0" rx="2" fill="#a9ccb4" stroke="none" stroke-width="1"/>
 <text x="142.5" y="74.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">am Rand</text>
 <rect x="211.5" y="64.0" width="12.0" height="12.0" rx="2" fill="#c8553d" stroke="none" stroke-width="1"/>
 <text x="229.5" y="74.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">daneben</text>
-<text x="30.0" y="110.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">llm-free</text>
-<line x1="80.0" y1="348.0" x2="460.0" y2="348.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="30.0" y="110.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">llm-free: gedruckte Absätze</text>
+<line x1="80.0" y1="348.0" x2="380.0" y2="348.0" stroke="#dde2e8" stroke-width="1"/>
 <text x="73.0" y="352.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">0</text>
-<line x1="80.0" y1="304.0" x2="460.0" y2="304.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="73.0" y="308.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">100</text>
-<line x1="80.0" y1="260.0" x2="460.0" y2="260.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="73.0" y="264.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">200</text>
-<line x1="80.0" y1="216.0" x2="460.0" y2="216.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="73.0" y="220.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">300</text>
-<line x1="80.0" y1="172.0" x2="460.0" y2="172.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="73.0" y="176.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">400</text>
-<line x1="80.0" y1="128.0" x2="460.0" y2="128.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="73.0" y="132.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">500</text>
-<rect x="104.5" y="333.9" width="46.0" height="14.1" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
-<rect x="104.5" y="321.2" width="46.0" height="12.8" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
-<rect x="104.5" y="308.0" width="46.0" height="13.2" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
-<text x="127.5" y="288.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">91</text>
-<text x="127.5" y="302.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">33 % daneben</text>
-<text x="127.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×1</text>
-<rect x="199.5" y="326.4" width="46.0" height="21.6" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
-<rect x="199.5" y="306.9" width="46.0" height="19.6" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
-<rect x="199.5" y="291.2" width="46.0" height="15.6" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
-<text x="222.5" y="271.2" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">129</text>
-<text x="222.5" y="285.2" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">28 % daneben</text>
-<text x="222.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×2</text>
-<text x="222.5" y="381.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">neu 38: 14 %</text>
-<rect x="294.5" y="314.6" width="46.0" height="33.4" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
-<rect x="294.5" y="286.6" width="46.0" height="27.9" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
-<rect x="294.5" y="270.1" width="46.0" height="16.5" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
-<text x="317.5" y="250.1" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">177</text>
-<text x="317.5" y="264.1" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">21 % daneben</text>
-<text x="317.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×4</text>
-<text x="317.5" y="381.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">neu 48: 4 %</text>
-<rect x="389.5" y="287.1" width="46.0" height="60.9" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
-<rect x="389.5" y="255.4" width="46.0" height="31.7" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
-<rect x="389.5" y="238.4" width="46.0" height="16.9" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
-<text x="412.5" y="218.4" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">249</text>
-<text x="412.5" y="232.4" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">15 % daneben</text>
-<text x="412.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×10</text>
-<text x="412.5" y="381.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">neu 72: 1 %</text>
-<text x="500.0" y="110.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">balanced</text>
-<line x1="550.0" y1="348.0" x2="930.0" y2="348.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="543.0" y="352.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">0</text>
-<line x1="550.0" y1="304.0" x2="930.0" y2="304.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="543.0" y="308.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">100</text>
-<line x1="550.0" y1="260.0" x2="930.0" y2="260.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="543.0" y="264.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">200</text>
-<line x1="550.0" y1="216.0" x2="930.0" y2="216.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="543.0" y="220.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">300</text>
-<line x1="550.0" y1="172.0" x2="930.0" y2="172.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="543.0" y="176.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">400</text>
-<line x1="550.0" y1="128.0" x2="930.0" y2="128.0" stroke="#dde2e8" stroke-width="1"/>
-<text x="543.0" y="132.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">500</text>
-<rect x="574.5" y="318.3" width="46.0" height="29.7" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
-<rect x="574.5" y="301.8" width="46.0" height="16.5" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
-<rect x="574.5" y="300.5" width="46.0" height="1.3" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
-<text x="597.5" y="280.5" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">108</text>
-<text x="597.5" y="294.5" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">3 % daneben</text>
-<text x="597.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×1</text>
-<rect x="669.5" y="301.6" width="46.0" height="46.4" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
-<rect x="669.5" y="271.4" width="46.0" height="30.1" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
-<rect x="669.5" y="269.7" width="46.0" height="1.8" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
-<text x="692.5" y="249.7" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">178</text>
-<text x="692.5" y="263.7" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">2 % daneben</text>
-<text x="692.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×2</text>
-<text x="692.5" y="381.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">neu 70: 1 %</text>
-<rect x="764.5" y="280.9" width="46.0" height="67.1" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
-<rect x="764.5" y="232.9" width="46.0" height="48.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
-<rect x="764.5" y="229.6" width="46.0" height="3.3" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
-<text x="787.5" y="209.6" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">269</text>
-<text x="787.5" y="223.6" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">3 % daneben</text>
-<text x="787.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×4</text>
-<text x="787.5" y="381.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">neu 91: 4 %</text>
-<rect x="859.5" y="243.1" width="46.0" height="104.9" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
-<rect x="859.5" y="159.2" width="46.0" height="83.8" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
-<rect x="859.5" y="149.6" width="46.0" height="9.7" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
-<text x="882.5" y="129.6" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">451</text>
-<text x="882.5" y="143.6" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">5 % daneben</text>
-<text x="882.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×10</text>
-<text x="882.5" y="381.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">neu 182: 8 %</text>
-<text x="24.0" y="412.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Jeder Absatz, den llm-free oder balanced bei einem Faktor drucken, blind benotet von zwei Claude-Gutachtern (Mittel); Summe der vier Themen.</text>
-<text x="24.0" y="428.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Über dem Balken: alle Absätze und ihr Anteil daneben. Darunter: die neuen Absätze gegenüber dem nächstkleineren Faktor und ihr Anteil daneben.</text>
-<text x="24.0" y="444.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Was ×1 druckt, drucken alle größeren Faktoren auch (gleicher Korpus je Thema).</text></svg><figcaption>Bausteinbudget: passende und unpassende Absätze im Text (M86)</figcaption></figure>
-<p><strong>Empfehlung:</strong> Faktor 4 als einstellbare Vorgabe für alle Profile, angewandt wie gemessen auf die Höchstzahl der
-Absätze und die Zeichen, ab denen ein Baustein schließt; die Vorlagen bleiben, wie sie sind. Bei ×4 gewinnt jedes
-Profil 0,8 bis 1,4 Noten an Nutzen und <code>best-quality-generated</code> 0,5 an Vollständigkeit, für 19 % mehr Tokens dort
-und ohne längere Dauer; Precision und Anteil unpassender Absätze bleiben, und die wörtlichen Texte kommen in die
-Nähe der Ziellänge. Über ×4 hinaus lohnt es nur für <code>best-quality-generated</code>: ×10 bringt dort noch 0,4 Noten an
-Nutzen und Vollständigkeit für 14 Prozentpunkte mehr Tokens, ohne den Text zu verlängern; die wörtlichen Profile
-bekämen bei ×10 lange Texte mit mehr Absätzen am Rand. Ein eigener, höherer Faktor für die schreibenden Profile wäre
-eine zweite Einstellung; für <code>/qa</code> kann der Faktor bei 1 bleiben.</p>
+<line x1="80.0" y1="311.3" x2="380.0" y2="311.3" stroke="#dde2e8" stroke-width="1"/>
+<text x="73.0" y="315.3" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">100</text>
+<line x1="80.0" y1="274.7" x2="380.0" y2="274.7" stroke="#dde2e8" stroke-width="1"/>
+<text x="73.0" y="278.7" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">200</text>
+<line x1="80.0" y1="238.0" x2="380.0" y2="238.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="73.0" y="242.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">300</text>
+<line x1="80.0" y1="201.3" x2="380.0" y2="201.3" stroke="#dde2e8" stroke-width="1"/>
+<text x="73.0" y="205.3" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">400</text>
+<line x1="80.0" y1="164.7" x2="380.0" y2="164.7" stroke="#dde2e8" stroke-width="1"/>
+<text x="73.0" y="168.7" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">500</text>
+<line x1="80.0" y1="128.0" x2="380.0" y2="128.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="73.0" y="132.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">600</text>
+<rect x="97.5" y="336.3" width="40.0" height="11.7" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="97.5" y="325.6" width="40.0" height="10.6" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="97.5" y="314.6" width="40.0" height="11.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="117.5" y="294.6" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">91</text>
+<text x="117.5" y="308.6" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">33 % daneben</text>
+<text x="117.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×1</text>
+<rect x="172.5" y="330.0" width="40.0" height="18.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="172.5" y="313.7" width="40.0" height="16.3" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="172.5" y="300.7" width="40.0" height="13.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="192.5" y="280.7" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">129</text>
+<text x="192.5" y="294.7" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">28 % daneben</text>
+<text x="192.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×2</text>
+<text x="192.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 38: 14 %</text>
+<rect x="247.5" y="320.1" width="40.0" height="27.9" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="247.5" y="296.9" width="40.0" height="23.3" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="247.5" y="283.1" width="40.0" height="13.8" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="267.5" y="263.1" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">177</text>
+<text x="267.5" y="277.1" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">21 % daneben</text>
+<text x="267.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×4</text>
+<text x="267.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 48: 4 %</text>
+<rect x="322.5" y="297.2" width="40.0" height="50.8" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="322.5" y="270.8" width="40.0" height="26.4" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="322.5" y="256.7" width="40.0" height="14.1" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="342.5" y="236.7" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">249</text>
+<text x="342.5" y="250.7" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">15 % daneben</text>
+<text x="342.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×10</text>
+<text x="342.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 72: 1 %</text>
+<text x="410.0" y="110.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">balanced: gedruckte Absätze</text>
+<line x1="460.0" y1="348.0" x2="760.0" y2="348.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="453.0" y="352.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">0</text>
+<line x1="460.0" y1="311.3" x2="760.0" y2="311.3" stroke="#dde2e8" stroke-width="1"/>
+<text x="453.0" y="315.3" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">100</text>
+<line x1="460.0" y1="274.7" x2="760.0" y2="274.7" stroke="#dde2e8" stroke-width="1"/>
+<text x="453.0" y="278.7" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">200</text>
+<line x1="460.0" y1="238.0" x2="760.0" y2="238.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="453.0" y="242.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">300</text>
+<line x1="460.0" y1="201.3" x2="760.0" y2="201.3" stroke="#dde2e8" stroke-width="1"/>
+<text x="453.0" y="205.3" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">400</text>
+<line x1="460.0" y1="164.7" x2="760.0" y2="164.7" stroke="#dde2e8" stroke-width="1"/>
+<text x="453.0" y="168.7" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">500</text>
+<line x1="460.0" y1="128.0" x2="760.0" y2="128.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="453.0" y="132.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">600</text>
+<rect x="477.5" y="323.2" width="40.0" height="24.8" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="477.5" y="309.5" width="40.0" height="13.8" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="477.5" y="308.4" width="40.0" height="1.1" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="497.5" y="288.4" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">108</text>
+<text x="497.5" y="302.4" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">3 % daneben</text>
+<text x="497.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×1</text>
+<rect x="552.5" y="309.3" width="40.0" height="38.7" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="552.5" y="284.2" width="40.0" height="25.1" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="552.5" y="282.7" width="40.0" height="1.5" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="572.5" y="262.7" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">178</text>
+<text x="572.5" y="276.7" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">2 % daneben</text>
+<text x="572.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×2</text>
+<text x="572.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 70: 1 %</text>
+<rect x="627.5" y="292.1" width="40.0" height="55.9" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="627.5" y="252.1" width="40.0" height="40.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="627.5" y="249.4" width="40.0" height="2.8" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="647.5" y="229.4" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">269</text>
+<text x="647.5" y="243.4" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">3 % daneben</text>
+<text x="647.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×4</text>
+<text x="647.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 91: 4 %</text>
+<rect x="702.5" y="260.6" width="40.0" height="87.4" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="702.5" y="190.7" width="40.0" height="69.8" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="702.5" y="182.6" width="40.0" height="8.1" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="722.5" y="162.6" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">451</text>
+<text x="722.5" y="176.6" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">5 % daneben</text>
+<text x="722.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×10</text>
+<text x="722.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 182: 8 %</text>
+<text x="790.0" y="110.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality-generated: Belege des Schreibers</text>
+<line x1="840.0" y1="348.0" x2="1140.0" y2="348.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="833.0" y="352.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">0</text>
+<line x1="840.0" y1="311.3" x2="1140.0" y2="311.3" stroke="#dde2e8" stroke-width="1"/>
+<text x="833.0" y="315.3" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">100</text>
+<line x1="840.0" y1="274.7" x2="1140.0" y2="274.7" stroke="#dde2e8" stroke-width="1"/>
+<text x="833.0" y="278.7" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">200</text>
+<line x1="840.0" y1="238.0" x2="1140.0" y2="238.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="833.0" y="242.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">300</text>
+<line x1="840.0" y1="201.3" x2="1140.0" y2="201.3" stroke="#dde2e8" stroke-width="1"/>
+<text x="833.0" y="205.3" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">400</text>
+<line x1="840.0" y1="164.7" x2="1140.0" y2="164.7" stroke="#dde2e8" stroke-width="1"/>
+<text x="833.0" y="168.7" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">500</text>
+<line x1="840.0" y1="128.0" x2="1140.0" y2="128.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="833.0" y="132.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">600</text>
+<rect x="857.5" y="320.7" width="40.0" height="27.3" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="857.5" y="306.2" width="40.0" height="14.5" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="857.5" y="305.1" width="40.0" height="1.1" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="877.5" y="285.1" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">117</text>
+<text x="877.5" y="299.1" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">3 % daneben</text>
+<text x="877.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×1</text>
+<rect x="932.5" y="302.0" width="40.0" height="46.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="932.5" y="276.5" width="40.0" height="25.5" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="932.5" y="275.0" width="40.0" height="1.5" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="952.5" y="255.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">199</text>
+<text x="952.5" y="269.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">2 % daneben</text>
+<text x="952.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×2</text>
+<text x="952.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 82: 1 %</text>
+<rect x="1007.5" y="275.2" width="40.0" height="72.8" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="1007.5" y="233.2" width="40.0" height="42.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="1007.5" y="229.2" width="40.0" height="4.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="1027.5" y="209.2" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">324</text>
+<text x="1027.5" y="223.2" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">3 % daneben</text>
+<text x="1027.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×4</text>
+<text x="1027.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 125: 6 %</text>
+<rect x="1082.5" y="231.6" width="40.0" height="116.4" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="1082.5" y="159.7" width="40.0" height="71.9" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="1082.5" y="153.3" width="40.0" height="6.4" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="1102.5" y="133.3" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="600">531</text>
+<text x="1102.5" y="147.3" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">3 % daneben</text>
+<text x="1102.5" y="365.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">×10</text>
+<text x="1102.5" y="381.0" font-size="9.5" fill="#52606d" text-anchor="middle" font-weight="normal">neu 207: 3 %</text>
+<text x="24.0" y="412.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Jeder Absatz einmal blind benotet von zwei Claude-Gutachtern (Mittel), Summe der vier Themen; bei best-quality-generated die Absätze, die der Schreiber je Baustein bekommt.</text>
+<text x="24.0" y="428.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Über dem Balken: alle Absätze und ihr Anteil daneben. Darunter: die neuen gegenüber dem nächstkleineren Faktor und ihr Anteil daneben.</text>
+<text x="24.0" y="444.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Was ×1 hat, haben alle größeren Faktoren auch (je Thema ein Korpus und eine Zuordnung).</text></svg><figcaption>Bausteinbudget: passende und unpassende Absätze im Text von llm-free und balanced und in den Belegen von best-quality-generated (M86)</figcaption></figure>
+<p><strong>Empfehlung vor der Entscheidung:</strong> Faktor 4 als einstellbare Vorgabe für alle Profile, angewandt wie gemessen auf
+die Höchstzahl der Absätze und die Zeichen, ab denen ein Baustein schließt; die Vorlagen bleiben, wie sie sind. Bei
+×4 gewinnt jedes Profil 0,8 bis 1,4 Noten an Nutzen und <code>best-quality-generated</code> 0,5 an Vollständigkeit, für 19 %
+mehr Tokens dort und ohne längere Dauer; Precision und Anteil unpassender Absätze bleiben, und die wörtlichen Texte
+kommen in die Nähe der Ziellänge. Über ×4 hinaus lohnt es nur für <code>best-quality-generated</code>: ×10 bringt dort noch 0,4
+Noten an Nutzen und Vollständigkeit für 14 Prozentpunkte mehr Tokens, ohne den Text zu verlängern; die wörtlichen
+Profile bekämen bei ×10 lange Texte mit mehr Absätzen am Rand. Ein eigener, höherer Faktor für die schreibenden
+Profile wäre eine zweite Einstellung; für <code>/qa</code> kann der Faktor bei 1 bleiben.</p>
+<p><strong>Entschieden (D102, Jan):</strong> „bei llm free steigt die fehlerquote nicht. bei balanced scheint sie leicht zu steigen.
+der tokenanstieg scheint zwar spürbar zu sein aber sich in grenzen zu halten … wahrscheinlich sollten wir das 10
+fachebudget als default wert setzen“. Seit Release 2.19.0 gilt das Zehnfache für alle Profile, einstellbar mit
+<code>BLOCK_BUDGET_FACTOR</code> (<code>1</code> stellt das Verhalten bis 2.18.2 her), und die <code>best-quality</code>-Profile dürfen 200.000
+Tokens je Anfrage brauchen (<code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY</code>). Die wörtlichen Texte werden damit deutlich
+länger, <code>balanced</code> im Median 44.900 statt 11.100 Zeichen, <code>best-quality</code> bei Demokratie 105.200 statt 15.500; die
+Belege des Schreibers bleiben so passend wie bei ×1. <code>/qa</code> bleibt bei den Budgets der Vorlage; <code>extraction=llm</code>, in
+keinem Profil voreingestellt, ist mit dem Zehnfachen nicht gemessen.</p>
 <p>Nebenbefund: Die Artikel, die das LLM zu einem Thema nennt (D63), wechselten von Lauf zu Lauf; einmal kam für Optik
 „Linsen“, im Archiv die Pflanzengattung, und ein größeres Budget druckte deren Botanik. M86 maß deshalb jedes Thema
 auf einem festen Korpus; die genannten Artikel auf Mehrdeutigkeit zu prüfen, ist eine eigene Messung.</p>
+</li>
+<li>
+<p><strong>Genannte Artikel einer anderen Bedeutung</strong> (Nebenbefund von Punkt 17): gemessen in M88 an den 100 Anfragen von
+M82, je fünf Läufe <code>balanced</code> (500), alle Varianten auf denselben Antworten von N; zu entscheiden.</p>
+<p><strong>Befund:</strong> 16 von 3.309 Artikeln, die das Archiv für die Titel von N lieferte, behandeln etwas anderes gleichen
+Namens (0,5 %; mit den Fällen nur eines Gutachters 21). In 14 von 500 Läufen druckt der Text Absätze daraus,
+zusammen 61 von 12.447 (0,5 %), zwei Drittel bei mehrdeutigen Wörtern mit Fach. „Linsen“ kam nicht wieder; N nannte
+die Linse zu Optik als „Linse (Optik)“. Zehn der 16 lieferte das Archiv, obwohl N das Richtige meinte: über eine
+Weiterleitung („Instrumental“ führt zur <em>Instrumentalmusik</em>), einen gleichnamigen Artikel („Friedrich von Spee“
+ist ein Landrat, „Neuronales Netz“ das biologische) und die Übersicht „Delta (Geografie)“, die ohne Klammerzusatz
+der griechische Buchstabe ist. Sechs nannte N selbst, etwa „Intervall (Mathematik)“ zum Intervall in Musik und
+„Mechanische Spannung“ zur Spannung in Physik. Keiner der Fälle ist im Archiv als mehrdeutig erkennbar.</p>
+<div class="table-wrap"><table style="min-width: 900px">
+<thead>
+<tr>
+<th>Variante</th>
+<th>andere Bedeutung im Korpus (heute 16)</th>
+<th>passende Artikel weg</th>
+<th>gedruckte Absätze anderer Bedeutung (heute 61)</th>
+<th>gedruckte Absätze (heute 12.447)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>den Artikelanfang auf Wörter des Themas prüfen (<code>anfang</code>)</td>
+<td>9</td>
+<td>604</td>
+<td>37</td>
+<td>11.726</td>
+</tr>
+<tr>
+<td>Verlinkung mit Hauptartikel oder Übersicht verlangen (<code>verlinkt</code>)</td>
+<td>6</td>
+<td>159</td>
+<td>26</td>
+<td>12.229</td>
+</tr>
+<tr>
+<td>den Klammerzusatz zum Fach bevorzugen (<code>klammer</code>)</td>
+<td>17</td>
+<td>5, dafür 39 neu</td>
+<td>61</td>
+<td>12.474</td>
+</tr>
+<tr>
+<td>nur Namen prüfen, die das Archiv als mehrdeutig zeigt (<code>mehrdeutig</code>)</td>
+<td>16</td>
+<td>7, dafür 8 neu</td>
+<td>61</td>
+<td>12.458</td>
+</tr>
+<tr>
+<td>ein Klammerzusatz, der ein anderes Fach nennt, fällt weg (<code>fachfremd</code>)</td>
+<td>15</td>
+<td>0</td>
+<td>56</td>
+<td>12.443</td>
+</tr>
+<tr>
+<td>die Übersicht ohne Klammerzusatz nur, wenn ihr Anfang das Klammerwort nennt (<code>uebersicht</code>)</td>
+<td>13</td>
+<td>0</td>
+<td>43</td>
+<td>12.435</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Empfehlung:</strong> keine Prüfung der genannten Artikel einbauen. Die allgemeinen Prüfungen kosten das 16- bis 86-Fache
+an passenden Artikeln (<code>verlinkt</code> 159 für 10, <code>anfang</code> 604 für 7) und Text, und die Fälle haben kein gemeinsames
+Merkmal, an dem eine Regel ansetzen könnte. Wer die zwei häufigsten Wege schließen will: <code>fachfremd</code> ist eine Regel
+von wenigen Zeilen und traf in 500 Läufen nur ihren Fall; <code>uebersicht</code> nähme den Buchstaben Delta heraus, aber auch
+den Fall, für den die Übersicht ohne Klammerzusatz gebaut wurde (V1a, M49): „Aufklärung (Philosophie)“, deren
+Artikel die Philosophie im ersten Absatz nicht nennt.</p>
+<p><strong>Beobachtungen:</strong></p>
+<ul>
+<li><code>klammer</code> löst ein anderes Problem desselben Schritts: Titel, die ohne Klammer eine Begriffsklärung sind oder
+fehlen, fallen heute aus; mit <code>klammer</code> kamen 34 passende Artikel dazu (<em>Ballade (Gedicht)</em>, <em>Hauptsatz
+(Grammatik)</em>, <em>Linse (Optik)</em> für „Linse“) und ein Fehlgriff (<em>Strom (Gewässerart)</em> zu „Strom“). Das wäre eine
+eigene Entscheidung, keine Prüfung auf Mehrdeutigkeit.</li>
+<li>Häufiger als eine andere Bedeutung ist, dass es einen genannten Titel nicht gibt: 437 der 3.729 genannten Teile
+(12 %), 168 davon mit einem Klammerzusatz, den es nicht gibt („Bruch (Mathematik)“, „Welle (Physik)“), dazu 92
+Begriffsklärungen. Beide fallen still aus.</li>
+<li>Die genannten Artikel wechseln stark von Lauf zu Lauf: Über fünf Läufe kamen je Anfrage im Median 11 verschiedene,
+nur 41 % davon in allen fünf; der Hauptartikel blieb bei allen 100 Anfragen gleich.</li>
+<li>Mit mehr Budget (Punkt 17) druckt jeder Fehlgriff mehr Absätze (M86).</li>
+</ul>
 </li>
 </ol>
 <p>Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
@@ -7191,7 +7369,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>aab1df9</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>1886afc</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
