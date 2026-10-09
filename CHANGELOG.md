@@ -9,11 +9,25 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+- **Neu (D102, M86):** `BLOCK_BUDGET_FACTOR` (Vorgabe 10, 1 bis 100) vervielfacht beim Zuschnitt der Zuordnung das
+  Budget jedes Inhaltsbausteins, nach den Regeln wie nach dem LLM: die Absätze, die er behält (`max_chunks` der Vorlage,
+  aufgerundet), und die Zeichen, ab denen er mit genug Absätzen schließt. Die Ziellänge des Schreibers bleibt die der
+  Anfrage. In M86 stieg damit der Nutzen in jedem Profil (`llm-free` 1,5 auf 2,8, `balanced` 2,0 auf 4,3,
+  `best-quality-generated` 3,8 auf 4,9), keine Anfrage dauerte länger, und die Precision am Gold blieb. Die wörtlichen
+  Texte werden deutlich länger (`balanced` im Median 44.900 statt 11.100 Zeichen), die geschriebenen kaum; `1` stellt
+  das Verhalten bis 2.18.2 her. `/qa` baut seinen Teil 1 weiter mit den Budgets der Vorlage.
+- **Geändert (D102):** `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` hat die Vorgabe 200.000 statt 180.000. Am breitesten
+  Thema, Demokratie, brauchte Teil 1 bei ×10 109.100 Tokens in `best-quality-generated` und 132.100 in
+  `best-coverage-generated`, 47 und 38 % mehr als beim Budget der Vorlage.
+- **[Betrieb](docs/betrieb.md#updates):** Eine neue Einstellung mit Vorgabe (`BLOCK_BUDGET_FACTOR`). Wer
+  `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` gesetzt hat, setzt 200000. Die Texte werden länger, die schreibenden Profile
+  brauchen rund ein Drittel mehr Tokens.
 - **Doku (M86):** Das Bausteinbudget mal 1, 2, 4 und 10 an vier Themen in `llm-free`, `balanced` und
-  `best-quality-generated` gemessen, mit Zeit, Tokens, Text, blinden Noten und dem Gold der Zuordnung, dazu das Gold
-  bis zur Sättigung (×1000) und ein Urteil zu jedem gedruckten Absatz; Entscheidungsvorlage Punkt 17 mit den Grafiken
-  `bausteinbudget.svg` (lineare Achse), `bausteinbudget_gold.svg` und `bausteinbudget_absaetze.svg`. Am Dienst ändert
-  sich nichts.
+  `best-quality-generated` gemessen, mit Zeit, Tokens, Text, blinden Noten und dem Gold der Zuordnung, dazu das Gold bis
+  zur Sättigung (×1000), ein Urteil zu jedem gedruckten Absatz und jedem Beleg des Schreibers und die Grenze am
+  breitesten Thema; Entscheidungsvorlage Punkt 17 mit den Grafiken `bausteinbudget.svg` (lineare Achse),
+  `bausteinbudget_gold.svg` und `bausteinbudget_absaetze.svg`. Seite 04 nennt das eigene Budget der Lehrplanprüfung
+  (D94) statt der 180.000 der Anfrage.
 - **Doku (D101, M87):** Kein Vektorindex über die Absätze der Wikipedia; Umfang und Tempo der Einbettung geschätzt.
 - **Doku (M88):** Wie oft ein Artikel, den die Frage N zu einem Thema nennt, eine andere Bedeutung hat (einer von 200),
   woher es kommt und was sechs Prüfungen an passenden Artikeln kosten; Entscheidungsvorlage Punkt 18. Am Dienst ändert

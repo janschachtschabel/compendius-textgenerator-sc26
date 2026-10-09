@@ -4466,7 +4466,7 @@ Klexikon-Seite und Text); Auswertung `mc_klexikon_zwillinge_auswertung.py`, Übe
 `mc_klexikon_zwillinge_uebereinstimmung.py`. Die Läufe mit den gedruckten Absätzen (57 MB) und der Bogen mit den Texten
 bleiben außerhalb des Repositorys.
 
-## M86 Bausteinbudget ×1 bis ×10: Zeit, Kosten und Güte (09.10.2026)
+## M86 Bausteinbudget ×1 bis ×10: Zeit, Kosten und Güte (D102, 09.10.2026)
 
 Jan nach M84: „der größte hebel ist das bausteinbudget - das sehe ich auch so. vom team gewünscht war, das die
 kompendiale texte umfangreich und vollständig sind. wir sollten mal mit begrenzen messungen unterschiedliche budgets an
@@ -4645,19 +4645,78 @@ Korpus nicht, druckt aber mehr von ihnen.
 **Grenzen.** Vier Themen, je Faktor ein Lauf; die Noten stammen von Claude-Gutachtern und gelten für einen Auszug (die
 Bausteine 5 bis 7 sah keiner). Eine Note eines Gutachters bei einem Thema verschiebt ein Mittel um 0,125.
 
-**Schluss.** Der Zuschnitt auf die Budgets verwirft gute Absätze: Am Gold bleibt die Precision bis zur Sättigung bei
-×20 bis ×30 gleich. Mehr Budget macht die Texte in allen Profilen gehaltvoller, ohne Zeit zu kosten;
+**Schluss.** Der Zuschnitt auf die Budgets verwirft gute Absätze: Am Gold bleibt die Precision bis zur Sättigung bei ×20
+bis ×30 gleich. Mehr Budget macht die Texte in allen Profilen gehaltvoller, ohne Zeit zu kosten;
 `best-quality-generated` wird auch vollständiger, für 19 % (×4) bis 33 % (×10) mehr Tokens. Die wörtlichen Profile
 werden länger und etwas schwerer lesbar; ihre leeren Bausteine füllt mehr Budget nicht, und über ×4 kommen mehr Absätze
-am Rand und daneben dazu, vor allem beim Aspektthema. Zu entscheiden: Entscheidungsvorlage, Punkt 17.
+am Rand und daneben dazu, vor allem beim Aspektthema. Jan entschied das Zehnfache als Vorgabe (D102,
+Entscheidungsvorlage Punkt 17).
+
+**Nach der Messung: das Zehnfache als Vorgabe (D102).** Jan: „bei llm free steigt die fehlerquote nicht. bei balanced
+scheint sie leicht zu steigen. der tokenanstieg scheint zwar spürbar zu sein aber sich in grenzen zu halten …
+wahrscheinlich sollten wir das 10 fachebudget als default wert setzen“; „du kannst die default token grenze auf 200000
+setzen“. Seit Release 2.19.0 vervielfacht `BLOCK_BUDGET_FACTOR` (Vorgabe 10) beim Zuschnitt die Absätze und Zeichen
+jedes Bausteins, wie hier gemessen, und die `best-quality`-Profile dürfen 200.000 statt 180.000 Tokens je Anfrage
+brauchen. Dazu drei Befunde und eine offene Frage.
+
+**Die Belege des Schreibers in `best-quality-generated`** (`mc_budget_belege.py`; Jan: „bausteine budget und passende /
+unpassende absätze wäre auch nochmal für das max quality generated profil spannend“). Das Profil druckt keine Absätze;
+das Budget ändert dort, welche Absätze der Schreiber je Baustein als Belege liest, je Absatz höchstens 1.500 Zeichen. Je
+Thema ein Korpus, wie das Profil ihn baut, und eine Zuordnung durch das LLM, mit jedem Faktor zugeschnitten; was ×1 hat,
+haben die größeren Faktoren auch. Die 531 verschiedenen Belege bewerteten zwei neue Claude-Gutachter blind wie oben;
+beim Thema urteilten sie in 521 Fällen gleich (κ 0,96), beim Baustein in 512. Mittel beider Gutachter, Summe der vier
+Themen:
+
+| Belege des Schreibers | gesamt | zum Thema | am Rand | daneben | im falschen Baustein | neu: Absätze, davon daneben |
+|---|---|---|---|---|---|---|
+| ×1 | 117 | 64 % | 34 % | 3,0 (3 %) | 3 % | – |
+| ×2 | 199 | 63 % | 35 % | 4,0 (2 %) | 4 % | 82, 1 % |
+| ×4 | 324 | 61 % | 35 % | 11,0 (3 %) | 6 % | 125, 6 % |
+| ×10 | 531 | 60 % | 37 % | 17,5 (3 %) | 6 % | 207, 3 % |
+
+- Der Anteil daneben bleibt bei jedem Faktor bei 2 bis 3 %, auch unter den Belegen, die ×10 zu ×4 hinzufügt. Alle
+  unpassenden Belege kommen vom Aspektthema: Zu „Inklusion im Sportunterricht“ liest der Schreiber bei ×10 182 Belege, 2
+  zum Sport, 162,5 zur Inklusion allgemein (am Rand) und 17,5 daneben. Die anderen drei Themen bekommen bei keinem
+  Faktor einen unpassenden Beleg, zum Thema sind dort 79 bis 98 %.
+- Im falschen Baustein stehen 3 bis 6 % der Belege, in `balanced` 28 bis 32 % der gedruckten Absätze: Das LLM ordnet
+  genauer zu als die Regeln, wie am Gold (Precision 0,78 bis 0,82 statt 0,62 bis 0,66).
+
+**Die Grenze am breitesten Thema** (`mc_kompendium_profil.py
+--variants=best-quality,best-quality-generated,best-coverage-generated --budgets=1,10 --warmup --fixed-corpus
+Demokratie`, ohne Grenzen wie oben). Demokratie ohne Fach brauchte schon in M33 und M79 die meisten Tokens; Teil 1, je
+Profil und Faktor ein Lauf:
+
+| Profil, Demokratie | Tokens bei ×1 und ×10 | Dauer der Anfrage | Zeichen | Modellwissen |
+|---|---|---|---|---|
+| `best-quality` | 53.962 und 54.190 | 15,6 und 12,8 s | 15.508 und 105.219 | – |
+| `best-quality-generated` | 74.193 und 109.054 | 32,3 und 28,3 s | 27.742 und 32.565 | 49 und 26 % |
+| `best-coverage-generated` | 96.014 und 132.068 | 30,8 und 30,3 s | 61.213 und 67.473 | 78 und 45 % |
+
+- Der teuerste Lauf, `best-coverage-generated` bei ×10, brauchte 132.068 Tokens, zwei Drittel der neuen Grenze; die
+  Prüfung von Teil 2 rechnet aus einem eigenen Budget (D94). Bei ×10 brauchen die schreibenden Profile 47 und 38 % mehr
+  Tokens als bei ×1, `best-quality` 0,4 % mehr.
+- Keine Anfrage dauert länger. Der erste Lauf, `best-quality` bei ×1, fragte die Artikelwahl noch (3,5 s), die anderen
+  nahmen sie aus dem festen Korpus.
+- `best-quality` druckt bei ×10 105.219 statt 15.508 Zeichen, das 3,5-Fache der Ziellänge von 30.000. Die schreibenden
+  Profile werden um 17 und 10 % länger und ersetzen Modellwissen durch Belege (49 auf 26 % und 78 auf 45 %).
+
+**`/qa` bei den Budgets der Vorlage.** Beim Bau fiel der Test von `/qa` mit dem Zehnfachen auf die Regeln zurück: Die
+Paare des LLM lesen den ganzen Teil 1, und das Budget reserviert ihn nach seinen Bytes. `/qa` baut seinen Teil 1 darum
+weiter mit dem Faktor 1.
+
+**Nicht gemessen: `extraction=llm`.** Der Schalter, in keinem Profil voreingestellt, bietet dem LLM je Baustein alle
+Absätze an, die ihm der Zuschnitt lässt, mit dem Zehnfachen in `balanced` im Median 116 statt 27,5 Absätze, je Absatz
+bis 1.000 Zeichen; seine Auswahl schließt weiter bei den Zeichen der Vorlage. Er braucht damit mehr Tokens, und reicht
+das Budget nicht, behält ein Baustein die Absätze der Zuordnung, mit Grund im Audit.
 
 Rohdaten: `m86_bausteinbudget.json` (je Profil und Faktor Zeit, Tokens, Text und Noten, die Läufe ohne Text, die Urteile
 ohne Zitate, die Schlüssel und das Gold des ersten Laufs), `m86_bausteinbudget_erster_durchgang.json`,
-`m86_gold_erweitert.json` (das Gold bis ×1000) und `m86_absaetze.json` (die Absatzurteile je Profil, Faktor und Thema,
-mit der Übereinstimmung). Skripte: `mc_kompendium_profil.py --budgets --fixed-corpus`, `mc_budget_boegen.py`,
-`mc_budget_auswertung.py`, `mc_budget_gold.py`, `mc_budget_absaetze.py`; Grafiken `bausteinbudget.svg`,
-`bausteinbudget_gold.svg` und `bausteinbudget_absaetze.svg` (`mc_grafiken.py`). Die Texte, die Bögen und die Urteile
-je Absatz bleiben außerhalb des Repositorys.
+`m86_gold_erweitert.json` (das Gold bis ×1000), `m86_absaetze.json` (die Absatzurteile je Profil, Faktor und Thema, mit
+der Übereinstimmung), `m86_belege_absaetze.json` (ebenso für die Belege von `best-quality-generated`) und
+`m86_grenze.json` (die Läufe an Demokratie, ohne Text). Skripte: `mc_kompendium_profil.py --budgets --fixed-corpus`,
+`mc_budget_boegen.py`, `mc_budget_auswertung.py`, `mc_budget_gold.py`, `mc_budget_absaetze.py`, `mc_budget_belege.py`;
+Grafiken `bausteinbudget.svg`, `bausteinbudget_gold.svg` und `bausteinbudget_absaetze.svg` (`mc_grafiken.py`). Die
+Texte, die Bögen und die Urteile je Absatz bleiben außerhalb des Repositorys.
 
 ## M87 Ein Vektorindex über die Absätze der Wikipedia: Umfang und Tempo (D101, 09.10.2026)
 
@@ -4752,11 +4811,12 @@ Hauptartikel bei allen 100.
 | Thema mit Aspekt | 3 | 15 | 69 | 1 | 1 | 1 | 3 von 528 |
 | zusammen | 100 | 500 | 3.309 | 16 (21) | 15 (18) | 14 | 61 (107) von 12.447 |
 
-Einer von 200 genannten Artikeln hat eine andere Bedeutung (0,5 %), ebenso einer von 200 gedruckten Absätzen; in 14
-von 500 Läufen erreicht ein solcher Artikel den Text, bei 11 von 100 Anfragen (mit einem Gutachter 12). Zwei Drittel
-der Fälle kommen bei mehrdeutigen Wörtern mit Fach. „Linsen“ kam nicht wieder: In den 20 Läufen zu Optik, „Optik in
-Klasse 7“, „Physik: Optik (Sek I)“ und „Lichtlehre“ nannte N die Linse sechsmal als „Linse (Optik)“, einmal als
-„Linse“ (eine Begriffsklärung, sie fiel aus) und einmal als „Linsenoptik“ (fehlt im Archiv).
+Einer von 200 genannten Artikeln hat eine andere Bedeutung (0,5 %), ebenso einer von 200 gedruckten Absätzen; in 15 von
+500 Läufen kam ein solcher Artikel in den Korpus, in 14 erreichte er den Text; betroffen waren 11 von 100 Anfragen (mit
+einem Gutachter 12), 10 davon mit gedrucktem Absatz. Zwei Drittel der Fälle kommen bei mehrdeutigen Wörtern mit Fach.
+„Linsen“ kam nicht wieder: In den 20 Läufen zu Optik, „Optik in Klasse 7“, „Physik: Optik (Sek I)“ und „Lichtlehre“
+nannte N die Linse sechsmal als „Linse (Optik)“, einmal als „Linse“ (eine Begriffsklärung, sie fiel aus) und einmal als
+„Linsenoptik“ (fehlt im Archiv).
 
 **Die Fälle und woher sie kommen** (13 Paare, die beide Gutachter so sahen, und drei, die einer so sah):
 

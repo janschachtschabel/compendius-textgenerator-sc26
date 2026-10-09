@@ -18,7 +18,7 @@ Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
 | QA-Paare zu einem Text | `POST /api/v1/qa` | `POST /api/v2/qa` mit `text` |
 | QA-Paare zu einem Thema | `POST /api/v1/pipeline` (Kompendium und Paare in einem Aufruf) | `POST /api/v2/qa` mit `topic`: erzeugt Teil 1 selbst und fragt ihn ab |
 | Begriffe mit Wikipedia-Artikel | `POST /api/v1/linker` (live bei Wikipedia) | `POST /api/v2/entities` (lokal, mit Wikidata- und GND-Nummer) |
-| Länge | `config.length`, Vorgabe 6.000 Zeichen | `target_length`, Vorgabe des Profils, in allen 30.000 (D70, bis dahin 12.000); eine Richtgröße, der Text wird so lang, wie die Quellen tragen |
+| Länge | `config.length`, Vorgabe 6.000 Zeichen | `target_length`, Vorgabe des Profils, in allen 30.000 (D70, bis dahin 12.000); eine Richtgröße, der Text wird so lang, wie die Quellen tragen; seit 2.19.0 in den wörtlichen Profilen oft deutlich länger (D102) |
 | Zugang | ohne Schlüssel | Header `X-API-Key`, sobald `API_KEYS` gesetzt ist |
 | Grenze | 60 Anfragen je Minute und IP | 60 je Minute und Aufrufer, je Worker (`RATE_LIMIT`) |
 | Fehler | HTTP 200 mit „# Fehler bei der Generierung“ als Text | HTTP-Status mit JSON (siehe [Fehler](#fehler)) |
@@ -42,12 +42,13 @@ lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, 
 
 Zeit und Tokens: Median auf dem Server, ein Kompendium allein (Messung M45,
 [01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)); `best-coverage-generated` Teil 1 allein auf dem
-Entwicklungsrechner (M52); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. In jedem Profil hört
-jeder Prompt das angefragte Thema (D72); in den beiden schreibenden Profilen formuliert das LLM es zuerst, wenn
-`topic` ein Text ist (mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder ein Knoten (`node_id`) oder
-eine Sammlung (`collection_id`) ohne Thema kommt.
-Gleichzeitig mit anderen dauert es länger ([Lastmessung](README.md#lastmessung-vom-29092026)). Bei `/api/v2/qa`
-schreiben `llm-free` und `balanced` die Paare mit Regeln aus dem Satzbau, die drei Profile ab `best-quality` mit dem LLM.
+Entwicklungsrechner (M52); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. Seit 2.19.0 (D102, M86)
+brauchen die schreibenden Profile rund ein Drittel mehr Tokens als hier gemessen; `best-quality` braucht gleich viele
+und druckt deutlich längere Texte. In jedem Profil hört jeder Prompt das angefragte Thema (D72); in den beiden
+schreibenden Profilen formuliert das LLM es zuerst, wenn `topic` ein Text ist (mehr als sechs Wörter oder 60 Zeichen,
+ein Satz, eine Frage) oder ein Knoten (`node_id`) oder eine Sammlung (`collection_id`) ohne Thema kommt. Gleichzeitig
+mit anderen dauert es länger ([Lastmessung](README.md#lastmessung-vom-29092026)). Bei `/api/v2/qa` schreiben `llm-free`
+und `balanced` die Paare mit Regeln aus dem Satzbau, die drei Profile ab `best-quality` mit dem LLM.
 
 ## Vorbereitung
 

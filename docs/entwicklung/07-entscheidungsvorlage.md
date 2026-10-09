@@ -41,8 +41,9 @@ sonst ist die Anfrage ein 503. Die Profile wählen auch das Verfahren der QA-Paa
 | Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; seit D81 rund 2,5 s neben der Zuordnung und im Median rund 4.000 Tokens mehr (M82) | wie `best-quality` | wie `best-quality` |
 | Entitäten: F1 an 40 Materialtexten, zwei Gutachter, durch den Endpunkt (M36, D62) | 0,38, Präzision 0,29; 2,4 s an 1.500 Zeichen (M82) | 0,78, Präzision 0,70; 5,8 s und 1.214 Tokens an 1.500 Zeichen (M82) | wie `balanced` | wie `balanced` | wie `balanced` |
 | Teil 1 und 2 auf dem Server (M45, Release 2.2.2) | 2,3 s ohne LLM | die Schritte ohne LLM etwa halb so lange wie im Container, die des LLM gleich lang | wie `balanced` | wie `balanced` | wie `balanced` |
-| Budget je Anfrage (D59) | 60.000 | 60.000 | 180.000 | 180.000 | 180.000 |
-| Kompendien je Million Tokens (M82) | ohne Grenze | rund 3.200 | rund 17 | rund 16 | rund 11 |
+| Budget je Anfrage (D59, D102) | 60.000 | 60.000 | 200.000 | 200.000 | 200.000 |
+| Bausteinbudget beim Zuschnitt (`BLOCK_BUDGET_FACTOR`, D102) | das Zehnfache der Vorlage | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` |
+| Kompendien je Million Tokens (M82, vor D102) | ohne Grenze | rund 3.200 | rund 17 | rund 16 | rund 11 |
 | so wählt man es | `preset: llm-free`; ohne LLM gilt es auch ohne `preset` (D68) | `preset: balanced` | `preset: best-quality` | Standard, `preset: best-quality-generated` | `preset: best-coverage-generated` |
 
 ![Fünf Profile an drei Arten von Themen (M48)](bilder/profilvergleich.svg)
@@ -161,9 +162,9 @@ Gutachtern falsch (M31).
 `/knowledge`, `/qa`, `/lehrplan/search` und seit D62 `/entities` nehmen `preset` wie das Kompendium; ohne es gilt
 `PRESET_DEFAULT`. Bei `/qa` wählt es nur das Verfahren der Paare, Teil 1 eines Themas entsteht immer ohne LLM (D55);
 bei `/entities` die Wege der Erkennung (`methods`). `/nodes` und der Sammlungsüberblick kennen kein LLM und kein
-Profil. Die drei Profile ab `best-quality` rechnen in jedem Endpunkt mit 180.000 Tokens je Anfrage, die anderen mit
-60.000 (D59). Zeiten und Tokens: M45, ohne LLM auf dem Server, mit LLM im Entwicklungscontainer, das Kompendium als
-Server plus die Schritte des LLM; die Güte aus M30, M32, M34 und M36.
+Profil. Die drei Profile ab `best-quality` rechnen in jedem Endpunkt mit 200.000 Tokens je Anfrage, die anderen mit
+60.000 (D59, D102). Zeiten und Tokens: M45, ohne LLM auf dem Server, mit LLM im Entwicklungscontainer, das Kompendium
+als Server plus die Schritte des LLM; die Güte aus M30, M32, M34 und M36.
 
 ## Der Ablauf
 
@@ -328,7 +329,8 @@ drei übrigen Bausteine (Akteure, Quellen, Glossar) erzeugt der Dienst selbst.
 | Anfrage: `matcher` | `hybrid_light`, `bm25`, `char_tfidf`, `lexicon_only`, `llm` | aus dem Profil |
 | Anfrage: `preset` | `llm-free` und `balanced` setzen `hybrid_light`, `best-quality` und `best-quality-generated` `llm` | `PRESET_DEFAULT` |
 | Umgebung: `MODEL2VEC_PATH` | Pfad des Modells | im Image `/models/m2v`; ohne Model2Vec fällt `hybrid_light` auf 0,38 |
-| Umgebung: `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | Tokens je Anfrage in `llm-free` und `balanced`, in den `best-quality`-Profilen | 60.000: vier Stapel zugleich, weitere warten (D39); 180.000 (D59): rund dreimal so viele |
+| Umgebung: `LLM_MAX_TOKENS_PER_REQUEST`, `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | Tokens je Anfrage in `llm-free` und `balanced`, in den `best-quality`-Profilen | 60.000: vier Stapel zugleich, weitere warten (D39); 200.000 (D59, D102): gut dreimal so viele |
+| Umgebung: `BLOCK_BUDGET_FACTOR` | Faktor auf die Absätze, die ein Baustein beim Zuschnitt behält, und die Zeichen, ab denen er schließt; 1 bis 100 | 10 (D102): am Gold Recall 0,56 und 0,69 statt 0,16 und 0,22, Precision gleich (M86) |
 
 | Verfahren | macro-F1, gelabelte Absätze | macro-F1, alle Absätze | Zuordnung je Thema | Teil 1 | Tokens |
 |---|---|---|---|---|---|
@@ -371,8 +373,8 @@ mit dem Code vom 25.09.2026 auf 0,447 bei den gelabelten und 0,459 bei allen Abs
 - **Mögliche Vereinfachung ohne Qualitätsverlust:** BM25 mit Model2Vec erreicht 0,43 (alle Absätze 0,44) in 0,05 statt
   0,30 s. Als Strategie ist das nicht wählbar.
 - **Das Budget je Baustein verwirft gute Absätze.** Mit doppeltem bis zehnfachem Budget bleibt die Precision des
-  Gedruckten am Gold gleich (Regeln 0,64, LLM 0,75 bis 0,77), der Recall steigt von 0,16 auf 0,56 und von 0,21 auf
-  0,66 (M86, Punkt 17).
+  Gedruckten am Gold gleich (Regeln 0,64, LLM 0,75 bis 0,77), der Recall steigt von 0,16 auf 0,56 und von 0,21 auf 0,66
+  (M86, Punkt 17). Seit D102 gilt darum das Zehnfache (`BLOCK_BUDGET_FACTOR`).
 
 ## Schritt 4: Text bauen und optional umformulieren
 
@@ -390,10 +392,10 @@ drei Schalter auf.
 
 **Kombinierbar:** `extraction` und `generation` lassen sich zusammen einschalten, `enrichment` wirkt nur mit
 `generation`. Alle LLM-Schalter teilen sich das Budget je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST`, 60.000, in den
-`best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, 180.000, D59) und, wenn gesetzt, ein Tagesbudget
-(`LLM_DAILY_TOKEN_BUDGET`; die Vorgabe 0 setzt keine Grenze, D67). Ein geschriebener Satz bleibt nur, wenn er eine
-gültige Belegnummer trägt und mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er gestrichen
-(`LLM_UNSUPPORTED_SENTENCES=drop`) oder als Schlussfolgerung markiert (`mark`).
+`best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, 200.000, D59, D102) und, wenn gesetzt, ein
+Tagesbudget (`LLM_DAILY_TOKEN_BUDGET`; die Vorgabe 0 setzt keine Grenze, D67). Ein geschriebener Satz bleibt nur, wenn
+er eine gültige Belegnummer trägt und mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er
+gestrichen (`LLM_UNSUPPORTED_SENTENCES=drop`) oder als Schlussfolgerung markiert (`mark`).
 
 | Schalter | Zeit | Tokens | Güte |
 |---|---|---|---|
@@ -439,14 +441,15 @@ Themen, 576, 49.019 und 60.357 Tokens. Die Tokens folgen der Größe des Korpus,
 und Tokens gehen und was sich daran sparen ließ: Punkt 15.
 
 Große Themen kosten mehr: Wikinger mit 400 Absätzen brauchte in `best-quality` 65.116 Tokens, Transistor in
-`best-quality-generated` 134.766 (M45); M27 maß vor D58 und D63 noch 26.267 und 35.376. Mit Teil 2 kommt die Prüfung
-der Lehrplanelemente dazu: Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in `best-quality`
-und 152.197 in `best-quality-generated` (M33), seit D93 140.600 in `best-quality-generated` und 160.900 in
-`best-coverage-generated` (M79). Eine Anfrage dieser Profile darf bis 180.000 Tokens ausgeben (D59), die der anderen
-60.000, die Prüfung von Teil 2 dazu bis 400.000 aus einem eigenen Budget (D94); die Grenzen schützen vor Ausreißern,
-die meisten Anfragen bleiben weit darunter. Ein Tagesbudget (`LLM_DAILY_TOKEN_BUDGET`) gilt, wenn gesetzt, für alle
-Anfragen und Worker zusammen; ist es aufgebraucht, fallen LLM-Schalter bis zum nächsten Tag auf die Regeln zurück. Die
-Vorgabe 0 setzt keine Grenze (D67).
+`best-quality-generated` 134.766 (M45); M27 maß vor D58 und D63 noch 26.267 und 35.376. Mit Teil 2 kommt die Prüfung der
+Lehrplanelemente dazu: Demokratie ohne Fach (382 Absätze, 819 Elemente) kostete 137.398 Tokens in `best-quality` und
+152.197 in `best-quality-generated` (M33), seit D93 140.600 in `best-quality-generated` und 160.900 in
+`best-coverage-generated` (M79). Mit dem zehnfachen Bausteinbudget (D102) brauchte Teil 1 von Demokratie 109.100 Tokens
+in `best-quality-generated` und 132.100 in `best-coverage-generated` (M86). Eine Anfrage dieser Profile darf bis 200.000
+Tokens ausgeben (D59, D102), die der anderen 60.000, die Prüfung von Teil 2 dazu bis 400.000 aus einem eigenen Budget
+(D94); die Grenzen schützen vor Ausreißern, die meisten Anfragen bleiben weit darunter. Ein Tagesbudget
+(`LLM_DAILY_TOKEN_BUDGET`) gilt, wenn gesetzt, für alle Anfragen und Worker zusammen; ist es aufgebraucht, fallen
+LLM-Schalter bis zum nächsten Tag auf die Regeln zurück. Die Vorgabe 0 setzt keine Grenze (D67).
 
 ## Die Empfehlungen im Einzelnen
 
@@ -494,12 +497,12 @@ gilt auch dort dieses Profil, auf einem Server ohne LLM also ein 503. Wer einen 
 ### `best-quality`
 
 Anfrage: `{"topic": "Optik", "preset": "best-quality"}`, mit konfiguriertem LLM wie oben. Das Profil rechnet
-mit einem eigenen, größeren Budget je Anfrage (D59), ausgeliefert:
+mit einem eigenen, größeren Budget je Anfrage (D59, D102), ausgeliefert:
 
 ```
-LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY=180000   # rund dreimal so viele Stapel der Zuordnung zugleich wie bei
-                                                 # 60.000 und Platz für die Prüfung aller Lehrplanelemente,
-                                                 # auch beim breitesten Thema (M33)
+LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY=200000   # rund dreimal so viele Stapel der Zuordnung zugleich wie bei
+                                                 # 60.000 und Platz für das zehnfache Bausteinbudget, auch beim
+                                                 # breitesten Thema (D102, M86)
 ```
 
 Ergebnis: 93 von 94 Hauptartikeln - das LLM prüft auch sichere Auflösungen mehrdeutiger Wörter (M35, D61) -,
@@ -591,12 +594,12 @@ Passung 4,56 und Nutzen 4,31.
    nicht zu verstehen sind („Wo befinden sich die Kurszentren?“), und Nachbar-Personen, die die Gutachter trivial
    nennen („Wer war Immanuel Kant?“ zu Ernst Abbe).
 8. **Budget je Anfrage für `best-quality`:** entschieden (D59, Jan): Die beiden `best-quality`-Profile (seit D69 auch
-   `best-coverage-generated`) rechnen mit
-   180.000 Tokens je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`), in jedem Endpunkt, auch in der
-   Lehrplansuche, die seither die Profile nimmt; `llm-free` und `balanced` bleiben bei 60.000. Jan wollte zuerst
-   120.000; damit prüfte das Kompendium mit Teil 1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze,
-   819 Elemente) nur 579 Elemente. Ohne Grenze brauchte es 137.398 Tokens in `best-quality` und 152.197 in
-   `best-quality-generated` (M33); Jan gab frei, das Budget zu erhöhen, und bei 180.000 prüften beide alle 819.
+   `best-coverage-generated`) rechnen mit 180.000 Tokens je Anfrage, seit D102 mit 200.000
+   (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`), in jedem Endpunkt, auch in der Lehrplansuche, die seither die Profile
+   nimmt; `llm-free` und `balanced` bleiben bei 60.000. Jan wollte zuerst 120.000; damit prüfte das Kompendium mit Teil
+   1 und 2 beim breitesten Thema (Demokratie ohne Fach, 382 Absätze, 819 Elemente) nur 579 Elemente. Ohne Grenze
+   brauchte es 137.398 Tokens in `best-quality` und 152.197 in `best-quality-generated` (M33); Jan gab frei, das Budget
+   zu erhöhen, und bei 180.000 prüften beide alle 819.
 9. **Sammel- und Mischthemen („deutsche Dichter“):** entschieden und gebaut (D63; Jan, 26. und 27.09.2026): `llm-free`
    bleibt ohne LLM, die neue Frage N stellt das konfigurierte Modell (`gpt-6-luna`) ab `balanced` in allen höheren
    Profilen (Option C), nachgemessen in M39. Ohne großes LLM ist ihre Wirkung nicht erreichbar, weder mit spaCy und
@@ -1046,7 +1049,8 @@ Passung 4,56 und Nutzen 4,31.
     dagegen sprechen könnte … vielleicht kann man dann mit einem f1 sagen wo die verbesserungen gesättigt sind“):
     gemessen in M86 mit dem Faktor 1, 2, 4 und 10 auf die Absätze und Zeichen je Baustein an vier Themen in `llm-free`,
     `balanced` und `best-quality-generated`, dazu am Gold der Zuordnung bis ×1000 und mit einem Urteil zu jedem
-    gedruckten Absatz; zu entscheiden.
+    gedruckten Absatz und jedem Beleg des Schreibers; entschieden (D102, Jan): das Zehnfache als Vorgabe seit
+    Release 2.19.0.
 
     ![Bausteinbudget ×1 bis ×10: Text, Belege, Kosten und Noten (M86)](bilder/bausteinbudget.svg)
 
@@ -1062,22 +1066,26 @@ Passung 4,56 und Nutzen 4,31.
     | `best-quality-generated`: Tokens je Anfrage | 65.200 | 69.600 (+7 %) | 77.600 (+19 %) | 86.400 (+33 %) |
     | `best-quality-generated`: Nutzen / Vollständigkeit / Lesbarkeit | 3,8 / 3,8 / 4,0 | 4,3 / 4,1 / 4,0 | 4,5 / 4,3 / 3,6 | 4,9 / 4,6 / 4,0 |
     | `best-quality-generated`: Zuordnung und Schreiben | 24,9 s | 23,0 s | 25,1 s | 25,9 s |
+    | `best-quality-generated`: Belege daneben, Summe der Themen | 3 (3 %) | 4 (2 %) | 11 (3 %) | 17,5 (3 %) |
     | Gold der Zuordnung: F1 der Regeln und des LLM | 0,26 und 0,35 | 0,34 und 0,46 | 0,46 und 0,58 | 0,60 und 0,74 |
 
     **Was dagegen sprechen könnte, gemessen:**
 
-    - **Kosten:** Mehr Tokens braucht mehr Budget nur in `best-quality-generated`: 7 % bei ×2, 19 % bei ×4, 33 % bei
-      ×10. Es wächst die Eingabe, kaum die Ausgabe; der teuerste Lauf brauchte 103.400 der erlaubten 180.000 Tokens.
-      `llm-free` braucht keine, `balanced` gleich bleibend rund 310. Nicht gemessen: `/qa` schreibt seine Paare aus
-      einem Teil 1 von `llm-free`; mit ×4 wäre dieser Text rund doppelt so lang, und die Paare des LLM (`best-quality`,
-      M82: 3.234 Tokens je Thema) würden entsprechend teurer.
+    - **Kosten:** Mehr Tokens braucht mehr Budget nur in den schreibenden Profilen, in `best-quality-generated` 7 % bei
+      ×2, 19 % bei ×4, 33 % bei ×10. Es wächst die Eingabe, kaum die Ausgabe; der teuerste Lauf brauchte 103.400 der
+      damals erlaubten 180.000 Tokens. Am breitesten Thema, Demokratie, brauchte Teil 1 bei ×10 109.100 Tokens in
+      `best-quality-generated` und 132.100 in `best-coverage-generated`, `best-quality` so viele wie bei ×1 (M86, nach
+      der Messung). `llm-free` braucht keine, `balanced` gleich bleibend rund 310. `/qa` schreibt seine Paare aus einem
+      Teil 1 von `llm-free`; mit dem Zehnfachen fielen sie im Test auf die Regeln zurück, weil sie den ganzen Teil 1
+      lesen, und `/qa` bleibt bei den Budgets der Vorlage (D102).
     - **Dauer:** In keinem Profil länger (Tabelle): Das Budget greift erst nach Artikelwahl und Zuordnung, und der
       Schreiber schreibt die Bausteine nebeneinander.
     - **Präzision, unpassende Absätze:** Am Gold bleibt die Precision bei jedem Faktor (Regeln 0,62 bis 0,66, LLM 0,78
       bis 0,82), auch der Anteil der Absätze, die nicht hineingehören (10 bis 14 und 4 bis 7 %). Im Text von `balanced`
       bleibt der Anteil daneben bis ×4 bei 2 bis 3 %; ×10 bringt mehr Absätze am Rand und unter den neuen 8 % daneben,
       vor allem beim Aspektthema und bei Optik. Die Zahl unpassender Absätze wächst mit der Länge, ihr Anteil bis ×4
-      nicht.
+      nicht. Die Belege, die der Schreiber von `best-quality-generated` liest, sind bei jedem Faktor zu 2 bis 3 %
+      daneben, auch die neuen bei ×10, alle beim Aspektthema (M86, nach der Messung).
     - **Länge und Lesbarkeit:** Die wörtlichen Texte werden länger und etwas schwerer lesbar (`balanced` 3,0 auf 2,4 bis
       ×4, danach gleich). Bei ×10 ist `balanced` im Median 44.900 Zeichen lang, beim Aspektthema 62.400, deutlich über
       der Ziellänge. `best-quality-generated` hält Länge und Lesbarkeit.
@@ -1091,16 +1099,25 @@ Passung 4,56 und Nutzen 4,31.
 
     ![Bausteinbudget am Gold der Zuordnung: Precision, Recall und F1 (M86)](bilder/bausteinbudget_gold.svg)
 
-    ![Bausteinbudget: passende und unpassende Absätze im Text (M86)](bilder/bausteinbudget_absaetze.svg)
+    ![Bausteinbudget: passende und unpassende Absätze im Text von llm-free und balanced und in den Belegen von best-quality-generated (M86)](bilder/bausteinbudget_absaetze.svg)
 
-    **Empfehlung:** Faktor 4 als einstellbare Vorgabe für alle Profile, angewandt wie gemessen auf die Höchstzahl der
-    Absätze und die Zeichen, ab denen ein Baustein schließt; die Vorlagen bleiben, wie sie sind. Bei ×4 gewinnt jedes
-    Profil 0,8 bis 1,4 Noten an Nutzen und `best-quality-generated` 0,5 an Vollständigkeit, für 19 % mehr Tokens dort
-    und ohne längere Dauer; Precision und Anteil unpassender Absätze bleiben, und die wörtlichen Texte kommen in die
-    Nähe der Ziellänge. Über ×4 hinaus lohnt es nur für `best-quality-generated`: ×10 bringt dort noch 0,4 Noten an
-    Nutzen und Vollständigkeit für 14 Prozentpunkte mehr Tokens, ohne den Text zu verlängern; die wörtlichen Profile
-    bekämen bei ×10 lange Texte mit mehr Absätzen am Rand. Ein eigener, höherer Faktor für die schreibenden Profile wäre
-    eine zweite Einstellung; für `/qa` kann der Faktor bei 1 bleiben.
+    **Empfehlung vor der Entscheidung:** Faktor 4 als einstellbare Vorgabe für alle Profile, angewandt wie gemessen auf
+    die Höchstzahl der Absätze und die Zeichen, ab denen ein Baustein schließt; die Vorlagen bleiben, wie sie sind. Bei
+    ×4 gewinnt jedes Profil 0,8 bis 1,4 Noten an Nutzen und `best-quality-generated` 0,5 an Vollständigkeit, für 19 %
+    mehr Tokens dort und ohne längere Dauer; Precision und Anteil unpassender Absätze bleiben, und die wörtlichen Texte
+    kommen in die Nähe der Ziellänge. Über ×4 hinaus lohnt es nur für `best-quality-generated`: ×10 bringt dort noch 0,4
+    Noten an Nutzen und Vollständigkeit für 14 Prozentpunkte mehr Tokens, ohne den Text zu verlängern; die wörtlichen
+    Profile bekämen bei ×10 lange Texte mit mehr Absätzen am Rand. Ein eigener, höherer Faktor für die schreibenden
+    Profile wäre eine zweite Einstellung; für `/qa` kann der Faktor bei 1 bleiben.
+
+    **Entschieden (D102, Jan):** „bei llm free steigt die fehlerquote nicht. bei balanced scheint sie leicht zu steigen.
+    der tokenanstieg scheint zwar spürbar zu sein aber sich in grenzen zu halten … wahrscheinlich sollten wir das 10
+    fachebudget als default wert setzen“. Seit Release 2.19.0 gilt das Zehnfache für alle Profile, einstellbar mit
+    `BLOCK_BUDGET_FACTOR` (`1` stellt das Verhalten bis 2.18.2 her), und die `best-quality`-Profile dürfen 200.000
+    Tokens je Anfrage brauchen (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`). Die wörtlichen Texte werden damit deutlich
+    länger, `balanced` im Median 44.900 statt 11.100 Zeichen, `best-quality` bei Demokratie 105.200 statt 15.500; die
+    Belege des Schreibers bleiben so passend wie bei ×1. `/qa` bleibt bei den Budgets der Vorlage; `extraction=llm`, in
+    keinem Profil voreingestellt, ist mit dem Zehnfachen nicht gemessen.
 
     Nebenbefund: Die Artikel, die das LLM zu einem Thema nennt (D63), wechselten von Lauf zu Lauf; einmal kam für Optik
     „Linsen“, im Archiv die Pflanzengattung, und ein größeres Budget druckte deren Botanik. M86 maß deshalb jedes Thema

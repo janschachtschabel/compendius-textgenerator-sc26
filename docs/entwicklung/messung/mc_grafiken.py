@@ -1562,41 +1562,45 @@ def bausteinbudget_gold() -> None:
 
 
 def bausteinbudget_absaetze() -> None:
-    """The paragraphs the verbatim profiles print per block budget (M86, page 07), judged by two blind raters: on the
-    topic, at its edge or off it, as stacked bars over the four topics; above each bar the share off the topic, below
-    it the share off the topic among the paragraphs the factor added."""
-    data = load("m86_absaetze.json")
+    """The paragraphs per block budget (M86, page 07), judged by two blind raters - on the topic, at its edge or off
+    it - as stacked bars over the four topics: what the verbatim profiles print, and the evidence the writer of
+    best-quality-generated gets. Above each bar the share off the topic, below it that share among the paragraphs the
+    factor added."""
+    panels = (
+        ("m86_absaetze.json", "llm-free", "llm-free: gedruckte Absätze"),
+        ("m86_absaetze.json", "balanced", "balanced: gedruckte Absätze"),
+        ("m86_belege_absaetze.json", "best-quality-generated", "best-quality-generated: Belege des Schreibers"),
+    )
     classes = (("passt", "zum Thema", FITS), ("rand", "am Rand", RELATED), ("daneben", "daneben", UNFIT))
     factors = ("×1", "×2", "×4", "×10")
-    profiles = ("llm-free", "balanced")
-    plot_w, plot_h, top, bar_w, maximum = 380, 220, 128, 46, 500
-    lefts = (80, 80 + plot_w + 90)
+    plot_w, plot_h, top, bar_w, maximum, gap = 300, 220, 128, 40, 600, 80
+    lefts = [80 + number * (plot_w + gap) for number in range(len(panels))]
     width = lefts[-1] + plot_w + 30
     bottom = top + plot_h
     notes = (
-        "Jeder Absatz, den llm-free oder balanced bei einem Faktor drucken, blind benotet von zwei Claude-Gutachtern "
-        "(Mittel); Summe der vier Themen.",
-        "Über dem Balken: alle Absätze und ihr Anteil daneben. Darunter: die neuen Absätze gegenüber dem "
-        "nächstkleineren Faktor und ihr Anteil daneben.",
-        "Was ×1 druckt, drucken alle größeren Faktoren auch (gleicher Korpus je Thema).",
+        "Jeder Absatz einmal blind benotet von zwei Claude-Gutachtern (Mittel), Summe der vier Themen; bei "
+        "best-quality-generated die Absätze, die der Schreiber je Baustein bekommt.",
+        "Über dem Balken: alle Absätze und ihr Anteil daneben. Darunter: die neuen gegenüber dem nächstkleineren "
+        "Faktor und ihr Anteil daneben.",
+        "Was ×1 hat, haben alle größeren Faktoren auch (je Thema ein Korpus und eine Zuordnung).",
     )
-    title = "Bausteinbudget: passende und unpassende Absätze im Text (M86)"
+    title = "Bausteinbudget: passende und unpassende Absätze (M86)"
     svg = Svg(width, bottom + 92 + 16 * len(notes), title)
     svg.text(24, 30, title, 17, weight="600")
-    svg.text(24, 52, "Wörtliche Profile, vier Themen: die gedruckten Absätze je Faktor nach ihrem Bezug zum "
-             "angefragten Thema", 12, MUTED, limit=width - 48)
+    svg.text(24, 52, "Vier Themen: die Absätze je Faktor nach ihrem Bezug zum angefragten Thema, wörtlich gedruckt "
+             "oder als Beleg für den Schreiber", 12, MUTED, limit=width - 48)
     x = 24
     for _, label, color in classes:
         svg.rect(x, 64, 12, 12, color, 2)
         svg.text(x + 18, 74, label, 12, MUTED)
         x += 18 + len(label) * 12 * CHAR_WIDTH + 22
-    for profile, left in zip(profiles, lefts, strict=True):
-        rows = data["profiles"][profile]["alle"]
 
-        def py(value: float) -> float:
-            return bottom - value / maximum * plot_h
+    def py(value: float) -> float:
+        return bottom - value / maximum * plot_h
 
-        svg.text(left - 50, top - 18, profile, 12, INK, weight="600")
+    for (name, profile, heading), left in zip(panels, lefts, strict=True):
+        rows = load(name)["profiles"][profile]["alle"]
+        svg.text(left - 50, top - 18, heading, 12, INK, weight="600", limit=plot_w + 50)
         for tick in range(0, maximum + 1, 100):
             svg.line(left, py(tick), left + plot_w, py(tick), GRID)
             svg.text(left - 7, py(tick) + 4, de(tick), 10, MUTED, "end")
@@ -1604,23 +1608,23 @@ def bausteinbudget_absaetze() -> None:
         for index, factor in enumerate(factors):
             row = rows[factor]
             raters = list(row["je_gutachter"].values())
-            mean = {name: sum(r[name] for r in raters) / len(raters) for name, _, _ in classes}
+            mean = {key: sum(r[key] for r in raters) / len(raters) for key, _, _ in classes}
             added = list(row["hinzu_je_gutachter"].values())
             added_off = sum(r["daneben"] for r in added) / len(added)
             x0 = left + step * index + (step - bar_w) / 2
             height = 0.0
-            for name, _, color in classes:
-                y_top = py(height + mean[name])
+            for key, _, color in classes:
+                y_top = py(height + mean[key])
                 svg.rect(x0, y_top, bar_w, py(height) - y_top, color)
-                height += mean[name]
+                height += mean[key]
             share = mean["daneben"] / row["gedruckt"] if row["gedruckt"] else 0
             svg.text(x0 + bar_w / 2, py(height) - 20, f"{row['gedruckt']}", 11, INK, "middle", "600")
-            svg.text(x0 + bar_w / 2, py(height) - 6, f"{de(share * 100, '1')} % daneben", 10, MUTED, "middle")
+            svg.text(x0 + bar_w / 2, py(height) - 6, f"{de(share * 100, '1')} % daneben", 9.5, MUTED, "middle")
             svg.text(x0 + bar_w / 2, bottom + 17, factor, 11, INK, "middle")
             if index:
                 new_share = added_off / row["hinzu"] if row["hinzu"] else 0
-                svg.text(x0 + bar_w / 2, bottom + 33, f"neu {row['hinzu']}: {de(new_share * 100, '1')} %", 10, MUTED,
-                         "middle")
+                label = f"neu {row['hinzu']}: {de(new_share * 100, '1')} %"
+                svg.text(x0 + bar_w / 2, bottom + 33, label, 9.5, MUTED, "middle")
     for number, note in enumerate(notes):
         svg.text(24, bottom + 64 + 16 * number, note, 10.5, MUTED, limit=width - 48)
     svg.save("bausteinbudget_absaetze.svg")

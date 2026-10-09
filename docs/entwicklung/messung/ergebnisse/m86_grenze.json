@@ -1,0 +1,506 @@
+{
+ "profiles": {
+  "best-quality": {
+   "runs": {
+    "best-quality@1": {
+     "runs": 1,
+     "seconds": 15.6,
+     "seconds_span": [
+      15.6,
+      15.6
+     ],
+     "match_s": 11.7,
+     "write_s": 0.4,
+     "steps_s": 12.0,
+     "resolve_s": 3.5,
+     "tokens": 53962,
+     "tokens_span": [
+      53962,
+      53962
+     ],
+     "prompt_tokens": 46159,
+     "completion_tokens": 7803,
+     "cached": 11984,
+     "calls": 10,
+     "chars": 15508,
+     "chars_span": [
+      15508,
+      15508
+     ],
+     "chars_growth": 1.0,
+     "evidence": 38,
+     "evidence_growth": 1.0,
+     "cited": 38,
+     "blocks": 9,
+     "model_share": 0.0,
+     "model_share_span": [
+      0.0,
+      0.0
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "best-quality@10": {
+     "runs": 1,
+     "seconds": 12.8,
+     "seconds_span": [
+      12.8,
+      12.8
+     ],
+     "match_s": 12.2,
+     "write_s": 0.4,
+     "steps_s": 12.6,
+     "resolve_s": 0.1,
+     "tokens": 54190,
+     "tokens_span": [
+      54190,
+      54190
+     ],
+     "prompt_tokens": 46159,
+     "completion_tokens": 8031,
+     "cached": 45536,
+     "calls": 10,
+     "chars": 105219,
+     "chars_span": [
+      105219,
+      105219
+     ],
+     "chars_growth": 6.78,
+     "evidence": 240,
+     "evidence_growth": 6.32,
+     "cited": 233,
+     "blocks": 9,
+     "model_share": 0.0,
+     "model_share_span": [
+      0.0,
+      0.0
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    }
+   }
+  },
+  "best-quality-generated": {
+   "runs": {
+    "best-quality-generated@1": {
+     "runs": 1,
+     "seconds": 32.3,
+     "seconds_span": [
+      32.3,
+      32.3
+     ],
+     "match_s": 12.0,
+     "write_s": 20.1,
+     "steps_s": 32.1,
+     "resolve_s": 0.1,
+     "tokens": 74193,
+     "tokens_span": [
+      74193,
+      74193
+     ],
+     "prompt_tokens": 58113,
+     "completion_tokens": 16080,
+     "cached": 45536,
+     "calls": 20,
+     "chars": 27742,
+     "chars_span": [
+      27742,
+      27742
+     ],
+     "chars_growth": 1.0,
+     "evidence": 33,
+     "evidence_growth": 1.0,
+     "cited": 100,
+     "blocks": 10,
+     "model_share": 0.492,
+     "model_share_span": [
+      0.492,
+      0.492
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "best-quality-generated@10": {
+     "runs": 1,
+     "seconds": 28.3,
+     "seconds_span": [
+      28.3,
+      28.3
+     ],
+     "match_s": 11.9,
+     "write_s": 16.2,
+     "steps_s": 28.1,
+     "resolve_s": 0.1,
+     "tokens": 109054,
+     "tokens_span": [
+      109054,
+      109054
+     ],
+     "prompt_tokens": 92319,
+     "completion_tokens": 16735,
+     "cached": 45536,
+     "calls": 20,
+     "chars": 32565,
+     "chars_span": [
+      32565,
+      32565
+     ],
+     "chars_growth": 1.17,
+     "evidence": 245,
+     "evidence_growth": 7.42,
+     "cited": 167,
+     "blocks": 10,
+     "model_share": 0.255,
+     "model_share_span": [
+      0.255,
+      0.255
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    }
+   }
+  },
+  "best-coverage-generated": {
+   "runs": {
+    "best-coverage-generated@1": {
+     "runs": 1,
+     "seconds": 30.8,
+     "seconds_span": [
+      30.8,
+      30.8
+     ],
+     "match_s": 13.0,
+     "write_s": 17.6,
+     "steps_s": 30.6,
+     "resolve_s": 0.1,
+     "tokens": 96014,
+     "tokens_span": [
+      96014,
+      96014
+     ],
+     "prompt_tokens": 73910,
+     "completion_tokens": 22104,
+     "cached": 65327,
+     "calls": 20,
+     "chars": 61213,
+     "chars_span": [
+      61213,
+      61213
+     ],
+     "chars_growth": 1.0,
+     "evidence": 37,
+     "evidence_growth": 1.0,
+     "cited": 70,
+     "blocks": 10,
+     "model_share": 0.783,
+     "model_share_span": [
+      0.783,
+      0.783
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "best-coverage-generated@10": {
+     "runs": 1,
+     "seconds": 30.3,
+     "seconds_span": [
+      30.3,
+      30.3
+     ],
+     "match_s": 10.9,
+     "write_s": 19.2,
+     "steps_s": 30.1,
+     "resolve_s": 0.1,
+     "tokens": 132068,
+     "tokens_span": [
+      132068,
+      132068
+     ],
+     "prompt_tokens": 108687,
+     "completion_tokens": 23381,
+     "cached": 67765,
+     "calls": 20,
+     "chars": 67473,
+     "chars_span": [
+      67473,
+      67473
+     ],
+     "chars_growth": 1.1,
+     "evidence": 251,
+     "evidence_growth": 6.78,
+     "cited": 202,
+     "blocks": 10,
+     "model_share": 0.45,
+     "model_share_span": [
+      0.45,
+      0.45
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    }
+   }
+  }
+ },
+ "guards": [],
+ "run_rows": [
+  {
+   "topic": "Demokratie",
+   "variant": "best-quality@1",
+   "budget": 1,
+   "s": 15.6,
+   "timings": {
+    "resolve": 3467,
+    "corpus": 19,
+    "segment": 29,
+    "match": 11655,
+    "synthesize": 384,
+    "assemble": 7
+   },
+   "main": "Demokratie",
+   "tokens": {
+    "prompt": 46159,
+    "completion": 7803,
+    "total": 53962,
+    "calls": 10,
+    "cached": 11984
+   },
+   "blocks": 9,
+   "llm_blocks": 0,
+   "chars": 15508,
+   "model_chars": 0,
+   "evidence": 38,
+   "cited": 38,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Demokratie",
+    "Demokratie",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahlrecht",
+    "Politische Partei",
+    "Demokratietheorie"
+   ]
+  },
+  {
+   "topic": "Demokratie",
+   "variant": "best-quality@10",
+   "budget": 10,
+   "s": 12.8,
+   "timings": {
+    "resolve": 95,
+    "corpus": 18,
+    "segment": 28,
+    "match": 12209,
+    "synthesize": 397,
+    "assemble": 12
+   },
+   "main": "Demokratie",
+   "tokens": {
+    "prompt": 46159,
+    "completion": 8031,
+    "total": 54190,
+    "calls": 10,
+    "cached": 45536
+   },
+   "blocks": 9,
+   "llm_blocks": 0,
+   "chars": 105219,
+   "model_chars": 0,
+   "evidence": 240,
+   "cited": 233,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Demokratie",
+    "Demokratie",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahlrecht",
+    "Politische Partei",
+    "Demokratietheorie"
+   ]
+  },
+  {
+   "topic": "Demokratie",
+   "variant": "best-quality-generated@1",
+   "budget": 1,
+   "s": 32.3,
+   "timings": {
+    "resolve": 98,
+    "corpus": 18,
+    "segment": 40,
+    "match": 12043,
+    "synthesize": 20062,
+    "assemble": 9
+   },
+   "main": "Demokratie",
+   "tokens": {
+    "prompt": 58113,
+    "completion": 16080,
+    "total": 74193,
+    "calls": 20,
+    "cached": 45536
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 27742,
+   "model_chars": 13654,
+   "evidence": 33,
+   "cited": 100,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Demokratie",
+    "Demokratie",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahlrecht",
+    "Politische Partei",
+    "Demokratietheorie"
+   ]
+  },
+  {
+   "topic": "Demokratie",
+   "variant": "best-quality-generated@10",
+   "budget": 10,
+   "s": 28.3,
+   "timings": {
+    "resolve": 83,
+    "corpus": 17,
+    "segment": 27,
+    "match": 11904,
+    "synthesize": 16211,
+    "assemble": 12
+   },
+   "main": "Demokratie",
+   "tokens": {
+    "prompt": 92319,
+    "completion": 16735,
+    "total": 109054,
+    "calls": 20,
+    "cached": 45536
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 32565,
+   "model_chars": 8314,
+   "evidence": 245,
+   "cited": 167,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Demokratie",
+    "Demokratie",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahlrecht",
+    "Politische Partei",
+    "Demokratietheorie"
+   ]
+  },
+  {
+   "topic": "Demokratie",
+   "variant": "best-coverage-generated@1",
+   "budget": 1,
+   "s": 30.8,
+   "timings": {
+    "resolve": 131,
+    "corpus": 21,
+    "segment": 32,
+    "match": 13003,
+    "synthesize": 17628,
+    "assemble": 9
+   },
+   "main": "Demokratie",
+   "tokens": {
+    "prompt": 73910,
+    "completion": 22104,
+    "total": 96014,
+    "calls": 20,
+    "cached": 65327
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 61213,
+   "model_chars": 47910,
+   "evidence": 37,
+   "cited": 70,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Demokratie",
+    "Demokratie",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahlrecht",
+    "Politische Partei",
+    "Demokratietheorie"
+   ]
+  },
+  {
+   "topic": "Demokratie",
+   "variant": "best-coverage-generated@10",
+   "budget": 10,
+   "s": 30.3,
+   "timings": {
+    "resolve": 93,
+    "corpus": 18,
+    "segment": 29,
+    "match": 10925,
+    "synthesize": 19173,
+    "assemble": 11
+   },
+   "main": "Demokratie",
+   "tokens": {
+    "prompt": 108687,
+    "completion": 23381,
+    "total": 132068,
+    "calls": 20,
+    "cached": 67765
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 67473,
+   "model_chars": 30379,
+   "evidence": 251,
+   "cited": 202,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Demokratie",
+    "Demokratie",
+    "Direkte Demokratie",
+    "Repräsentative Demokratie",
+    "Parlamentarismus",
+    "Gewaltenteilung",
+    "Rechtsstaat",
+    "Wahlrecht",
+    "Politische Partei",
+    "Demokratietheorie"
+   ]
+  }
+ ],
+ "failed": []
+}

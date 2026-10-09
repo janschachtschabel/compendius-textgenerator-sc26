@@ -43,13 +43,13 @@ zu acht Ebenen tief.
    Bindestrich-Teile kommen nur aus dem Thema selbst; andere Bedeutungen kurzer Stichwörter („Solarzelle“) bleiben.
 4. **Stufen:** Schulstufe und Klassenstufe kommen aus den Daten; fehlen sie, leitet der Dienst sie aus der
    Jahrgangsstufe oder dem Titel ab und kennzeichnet sie als abgeleitet.
-5. **Prüfung durch das LLM (nur in den drei Profilen ab `best-quality`, D58):** Mit `curriculum_check=llm`
-   liest das LLM jedes gefundene Element mit seinem Bereich und seinem Lehrplan und bewertet es nach den Noten von
-   M22: passt, berührt das Thema, passt nicht. Was nicht passt, fällt heraus; ein Element, das nur seine
-   Überschrift zum Thema macht, steht einzeln da, wenn das LLM es passend nennt. Die Elemente gehen in Stapeln zu
-   60 parallel an die b-api, auf Budget und Frist der Anfrage - in diesen Profilen 180.000 Tokens (D59); ein
-   gescheiterter Stapel behält die Entscheidung der Regeln, und `audit.llm.curriculum_check` sagt, was geprüft,
-   verworfen und warum etwas nicht geprüft wurde.
+5. **Prüfung durch das LLM (nur in den drei Profilen ab `best-quality`, D58):** Mit `curriculum_check=llm` liest das LLM
+   jedes gefundene Element mit seinem Bereich und seinem Lehrplan und bewertet es nach den Noten von M22: passt, berührt
+   das Thema, passt nicht. Was nicht passt, fällt heraus; ein Element, das nur seine Überschrift zum Thema macht, steht
+   einzeln da, wenn das LLM es passend nennt. Die Elemente gehen in Stapeln zu 60 parallel an die b-api, in der Frist
+   der Anfrage und aus einem eigenen Budget neben dem der Anfrage, 400.000 Tokens (`LLM_MAX_TOKENS_CURRICULUM_CHECK`,
+   D94); ein gescheiterter Stapel behält die Entscheidung der Regeln, und `audit.llm.curriculum_check` sagt, was
+   geprüft, verworfen und warum etwas nicht geprüft wurde.
 
 Für Optik fand Teil 2 im Test am 23.09.2026 (lokaler Cache vom 20.09.) 145 Lehrplanelemente in 19 Lehrplänen aus
 drei Ländern.

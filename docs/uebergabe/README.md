@@ -10,8 +10,10 @@ Release 2.18.2. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und o
 Teil 3 wie mit `collection_id` (D77); seit 2.9.0 stellt der Quellenblock Teil 1 nur dann ganz unter CC BY-SA 4.0, wenn
 alle Quellen frei lizenziert sind (D78); seit 2.13.0 nennt das Thema einer Sammlung mit inhaltsneutralem Titel die
 Sammlung darüber, etwa „Grundlagen (Kernphysik)“ (D92); seit 2.18.0 kann der Dienst das Routing der b-api nutzen, über
-eine Route, die vorab in der b-api angelegt ist (`B_API_PROVIDER=router`, D97), und seit 2.18.1 nennt `/health` unter
-`components.llm.reason`, warum das LLM nicht verfügbar ist (D98). Was sich je Stand für den Betrieb ändert, steht in
+eine Route, die vorab in der b-api angelegt ist (`B_API_PROVIDER=router`, D97), seit 2.18.1 nennt `/health` unter
+`components.llm.reason`, warum das LLM nicht verfügbar ist (D98), und seit 2.19.0 vervielfacht `BLOCK_BUDGET_FACTOR`
+(Vorgabe 10) das Budget jedes Bausteins: Die Texte werden länger, die wörtlichen deutlich, und die schreibenden Profile
+brauchen rund ein Drittel mehr Tokens (D102). Was sich je Stand für den Betrieb ändert, steht in
 [docs/betrieb.md](../betrieb.md) unter „Updates“. Die Speichergrenze 6g steht in `docker-compose.yml` und gilt mit jedem
 Image.
 
