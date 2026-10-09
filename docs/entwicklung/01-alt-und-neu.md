@@ -1,7 +1,8 @@
 # Alter und neuer Dienst im Vergleich
 
-[Übersicht](README.md) · Stand 29.09.2026 · neuer Dienst: Release 2.4.2, Messwerte mit 2.2.2 · alter Dienst: v0.2.0
-(`alterCode/compendious`) · Messungen: [Messprotokoll](05-messprotokoll.md), vor allem M1 bis M3, M17, M37 und M45 ·
+[Übersicht](README.md) · Stand 29.09.2026, die fünf Profile 09.10.2026 · neuer Dienst: Release 2.4.2, Messwerte mit
+2.2.2, die Übersicht der Profile mit 2.17.0 · alter Dienst: v0.2.0 (`alterCode/compendious`) · Messungen:
+[Messprotokoll](05-messprotokoll.md), vor allem M1 bis M3, M17, M37, M45 und M82 ·
 Methoden je Schritt: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
 Ein Kompendium hat nach dem neuen Soll drei Teile: Weltwissen, Lehrplanbezüge und einen Überblick über die
@@ -22,14 +23,13 @@ Profil es vorsieht.
 
 ## Güte, Zeit und Kosten
 
-![Die fünf Profile: Güte, Zeit und Kosten (M52)](bilder/profiluebersicht.svg)
+![Die fünf Profile: Güte, Zeit und Kosten (M82)](bilder/profiluebersicht.svg)
 
-Die fünf Profile im Stand D72 an neun Themen in drei Arten (M52, Tabelle auf
-[Seite 09](09-methoden-und-profile.md#die-fünf-profile-im-überblick-güte-zeit-und-kosten-m52)): Passung, Nutzen und
-Vollständigkeit steigen mit jedem LLM-Schritt, die Vollständigkeit von 1,0 auf 4,9 von 5, die Lesbarkeit erst mit dem
-Schreiben. Dafür steigen die Zeit für Teil 1 von 1,7 auf 38 s und
-die Tokens von 0 auf 103.300, und die schreibenden Profile bestehen zu 62 und 83 % aus gekennzeichnetem
-Modellwissen.
+Die fünf Profile mit Release 2.17.0 an neun Themen in drei Arten (M82, Tabelle auf
+[Seite 09](09-methoden-und-profile.md#die-fünf-profile-im-überblick-güte-zeit-und-kosten-m82)): Passung, Nutzen und
+Vollständigkeit steigen mit jedem LLM-Schritt, die Vollständigkeit von 1,2 auf 5,0 von 5, die Lesbarkeit erst mit dem
+Schreiben. Dafür steigen die Zeit für Teil 1 und 2 von 2,6 auf 27 s und die Tokens von 0 auf 87.000, und die
+schreibenden Profile bestehen zu 51 und 82 % aus gekennzeichnetem Modellwissen.
 
 Der alte Dienst neben den vier Profilen vor D69, auf dem Server gemessen (M45):
 
@@ -40,15 +40,15 @@ Der alte Dienst neben den vier Profilen vor D69, auf dem Server gemessen (M45):
   - Den Hauptartikel nannte er an erster Stelle bei 55 von 94 Goldanfragen.
   - Nur 21 % seiner Sätze stützt der zitierte Text.
 - **`llm-free`:** ist auf dem Server in 2,3 s fertig und braucht keine Tokens. Den Hauptartikel trifft es bei 87 von 94, und jeder Satz steht wörtlich im zitierten Absatz.
-- **`balanced` (Standard):** fragt das LLM an zwei Stellen, bei unsicheren Hauptartikeln und nach Übersicht und Teilen des Themas. Das dauert rund 7 s und kostet 580 Tokens. Dafür trifft es 91 von 94, und bei Sammelthemen stammen 87 statt 43 % der gedruckten Absätze aus passenden Artikeln.
+- **`balanced`:** bis D82 der Standard; fragt das LLM an zwei Stellen, bei unsicheren Hauptartikeln und nach Übersicht und Teilen des Themas. Das dauert rund 7 s und kostet 580 Tokens. Dafür trifft es 91 von 94, und bei Sammelthemen stammen 87 statt 43 % der gedruckten Absätze aus passenden Artikeln.
 - **`best-quality`:** lässt das LLM zusätzlich die Absätze zuordnen und die Lehrplanschnipsel prüfen. Die Zuordnung steigt auf macro-F1 0,70 statt 0,45, für 26 s und rund 49.000 Tokens.
-- **`best-quality-generated`:** lässt das LLM auch den Text schreiben, seit D72 zum angefragten Thema und auch für Bausteine ohne Belege. Lesbar ist er mit 4,0 statt 2,5 von 5, das dauert 36 s und kostet rund 60.000 Tokens.
+- **`best-quality-generated`:** seit D82 der Standard; lässt das LLM auch den Text schreiben, seit D72 zum angefragten Thema und auch für Bausteine ohne Belege. Lesbar ist er mit 4,0 statt 2,5 von 5, das dauert 36 s und kostet rund 60.000 Tokens.
 - **`best-coverage-generated`:** lässt das LLM jeden Baustein vollständig zum angefragten Thema schreiben, aus den Belegen, wo sie das Thema treffen, sonst aus eigenem, markiertem Wissen. Bei Themen mit Aspekt wie „OER-Förderungen“ trifft es das Thema (Passung 4,8 statt 1,8 von 5) und füllt jeden Baustein; Teil 1 allein dauert rund 28 s und kostet 91.000 bis 99.000 Tokens, ein Drittel davon aus dem Prompt-Cache (M46, M47).
 
 **Was man bekommt:**
 - `llm-free` ist schnell und kostet nichts.
-- Der Standard verdoppelt etwa die Zeit, für den deutlich besseren Korpus und die treffsicherere Artikelwahl.
-- Die drei Profile ab `best-quality` sind für die Vorbereitung durch die Redaktion gedacht, nicht für Massenabrufe. Das Tagesbudget von 2 Mio. Tokens reicht für rund 40, 33 und 20 Kompendien.
+- `balanced` verdoppelt etwa die Zeit, für den deutlich besseren Korpus und die treffsicherere Artikelwahl.
+- Die drei Profile ab `best-quality` brauchen mit Release 2.17.0 je Kompendium mit Teil 1 und 2 rund 13, 23 und 27 s und 59.000, 63.000 und 87.000 Tokens (M82); eine Million Tokens reicht für rund 17, 16 und 11 Kompendien. Seit D82 ist `best-quality-generated` der Standard; wer viele Kompendien schnell braucht, setzt `PRESET_DEFAULT=balanced`.
 
 ## Teil 1: Weltwissen
 
@@ -181,7 +181,7 @@ Model2Vec, die extraktive Synthese und die Idee, jeden Satz gegen seine Quelle z
 | Titel werden geraten statt gesucht | In drei von zehn Themen waren zehn der „Quellen“ Begriffsklärungen; an 94 Goldanfragen stand der richtige Artikel 55 Mal an erster Stelle (M17) | Auflösung über den Index des Archivs, Begriffsklärungen erkannt: 87 von 94 mit den Regeln, 91 und 93 mit dem LLM |
 | Nur Einleitungen als Quelle | im Median rund 12.200 Zeichen Einleitung für 13.200 Zeichen Text | ganze Artikel, bis 12 Artikel und 400 Absätze |
 | Text großteils unbelegt | 24 % der Sätze mit Quellenangabe, 21 % von ihr gestützt; Verweise zeigen auf ganze Artikel | jeder Satz steht wörtlich im zitierten Absatz; jede Belegnummer führt zu Artikel, Abschnitt und Textstelle |
-| Dauer und Kosten | im besten Fall 35 s und 7.900 Tokens, fast die ganze Zeit Warten auf das Modell | 2,3 s ohne Tokens (`llm-free`), rund 7 s und 580 Tokens im Standard (M45) |
+| Dauer und Kosten | im besten Fall 35 s und 7.900 Tokens, fast die ganze Zeit Warten auf das Modell | 2,3 s ohne Tokens (`llm-free`), rund 7 s und 580 Tokens mit `balanced` (M45) |
 | Keine Struktur | 15 Aspekte als Hinweis im Prompt, vom Code nicht geprüft | Template SC26 mit 13 Bausteinen, Längenbudgets, Facetten und maschinenlesbaren Markern |
 | Nur Weltwissen | – | Teil 2 Lehrplanbezüge, Teil 3 Sammlungsüberblick |
 | Fehler als normale Antwort | „# Fehler bei der Generierung …“ als Markdown in einer normalen Antwort | Fehlerantworten mit einem Fehlermodell in OpenAPI |

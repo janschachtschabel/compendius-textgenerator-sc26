@@ -33,9 +33,9 @@
 <text x="24.0" y="169.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM schreibt jeden Baustein neu</text>
 <rect x="324.0" y="158.0" width="136.0" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="466.0" y="169.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,0; 11 von 12 vorgezogen</text>
-<text x="644.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+8,7 s</text>
-<text x="780.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+4.300 bis 11.600</text>
+<text x="644.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+10,4 s</text>
+<text x="780.0" y="169.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+19.000 im Median</text>
 <rect x="1042.0" y="157.0" width="40.0" height="16.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
 <text x="1062.0" y="169.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">gen.</text>
 <text x="24.0" y="202.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Lesbarkeit: zwei Claude-Gutachter, sechs Themen (M28); Modellwissen mit Prompt v2 sichtbar markiert: 50 Sätze, 13 Füllsätze,</text>
-<text x="24.0" y="218.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">keiner falsch (M31). Zeit des Schreibens M45; extraction=llm gemessen am 18. und 19.09.2026 (02-weltwissen.md).</text></svg>
+<text x="24.0" y="218.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">keiner falsch (M31). Zeit und Tokens des Schreibens M82; extraction=llm gemessen am 18. und 19.09.2026 (02-weltwissen.md).</text></svg>

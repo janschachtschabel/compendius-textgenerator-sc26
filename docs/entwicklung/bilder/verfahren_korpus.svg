@@ -42,8 +42,8 @@
 <text x="24.0" y="229.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM nennt Übersicht und Teile (N)</text>
 <rect x="324.0" y="218.0" width="147.9" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="477.9" y="229.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">87 % / 93 %</text>
-<text x="644.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+5 s</text>
-<text x="780.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 500</text>
+<text x="644.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+2 s</text>
+<text x="780.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 310</text>
 <rect x="954.0" y="217.0" width="40.0" height="16.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
 <text x="974.0" y="229.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">balanced</text>
 <rect x="998.0" y="217.0" width="40.0" height="16.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
@@ -51,4 +51,4 @@
 <rect x="1042.0" y="217.0" width="40.0" height="16.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
 <text x="1062.0" y="229.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">gen.</text>
 <text x="24.0" y="262.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Gedruckte Absätze aus passenden Artikeln, zwei Gutachter: 25 Sammel- und Mischthemen / 20 gewöhnliche Themen (M37, M39).</text>
-<text x="24.0" y="278.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens des LLM je Thema: N in M45 (Phase resolve), die Prüfung der Nebenartikel M25 und M37, der alte Weg M17.</text></svg>
+<text x="24.0" y="278.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens des LLM je Thema: N in M82 (Phase resolve, seit D81 ohne Denken), die Prüfung der Nebenartikel M25 und M37.</text></svg>

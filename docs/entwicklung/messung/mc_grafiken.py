@@ -786,59 +786,59 @@ def verfahren_charts() -> None:
         ("v2.0.0: Titel, Weiterleitung, Wortzählung", 66 / 94, "66", "rund 0,03 s", "0", "abgelöst"),
         ("Regeln mit Kontextwörtern des Fachs", 87 / 94, "87", "rund 0,03 s", "0", ("llm-free",)),
         ("Regeln und laya (lokales Modell)", 81 / 94, "81", "+0,45 s; 1,7 GB", "0", "nicht eingebaut (D42)"),
-        ("LLM entscheidet unsichere (llm)", 91 / 94, "91", "+1 s bei 18 von 94", "rund 800 je Frage", ("balanced",)),
-        ("LLM prüft auch sichere (llm-thorough)", 93 / 94, "93", "+1 s bei 64 von 94", "rund 800 je Frage",
+        ("LLM entscheidet unsichere (llm)", 91 / 94, "91", "mit N 2,4 s", "320 je Anfrage", ("balanced",)),
+        ("LLM prüft auch sichere (llm-thorough)", 91 / 94, "91 bis 93", "mit N 3,0 s", "748 je Anfrage",
          ("best-quality", "best-quality-generated")),
-    ], ("Hauptartikel richtig: drei Goldsätze, 94 Anfragen (M9, M16, M17; die heutigen Werte M35, nach D63 unverändert, M39).",
-        "Zeit und Tokens je Frage an das LLM (M35); die Regeln fragen es nur, wo sie unsicher sind."))
+    ], ("Hauptartikel richtig: drei Goldsätze, 94 Anfragen (M9, M16, M17; die heutigen Werte M82, Release 2.17.0; llm-thorough in M35",
+        "und M59 93). Zeit und Tokens je Anfrage samt der Frage N (M82); die Regeln fragen das LLM nur, wo sie unsicher sind."))
     verfahren("verfahren_korpus.svg", "Korpusbau: welche Artikel neben dem Hauptartikel", "gedruckt aus passenden Artikeln", [
         ("alter Weg: Begriffe vom LLM", 0.63, "63 % Sammelthemen", "6 bis 8 s", "rund 1.500", "alter Dienst"),
         ("Regeln: Links, verlinkte Volltexttreffer", 0.43, "43 % / 71 %", "lokal", "0", ("llm-free",)),
         ("dazu LLM prüft die Nebenartikel", 0.45, "45 % / 73 %", "+1,4 bis 2 s", "750 bis 1.400",
          "bis D63 in balanced"),
         ("kleine lokale Modelle für N (LFM2, Qwen3)", None, "kein Gewinn", "4,4 bis 6,3 s", "0", "nicht eingebaut (M40)"),
-        ("LLM nennt Übersicht und Teile (N)", 0.87, "87 % / 93 %", "+5 s", "rund 500",
+        ("LLM nennt Übersicht und Teile (N)", 0.87, "87 % / 93 %", "+2 s", "rund 310",
          ("balanced", "best-quality", "best-quality-generated")),
     ], ("Gedruckte Absätze aus passenden Artikeln, zwei Gutachter: 25 Sammel- und Mischthemen / 20 gewöhnliche Themen (M37, M39).",
-        "Zeit und Tokens des LLM je Thema: N in M45 (Phase resolve), die Prüfung der Nebenartikel M25 und M37, der alte Weg M17."))
+        "Zeit und Tokens des LLM je Thema: N in M82 (Phase resolve, seit D81 ohne Denken), die Prüfung der Nebenartikel M25 und M37."))
     verfahren("verfahren_zuordnung.svg", "Zuordnung: Absätze auf die Bausteine verteilen", "macro-F1, gelabelte Absätze", [
         ("nur Überschriften-Lexikon", 0.35, "0,35", "0,02 s", "0", "wählbar"),
         ("BM25", 0.36, "0,36", "0,03 s", "0", "wählbar"),
         ("Zeichen-TF-IDF", 0.40, "0,40", "0,25 s", "0", "wählbar"),
         ("Satzvektoren und Cross-Encoder der Testapp", 0.37, "0,29 bis 0,37", "4 bis 73 s", "0", "nicht eingebaut"),
         ("hybrid_light ohne Model2Vec", 0.38, "0,38", "0,3 s", "0", "Rückfall ohne Modell"),
-        ("hybrid_light mit Model2Vec", 0.45, "0,45", "0,3 s", "0", ("llm-free", "balanced")),
+        ("hybrid_light mit Model2Vec", 0.45, "0,45", "0,2 bis 0,7 s", "0", ("llm-free", "balanced")),
         ("LLM nur für unsichere Absätze", 0.54, "0,54", "halbe LLM-Zeit", "halbe Tokens", "verworfen (M12)"),
-        ("LLM ordnet jeden Absatz zu", 0.70, "0,70", "+12,7 s", "rund 170 je Absatz",
+        ("LLM ordnet jeden Absatz zu", 0.68, "0,66 bis 0,70", "+10 s", "rund 160 je Absatz",
          ("best-quality", "best-quality-generated")),
     ], ("macro-F1 am Goldstandard, gelabelte Absätze (M4, M5, M12, M15, M19, M27; ohne Model2Vec M44: 0,40 auf allen Absätzen).",
-        "Zeit je Kompendium; die LLM-Zuordnung in M45 (Phase match), rund 170 Tokens je Absatz (M27)."))
+        "Zeit je Kompendium; die LLM-Zuordnung in M82 (Phase match; am Gold 0,661 und 0,675), rund 160 Tokens je Absatz (M82)."))
     verfahren("verfahren_lehrplan.svg", "Lehrplanschnipsel auswählen (Teil 2)", "passend, einzeln gezeigt", [
         ("alle Treffer einzeln", 0.63, "62–67 %, 11–17 % unpassend", "0,1 bis 0,7 s", "0", "abgelöst (D58)"),
-        ("Überschriften-Treffer gebündelt", 0.71, "70–81 %, 5–9 % unpassend", "0,1 bis 0,7 s", "0",
+        ("Überschriften-Treffer gebündelt", 0.71, "70–81 %, 5–9 % unpassend", "0,1 bis 0,4 s", "0",
          ("llm-free", "balanced")),
-        ("dazu LLM prüft jedes Element", 0.755, "74–79 %, 5–9 % unpassend", "+6 bis 8 s", "5.100 bis 9.600",
+        ("dazu LLM prüft jedes Element", 0.755, "74–79 %, 5–9 % unpassend", "+2,5 s", "rund 4.100",
          ("best-quality", "best-quality-generated")),
     ], ("Anteil der einzeln gezeigten Elemente, zwei Gutachter, 20 Themen ohne und mit Fach (M22, M32). Gebündelt steht ein Viertel",
-        "der passenden nur in einer Sammelzeile; die LLM-Prüfung verwirft keines. Zeit und Tokens: M32 und M45 (Suche und Teil 2)."))
+        "der passenden nur in einer Sammelzeile; die LLM-Prüfung verwirft keines. Zeit und Tokens: M82 (Teil 2 und die Prüfung an 57 Themen)."))
     verfahren("verfahren_qa.svg", "QA-Paare erzeugen", "mangelfrei bei beiden Gutachtern", [
         ("vier Vorlagen (bis D55)", None, "nicht bewertet, 82 % Jahresfragen", "0,02 s", "0", "abgelöst (D55)"),
         ("Satzanalyse (parse-based)", 0.36, "36 %", "0,17 s", "0", "entfernt (D57)"),
         ("kleine Modelle im Image", 0.21, "21 %", "25 s je Text", "0; 1,3 GB", "entfernt (D57)"),
         ("Regeln aus dem Parse, aufgefüllt", 0.61, "61 % (58 von 95)", "0,5 s", "0", ("llm-free", "balanced")),
-        ("LLM schreibt die Paare", 0.83, "83 % (99 von 120)", "6,3 s", "2.400 bis 7.100",
+        ("LLM schreibt die Paare", 0.83, "83 % (99 von 120)", "5,8 s", "2.400 bis 8.200",
          ("best-quality", "best-quality-generated")),
-    ], ("Je 20 verlangte Paare zu sechs Texten, zwei Gutachter (M30, die Regeln nach D60 in M34). Zeit und Tokens: M45 an Texten",
-        "von rund 23.000 Zeichen (Regeln auf dem Server); das LLM brauchte bei 5.000 bis 12.000 Zeichen rund 2.400 Tokens (M30)."))
+    ], ("Je 20 verlangte Paare zu sechs Texten, zwei Gutachter (M30, die Regeln nach D60 in M34). Zeit und Tokens: M82 an Texten",
+        "von rund 26.500 Zeichen; das LLM brauchte bei 5.000 bis 12.000 Zeichen rund 2.400 Tokens (M30)."))
     verfahren("verfahren_entitaeten.svg", "Entitäten ermitteln (/entities)", "F1 an 40 Materialtexten", [
         ("spaCy allein", 0.30, "0,30", "lokal", "0", "Teil von llm-free"),
         ("Wörterbuch der Artikeltitel allein", 0.35, "0,35", "lokal", "0", "Teil von llm-free"),
-        ("spaCy und Wörterbuch", 0.38, "0,38 (Präzision 0,29)", "1,0 s", "0", ("llm-free",)),
-        ("LLM nennt sie mit Artikeltitel", 0.78, "0,78 (Präzision 0,70)", "6,8 s", "rund 1.300",
+        ("spaCy und Wörterbuch", 0.38, "0,38 (Präzision 0,29)", "0,9 bis 2,4 s", "0", ("llm-free",)),
+        ("LLM nennt sie mit Artikeltitel", 0.78, "0,78 (Präzision 0,70)", "5,5 bis 5,8 s", "900 bis 1.200",
          ("balanced", "best-quality", "best-quality-generated")),
-        ("dazu LLM prüft jede Verknüpfung", 0.76, "0,76 (Präzision 0,94)", "+2 s", "+820", "Schalter link_check"),
+        ("dazu LLM prüft jede Verknüpfung", 0.76, "0,76 (Präzision 0,94)", "+4,6 s", "+1.900", "Schalter link_check"),
     ], ("F1 der verknüpften Artikel, zwei Gutachter, 40 Materialtexte, durch den Endpunkt (M36). Die Kennungen folgen dem Artikel:",
-        "Wikidata-Präzision 0,29 und 0,70, GND 0,31 und 0,70 (M43). Zeit und Tokens: M45 an 1.500 Zeichen (Regeln auf dem Server)."))
+        "Wikidata-Präzision 0,29 und 0,70, GND 0,31 und 0,70 (M43). Zeit und Tokens: M82 an den Materialtexten und an 1.500 Zeichen."))
 
 
 def verfahren_text() -> None:
@@ -847,10 +847,10 @@ def verfahren_text() -> None:
         ("wörtlich, jeder Satz mit Belegnummer", 2.5 / 5, "2,5", "lokal", "0", ("llm-free", "balanced", "best-quality")),
         ("LLM wählt die Sätze aus (extraction=llm)", None, "am Goldstandard kein Gewinn", "+11 s", "14.000 bis 22.400",
          "in keinem Profil"),
-        ("LLM schreibt jeden Baustein neu", 4.0 / 5, "4,0; 11 von 12 vorgezogen", "+8,7 s",
-         "+4.300 bis 11.600", ("best-quality-generated",)),
+        ("LLM schreibt jeden Baustein neu", 4.0 / 5, "4,0; 11 von 12 vorgezogen", "+10,4 s",
+         "+19.000 im Median", ("best-quality-generated",)),
     ], ("Lesbarkeit: zwei Claude-Gutachter, sechs Themen (M28); Modellwissen mit Prompt v2 sichtbar markiert: 50 Sätze, 13 Füllsätze,",
-        "keiner falsch (M31). Zeit des Schreibens M45; extraction=llm gemessen am 18. und 19.09.2026 (02-weltwissen.md)."))
+        "keiner falsch (M31). Zeit und Tokens des Schreibens M82; extraction=llm gemessen am 18. und 19.09.2026 (02-weltwissen.md)."))
 
 
 FIVE = (*PROFILES, "best-coverage-generated")
@@ -858,12 +858,13 @@ KIND_LABELS = {"einfach": "einfach", "Sammelthema": "Sammelthema", "Aspekt": "mi
 
 
 def profile_grades(data: dict, name: str, heading: str, subtitle: str, notes: tuple[str, ...], label: str,
-                   overview: bool = False) -> None:
+                   overview: bool = False, time_label: str = "Teil 1, Median") -> None:
     """The five profiles on three kinds of topic: fit per kind, use, completeness and readability over all nine topics
     as bars from 1 to 5, time and tokens of part 1 as bars from 0; every column has a scale of its own and names its
     values, the profile is the row. Colored by what a column measures, not by profile: the five profile colors do not
     keep apart for every reader (validate_palette.js, 2026-10-01). ``overview`` (M52) shows the share of the tokens
-    read from the prompt cache as the lighter part of their bar and adds the share of model knowledge in the text."""
+    read from the prompt cache as the lighter part of their bar and adds the share of model knowledge in the text.
+    ``time_label`` names what the time column measured (M82: the request with part 1 and 2)."""
     grades, runs = data["grades"], data["runs"]["alle"]
     label_w, col_w, cost_w, bar_w, top = 200, 100, 120, 62, 128
     row_h = 40 if overview else 34  # the overview names the cached tokens on a second line
@@ -873,7 +874,7 @@ def profile_grades(data: dict, name: str, heading: str, subtitle: str, notes: tu
                    (("Lesbarkeit", "alle Themen"), "alle", "lesbarkeit")]
     longest_s = max(runs[p]["seconds"] for p in FIVE)
     longest_t = max(runs[p]["tokens"] for p in FIVE)
-    cost_cols = [(("Zeit", "Teil 1, Median"), "seconds", longest_s), (("Tokens", "Median"), "tokens", longest_t)]
+    cost_cols = [(("Zeit", time_label), "seconds", longest_s), (("Tokens", "Median"), "tokens", longest_t)]
     if overview:
         cost_cols.append((("Modellwissen", "am Text, Median"), "model_share", 1.0))
     cost_x = 24 + label_w + col_w * len(grade_cols)
@@ -947,17 +948,18 @@ def profilvergleich() -> None:
 
 
 def profiluebersicht() -> None:
-    """The five profiles as the service runs them since D72 (M52): the overview of quality, time and cost."""
+    """The five profiles as release 2.17.0 runs them (M82): the overview of quality, time and cost."""
     profile_grades(
-        load("m52_profiluebersicht.json"),
+        load("m82_profiluebersicht.json"),
         "profiluebersicht.svg",
         "Die fünf Profile: Güte, Zeit und Kosten",
-        "Stand D72; Teil 1, neun Themen in drei Arten, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5 (M52)",
+        "Release 2.17.0; Teil 1 und 2, neun Themen in drei Arten, je ein Lauf; Noten zweier blinder Gutachter von 1 bis 5 (M82)",
         (*TOPIC_NOTES,
-         "Zeit, Tokens und Modellwissen: Median der neun Läufe auf dem Entwicklungsrechner, Teil 1 mit 30.000 Zielzeichen, gpt-6-luna",
-         "(M52, 02.10.2026). Tokens aus dem Prompt-Cache zahlt der Anbieter günstiger. Teil 2 (Lehrpläne) kommt dazu: M45."),
-        "Die fünf Profile: Güte, Zeit und Kosten (M52)",
+         "Zeit, Tokens und Modellwissen: Median der neun Anfragen mit Teil 1 und 2 im Einmal-Container auf dem Entwicklungsrechner,",
+         "Teil 1 mit 30.000 Zielzeichen, gpt-6-luna über OpenAI (M82, 09.10.2026). Tokens aus dem Prompt-Cache zahlt der Anbieter günstiger."),
+        "Die fünf Profile: Güte, Zeit und Kosten (M82)",
         overview=True,
+        time_label="Teil 1 und 2, Median",
     )
 
 

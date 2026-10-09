@@ -1,20 +1,20 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
-[Übersicht](README.md) · Stand 08.10.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis M75; Rohdaten und
-Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von `/entities`:
-[Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit und Tokens
-je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
+[Übersicht](README.md) · Stand 09.10.2026, Release 2.17.0 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis
+M82; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
+`/entities`: [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit
+und Tokens je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
 Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
 zuschalten. Diese Vorlage zeigt je Schritt, welche Verfahren es gibt, wie man sie im Dienst wählt, was sie leisten und
 was sie an Zeit und Tokens kosten. Fünf Profile bündeln sie (D53, D69); der Schalter `preset` wählt eines. „Standard“
-heißt: Das gilt, wenn die Anfrage nichts anderes verlangt. Standard ist das Profil `balanced` (`PRESET_DEFAULT`);
-jedes Profil außer `llm-free` braucht ein LLM, sonst ist die Anfrage ein 503. Die Profile wählen auch das Verfahren
-der QA-Paare (D54, D55, D57).
+heißt: Das gilt, wenn die Anfrage nichts anderes verlangt. Standard ist das Profil `best-quality-generated`
+(`PRESET_DEFAULT`, D82), ohne konfiguriertes LLM `llm-free` (D68); jedes Profil außer `llm-free` braucht ein LLM,
+sonst ist die Anfrage ein 503. Die Profile wählen auch das Verfahren der QA-Paare (D54, D55, D57).
 
 ## Die fünf Profile auf einen Blick
 
-| | `llm-free` | `balanced` (Standard) | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+| | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` (Standard) | `best-coverage-generated` |
 |---|---|---|---|---|---|
 | Hauptartikel (`article_choice`) | `rule-based` | `llm` | `llm-thorough` | `llm-thorough` | `llm-thorough` |
 | Korpus | 12 Artikel, Volltexttreffer nur mit Link zum Hauptartikel | statt verlinkter Unterartikel und Volltexttreffer die Artikel, die das LLM als Übersicht und Teile nennt (D63); ohne Antwort wie `llm-free` mit Prüfung der Nebenartikel | wie `balanced` | wie `balanced` | wie `balanced` |
@@ -27,32 +27,31 @@ der QA-Paare (D54, D55, D57).
 | Lehrplanbezüge (Teil 2, `curriculum_check`) | Regeln, Überschriften-Treffer gebündelt | wie `llm-free` | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements | dazu LLM-Prüfung jedes Elements |
 | Entitäten (`/entities`, `methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt sie mit Artikeltitel | wie `balanced` | wie `balanced` | wie `balanced` |
 | Kennungen der Entitäten (Wikidata, GND, DBpedia; M43) | aus lokalen Daten zum verknüpften Artikel, in allen Profilen gleich (D65): Wikidata Präzision 0,29, Recall 0,55; GND 0,31 und 0,57; DBpedia über den englischen Artikel bei 88 % | ebenso, auf den Artikeln des LLM: Wikidata 0,70 und 0,89; GND 0,70 und 0,88; englischer Artikel bei 96 % | wie `balanced` | wie `balanced` | wie `balanced` |
-| Hauptartikel richtig, 94 Goldanfragen (M35) | 87 | 91 | 93 | 93 | 93 |
+| Hauptartikel richtig, 94 Goldanfragen (M82; mit `llm-thorough` in M35 und M59 93) | 87 | 91 | 91 | 91 | 91 |
 | Material ohne `topic`: Hauptartikel-F1, zwei Stichproben (M25) | 0,56 und 0,63 | 0,98 und 0,88 | wie `balanced` | wie `balanced` | wie `balanced` |
 | gedruckte Absätze aus unpassenden Artikeln, 20 Themen (M25) | 12 von 352 | 5 von 346 vor D63 | nicht gemessen | nicht gemessen | nicht gemessen |
 | gedruckte Absätze aus passenden Artikeln, 25 Sammel- und 20 gewöhnliche Themen (M37, M39) | 43 % und 71 % | 87 % und 93 % seit D63 (vorher 45 und 73 %) | wie `balanced` (derselbe Korpus, nicht eigens gemessen) | wie `balanced` | wie `balanced` |
-| Zuordnung, macro-F1 der gelabelten Absätze (M27, M19) | 0,45 | 0,45 vor D63; den Korpus mit N deckt das Gold nicht mehr ab (M39) | 0,70 vor D63 | 0,70 vor D63 | 0,70 vor D63 |
+| Zuordnung, macro-F1 der gelabelten Absätze (M82; M27, M19) | 0,455 | 0,455; den Korpus mit N deckt das Gold nur zu zwei Dritteln ab (M39) | 0,661 und 0,675 in zwei Läufen (M19: 0,70) | wie `best-quality` | wie `best-quality` |
 | Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) | nicht gemessen; in M52 4,2 |
-| Passung zum angefragten Thema an neun Themen, zwei Gutachter (M52, Stand D72): einfach, Sammelthema, mit Aspekt | 3,0, 1,5, 1,0 | 3,7, 2,8, 1,2 | 4,2, 3,8, 1,7 | 4,8, 4,7, 4,2 | 5,0, 5,0, 5,0 |
-| Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M52) | 1,5, 1,0, 2,1 | 2,3, 1,3, 1,9 | 2,7, 1,9, 1,9 | 4,1, 4,2, 3,9; keine schweren Fehler, 0,6 leichte je Text | 4,8, 4,9, 4,2; 0,1 schwere und 0,8 leichte Fehler je Text |
-| Teil 1 mit 30.000 Zielzeichen auf dem Entwicklungsrechner, Median (M52) | 1,7 s, 0 Tokens, 8.720 Zeichen | 5,0 s, 530 Tokens, 11.426 Zeichen | 16 s, 59.900 Tokens, 11.703 Zeichen | 30 s, 84.000 Tokens, 27.809 Zeichen, 62 % Modellwissen | 38 s, 103.300 Tokens (60.200 aus dem Prompt-Cache), 58.917 Zeichen, 83 % Modellwissen |
+| Passung zum angefragten Thema an neun Themen, zwei Gutachter (M82, Release 2.17.0): einfach, Sammelthema, mit Aspekt | 3,3, 1,2, 1,0 | 4,0, 2,0, 1,3 | 4,5, 2,5, 1,8 | 4,8, 4,0, 3,8 | 5,0, 5,0, 5,0 |
+| Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M82) | 1,7, 1,2, 2,1 | 2,0, 1,4, 1,9 | 2,7, 2,1, 2,1 | 3,8, 3,7, 3,6; 0,1 schwere und 1,2 leichte Fehler je Text | 4,7, 5,0, 4,1; keine schweren und 0,7 leichte Fehler je Text |
+| Teil 1 und 2 mit 30.000 Zielzeichen im Container des Entwicklungsrechners, nachts, Median (M82) | 2,6 s, 0 Tokens, 9.718 Zeichen | 4,6 s, 314 Tokens, 11.146 Zeichen | 12,6 s, 59.335 Tokens, 12.914 Zeichen | 23,2 s, 63.117 Tokens, 24.711 Zeichen, 51 % Modellwissen | 27,3 s, 87.225 Tokens (50.637 aus dem Prompt-Cache), 54.309 Zeichen, 82 % Modellwissen |
 | Themen mit Aspekt („OER-Förderungen“), acht Themen, zwei Gutachter (M47): Passung, Nutzen, Vollständigkeit von 1 bis 5 | nicht gemessen | nicht gemessen | nicht gemessen | 1,81, 2,12, 1,69: der Text handelt vom Artikel | 4,81, 4,81, 5,00; keine schweren Fehler |
-| QA-Paare mangelfrei bei beiden Gutachtern (M30, M34) | 58 von 95 seit D60 (vorher 48 von 96); 0,52 s an rund 23.000 Zeichen (M45) | wie `llm-free` | 99 von 120; 6,3 s und 7.137 Tokens an rund 23.000 Zeichen (M45) | wie `best-quality` | wie `best-quality` |
-| Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; rund 6 s und 8.000 bis 10.000 Tokens mehr | wie `best-quality` | wie `best-quality` |
-| Entitäten: F1 an 40 Materialtexten, zwei Gutachter, durch den Endpunkt (M36, D62) | 0,38, Präzision 0,29; 1,0 s an 1.500 Zeichen (M45) | 0,78, Präzision 0,70; 6,8 s und 1.284 Tokens an 1.500 Zeichen (M45) | wie `balanced` | wie `balanced` | wie `balanced` |
-| Teil 1 und 2 je Kompendium auf dem Server (M45) | 2,3 s | rund 6,9 s | rund 26 s | rund 36 s | nicht gemessen; Teil 1 allein auf dem Entwicklungsrechner rund 37 s (M48) |
-| Tokens je Kompendium, Median (M45) | 0 | 576 | 49.019 | 60.357 | Teil 1 allein 101.150, die Hälfte aus dem Prompt-Cache (M48) |
+| QA-Paare mangelfrei bei beiden Gutachtern (M30, M34); Note von 0 bis 2 an sechs Themen à fünf Paare (M82) | 58 von 95 seit D60 (vorher 48 von 96); Note 0,8; 0,49 s an rund 26.500 Zeichen (M82) | wie `llm-free` | 99 von 120; Note 1,4; 5,8 s und 8.209 Tokens an rund 26.500 Zeichen (M82) | wie `best-quality` | wie `best-quality` |
+| Lehrplanelemente passend, 20 Themen, zwei Gutachter (M32) | 70 bis 81 %, 5 bis 9 % unpassend, ein Viertel der passenden nur gebündelt | wie `llm-free` | 74 bis 79 %, 5 bis 9 % unpassend, kein passendes verloren; seit D81 rund 2,5 s neben der Zuordnung und im Median rund 4.000 Tokens mehr (M82) | wie `best-quality` | wie `best-quality` |
+| Entitäten: F1 an 40 Materialtexten, zwei Gutachter, durch den Endpunkt (M36, D62) | 0,38, Präzision 0,29; 2,4 s an 1.500 Zeichen (M82) | 0,78, Präzision 0,70; 5,8 s und 1.214 Tokens an 1.500 Zeichen (M82) | wie `balanced` | wie `balanced` | wie `balanced` |
+| Teil 1 und 2 auf dem Server (M45, Release 2.2.2) | 2,3 s ohne LLM | die Schritte ohne LLM etwa halb so lange wie im Container, die des LLM gleich lang | wie `balanced` | wie `balanced` | wie `balanced` |
 | Budget je Anfrage (D59) | 60.000 | 60.000 | 180.000 | 180.000 | 180.000 |
-| Kompendien je Tagesbudget von 2 Mio. Tokens | ohne Grenze | rund 3.500 | rund 41 | rund 33 | rund 20 (Teil 1 allein) |
-| so wählt man es | `preset: llm-free`, ohne LLM `PRESET_DEFAULT=llm-free` | Standard, `preset: balanced` | `preset: best-quality` | `preset: best-quality-generated` | `preset: best-coverage-generated` |
+| Kompendien je Million Tokens (M82) | ohne Grenze | rund 3.200 | rund 17 | rund 16 | rund 11 |
+| so wählt man es | `preset: llm-free`; ohne LLM gilt es auch ohne `preset` (D68) | `preset: balanced` | `preset: best-quality` | Standard, `preset: best-quality-generated` | `preset: best-coverage-generated` |
 
 ![Fünf Profile an drei Arten von Themen (M48)](bilder/profilvergleich.svg)
 
-Güte, Zeit und Kosten aller fünf Profile im Stand D72 (M52), Tabelle und Lesart auf
-[Methoden, Messwerte und Profile](09-methoden-und-profile.md#die-fünf-profile-im-überblick-güte-zeit-und-kosten-m52),
+Güte, Zeit und Kosten aller fünf Profile mit Release 2.17.0 (M82), Tabelle und Lesart auf
+[Methoden, Messwerte und Profile](09-methoden-und-profile.md#die-fünf-profile-im-überblick-güte-zeit-und-kosten-m82),
 dort auch [welches Profil wofür](09-methoden-und-profile.md#welches-profil-wofür):
 
-![Die fünf Profile: Güte, Zeit und Kosten (M52)](bilder/profiluebersicht.svg)
+![Die fünf Profile: Güte, Zeit und Kosten (M82)](bilder/profiluebersicht.svg)
 
 ![Die vier Profile vor D69 im Vergleich (das fünfte steht in der Tabelle)](bilder/kombinationen.svg)
 
@@ -63,32 +62,37 @@ dort auch [welches Profil wofür](09-methoden-und-profile.md#welches-profil-wof�
   0,3 s je Text (M34). Entitäten (`/entities`) erkennt es mit spaCy und dem Wörterbuch der Artikeltitel: F1 0,38 an
   40 Materialtexten, weil das Wörterbuch auch Allerweltswörter verknüpft (M36). Keine Tokens, keine Abhängigkeit von
   der b-api; das Profil für einen Dienst ohne LLM.
-- **`balanced`** ist der Standard. Die LLM-Artikelwahl ist der billigste Hebel mit messbarer Wirkung: fünf richtige
+- **`balanced`** war bis D82 der Standard. Die LLM-Artikelwahl ist der billigste Hebel mit messbarer Wirkung: fünf richtige
   Hauptartikel mehr von 94, 5 statt 12 gedruckte Absätze aus unpassenden Artikeln und bei einem Material ohne `topic`
   ein Hauptartikel-F1 von 0,88 bis 0,98 statt 0,56 bis 0,63, damals für rund 1,5 bis 2 s und 900 Tokens (M25, M27).
   Seit D63 nennt das LLM dazu Übersicht und Teile des Themas: 87 statt 43 % passende Absätze bei Sammelthemen (M39);
-  ein Kompendium kostet so auf dem Server rund 6,9 s und 576 Tokens (M45). Die Zuordnung bleibt die von `llm-free`
+  ein Kompendium mit Teil 1 und 2 kostet so rund 4,6 s und 310 Tokens (M82; auf dem Server 6,9 s und 576 Tokens in
+  M45, vor D81). Die Zuordnung bleibt die von `llm-free`
   (0,45): Das LLM wirkt vor ihr, nicht in ihr (M27). Die QA-Paare kommen seit D57
   aus denselben Regeln wie in `llm-free` (Jan: der Standard fragt schnell und ressourcenschonend): 0,3 s, keine
   Tokens, kein zusätzliches Modell. Die zwei kleinen Modelle, die hier bis D57 fragten, waren in M30 die schwächste
   und langsamste Stufe (25 von 120 mangelfrei, rund 25 s je Text) und sind entfernt. In `/entities` nennt das LLM die
   Entitäten mit ihrem Artikeltitel (D62): F1 0,78 statt 0,38, von 269 Verknüpfungen meinte eine etwas anderes, rund
   800 Tokens und 4 s je Text (M36, durch den Endpunkt nachgemessen).
-- **`best-quality`** nimmt dazu das LLM als Zuordner: 0,70 statt 0,45 macro-F1, für rund 26 s und 49.000 Tokens je
-  Kompendium mit Teil 2 (M45): rund 170 Tokens je Absatz, dazu die Prüfung der Lehrplanelemente. Sinnvoll, wo Qualität zählt und Zeit nicht, etwa beim Vorbereiten eines Kompendiums
-  für die Redaktion. Der Text bleibt wörtlich und belegt. Die QA-Paare schreibt das LLM: 99 von 120 mangelfrei, rund
+- **`best-quality`** nimmt dazu das LLM als Zuordner: 0,66 bis 0,70 statt 0,45 macro-F1, für rund 13 s und 59.000
+  Tokens je Kompendium mit Teil 2 (M82, nachts; am Nachmittag 15 s, M78): rund 160 Tokens je Absatz, dazu die Prüfung
+  der Lehrplanelemente. Sinnvoll, wo Qualität zählt und Zeit nicht, etwa beim Vorbereiten eines Kompendiums für die
+  Redaktion. Der Text bleibt wörtlich und belegt. Die QA-Paare schreibt das LLM: 99 von 120 mangelfrei, rund
   2.400 Tokens und 4 bis 7,5 s je Text (M30). Die Lehrplanelemente von Teil 2 prüft das LLM ebenfalls (D58): 74 bis
-  79 % passend, kein passendes verworfen, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32). `/entities`
+  79 % passend, kein passendes verworfen, im Median rund 6 s und 8.000 bis 10.000 Tokens mehr (M32); seit D81 fragt
+  die Prüfung ohne Denken und läuft neben der Zuordnung, im Median rund 4.000 Tokens (M82). `/entities`
   arbeitet wie in `balanced`: Eine zweite LLM-Prüfung jeder Verknüpfung hob die Präzision auf 0,94, verwarf aber ein
   Drittel der passenden Entitäten (F1 0,76 statt 0,78); sie bleibt ein eigener Schalter (`link_check: llm`, D62).
-- **`best-quality-generated`** lässt das LLM zusätzlich jeden Baustein schreiben und eigenes Wissen ergänzen, ohne
-  Belegnummer und sichtbar gekennzeichnet mit `[Modellwissen]` (D56): rund 36 s und 60.000 Tokens je Kompendium (M45). Zwei
+- **`best-quality-generated`**, seit D82 der Standard, lässt das LLM zusätzlich jeden Baustein schreiben und eigenes
+  Wissen ergänzen, ohne Belegnummer und gekennzeichnet (D56; sichtbar als `[Modellwissen]` seit D76 nur auf Wunsch):
+  rund 23 s und 63.000 Tokens je Kompendium mit Teil 2 (M82, nachts; am Nachmittag 30 s, M78). Zwei
   blinde Gutachter zogen den geschriebenen Text in 11 von 12 Urteilen dem wörtlichen vor (Lesbarkeit 4,0 statt 2,5 von
   5, Zusammenhang 4,0 statt 2,4), bei ähnlich vielen Fachfehlern, die meist schon in den Quellen stehen (M28). Mit dem
   ersten Prompt bestand das ergänzte Modellwissen zu zwei Dritteln aus Füllsätzen; der zweite verlangt eine prüfbare
   Sachaussage oder nichts: 50 statt 82 ergänzte Sätze, davon 13 statt 50 Füllsätze und 32 statt 27 fachliche, keiner
   falsch nach beiden Gutachtern (M31). `/entities` wie in `balanced`. Seit D70 darf das Modellwissen bis zur Hälfte
-  eines Bausteins füllen; genutzt hat es in M48 im Median 28 %. Ein Thema ohne eigenen Artikel behandelt das Profil
+  eines Bausteins füllen; genutzt hat es in M48 im Median 28 %. Seit D72 schreibt es leere Bausteine ganz aus
+  Modellwissen: in M52 62 %, in M82 51 % des Textes. Ein Thema ohne eigenen Artikel behandelt das Profil
   als den Artikel der Artikelwahl: Passung 3,0 bei Sammelthemen, 1,7 bei Themen mit Aspekt (M48).
 - **`best-coverage-generated`** (D69) schreibt wie `best-quality-generated`, aber jeden Baustein vollständig über das
   Thema, wie es angefragt ist: Belege, wo sie das Thema treffen, sonst gesichertes Modellwissen, sichtbar
@@ -98,21 +102,24 @@ dort auch [welches Profil wofür](09-methoden-und-profile.md#welches-profil-wof�
   rund ein Drittel aus dem Prompt-Cache (M46). Den größten Teil des Textes schreibt das Modell aus eigenem Wissen.
   M48 an allen drei Arten von Themen: Passung 5,0, Nutzen 4,5, Vollständigkeit 4,8, Lesbarkeit 4,1, keine schweren
   Fehler, 0,8 leichte je Text, sechs der acht im Modellwissen; mit 30.000 Zielzeichen rund 37 s, 101.000 Tokens und
-  57.000 Zeichen, denn die Ziellänge ist hier Untergrenze (Punkt 13).
+  57.000 Zeichen, denn die Ziellänge ist hier Untergrenze (Punkt 13). M82, Release 2.17.0: Passung und
+  Vollständigkeit 5,0 bei allen drei Arten, Teil 1 und 2 in rund 27 s mit 87.000 Tokens, 54.000 Zeichen, 82 %
+  Modellwissen.
 
-Zeiten und Tokens: M45 (28.09.2026, Release 2.2.2, `gpt-6-luna`), Teil 1 und 2, jedes LLM-Profil auf sechs eigenen
-Themen; die Zeit auf dem Server ohne LLM gemessen, dazu die Schritte, in denen das LLM des Profils arbeitet. Die
-Werte vor D58 und D63 stehen in M27; seither kosten die `best-quality`-Profile rund das Doppelte, weil das LLM die
-Lehrplanelemente prüft und der Korpus mit N größer ist ([Methoden, Messwerte und Profile](09-methoden-und-profile.md)).
+Zeiten und Tokens in der Tabelle oben: M82 (09.10.2026, Release 2.17.0, `gpt-6-luna` über OpenAI), Teil 1 und 2 an
+neun Themen im Container des Entwicklungsrechners, nachts; die Profile im Text nennen daneben die Werte zur Zeit ihrer
+Entscheidung. Die Werte vor D58 und D63 stehen in M27, die von Release 2.2.2 in M45
+([Methoden, Messwerte und Profile](09-methoden-und-profile.md)).
 
 ## Die Profile: `preset`
 
 `preset` setzt alle Schalter von Teil 1 und die Lehrplanprüfung von Teil 2 auf eines der fünf Profile (D41, D53,
 D58, D69). Einen Schalter, den die Anfrage selbst
-setzt, lässt es stehen. Ohne `preset` gilt `PRESET_DEFAULT`, ausgeliefert `balanced` (D53; bis dahin war `llm-free`
-die Vorgabe, D40); es ersetzt die Vorgaben der Einzelschalter (`MATCHER_DEFAULT`, `LLM_ARTICLE_CHOICE_DEFAULT` und
-die übrigen). Jedes Profil außer `llm-free` braucht ein LLM: Ohne `LLM_ENABLED` und `B_API_KEY` ist eine solche
-Anfrage ein 503, der die Schalter nennt, die ein LLM brauchen; ein Dienst ohne LLM setzt `PRESET_DEFAULT=llm-free`.
+setzt, lässt es stehen. Ohne `preset` gilt `PRESET_DEFAULT`, ausgeliefert `best-quality-generated` (D82; davor
+`balanced`, D53, und bis dahin `llm-free`, D40); es ersetzt die Vorgaben der Einzelschalter (`MATCHER_DEFAULT`,
+`LLM_ARTICLE_CHOICE_DEFAULT` und die übrigen). Jedes Profil außer `llm-free` braucht ein LLM: Ohne `LLM_ENABLED` und
+`B_API_KEY` ist eine Anfrage, die ein solches Profil nennt, ein 503, der die Schalter nennt, die ein LLM brauchen; eine
+Anfrage ohne `preset` läuft dann mit `llm-free` (D68).
 
 | `preset` | `article_choice` | `matcher` | `extraction` | `generation` | `enrichment` | `curriculum_check` |
 |---|---|---|---|---|---|---|
@@ -131,7 +138,8 @@ in `audit.llm`. Ist die b-api nur gerade nicht erreichbar, laufen die Regeln, un
 mit `enrichment: model-knowledge-full` (D69, siehe die Empfehlung unten): Das LLM
 schreibt jeden Baustein und darf eigenes Wissen ergänzen, ohne Belegnummer und sichtbar gekennzeichnet mit
 `[Modellwissen]` (D56); `extraction` bleibt regelbasiert, weil es am Goldstandard nichts gewann (Schritt 4). Gemessen in
-M27, M28, M31 und M45: rund 36 s und 60.000 Tokens je Kompendium (M45); zwei blinde Gutachter zogen den geschriebenen Text in 11
+M27, M28, M31, M45 und M82: rund 23 s und 63.000 Tokens je Kompendium mit Teil 2 (M82, nachts; am Nachmittag
+30 s, M78); zwei blinde Gutachter zogen den geschriebenen Text in 11
 von 12 Urteilen dem wörtlichen vor (Lesbarkeit 4,0 statt 2,5 von 5, Zusammenhang 4,0 statt 2,4), bei ähnlich vielen
 Fachfehlern, die meist schon in den Quellen stehen. Mit dem ersten Prompt waren zwei Drittel des ergänzten Modellwissens
 Füllsätze; mit dem zweiten (D56) sind es 13 von 50 ergänzten Sätzen statt 50 von 82, und keiner ist nach beiden
@@ -141,14 +149,14 @@ Gutachtern falsch (M31).
 
 | Endpunkt | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
 |---|---|---|---|---|---|
-| `POST /api/v2/compendium`, Teil 1 und 2 | Regeln; 2,3 s, keine Tokens | das LLM nennt Übersicht und Teile des Themas (D63) und entscheidet unsichere Artikel; rund 6,9 s, 576 Tokens | dazu LLM-Zuordnung und die Prüfung der Lehrplanelemente; rund 26 s, 49.019 Tokens | dazu Text vom LLM; rund 36 s, 60.357 Tokens | dazu schreibt das LLM jeden Baustein vollständig zum angefragten Thema; Teil 1 allein rund 27,5 s, 98.707 Tokens (M47) |
-| `POST /api/v2/knowledge` | Regeln; 0,33 s | dieselben Artikel wie das Kompendium: Übersicht und Teile vom LLM (D63); 4,6 s, 494 Tokens | dazu prüft das LLM auch sichere Artikel; 5,7 s, 903 Tokens | wie `best-quality` | wie `best-quality` |
-| `POST /api/v2/qa` mit `text` | `rule-based`: 0,52 s an rund 23.000 Zeichen (M45), 9 bis 20 von 20 Paaren, 58 von 95 mangelfrei (M34) | wie `llm-free` (D57) | `llm`: 6,3 s und 7.137 Tokens für 20 Paare an rund 23.000 Zeichen (M45; an 5.000 bis 12.000 Zeichen rund 2.400, M30), 99 von 120 mangelfrei | wie `best-quality` | wie `best-quality` |
+| `POST /api/v2/compendium`, Teil 1 und 2 (M82) | Regeln; 2,6 s, keine Tokens | das LLM nennt Übersicht und Teile des Themas (D63) und entscheidet unsichere Artikel; 4,6 s, 314 Tokens | dazu LLM-Zuordnung und die Prüfung der Lehrplanelemente; 12,6 s, 59.335 Tokens | dazu Text vom LLM (Standard); 23,2 s, 63.117 Tokens | dazu schreibt das LLM jeden Baustein vollständig zum angefragten Thema; 27,3 s, 87.225 Tokens |
+| `POST /api/v2/knowledge` | Regeln; 0,57 s | dieselben Artikel wie das Kompendium: Übersicht und Teile vom LLM (D63); 1,8 s, 313 Tokens | dazu prüft das LLM auch sichere Artikel; 3,6 s, 751 Tokens | wie `best-quality` | wie `best-quality` |
+| `POST /api/v2/qa` mit `text` | `rule-based`: 0,49 s an rund 26.500 Zeichen (M82), 10 bis 20 von 20 Paaren, 58 von 95 mangelfrei (M34) | wie `llm-free` (D57) | `llm`: 5,8 s und 8.209 Tokens für 20 Paare an rund 26.500 Zeichen (M82; an 5.000 bis 12.000 Zeichen rund 2.400, M30), 99 von 120 mangelfrei | wie `best-quality` | wie `best-quality` |
 | `POST /api/v2/qa` mit `topic` oder `node_id` | Teil 1 ohne LLM wie in `llm-free`, dann die Paare wie mit `text`; die Regeln lesen dazu Glossar und Akteure | ebenso; nur bei einem Material-Knoten wählt das LLM den Artikel (D47) | ebenso | ebenso; auch hier fragen die Paare den wörtlichen Teil 1 ab | ebenso |
-| `GET /api/v2/lehrplan/search` | Regeln finden und bewerten, 0,05 s (M45); `mode=topic` löst wie Teil 2 auf, 0,5 bis 1,3 s, keine Tokens | wie `llm-free`; mit `mode=topic` wählt das LLM den Artikel wie in Teil 2 | dazu bewertet das LLM jedes gefundene Element (D59): 8,3 s und 5.085 Tokens bei 13 bis 50 Treffern (M45); Demokratie ohne Fach: 819 Elemente, 75.016 Tokens, 9,5 s (M33) | wie `best-quality` | wie `best-quality` |
+| `GET /api/v2/lehrplan/search` | Regeln finden und bewerten, 0,02 s (M82); `mode=topic` löst wie Teil 2 auf, 0,57 s, keine Tokens | wie `llm-free`; mit `mode=topic` wählt das LLM den Artikel wie in Teil 2, 2,3 s und 313 Tokens | dazu bewertet das LLM jedes gefundene Element (D59): 2,7 s und 4.533 Tokens bei 14 bis 181 Treffern (M82); Demokratie ohne Fach: 819 Elemente, 75.016 Tokens, 9,5 s (M33) | wie `best-quality` | wie `best-quality` |
 | `GET /api/v2/nodes/{id}` | Regeln, in allen Profilen gleich: zeigt, was ein Knoten mitbringt | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` |
-| `POST /api/v2/entities` | spaCy und Wörterbuch der Archive, ohne LLM; F1 0,38; 1,0 s an 1.500 Zeichen (M45) | das LLM nennt die Entitäten mit ihrem Artikeltitel; F1 0,78; 6,8 s und 1.284 Tokens an 1.500 Zeichen (M45, D62) | wie `balanced` | wie `balanced` | wie `balanced` |
-| `GET /api/v2/collections/{id}/overview` | Teil 3, ohne LLM | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` |
+| `POST /api/v2/entities` | spaCy und Wörterbuch der Archive, ohne LLM; F1 0,38; 2,4 s an 1.500 Zeichen (M82) | das LLM nennt die Entitäten mit ihrem Artikeltitel; F1 0,78; 5,8 s und 1.214 Tokens an 1.500 Zeichen (M82, D62) | wie `balanced` | wie `balanced` | wie `balanced` |
+| `GET /api/v2/collections/{id}/overview` | Teil 3, ohne LLM; ohne Cache 0,8 bis 6,1 s, mit Cache unter 0,05 s (M82) | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` |
 
 `/knowledge`, `/qa`, `/lehrplan/search` und seit D62 `/entities` nehmen `preset` wie das Kompendium; ohne es gilt
 `PRESET_DEFAULT`. Bei `/qa` wählt es nur das Verfahren der Paare, Teil 1 eines Themas entsteht immer ohne LLM (D55);
@@ -189,7 +197,7 @@ sucht dann den Artikel, um den sich der Korpus dreht.
 | laya (nur zum Vergleich) | ein kleines lokales Entscheidungsmodell (mmBERT-base, 322 Mio. Parameter) wählt an der Stelle des LLM unter den Kandidaten der Regeln. Ohne Nachtraining gemessen; nicht eingebaut (D42). |
 | alter Weg (v0.2.0, nur zum Vergleich) | ein LLM nennt bei jeder Anfrage bis zu zehn Begriffe mit vermutetem Wikipedia-Titel, jeder wird nachgeschlagen; einen Hauptartikel wählt er nicht. Nicht eingebaut. |
 
-**Profile:** `llm-free` nimmt `rule-based`, der Standard `balanced` `llm` (D53), die drei Profile ab `best-quality`
+**Profile:** `llm-free` nimmt `rule-based`, `balanced` `llm` (D53), die drei Profile ab `best-quality`
 `llm-thorough` (D61, D69).
 
 | Einstellung | Werte | Standard |
@@ -448,9 +456,9 @@ Bausteinen, Wikibooks und Wikiversity bringen nichts, schwerere Modelle schaden.
 (spaCy) und `dictionary` (Artikeltitel der Archive): an 40 Materialtexten F1 0,38 bei einer Präzision von 0,29 und
 einem Recall von 0,55, in rund 0,25 s (M36); allein kommt `ner` auf 0,30, `dictionary` auf 0,35.
 
-### `balanced`: Zeit und Kosten optimiert bei guter Qualität (Standard)
+### `balanced`: Zeit und Kosten optimiert bei guter Qualität
 
-Anfrage: `{"topic": "Optik"}` genügt. Dafür muss ein LLM konfiguriert sein:
+Anfrage: `{"topic": "Optik", "preset": "balanced"}`. Dafür muss ein LLM konfiguriert sein:
 
 ```
 LLM_ENABLED=true
@@ -489,9 +497,9 @@ jedes Themas wie in `balanced`; Zuordnung, Zeit und Tokens dieses Profils sind v
 llm`) ist in keinem Profil voreingestellt: Präzision 0,94 statt 0,70, aber Recall 0,64 statt 0,89 und F1 0,76, rund
 820 Tokens und 2 s mehr (D62) - für Aufrufer, die eine kurze, sichere Liste brauchen.
 
-### `best-quality-generated`
+### `best-quality-generated` (Standard)
 
-Anfrage: `{"topic": "Optik", "preset": "best-quality-generated"}`, mit LLM und Budget wie bei `best-quality`.
+Anfrage: `{"topic": "Optik"}` genügt, seit D82 der Standard, mit LLM und Budget wie bei `best-quality`.
 
 Ergebnis: wie `best-quality`, dazu schreibt das LLM jeden Baustein und darf eigenes Wissen ergänzen, sichtbar
 gekennzeichnet mit `[Modellwissen]`; rund 24 s (19 bis 28 s) und im Median 35.376 Tokens (M27), mit dem zweiten Prompt

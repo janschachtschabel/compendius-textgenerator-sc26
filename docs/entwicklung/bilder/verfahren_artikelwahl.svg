@@ -43,18 +43,18 @@
 <text x="24.0" y="229.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM entscheidet unsichere (llm)</text>
 <rect x="324.0" y="218.0" width="164.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="494.6" y="229.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">91</text>
-<text x="644.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+1 s bei 18 von 94</text>
-<text x="780.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 800 je Frage</text>
+<text x="644.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">mit N 2,4 s</text>
+<text x="780.0" y="229.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">320 je Anfrage</text>
 <rect x="954.0" y="217.0" width="40.0" height="16.0" rx="3" fill="#7a5aa6" stroke="none" stroke-width="1"/>
 <text x="974.0" y="229.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">balanced</text>
 <text x="24.0" y="259.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">LLM prüft auch sichere (llm-thorough)</text>
-<rect x="324.0" y="248.0" width="168.2" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
-<text x="498.2" y="259.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">93</text>
-<text x="644.0" y="259.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">+1 s bei 64 von 94</text>
-<text x="780.0" y="259.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">rund 800 je Frage</text>
+<rect x="324.0" y="248.0" width="164.6" height="14.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="494.6" y="259.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">91 bis 93</text>
+<text x="644.0" y="259.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">mit N 3,0 s</text>
+<text x="780.0" y="259.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">748 je Anfrage</text>
 <rect x="998.0" y="247.0" width="40.0" height="16.0" rx="3" fill="#d9822b" stroke="none" stroke-width="1"/>
 <text x="1018.0" y="259.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">best-q.</text>
 <rect x="1042.0" y="247.0" width="40.0" height="16.0" rx="3" fill="#b24c63" stroke="none" stroke-width="1"/>
 <text x="1062.0" y="259.0" font-size="9.5" fill="#ffffff" text-anchor="middle" font-weight="600">gen.</text>
-<text x="24.0" y="292.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Hauptartikel richtig: drei Goldsätze, 94 Anfragen (M9, M16, M17; die heutigen Werte M35, nach D63 unverändert, M39).</text>
-<text x="24.0" y="308.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zeit und Tokens je Frage an das LLM (M35); die Regeln fragen es nur, wo sie unsicher sind.</text></svg>
+<text x="24.0" y="292.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Hauptartikel richtig: drei Goldsätze, 94 Anfragen (M9, M16, M17; die heutigen Werte M82, Release 2.17.0; llm-thorough in M35</text>
+<text x="24.0" y="308.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">und M59 93). Zeit und Tokens je Anfrage samt der Frage N (M82); die Regeln fragen das LLM nur, wo sie unsicher sind.</text></svg>

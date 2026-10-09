@@ -1,8 +1,9 @@
 # Entitäten und Kennungen: Methoden und Werte je Profil
 
-[Übersicht](README.md) · Stand 28.09.2026 · Zahlen: [Messprotokoll](05-messprotokoll.md), M18, M20, M36, M41 bis
-M43 und M45; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); alle Schritte im
-Vergleich: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
+[Übersicht](README.md) · Stand 09.10.2026, Release 2.17.0 · Zahlen: [Messprotokoll](05-messprotokoll.md), M18, M20,
+M36, M41 bis M43, M45 und M82; Rohdaten und Zusammenfassungen in
+[messung/ergebnisse](messung/ergebnisse/README.md); alle Schritte im Vergleich:
+[Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
 `POST /api/v2/entities` findet in einem Text die Entitäten - Personen, Orte, Organisationen, Werke, Ereignisse und
 Fachbegriffe -, verknüpft jede mit einem Artikel der geladenen Archive und nennt zu jedem Wikipedia-Artikel seine
@@ -20,22 +21,25 @@ Anfragezeit fragt der Dienst nichts online außer der b-api für das LLM.
 
 ## Die Profile auf einen Blick
 
-| | `llm-free` | `balanced` (Standard) | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+| | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` (Standard) | `best-coverage-generated` |
 |---|---|---|---|---|---|
 | Erkennen (`methods`) | `ner` (spaCy) und `dictionary` (Artikeltitel) | `llm`: das LLM nennt die Entitäten mit dem Titel ihres Artikels | wie `balanced` | wie `balanced` | wie `balanced` |
 | Prüfen (`link_check`) | aus | aus, `llm` wählbar | aus, `llm` wählbar | aus, `llm` wählbar | aus, `llm` wählbar |
 | Verknüpfen und Kennungen | Titel zum Artikel; Kennungen aus lokalen Daten | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` |
 | Entitäten: Präzision / Recall / F1 (M36, D62) | 0,29 / 0,55 / 0,38 | 0,70 / 0,89 / 0,78 | wie `balanced` | wie `balanced` | wie `balanced` |
+| nachgemessen mit Release 2.17.0, Gutachter 1, nur benotete Verknüpfungen (M82, wie M59): passend / von den passenden gefunden | 29 % / 55 % | 69 % / 81 % (M59: 73 / 84 %) | wie `balanced` | wie `balanced` | wie `balanced` |
 | Wikidata-Nummer: Präzision / Recall / F1 (M43) | 0,29 / 0,55 / 0,38 | 0,70 / 0,89 / 0,78 | wie `balanced` | wie `balanced` | wie `balanced` |
 | GND: Präzision / Recall / F1 (M43) | 0,31 / 0,57 / 0,40 | 0,70 / 0,88 / 0,78 | wie `balanced` | wie `balanced` | wie `balanced` |
 | DBpedia-URI über den englischen Artikel (M43) | 348 von 394 Artikeln (88 %) | 259 von 269 (96 %) | wie `balanced` | wie `balanced` | wie `balanced` |
-| Tokens und Zeit je Text | keine; rund 0,25 s an den Materialtexten (M36), 1,0 s an 1.500 Zeichen Kompendiumtext auf dem Server (M45) | rund 800 Tokens und 4 s an den Materialtexten (M36); 1.284 Tokens und 6,8 s an 1.500 Zeichen (M45) | wie `balanced` | wie `balanced` | wie `balanced` |
+| Tokens und Zeit je Text | keine; 0,9 s an den Materialtexten, 2,4 s an 1.500 Zeichen Kompendiumtext im Container (M82; auf dem Server 1,0 s, M45) | rund 890 Tokens und 5,5 s an den Materialtexten; 1.214 Tokens und 5,8 s an 1.500 Zeichen (M82) | wie `balanced` | wie `balanced` | wie `balanced` |
+| Verknüpfungen mit Wikidata-Nummer und GND an sechs Kompendiumtexten (M82) | 188 und 165 von 200 | 81 und 69 von 83 | wie `balanced` | wie `balanced` | wie `balanced` |
 
 Die drei Profile ab `best-quality` erkennen wie `balanced`. Sie unterscheiden sich nur in Teil 1 des
 Kompendiums, nicht in `/entities`. Die Werte gelten für die Texte von 40 echten Materialien (M36), benotet von zwei
 Gutachtern. Mit `link_check: llm` prüft das LLM jede Verknüpfung, und nur die mit Note 2 bleiben: Die Präzision
-steigt auf 0,94, aber ein Drittel der passenden Entitäten fällt weg (F1 0,76). Das kostet rund 820 Tokens und 2 s
-mehr. Deshalb steht die Prüfung in keinem Profil; wer eine kurze, sichere Liste will, setzt sie selbst.
+steigt auf 0,94, aber ein Drittel der passenden Entitäten fällt weg (F1 0,76). Das kostete in M36 rund 820 Tokens
+und 2 s mehr, an 1.500 Zeichen Kompendiumtext in M82 rund 1.900 Tokens und 4,6 s. Deshalb steht die Prüfung in
+keinem Profil; wer eine kurze, sichere Liste will, setzt sie selbst.
 
 ## 1. Erkennen
 

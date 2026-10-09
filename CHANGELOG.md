@@ -9,7 +9,13 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
-Noch nichts.
+- **Gemessen:** M82, Release 2.17.0 in allen Profilen und Funktionen nach Güte, Zeit und Tokens: Jede Funktion hält
+  die Güte ihrer letzten Messung; ein Kompendium mit Teil 1 und 2 braucht im Median 2,6 / 4,6 / 12,6 / 23,2 / 27,3 s
+  und 0 / 314 / 59.335 / 63.117 / 87.225 Tokens (`llm-free` bis `best-coverage-generated`). Neue Messskripte für die
+  Endpunkte, die Auswertung der KI-Fragen und den QA-Bogen; `mc_kompendium_profil.py` zählt das Modellwissen an den
+  Markierungen im Markup, denn seit D76 steht der sichtbare Vermerk nur auf Wunsch im Text.
+- **Doku:** die Entwicklungsdoku auf dem Stand 2.17.0 (Übersicht, Seiten 01, 07, 08 und 09, Grafiken, Messprotokoll
+  und Ergebnisübersicht), im README die Werte der Profile und der KI-Schalter aus M82.
 
 ## 2.17.0 – 2026-10-09
 

@@ -1,7 +1,7 @@
-"""M52: the overview table of the five profiles - quality, time and cost - as Markdown, from the evaluation of
+"""M52, M82: the overview table of the five profiles - quality, time and cost - as Markdown, from the evaluation of
 mc_profilvergleich_auswertung.py, so that page 09 and the decision paper print the measured numbers, not copies.
 
-Usage: python mc_profiltabelle.py <m52_profiluebersicht.json>
+Usage: python mc_profiltabelle.py <m82_profiluebersicht.json>
 """
 
 from __future__ import annotations
@@ -17,8 +17,8 @@ if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
 
 PROFILES = ("llm-free", "balanced", "best-quality", "best-quality-generated", "best-coverage-generated")
-MAIN_ARTICLE = {"llm-free": 87, "balanced": 91, "best-quality": 93, "best-quality-generated": 93,
-                "best-coverage-generated": 93}  # M35 (with D63 unchanged, M39); D72 left the article choice alone
+MAIN_ARTICLE = {"llm-free": 87, "balanced": 91, "best-quality": 91, "best-quality-generated": 91,
+                "best-coverage-generated": 91}  # M82; the three best-quality profiles choose alike (llm-thorough)
 
 
 def de(value: float, places: str = "0.1") -> str:
@@ -54,10 +54,10 @@ def main() -> None:
          [f"{de(grades['alle'][p]['schwere_fehler'], '0.01')} und {de(grades['alle'][p]['leichte_fehler'], '0.01')}"
           for p in PROFILES]),
         ("Überschrift ist das angefragte Thema", run(lambda r: f"{r['heading_as_asked']} von {r['runs']}")),
-        ("Hauptartikel richtig, 94 Goldanfragen (M35)", [f"{MAIN_ARTICLE[p]} von 94" for p in PROFILES]),
+        ("Hauptartikel richtig, 94 Goldanfragen", [f"{MAIN_ARTICLE[p]} von 94" for p in PROFILES]),
         ("**Zeit**", None),
-        ("Teil 1, Median (Spanne)", run(lambda r: f"{de(r['seconds'])} s ({de(r['seconds_span'][0])} bis "
-                                                  f"{de(r['seconds_span'][1])} s)")),
+        ("Anfrage mit Teil 1 und 2, Median (Spanne)",
+         run(lambda r: f"{de(r['seconds'])} s ({de(r['seconds_span'][0])} bis {de(r['seconds_span'][1])} s)")),
         ("**Kosten**", None),
         ("Tokens, Median", run(lambda r: tokens(r["tokens"]))),
         ("davon aus dem Prompt-Cache", run(lambda r: tokens(r["cached"]) if r["tokens"] else "–")),
