@@ -5,6 +5,11 @@ Measured against ``b-api.staging.openeduhub.net`` on 2026-09-17: the path is
 the o-series - take ``max_completion_tokens``, ``reasoning_effort`` and ``verbosity`` and reject
 ``temperature``; classic models take ``max_tokens`` and ``temperature``; Qwen3 models need ``chat_template_kwargs``
 ``{"enable_thinking": false}``. ``/models`` lists ``status`` and ``demand`` only for academiccloud.
+
+The provider ``router`` is the b-api's routing (D97, measured on staging 2026-10-09): ``model`` names a route, set up
+beforehand for the key or for all, which hands the request unchanged to one of its models; its ``/models`` lists the
+routes, and the answer names the model that answered. A route bundles models of one parameter family, so the
+parameters follow ``model``, the family, and the route name travels as ``route``.
 """
 
 from __future__ import annotations
@@ -62,6 +67,35 @@ MAX_USAGE = 10_000_000
 # not measured. Parsed, JSON of many small objects takes 19 times its size (review of 2026-10-08)
 MAX_ANSWER_BYTES = 16 * 1024 * 1024
 _KEPT_HEADERS = frozenset({"content-type", "retry-after"})  # what the attempts read of an answer's headers
+ROUTER = "router"  # the provider path of the b-api's routing (D97)
+# The router's answers no retry mends (staging, 2026-10-09): a route unknown or switched off, a model of it without a
+# price or one that cannot chat. It answers within 0.15 s, having tried its deployments; a retry got the same answer
+# after 15 s (b-api test of 2026-10-01). With no deployment left the calls wait as after an outage: deployments the
+# router paused after errors come back. Status, words of the answer, seconds held back, why
+ROUTE_STOPS = (
+    (
+        400,
+        "No route configured",
+        AUTH_SUSPEND_S,
+        "Route {route!r} ist in der b-api weder für den Schlüssel noch global aktiv; Route anlegen oder "
+        "B_API_ROUTE prüfen",
+    ),
+    (
+        503,
+        "NOT_ELIGIBLE",
+        AUTH_SUSPEND_S,
+        "ein Modell der Route {route!r} beantwortet keine Chat-Anfragen (NOT_ELIGIBLE); Modelle der Route prüfen",
+    ),
+    (
+        503,
+        "Model pricing unavailable",
+        AUTH_SUSPEND_S,
+        "ein Modell der Route {route!r} hat in der b-api keinen Preis; Modellnamen der Route prüfen",
+    ),
+    (503, "No deployment could serve", BREAKER_S, "kein Modell der Route {route!r} ist aktiv oder erreichbar"),
+)
+# OpenAI's codes for a parameter the model does not take: a route of another family than B_API_MODEL refuses so
+_FAMILY_CODES = ("unsupported_parameter", "unsupported_value")
 
 Message = Mapping[str, str]
 
@@ -143,6 +177,7 @@ class BApiClient:
         *,
         provider: str,
         model: str,
+        route: str = "",
         timeout_s: float = 120.0,
         max_concurrency: int = 4,
         attempts: int = 3,
@@ -173,6 +208,10 @@ class BApiClient:
         self.base_url = base_url.rstrip("/")
         self.provider = provider
         self.model = model
+        # The route the router gets; without one a route named like the model, the b-api's way to switch without an
+        # outage. The other providers take the model itself (D97)
+        self.route = (route.strip() or model) if provider == ROUTER else ""
+        self._answering: set[str] = set()  # the models that answered behind the route
         self.timeout_s = timeout_s
         self.attempts = max(1, attempts)
         self.backoff_s = backoff_s
@@ -243,6 +282,8 @@ class BApiClient:
             # 504, and the attempts before it too; both used to count nothing (audit 2026-09-29, A05)
             usage = _usage(data.get("usage")) if isinstance(data, dict) else (0, 0, 0)
             raise LlmError(str(exc), 200, reached=reached if usage[2] else reached + 1, usage=usage) from exc
+        if self.route:
+            self._note_model(result.model)
         return replace(result, reached_before=reached) if reached else result
 
     def models(self) -> list[ModelInfo]:
@@ -265,30 +306,41 @@ class BApiClient:
         return infos
 
     def check_model(self) -> ModelCheck:
-        """Compare the configured model with ``/models``; never raises, the caller decides what to do."""
+        """Compare the configured model - with the router its route - with ``/models``; never raises, the caller
+        decides what to do."""
+        name = self.route or self.model
         try:
             infos = self.models()
         except LlmError as exc:
-            return ModelCheck(False, self.model, False, None, None, f"b-api nicht erreichbar: {exc}")
-        info = next((m for m in infos if m.id == self.model), None)
+            return ModelCheck(False, name, False, None, None, f"b-api nicht erreichbar: {exc}")
+        info = next((m for m in infos if m.id == name), None)
         if info is None:
-            message = f"Modell {self.model!r} steht nicht in /models des Providers {self.provider}"
-            return ModelCheck(False, self.model, False, None, None, message)
+            if "/" in self.route:
+                # provider/model reaches that provider without a route and is never listed (b-api, 2026-10-02)
+                message = f"{name} ohne Route: die b-api fragt den Provider davor direkt, ohne Ausweichen"
+                return ModelCheck(True, name, False, None, None, message)
+            if self.route:
+                message = (
+                    f"Route {name!r} steht nicht in /models des Routers: In der b-api ist weder für den Schlüssel "
+                    "noch global eine aktive Route dieses Namens; Route anlegen oder B_API_ROUTE prüfen"
+                )
+            else:
+                message = f"Modell {self.model!r} steht nicht in /models des Providers {self.provider}"
+            return ModelCheck(False, name, False, None, None, message)
         if info.status is not None and info.status != "ready":
-            return ModelCheck(
-                False, self.model, True, info.status, info.demand, f"Modell {self.model} hat status {info.status}"
-            )
+            return ModelCheck(False, name, True, info.status, info.demand, f"Modell {name} hat status {info.status}")
         if info.demand is not None and info.demand >= HIGH_DEMAND:
-            message = f"Modell {self.model} ist stark ausgelastet (demand {info.demand})"
-            return ModelCheck(False, self.model, True, info.status, info.demand, message)
-        return ModelCheck(True, self.model, True, info.status, info.demand, f"Modell {self.model} verfügbar")
+            message = f"Modell {name} ist stark ausgelastet (demand {info.demand})"
+            return ModelCheck(False, name, True, info.status, info.demand, message)
+        message = f"Route {name} verfügbar, Parameter wie {self.model}" if self.route else f"Modell {name} verfügbar"
+        return ModelCheck(True, name, True, info.status, info.demand, message)
 
     def completion_limit(self, answer_tokens: int) -> int:
         """The API's output limit for an answer of ``answer_tokens``: reasoning models also spend it on thinking."""
         return answer_tokens + REASONING_ALLOWANCE if is_reasoning_model(self.model) else answer_tokens
 
     def _body(self, messages: Sequence[Message], max_output_tokens: int, prompt: str | None = None) -> dict[str, Any]:
-        body: dict[str, Any] = {"model": self.model, "messages": [dict(m) for m in messages]}
+        body: dict[str, Any] = {"model": self.route or self.model, "messages": [dict(m) for m in messages]}
         if is_reasoning_model(self.model):
             body["max_completion_tokens"] = max_output_tokens
             body["reasoning_effort"] = self.reasoning_efforts.get(prompt or "", self.reasoning_effort)
@@ -386,13 +438,22 @@ class BApiClient:
                     except (ValueError, RecursionError) as exc:  # also a nesting too deep to read
                         # the model answered: the attempt may have cost its prompt like one behind a 504 (A05)
                         raise LlmError("b-api antwortete ohne gültiges JSON", status, reached=reached + 1) from exc
-                if status not in RETRY_STATUSES:
+                stop = self._route_stop(status, response.text) if self.route else None
+                if status not in RETRY_STATUSES or stop is not None:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
                     # key is blanked before the cut, which otherwise left the start of an echoed key (SE-10).
                     # on one line: the CR and LF of an error page split a record of the plain format (logging review)
                     log.warning(
-                        "b-api answered HTTP %s: %s", status, " ".join(self._redact(response.text)[:200].split())
+                        "b-api answered HTTP %s: %s%s",
+                        status,
+                        " ".join(self._redact(response.text)[:200].split()),
+                        self._family_hint(status, response.text),
                     )
+                    if stop is not None:
+                        seconds, why = stop
+                        span = f"{round(seconds / 60)} Minuten" if seconds >= 120 else f"{seconds:.0f} s"
+                        self._trip(seconds, f"b-api-Routing {span} ausgesetzt: {why}", cause=f"HTTP {status}")
+                        raise LlmError(f"b-api antwortete HTTP {status}: {why}", status, reached=reached)
                     if status in REFUSED_STATUSES:
                         self._refused(status)
                     elif status < 500:
@@ -434,6 +495,32 @@ class BApiClient:
             self._probing = True
         log.info("b-api probe after the break: this call decides whether the calls resume")
         return True
+
+    def _route_stop(self, status: int, text: str) -> tuple[float, str] | None:
+        """How long the calls wait and why, when the router answered what no retry mends (``ROUTE_STOPS``)."""
+        for code, words, seconds, why in ROUTE_STOPS:
+            if status == code and words in text:
+                return seconds, why.format(route=self.route)
+        return None
+
+    def _family_hint(self, status: int, text: str) -> str:
+        """Behind a route the provider's refusal of a parameter: the route bundles models of another family than
+        B_API_MODEL, whose parameters the service sends (D97)."""
+        if not self.route or status != 400 or not any(code in text for code in _FAMILY_CODES):
+            return ""
+        return (
+            f" - route {self.route!r} leads to a model that refuses the parameters of B_API_MODEL={self.model}; a "
+            "route bundles models of one parameter family"
+        )
+
+    def _note_model(self, model: str) -> None:
+        """Name once which model answers behind the route: the answer names the model, not the deployment, and a
+        new one shows the route turned to another, its reserve (D97)."""
+        with self._state:
+            new = model not in self._answering
+            self._answering.add(model)
+        if new:
+            log.info("b-api routing: route %r answers with %s", self.route, model)
 
     def _refused(self, status: int) -> None:
         minutes = round(AUTH_SUSPEND_S / 60)

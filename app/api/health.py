@@ -50,7 +50,13 @@ def _components(request: Request) -> dict[str, Any]:
     llm_status: dict[str, Any] = (
         llm.status()
         if llm is not None
-        else {"enabled": False, "provider": settings.b_api_provider, "model": settings.b_api_model, "available": False}
+        else {
+            "enabled": False,
+            "provider": settings.b_api_provider,
+            "model": settings.b_api_model,
+            "route": settings.b_api_route_name or None,
+            "available": False,
+        }
     )
     llm_status = {**llm_status, "host": _host(settings.b_api_url)}
     curricula = getattr(request.app.state, "curricula", None)

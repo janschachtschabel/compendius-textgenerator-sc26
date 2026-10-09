@@ -812,6 +812,30 @@ Dienst ein Modell nur am Namen (`gpt-5`, `gpt-6`, `o1`, `o3`, `o4`). Schreibt ei
 (`reasoning`, `reasoning_content`), gilt das als Antwort, außer es brach an der Grenze der Ausgabe ab
 (`finish_reason=length`): Dann zählt der Aufruf als leere Antwort, und die Regeln entscheiden (Audit 2026-09-29, L2).
 
+**b-api-Routing (D97).** Mit `B_API_PROVIDER=router` fragt der Dienst den Router der b-api
+(`/api/v1/llm/router/chat/completions`) und schickt im Feld `model` den Namen einer Route: `B_API_ROUTE`, ohne
+Eintrag eine Route, die wie `B_API_MODEL` heißt. Eine Route bündelt Modelle nach Priorität und Gewicht; antwortet
+eines nicht, fragt die b-api das nächste. Routen legen Administratoren in der b-api an, global oder für den Schlüssel
+(Recht `LLM_ROUTE_MANAGE`); der Dienst verwaltet keine und setzt eine angelegte Route voraus. Der Router reicht die
+Anfrage unverändert an das gewählte Modell weiter. Darum darf eine Route nur Modelle einer Parameterfamilie bündeln,
+und `B_API_MODEL` nennt diese Familie: Mit `gpt-6-luna` schickt der Dienst `max_completion_tokens`,
+`reasoning_effort` und `verbosity`, wie für jedes Modell der Serien GPT-5, GPT-6 und o. Ein Modell, das diese Parameter
+nicht kennt, lehnt jede Frage mit 400 ab, und die Warnung im Log nennt dann die Familie. Die Modellprüfung beim
+Start sucht die Route in `GET /api/v1/llm/router/models`; `provider/modell` (etwa `openai/gpt-6-luna`) erreicht das
+Modell auch ohne Route,
+steht dort aber nie und gilt ohne Prüfung. `/health` nennt unter `components.llm` die Route, das Frontmatter
+`llm.route` und in `llm.model` das Modell, das geantwortet hat; das Log sagt einmal je Modell, wer hinter der Route
+antwortet (`b-api routing: route 'kompendium-test' answers with gpt-6-luna`), ein neues Modell zeigt das Ausweichen
+auf die Reserve. Antworten des Routers, die keine Wiederholung heilt, halten die Aufrufe mit dem Grund zurück, statt
+sie dreimal zu wiederholen: eine Route, die es nicht oder nur abgeschaltet gibt (400), und ein Modell der Route ohne
+Preis oder ohne Chat (503) für zehn Minuten, eine Route ohne aktives oder erreichbares Modell (503) für eine Minute;
+in der Zeit antworten die Regeln, und Ergebniszeile und `/health` nennen den Grund. Die Vorgaben je Provider sind die
+von `openai` (20 Aufrufe zugleich, 300 s je Anfrage); bündelt eine Route Modelle der AcademicCloud, gehören deren
+Werte in `LLM_MAX_CONCURRENCY` und `REQUEST_TIMEOUT_S` (2 und 600 s). Ohne `B_API_RESPONSE_CACHE` trägt auch hier
+jeder Aufruf einen eigenen `safety_identifier`. Geprüft am 09.10.2026 auf Staging mit einer Route aus `gpt-6-luna` und
+`gpt-5.6-luna` als Reserve (M83): Die Kompendien kosteten über die Route dieselben Tokens wie direkt über `openai`,
+ein einzelner Aufruf dauerte im Median 0,82 statt 0,86 s, und mit abgeschaltetem Hauptmodell antwortete die Reserve.
+
 Betrieb: Die Modellprüfung ist ein einzelner Versuch mit 10 s Timeout (Start, danach höchstens alle zehn
 Minuten, solange das Modell fehlt); `/health` ruft die b-api nie selbst. Alle Versuche eines Aufrufs teilen sich
 seine Frist; eine Wiederholung wartet 1,5 s, dann 3 s, je mit einer Streuung zwischen der Hälfte und dem
@@ -1055,8 +1079,9 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg: `drop` (verwerfen) oder `mark` (als Schlussfolgerung kennzeichnen) |
 | `B_API_KEY` | leer | Schlüssel der b-api. Gehört in die `.env`, nicht in die Vorlage |
 | `B_API_BASE_URL` | leer | Leer lassen: dann gilt die b-api, die zum Repository oben gehört (Staging → `https://b-api.staging.openeduhub.net`, Redaktion → `https://b-api.prod.openeduhub.net`). Ein eigener Wert wird befolgt; passt er nicht zum Repository, sagt es das Log beim Start |
-| `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api |
-| `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`). Ohne Eintrag, auch bei leerem Wert, gilt `gpt-6-luna`. Gemessen an der Staging-b-api; ob eine andere b-api es führt, zeigt `/health` unter `components.llm` |
+| `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api: `openai`, `academiccloud` oder `router`, das Routing der b-api über eine vorab angelegte Route (`B_API_ROUTE`, D97, Abschnitt „b-api-Routing“) |
+| `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`). Ohne Eintrag, auch bei leerem Wert, gilt `gpt-6-luna`. Gemessen an der Staging-b-api; ob eine andere b-api es führt, zeigt `/health` unter `components.llm`. Mit `B_API_PROVIDER=router` die Modellfamilie der Route: Ihre Parameter schickt der Dienst |
+| `B_API_ROUTE` | leer | Nur mit `B_API_PROVIDER=router`: die Route, die der Dienst im Feld `model` an den Router der b-api schickt (D97). Leer: eine Route, die wie `B_API_MODEL` heißt. Anlegen müssen sie Administratoren, global oder für den Schlüssel; der Dienst verwaltet keine. `openai/gpt-6-luna` erreicht das Modell ohne Route und ohne Ausweichen. Mit einem anderen Provider ohne Wirkung, der Start warnt |
 | `B_API_RESPONSE_CACHE` | `false` | Ob die b-api eine wortgleiche Anfrage aus ihrem Speicher beantworten darf (D70). Sie tut es, ohne dass ein Schalter es abstellt: gleiche Antwort-ID, gleicher Text, 0,4 statt 3,8 s, auch nach einer unbrauchbaren Antwort und in jeder Wiederholung einer Messung. Aus: Jeder Aufruf trägt einen eigenen `safety_identifier` und wird neu beantwortet; das Prompt-Caching des Anbieters (gleicher Anfang des Prompts, `cached` im Audit) bleibt dabei erhalten, anders als mit `user` (gemessen am 01.10.2026) |
 | `LLM_REASONING_EFFORT` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Denkaufwand jeder Frage, die `LLM_REASONING_EFFORTS` nicht nennt. Bekannt sind `none`, `minimal`, `low`, `medium`, `high` und `xhigh`; einen anderen Wert schickt der Dienst trotzdem, und der Start warnt: ein Tippfehler lässt vermutlich jeden Aufruf mit 400 scheitern |
 | `LLM_REASONING_EFFORTS` | `topic_articles=none,article_choice=none,curriculum_check=none,topic_wording=none,qa_pairs=none` | Fragen mit eigenem Denkaufwand, als Prompt=Aufwand mit Komma getrennt (D81). Die ausgelieferten antworteten ohne Denken gleich gut, in etwa der halben Zeit (M59). Der Start warnt bei einer Frage, die der Dienst nicht stellt, und bei einem unbekannten Aufwand |

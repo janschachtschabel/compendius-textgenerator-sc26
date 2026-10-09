@@ -15,7 +15,7 @@ from app.compendium.gateway import LlmGateway, LlmOptions
 from app.knowledge.lexicon import HeadingLexicon
 from app.llm.budget import DailyStore, TokenBudget
 from app.llm.budget_store import SqliteDailyStore
-from app.llm.client import BApiClient, is_reasoning_model
+from app.llm.client import ROUTER, BApiClient, is_reasoning_model
 from app.llm.deadline import MIN_CALL_S
 from app.llm.prompts import PROMPTS
 from app.service import CompendiumService
@@ -131,6 +131,11 @@ def warn_about_llm_settings(settings: Settings) -> None:
             MIN_CALL_S,
             PROVIDER_REQUEST_TIMEOUT_S[settings.b_api_provider],
         )
+    if settings.b_api_route and settings.b_api_provider != ROUTER:
+        log.warning(
+            "B_API_ROUTE=%r has no effect: only B_API_PROVIDER=router sends a route, to the b-api's router (D97)",
+            settings.b_api_route,
+        )
     if not settings.llm_daily_token_budget and not settings.api_key_list:
         log.warning(
             "LLM_DAILY_TOKEN_BUDGET=0 and API_KEYS empty: anyone who reaches the service spends b-api tokens without a "
@@ -185,6 +190,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
         settings.b_api_key,
         provider=settings.b_api_provider,
         model=settings.b_api_model,
+        route=settings.b_api_route,
         timeout_s=settings.llm_timeout_s,
         max_concurrency=settings.llm_concurrency,
         attempts=settings.llm_attempts,

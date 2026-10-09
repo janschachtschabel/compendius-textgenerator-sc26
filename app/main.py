@@ -181,6 +181,14 @@ def log_defaults(settings: Settings, service: CompendiumService, templates: Temp
         )
 
 
+def _llm_target(settings: Settings) -> str:
+    """What the start line names of the LLM: provider and model, with the router its route and the model family whose
+    parameters the service sends (D97)."""
+    if settings.b_api_route_name:
+        return f"router {settings.b_api_route_name} (parameters of {settings.b_api_model})"
+    return f"{settings.b_api_provider} {settings.b_api_model}"
+
+
 def log_start(app: FastAPI, settings: Settings, service: CompendiumService) -> None:
     """One line with what this worker runs: the version and the commit, so the log of an error names the code that
     wrote it, and what is there - a first start says that part 2 has no cache yet or /entities no index (logging
@@ -201,7 +209,7 @@ def log_start(app: FastAPI, settings: Settings, service: CompendiumService) -> N
         len(registry.archives),
         len(required) - len(missing),
         len(required),
-        f"{settings.b_api_provider} {settings.b_api_model}" if service.llm is not None else "off",
+        _llm_target(settings) if service.llm is not None else "off",
         "yes" if app.state.matching["embeddings"] else "no",
         "yes" if app.state.entities["ner"] else "no",
         cache,

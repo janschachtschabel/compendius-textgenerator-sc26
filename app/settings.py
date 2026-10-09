@@ -12,7 +12,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.domain.requests import Preset
 
-Provider = Literal["openai", "academiccloud"]
+Provider = Literal["openai", "academiccloud", "router"]
 FacetsLevel = Literal["minimal", "full"]
 ZimProfile = Literal["compact", "standard", "extended"]
 
@@ -44,9 +44,11 @@ DEFAULT_B_API_MODEL = "gpt-6-luna"
 # assignment (D93), and requests may share a worker; academiccloud queues them on few GPUs, and with 2 at once
 # best-coverage-generated needs about 120 s even at the speed of gpt-6-luna. Both limits sit well above what a request
 # takes, so that a slow answer does not cost the LLM steps (Jan: "damit es nicht schief geht"); M75 measured 35 to 43 s
-# for best-coverage-generated on OpenAI and once 126 s behind one slow answer.
-PROVIDER_CONCURRENCY: dict[str, int] = {"openai": 20, "academiccloud": 2}
-PROVIDER_REQUEST_TIMEOUT_S: dict[str, int] = {"openai": 300, "academiccloud": 600}
+# for best-coverage-generated on OpenAI and once 126 s behind one slow answer. The router hands each call to a model
+# of its route, and the routes of the service bundle OpenAI models of one family (D97): the limits of openai; a route
+# of academiccloud models wants theirs, set in LLM_MAX_CONCURRENCY and REQUEST_TIMEOUT_S.
+PROVIDER_CONCURRENCY: dict[str, int] = {"openai": 20, "academiccloud": 2, "router": 20}
+PROVIDER_REQUEST_TIMEOUT_S: dict[str, int] = {"openai": 300, "academiccloud": 600, "router": 300}
 # The questions that think otherwise than LLM_REASONING_EFFORT (M59): without the model's thinking these chose the same
 # articles, rated the curriculum elements alike and wrote equal topics and question pairs, in about half the time; the
 # writing, the paragraph assignment, the entities and the article of a material lost without it and keep thinking
@@ -213,9 +215,20 @@ class Settings(BaseSettings):
     b_api_base_url: str = Field(
         "", description="b-api host, no path; empty takes the one belonging to EDU_SHARING_BASE_URL"
     )
-    b_api_provider: Provider = Field("openai", description="b-api provider: openai or academiccloud")
+    b_api_provider: Provider = Field(
+        "openai",
+        description="b-api provider: openai, academiccloud, or router - the b-api's routing over a route set up "
+        "beforehand, globally or for the key (B_API_ROUTE, D97)",
+    )
     b_api_model: str = Field(
-        DEFAULT_B_API_MODEL, description="Model id at the selected provider (D44); empty takes the default"
+        DEFAULT_B_API_MODEL,
+        description="Model id at the selected provider (D44); empty takes the default. With the router the model "
+        "family of the route: its parameters are what the service sends",
+    )
+    b_api_route: str = Field(
+        "",
+        description="Route the router gets with B_API_PROVIDER=router, in the field model (D97); empty takes a route "
+        "named like B_API_MODEL. provider/model reaches that model without a route, without falling back",
     )
     b_api_response_cache: bool = Field(
         False,
@@ -364,6 +377,14 @@ class Settings(BaseSettings):
         if self.request_timeout_s is not None:
             return self.request_timeout_s
         return PROVIDER_REQUEST_TIMEOUT_S[self.b_api_provider]
+
+    @property
+    def b_api_route_name(self) -> str:
+        """The route the router gets (D97): B_API_ROUTE, else one named like B_API_MODEL; "" for the other providers,
+        which take the model itself."""
+        if self.b_api_provider != "router":
+            return ""
+        return self.b_api_route.strip() or self.b_api_model
 
     @property
     def api_key_list(self) -> list[str]:

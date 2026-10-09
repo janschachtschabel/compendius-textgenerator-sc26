@@ -191,6 +191,8 @@ def build_llm_report(
             if r is not None and r.model
         ]
         front["provider"] = gateway.client.provider
+        if gateway.client.route:
+            front["route"] = gateway.client.route  # the model below is the one that answered behind it (D97)
         front["model"] = models[0] if models else gateway.client.model
     front["prompts"] = sorted({prompt for r in reports for prompt in r.prompts})
     front["extraction"] = {

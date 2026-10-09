@@ -42,6 +42,7 @@ def test_health_and_ready(client: TestClient) -> None:
         "enabled": False,
         "provider": "openai",
         "model": "gpt-6-luna",  # the shipped default since D44
+        "route": None,  # only the router gets one (D97)
         "available": False,
         "host": "b-api.staging.openeduhub.net",  # derived from the repository, which is staging by default
     }

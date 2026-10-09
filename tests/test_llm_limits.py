@@ -22,13 +22,15 @@ from tests.conftest import make_settings
 from tests.test_llm_client import FakeBApi
 
 
-@pytest.mark.parametrize(("provider", "calls", "seconds"), [("openai", 20, 300), ("academiccloud", 2, 600)])
+@pytest.mark.parametrize(
+    ("provider", "calls", "seconds"), [("openai", 20, 300), ("academiccloud", 2, 600), ("router", 20, 300)]
+)
 def test_the_provider_sets_the_calls_at_once_and_the_time_of_a_request(provider: str, calls: int, seconds: int) -> None:
     settings = Settings(_env_file=None, b_api_provider=provider)
     assert (settings.llm_concurrency, settings.request_time_limit_s) == (calls, seconds)
 
 
-@pytest.mark.parametrize("provider", ["openai", "academiccloud"])
+@pytest.mark.parametrize("provider", ["openai", "academiccloud", "router"])
 def test_a_value_set_holds_for_every_provider(provider: str) -> None:
     settings = Settings(_env_file=None, b_api_provider=provider, llm_max_concurrency=7, request_timeout_s=90)
     assert (settings.llm_concurrency, settings.request_time_limit_s) == (7, 90)
