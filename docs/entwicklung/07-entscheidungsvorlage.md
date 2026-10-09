@@ -1,7 +1,7 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
 [Übersicht](README.md) · Stand 09.10.2026, Release 2.17.0 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis
-M90; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
+M91; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
 `/entities`: [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit
 und Tokens je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
@@ -11,6 +11,43 @@ was sie an Zeit und Tokens kosten. Fünf Profile bündeln sie (D53, D69); der Sc
 heißt: Das gilt, wenn die Anfrage nichts anderes verlangt. Standard ist das Profil `best-quality-generated`
 (`PRESET_DEFAULT`, D82), ohne konfiguriertes LLM `llm-free` (D68); jedes Profil außer `llm-free` braucht ein LLM,
 sonst ist die Anfrage ein 503. Die Profile wählen auch das Verfahren der QA-Paare (D54, D55, D57).
+
+## Zur Entscheidung: Bausteinbudget, Quellen und Profil im Betrieb (09.10.2026)
+
+Jan: „ok dann will ich jetzt eine entscheidungsvorlage für die themen mit dem bausteinbudget erstellen und empfehlungen
+zusätzlichen quellen geben … bitte zusätzlich empfehlen welches profil im produktiv betrieb laufen sollte. die llm
+kosten sehe ich nicht als problem - die bleiben bei gpt-5-luna unter einem cent je kompendialen text - wirklich relevant
+ist wahrscheinlich nur qualität vs geschwindigkeit“. Die Empfehlungen stützen sich auf M84, M86 und M89 bis M91; die
+Punkte 16, 17, 19 und 20 unten tragen die Zahlen.
+
+| Frage | Empfehlung | Grundlage | Punkt |
+|---|---|---|---|
+| Bausteinbudget | das Zehnfache für alle Profile, wie ausgeliefert (D102) | M86: Nutzen höher in jedem Profil, keine längere Dauer, Precision am Gold gleich; die wörtlichen Texte werden lang | 17 |
+| Satzauswahl der KI (`extraction=llm`) | in keinem Profil; das Kästchen für Einzelfälle (D103) | M89: kürzer und lesbarer, aber Nutzen rund 0,75 niedriger | 19 |
+| Weitere Quellen | Wikipedia und Klexikon (D99); Wikibooks und Wikiversity kein Muss | M84, M90: ein Treffer bei 6 von 100 Anfragen, dort beim Zehnfachen nicht schlechter | 16 |
+| Profil im Betrieb | `best-coverage-generated`; geht Belegnähe vor, `best-quality-generated` | M91: in jeder Note vorn, 5 s langsamer, 68 % Modellwissen | 20 |
+
+![Die fünf Profile beim zehnfachen Bausteinbudget: Güte, Zeit und Kosten (M91)](bilder/profiluebersicht_x10.svg)
+
+**Empfehlung in Kürze**
+
+- **Bausteinbudget:** beim Zehnfachen bleiben, wie ausgeliefert (D102). Es hebt den Nutzen in jedem Profil, kostet keine
+  Zeit, und die Precision der Zuordnung bleibt (M86). Die wörtlichen Texte werden dafür lang (`balanced` im Median
+  43.000 Zeichen, `best-quality` 61.000); wer sie kürzer will, stellt `BLOCK_BUDGET_FACTOR` niedriger, etwa auf 4.
+- **Satzauswahl der KI:** in keinem Profil voreinstellen. Sie macht die Texte kürzer, lesbarer und fehlerärmer, aber
+  rund 0,75 Noten weniger nützlich (M89); das Kästchen in der Prüfansicht bleibt für Einzelfälle (D103).
+- **Weitere Quellen:** bei Wikipedia und Klexikon bleiben (D99). Wikibooks und Wikiversity treffen über den Titel nur
+  bei 6 von 100 Anfragen; dort schaden sie beim Zehnfachen nicht und helfen bei zwei von drei Seiten (M90). Für 4,1 GB
+  Platte ein seltener Gewinn, kein Muss.
+- **Profil im Betrieb:** `best-coverage-generated` als Standard (`PRESET_DEFAULT`). Es ist in jeder Note vorn (Passung
+  4,9, Nutzen 4,7, Vollständigkeit 4,9, Lesbarkeit 4,4) und trägt die wenigsten schweren Fehler, für 32,5 s je
+  Kompendium, 5 s mehr als `best-quality-generated` (4,4, 4,0, 3,8, 4,3; 27,5 s). Am größten ist der Abstand bei Themen
+  mit Aspekt (Passung 5,0 statt 3,7). Der Preis liegt in der Herkunft, nicht in der Zeit: 68 % seines Textes sind
+  Modellwissen, im Markup gekennzeichnet und sichtbar nur mit `model_knowledge_label`, bei `best-quality-generated` 42
+  %. Geht Belegnähe vor Vollständigkeit, bleibt `best-quality-generated` Standard und `best-coverage-generated` die Wahl
+  für Sammel- und Aspektthemen.
+- **Schneller, schlechter:** `balanced` liefert in 3,8 s, aber unvollständig (1,8) und schwer lesbar (1,9);
+  `best-quality` braucht 14,9 s für denselben Nutzen (3,2) und lohnt sich kaum; `llm-free` nur ohne LLM.
 
 ## Die fünf Profile auf einen Blick
 
@@ -35,6 +72,9 @@ sonst ist die Anfrage ein 503. Die Profile wählen auch das Verfahren der QA-Paa
 | Lesbarkeit für Lehrkräfte, 1 bis 5, zwei Gutachter (M28) | wörtlich wie `best-quality` | wörtlich wie `best-quality` | 2,5 | 4,0; im Mittel 5 Füllsätze je Thema, mit dem ersten Prompt 12 (M31) | nicht gemessen; in M52 4,2 |
 | Passung zum angefragten Thema an neun Themen, zwei Gutachter (M82, Release 2.17.0): einfach, Sammelthema, mit Aspekt | 3,3, 1,2, 1,0 | 4,0, 2,0, 1,3 | 4,5, 2,5, 1,8 | 4,8, 4,0, 3,8 | 5,0, 5,0, 5,0 |
 | Nutzen, Vollständigkeit, Lesbarkeit an denselben neun Themen (M82) | 1,7, 1,2, 2,1 | 2,0, 1,4, 1,9 | 2,7, 2,1, 2,1 | 3,8, 3,7, 3,6; 0,1 schwere und 1,2 leichte Fehler je Text | 4,7, 5,0, 4,1; keine schweren und 0,7 leichte Fehler je Text |
+| Passung beim zehnfachen Bausteinbudget, neun Themen, zwei Gutachter (M91, Release 2.20.0): einfach, Sammelthema, mit Aspekt | 4,0, 1,3, 1,0 | 4,3, 2,7, 1,3 | 4,3, 3,0, 2,0 | 4,8, 4,7, 3,7 | 5,0, 4,8, 5,0 |
+| Nutzen, Vollständigkeit, Lesbarkeit beim zehnfachen Bausteinbudget (M91) | 2,2, 1,3, 2,1 | 3,2, 1,8, 1,9 | 3,2, 2,3, 2,1 | 4,0, 3,8, 4,3; 0,11 schwere und 1,0 leichte Fehler je Text und Gutachter | 4,7, 4,9, 4,4; 0,06 schwere und 1,5 leichte |
+| Teil 1 und 2 beim zehnfachen Bausteinbudget, abends, Median (M91) | 2,9 s, 0 Tokens, 25.299 Zeichen | 3,8 s, 320 Tokens, 42.818 Zeichen | 14,9 s, 51.932 Tokens, 60.851 Zeichen | 27,5 s, 89.175 Tokens, 30.039 Zeichen, 42 % Modellwissen | 32,5 s, 111.716 Tokens, 58.130 Zeichen, 68 % Modellwissen |
 | Teil 1 und 2 mit 30.000 Zielzeichen im Container des Entwicklungsrechners, nachts, Median (M82) | 2,6 s, 0 Tokens, 9.718 Zeichen | 4,6 s, 314 Tokens, 11.146 Zeichen | 12,6 s, 59.335 Tokens, 12.914 Zeichen | 23,2 s, 63.117 Tokens, 24.711 Zeichen, 51 % Modellwissen | 27,3 s, 87.225 Tokens (50.637 aus dem Prompt-Cache), 54.309 Zeichen, 82 % Modellwissen |
 | Themen mit Aspekt („OER-Förderungen“), acht Themen, zwei Gutachter (M47): Passung, Nutzen, Vollständigkeit von 1 bis 5 | nicht gemessen | nicht gemessen | nicht gemessen | 1,81, 2,12, 1,69: der Text handelt vom Artikel | 4,81, 4,81, 5,00; keine schweren Fehler |
 | QA-Paare mangelfrei bei beiden Gutachtern (M30, M34); Note von 0 bis 2 an sechs Themen à fünf Paare (M82) | 58 von 95 seit D60 (vorher 48 von 96); Note 0,8; 0,49 s an rund 26.500 Zeichen (M82) | wie `llm-free` | 99 von 120; Note 1,4; 5,8 s und 8.209 Tokens an rund 26.500 Zeichen (M82) | wie `best-quality` | wie `best-quality` |
@@ -1057,6 +1097,8 @@ Passung 4,56 und Nutzen 4,31.
     wird der Text bei ×10 also nicht schlechter, bei zwei der drei Seiten besser; an der Empfehlung ändert das wenig,
     weil es selten trifft. Die beiden Archive kosten 4,1 GB Platte; gemessen nur in `llm-free`, für M90 neu geladen.
 
+    ![Wikibooks und Wikiversity beim zehnfachen Bausteinbudget: gewonnene und verdrängte Absätze (M90)](bilder/zusatzquellen_budget.svg)
+
 17. **Bausteinbudget** (Jan, 09.10.2026: „der größte hebel ist das bausteinbudget … vom team gewünscht war, das die
     kompendiale texte umfangreich und vollständig sind“; nach den ersten Zahlen: „zu prüfen wäre was möglicherweise
     dagegen sprechen könnte … vielleicht kann man dann mit einem f1 sagen wo die verbesserungen gesättigt sind“):
@@ -1193,6 +1235,8 @@ Passung 4,56 und Nutzen 4,31.
     | Dauer der Anfrage (Median) | 4,8 s | 10,8 s | 16,8 s | 22,3 s |
     | Gold der Zuordnung ×10: Precision / Recall | 0,64 / 0,56 | 0,70 / 0,26 | 0,77 / 0,67 | 0,72 / 0,34 |
 
+    ![Satzauswahl der KI beim zehnfachen Bausteinbudget: Noten, Zeit und Tokens (M89)](bilder/satzauswahl.svg)
+
     - **Nutzen:** sinkt in beiden Profilen um rund 0,75 Noten. Die Auswahl schließt beim Zeichenbudget der Vorlage,
       nicht bei dem von D102: Die Texte werden ein Drittel so lang, und am Gold halbiert sich der Recall.
     - **Lesbarkeit und Fehler:** etwas lesbarer, weniger Fehler, vor allem weil weniger Text dasteht.
@@ -1204,6 +1248,35 @@ Passung 4,56 und Nutzen 4,31.
     **Empfehlung:** In keinem Profil voreinstellen; der Schalter bleibt für Anfragen und die Prüfansicht. Soll die
     Auswahl die Länge von D102 halten, müsste sie beim Zeichenbudget mal `BLOCK_BUDGET_FACTOR` schließen; ob sie dann
     den Nutzen hält und lesbarer bleibt, wäre neu zu messen.
+
+20. **Profil im Betrieb** (Jan, 09.10.2026: „bitte zusätzlich empfehlen welches profil im produktiv betrieb laufen
+    sollte … wirklich relevant ist wahrscheinlich nur qualität vs geschwindigkeit“): gemessen in M91 mit Release 2.20.0
+    beim zehnfachen Bausteinbudget, alle fünf Profile an den neun Themen von M82, Teil 1 und 2, wie Aufrufer sie
+    anfragen; zu entscheiden. Heute ist `best-quality-generated` Standard (D82).
+
+    | Profil | Passung einfach / Sammelthema / mit Aspekt | Nutzen | Vollständigkeit | Lesbarkeit | Fehler schwer / leicht je Text und Gutachter | Teil 1 und 2 | Tokens | Zeichen | Modellwissen |
+    |---|---|---|---|---|---|---|---|---|---|
+    | `llm-free` | 4,0 / 1,3 / 1,0 | 2,2 | 1,3 | 2,1 | 0,22 / 1,61 | 2,9 s | 0 | 25.299 | – |
+    | `balanced` | 4,3 / 2,7 / 1,3 | 3,2 | 1,8 | 1,9 | 0,28 / 2,11 | 3,8 s | 320 | 42.818 | – |
+    | `best-quality` | 4,3 / 3,0 / 2,0 | 3,2 | 2,3 | 2,1 | 0,44 / 3,22 | 14,9 s | 51.932 | 60.851 | – |
+    | `best-quality-generated` | 4,8 / 4,7 / 3,7 | 4,0 | 3,8 | 4,3 | 0,11 / 1,00 | 27,5 s | 89.175 | 30.039 | 42 % |
+    | `best-coverage-generated` | 5,0 / 4,8 / 5,0 | 4,7 | 4,9 | 4,4 | 0,06 / 1,50 | 32,5 s | 111.716 | 58.130 | 68 % |
+
+    - **Qualität:** `best-coverage-generated` ist in jeder Note vorn. Der Abstand zu `best-quality-generated` ist bei
+      Themen mit Aspekt groß (Passung 5,0 statt 3,7, Vollständigkeit 5,0 statt 3,3) und bei einfachen Themen klein
+      (Passung 5,0 statt 4,8). Die wörtlichen Profile bleiben bei Vollständigkeit und Lesbarkeit um 2.
+    - **Geschwindigkeit:** `balanced` 3,8 s, `best-quality` 14,9 s, `best-quality-generated` 27,5 s (21,9 bis 31,7),
+      `best-coverage-generated` 32,5 s (28,6 bis 42,0); die Kosten liegen bei rund 90.000 und 112.000 Tokens je
+      Kompendium.
+    - **Herkunft:** `best-coverage-generated` schreibt 68 % seines Textes aus Modellwissen (M82, vor D102: 82 %),
+      `best-quality-generated` 42 % (vorher 51 %); das Zehnfache gibt dem Schreiber mehr Belege. Die schweren Fehler
+      sind dort am seltensten (0,06 und 0,11 je Text und Gutachter), in den wörtlichen Texten am häufigsten (0,22 bis
+      0,44, geerbte Ungenauigkeiten der Quellen, M86).
+
+    **Empfehlung:** `best-coverage-generated` als Standard (`PRESET_DEFAULT=best-coverage-generated`, eine Einstellung,
+    kein Code): bessere Texte in jeder Hinsicht für 5 s mehr. Geht Belegnähe vor Vollständigkeit, bleibt
+    `best-quality-generated` Standard, und `best-coverage-generated` wird für Sammel- und Aspektthemen gewählt. Für
+    Massenabrufe unter 5 s `balanced`, ohne LLM `llm-free`.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

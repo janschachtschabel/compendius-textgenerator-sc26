@@ -37,6 +37,16 @@ wird ein Profil mit
 | Budget je Anfrage (D59, D102) | 60.000 Tokens | 60.000 | 200.000 | 200.000 | 200.000 | D59, D102 |
 | Bausteinbudget (`BLOCK_BUDGET_FACTOR`) | das Zehnfache der Vorlage, Absätze und Zeichen | wie `llm-free` | wie `llm-free` | wie `llm-free` | wie `llm-free` | D102, M86 |
 
+### Die fünf Profile beim zehnfachen Bausteinbudget (M91)
+
+![Die fünf Profile beim zehnfachen Bausteinbudget: Güte, Zeit und Kosten (M91)](bilder/profiluebersicht_x10.svg)
+
+Release 2.20.0, gemessen am 09.10.2026 wie M82, aber mit dem zehnfachen Bausteinbudget (D102) und je Thema einem Bogen
+mit allen fünf Texten ([M91](05-messprotokoll.md)): `best-coverage-generated` ist in jeder Note vorn (Passung 4,9,
+Nutzen 4,7, Vollständigkeit 4,9, Lesbarkeit 4,4) und braucht 32,5 s, `best-quality-generated` 27,5 s (4,4, 4,0, 3,8,
+4,3); Modellwissen 68 und 42 %. Die Empfehlung für den Betrieb steht in der Entscheidungsvorlage, Punkt 20. Die
+Übersicht darunter ist der Stand vor D102.
+
 ### Die fünf Profile im Überblick: Güte, Zeit und Kosten (M82)
 
 ![Die fünf Profile: Güte, Zeit und Kosten - Passung je Art von Thema, Nutzen, Vollständigkeit, Lesbarkeit, Zeit, Tokens und Modellwissen (M82)](bilder/profiluebersicht.svg)

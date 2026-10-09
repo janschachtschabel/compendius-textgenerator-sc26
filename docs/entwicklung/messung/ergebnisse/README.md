@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M90
+# Ergebnisse der Messungen M1 bis M91
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23.09. bis 09.10.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -104,6 +104,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M88 | Wie oft trifft ein Artikel, den N zu einem Thema nennt, eine andere Bedeutung, warum, und was kostet eine Prüfung? | selten: 16 von 3.309 genannten Artikeln, 61 von 12.447 gedruckten Absätzen, in 14 von 500 Läufen; über Weiterleitungen, gleichnamige Artikel, die Übersicht ohne Klammerzusatz oder weil N selbst ein anderes Fach nennt; den Artikelanfang zu prüfen kostet 604, die Verlinkung 159 passende Artikel; zwei enge Regeln treffen 4 der 16 ohne Preis | – | `m88_genannte_artikel.json` |
 | M89 | Was bringt die Satzauswahl der KI (`extraction=llm`) beim zehnfachen Bausteinbudget in `balanced` und `best-quality`? | kürzere Texte (ein Drittel), etwas lesbarer (2,4 auf 2,6 und 2,5 auf 3,0) und mit weniger Fehlern, aber weniger Nutzen (3,8 auf 3,1 und 4,2 auf 3,4), für rund 33.000 und 31.000 Tokens und 6 s mehr; am Gold steigt die Precision nur nach den Regeln (0,64 auf 0,70), der Recall halbiert sich (0,56 auf 0,26, nach dem LLM 0,67 auf 0,34) | – | `m89_extraktion_auswertung.json`, `m89_extraktion_gold.json` |
 | M90 | Bringen Wikibooks und Wikiversity beim zehnfachen Bausteinbudget mehr als bei ×1? | selten: bei 6 von 100 Anfragen ein Zwilling (drei Seiten); dort druckt ×10 70 statt 3 Absätze daraus, drei Viertel zum Thema, und verdrängt den letzten Korpusartikel: bei „Lineare Funktion“ 36 unpassende Absätze aus *Lineare Algebra*, bei Optik ebenso passende aus *Röntgenoptik* | – | `m90_zusatzquellen.json`, `m90_zusatz_auswertung.json` |
+| M91 | Wie stehen die fünf Profile beim zehnfachen Bausteinbudget zueinander, Güte gegen Zeit? | `best-coverage-generated` in jeder Note vorn (Passung 4,9, Nutzen 4,7, Vollständigkeit 4,9, Lesbarkeit 4,4) für 32,5 s, `best-quality-generated` 4,4, 4,0, 3,8, 4,3 für 27,5 s; Modellwissen 68 und 42 %; `balanced` 3,8 s mit Nutzen 3,2 und Vollständigkeit 1,8 | – | `m91_profile_x10.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

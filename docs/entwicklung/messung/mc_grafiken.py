@@ -862,13 +862,16 @@ KIND_LABELS = {"einfach": "einfach", "Sammelthema": "Sammelthema", "Aspekt": "mi
 
 
 def profile_grades(data: dict, name: str, heading: str, subtitle: str, notes: tuple[str, ...], label: str,
-                   overview: bool = False, time_label: str = "Teil 1, Median") -> None:
+                   overview: bool = False, time_label: str = "Teil 1, Median", rows: tuple[str, ...] = FIVE,
+                   names: dict[str, str] | None = None) -> None:
     """The five profiles on three kinds of topic: fit per kind, use, completeness and readability over all nine topics
     as bars from 1 to 5, time and tokens of part 1 as bars from 0; every column has a scale of its own and names its
     values, the profile is the row. Colored by what a column measures, not by profile: the five profile colors do not
     keep apart for every reader (validate_palette.js, 2026-10-01). ``overview`` (M52) shows the share of the tokens
     read from the prompt cache as the lighter part of their bar and adds the share of model knowledge in the text.
-    ``time_label`` names what the time column measured (M82: the request with part 1 and 2)."""
+    ``time_label`` names what the time column measured (M82: the request with part 1 and 2). ``rows`` are the
+    variants of the evaluation in their order (M89: the profiles with and without the choice of sentences), ``names``
+    the words a row shows instead of its variant."""
     grades, runs = data["grades"], data["runs"]["alle"]
     label_w, col_w, cost_w, bar_w, top = 200, 100, 120, 62, 128
     row_h = 40 if overview else 34  # the overview names the cached tokens on a second line
@@ -876,14 +879,14 @@ def profile_grades(data: dict, name: str, heading: str, subtitle: str, notes: tu
     grade_cols += [(("Nutzen", "alle Themen"), "alle", "nutzen"),
                    (("Vollständigkeit", "alle Themen"), "alle", "vollstaendigkeit"),
                    (("Lesbarkeit", "alle Themen"), "alle", "lesbarkeit")]
-    longest_s = max(runs[p]["seconds"] for p in FIVE)
-    longest_t = max(runs[p]["tokens"] for p in FIVE)
+    longest_s = max(runs[p]["seconds"] for p in rows)
+    longest_t = max(runs[p]["tokens"] for p in rows)
     cost_cols = [(("Zeit", time_label), "seconds", longest_s), (("Tokens", "Median"), "tokens", longest_t)]
     if overview:
         cost_cols.append((("Modellwissen", "am Text, Median"), "model_share", 1.0))
     cost_x = 24 + label_w + col_w * len(grade_cols)
     width = cost_x + cost_w * len(cost_cols) + 16
-    svg = Svg(width, top + len(FIVE) * row_h + 24 + 16 * len(notes), label)
+    svg = Svg(width, top + len(rows) * row_h + 24 + 16 * len(notes), label)
     svg.text(24, 30, heading, 17, weight="600")
     svg.text(24, 52, subtitle, 12, MUTED, limit=width - 48)
     legend = [(LOCAL, "Güte: Note von 1 bis 5 (volle Spur = 5)"), (MUTED, "Aufwand: Zeit und Tokens, ab 0")]
@@ -895,11 +898,11 @@ def profile_grades(data: dict, name: str, heading: str, subtitle: str, notes: tu
     for x, (first, second), room in heads:
         svg.text(x, top - 26, first, 11, MUTED, weight="600", limit=room - 6)
         svg.text(x, top - 12, second, 10.5, MUTED, limit=room - 6)
-    for number, profile in enumerate(FIVE):
+    for number, profile in enumerate(rows):
         y = top + number * row_h
         if number % 2 == 0:
             svg.rect(20, y - 4, width - 36, row_h, PANEL, 3)
-        svg.text(24, y + 16, profile, 12, INK, weight="600", limit=label_w - 12)
+        svg.text(24, y + 16, (names or {}).get(profile, profile), 12, INK, weight="600", limit=label_w - 12)
         for index, (_, group, score) in enumerate(grade_cols):
             x = 24 + label_w + index * col_w
             value = grades[group][profile][score]
@@ -927,7 +930,7 @@ def profile_grades(data: dict, name: str, heading: str, subtitle: str, notes: tu
             if cached:
                 svg.text(x, y + 32, f"davon Cache {tokens_text(cached)}", 9.5, MUTED, limit=cost_w - 8)
     for number, note in enumerate(notes):
-        svg.text(24, top + len(FIVE) * row_h + 18 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+        svg.text(24, top + len(rows) * row_h + 18 + 16 * number, note, 10.5, MUTED, limit=width - 48)
     svg.save(name)
 
 
@@ -966,6 +969,25 @@ def profiluebersicht() -> None:
         time_label="Teil 1 + 2, Median",
     )
 
+
+
+def profiluebersicht_x10() -> None:
+    """The five profiles at ten times the block budget (M91, release 2.20.0, D102): quality, time and cost as callers
+    get them, the basis of the recommendation for the production profile (page 07, point 20)."""
+    profile_grades(
+        load("m91_profile_x10.json"),
+        "profiluebersicht_x10.svg",
+        "Die fünf Profile beim zehnfachen Bausteinbudget",
+        "Release 2.20.0; Teil 1 und 2, neun Themen in drei Arten, je ein Lauf; Noten zweier blinder Gutachter von 1 "
+        "bis 5 (M91)",
+        (*TOPIC_NOTES,
+         "Zeit, Tokens und Modellwissen: Median der neun Anfragen mit Teil 1 und 2 im Einmal-Container auf dem "
+         "Entwicklungsrechner, gpt-6-luna über OpenAI",
+         "direkt, mit den ausgelieferten Grenzen (M91, 09.10.2026). Je Thema ein Bogen mit allen fünf Texten."),
+        "Die fünf Profile beim zehnfachen Bausteinbudget (M91)",
+        overview=True,
+        time_label="Teil 1 + 2, Median",
+    )
 
 def seconds_text(value: float) -> str:
     return f"{de(value, '0.01') if value < 1 else de(value, '0.1')} s"
@@ -1630,9 +1652,83 @@ def bausteinbudget_absaetze() -> None:
     svg.save("bausteinbudget_absaetze.svg")
 
 
+def satzauswahl() -> None:
+    """The AI's choice of sentences at ten times the block budget (M89, page 07, point 19): balanced and best-quality
+    with and without extraction=llm on the nine topics of M82, as profile_grades draws the profiles."""
+    profile_grades(
+        load("m89_extraktion_auswertung.json"),
+        "satzauswahl.svg",
+        "Satzauswahl der KI beim zehnfachen Bausteinbudget",
+        "Release 2.19.0; Teil 1, neun Themen in drei Arten, je ein Lauf auf festem Korpus; Noten zweier blinder "
+        "Gutachter von 1 bis 5 (M89)",
+        (*TOPIC_NOTES,
+         "Zeit und Tokens: Median der neun Anfragen mit Teil 1 im Einmal-Container, gpt-6-luna über OpenAI direkt "
+         "(M89, 09.10.2026)."),
+        "Satzauswahl der KI beim zehnfachen Bausteinbudget (M89)",
+        rows=("balanced", "balanced+ex", "best-quality", "best-quality+ex"),
+        names={"balanced+ex": "balanced + Satzauswahl", "best-quality+ex": "best-quality + Satzauswahl"},
+    )
+
+
+def zusatzquellen_budget() -> None:
+    """Wikibooks and Wikiversity at the block budget times 1 and 10 (M90, page 07, point 16): the distinct paragraphs
+    their twins bring into the text and the paragraphs of Wikipedia they push out, judged blind by two raters, as
+    stacked bars per factor."""
+    data = load("m90_zusatz_auswertung.json")["alle"]
+    classes = (("passt", "zum Thema", FITS), ("rand", "am Rand", RELATED), ("daneben", "daneben", UNFIT))
+    groups = (("×1", "1"), ("×10", "10"))
+    bars = (("gewonnen", "gewonnen"), ("verdraengt", "verdrängt"))
+    plot_h, top, bar_w, maximum, step = 220, 128, 56, 70, 10
+    group_w, gap, left = 300, 120, 80
+    width = left + len(groups) * group_w + (len(groups) - 1) * gap + 40
+    bottom = top + plot_h
+    notes = (
+        "100 Anfragen (eval/artikelwahl und die neun Themen von M82) in llm-free; einen Zwilling bekommen 6, "
+        "drei Seiten:",
+        "Optik (Wikibooks), Lineare Funktion und Open Educational Resources (Wikiversity).",
+        "Gewonnen: Absätze aus Wikibooks und Wikiversity im Text. Verdrängt: Absätze der Wikipedia, gedruckt "
+        "ohne die",
+        "weiteren Archive, mit ihnen nicht. Jeder verschiedene Absatz blind benotet von zwei Claude-Gutachtern "
+        "(Mittel).",
+    )
+    title = "Wikibooks und Wikiversity beim zehnfachen Bausteinbudget (M90)"
+    svg = Svg(width, bottom + 74 + 16 * len(notes), title)
+    svg.text(24, 30, title, 17, weight="600")
+    svg.text(24, 52, "Was der Zwilling aus einem weiteren Archiv in den Text bringt und was er aus der Wikipedia "
+             "verdrängt", 12, MUTED, limit=width - 48)
+    svg.legend(24, 74, [(color, label) for _, label, color in classes])
+
+    def py(value: float) -> float:
+        return bottom - value / maximum * plot_h
+
+    for tick in range(0, maximum + 1, step):
+        svg.line(left, py(tick), width - 30, py(tick), GRID)
+        svg.text(left - 7, py(tick) + 4, de(tick), 10, MUTED, "end")
+    for number, (factor, suffix) in enumerate(groups):
+        x_group = left + number * (group_w + gap)
+        svg.text(x_group + group_w / 2, bottom + 40, f"Bausteinbudget {factor}", 12, INK, "middle", "600")
+        for index, (kind, word) in enumerate(bars):
+            row = data[f"{kind}@{suffix}"]
+            x0 = x_group + (group_w - 2 * bar_w - 50) / 2 + index * (bar_w + 50)
+            height = 0.0
+            for key, _, color in classes:
+                y_top = py(height + row[key])
+                if row[key]:
+                    svg.rect(x0, y_top, bar_w, py(height) - y_top, color)
+                height += row[key]
+            svg.text(x0 + bar_w / 2, py(height) - 20, str(row["absaetze"]), 11, INK, "middle", "600")
+            share = row["daneben"] / row["absaetze"] if row["absaetze"] else 0
+            svg.text(x0 + bar_w / 2, py(height) - 6, f"{de(share * 100, '1')} % daneben", 9.5, MUTED, "middle")
+            svg.text(x0 + bar_w / 2, bottom + 17, word, 11, INK, "middle")
+    for number, note in enumerate(notes):
+        svg.text(24, bottom + 66 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("zusatzquellen_budget.svg")
+
+
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
               kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile,
               profilvergleich, profiluebersicht, endpunkte, profile_verlauf, kiwix_quellen,
-              quellen_empfehlung, bausteinbudget, bausteinbudget_gold, bausteinbudget_absaetze):
+              quellen_empfehlung, bausteinbudget, bausteinbudget_gold, bausteinbudget_absaetze, satzauswahl,
+              zusatzquellen_budget, profiluebersicht_x10):
     chart()

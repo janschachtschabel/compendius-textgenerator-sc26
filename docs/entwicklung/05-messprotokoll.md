@@ -5041,3 +5041,54 @@ Rohdaten: `m90_zusatzquellen.json` (je Anfrage und Faktor Hauptartikel, Zahl der
 je Projekt, die Zwillinge und die verdrängten Absätze, ohne Texte) und `m90_zusatz_auswertung.json` (die Urteile je Art,
 Faktor und Thema, mit der Übereinstimmung). Skripte: `mc_zusatzquellen_budget.py`, `mc_zusatzquellen_boegen.py`. Die
 Absatztexte und der Bogen bleiben außerhalb des Repositorys.
+
+## M91 Die fünf Profile beim zehnfachen Bausteinbudget (09.10.2026)
+
+Jan: „ok dann will ich jetzt eine entscheidungsvorlage für die themen mit dem bausteinbudget erstellen und empfehlungen
+zusätzlichen quellen geben … bitte zusätzlich empfehlen welches profil im produktiv betrieb laufen sollte. die llm
+kosten sehe ich nicht als problem - die bleiben bei gpt-5-luna unter einem cent je kompendialen text - wirklich relevant
+ist wahrscheinlich nur qualität vs geschwindigkeit“. M82 maß die fünf Profile mit Release 2.17.0, vor D102; seitdem
+schneidet der Dienst die Bausteine auf das Zehnfache zu. Gemessen am Stand 2.20.0 (`97e0522`).
+
+**Aufbau.**
+
+- Die neun Themen von M48 und M82, alle fünf Profile, Teil 1 und 2, wie Aufrufer sie anfragen (`mc_kompendium_profil.py
+  --parts=world,curricula --warmup --fixed-corpus`): 45 Kompendien. Die drei `best`-Profile liefen in einem Container
+  nacheinander und teilen je Thema einen Korpus; `llm-free` und `balanced` liefen nebenher in einem zweiten.
+- Einmal-Container, `gpt-6-luna` über OpenAI direkt, am Abend, mit den ausgelieferten Grenzen (200.000 Tokens in den
+  `best`-Profilen, 300 s). Keine Anfrage fiel zurück; die teuerste brauchte 145.943 Tokens.
+- Güte: je Thema ein blinder Bogen mit allen fünf Texten als A bis E (`mc_profilvergleich_boegen_je_thema.py --seed=91`;
+  drei Themen auf einem Bogen ergäben beim Zehnfachen rund 450 KB), Auszug und Raster wie M48 und M82, je Bogen zwei
+  neue Claude-Gutachter. Gleiche Note bei Passung in 39 von 45 Fällen, bei Nutzen in 38, bei Vollständigkeit in 41, bei
+  Lesbarkeit in 36, sonst um eins verschieden.
+
+**Ergebnis**, Noten als Mittel zweier Gutachter (1 bis 5), Zeit, Tokens, Zeichen und Modellwissen als Median:
+
+| Profil | Passung einfach / Sammelthema / mit Aspekt | Nutzen | Vollständigkeit | Lesbarkeit | Fehler schwer / leicht je Text und Gutachter | Teil 1 und 2 | Tokens | Zeichen | Modellwissen |
+|---|---|---|---|---|---|---|---|---|---|
+| `llm-free` | 4,0 / 1,3 / 1,0 | 2,2 | 1,3 | 2,1 | 0,22 / 1,61 | 2,9 s | 0 | 25.299 | – |
+| `balanced` | 4,3 / 2,7 / 1,3 | 3,2 | 1,8 | 1,9 | 0,28 / 2,11 | 3,8 s | 320 | 42.818 | – |
+| `best-quality` | 4,3 / 3,0 / 2,0 | 3,2 | 2,3 | 2,1 | 0,44 / 3,22 | 14,9 s | 51.932 | 60.851 | – |
+| `best-quality-generated` | 4,8 / 4,7 / 3,7 | 4,0 | 3,8 | 4,3 | 0,11 / 1,00 | 27,5 s | 89.175 | 30.039 | 42 % |
+| `best-coverage-generated` | 5,0 / 4,8 / 5,0 | 4,7 | 4,9 | 4,4 | 0,06 / 1,50 | 32,5 s | 111.716 | 58.130 | 68 % |
+
+- **Qualität:** `best-coverage-generated` ist in jeder Note vorn. Der Abstand zu `best-quality-generated` ist bei Themen
+  mit Aspekt groß (Passung 5,0 statt 3,7, Vollständigkeit 5,0 statt 3,3, Nutzen 4,5 statt 3,3) und bei einfachen Themen
+  klein (Passung 5,0 statt 4,8, Nutzen 4,8 statt 4,3).
+- **Geschwindigkeit:** `best-coverage-generated` braucht 5 s mehr als `best-quality-generated` (32,5 statt 27,5 s,
+  Spannen 28,6 bis 42,0 und 21,9 bis 31,7 s); M82 maß nachts 27,3 und 23,2 s.
+- **Herkunft:** Modellwissen 68 % in `best-coverage-generated` (je Art 62 bis 72 %; M82: 82 %) und 42 % in
+  `best-quality-generated` (M82: 51 %): Das Zehnfache gibt dem Schreiber mehr Belege. Schwere Fehler je Text und
+  Gutachter 0,06 und 0,11, in den wörtlichen Profilen 0,22 bis 0,44.
+- **Die wörtlichen Profile:** Gegenüber M82 steigt ihr Nutzen (`balanced` 2,0 auf 3,2, `best-quality` 2,7 auf 3,2),
+  Vollständigkeit und Lesbarkeit bleiben um 2. `best-quality` braucht für denselben Nutzen wie `balanced` die vierfache
+  Zeit. `llm-free` wählt bei Sammel- und Aspektthemen falsche Hauptartikel (*Max Richter (Komponist)*, *Böse
+  Philosophen*, *Halluzination (Künstliche Intelligenz)*) und bleibt dort bei Passung 1.
+
+**Schluss.** Beim zehnfachen Bausteinbudget ist `best-coverage-generated` in jeder Note das beste Profil, für 5 s mehr
+als `best-quality-generated` und mit dem größten Anteil Modellwissen. Zu entscheiden: Entscheidungsvorlage, Punkt 20.
+
+Rohdaten: `m91_profile_x10.json` (je Profil und Art von Thema Zeit, Tokens, Text und Noten, die Läufe ohne Text, die
+Urteile ohne Zitate, der Schlüssel). Skripte: `mc_kompendium_profil.py`, `mc_profilvergleich_boegen_je_thema.py`,
+`mc_profilvergleich_auswertung.py`; Grafik `profiluebersicht_x10.svg` (`mc_grafiken.py`). Die Texte und die Bögen
+bleiben außerhalb des Repositorys.
