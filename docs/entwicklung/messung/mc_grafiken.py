@@ -3,7 +3,8 @@ old and new service (01-alt-und-neu.md), and methods, measurements and profiles 
 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
 prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
-text_schalter.svg and kombinationen.svg (page 07), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01),
+text_schalter.svg, kombinationen.svg and kiwix_quellen.svg (page 07), qualitaet_zeit_kosten.svg and
+alt_neu_teile.svg (page 01),
 profile_matrix.svg, profilvergleich.svg, profiluebersicht.svg (pages 07 and 09), and endpunkte.svg,
 profile_verlauf.svg and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their
 source: the text
@@ -1178,8 +1179,99 @@ def alt_neu_teile() -> None:
     svg.save("alt_neu_teile.svg")
 
 
+def signed(value: int, one: str, many: str) -> str:
+    """A change with its noun: −7 Absätze, ±0 Bausteine, +1 Absatz, with the minus sign of print."""
+    number = "±0" if not value else f"{value:+d}".replace("-", "−")
+    return f"{number} {one if abs(value) == 1 else many}"
+
+
+def kiwix_quellen() -> None:
+    """What further Kiwix archives add (M84, page 07): the page of the main article's title - the way another archive
+    enters a corpus today -, the hits a search over the archive would bring for collection and aspect topics, and the
+    paragraphs part 1 printed from it. Every page carries its label for the topic (m84_einordnung.yaml, Claude,
+    unreviewed); a page without one stops the chart."""
+    data = load("m84_kiwix_quellen.json")
+    labels = yaml.safe_load((DIR / "m84_einordnung.yaml").read_text(encoding="utf-8"))
+    archives = (("klexikon", "Klexikon (heute Quelle)"), ("wikibooks", "Wikibooks"), ("wikiversity", "Wikiversity"),
+                ("wiktionary", "Wiktionary"), ("wikisource", "Wikisource"), ("wikiquote", "Wikiquote"),
+                ("wikivoyage", "Wikivoyage"))
+    colors = (("passend", FITS), ("teilweise", RELATED), ("daneben", UNFIT))
+    same, search, flow = data["abdeckung"]["gleicher_titel"], data["abdeckung"]["volltextsuche"], data["ablauf"]
+    base = flow["standard"]
+    standard = (sum(r["gedruckt"] for r in base.values()), sum(r["bausteine_gefuellt"] for r in base.values()))
+    panels: list[tuple[str, int, list[tuple[str, dict[str, int], str]]]] = [
+        (f"Seite mit dem Titel des Hauptartikels, {len(same)} Themen: so kommt ein Archiv heute in den Korpus", 40, []),
+        (f"Volltextsuche, {len(search)} Sammel- und Aspektthemen, je 5 Treffer, behalten wie im Dienst (nicht gebaut)",
+         90, []),
+        ("Ins Kompendium gedruckte Absätze: 20 Themen, llm-free, das Archiv zu Wikipedia und Klexikon dazu", 20, []),
+    ]
+    for name, label in archives:
+        pages = [title for title, row in same.items() if row[name] and not row[name]["begriffsklaerung"]]
+        tags = [labels["gleicher_titel"][name][title] for title in pages]
+        panels[0][2].append((label, {kind: tags.count(kind) for kind, _ in colors}, f"{len(pages)} von {len(same)}"))
+        hits = [(key, hit["titel"]) for key, row in search.items() for hit in row[name] if hit["behalten"]]
+        tags = [labels["volltextsuche"][name][key][title] for key, title in hits]
+        fit = {key for key, title in hits if labels["volltextsuche"][name][key][title] == "passend"}
+        topics = "Thema" if len(fit) == 1 else "Themen"
+        panels[1][2].append((label, {kind: tags.count(kind) for kind, _ in colors},
+                             f"{len(hits)} Seiten, passend bei {len(fit)} {topics}"))
+        run = flow["standard" if name == "klexikon" else name]
+        printed = dict.fromkeys((kind for kind, _ in colors), 0)
+        for topic, row in run.items():
+            for page in row["seiten"]:
+                if page["projekt"] == name:
+                    printed[labels["ablauf"][name][topic][page["titel"]]] += page["gedruckt"]
+        if name == "klexikon":
+            note = "heute im Standard"
+        else:
+            lines = sum(r["gedruckt"] for r in run.values()) - standard[0]
+            blocks = sum(r["bausteine_gefuellt"] for r in run.values()) - standard[1]
+            note = f"Text gesamt {signed(lines, 'Absatz', 'Absätze')}, {signed(blocks, 'Baustein', 'Bausteine')}"
+        panels[2][2].append((label, printed, f"{sum(printed.values())} · {note}"))
+    notes = (
+        "Gleicher Titel (auch ein Alias des Hauptartikels): der heutige Weg eines weiteren Archivs in den Korpus.",
+        "Volltextsuche: was eine Suche über das Archiv brächte; M11 maß sie für Wikibooks und Wikiversity, "
+        "sie kam nicht.",
+        f"Gedruckt: Teil 1 mit den Regeln (hybrid_light, 30.000 Zeichen); ohne Zusatz {standard[0]} Absätze, "
+        f"{standard[1]} Bausteine.",
+        "Farbe nach der Seite, aus der ein Absatz stammt. Einordnung: Claude, ein Gutachter, ungeprüft "
+        "(m84_einordnung.yaml).",
+        "Gutenberg (11 GB) nicht gemessen: kein Volltextindex, ganze Bücher statt Artikel.",
+    )
+    x0, scale_w, bar, row_h, head_h, top = 210, 330, 16, 24, 34, 100
+    width = x0 + scale_w + 300
+    height = top + len(panels) * (head_h + len(archives) * row_h + 12) + 14 + 16 * len(notes)
+    svg = Svg(width, height, "Mehrwert weiterer Kiwix-Archive für die Kompendien")
+    svg.text(24, 30, "Mehrwert weiterer Kiwix-Archive für die Kompendien (M84)", 17, weight="600")
+    svg.text(24, 52, "Deutsche Archive der Wiki-Familie neben der Wikipedia, je Seite eingeordnet nach Passung zum "
+             "angefragten Thema", 12, MUTED, limit=width - 48)
+    svg.legend(24, 78, [(FITS, "passt als Text zum Thema"), (RELATED, "zum Thema, aber nicht als Text übernehmbar"),
+                        (UNFIT, "anderes Thema, andere Sprache oder Fassung")], 11.5)
+    y = top
+    for heading, maximum, rows in panels:
+        svg.line(20, y + 2, width - 20, y + 2, GRID)
+        svg.text(24, y + 22, heading, 12.5, INK, weight="600", limit=width - 48)
+        y += head_h
+        for label, counts, summary in rows:
+            svg.text(x0 - 12, y + 13, label, 12, INK, "end", "600" if label.startswith("Klexikon") else "normal",
+                     limit=x0 - 30)
+            x = x0
+            for kind, color in colors:
+                w = scale_w * counts[kind] / maximum
+                svg.rect(x, y + 1, w, bar, color)
+                if w > 22:
+                    svg.text(x + w / 2, y + 13, counts[kind], 10.5, PAPER if color != RELATED else INK, "middle")
+                x += w
+            svg.text(max(x, x0) + 8, y + 13, summary, 11, MUTED, limit=width - max(x, x0) - 30)
+            y += row_h
+        y += 12
+    for number, note in enumerate(notes):
+        svg.text(24, y + 14 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("kiwix_quellen.svg")
+
+
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
               kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile,
-              profilvergleich, profiluebersicht, endpunkte, profile_verlauf):
+              profilvergleich, profiluebersicht, endpunkte, profile_verlauf, kiwix_quellen):
     chart()

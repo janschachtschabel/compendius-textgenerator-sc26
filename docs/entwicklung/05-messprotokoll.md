@@ -4293,3 +4293,109 @@ eine Minute), jeweils ohne Wiederholung, mit den hier aufgenommenen Antworten. D
 
 Rohdaten: `m83_routing.json` (die Läufe, die Einzelaufrufe, die Proben vorab und die Antworten des Routers mit
 ihren Zeiten, ohne Texte).
+
+## M84 Weitere Kiwix-Archive als Quellen (09.10.2026)
+
+Jan: „was ich als abschließenden punkt gern noch klären will ist, ob man das hinzufügen weiterer kiwix zum quellen die
+qualität verbessern kann … Potentiell gehts primär um deutsche quellen … da sonst direkt übernommene absätze das
+schriftbild vermischen würden“; dann „prüfen könnte man die quellen der wiki famlie. Wiktionary, wikiversity,
+wikisource, wikiquite. einzelauszüge aus wikipedia macht kein sinn - haben wir schon im wikipedia de datensatz, projekt
+gutenberg“ und „wichtig wäre das du die prüfung der anderen quellen auswertest, damit ich es als entscheidungsgrundlage
+mitnehmen kann“.
+
+**Katalog.** Der Kiwix-Katalog führte am 09.10.2026 309 deutschsprachige Einträge, 240 davon TED-Videos. Text zu
+Schulthemen haben die Wikipedia, das Klexikon, sechs weitere Projekte der Wiki-Familie (Wikibooks, Wikiversity,
+Wiktionary, Wikisource, Wikiquote, Wikivoyage) und Projekt Gutenberg. Die 14 Teilarchive der Wikipedia (Chemie, Physik,
+Geschichte, Mathematik und andere) sind Auszüge aus `wikipedia_de_all` und bringen nichts Neues. Der Rest ist fachfremd
+(Koch-Wiki, PokéWiki, ein Wiki zum VW-Bus T4, ubuntuusers von 2017, iFixit, freeCodeCamp), Satire (Stupidedia),
+polemisch (Psiram) oder die Textsammlung einer Richtung (marxists.org); PhET bietet Simulationen, keinen Text.
+ZUM-Unterrichten, das MiniKlexikon und Serlo führt Kiwix nicht. Gemessen wurde an heruntergeladenen Archiven;
+Wiktionary, Wikiquote und Wikisource sind außerdem stichprobenweise im Browser gesichtet.
+
+**Aufbau.** `mc_kiwix_quellen.py` (Projekt-venv, ohne LLM) misst das Klexikon als Bezug und sechs Archive ohne Bilder:
+Wikibooks (Stand 2026-01) und Wikiversity (2026-07) wie in M11, dazu Wiktionary (2026-07), Wikisource (2026-09),
+Wikiquote (2026-07) und Wikivoyage (2026-07), mit Katalog und Downloader des Dienstes geladen und per SHA-256 geprüft
+(zusammen 2,7 GB). Es fragt dreierlei:
+
+1. **Gleicher Titel:** zu jedem der 40 erwarteten Hauptartikel des Golds (`eval/artikelwahl/hauptartikel.yaml`) die
+   Seite gleichen Titels. Nur so kommt ein weiteres Archiv heute in den Korpus: als Zwilling über den Titel des
+   Hauptartikels oder einen seiner ersten zwei Aliasse.
+2. **Volltextsuche:** zu den 26 Sammel- und 11 Aspektthemen von M82 die ersten fünf Treffer je Archiv, behalten wie ein
+   Treffer im Dienst (das Thema in Titel oder Einleitung). Das zeigt, was eine Suche über die weiteren Archive brächte;
+   gebaut ist sie nicht (M11).
+3. **Ablauf des Dienstes:** Teil 1 der 20 gewöhnlichen Themen mit den Regeln (`llm-free`, `hybrid_light`, 30.000
+   Zeichen), einmal mit Wikipedia und Klexikon, dann mit je einem weiteren Archiv und mit allen sechs.
+
+Claude ordnete jede gefundene Seite nach Titel, Gliederung und Anfang ein (`m84_einordnung.yaml`, ein Gutachter,
+redaktionell ungeprüft): *passend* erklärt das Thema oder einen klaren Teil davon als heutiger deutscher Sachtext, bei
+einem Sammelthema ein Glied der Sammlung oder ihren Oberbegriff; *teilweise* ist beim Thema, aber in einer Form, die ein
+Kompendium nicht als Text übernehmen kann (Wörterbucheintrag, Zitatliste, historischer Text, Linkliste, Reiseführer,
+Unterrichtsplanung, Kursprotokoll, Quiz, Gesetzestext), oder nur am Rand; *daneben* ist ein anderes Thema, eine andere
+Sprache oder die Druckfassung eines Buchs. Drei Läufe ergaben dieselben Zahlen.
+
+| Archiv | gleicher Titel, 40 Themen | davon passend | Volltextsuche, 37 Themen: behalten | davon passend (Themen) | im Ablauf gedruckt | Text der 20 Themen insgesamt |
+|---|---|---|---|---|---|---|
+| Klexikon (heute Quelle) | 17 | 15 | 81 | 28 (13) | 20 | – |
+| Wikibooks | 1 | 1 | 37 | 3 (2) | 0 | +1 Absatz |
+| Wikiversity | 1 | 1 | 39 | 1 (1) | 2 | −4 Absätze |
+| Wiktionary | 20 | 0 | 19 | 0 | 17 | −7 Absätze, −1 Baustein |
+| Wikisource | 2 | 0 | 81 | 0 | 4 | +2 Absätze |
+| Wikiquote | 10 | 0 | 3 | 0 | 5 | −6 Absätze, −1 Baustein |
+| Wikivoyage | 1 | 0 | 30 | 0 | 0 | ±0 |
+| alle sechs zusammen | | | | | 27 | −16 Absätze, −3 Bausteine |
+
+Ohne weiteres Archiv druckt Teil 1 der 20 Themen 458 Absätze, 20 davon aus dem Klexikon, und füllt 117 Inhaltsbausteine.
+
+![Mehrwert weiterer Kiwix-Archive für die Kompendien (M84)](bilder/kiwix_quellen.svg)
+
+**Gleicher Titel.** Wikibooks und Wikiversity finden wie in M11 nur *Optik* und *Lineare Funktion*: Bücher und Kurse
+heißen anders als Lexikonartikel. *Optik* ist Band 10 eines Lehrbuchs der theoretischen Physik, nach eigener Angabe zu
+20 % fertig; im Ablauf druckte der Dienst daraus nichts. Wiktionary hat zu 20 Themen eine Seite, aber jede ist ein
+Wörterbucheintrag: Deklination, Worttrennung, Bedeutungen, Herkunft, Beispielsätze. Wikiquote führt zu zehn Themen
+Zitatlisten, Wikisource zu zwei Themenseiten mit Listen von Quelltexten, Wikivoyage einen Reiseführer zur Europäischen
+Union.
+
+**Volltextsuche.** Für die elf Aspektthemen hat kein weiteres Archiv eine passende Seite; die einzige kommt aus dem
+Klexikon (*Datenschutz* zu „Datenschutz für Schüler“). Unter den Sammelthemen passen aus Wikibooks drei Seiten zu zwei
+Themen (*Geschichte des römischen Weltreiches* zu den römischen Kaisern, *Wikijunior Die Elemente* zu den Edelgasen),
+aus Wikiversity eine (*Gerberga von Sachsen* zu den Frauen im Mittelalter). Sonst trifft die Suche Kursprotokolle eines
+Seminars zur mathematischen Modellbildung, Quizfragen zum Einbürgerungstest, Druck- und LaTeX-Fassungen ganzer Bücher
+und fünf Seiten aus dem *Ungarisch-Lesebuch*, also ungarischen Text. Wikisource ist oft beim Thema, bei 48 von 81
+Seiten, aber nur mit historischen Texten: *Die Gartenlaube*, die *Allgemeine Deutsche Biographie*, Meyers
+Konversations-Lexikon von 1888, Gesetze. Wikivoyage beschreibt Reiseziele (Marbach am Neckar zu den deutschen Dichtern,
+Giverny zum Impressionismus), Wiktionary Wörter, oft in mehreren gebeugten Formen (*Edelgas*, *Edelgase*, *Edelgasen*,
+*Edelgases*).
+
+**Ablauf.** Kein Archiv füllte einen Baustein mehr. Wiktionary kam bei 16 der 20 Themen in den Korpus und brachte 17
+Absätze in den Text, alle unter „Fachinhalte“: Deklinationstabellen („| Singular | Plural Nominativ | die Demokratie |
+…“), Beispielsätze und Bedeutungsangaben. Wikiquote setzte fünf Zitate in den Text, Wikisource vier Zeilen aus Listen
+von Quelltexten und Büchern, etwa „Siehe auch die bei Wikisource verfügbaren Texte in der Kategorie Französische
+Revolution“. Die Zwillinge belegen Plätze im Korpus und verdrängen Unterartikel der Wikipedia: Mit allen sechs Archiven
+druckte Teil 1 442 statt 458 Absätze in 114 statt 117 Bausteinen; 27 davon kamen aus den neuen Archiven, 41 Absätze der
+Wikipedia fielen weg.
+
+**Nicht gemessen.** Die Profile mit LLM: `balanced` wählt die Absätze mit denselben Regeln wie `llm-free`,
+`best-quality` lässt das LLM zuordnen, die schreibenden Profile übernehmen nichts wörtlich; die Zwillinge kämen in allen
+genauso in den Korpus. Projekt Gutenberg (`gutenberg_de_all_2026-01`, 11,05 GB, 3.544 Einträge): Laut Katalog hat es
+keinen Volltextindex, der Dienst könnte darin nur Buchtitel nachschlagen; es enthält ganze Bücher ohne Auswahl für die
+Schule und stammt von gutenberg2zim, nicht von mwoffliner, dessen HTML der Parser kennt.
+
+**Nebenbefund: Zwillinge über einen Alias.** Den Klexikon-Zwilling nimmt der Dienst schon heute auch über einen Alias
+des Hauptartikels. Bei „Elektrischer Strom“ ist das die Klexikon-Seite *Strom*, die mit Flüssen beginnt; ihr erster
+Absatz („Im Alltag gibt es viele verschiedene Ströme. Im Mittelalter bedeutete der Ausdruck Strom …“) steht im Standard
+unter „Themendefinition“. Bei „Zelle (Biologie)“ steht dort der Anfang der Klexikon-Seite *Zelle*, der mit Gefängnis-
+und Klosterzellen beginnt. Beide Seiten sind keine Begriffsklärungen, deshalb hält die Prüfung sie nicht auf. Nicht
+behoben; eine Änderung wäre erst zu messen.
+
+**Nebenbefund: die Wikipedia vom Oktober.** Kiwix bietet seit dem 01.10.2026 eine neue deutsche Wikipedia ohne Bilder
+(`wikipedia_de_all_nopic_2026-10`, rund 18,6 statt 14,6 GB, 5,15 statt 5,04 Millionen Einträge), gebaut mit mwoffliner
+2.0.1-dev0 statt 1.17.4. Ihr HTML hat neue Hüllen (`<section>` je Abschnitt, Parsoid-Attribute). Der Parser des Dienstes
+las *Optik*, *Bruchrechnung* und *Photosynthese* daraus (über die Bibliothek von Kiwix im Browser) mit denselben
+Abschnitten, Links und Formeln, Absatz für Absatz gleich bis auf Änderungen der Wikipedia selbst (in *Photosynthese*
+heißt es jetzt „der wichtigste“ statt „der einzige“ biochemische Prozess). Der `zim-updater` lädt die Ausgabe bei seiner
+nächsten Prüfung (`ZIM_SYNC_INTERVAL`, 30 Tage) und hält beim Wechsel beide 24 Stunden nebeneinander: rund 33 GB im
+Volume `zim`, geplant sind 40 GB.
+
+Rohdaten: `m84_kiwix_quellen.json` (Titel, Zahlen und Überschriften, ohne Text), die Einordnung `m84_einordnung.yaml`;
+die Grafik `bilder/kiwix_quellen.svg` zeichnet `mc_grafiken.py`. Die Anfänge der Seiten und der gedruckten Absätze
+bleiben außerhalb des Repositorys.

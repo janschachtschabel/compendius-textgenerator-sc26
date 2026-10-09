@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="836" viewBox="0 0 840 836" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Mehrwert weiterer Kiwix-Archive für die Kompendien"><title>Mehrwert weiterer Kiwix-Archive für die Kompendien</title><rect width="840" height="836" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Mehrwert weiterer Kiwix-Archive für die Kompendien (M84)</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Deutsche Archive der Wiki-Familie neben der Wikipedia, je Seite eingeordnet nach Passung zum angefragten Thema</text>
+<rect x="24.0" y="68.0" width="12.0" height="12.0" rx="2" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="42.0" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">passt als Text zum Thema</text>
+<rect x="218.6" y="68.0" width="12.0" height="12.0" rx="2" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="236.6" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">zum Thema, aber nicht als Text übernehmbar</text>
+<rect x="529.0" y="68.0" width="12.0" height="12.0" rx="2" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="547.0" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">anderes Thema, andere Sprache oder Fassung</text>
+<line x1="20.0" y1="102.0" x2="820.0" y2="102.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="122.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Seite mit dem Titel des Hauptartikels, 40 Themen: so kommt ein Archiv heute in den Korpus</text>
+<text x="198.0" y="147.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Klexikon (heute Quelle)</text>
+<rect x="210.0" y="135.0" width="123.8" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="271.9" y="147.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">15</text>
+<rect x="333.8" y="135.0" width="8.2" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="342.0" y="135.0" width="8.2" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="358.2" y="147.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">17 von 40</text>
+<text x="198.0" y="171.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikibooks</text>
+<rect x="210.0" y="159.0" width="8.2" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="218.2" y="159.0" width="0.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="218.2" y="159.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="226.2" y="171.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1 von 40</text>
+<text x="198.0" y="195.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikiversity</text>
+<rect x="210.0" y="183.0" width="8.2" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="218.2" y="183.0" width="0.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="218.2" y="183.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="226.2" y="195.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1 von 40</text>
+<text x="198.0" y="219.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wiktionary</text>
+<rect x="210.0" y="207.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="207.0" width="165.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="292.5" y="219.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">20</text>
+<rect x="375.0" y="207.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="383.0" y="219.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">20 von 40</text>
+<text x="198.0" y="243.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikisource</text>
+<rect x="210.0" y="231.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="231.0" width="16.5" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="226.5" y="231.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="234.5" y="243.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">2 von 40</text>
+<text x="198.0" y="267.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikiquote</text>
+<rect x="210.0" y="255.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="255.0" width="74.2" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="247.1" y="267.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">9</text>
+<rect x="284.2" y="255.0" width="8.2" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="300.5" y="267.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">10 von 40</text>
+<text x="198.0" y="291.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikivoyage</text>
+<rect x="210.0" y="279.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="279.0" width="8.2" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="218.2" y="279.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="226.2" y="291.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1 von 40</text>
+<line x1="20.0" y1="316.0" x2="820.0" y2="316.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="336.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Volltextsuche, 37 Sammel- und Aspektthemen, je 5 Treffer, behalten wie im Dienst (nicht gebaut)</text>
+<text x="198.0" y="361.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Klexikon (heute Quelle)</text>
+<rect x="210.0" y="349.0" width="102.7" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="261.3" y="361.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">28</text>
+<rect x="312.7" y="349.0" width="84.3" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="354.8" y="361.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">23</text>
+<rect x="397.0" y="349.0" width="110.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="452.0" y="361.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">30</text>
+<text x="515.0" y="361.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">81 Seiten, passend bei 13 Themen</text>
+<text x="198.0" y="385.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikibooks</text>
+<rect x="210.0" y="373.0" width="11.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="221.0" y="373.0" width="47.7" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="244.8" y="385.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">13</text>
+<rect x="268.7" y="373.0" width="77.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="307.2" y="385.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">21</text>
+<text x="353.7" y="385.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">37 Seiten, passend bei 2 Themen</text>
+<text x="198.0" y="409.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikiversity</text>
+<rect x="210.0" y="397.0" width="3.7" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="213.7" y="397.0" width="62.3" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="244.8" y="409.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">17</text>
+<rect x="276.0" y="397.0" width="77.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="314.5" y="409.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">21</text>
+<text x="361.0" y="409.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">39 Seiten, passend bei 1 Thema</text>
+<text x="198.0" y="433.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wiktionary</text>
+<rect x="210.0" y="421.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="421.0" width="58.7" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="239.3" y="433.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">16</text>
+<rect x="268.7" y="421.0" width="11.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="287.7" y="433.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">19 Seiten, passend bei 0 Themen</text>
+<text x="198.0" y="457.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikisource</text>
+<rect x="210.0" y="445.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="445.0" width="176.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="298.0" y="457.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">48</text>
+<rect x="386.0" y="445.0" width="121.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="446.5" y="457.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">33</text>
+<text x="515.0" y="457.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">81 Seiten, passend bei 0 Themen</text>
+<text x="198.0" y="481.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikiquote</text>
+<rect x="210.0" y="469.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="469.0" width="7.3" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="217.3" y="469.0" width="3.7" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="229.0" y="481.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">3 Seiten, passend bei 0 Themen</text>
+<text x="198.0" y="505.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikivoyage</text>
+<rect x="210.0" y="493.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="493.0" width="47.7" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="233.8" y="505.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">13</text>
+<rect x="257.7" y="493.0" width="62.3" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="288.8" y="505.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">17</text>
+<text x="328.0" y="505.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">30 Seiten, passend bei 0 Themen</text>
+<line x1="20.0" y1="530.0" x2="820.0" y2="530.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="550.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Ins Kompendium gedruckte Absätze: 20 Themen, llm-free, das Archiv zu Wikipedia und Klexikon dazu</text>
+<text x="198.0" y="575.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Klexikon (heute Quelle)</text>
+<rect x="210.0" y="563.0" width="297.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="358.5" y="575.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">18</text>
+<rect x="507.0" y="563.0" width="33.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="523.5" y="575.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">2</text>
+<rect x="540.0" y="563.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="548.0" y="575.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">20 · heute im Standard</text>
+<text x="198.0" y="599.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikibooks</text>
+<rect x="210.0" y="587.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="587.0" width="0.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="587.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="218.0" y="599.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0 · Text gesamt +1 Absatz, ±0 Bausteine</text>
+<text x="198.0" y="623.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikiversity</text>
+<rect x="210.0" y="611.0" width="33.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="226.5" y="623.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">2</text>
+<rect x="243.0" y="611.0" width="0.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="243.0" y="611.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="251.0" y="623.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">2 · Text gesamt −4 Absätze, ±0 Bausteine</text>
+<text x="198.0" y="647.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wiktionary</text>
+<rect x="210.0" y="635.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="635.0" width="280.5" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="350.2" y="647.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">17</text>
+<rect x="490.5" y="635.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="498.5" y="647.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">17 · Text gesamt −7 Absätze, −1 Baustein</text>
+<text x="198.0" y="671.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikisource</text>
+<rect x="210.0" y="659.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="659.0" width="33.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="226.5" y="671.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">2</text>
+<rect x="243.0" y="659.0" width="33.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="259.5" y="671.0" font-size="10.5" fill="#ffffff" text-anchor="middle" font-weight="normal">2</text>
+<text x="284.0" y="671.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">4 · Text gesamt +2 Absätze, ±0 Bausteine</text>
+<text x="198.0" y="695.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikiquote</text>
+<rect x="210.0" y="683.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="683.0" width="82.5" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<text x="251.2" y="695.0" font-size="10.5" fill="#1f2933" text-anchor="middle" font-weight="normal">5</text>
+<rect x="292.5" y="683.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="300.5" y="695.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">5 · Text gesamt −6 Absätze, −1 Baustein</text>
+<text x="198.0" y="719.0" font-size="12" fill="#1f2933" text-anchor="end" font-weight="normal">Wikivoyage</text>
+<rect x="210.0" y="707.0" width="0.0" height="16.0" rx="0" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="707.0" width="0.0" height="16.0" rx="0" fill="#a9ccb4" stroke="none" stroke-width="1"/>
+<rect x="210.0" y="707.0" width="0.0" height="16.0" rx="0" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="218.0" y="719.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">0 · Text gesamt ±0 Absätze, ±0 Bausteine</text>
+<text x="24.0" y="756.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Gleicher Titel (auch ein Alias des Hauptartikels): der heutige Weg eines weiteren Archivs in den Korpus.</text>
+<text x="24.0" y="772.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Volltextsuche: was eine Suche über das Archiv brächte; M11 maß sie für Wikibooks und Wikiversity, sie kam nicht.</text>
+<text x="24.0" y="788.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Gedruckt: Teil 1 mit den Regeln (hybrid_light, 30.000 Zeichen); ohne Zusatz 458 Absätze, 117 Bausteine.</text>
+<text x="24.0" y="804.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Farbe nach der Seite, aus der ein Absatz stammt. Einordnung: Claude, ein Gutachter, ungeprüft (m84_einordnung.yaml).</text>
+<text x="24.0" y="820.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Gutenberg (11 GB) nicht gemessen: kein Volltextindex, ganze Bücher statt Artikel.</text></svg>

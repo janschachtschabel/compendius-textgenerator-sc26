@@ -240,18 +240,22 @@ ganze Liste nicht: „Programmiersprache“ passt auf das Sprachmuster und ließ
 *Liste der Atommodelle* auf das Listenmuster und ließ *Physik* ein. Jetzt fällt nur das Muster weg, auf das der Titel
 selbst passt.
 
-**Weitere Quellen: Wikibooks und Wikiversity** (M11). Aus weiteren Archiven nimmt der Dienst nur einen Artikel mit
-genau dem Titel des Hauptartikels; für die 20 Themen aus M1 waren das zwei Seiten, und die Zahl gefüllter Bausteine
-blieb bei 122. Mit der Volltextsuche beider Archive, drei Treffer je Archiv, kamen 88 Seiten hinzu und 1 gefüllter
-Baustein (mit der LLM-Prüfung 3). Die Suche findet gute Seiten, etwa *Physikunterricht/ Optik* oder den
-Wikiversity-Kurs *Kurs:Optik* mit Versuchen, doch aus keiner dieser Seiten druckte der Standard einen Absatz. Gedruckt
-wurde aus Seiten wie *Arbeiten mit .NET* oder *Kommutative Ringe/Bruchrechnung/Aufgabe*, und das *Ungarisch-Lesebuch*
-lieferte bei fünf Themen Treffer aus Wikibooks, bei zweien alle drei. Das deckt sich mit dem gemischten Bild aus der
-Testapp. Die Zusatzsuche wurde deshalb nicht übernommen; die Profile `standard` und `extended` bleiben, wie sie sind.
+**Weitere Quellen: Wikibooks und Wikiversity** (M11). Aus weiteren Archiven nimmt der Dienst nur einen Artikel mit genau
+dem Titel des Hauptartikels; für die 20 Themen aus M1 waren das zwei Seiten, und die Zahl gefüllter Bausteine blieb bei
+122. Mit der Volltextsuche beider Archive, drei Treffer je Archiv, kamen 88 Seiten hinzu und 1 gefüllter Baustein (mit
+der LLM-Prüfung 3). Die Suche findet gute Seiten, etwa *Physikunterricht/ Optik* oder den Wikiversity-Kurs *Kurs:Optik*
+mit Versuchen, doch aus keiner dieser Seiten druckte der Standard einen Absatz. Gedruckt wurde aus Seiten wie *Arbeiten
+mit .NET* oder *Kommutative Ringe/Bruchrechnung/Aufgabe*, und das *Ungarisch-Lesebuch* lieferte bei fünf Themen Treffer
+aus Wikibooks, bei zweien alle drei. Das deckt sich mit dem gemischten Bild aus der Testapp. Die Zusatzsuche wurde
+deshalb nicht übernommen; die Profile `standard` und `extended` bleiben, wie sie sind. M84 (09.10.2026) bestätigt das
+mit Release 2.18.1 und prüft dazu Wiktionary, Wikisource, Wikiquote und Wikivoyage: Keines bringt passenden Text, und im
+Ablauf setzten Wiktionary, Wikiquote und Wikisource Deklinationstabellen, Zitate und Linklisten in den Text
+(Entscheidungsvorlage, Punkt 16).
 
 **Offen:** ein LLM-Vorschlag, wenn die Regeln gar keinen Artikel finden (bisher ein 404 mit Alternativen); die
 didaktischen Seiten aus Wikibooks und Wikiversity gezielt für Praxis und Bildung nutzen, etwa mit `matcher=llm` (nicht
-gemessen, ein Kompendium kostet dann rund 30.000 Tokens); eine redaktionelle Prüfung der drei Goldsätze.
+gemessen, ein Kompendium kostet dann rund 30.000 Tokens); eine redaktionelle Prüfung der drei Goldsätze. Für die elf
+Aspektthemen von M82 fand eine Suche in beiden Archiven keine passende Seite (M84).
 
 ## Extraktiv oder generativ
 

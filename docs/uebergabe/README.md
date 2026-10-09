@@ -133,7 +133,7 @@ python3 docs/uebergabe/lasttest.py --name 5-balanced --preset balanced --api-key
 | Was | Größe | Anmerkung |
 |---|---|---|
 | Image für alle fünf Container | 1,1 GB | das vorige bleibt bis `docker image prune` liegen |
-| Volume `zim` | 14,7 GB | Wikipedia de ohne Bilder 14,6 GB (13,6 GiB, Stand 2026-01), Klexikon 0,14 GB. Beim Update liegen altes und neues Archiv 24 Stunden nebeneinander (`ZIM_RETENTION_HOURS`): rund 30 GB. Ein Download beginnt nur, wenn das Volume ihn und 1 GB darüber fasst |
+| Volume `zim` | 14,7 GB | Wikipedia de ohne Bilder 14,6 GB (13,6 GiB, Stand 2026-01), Klexikon 0,14 GB. Beim Update liegen altes und neues Archiv 24 Stunden nebeneinander (`ZIM_RETENTION_HOURS`): rund 30 GB, mit der Ausgabe 2026-10 (rund 18,6 GB) rund 33 GB (M84). Ein Download beginnt nur, wenn das Volume ihn und 1 GB darüber fasst |
 | Volume `state` | 0,45 GB | `lehrplan.db` 277 MB, `wikidata.db` 139 MB, `gnd.db` 55 MB; der Neubau des Wikidata-Index braucht rund 1,5 GB frei |
 | Protokolle | höchstens 0,25 GB | je Container fünf Dateien zu 10 MB |
 | Volume `prometheus` (optional) | nicht gemessen | 30 Tage Aufbewahrung |

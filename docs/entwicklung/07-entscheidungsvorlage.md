@@ -1,7 +1,7 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
 [Übersicht](README.md) · Stand 09.10.2026, Release 2.17.0 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis
-M82; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
+M84; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
 `/entities`: [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit
 und Tokens je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
@@ -997,6 +997,40 @@ Passung 4,56 und Nutzen 4,31.
     `best-coverage-generated` in Zuordnung und Teil 2 rund 6 s, mit Sammlung bis zu 6 s mehr, wenn Teil 3 ohne Cache
     liest. Zuordnung und Schreiben warten auf das Modell; mehr Tempo und spürbar weniger Tokens gäbe es nur gegen Güte
     (d, g) oder mit weniger bestätigten Lehrplanbezügen (f).
+
+16. **Weitere Kiwix-Archive als Quellen** (Jan, 09.10.2026: „ob man das hinzufügen weiterer kiwix zum quellen die
+    qualität verbessern kann … primär um deutsche quellen“, dann „prüfen könnte man die quellen der wiki famlie …
+    projekt gutenberg“): gemessen in M84; entschieden ist nichts.
+
+    ![Mehrwert weiterer Kiwix-Archive für die Kompendien (M84)](bilder/kiwix_quellen.svg)
+
+    **Angebot.** Auf Deutsch hat Kiwix neben Wikipedia und Klexikon sechs Projekte der Wiki-Familie und Projekt
+    Gutenberg mit Text zu Schulthemen. Die Teilarchive der Wikipedia stecken schon in `wikipedia_de_all`, der Rest des
+    Katalogs ist fachfremd, Satire oder Video. Ein deutsches Lehr-Wiki wie ZUM-Unterrichten oder das MiniKlexikon gibt
+    es dort nicht.
+
+    **Mehrwert, gemessen.** Kein Archiv bringt passenden Text in nennenswertem Umfang. Über den gleichen Titel, den Weg
+    in den Korpus, kommen Wikibooks und Wikiversity bei je einem von 40 Themen; Wiktionary (20), Wikiquote (10),
+    Wikisource (2) und Wikivoyage (1) treffen öfter, aber nur mit Wörterbucheinträgen, Zitatlisten, Linklisten zu
+    Quelltexten und einem Reiseführer. Eine Volltextsuche fände für die elf Aspektthemen von M82 in keinem weiteren
+    Archiv eine passende Seite, für die 26 Sammelthemen drei in Wikibooks und eine in Wikiversity; das Klexikon, schon
+    heute dabei, hat 28 bei 13 Themen. Im Ablauf mit den Regeln setzten Wiktionary, Wikiquote und Wikisource 26 Absätze
+    in den Text (Deklinationstabellen, Zitate, Listen) und verdrängten Absätze der Wikipedia; mit allen sechs Archiven
+    druckte Teil 1 der 20 Themen 16 Absätze und drei Bausteine weniger. Das gemischte Schriftbild, das Jan vermeiden
+    will, entstünde in den wörtlichen Profilen (`llm-free`, `balanced`, `best-quality`) also schon mit deutschen
+    Archiven. Die Profile mit LLM sind nicht gemessen; die Zwillinge kämen dort genauso in den Korpus.
+
+    **Gutenberg.** 11 GB, ganze Bücher, kein Volltextindex: Der Dienst fände darin nur Buchtitel. Nicht gemessen, nicht
+    empfohlen.
+
+    **Empfehlung.** Bei Wikipedia und Klexikon bleiben (Profil `standard`); `extended` mit Wikibooks und Wikiversity
+    bleibt einstellbar, bringt aber nichts. Mehr Qualität kommt auf anderen Wegen: aus einer aktuellen Wikipedia (die
+    Ausgabe vom 01.10.2026 liest der Parser gleich, der `zim-updater` holt sie von selbst), aus einem genaueren
+    Klexikon-Zwilling (über einen Alias landen heute Absätze über Flüsse bei „Elektrischer Strom“ und über
+    Gefängniszellen bei „Zelle (Biologie)“; erst messen, dann ändern) und bei Aspektthemen aus den schreibenden Profilen
+    (M82: Passung 3,8 in `best-quality-generated`, 5,0 in `best-coverage-generated`). Ob ein Archiv aus ZUM-Unterrichten
+    oder dem MiniKlexikon hülfe, wäre eine eigene Messung; bauen müsste es openZIM, das Wünsche für neue Archive
+    annimmt, oder der Betrieb selbst.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

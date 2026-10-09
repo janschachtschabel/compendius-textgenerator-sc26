@@ -1,0 +1,537 @@
+# M84: Einordnung der Seiten aus Klexikon und den weiteren Kiwix-Archiven (mc_kiwix_quellen.py)
+#
+# Festgelegt von Claude am 2026-10-09 nach Titel, Gliederung und Anfang jeder Seite (der Anfang liegt im Pool des
+# Skripts, außerhalb des Repositorys); ein Gutachter, redaktionell ungeprüft. Bezug ist immer das angefragte Thema.
+#
+#   passend   - erklärt das Thema oder einen klaren Teil davon als heutiger deutscher Sachtext; bei einem Sammelthema
+#               ein Glied der Sammlung (Beethoven zu „Komponisten der Klassik“) oder ihr Oberbegriff
+#   teilweise - zum Thema, aber in einer Form, die ein Kompendium nicht als Text übernehmen kann: Wörterbucheintrag,
+#               Zitatliste, historischer Text (19. Jahrhundert bis 1949), Linkliste, Reiseführer, Unterrichtsplanung,
+#               Kursprotokoll, Quiz, Leseliste, Gesetzestext; oder nur am Rand des Themas, oder mehrere Bedeutungen
+#               eines Wortes auf einer Seite
+#   daneben   - anderes Thema, andere Sprache (Ungarisch-Lesebuch), Druck- oder LaTeX-Fassung eines Buchs, leere Seite
+#
+# gleicher_titel: je erwartetem Hauptartikel des Golds (eval/artikelwahl/hauptartikel.yaml) die Seite gleichen Titels.
+# volltextsuche: je Sammel- und Aspektthema von M82 die Treffer, die die Themenprüfung des Dienstes behält.
+# ablauf: je Thema die Seiten, die der Ablauf des Dienstes in den Korpus nahm (auch über einen Alias des Hauptartikels).
+
+gleicher_titel:
+  klexikon:
+    "Bruchrechnung": passend
+    "Demokratie": passend
+    "Französische Revolution": passend
+    "Klimawandel": passend
+    "Optik": passend
+    "Photosynthese": passend
+    "Plattentektonik": passend
+    "Ökosystem": passend
+    "Industrielle Revolution": passend
+    "Wasserkreislauf": passend
+    "Römisches Reich": passend
+    "Gedicht": passend
+    "Welle": teilweise  # Bauteil der Technik und Wasserwelle, nicht die Welle der Physik
+    "Maus (Computer)": passend
+    "Computervirus": daneben  # leer: nur der Titel
+    "Europäische Union": passend
+    "Gewaltenteilung": passend
+  wikibooks:
+    "Optik": passend  # Band 10 eines Lehrbuchs der theoretischen Physik, nach eigener Angabe zu 20 % fertig
+  wikiversity:
+    "Lineare Funktion": passend
+  wiktionary:  # Wörterbucheinträge: Deklination, Worttrennung, Bedeutungen, Herkunft, Beispielsätze
+    "Bruchrechnung": teilweise
+    "Demokratie": teilweise
+    "Französische Revolution": teilweise
+    "Klimawandel": teilweise
+    "Optik": teilweise
+    "Photosynthese": teilweise
+    "Programmiersprache": teilweise
+    "Sinfonie": teilweise
+    "Plattentektonik": teilweise
+    "Ökosystem": teilweise
+    "Atommodell": teilweise
+    "Wasserkreislauf": teilweise
+    "Römisches Reich": teilweise
+    "Gedicht": teilweise
+    "Welle": teilweise
+    "Computermaus": teilweise
+    "Computervirus": teilweise
+    "Desoxyribonukleinsäure": teilweise
+    "Europäische Union": teilweise
+    "Gewaltenteilung": teilweise
+  wikisource:  # Themenseiten: Listen von Quelltexten und Literatur
+    "Demokratie": teilweise
+    "Französische Revolution": teilweise
+  wikiquote:  # Zitatlisten
+    "Demokratie": teilweise
+    "Französische Revolution": teilweise
+    "Klimawandel": teilweise
+    "Sinfonie": teilweise
+    "Elektrischer Strom": teilweise
+    "Gedicht": teilweise
+    "Welle": daneben  # Zitate über Wasserwellen, das Thema ist die Welle der Physik
+    "Strom (Gewässer)": teilweise
+    "Globale Erwärmung": teilweise
+    "Europäische Union": teilweise
+  wikivoyage:
+    "Europäische Union": teilweise  # Reiseführer
+
+volltextsuche:
+  klexikon:
+    "gruppe:deutsche Dichter":
+      "Ossian": daneben
+      "Ballade": teilweise
+      "Wartburg": teilweise
+      "Thüringen": daneben
+      "Schäferhund": daneben
+    "gruppe:Dichter der Romantik":
+      "Ossian": daneben
+      "Johann Wolfgang von Goethe": teilweise
+      "Drachenfels": daneben
+    "gruppe:Komponisten der Klassik":
+      "Klassik": teilweise
+      "Weimar": daneben
+      "Klassizismus": daneben
+      "Ludwig van Beethoven": passend
+    "gruppe:Philosophen der Aufklärung":
+      "Aufklärung": passend
+      "Immanuel Kant": passend
+      "Menschenrechte": teilweise
+    "gruppe:Maler des Impressionismus":
+      "Impressionismus": passend
+      "Claude Monet": passend
+      "Vincent van Gogh": teilweise
+    "gruppe:römische Kaiser":
+      "Heiliges Römisches Reich": daneben
+      "Kaiser": teilweise
+      "Römisches Reich": teilweise
+      "Byzantinisches Reich": teilweise
+      "Kolosseum": daneben
+    "gruppe:deutsche Bundeskanzler":
+      "Bundeskanzler": passend
+      "Helmut Kohl": passend
+      "Bundestagswahl 2025": teilweise
+      "Bundestagswahl 2021": teilweise
+      "Olaf Scholz": passend
+    "gruppe:griechische Götter":
+      "Griechische Götter": passend
+      "Athene": passend
+      "Christentum": daneben
+      "Hera": passend
+      "Bibel": daneben
+    "gruppe:Planeten des Sonnensystems":
+      "Planet": passend
+      "Planetenweg": teilweise
+      "Merkur": passend
+      "Sonnensystem": passend
+      "Neptun": passend
+    "gruppe:Edelgase":
+      "Gas": teilweise
+      "Luft": teilweise
+      "Helium": passend
+      "Wasserstoff": daneben
+    "gruppe:erneuerbare Energien":
+      "Erneuerbare Energie": passend
+      "Kraftwerk": teilweise
+    "gruppe:Nobelpreisträger für Physik":
+      "Nobelpreis": teilweise
+    "gruppe:Frauen in der Wissenschaft":
+      "Homosexualität": daneben
+    "gruppe:Märchen der Brüder Grimm":
+      "Brüder Grimm": passend
+      "Märchen": passend
+      "Rotkäppchen": passend
+      "Dornröschen": passend
+      "Rumpelstilzchen": passend
+    "gruppe:deutsche Flüsse":
+      "Deutschsprachige Gemeinschaft in Ostbelgien": daneben
+      "Wolga": daneben
+      "Deutsches Eck": teilweise
+      "Graubünden": daneben
+      "Mississippi": daneben
+    "gruppe:Säugetiere des Waldes":
+      "Wisent": passend
+      "Vögel": daneben
+      "Kreuzotter": daneben
+      "Amphibien": daneben
+    "gruppe:Vulkane Europas":
+      "Elbrus": teilweise
+      "Island": teilweise
+    "gruppe:Entdecker der Neuzeit":
+      "Paprika": daneben
+      "Thule": daneben
+    "gruppe:Klimawandel und Landwirtschaft":
+      "Klimawandel": teilweise
+      "Kamerun": daneben
+      "Niger": daneben
+    "gruppe:Mathematik in der Musik":
+      "Ada Lovelace": daneben
+    "gruppe:Chemie im Alltag":
+      "Kraft": daneben
+    "gruppe:Frauen im Mittelalter":
+      "Schleier": teilweise
+      "Seejungfrau": daneben
+      "Hildegard von Bingen": passend
+    "gruppe:Musik der Romantik":
+      "Romantik": passend
+      "Artikelübersicht Musik": daneben
+      "Franz Schubert": passend
+      "Robert Schumann": passend
+    "gruppe:Dichter aus dem Mittelalter":
+      "Ossian": daneben
+      "Toskana": daneben
+    "aspekt:Künstliche Intelligenz im Unterricht":
+      "Künstliche Intelligenz": teilweise
+    "aspekt:Mikroplastik im Meer":
+      "Umweltverschmutzung": teilweise
+    "aspekt:Datenschutz für Schüler":
+      "Datenschutz": passend
+  wikibooks:
+    "gruppe:deutsche Dichter":
+      "Wikijunior Sprachen/ Druckversion": daneben
+      "Bürgerwissen Deutschland/ Kultur und Wissenschaft/ Dichtung": teilweise  # Leselisten zum Einbürgerungstest
+    "gruppe:Dichter der Romantik":
+      "Reise in das romantische Dresden/ Künstler der Frühromantik/ Ludwig Richter/ Rom 1825": daneben
+      "Reise in das romantische Dresden/ Künstler der Frühromantik/ Ludwig Richter/ Nach Rom!": daneben
+    "gruppe:Maler des Impressionismus":
+      "Stenografisches Wörterbuch/ Wortliste ohne Links": daneben
+    "gruppe:römische Kaiser":
+      "Geschichte des römischen Weltreiches/ Von den Soldatenkaisern zur Teilung Roms": passend
+      "Geschichte des römischen Weltreiches/ Druckversion": passend
+      "Geschichte der westslawischen Orthodoxie/ Die Frühzeit der westslawischen Orthodoxie/ Christenverfolgung": teilweise
+    "gruppe:deutsche Bundeskanzler":
+      "Staatsbürgerkunde Deutschland/ Praktische Politik/ Namen": teilweise  # Quiz
+      "Bürgerwissen Deutschland/ Parlament, Regierung und Streitkräfte/ Präsident": daneben
+      "OpenRewi/ Staatsorganisationsrecht-Lehrbuch/ Verfassungsorgane/ Bundesregierung": teilweise  # Rechtslehrbuch
+      "Staatsbürgerkunde Deutschland/ Die politische Struktur/ Bundesregierung": teilweise  # Quiz
+      "Staatsbürgerkunde Deutschland/ LaTeX": daneben
+    "gruppe:griechische Götter":
+      "Ungarisch/Ungarisch-Lesebuch/Thema Die griechische Götterwelt": daneben
+    "gruppe:Edelgase":
+      "Wikijunior Die Elemente/ Elemente/ Edelgase": passend
+      "Einführung in die Allgemeine und die Anorganische Chemie: Das Periodensystem der Elemente": teilweise
+    "gruppe:Weltreligionen":
+      "Religionskritik: Judentum": teilweise
+    "gruppe:Märchen der Brüder Grimm":
+      "Reise in das romantische Dresden/ Künstler der Frühromantik/ Ludwig Richter/ Aus Ludwig Richters Tagebuch-Aufzeichnungen": daneben
+    "gruppe:deutsche Flüsse":
+      "Bürgerwissen Deutschland/ Deutschland und die Deutschen/ Geographie": teilweise
+      "Ungarisch/Ungarisch-Lesebuch-Alltagthemen/Deutschland Németország Teil 2": daneben
+      "Ungarisch/Ungarisch-Lesebuch/Thema Der Amazonas": daneben
+    "gruppe:Klimawandel und Landwirtschaft":
+      "Ungarisch/Ungarisch-Lesebuch/Thema Klimawandel": daneben
+    "gruppe:Mathematik in der Musik":
+      "Gehirn und Sprache: Gehirn und Musik": teilweise
+      "Quadriviale Kuriositäten": teilweise
+      "Gehirn und Sprache/ Druckversion": daneben
+    "gruppe:Chemie im Alltag":
+      "Anorganische Chemie für Schüler/ Stoffgemische und Stofftrennung": teilweise
+      "Wikijunior Die Elemente/ Einführung Materie": teilweise
+      "Anorganische Chemie für Schüler/ Chemisches Rechnen": daneben
+      "Chemie für Quereinsteiger/ Vorwort": daneben
+    "gruppe:Musik der Romantik":
+      "Reise in das romantische Dresden/ Künstler der Frühromantik/ Ludwig Richter/ Fortsetzung, und was Weiteres bis zur Reise nach Frankreich geschah, bis 1819": daneben
+      "Reise in das romantische Dresden/ Künstler der Frühromantik/ Ludwig Richter/ Im Albanergebirge": daneben
+      "Reise in das romantische Dresden/ Künstler der Frühromantik/ Ludwig Richter/ Aus Ludwig Richters Tagebuch-Aufzeichnungen": daneben
+    "aspekt:Künstliche Intelligenz im Unterricht":
+      "Ungarisch/Ungarisch-Lesebuch-Schilder": daneben
+    "aspekt:Datenschutz für Schüler":
+      "Datenschutz/ DS-GVO/ Allgemeine Bestimmungen/ Begriffe/ Personenbezogene Daten": teilweise  # Gesetzestext
+      "Wikipedia in der Schule/ Die Befreiung des Wissens/ Gesellschaftliche Bedeutung": daneben
+    "aspekt:Wasserstoff als Energieträger":
+      "Ästhetik der Formen und des Materials/ Materrialsymbole": daneben
+      "Interstellare Raumfahrt: Spezifischer Impuls": daneben
+  wikiversity:
+    "gruppe:deutsche Dichter":
+      "Kurs:Reise in das romantische Dresden/Scharfenberger Kreis/Friedrich de La Motte Fouqué": teilweise  # Kurs mit älterem Lebensbild
+    "gruppe:Dichter der Romantik":
+      "Kurs:Reise in das romantische Dresden/Scharfenberger Kreis/Friedrich de La Motte Fouqué": teilweise
+      "Kurs:Reise in das romantische Dresden/Scharfenberger Kreis/Friedrich de La Motte Fouqué/Briefe": teilweise
+    "gruppe:Komponisten der Klassik":
+      "Kurs:Welterbe, Kulturgüterschutz und Kommunikation (Sommeruniversität 2016)/Arbeiten/Musikerwohnungen in Wien: Mozarthaus Wien": teilweise
+    "gruppe:römische Kaiser":
+      "Kurs:Das Große Schisma von 1054": teilweise
+      "Kurs:Römisch-katholische Urkundenfälschungen": daneben
+      "Kurs:Römisch-katholische Urkundenfälschungen/Bistum Meißen: Urkundenfälschungen auf Bischof Benno": daneben
+    "gruppe:deutsche Bundeskanzler":
+      "Kurs:Neue Medien in Geschichtswissenschaft und Geschichtsunterricht (SoS 2016)/Artikel 2": daneben
+      "Ausdruck der Negation": daneben
+    "gruppe:griechische Götter":
+      "Kurs:Problemlösung und Entscheidungsfindung/Trilemma": daneben
+      "Kurs:Gott im islamischen Denken/Muhyi d-Din Abd al-Hamid": daneben
+    "gruppe:Planeten des Sonnensystems":
+      "Kurs:Mathematische Modellbildung/Themen/2021-22 Wintersemester/Planetenbahnen/Blender": daneben
+      "Kurs:Mathematische Modellierung der Planetenbahnen/Einflüsse anderer Planeten": teilweise
+      "Kurs:Mathematische Modellierung der Planetenbahnen/Gravitationsgesetz nach Newton": teilweise
+    "gruppe:erneuerbare Energien":
+      "Kurs:Mathematische Modellbildung/Themen/Erneuerbare Energien/Haushalt 2": daneben
+      "Kurs:Mathematische Modellbildung/Themen/Erneuerbare Energien/Haushalt 1": daneben
+      "Kurs:Mathematische Modellbildung/Themen/Erneuerbare Energien/Einführung": teilweise
+      "Kurs:Mathematische Modellbildung/Themen/Erneuerbare Energien/Implementation Sek I Haushalt 2": daneben
+      "Kurs:Mathematische Modellbildung/Themen/Erneuerbare Energien": teilweise
+    "gruppe:deutsche Flüsse":
+      "Methodios/Glossar/U/Unstrut": daneben
+      "Kurs:Dresden/Quellen/Sinnloser \"Endkampf\" in Sachsen": daneben
+      "Kurs:Die Nisaner – Dresdens Ureinwohner/Glagoliza/Zerstörung des Johannisklosters mit Kirche 984": daneben
+    "gruppe:Klimawandel und Landwirtschaft":
+      "Klimawandel: Auswirkungen der Erderwärmung": teilweise  # Kursprotokoll
+    "gruppe:Mathematik in der Musik":
+      "Alma Mater": daneben
+    "gruppe:Chemie im Alltag":
+      "Interdiszipläres Zentrum Science, Technology and Social Studies": daneben
+    "gruppe:Frauen im Mittelalter":
+      "Kurs:Meißen im Mittelalter/Die Gründung des Bistums Meißen/Der Magdeburgplan/Gerberga von Sachsen": passend
+    "gruppe:Musik der Romantik":
+      "Kurs:Reise in das romantische Dresden/Scharfenberger Kreis/Friedrich de La Motte Fouqué/Briefe": daneben
+      "Kurs:Reise in das romantische Dresden/Scharfenberger Kreis/Friedrich de La Motte Fouqué": daneben
+    "gruppe:Dichter aus dem Mittelalter":
+      "Kurs:Die Nisaner – Dresdens Ureinwohner/Heinrich I. (der Vogeler)": daneben
+    "aspekt:Künstliche Intelligenz im Unterricht":
+      "Kurs:Künstliche Intelligenz (Handelsdiplom)/Prompt": teilweise
+      "Kurs:Künstliche Intelligenz (Handelsdiplom)/Maschinelles Lernen": teilweise
+    "aspekt:Fake News erkennen":
+      "Kurs:Mathematische Modellbildung/Themen/Fake News in Sozialen Medien/Modellierungszyklus 2": daneben
+      "Kurs:Mathematische Modellbildung/Themen/Fake News in Sozialen Medien": teilweise
+      "Kurs:Mathematische Modellbildung/Themen/Fake News in Sozialen Medien/Modellierungszyklus 1": daneben
+    "aspekt:Datenschutz für Schüler":
+      "OpenSource4School/Lernumgebungen zur Informatischen Bildung im Mathematikunterricht der Primarstufe/Datenschutz": teilweise  # Unterrichtsplanung
+      "Kurs:Datenschutz": teilweise
+    "aspekt:Algorithmen im Alltag":
+      "OpenSource4School/Lernumgebungen zur Informatischen Bildung im Mathematikunterricht der Primarstufe/Algorithmen": teilweise
+      "OpenSource4School/Lernumgebungen zur Informatischen Bildung im Mathematikunterricht der Primarstufe": teilweise
+    "aspekt:Wasserstoff als Energieträger":
+      "Kurs:Verbrennung von Kohlenwasserstoffen": daneben
+  wiktionary:
+    "gruppe:Maler des Impressionismus":
+      "Malerei": daneben
+    "gruppe:römische Kaiser":
+      "Heiliges Römisches Reich": daneben
+      "römisch-deutsch": daneben
+    "gruppe:Edelgase":
+      "Edelgase": teilweise
+      "Edelgas": teilweise
+      "Edelgasen": teilweise
+      "Edelgases": teilweise
+    "gruppe:Weltreligionen":
+      "Weltreligionen": teilweise
+    "gruppe:erneuerbare Energien":
+      "erneuerbaren Energien": teilweise
+      "erneuerbare Energie": teilweise
+      "erneuerbaren Energie": teilweise
+      "erneuerbare Energien": teilweise
+      "erneuerbarer Energie": teilweise
+    "gruppe:Nobelpreisträger für Physik":
+      "Nobelpreisträger": teilweise
+    "gruppe:Musik der Romantik":
+      "absolute Musik": teilweise
+    "aspekt:Fake News erkennen":
+      "Fake News": teilweise
+    "aspekt:Mikroplastik im Meer":
+      "Mikroplastik": teilweise
+    "aspekt:Wasserstoff als Energieträger":
+      "Wasserstoffauto": teilweise
+      "Wasserstoff": teilweise
+  wikisource:  # historische Texte: Gartenlaube, ADB, Meyers Konversations-Lexikon 1888, Gesetze
+    "gruppe:deutsche Dichter":
+      "Bilder aus dem Leben deutscher Dichter/Nr. 4. Ein Dichter-Asyl": teilweise
+      "Ein deutscher Dichter und Dulder": teilweise
+      "Die Dichter der deutschen Freiheitskriege": teilweise
+      "Leben und Sterben eines deutschen Dichters": teilweise
+      "Bilder aus dem Leben deutscher Dichter/Nr. 5. Nicolaus Lenau": teilweise
+    "gruppe:Dichter der Romantik":
+      "BLKÖ:Prechtler, Johann Otto": teilweise
+      "Ein Kleinod der Romantik": teilweise
+      "ADB:Eichendorff, Joseph Freiherr von": teilweise
+      "Zum Kleist-Jubiläum": teilweise
+    "gruppe:Komponisten der Klassik":
+      "Franz Schubert (Die Gartenlaube 1897)": teilweise
+    "gruppe:Philosophen der Aufklärung":
+      "MKL1888:Aufklärung": teilweise
+      "ADB:Erhard, Johann Benjamin": teilweise
+    "gruppe:Maler des Impressionismus":
+      "Malerei und Plastik (1914)": teilweise
+      "Camille Pissarro (Julius Meier-Graefe)": teilweise
+      "ADB:Stauffer, Karl": daneben
+    "gruppe:römische Kaiser":
+      "ADB:Otto IV. (römischer Kaiser)": daneben
+      "ADB:Heinrich III. (römisch-deutscher König)": daneben
+      "Römische Cäsaren/Caligula": teilweise
+      "Römische Cäsaren/Tiberius": teilweise
+      "Zimmerische Chronik/Band 1/Kapitel 46": daneben
+    "gruppe:deutsche Bundeskanzler":
+      "Gesetz, betreffend die Beschaffung weiterer Geldmittel zur Bestreitung der durch den Krieg veranlaßten außerordentlichen Ausgaben": daneben
+      "Abkommen zum deutsch-amerikanischen Kulturaustausch": daneben
+      "Grundgesetz für die Bundesrepublik Deutschland (1949)": teilweise
+      "Bekanntmachung, betreffend die Ernennung der Bevollmächtigten zum Bundesrathe. Vom 20. Februar 1871": daneben
+    "gruppe:griechische Götter":
+      "Apokalypse des Baruch (griechisch)": daneben
+      "Griechische und römische Mythologie": teilweise
+      "Über das griechische Mönchtum": daneben
+      "Das Wesen des Christentums/Dreizehnte Vorlesung": daneben
+      "Die schriftstellerische Form des griechischen Heiligenlebens": daneben
+    "gruppe:Planeten des Sonnensystems":
+      "MKL1888:Welt": teilweise
+      "MKL1888:Sterne": teilweise
+      "Die Kometen und die Erde": daneben
+    "gruppe:Edelgase":
+      "Meyers Blitz-Lexikon/X": teilweise
+      "Meyers Blitz-Lexikon/N": teilweise
+    "gruppe:Erfindungen der Industrialisierung":
+      "Der Todesgang des armenischen Volkes/Dritter Teil": daneben
+    "gruppe:Frauen in der Wissenschaft":
+      "Frauen auf akademischem Lehrstuhle der Mathematik": teilweise
+      "Frauen als Entdeckungsreisende und Geographen": teilweise
+      "Eine Frauen-Universität": teilweise
+    "gruppe:Märchen der Brüder Grimm":
+      "Zur Entstehungsgeschichte der Märchen und Sagen der Brüder Grimm": teilweise
+      "Anmerkungen zu den Kinder- und Hausmärchen der Brüder Grimm I/Die zwölf Brüder": teilweise
+      "Anmerkungen zu den Kinder- und Hausmärchen der Brüder Grimm I/Das Lumpengesindel": teilweise
+      "Anmerkungen zu den Kinder- und Hausmärchen der Brüder Grimm I/Dornröschen": teilweise
+      "Anmerkungen zu den Kinder- und Hausmärchen der Brüder Grimm I/Marienkind": teilweise
+    "gruppe:deutsche Flüsse":
+      "Die Schedelsche Weltchronik (deutsch):008": daneben
+      "Bekanntmachung über die Verlegung der deutsch-österreichischen Grenze längs des Przemsa-Flusses": daneben
+      "Gesetz über die Verlegung der deutsch-österreichischen Grenze längs des Przemsa-Flusses": daneben
+      "MKL1888:Germanen und Germanien": daneben
+      "Wasserbau (1914)": daneben
+    "gruppe:Säugetiere des Waldes":
+      "MKL1888:Spitzmäuse": teilweise
+      "MKL1888:Riesenschlangen": daneben
+    "gruppe:Vulkane Europas":
+      "MKL1888:Europa": teilweise
+      "MKL1888:Atlantischer Ozean": daneben
+      "MKL1888:Diluvium": daneben
+      "MKL1888:Daubrée": daneben
+    "gruppe:Mathematik in der Musik":
+      "ADB:Werckmeister, Andreas": teilweise
+      "ADB:Opelt, Friedrich Wilhelm": teilweise
+      "MKL1888:Riemann": teilweise
+      "ADB:Scheibler, Johann Heinrich": teilweise
+      "ADB:Gersbach, Anton": daneben
+    "gruppe:Chemie im Alltag":
+      "Aus der Chemie des menschlichen Haushalts (1)": teilweise
+      "Zur Orientirung": daneben
+      "MKL1888:Fix": daneben
+      "Explodierende Briefcouverts": teilweise
+    "gruppe:Frauen im Mittelalter":
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1878/37)": teilweise
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1878/43)": teilweise
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1879/13)": teilweise
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1879/2)": teilweise
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1878/27)": teilweise
+    "gruppe:Musik der Romantik":
+      "Ueber die Hauptrichtungen in der heutigen Musik": teilweise
+      "Gesammelte Schriften über Musik und Musiker/Die Teufelsromantiker": teilweise
+      "Beethovens Instrumental-Musik": teilweise
+      "Neue Musik": teilweise
+    "gruppe:Dichter aus dem Mittelalter":
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1878/31)": daneben
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1878/43)": daneben
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1878/27)": daneben
+      "Deutsches Frauenleben im Mittelalter (Die Gartenlaube 1879/2)": daneben
+      "ADB:Konemann": teilweise
+    "aspekt:Künstliche Intelligenz im Unterricht":
+      "Leben des allemannischen Dichters Johann Peter Hebel": daneben
+      "Zur Lage der jüdischen Bevölkerung in Galizien": daneben
+      "ADB:Clausewitz, Carl von": daneben
+      "ADB:Ernst II. (Herzog von Sachsen-Coburg und Gotha)": daneben
+  wikiquote:
+    "gruppe:römische Kaiser":
+      "Franz": daneben
+    "gruppe:erneuerbare Energien":
+      "Energiewende": teilweise
+    "gruppe:Frauen in der Wissenschaft":
+      "Frauenbewegung": teilweise
+  wikivoyage:  # Reiseführer
+    "gruppe:deutsche Dichter":
+      "Marbach am Neckar": teilweise
+      "Berlin/Gendarmenmarkt": daneben
+      "Essen/Stadtmitte-Frillendorf-Huttrop": daneben
+      "Lebus": daneben
+      "Wallonien": daneben
+    "gruppe:Dichter der Romantik":
+      "Masowien": daneben
+    "gruppe:Maler des Impressionismus":
+      "Giverny": teilweise
+    "gruppe:römische Kaiser":
+      "Archäologische Schätze der Dekapolis": daneben
+      "Schanhūr": daneben
+      "Archäologische Stätten aus Römischer Zeit in Kampanien": daneben
+      "Nikopolis": daneben
+    "gruppe:deutsche Bundeskanzler":
+      "Willy Brandt": teilweise
+      "Konrad Adenauer": teilweise
+      "Deidesheim": daneben
+      "Hansestädte": daneben
+      "Hermeskeil": daneben
+    "gruppe:griechische Götter":
+      "Griechische Mythologie": teilweise
+      "Ṭihnā el-Gebel": daneben
+      "Tūna el-Gebel": daneben
+    "gruppe:erneuerbare Energien":
+      "Güssing": teilweise
+    "gruppe:Märchen der Brüder Grimm":
+      "Deutsche Märchenstraße": teilweise
+      "Sababurg": teilweise
+      "Kassel": teilweise
+    "gruppe:deutsche Flüsse":
+      "Wasserwandern in Deutschland": teilweise
+      "Deutsche Feriengebiete": daneben
+    "gruppe:Vulkane Europas":
+      "Vulkane": teilweise
+      "Vulkaneifel": teilweise
+      "Ätna": teilweise
+    "gruppe:Mathematik in der Musik":
+      "Pisa": daneben
+    "gruppe:Dichter aus dem Mittelalter":
+      "Masowien": daneben
+
+ablauf:
+  klexikon:
+    "Bruchrechnung": {"Bruchrechnung": passend}
+    "Demokratie": {"Demokratie": passend}
+    "Französische Revolution": {"Französische Revolution": passend}
+    "Klimawandel": {"Klimawandel": passend}
+    "Optik": {"Optik": passend}
+    "Photosynthese": {"Photosynthese": passend}
+    "Plattentektonik": {"Plattentektonik": passend}
+    "Ökosystem": {"Ökosystem": passend}
+    "Industrielle Revolution": {"Industrielle Revolution": passend}
+    "Elektrischer Strom": {"Strom": teilweise}  # über den Alias „Strom“: Fluss, Strom, Strömung, Lavastrom
+    "Wasserkreislauf": {"Wasserkreislauf": passend}
+    "Römisches Reich": {"Römisches Reich": passend}
+    "Zelle (Biologie)": {"Zelle": teilweise}  # über den Alias „Zelle“: beginnt mit Gefängnis- und Klosterzelle
+    "Gedicht": {"Gedicht": passend}
+  wikibooks:
+    "Optik": {"Optik": passend}
+  wikiversity:
+    "Lineare Funktion": {"Lineare Funktion": passend}
+  wiktionary:
+    "Bruchrechnung": {"Bruchrechnung": teilweise}
+    "Demokratie": {"Demokratie": teilweise}
+    "Französische Revolution": {"Französische Revolution": teilweise}
+    "Klimawandel": {"Klimawandel": teilweise}
+    "Optik": {"Optik": teilweise}
+    "Photosynthese": {"Photosynthese": teilweise}
+    "Programmiersprache": {"Programmiersprache": teilweise}
+    "Sinfonie": {"Sinfonie": teilweise}
+    "Plattentektonik": {"Plattentektonik": teilweise}
+    "Ökosystem": {"Ökosystem": teilweise}
+    "Atommodell": {"Atommodell": teilweise}
+    "Elektrischer Strom": {"Strom": teilweise}
+    "Wasserkreislauf": {"Wasserkreislauf": teilweise}
+    "Römisches Reich": {"Römisches Reich": teilweise}
+    "Zelle (Biologie)": {"Zelle": teilweise}
+    "Gedicht": {"Lyrik": teilweise}
+  wikisource:
+    "Demokratie": {"Demokratie": teilweise}
+    "Französische Revolution": {"Französische Revolution": teilweise}
+    "Gedicht": {"Gedichte": daneben}  # Liste von Büchern mit dem Titel „Gedichte“
+  wikiquote:
+    "Demokratie": {"Demokratie": teilweise}
+    "Französische Revolution": {"Französische Revolution": teilweise}
+    "Klimawandel": {"Globale Erwärmung": teilweise}
+    "Sinfonie": {"Symphonie": teilweise}
+    "Elektrischer Strom": {"Elektrischer Strom": teilweise}
+    "Zelle (Biologie)": {"Zelle": teilweise}
+    "Gedicht": {"Lyrik": teilweise}
