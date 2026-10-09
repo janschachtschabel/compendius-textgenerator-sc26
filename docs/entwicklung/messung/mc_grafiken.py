@@ -3,8 +3,10 @@ old and new service (01-alt-und-neu.md), and methods, measurements and profiles 
 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
 prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
-text_schalter.svg and kombinationen.svg (page 07), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), and
-profile_matrix.svg, profilvergleich.svg, profiluebersicht.svg (pages 07 and 09) and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their source: the text
+text_schalter.svg and kombinationen.svg (page 07), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01),
+profile_matrix.svg, profilvergleich.svg, profiluebersicht.svg (pages 07 and 09), and endpunkte.svg,
+profile_verlauf.svg and one verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their
+source: the text
 switches (measured on 2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1,
 05-messprotokoll.md). No chart library, so the files render on GitHub, in Confluence and in a browser alike.
 Rounding half up, German number format.
@@ -30,7 +32,7 @@ LABELS = Path(__file__).resolve().parents[3] / "eval" / "artikelwahl" / "korpus_
 FONT = "Segoe UI, Helvetica Neue, Arial, sans-serif"
 INK, MUTED, GRID, PAPER, PANEL = "#1f2933", "#52606d", "#dde2e8", "#ffffff", "#f3f6fa"
 OLD, LOCAL, LLM = "#9aa5b1", "#2f6db5", "#d9822b"
-TINT = {LOCAL: "#9dbde6", LLM: "#f2c28f", "#7a5aa6": "#c3b2dc"}  # lighter part of a bar: the span of runs
+TINT = {LOCAL: "#9dbde6", LLM: "#f2c28f", "#7a5aa6": "#c3b2dc", MUTED: "#bcc4ce"}  # lighter part of a bar: the span of runs
 FITS, RELATED, UNFIT = "#3a8f5c", "#a9ccb4", "#c8553d"
 CHAR_WIDTH = 0.56  # average glyph width per font size, for layout checks
 SLOTS = {"fachinhalte": "Fachinhalte", "entwicklung_ausblick": "Entwicklung & Ausblick",
@@ -963,6 +965,183 @@ def profiluebersicht() -> None:
     )
 
 
+def seconds_text(value: float) -> str:
+    return f"{de(value, '0.01') if value < 1 else de(value, '0.1')} s"
+
+
+def count_text(value: float) -> str:
+    return de(value, "1") if float(value).is_integer() else de(value, "0.1")
+
+
+def endpunkte() -> None:
+    """The endpoints beside the compendium on release 2.17.0 (M82, page 09): time and tokens of a request as the
+    median, the lighter part up to the longest request, M45 (release 2.2.2) as a circle where it asked the same; what
+    came back beside. One color for what is measured, the profile is the row, as in profiluebersicht.svg."""
+    now, then = load("m82_endpunkte.json"), load("m45_profile_endpunkte.json")
+    blocks = [  # heading, section, rows (label, M82 variant, M45 variant or None), result field, unit
+        ("/knowledge: die Artikel eines Themas", "knowledge",
+         [("llm-free", "llm-free", "llm-free"), ("balanced", "balanced", "balanced"),
+          ("best-quality", "best-quality", "best-quality")], "artikel", "Artikel"),
+        ("/lehrplan/search mit Suchwort", "lehrplan_suche",
+         [("llm-free", "keyword llm-free", "llm-free"), ("best-quality", "keyword best-quality", "best-quality")],
+         "treffer", "Treffer"),
+        ("/lehrplan/search mit Thema (mode=topic)", "lehrplan_suche",
+         [("llm-free", "topic llm-free", None), ("balanced", "topic balanced", None),
+          ("best-quality", "topic best-quality", None)], "treffer", "Treffer"),
+        ("/qa mit Text, 20 Paare verlangt", "qa",
+         [("llm-free", "text llm-free", "llm-free"), ("best-quality", "text best-quality", "best-quality")],
+         "paare", "Paare"),
+        ("/qa mit Thema: Teil 1 ohne LLM, dann die Paare", "qa",
+         [("llm-free", "topic llm-free", None), ("best-quality", "topic best-quality", None)], "paare", "Paare"),
+        ("/entities an 1.500 Zeichen", "entities",
+         [("llm-free", "llm-free", "llm-free"), ("balanced", "balanced", "balanced"),
+          ("balanced, link_check: llm", "balanced link_check", None)], "entitaeten", "Entitäten"),
+        ("/compendium aus einem Material, Teil 1", "material",
+         [("llm-free", "llm-free", None), ("balanced", "balanced", None)], "zeichen_teil1", "Zeichen"),
+    ]
+    notes = (
+        "Release 2.17.0 im Einmal-Container des Entwicklungsrechners, gpt-6-luna über OpenAI direkt, nachts (M82, "
+        "09.10.2026); je Zeile sechs Anfragen, beim Material drei.",
+        "Tokens aus den Zählern des Dienstes (/metrics) je Route. best-quality steht für die drei Profile ab "
+        "best-quality, die an diesen Endpunkten gleich arbeiten.",
+        "/qa und /entities lesen Teil 1 der llm-free-Kompendien von sechs Themen (rund 26.500 Zeichen, /entities die "
+        "ersten 1.500).",
+        "Die Lehrplansuche gab bis zu 500 Treffer zurück, in M45 bis zu 50. Entitäten: Die Regeln finden mehr, das LLM "
+        "trifft besser (F1 0,38 und 0,78, M36).",
+        "Kreis: M45, 28.09.2026, der laufende Entwicklungscontainer über HTTP, das LLM über die b-api.",
+    )
+    label_w, panel_w, gap, row_h, head_h, top = 250, 250, 70, 22, 26, 128
+    time_x = 24 + label_w
+    token_x = time_x + panel_w + gap
+    result_x = token_x + panel_w + gap
+    width = result_x + 190
+    rows_end = top + len(blocks) * head_h + sum(len(rows) for _, _, rows, _, _ in blocks) * row_h
+    svg = Svg(width, rows_end + 26 + 16 * len(notes), "Die übrigen Endpunkte: Zeit und Tokens je Profil")
+    svg.text(24, 30, "Die übrigen Endpunkte: Zeit und Tokens je Profil", 17, weight="600")
+    svg.text(24, 52, "Release 2.17.0, Median je Anfrage (M82); der Kreis zeigt M45 (Release 2.2.2), wo es dieselbe "
+             "Anfrage gab", 12, MUTED, limit=width - 48)
+    entries = [(MUTED, "Median"), (TINT[MUTED], "bis zur längsten Anfrage")]
+    svg.legend(24, 78, entries, 11.5)
+    x = 24 + sum(18 + len(label) * 11.5 * CHAR_WIDTH + 22 for _, label in entries)
+    svg.circle(x + 6, 74, 4.5, PAPER, INK, 1.5)
+    svg.text(x + 18, 78, "M45, Release 2.2.2", 11.5, MUTED)
+    panels = ((time_x, "Zeit je Anfrage", 20.0, (0, 5, 10, 15, 20), lambda v: f"{v} s"),
+              (token_x, "Tokens je Anfrage", 20_000, (0, 5_000, 10_000, 15_000, 20_000), lambda v: de(v)))
+    for x, head, maximum, ticks, tick_text in panels:
+        svg.text(x, top - 32, head, 11.5, MUTED, weight="600")
+        for tick in ticks:
+            tx = x + panel_w * tick / maximum
+            svg.line(tx, top - 6, tx, rows_end, GRID)
+            svg.text(tx, top - 12, tick_text(tick), 10, MUTED, "middle")
+    svg.text(result_x, top - 32, "Ergebnis, Median", 11.5, MUTED, weight="600")
+    y = top
+    for heading, section, rows, field, unit in blocks:
+        svg.line(20, y + 2, width - 20, y + 2, GRID)
+        svg.text(24, y + 18, heading, 12, INK, weight="600", limit=width - 48)
+        y += head_h
+        for label, variant, old_variant in rows:
+            summary = now[section]["zusammenfassung"][variant]
+            old = then[section]["zusammenfassung"][old_variant] if old_variant else None
+            svg.text(36, y + 15, label, 11.5, INK, limit=label_w - 16)
+            for x, maximum, key, value_text in ((time_x, 20.0, "sekunden", seconds_text),
+                                                 (token_x, 20_000, "tokens", lambda v: de(v))):
+                stats = summary[key]
+                median_w = panel_w * min(stats["median"], maximum) / maximum
+                high_w = panel_w * min(stats["max"], maximum) / maximum
+                svg.rect(x, y + 5, high_w, 12, TINT[MUTED], 2)
+                svg.rect(x, y + 5, median_w, 12, MUTED, 2)
+                end = high_w
+                if old is not None and old[key]["median"]:
+                    ox = x + panel_w * min(old[key]["median"], maximum) / maximum
+                    svg.circle(ox, y + 11, 4.5, PAPER, INK, 1.5)
+                    end = max(end, ox - x + 5)
+                svg.text(x + end + 6, y + 15, value_text(stats["median"]), 11, INK, limit=gap - 8)
+            svg.text(result_x, y + 15, f"{count_text(summary[field]['median'])} {unit}", 11.5, INK,
+                     limit=width - result_x - 24)
+            y += row_h
+    for number, note in enumerate(notes):
+        svg.text(24, rows_end + 26 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("endpunkte.svg")
+
+
+def profile_verlauf() -> None:
+    """Time and tokens of the compendium per profile from M45 to M82 (page 09): parts 1 and 2, the median of a request,
+    one bar per measurement from light to dark. M45 is outlined: it asked the b-api in the running container, each
+    LLM profile on topics of its own; M75, M78 and M82 ran the nine topics of M52 in the one-off container."""
+    then = load("m45_profile_endpunkte.json")["compendium"]["zusammenfassung"]
+    before = {row["profile"]: row for row in load("m75_tempo.json")["zusammenfassung"] if row["variant"] == "seq"}
+    after = {row["profile"]: row for row in load("m78_tempo_nachher.json")["zusammenfassung"]
+             if row["concurrency"] == 20}  # its rows with 10 places repeat M75
+    now = load("m82_profiluebersicht.json")["runs"]["alle"]
+    marks = [  # label, legend, fill, stroke, dash
+        ("M45", "M45 · 28.09. · Release 2.2.2", PAPER, OLD, "3 2"),
+        ("M75", "M75 · 08.10. · vor D93", TINT[MUTED], "none", None),
+        ("M78", "M78 · 08.10. · nach D93", OLD, "none", None),
+        ("M82", "M82 · 09.10. · Release 2.17.0", MUTED, "none", None),
+    ]
+    values = {profile: [(then[profile]["sekunden"]["median"], then[profile]["tokens"]["median"])
+                        if profile in then else None,
+                        (before[profile]["s"], before[profile]["tokens"]),
+                        (after[profile]["s"], after[profile]["tokens"]),
+                        (now[profile]["seconds"], now[profile]["tokens"])] for profile in FIVE}
+    notes = (
+        "Kompendium mit Teil 1 und 2, Median je Anfrage. M75, M78 und M82: die neun Themen von M52 im Einmal-Container, "
+        "gpt-6-luna über OpenAI direkt.",
+        "M45: der laufende Entwicklungscontainer über HTTP, das LLM über die b-api, je LLM-Profil sechs eigene Themen, "
+        "llm-free 18; best-coverage-generated kam mit D69.",
+        "Zwischen M45 und M75: 30.000 statt 12.000 Zielzeichen (D70), best-quality-generated schreibt leere Bausteine aus "
+        "Modellwissen (D72),",
+        "N, Artikelwahl und Lehrplanprüfung fragen ohne Denken (D81). Zwischen M75 und M78: D93, Teil 2 und 3 neben "
+        "Teil 1, die Zuordnung in Zeilen,",
+        "20 gleichzeitige Aufrufe. M78 lief am Nachmittag, M82 nachts.",
+    )
+    label_w, panel_w, gap, bar_h, step, group_gap, top = 220, 300, 80, 10, 13, 16, 130
+    time_x = 24 + label_w
+    token_x = time_x + panel_w + gap
+    width = token_x + panel_w + 80
+    group_h = len(marks) * step + group_gap
+    rows_end = top + len(FIVE) * group_h - group_gap
+    svg = Svg(width, rows_end + 30 + 16 * len(notes), "Zeit und Tokens je Profil von M45 bis M82")
+    svg.text(24, 30, "Zeit und Tokens je Profil von M45 bis M82", 17, weight="600")
+    svg.text(24, 52, "Kompendium mit Teil 1 und 2, Median je Anfrage; zwischen den Messungen änderten sich Code, Themen "
+             "und Tageszeit (unten)", 12, MUTED, limit=width - 48)
+    x = 24
+    for _, legend, fill, stroke, dash in marks:
+        svg.rect(x, 68, 12, 12, fill, 2, stroke, 1.2, dash)
+        svg.text(x + 18, 78, legend, 11.5, MUTED)
+        x += 18 + len(legend) * 11.5 * CHAR_WIDTH + 22
+    panels = ((time_x, "Zeit je Anfrage", 40.0, (0, 10, 20, 30, 40), lambda v: f"{v} s"),
+              (token_x, "Tokens je Anfrage", 100_000, (0, 25_000, 50_000, 75_000, 100_000), lambda v: de(v)))
+    for x, head, maximum, ticks, tick_text in panels:
+        svg.text(x, top - 32, head, 11.5, MUTED, weight="600")
+        for tick in ticks:
+            tx = x + panel_w * tick / maximum
+            svg.line(tx, top - 6, tx, rows_end, GRID)
+            svg.text(tx, top - 12, tick_text(tick), 10, MUTED, "middle")
+    for number, profile in enumerate(FIVE):
+        y0 = top + number * group_h
+        svg.text(24, y0 + 10, profile, 12, INK, weight="600", limit=label_w - 50)
+        if not any(value and value[1] for value in values[profile]):
+            svg.text(token_x, y0 + 1.5 * step + 10, "keine Tokens", 11, MUTED)
+        for index, ((label, _, fill, stroke, dash), value) in enumerate(zip(marks, values[profile], strict=True)):
+            y = y0 + index * step
+            svg.text(time_x - 8, y + 9, label, 10, MUTED, "end")
+            if value is None:
+                svg.text(time_x, y + 9, "gab es noch nicht", 10, MUTED)
+                continue
+            seconds, tokens = value
+            for x, maximum, amount, amount_text in ((time_x, 40.0, seconds, lambda v: f"{de(v, '0.1')} s"),
+                                                    (token_x, 100_000, tokens, tokens_text)):
+                if x == token_x and not any(item and item[1] for item in values[profile]):
+                    continue
+                length = panel_w * min(amount, maximum) / maximum
+                svg.rect(x, y, length, bar_h, fill, 2, stroke, 1.2, dash)
+                svg.text(x + length + 6, y + 9, amount_text(amount), 10, INK)
+    for number, note in enumerate(notes):
+        svg.text(24, rows_end + 30 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("profile_verlauf.svg")
+
+
 def alt_neu_teile() -> None:
     """What the old and the new service deliver for the three parts of the compendium and beside it (01-alt-und-neu.md);
     the numbers as on that page, each with its measurement."""
@@ -1002,5 +1181,5 @@ def alt_neu_teile() -> None:
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
               kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile,
-              profilvergleich, profiluebersicht):
+              profilvergleich, profiluebersicht, endpunkte, profile_verlauf):
     chart()

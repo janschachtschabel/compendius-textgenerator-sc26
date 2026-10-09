@@ -161,6 +161,11 @@ Frage N bringt bei großen Themen bis 400 Absätze in den Korpus; die Prüfung v
 Tokens aus einem eigenen Budget (D94). Gegenüber M78 (08.10., nachmittags) sind die Zeiten der `best-quality`-Profile
 nachts 17 bis 26 % kürzer, die Tokens gleich.
 
+Wie sich Zeit und Tokens je Profil seit M45 bewegt haben; zwischen den Messungen änderten sich Code, Themen und
+Tageszeit, die Anmerkungen unter der Grafik nennen es:
+
+![Zeit und Tokens je Profil von M45 bis M82](bilder/profile_verlauf.svg)
+
 ### Die übrigen Endpunkte
 
 Median je Anfrage (M82), im Einmal-Container des Entwicklungsrechners, `gpt-6-luna` über OpenAI.
@@ -176,6 +181,8 @@ Median je Anfrage (M82), im Einmal-Container des Entwicklungsrechners, `gpt-6-lu
 | `POST /api/v2/compendium` aus einem Material (`node_id`, Teil 1) | 1,2 s | `balanced` 4,7 s und 1.071 Tokens: das LLM nennt den Artikel |
 | `GET /api/v2/collections/{id}/overview` (Teil 3) | ohne Cache 0,8 bis 6,1 s, mit Cache unter 0,05 s; ohne LLM in allen Profilen | – |
 | `GET /api/v2/nodes/{id}` | ohne LLM in allen Profilen | – |
+
+![Die übrigen Endpunkte: Zeit und Tokens je Profil (M82, der Kreis zeigt M45)](bilder/endpunkte.svg)
 
 ## 1. Artikelwahl: den Hauptartikel finden
 
