@@ -1,7 +1,7 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
 [Übersicht](README.md) · Stand 09.10.2026, Release 2.17.0 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis
-M87; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
+M88; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
 `/entities`: [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit
 und Tokens je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
@@ -302,6 +302,10 @@ gpt-5.6-luna: 1,7 s und 930).
   dazu (mit Trefferprüfung drei), und aus guten Unterrichtsseiten wie *Physikunterricht/ Optik* druckte der Standard
   keinen Absatz (M11). Dasselbe gilt für Wiktionary, Wikisource, Wikiquote und Wikivoyage: Sie mischten Tabellen, Zitate
   und Listen in den Text (M84, D99, Punkt 16).
+- Die Artikel, die N nennt, haben selten eine andere Bedeutung: 16 von 3.309 an den 100 Anfragen von M82, 61 von
+  12.447 gedruckten Absätzen (M88). Sie kommen über Weiterleitungen, gleichnamige Artikel, die Übersicht ohne
+  Klammerzusatz oder weil N selbst ein anderes Fach nennt; den Artikelanfang oder die Verlinkung zu prüfen kostete 16-
+  bis 86-mal so viele passende Artikel (Punkt 18).
 
 ## Schritt 3: Absätze zuordnen
 
@@ -1101,6 +1105,47 @@ Passung 4,56 und Nutzen 4,31.
     Nebenbefund: Die Artikel, die das LLM zu einem Thema nennt (D63), wechselten von Lauf zu Lauf; einmal kam für Optik
     „Linsen“, im Archiv die Pflanzengattung, und ein größeres Budget druckte deren Botanik. M86 maß deshalb jedes Thema
     auf einem festen Korpus; die genannten Artikel auf Mehrdeutigkeit zu prüfen, ist eine eigene Messung.
+
+18. **Genannte Artikel einer anderen Bedeutung** (Nebenbefund von Punkt 17): gemessen in M88 an den 100 Anfragen von
+    M82, je fünf Läufe `balanced` (500), alle Varianten auf denselben Antworten von N; zu entscheiden.
+
+    **Befund:** 16 von 3.309 Artikeln, die das Archiv für die Titel von N lieferte, behandeln etwas anderes gleichen
+    Namens (0,5 %; mit den Fällen nur eines Gutachters 21). In 14 von 500 Läufen druckt der Text Absätze daraus,
+    zusammen 61 von 12.447 (0,5 %), zwei Drittel bei mehrdeutigen Wörtern mit Fach. „Linsen“ kam nicht wieder; N nannte
+    die Linse zu Optik als „Linse (Optik)“. Zehn der 16 lieferte das Archiv, obwohl N das Richtige meinte: über eine
+    Weiterleitung („Instrumental“ führt zur *Instrumentalmusik*), einen gleichnamigen Artikel („Friedrich von Spee“
+    ist ein Landrat, „Neuronales Netz“ das biologische) und die Übersicht „Delta (Geografie)“, die ohne Klammerzusatz
+    der griechische Buchstabe ist. Sechs nannte N selbst, etwa „Intervall (Mathematik)“ zum Intervall in Musik und
+    „Mechanische Spannung“ zur Spannung in Physik. Keiner der Fälle ist im Archiv als mehrdeutig erkennbar.
+
+    | Variante | andere Bedeutung im Korpus (heute 16) | passende Artikel weg | gedruckte Absätze anderer Bedeutung (heute 61) | gedruckte Absätze (heute 12.447) |
+    |---|---|---|---|---|
+    | den Artikelanfang auf Wörter des Themas prüfen (`anfang`) | 9 | 604 | 37 | 11.726 |
+    | Verlinkung mit Hauptartikel oder Übersicht verlangen (`verlinkt`) | 6 | 159 | 26 | 12.229 |
+    | den Klammerzusatz zum Fach bevorzugen (`klammer`) | 17 | 5, dafür 39 neu | 61 | 12.474 |
+    | nur Namen prüfen, die das Archiv als mehrdeutig zeigt (`mehrdeutig`) | 16 | 7, dafür 8 neu | 61 | 12.458 |
+    | ein Klammerzusatz, der ein anderes Fach nennt, fällt weg (`fachfremd`) | 15 | 0 | 56 | 12.443 |
+    | die Übersicht ohne Klammerzusatz nur, wenn ihr Anfang das Klammerwort nennt (`uebersicht`) | 13 | 0 | 43 | 12.435 |
+
+    **Empfehlung:** keine Prüfung der genannten Artikel einbauen. Die allgemeinen Prüfungen kosten das 16- bis 86-Fache
+    an passenden Artikeln (`verlinkt` 159 für 10, `anfang` 604 für 7) und Text, und die Fälle haben kein gemeinsames
+    Merkmal, an dem eine Regel ansetzen könnte. Wer die zwei häufigsten Wege schließen will: `fachfremd` ist eine Regel
+    von wenigen Zeilen und traf in 500 Läufen nur ihren Fall; `uebersicht` nähme den Buchstaben Delta heraus, aber auch
+    den Fall, für den die Übersicht ohne Klammerzusatz gebaut wurde (V1a, M49): „Aufklärung (Philosophie)“, deren
+    Artikel die Philosophie im ersten Absatz nicht nennt.
+
+    **Beobachtungen:**
+
+    - `klammer` löst ein anderes Problem desselben Schritts: Titel, die ohne Klammer eine Begriffsklärung sind oder
+      fehlen, fallen heute aus; mit `klammer` kamen 34 passende Artikel dazu (*Ballade (Gedicht)*, *Hauptsatz
+      (Grammatik)*, *Linse (Optik)* für „Linse“) und ein Fehlgriff (*Strom (Gewässerart)* zu „Strom“). Das wäre eine
+      eigene Entscheidung, keine Prüfung auf Mehrdeutigkeit.
+    - Häufiger als eine andere Bedeutung ist, dass es einen genannten Titel nicht gibt: 437 der 3.729 genannten Teile
+      (12 %), 168 davon mit einem Klammerzusatz, den es nicht gibt („Bruch (Mathematik)“, „Welle (Physik)“), dazu 92
+      Begriffsklärungen. Beide fallen still aus.
+    - Die genannten Artikel wechseln stark von Lauf zu Lauf: Über fünf Läufe kamen je Anfrage im Median 11 verschiedene,
+      nur 41 % davon in allen fünf; der Hauptartikel blieb bei allen 100 Anfragen gleich.
+    - Mit mehr Budget (Punkt 17) druckt jeder Fehlgriff mehr Absätze (M86).
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

@@ -1,0 +1,3226 @@
+{
+ "ablauf": {
+  "anfragen": 100,
+  "gehoerte_themen": 94,
+  "laeufe": 500,
+  "tokens_summe": 247199,
+  "tokens_je_lauf_median": 319.0,
+  "llm_aufrufe": 582,
+  "wiederholt_wie_fragen": 500
+ },
+ "uebereinstimmung": {
+  "artikel": 1017,
+  "beide_benotet": 1017,
+  "fehlend": [],
+  "gleich": 978,
+  "kappa": 0.86,
+  "andere_bedeutung_gleich": 1014,
+  "andere_bedeutung_kappa": 0.902,
+  "je_urteil": {
+   "A": {
+    "randthema": 128,
+    "passt": 856,
+    "andere_bedeutung": 17,
+    "passt_nicht": 16
+   },
+   "B": {
+    "randthema": 137,
+    "passt": 856,
+    "andere_bedeutung": 14,
+    "passt_nicht": 10
+   }
+  }
+ },
+ "aufloesung": {
+  "teile": {
+   "genannt": 3729,
+   "titel": 2536,
+   "fehlt": 437,
+   "weiterleitung": 501,
+   "abschnitt": 159,
+   "fehlt_mit_klammerzusatz": 168,
+   "begriffsklaerung": 92,
+   "schreibvariante": 4
+  },
+  "uebersicht": {
+   "titel": 419,
+   "weiterleitung_oder_schreibweise": 45,
+   "fehlt": 33,
+   "ohne_klammerzusatz": 3
+  },
+  "fehlend_mit_klammerzusatz": [
+   [
+    "Bruch (Mathematik)",
+    15
+   ],
+   [
+    "Infiltration (Boden)",
+    9
+   ],
+   [
+    "Kürzen (Mathematik)",
+    7
+   ],
+   [
+    "Erweitern (Mathematik)",
+    7
+   ],
+   [
+    "Abfluss (Hydrologie)",
+    5
+   ],
+   [
+    "Steigung (Mathematik)",
+    5
+   ],
+   [
+    "Welle (Physik)",
+    5
+   ],
+   [
+    "Friedliche Revolution (DDR)",
+    5
+   ],
+   [
+    "Auftakt (Musik)",
+    5
+   ],
+   [
+    "Verfassung des Deutschen Reichs (Weimarer Republik)",
+    4
+   ],
+   [
+    "Typus (Biologie)",
+    4
+   ],
+   [
+    "Sinfonie (Beethoven)",
+    3
+   ],
+   [
+    "Sinfonie Nr. 5 (Beethoven)",
+    3
+   ],
+   [
+    "Sinfonie Nr. 9 (Beethoven)",
+    3
+   ],
+   [
+    "Kasus (Grammatik)",
+    3
+   ],
+   [
+    "Sinfonie (Musik)",
+    3
+   ],
+   [
+    "Quelle (Gewässer)",
+    3
+   ],
+   [
+    "Energiefluss (Ökologie)",
+    3
+   ],
+   [
+    "Sinfonie Nr. 40 (Mozart)",
+    2
+   ],
+   [
+    "Sinfonie Nr. 41 (Mozart)",
+    2
+   ],
+   [
+    "Sinfonie (Haydn)",
+    2
+   ],
+   [
+    "Sinfonie (Mozart)",
+    2
+   ],
+   [
+    "Sinfonie (Mahler)",
+    2
+   ],
+   [
+    "Bruch (Zahl)",
+    2
+   ],
+   [
+    "Syntax (Programmierung)",
+    2
+   ]
+  ]
+ },
+ "streuung": {
+  "anfragen": 100,
+  "artikel_je_lauf_median": 6.9,
+  "verschiedene_in_5_laeufen_median": 11.0,
+  "anteil_in_allen_laeufen_median": 0.41,
+  "jaccard_zweier_laeufe_median": 0.67,
+  "jaccard_gedruckter_quellen_median": 0.67,
+  "gleiche_uebersicht_in_allen_laeufen": 85,
+  "gleicher_hauptartikel_in_allen_laeufen": 100
+ },
+ "haeufigkeit": {
+  "gewöhnliches Thema": {
+   "anfragen": 53,
+   "laeufe": 265,
+   "genannte_artikel": {
+    "passt": 1709,
+    "genannt": 1809,
+    "randthema": 77,
+    "uneinig": 18,
+    "andere_bedeutung": 4,
+    "passt_nicht": 1
+   },
+   "laeufe_mit_andere_bedeutung": [
+    4,
+    4
+   ],
+   "laeufe_gedruckt_andere_bedeutung": 4,
+   "anfragen_mit_andere_bedeutung": [
+    4,
+    4
+   ],
+   "gedruckte_absaetze": {
+    "alle": 6685,
+    "passt": 4664,
+    "genannt": 5023,
+    "randthema": 279,
+    "uneinig": 68,
+    "andere_bedeutung": 8,
+    "passt_nicht": 4
+   }
+  },
+  "mehrdeutiges Wort mit Fach": {
+   "anfragen": 38,
+   "laeufe": 190,
+   "genannte_artikel": {
+    "passt": 1007,
+    "genannt": 1190,
+    "randthema": 115,
+    "uneinig": 41,
+    "andere_bedeutung": 10,
+    "passt_nicht": 17
+   },
+   "laeufe_mit_andere_bedeutung": [
+    9,
+    12
+   ],
+   "laeufe_gedruckt_andere_bedeutung": 8,
+   "anfragen_mit_andere_bedeutung": [
+    5,
+    6
+   ],
+   "gedruckte_absaetze": {
+    "alle": 4512,
+    "passt": 2669,
+    "genannt": 3344,
+    "randthema": 428,
+    "uneinig": 145,
+    "andere_bedeutung": 49,
+    "passt_nicht": 53
+   }
+  },
+  "mehrdeutiges Wort ohne Kontext": {
+   "anfragen": 3,
+   "laeufe": 15,
+   "genannte_artikel": {
+    "passt": 111,
+    "genannt": 115,
+    "randthema": 3,
+    "andere_bedeutung": 1
+   },
+   "laeufe_mit_andere_bedeutung": [
+    1,
+    1
+   ],
+   "laeufe_gedruckt_andere_bedeutung": 1,
+   "anfragen_mit_andere_bedeutung": [
+    1,
+    1
+   ],
+   "gedruckte_absaetze": {
+    "alle": 373,
+    "passt": 261,
+    "genannt": 266,
+    "randthema": 4,
+    "andere_bedeutung": 1
+   }
+  },
+  "Sammelthema": {
+   "anfragen": 3,
+   "laeufe": 15,
+   "genannte_artikel": {
+    "passt": 124,
+    "genannt": 126,
+    "randthema": 2
+   },
+   "laeufe_mit_andere_bedeutung": [
+    0,
+    0
+   ],
+   "laeufe_gedruckt_andere_bedeutung": 0,
+   "anfragen_mit_andere_bedeutung": [
+    0,
+    0
+   ],
+   "gedruckte_absaetze": {
+    "alle": 349,
+    "passt": 194,
+    "genannt": 204,
+    "randthema": 10
+   }
+  },
+  "Thema mit Aspekt": {
+   "anfragen": 3,
+   "laeufe": 15,
+   "genannte_artikel": {
+    "passt": 37,
+    "genannt": 69,
+    "randthema": 23,
+    "andere_bedeutung": 1,
+    "passt_nicht": 1,
+    "uneinig": 7
+   },
+   "laeufe_mit_andere_bedeutung": [
+    1,
+    1
+   ],
+   "laeufe_gedruckt_andere_bedeutung": 1,
+   "anfragen_mit_andere_bedeutung": [
+    1,
+    1
+   ],
+   "gedruckte_absaetze": {
+    "alle": 528,
+    "passt": 108,
+    "genannt": 216,
+    "randthema": 93,
+    "andere_bedeutung": 3,
+    "passt_nicht": 2,
+    "uneinig": 10
+   }
+  }
+ },
+ "treffer_andere_bedeutung": [
+  {
+   "thema": "Delta (Fach: Geografie)",
+   "titel": "Delta",
+   "genannt": [
+    "Delta (Geografie)",
+    "Delta (Geographie)"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 3,
+   "anfragen": [
+    "Erdkunde: Delta"
+   ],
+   "uebersicht": true,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 18,
+   "ursache": {
+    "wo": "archiv",
+    "art": "Übersicht ohne Klammerzusatz",
+    "beschreibung": "„Delta (Geografie)“ fehlt im Archiv; ohne Klammer (V1a, M49) ist „Delta“ der griechische Buchstabe"
+   },
+   "anfang": "Das Delta (griechisch δέλτα, neugriechisch Δέλτα, Großbuchstabe: Δ, Kleinbuchstabe: δ) ist der vierte Buchstabe im griec"
+  },
+  {
+   "thema": "Fall (Fach: Deutsch)",
+   "titel": "Instrumentalmusik",
+   "genannt": [
+    "Instrumental"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 2,
+   "anfragen": [
+    "Deutsch: Fall"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 16,
+   "ursache": {
+    "wo": "archiv",
+    "art": "Weiterleitung",
+    "beschreibung": "„Instrumental“ leitet zur Instrumentalmusik; der Kasus heißt „Instrumentalis“"
+   },
+   "anfang": "Instrumentalmusik ist Musik, die im Gegensatz zur Vokalmusik hauptsächlich mit Musikinstrumenten ausgeführt wird. Musik "
+  },
+  {
+   "thema": "Stamm (Fach: Biologie)",
+   "titel": "Baum",
+   "genannt": [
+    "Stamm (Botanik)"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "randthema"
+   ],
+   "laeufe": 2,
+   "anfragen": [
+    "Biologie: Stamm"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 38,
+   "ursache": {
+    "wo": "ki",
+    "art": "andere Lesart des Themas",
+    "beschreibung": "N liest Stamm botanisch; „Stamm (Botanik)“ leitet in den Artikel Baum"
+   },
+   "anfang": "Als Baum (von westgermanisch mittelhochdeutsch, althochdeutsch boum, Herkunft ungeklärt, Teil der Swadesh-Liste) wird im"
+  },
+  {
+   "thema": "Stamm (Fach: Biologie)",
+   "titel": "Sprossachse",
+   "genannt": [
+    "Sprossachse",
+    "Stängel"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "passt"
+   ],
+   "laeufe": 2,
+   "anfragen": [
+    "Biologie: Stamm"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 8,
+   "ursache": {
+    "wo": "ki",
+    "art": "andere Lesart des Themas",
+    "beschreibung": "N liest Stamm botanisch"
+   },
+   "anfang": "Die Sprossachse bezeichnet in der Botanik eines der drei Grundorgane der Pflanzen mit Kormus (veraltet: Kormophyten). Si"
+  },
+  {
+   "thema": "Barockliteratur",
+   "titel": "Friedrich von Spee",
+   "genannt": [
+    "Friedrich von Spee"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Barockliteratur"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 1,
+   "ursache": {
+    "wo": "archiv",
+    "art": "gleichnamiger Artikel",
+    "beschreibung": "ein Landrat (1882–1959); der Dichter heißt im Archiv „Friedrich Spee“"
+   },
+   "anfang": "Friedrich Stephan Maria Hubertus Benediktus Graf von Spee (* 12. Februar 1882 auf Burg Untermaubach; † 11. Dezember 1959"
+  },
+  {
+   "thema": "Französische Revolution",
+   "titel": "Nationalversammlung (Frankreich)",
+   "genannt": [
+    "Nationalversammlung (Frankreich)"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Französische Revolution"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 2,
+   "ursache": {
+    "wo": "archiv",
+    "art": "Klammerzusatz trifft eine andere Zeit",
+    "beschreibung": "das heutige Unterhaus; die Nationalversammlung von 1789 hat keinen eigenen Artikel"
+   },
+   "anfang": "Die Nationalversammlung (französisch [a.sɑ̃.ble.na.sjɔ'nal]) ist das Unterhaus (französisch ) des französischen Parlamen"
+  },
+  {
+   "thema": "Intervall (Fach: Musik)",
+   "titel": "Intervall (Mathematik)",
+   "genannt": [
+    "Intervall (Mathematik)"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Musik: Intervall"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 5,
+   "ursache": {
+    "wo": "ki",
+    "art": "Begriff eines anderen Fachs",
+    "beschreibung": "N nennt das Intervall der Mathematik"
+   },
+   "anfang": "Als Intervall wird in der Analysis, der Ordnungstopologie und verwandten Gebieten der Mathematik eine „zusammenhängende“"
+  },
+  {
+   "thema": "Intervall (Fach: Musik)",
+   "titel": "Intervallschachtelung",
+   "genannt": [
+    "Intervallschachtelung"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Musik: Intervall"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 3,
+   "ursache": {
+    "wo": "ki",
+    "art": "Begriff eines anderen Fachs",
+    "beschreibung": "N nennt ein Beweisprinzip der Analysis"
+   },
+   "anfang": "Das Intervallschachtelungsprinzip wird besonders in der Analysis in Beweisen benutzt und bildet in der numerischen Mathe"
+  },
+  {
+   "thema": "Künstliche Intelligenz im Unterricht",
+   "titel": "Neuronales Netz",
+   "genannt": [
+    "Neuronales Netz"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Künstliche Intelligenz im Unterricht"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 3,
+   "ursache": {
+    "wo": "archiv",
+    "art": "gleichnamiger Artikel",
+    "beschreibung": "das biologische Netz; das gemeinte heißt „Künstliches neuronales Netz“"
+   },
+   "anfang": "Als neuronales Netz wird in den Neurowissenschaften eine beliebige Anzahl miteinander verbundener Neuronen bezeichnet, d"
+  },
+  {
+   "thema": "Satz des Pythagoras",
+   "titel": "Pythagoreisches Komma",
+   "genannt": [
+    "Pythagoreisches Komma"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Satz des Pythagoras"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 3,
+   "ursache": {
+    "wo": "ki",
+    "art": "Begriff eines anderen Fachs",
+    "beschreibung": "N nennt ein Intervall der Musiktheorie"
+   },
+   "anfang": "Das pythagoreische Komma ist in der Musik ein Intervall von ≈ 23,46 Cent, welches nicht als selbständiger musikalischer "
+  },
+  {
+   "thema": "Spannung (Fach: Physik)",
+   "titel": "Mechanische Spannung",
+   "genannt": [
+    "Mechanische Spannung"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Physik: Spannung"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 1,
+   "ursache": {
+    "wo": "ki",
+    "art": "andere Lesart des Themas",
+    "beschreibung": "N liest Spannung als mechanische Spannung (Gold: elektrische)"
+   },
+   "anfang": "Die mechanische Spannung (Formelzeichen σ (kleines Sigma) und τ (kleines Tau), englisch stress, französisch contrainte) "
+  },
+  {
+   "thema": "Spannung (Fach: Physik)",
+   "titel": "Oberflächenspannung",
+   "genannt": [
+    "Oberflächenspannung"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Physik: Spannung"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 6,
+   "ursache": {
+    "wo": "ki",
+    "art": "andere Lesart des Themas",
+    "beschreibung": "N liest Spannung als Oberflächenspannung (Gold: elektrische)"
+   },
+   "anfang": "Die Oberflächenspannung (Symbol: σ, ersatzweise γ) ist die infolge von Molekularkräften auftretende Erscheinung bei Flüs"
+  },
+  {
+   "thema": "Strom",
+   "titel": "Meeresströmung",
+   "genannt": [
+    "Meeresströmung"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Strom"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 1,
+   "ursache": {
+    "wo": "ki",
+    "art": "andere Lesart des Themas",
+    "beschreibung": "N liest Strom auch als Strömung"
+   },
+   "anfang": "Meeresströmungen (engl. Ocean Currents) sind großräumige, gerichtete Bewegungen des Meerwassers, die durch eine Vielzahl"
+  },
+  {
+   "thema": "Strom (Fach: Geografie)",
+   "titel": "Gezeitenströmung",
+   "genannt": [
+    "Gezeitenstrom"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "randthema"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Erdkunde: Strom"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 0,
+   "ursache": {
+    "wo": "ki",
+    "art": "andere Lesart des Themas",
+    "beschreibung": "N liest Strom als Strömung; „Gezeitenstrom“ leitet weiter"
+   },
+   "anfang": "Gezeitenströmungen (auch „Gezeitenströme“) sind vor allem küstennahe Meeres-Ausgleichströmungen, bedingt durch die Gezei"
+  },
+  {
+   "thema": "Strom (Fach: Geografie)",
+   "titel": "Stromtal",
+   "genannt": [
+    "Stromtal"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Erdkunde: Strom"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 0,
+   "ursache": {
+    "wo": "archiv",
+    "art": "gleichnamiger Artikel",
+    "beschreibung": "ein ehemaliges Naturschutzgebiet; den gemeinten Begriff hat das Archiv nicht"
+   },
+   "anfang": "Das Naturschutzgebiet Stromtal lag im Landkreis Uckermark in Brandenburg. Das Gebiet mit der Kenn-Nummer 1479 wurde mit "
+  },
+  {
+   "thema": "Ursachen der Französischen Revolution",
+   "titel": "Steuersubvention",
+   "genannt": [
+    "Steuerprivileg"
+   ],
+   "urteile": [
+    "andere_bedeutung",
+    "andere_bedeutung"
+   ],
+   "laeufe": 1,
+   "anfragen": [
+    "Ursachen der Französischen Revolution"
+   ],
+   "uebersicht": false,
+   "ersetzt_haupt": false,
+   "gedruckte_absaetze": 2,
+   "ursache": {
+    "wo": "archiv",
+    "art": "Weiterleitung",
+    "beschreibung": "„Steuerprivileg“ leitet zur heutigen Steuersubvention"
+   },
+   "anfang": "Steuersubventionen oder Steuervergünstigungen sind Ausnahmen im Umfang einer Steuer oder in der Steuerpflicht, deren Gru"
+  }
+ ],
+ "varianten": [
+  {
+   "variante": "heute",
+   "laeufe": 500,
+   "korpus_anders": 0,
+   "ohne_genannten_teil": 12,
+   "korpus_genannt": 2837,
+   "korpus_passt": 2516,
+   "gedruckt": 12447,
+   "gedruckt_passt": 7896,
+   "laeufe_gedruckt_andere_bedeutung": 14,
+   "bausteine_gefuellt": 3221,
+   "llm_live": 0,
+   "korpus_andere_bedeutung": 16,
+   "korpus_randthema": 220,
+   "gedruckt_randthema": 814,
+   "gedruckt_andere_bedeutung": 61,
+   "korpus_uneinig": 66,
+   "gedruckt_uneinig": 223,
+   "korpus_passt_nicht": 19,
+   "gedruckt_passt_nicht": 59,
+   "weg": {},
+   "neu": {},
+   "weg_andere_bedeutung": [],
+   "weg_passt": [],
+   "neu_nicht_passend": []
+  },
+  {
+   "variante": "klammer",
+   "laeufe": 500,
+   "korpus_anders": 34,
+   "ohne_genannten_teil": 12,
+   "korpus_genannt": 2873,
+   "korpus_passt": 2550,
+   "gedruckt": 12474,
+   "gedruckt_passt": 7941,
+   "laeufe_gedruckt_andere_bedeutung": 14,
+   "bausteine_gefuellt": 3221,
+   "llm_live": 0,
+   "korpus_andere_bedeutung": 17,
+   "korpus_randthema": 220,
+   "gedruckt_randthema": 813,
+   "gedruckt_andere_bedeutung": 61,
+   "korpus_uneinig": 67,
+   "gedruckt_uneinig": 225,
+   "korpus_passt_nicht": 19,
+   "gedruckt_passt_nicht": 59,
+   "weg": {
+    "passt": 5,
+    "randthema": 1
+   },
+   "neu": {
+    "andere_bedeutung": 1,
+    "passt": 39,
+    "randthema": 1,
+    "uneinig": 1
+   },
+   "weg_andere_bedeutung": [],
+   "weg_passt": [
+    [
+     "Gedicht",
+     "Ode",
+     5
+    ]
+   ],
+   "neu_nicht_passend": [
+    [
+     "andere_bedeutung",
+     "Strom",
+     "Strom (Gewässerart)",
+     1
+    ],
+    [
+     "uneinig",
+     "Bruchrechnen",
+     "Division (Mathematik)",
+     1
+    ]
+   ]
+  },
+  {
+   "variante": "anfang",
+   "laeufe": 500,
+   "korpus_anders": 309,
+   "ohne_genannten_teil": 39,
+   "korpus_genannt": 2114,
+   "korpus_passt": 1912,
+   "gedruckt": 11726,
+   "gedruckt_passt": 6533,
+   "laeufe_gedruckt_andere_bedeutung": 8,
+   "bausteine_gefuellt": 3037,
+   "llm_live": 27,
+   "korpus_andere_bedeutung": 9,
+   "gedruckt_andere_bedeutung": 37,
+   "korpus_randthema": 133,
+   "gedruckt_randthema": 614,
+   "korpus_uneinig": 48,
+   "gedruckt_uneinig": 211,
+   "korpus_passt_nicht": 12,
+   "gedruckt_passt_nicht": 53,
+   "weg": {
+    "andere_bedeutung": 7,
+    "passt": 604,
+    "passt_nicht": 7,
+    "randthema": 87,
+    "uneinig": 18
+   },
+   "neu": {},
+   "weg_andere_bedeutung": [
+    [
+     "Barockliteratur",
+     "Friedrich von Spee",
+     1
+    ],
+    [
+     "Fall (Fach: Deutsch)",
+     "Instrumentalmusik",
+     2
+    ],
+    [
+     "Künstliche Intelligenz im Unterricht",
+     "Neuronales Netz",
+     1
+    ],
+    [
+     "Satz des Pythagoras",
+     "Pythagoreisches Komma",
+     1
+    ],
+    [
+     "Strom",
+     "Meeresströmung",
+     1
+    ],
+    [
+     "Ursachen der Französischen Revolution",
+     "Steuersubvention",
+     1
+    ]
+   ],
+   "weg_passt": [
+    [
+     "Optik",
+     "Quantenoptik",
+     10
+    ],
+    [
+     "Plattentektonik",
+     "Kontinentaldrift",
+     10
+    ],
+    [
+     "Plattentektonik",
+     "Mittelozeanischer Rücken",
+     10
+    ],
+    [
+     "Plattentektonik",
+     "Transformstörung",
+     10
+    ],
+    [
+     "Demokratie",
+     "Gewaltenteilung",
+     9
+    ],
+    [
+     "Demokratie",
+     "Parlamentarismus",
+     9
+    ],
+    [
+     "Demokratie",
+     "Rechtsstaat",
+     9
+    ],
+    [
+     "Optik",
+     "Licht",
+     9
+    ],
+    [
+     "Photosynthese",
+     "C4-Pflanze",
+     8
+    ],
+    [
+     "Plattentektonik",
+     "Erdbeben",
+     8
+    ],
+    [
+     "Optik",
+     "Beugung (Physik)",
+     6
+    ],
+    [
+     "Optik",
+     "Brechung (Physik)",
+     6
+    ],
+    [
+     "Optik",
+     "Reflexion (Physik)",
+     6
+    ],
+    [
+     "Atommodell",
+     "Atomorbital",
+     5
+    ],
+    [
+     "Aufbau der Atome",
+     "Elektron",
+     5
+    ],
+    [
+     "Barockliteratur",
+     "Andreas Gryphius",
+     5
+    ],
+    [
+     "Barockliteratur",
+     "Catharina Regina von Greiffenberg",
+     5
+    ],
+    [
+     "Barockliteratur",
+     "Hans Jakob Christoffel von Grimmelshausen",
+     5
+    ],
+    [
+     "Barockliteratur",
+     "Martin Opitz",
+     5
+    ],
+    [
+     "Base (Fach: Chemie)",
+     "PH-Wert",
+     5
+    ],
+    [
+     "Bindung (Fach: Chemie)",
+     "Van-der-Waals-Kräfte",
+     5
+    ],
+    [
+     "Bruchrechnung",
+     "Dezimalbruch",
+     5
+    ],
+    [
+     "Bus (Fach: Informatik)",
+     "Front Side Bus",
+     5
+    ],
+    [
+     "Bus (Fach: Informatik)",
+     "Peripheral Component Interconnect",
+     5
+    ],
+    [
+     "Bus (Fach: Informatik)",
+     "Universal Serial Bus",
+     5
+    ],
+    [
+     "DNA",
+     "Transkription (Biologie)",
+     5
+    ],
+    [
+     "Evolutionstheorie",
+     "Gendrift",
+     5
+    ],
+    [
+     "Evolutionstheorie",
+     "Selektion (Evolution)",
+     5
+    ],
+    [
+     "Feld (Fach: Physik)",
+     "Gravitationsfeld",
+     5
+    ],
+    [
+     "Feld (Fach: Physik)",
+     "Vektorfeld",
+     5
+    ],
+    [
+     "Fotosynthese",
+     "C4-Pflanze",
+     5
+    ],
+    [
+     "Gedicht",
+     "Ode",
+     5
+    ],
+    [
+     "Industrielle Revolution",
+     "Dampfmaschine",
+     5
+    ],
+    [
+     "Klimawandel",
+     "Klimamodell",
+     5
+    ],
+    [
+     "Klimawandel",
+     "Klimapolitik",
+     5
+    ],
+    [
+     "Kreislauf des Kohlenstoffs",
+     "Photosynthese",
+     5
+    ],
+    [
+     "Kreislauf des Kohlenstoffs",
+     "Zellatmung",
+     5
+    ],
+    [
+     "Kreislauf des Wassers",
+     "Kondensation",
+     5
+    ],
+    [
+     "Kreislauf des Wassers",
+     "Verdunstung",
+     5
+    ],
+    [
+     "Lineare Funktion",
+     "Proportionalität",
+     5
+    ],
+    [
+     "Maus (Fach: Informatik)",
+     "Jog Dial",
+     5
+    ],
+    [
+     "Menge (Fach: Mathematik)",
+     "Element (Mathematik)",
+     5
+    ],
+    [
+     "Note (Fach: Musik)",
+     "Vorzeichen (Musik)",
+     5
+    ],
+    [
+     "Philosophen der Aufklärung",
+     "Denis Diderot",
+     5
+    ],
+    [
+     "Philosophen der Aufklärung",
+     "Jean-Jacques Rousseau",
+     5
+    ],
+    [
+     "Photosynthese bei Pflanzen",
+     "C4-Pflanze",
+     5
+    ],
+    [
+     "Restauration (Fach: Geschichte)",
+     "Deutscher Bund",
+     5
+    ],
+    [
+     "Restauration (Fach: Geschichte)",
+     "Heilige Allianz",
+     5
+    ],
+    [
+     "Restauration (Fach: Geschichte)",
+     "Karlsbader Beschlüsse",
+     5
+    ],
+    [
+     "Restauration (Fach: Geschichte)",
+     "Wiener Kongress",
+     5
+    ],
+    [
+     "Treibhauseffekt",
+     "Kohlenstoffdioxid",
+     5
+    ],
+    [
+     "Treibhauseffekt",
+     "Methan",
+     5
+    ],
+    [
+     "Treibhauseffekt",
+     "Strahlungshaushalt der Erde",
+     5
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Imperialismus",
+     5
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Nationalismus",
+     5
+    ],
+    [
+     "Virus (Fach: Informatik)",
+     "Antivirenprogramm",
+     5
+    ],
+    [
+     "Wasserkreislauf",
+     "Grundwasser",
+     5
+    ],
+    [
+     "Wasserkreislauf",
+     "Kondensation",
+     5
+    ],
+    [
+     "Wasserkreislauf",
+     "Niederschlag",
+     5
+    ],
+    [
+     "Wasserkreislauf",
+     "Verdunstung",
+     5
+    ],
+    [
+     "Welle",
+     "Schall",
+     5
+    ],
+    [
+     "photosynthese",
+     "C4-Pflanze",
+     5
+    ],
+    [
+     "Ökosystem",
+     "Biotop",
+     5
+    ],
+    [
+     "Ökosystem",
+     "Nahrungskette",
+     5
+    ],
+    [
+     "Bruchrechnung",
+     "Doppelbruch",
+     4
+    ],
+    [
+     "Bruchrechnung",
+     "Rationale Zahl",
+     4
+    ],
+    [
+     "Bus (Fach: Informatik)",
+     "Systembus",
+     4
+    ],
+    [
+     "DNA",
+     "Replikation",
+     4
+    ],
+    [
+     "Delta (Fach: Geografie)",
+     "Biosphärenreservat Donaudelta",
+     4
+    ],
+    [
+     "Demokratie",
+     "Politische Partizipation",
+     4
+    ],
+    [
+     "Evolutionstheorie",
+     "Mutation",
+     4
+    ],
+    [
+     "Industrielle Revolution",
+     "Eisenbahn",
+     4
+    ],
+    [
+     "Industrielle Revolution",
+     "Industrialisierung",
+     4
+    ],
+    [
+     "Klimawandels",
+     "Klimapolitik",
+     4
+    ],
+    [
+     "Leiter (Fach: Physik)",
+     "Wärmeleitung",
+     4
+    ],
+    [
+     "Lichtlehre",
+     "Reflexion (Physik)",
+     4
+    ],
+    [
+     "Lineare Funktion",
+     "Steigung",
+     4
+    ],
+    [
+     "Lineare Funktionen",
+     "Proportionalität",
+     4
+    ],
+    [
+     "Satz (Fach: Musik)",
+     "Kontrapunkt",
+     4
+    ],
+    [
+     "Treibhauseffekt",
+     "Wasserdampf",
+     4
+    ],
+    [
+     "Ursachen der Französischen Revolution",
+     "Ständegesellschaft",
+     4
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Weltpolitik",
+     4
+    ],
+    [
+     "Wasserkreislauf",
+     "Abfluss",
+     4
+    ],
+    [
+     "Weimarer Republik",
+     "Weltwirtschaftskrise",
+     4
+    ],
+    [
+     "Welle (Fach: Physik)",
+     "Schall",
+     4
+    ],
+    [
+     "Wende (Fach: Geschichte)",
+     "Berliner Mauer",
+     4
+    ],
+    [
+     "Ökosystem",
+     "Ökologie",
+     4
+    ],
+    [
+     "Bindung (Fach: Chemie)",
+     "Dipol-Dipol-Kräfte",
+     3
+    ],
+    [
+     "Bruchrechnen",
+     "Dezimalbruch",
+     3
+    ],
+    [
+     "Bruchrechnen",
+     "Rationale Zahl",
+     3
+    ],
+    [
+     "Demokratie",
+     "Wahl",
+     3
+    ],
+    [
+     "Industrielle Revolution",
+     "Spinning Jenny",
+     3
+    ],
+    [
+     "Klimawandel",
+     "Treibhausgas",
+     3
+    ],
+    [
+     "Kreislauf des Kohlenstoffs",
+     "Fossile Energie",
+     3
+    ],
+    [
+     "Künstliche Intelligenz im Unterricht",
+     "ChatGPT",
+     3
+    ],
+    [
+     "Optik",
+     "Polarisation",
+     3
+    ],
+    [
+     "Optik",
+     "Spiegel",
+     3
+    ],
+    [
+     "Optik (Fach: Physik)",
+     "Spiegel",
+     3
+    ],
+    [
+     "Ursachen der Französischen Revolution",
+     "Generalstände von 1789",
+     3
+    ],
+    [
+     "Wasserkreislauf",
+     "Transpiration",
+     3
+    ],
+    [
+     "Art (Fach: Biologie)",
+     "Allopatrische Artbildung",
+     2
+    ],
+    [
+     "Art (Fach: Biologie)",
+     "Sympatrische Artbildung",
+     2
+    ],
+    [
+     "Barockliteratur",
+     "Johann Rist",
+     2
+    ],
+    [
+     "Bruchrechnung",
+     "Stammbruch",
+     2
+    ],
+    [
+     "DNA",
+     "DNA-Sequenzierung",
+     2
+    ],
+    [
+     "Demokratie",
+     "Politische Partei",
+     2
+    ],
+    [
+     "Gedicht",
+     "Vers",
+     2
+    ],
+    [
+     "Gewaltenteilung in Deutschland",
+     "Exekutive",
+     2
+    ],
+    [
+     "Industrielle Revolution",
+     "Arbeiterbewegung",
+     2
+    ],
+    [
+     "Industrielle Revolution",
+     "Textilindustrie",
+     2
+    ],
+    [
+     "Klimaerwärmung",
+     "Treibhausgas",
+     2
+    ],
+    [
+     "Klimawandel",
+     "Klimageschichte",
+     2
+    ],
+    [
+     "Klimawandels",
+     "Klimamodell",
+     2
+    ],
+    [
+     "Komponisten der Klassik",
+     "Muzio Clementi",
+     2
+    ],
+    [
+     "Künstliche Intelligenz im Unterricht",
+     "Adaptives Lernen",
+     2
+    ],
+    [
+     "Künstliche Intelligenz im Unterricht",
+     "Chatbot",
+     2
+    ],
+    [
+     "Künstliche Intelligenz im Unterricht",
+     "Sprachmodell",
+     2
+    ],
+    [
+     "Lineare Funktion",
+     "Geradengleichung",
+     2
+    ],
+    [
+     "Optik",
+     "Interferenz (Physik)",
+     2
+    ],
+    [
+     "Optik (Fach: Physik)",
+     "Interferenz (Physik)",
+     2
+    ],
+    [
+     "Programmiersprache",
+     "Interpreter",
+     2
+    ],
+    [
+     "Satz (Fach: Deutsch)",
+     "Satzzeichen",
+     2
+    ],
+    [
+     "Satz (Fach: Deutsch)",
+     "Syntax",
+     2
+    ],
+    [
+     "Satz (Fach: Musik)",
+     "Kanon (Musik)",
+     2
+    ],
+    [
+     "Säure-Base-Konzepte",
+     "PH-Wert",
+     2
+    ],
+    [
+     "Treibhauseffekt",
+     "Distickstoffmonoxid",
+     2
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Bündnispolitik Otto von Bismarcks",
+     2
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Militarismus",
+     2
+    ],
+    [
+     "Vulkane",
+     "Lava",
+     2
+    ],
+    [
+     "Vulkane",
+     "Magmakammer",
+     2
+    ],
+    [
+     "Wasserkreislauf",
+     "Evapotranspiration",
+     2
+    ],
+    [
+     "Wende (Fach: Geschichte)",
+     "Zwei-plus-Vier-Vertrag",
+     2
+    ],
+    [
+     "Arbeit (Fach: Physik)",
+     "Weg (Physik)",
+     1
+    ],
+    [
+     "Atommodell",
+     "Atom",
+     1
+    ],
+    [
+     "Barockliteratur",
+     "Christian Hoffmann von Hoffmannswaldau",
+     1
+    ],
+    [
+     "Base (Fach: Chemie)",
+     "Natronlauge",
+     1
+    ],
+    [
+     "Bruchrechnen",
+     "Doppelbruch",
+     1
+    ],
+    [
+     "Bus (Fach: Informatik)",
+     "I²C",
+     1
+    ],
+    [
+     "DNA",
+     "Genetischer Fingerabdruck",
+     1
+    ],
+    [
+     "Demokratie",
+     "Präsidentielles Regierungssystem",
+     1
+    ],
+    [
+     "EU",
+     "Europarecht",
+     1
+    ],
+    [
+     "Evolutionstheorie",
+     "Alfred Russel Wallace",
+     1
+    ],
+    [
+     "Industrielle Revolution",
+     "Power Loom",
+     1
+    ],
+    [
+     "Industrielle Revolution",
+     "Urbanisierung",
+     1
+    ],
+    [
+     "Inklusion im Sportunterricht",
+     "Übereinkommen über die Rechte von Menschen mit Behinderungen",
+     1
+    ],
+    [
+     "Klimaerwärmung",
+     "Klimamodell",
+     1
+    ],
+    [
+     "Klimaerwärmung",
+     "Treibhauseffekt",
+     1
+    ],
+    [
+     "Klimawandel",
+     "Kippelemente im Erdklimasystem",
+     1
+    ],
+    [
+     "Klimawandels",
+     "Treibhauseffekt",
+     1
+    ],
+    [
+     "Klimawandels",
+     "Treibhausgas",
+     1
+    ],
+    [
+     "Klimawandels",
+     "Umweltflüchtling",
+     1
+    ],
+    [
+     "Komponisten der Klassik",
+     "Johann Nepomuk Hummel",
+     1
+    ],
+    [
+     "Künstliche Intelligenz im Unterricht",
+     "Large Language Model",
+     1
+    ],
+    [
+     "Künstliche Intelligenz im Unterricht",
+     "Maschinelles Lernen",
+     1
+    ],
+    [
+     "Lineare Funktionen",
+     "Geradengleichung",
+     1
+    ],
+    [
+     "Lineare Funktionen",
+     "Koordinatensystem",
+     1
+    ],
+    [
+     "Lineare Funktionen",
+     "Steigung",
+     1
+    ],
+    [
+     "Lösung (Fach: Chemie)",
+     "Konzentration (Chemie)",
+     1
+    ],
+    [
+     "Menge (Fach: Mathematik)",
+     "Komplement (Mengenlehre)",
+     1
+    ],
+    [
+     "Optik",
+     "Elektromagnetische Welle",
+     1
+    ],
+    [
+     "Optik (Fach: Physik)",
+     "Brechung (Physik)",
+     1
+    ],
+    [
+     "Optik (Fach: Physik)",
+     "Elektromagnetisches Spektrum",
+     1
+    ],
+    [
+     "Programmiersprache",
+     "Objektorientierte Programmierung",
+     1
+    ],
+    [
+     "Satz (Fach: Deutsch)",
+     "Satzart",
+     1
+    ],
+    [
+     "Satz (Fach: Mathematik)",
+     "Theorem",
+     1
+    ],
+    [
+     "Strom (Fach: Geografie)",
+     "Fluss",
+     1
+    ],
+    [
+     "Strom (Fach: Geografie)",
+     "Flusssystem",
+     1
+    ],
+    [
+     "Strom (Fach: Geografie)",
+     "Liste der längsten Flüsse der Erde",
+     1
+    ],
+    [
+     "Säure",
+     "Saurer Regen",
+     1
+    ],
+    [
+     "Treibhauseffekt",
+     "Klimasensitivität",
+     1
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Bosnische Annexionskrise",
+     1
+    ],
+    [
+     "Vulkane",
+     "Magma",
+     1
+    ],
+    [
+     "Weimarer Republik",
+     "Friedensvertrag von Versailles",
+     1
+    ],
+    [
+     "Wende (Fach: Geschichte)",
+     "Deutsche Wiedervereinigung",
+     1
+    ],
+    [
+     "Wende (Fach: Geschichte)",
+     "Treuhandanstalt",
+     1
+    ],
+    [
+     "Ökosystem",
+     "Ökologische Nische",
+     1
+    ]
+   ],
+   "neu_nicht_passend": []
+  },
+  {
+   "variante": "verlinkt",
+   "laeufe": 500,
+   "korpus_anders": 131,
+   "ohne_genannten_teil": 18,
+   "korpus_genannt": 2574,
+   "korpus_passt": 2357,
+   "gedruckt": 12229,
+   "gedruckt_passt": 7737,
+   "laeufe_gedruckt_andere_bedeutung": 6,
+   "bausteine_gefuellt": 3178,
+   "llm_live": 6,
+   "korpus_andere_bedeutung": 6,
+   "gedruckt_andere_bedeutung": 26,
+   "korpus_uneinig": 46,
+   "gedruckt_uneinig": 155,
+   "korpus_randthema": 161,
+   "gedruckt_randthema": 689,
+   "korpus_passt_nicht": 4,
+   "gedruckt_passt_nicht": 21,
+   "weg": {
+    "andere_bedeutung": 10,
+    "passt": 159,
+    "passt_nicht": 15,
+    "randthema": 59,
+    "uneinig": 20
+   },
+   "neu": {},
+   "weg_andere_bedeutung": [
+    [
+     "Barockliteratur",
+     "Friedrich von Spee",
+     1
+    ],
+    [
+     "Fall (Fach: Deutsch)",
+     "Instrumentalmusik",
+     2
+    ],
+    [
+     "Intervall (Fach: Musik)",
+     "Intervall (Mathematik)",
+     1
+    ],
+    [
+     "Intervall (Fach: Musik)",
+     "Intervallschachtelung",
+     1
+    ],
+    [
+     "Satz des Pythagoras",
+     "Pythagoreisches Komma",
+     1
+    ],
+    [
+     "Spannung (Fach: Physik)",
+     "Oberflächenspannung",
+     1
+    ],
+    [
+     "Strom",
+     "Meeresströmung",
+     1
+    ],
+    [
+     "Strom (Fach: Geografie)",
+     "Stromtal",
+     1
+    ],
+    [
+     "Ursachen der Französischen Revolution",
+     "Steuersubvention",
+     1
+    ]
+   ],
+   "weg_passt": [
+    [
+     "Barockliteratur",
+     "Catharina Regina von Greiffenberg",
+     5
+    ],
+    [
+     "Dichter aus dem Mittelalter",
+     "Gottfried von Straßburg",
+     5
+    ],
+    [
+     "Dichter aus dem Mittelalter",
+     "Hartmann von Aue",
+     5
+    ],
+    [
+     "Dichter aus dem Mittelalter",
+     "Walther von der Vogelweide",
+     5
+    ],
+    [
+     "Evolutionstheorie",
+     "Gendrift",
+     5
+    ],
+    [
+     "Gedicht",
+     "Ode",
+     5
+    ],
+    [
+     "Inklusion im Sportunterricht",
+     "Sportunterricht",
+     5
+    ],
+    [
+     "Klimawandel",
+     "Klimapolitik",
+     5
+    ],
+    [
+     "Note (Fach: Musik)",
+     "Takt (Musik)",
+     5
+    ],
+    [
+     "Note (Fach: Musik)",
+     "Vorzeichen (Musik)",
+     5
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Imperialismus",
+     5
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Nationalismus",
+     5
+    ],
+    [
+     "Welle",
+     "Schall",
+     5
+    ],
+    [
+     "Dichter aus dem Mittelalter",
+     "Oswald von Wolkenstein",
+     4
+    ],
+    [
+     "Klimawandel",
+     "Klimawandelleugnung",
+     4
+    ],
+    [
+     "Klimawandels",
+     "Klimapolitik",
+     4
+    ],
+    [
+     "Satz (Fach: Musik)",
+     "Kontrapunkt",
+     4
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Weltpolitik",
+     4
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Wettrüsten",
+     4
+    ],
+    [
+     "Welle (Fach: Physik)",
+     "Schall",
+     4
+    ],
+    [
+     "Dichter aus dem Mittelalter",
+     "Meistersinger",
+     3
+    ],
+    [
+     "Klimawandels",
+     "Anpassung an die globale Erwärmung",
+     3
+    ],
+    [
+     "Kreislauf des Wassers",
+     "Transpiration",
+     3
+    ],
+    [
+     "Lineare Funktionen",
+     "Lineare Gleichung",
+     3
+    ],
+    [
+     "Wasserkreislauf",
+     "Transpiration",
+     3
+    ],
+    [
+     "Art (Fach: Biologie)",
+     "Sympatrische Artbildung",
+     2
+    ],
+    [
+     "Barockliteratur",
+     "Johann Rist",
+     2
+    ],
+    [
+     "Dichter aus dem Mittelalter",
+     "Neidhart",
+     2
+    ],
+    [
+     "Gedicht",
+     "Hymne",
+     2
+    ],
+    [
+     "Inklusion im Sportunterricht",
+     "Schulsport",
+     2
+    ],
+    [
+     "Klimawandel",
+     "Klimamodell",
+     2
+    ],
+    [
+     "Klimawandels",
+     "Klimamodell",
+     2
+    ],
+    [
+     "Klimawandels",
+     "Klimawandelleugnung",
+     2
+    ],
+    [
+     "Künstliche Intelligenz im Unterricht",
+     "Intelligentes tutorielles System",
+     2
+    ],
+    [
+     "Lösung (Fach: Chemie)",
+     "Elektrolyt",
+     2
+    ],
+    [
+     "Satz (Fach: Mathematik)",
+     "Vermutung (Mathematik)",
+     2
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Bündnispolitik Otto von Bismarcks",
+     2
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Militarismus",
+     2
+    ],
+    [
+     "Wasserkreislauf",
+     "Evapotranspiration",
+     2
+    ],
+    [
+     "Welle",
+     "Stoßwelle",
+     2
+    ],
+    [
+     "Wende (Fach: Geschichte)",
+     "Zwei-plus-Vier-Vertrag",
+     2
+    ],
+    [
+     "Baum (Fach: Informatik)",
+     "Trie",
+     1
+    ],
+    [
+     "Dichter aus dem Mittelalter",
+     "Heinrich von Morungen",
+     1
+    ],
+    [
+     "Dichter aus dem Mittelalter",
+     "Nibelungenlied",
+     1
+    ],
+    [
+     "Industrielle Revolution",
+     "Power Loom",
+     1
+    ],
+    [
+     "Kreislauf des Wassers",
+     "Evapotranspiration",
+     1
+    ],
+    [
+     "Kreislauf des Wassers",
+     "Schneeschmelze",
+     1
+    ],
+    [
+     "Lineare Funktionen",
+     "Koordinatensystem",
+     1
+    ],
+    [
+     "Lösung (Fach: Chemie)",
+     "Fällungsreaktion",
+     1
+    ],
+    [
+     "Satz (Fach: Musik)",
+     "Liedform",
+     1
+    ],
+    [
+     "Satz (Fach: Musik)",
+     "Sonatensatzform",
+     1
+    ],
+    [
+     "Satz (Fach: Musik)",
+     "Variation (Musik)",
+     1
+    ],
+    [
+     "Strom (Fach: Geografie)",
+     "Flussdelta",
+     1
+    ],
+    [
+     "Strom (Fach: Geografie)",
+     "Flusssystem",
+     1
+    ],
+    [
+     "Strom (Fach: Geografie)",
+     "Stromschnelle",
+     1
+    ],
+    [
+     "Säure",
+     "Säure-Base-Reaktion",
+     1
+    ],
+    [
+     "Ursachen des Ersten Weltkriegs",
+     "Erste Marokkokrise",
+     1
+    ],
+    [
+     "Vulkane",
+     "Vulkanexplosivitätsindex",
+     1
+    ],
+    [
+     "Welle",
+     "Licht",
+     1
+    ],
+    [
+     "Ökosystem",
+     "Ökologische Nische",
+     1
+    ]
+   ],
+   "neu_nicht_passend": []
+  },
+  {
+   "variante": "mehrdeutig",
+   "laeufe": 500,
+   "korpus_anders": 10,
+   "ohne_genannten_teil": 12,
+   "korpus_genannt": 2838,
+   "korpus_passt": 2517,
+   "gedruckt": 12458,
+   "gedruckt_passt": 7909,
+   "laeufe_gedruckt_andere_bedeutung": 14,
+   "bausteine_gefuellt": 3220,
+   "llm_live": 0,
+   "korpus_andere_bedeutung": 16,
+   "korpus_randthema": 220,
+   "gedruckt_randthema": 812,
+   "gedruckt_andere_bedeutung": 61,
+   "korpus_uneinig": 66,
+   "gedruckt_uneinig": 223,
+   "korpus_passt_nicht": 19,
+   "gedruckt_passt_nicht": 59,
+   "weg": {
+    "passt": 7
+   },
+   "neu": {
+    "passt": 8
+   },
+   "weg_andere_bedeutung": [],
+   "weg_passt": [
+    [
+     "Gedicht",
+     "Ode",
+     5
+    ],
+    [
+     "Welle (Fach: Physik)",
+     "Schall",
+     2
+    ]
+   ],
+   "neu_nicht_passend": []
+  },
+  {
+   "variante": "fachfremd",
+   "laeufe": 500,
+   "korpus_anders": 1,
+   "ohne_genannten_teil": 12,
+   "korpus_genannt": 2836,
+   "korpus_passt": 2516,
+   "gedruckt": 12443,
+   "gedruckt_passt": 7895,
+   "laeufe_gedruckt_andere_bedeutung": 13,
+   "bausteine_gefuellt": 3220,
+   "llm_live": 0,
+   "korpus_andere_bedeutung": 15,
+   "korpus_randthema": 220,
+   "gedruckt_randthema": 814,
+   "gedruckt_andere_bedeutung": 56,
+   "korpus_uneinig": 66,
+   "gedruckt_uneinig": 223,
+   "korpus_passt_nicht": 19,
+   "gedruckt_passt_nicht": 59,
+   "weg": {
+    "andere_bedeutung": 1
+   },
+   "neu": {},
+   "weg_andere_bedeutung": [
+    [
+     "Intervall (Fach: Musik)",
+     "Intervall (Mathematik)",
+     1
+    ]
+   ],
+   "weg_passt": [],
+   "neu_nicht_passend": []
+  },
+  {
+   "variante": "uebersicht",
+   "laeufe": 500,
+   "korpus_anders": 3,
+   "ohne_genannten_teil": 12,
+   "korpus_genannt": 2834,
+   "korpus_passt": 2516,
+   "gedruckt": 12435,
+   "gedruckt_passt": 7902,
+   "laeufe_gedruckt_andere_bedeutung": 11,
+   "bausteine_gefuellt": 3218,
+   "llm_live": 0,
+   "korpus_andere_bedeutung": 13,
+   "korpus_randthema": 220,
+   "gedruckt_randthema": 814,
+   "gedruckt_andere_bedeutung": 43,
+   "korpus_uneinig": 66,
+   "gedruckt_uneinig": 223,
+   "korpus_passt_nicht": 19,
+   "gedruckt_passt_nicht": 59,
+   "weg": {
+    "andere_bedeutung": 3
+   },
+   "neu": {},
+   "weg_andere_bedeutung": [
+    [
+     "Delta (Fach: Geografie)",
+     "Delta",
+     3
+    ]
+   ],
+   "weg_passt": [],
+   "neu_nicht_passend": []
+  }
+ ],
+ "urteile": [
+  ["Ableitung (Fach: Mathematik)", "Differentialrechnung", "passt", "passt", "", ""],
+  ["Ableitung (Fach: Mathematik)", "Differenzierbarkeit", "passt", "passt", "", ""],
+  ["Ableitung (Fach: Mathematik)", "Implizite Differentiation", "passt", "passt", "", ""],
+  ["Ableitung (Fach: Mathematik)", "Kettenregel", "passt", "passt", "", ""],
+  ["Ableitung (Fach: Mathematik)", "Partielle Ableitung", "passt", "passt", "", ""],
+  ["Ableitung (Fach: Mathematik)", "Produktregel", "passt", "passt", "", ""],
+  ["Ableitung (Fach: Mathematik)", "Quotientenregel", "passt", "passt", "", ""],
+  ["Ableitung (Fach: Mathematik)", "Totales Differential", "randthema", "randthema", "Differential bei mehreren Variablen, Nachbarbegriff zur Ableitung", "Differential bei Funktionen mehrerer Veränderlicher, Nachbarbegriff der Ableitung"],
+  ["Arbeit (Fach: Physik)", "Arbeit (Physik)", "passt", "passt", "", ""],
+  ["Arbeit (Fach: Physik)", "Drehmoment", "randthema", "randthema", "Drehmoment ist Nachbargröße der Mechanik (gleiche Einheit Nm, andere Größe)", "Drehwirkung einer Kraft, Nachbarbegriff der Mechanik (gleiche Einheit Nm), keine Arbeit"],
+  ["Arbeit (Fach: Physik)", "Energie", "passt", "passt", "", ""],
+  ["Arbeit (Fach: Physik)", "Kraft", "passt", "passt", "", ""],
+  ["Arbeit (Fach: Physik)", "Leistung (Physik)", "randthema", "passt", "Leistung ist Nachbargröße (Arbeit pro Zeit), kein Teil der Arbeit", ""],
+  ["Arbeit (Fach: Physik)", "Volumenarbeit", "passt", "passt", "", ""],
+  ["Arbeit (Fach: Physik)", "Weg (Physik)", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Allopatrische Artbildung", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Art (Biologie)", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Artbildung", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Artenschwarm", "randthema", "randthema", "Artenschwarm (adaptive Radiation) statt Artkomplex; nur Randbezug zum Artbegriff", "Artenschwarm (Gruppe nah verwandter Arten nach adaptiver Radiation) statt des genannten Artkomplexes; Spezialfall am Rand des Artbegriffs"],
+  ["Art (Fach: Biologie)", "Artenvielfalt", "randthema", "randthema", "Biodiversität, Nachbarthema zum Artbegriff", "Biodiversität eines Lebensraums, Nachbarthema zum Artbegriff"],
+  ["Art (Fach: Biologie)", "Hybride", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Kryptospezies", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Morphospezies", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Nomenklatur (Biologie)", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Population (Biologie)", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Sympatrische Artbildung", "passt", "passt", "", ""],
+  ["Art (Fach: Biologie)", "Unterart", "passt", "passt", "", ""],
+  ["Artikel (Fach: Deutsch)", "Deutsch als Fremdsprache", "passt_nicht", "passt_nicht", "Status und Unterricht Deutsch als Fremdsprache; gehört nicht zum Thema Artikel (Wortart)", "Deutsch als Fremdsprache (Status, Didaktik), nicht die Wortart Artikel"],
+  ["Artikel (Fach: Deutsch)", "Deutsche Grammatik", "randthema", "randthema", "deutsche Grammatik als Oberbegriff; der Artikel ist darin nur eine Wortart", "deutsche Grammatik als Ganzes; Oberbegriff, der Artikel ist nur eine Wortart darin"],
+  ["Artikel (Fach: Deutsch)", "Deutsche Rechtschreibung", "passt_nicht", "passt_nicht", "deutsche Rechtschreibung allgemein, nichts zur Wortart Artikel", "deutsche Rechtschreibung (Regelwerk, Reform), nicht die Wortart Artikel"],
+  ["Artikel (Fach: Deutsch)", "Deutsche Sprache", "randthema", "randthema", "die deutsche Sprache als Ganzes, nur weiter Oberbegriff", "die deutsche Sprache insgesamt; weiter Oberbegriff"],
+  ["Artikel (Fach: Deutsch)", "Deutsche Sprachgeschichte", "passt_nicht", "passt_nicht", "Geschichte der deutschen Sprache; gehört nicht zum Thema Artikel (Wortart)", "Geschichte der deutschen Sprache, nicht die Wortart Artikel"],
+  ["Artikel (Fach: Deutsch)", "Deutschsprachige Literatur", "passt_nicht", "passt_nicht", "deutschsprachige Literatur; gehört nicht zum Thema Artikel (Wortart)", "deutschsprachige Literatur, nicht die Wortart Artikel"],
+  ["Artikel (Fach: Deutsch)", "Deutschunterricht", "randthema", "randthema", "nur das Schulfach Deutsch als weiter Oberbegriff, nichts zum Artikel", "das Schulfach Deutsch als Ganzes; nur weiter Oberbegriff"],
+  ["Artikel (Fach: Deutsch)", "Literatur", "passt_nicht", "passt_nicht", "Literatur allgemein; gehört nicht zum Thema Artikel (Wortart)", "Literatur allgemein, nicht die Wortart Artikel"],
+  ["Artikel (Fach: Deutsch)", "Orthographie", "passt_nicht", "passt_nicht", "Rechtschreibung allgemein, nichts zur Wortart Artikel", "Rechtschreibung allgemein, nicht die Wortart Artikel"],
+  ["Artikel (Fach: Deutsch)", "Rhetorik", "passt_nicht", "passt_nicht", "Redekunst; gehört nicht zum Thema Artikel (Wortart)", "Redekunst, nicht die Wortart Artikel"],
+  ["Artikel (Fach: Deutsch)", "Sprachwissenschaft", "randthema", "randthema", "Linguistik allgemein, nur weiter Oberbegriff", "Linguistik als ganze Disziplin; sehr weiter Oberbegriff"],
+  ["Atommodell", "Atom", "passt", "passt", "", ""],
+  ["Atommodell", "Atomorbital", "passt", "passt", "", ""],
+  ["Atommodell", "Bohr-sommerfeldsches Atommodell", "passt", "passt", "", ""],
+  ["Atommodell", "Bohrsches Atommodell", "passt", "passt", "", ""],
+  ["Atommodell", "Liste der Atommodelle", "passt", "passt", "", ""],
+  ["Atommodell", "Rutherfordsches Atommodell", "passt", "passt", "", ""],
+  ["Atommodell", "Thomsonsches Atommodell", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Atom", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Atomhülle", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Atomkern", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Atomphysik", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Elektron", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Isotop", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Liste der Atommodelle", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Neutron", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Nukleon", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Proton", "passt", "passt", "", ""],
+  ["Aufbau der Atome", "Quantenzahl", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Cytoplasma", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Endoplasmatisches Retikulum", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Golgi-Apparat", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Lysosom", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Mitochondrium", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Organell", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Ribosom", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Zelle (Biologie)", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Zellkern", "passt", "passt", "", ""],
+  ["Aufbau der Zelle", "Zellmembran", "passt", "passt", "", ""],
+  ["Barockliteratur", "Andreas Gryphius", "passt", "passt", "", ""],
+  ["Barockliteratur", "Angelus Silesius", "passt", "passt", "", ""],
+  ["Barockliteratur", "Barockliteratur", "passt", "passt", "", ""],
+  ["Barockliteratur", "Barocktheater", "randthema", "randthema", "Bühne, Theaterbau und höfische Aufführung; das Barockdrama als Literatur nur am Rand", "Bühne, Theaterbau und Aufführungspraxis; das Barockdrama als Literatur nur am Rand"],
+  ["Barockliteratur", "Catharina Regina von Greiffenberg", "passt", "passt", "", ""],
+  ["Barockliteratur", "Christian Hoffmann von Hoffmannswaldau", "passt", "passt", "", ""],
+  ["Barockliteratur", "Friedrich von Spee", "andere_bedeutung", "andere_bedeutung", "Landrat des Kreises Merzig-Wadern (1882-1959), nicht der Barockdichter Friedrich Spee von Langenfeld", "Landrat Friedrich Graf von Spee (1882-1959), nicht der Barockdichter Friedrich Spee von Langenfeld"],
+  ["Barockliteratur", "Hans Jakob Christoffel von Grimmelshausen", "passt", "passt", "", ""],
+  ["Barockliteratur", "Johann Rist", "passt", "passt", "", ""],
+  ["Barockliteratur", "Martin Opitz", "passt", "passt", "", ""],
+  ["Barockliteratur", "Paul Fleming", "passt", "passt", "", ""],
+  ["Base (Fach: Chemie)", "Ammoniak", "passt", "passt", "", ""],
+  ["Base (Fach: Chemie)", "Basen (Chemie)", "passt", "passt", "", ""],
+  ["Base (Fach: Chemie)", "Basenkonstante", "passt", "passt", "", ""],
+  ["Base (Fach: Chemie)", "Hydroxide", "passt", "passt", "", ""],
+  ["Base (Fach: Chemie)", "Natriumhydrogencarbonat", "randthema", "randthema", "Salz der Kohlensäure und Ampholyt; als schwache Base nur ein Randbeispiel", "Salz der Kohlensäure und Ampholyt; als schwache Base im Alltag nur am Rand"],
+  ["Base (Fach: Chemie)", "Natriumhydroxid", "passt", "passt", "", ""],
+  ["Base (Fach: Chemie)", "Natronlauge", "passt", "passt", "", ""],
+  ["Base (Fach: Chemie)", "PH-Wert", "passt", "passt", "", ""],
+  ["Base (Fach: Chemie)", "Säure-Base-Reaktion", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "AVL-Baum", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "B-Baum", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Baum (Datenstruktur)", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Baum (Graphentheorie)", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Binärbaum", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Gewurzelter Baum", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Heap (Datenstruktur)", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Rot-Schwarz-Baum", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Spannbaum", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Suchbaum", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Syntaxbaum", "passt", "passt", "", ""],
+  ["Baum (Fach: Informatik)", "Trie", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Chemische Bindung", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Dipol-Dipol-Kräfte", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Elektronegativität", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Ionische Bindung", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Koordinative Bindung", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Kovalente Bindung", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Metallische Bindung", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Molekülorbitaltheorie", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Van-der-Waals-Kräfte", "passt", "passt", "", ""],
+  ["Bindung (Fach: Chemie)", "Wasserstoffbrückenbindung", "passt", "passt", "", ""],
+  ["Bruchrechnen", "Addition", "passt", "randthema", "", "Grundrechenart allgemein; weiter Oberbegriff, nicht das Addieren von Brüchen"],
+  ["Bruchrechnen", "Bruchgleichung", "randthema", "randthema", "Gleichungen mit Bruchtermen (Algebra); Bruchrechnung nur als Werkzeug", "Algebra (Gleichungen mit Bruchtermen), baut auf dem Bruchrechnen auf; Nachbarthema"],
+  ["Bruchrechnen", "Bruchrechnung", "passt", "passt", "", ""],
+  ["Bruchrechnen", "Dezimalbruch", "passt", "passt", "", ""],
+  ["Bruchrechnen", "Division (Mathematik)", "passt", "randthema", "", "Grundrechenart allgemein; weiter Oberbegriff, nicht das Dividieren von Brüchen"],
+  ["Bruchrechnen", "Doppelbruch", "passt", "passt", "", ""],
+  ["Bruchrechnen", "Multiplikation", "passt", "randthema", "", "Grundrechenart allgemein; weiter Oberbegriff, nicht das Multiplizieren von Brüchen"],
+  ["Bruchrechnen", "Prozent", "randthema", "randthema", "Prozent und Prozentrechnung (Hundertstel); Nachbarthema der Bruchrechnung", "Prozentrechnung ist ein Nachbarthema (Hundertstel)"],
+  ["Bruchrechnen", "Rationale Zahl", "passt", "passt", "", ""],
+  ["Bruchrechnen", "Subtraktion", "passt", "randthema", "", "Grundrechenart allgemein; weiter Oberbegriff, nicht das Subtrahieren von Brüchen"],
+  ["Bruchrechnung", "Addition", "randthema", "randthema", "Grundrechenart allgemein (Oberbegriff), Brüche dort nur am Rand", "Grundrechenart allgemein (weiter Oberbegriff); Brüche nur am Rand"],
+  ["Bruchrechnung", "Bruchgleichung", "randthema", "randthema", "Gleichungen mit Bruchtermen gehören zur Algebra; Nachbarthema, das die Bruchrechnung nur anwendet", "Algebra mit Bruchtermen; baut auf der Bruchrechnung auf, Nachbarthema"],
+  ["Bruchrechnung", "Bruchrechnung", "passt", "passt", "", ""],
+  ["Bruchrechnung", "Dezimalbruch", "passt", "passt", "", ""],
+  ["Bruchrechnung", "Division (Mathematik)", "randthema", "randthema", "Grundrechenart allgemein (Oberbegriff), Brüche dort nur am Rand", "Grundrechenart allgemein (weiter Oberbegriff); Brüche nur am Rand"],
+  ["Bruchrechnung", "Doppelbruch", "passt", "passt", "", ""],
+  ["Bruchrechnung", "Geteiltzeichen", "randthema", "randthema", "Artikel über das Divisionszeichen allgemein; der Bruchstrich ist dort nur eine Form", "Artikel über das Divisionszeichen allgemein; der Bruchstrich ist nur eine seiner Formen"],
+  ["Bruchrechnung", "Kettenbruch", "randthema", "randthema", "Kettenbrüche gehören zur Zahlentheorie, weit über die Schul-Bruchrechnung hinaus; Nachbarthema", "Zahlentheorie; nur entfernt mit der Bruchrechnung der Schule verwandt"],
+  ["Bruchrechnung", "Multiplikation", "randthema", "randthema", "Grundrechenart allgemein (Oberbegriff), Brüche dort nur am Rand", "Grundrechenart allgemein (weiter Oberbegriff); Brüche nur am Rand"],
+  ["Bruchrechnung", "Partialbruchzerlegung", "randthema", "randthema", "entfernte Anwendung bei rationalen Funktionen (Integration)", "rationale Funktionen und Integration; entfernte Anwendung jenseits der Schulbruchrechnung"],
+  ["Bruchrechnung", "Prozent", "randthema", "randthema", "Prozentrechnung ist ein eigenes Nachbarthema der Bruchrechnung", "Nachbarthema Prozentrechnung"],
+  ["Bruchrechnung", "Rationale Zahl", "passt", "passt", "", ""],
+  ["Bruchrechnung", "Stammbruch", "passt", "passt", "", ""],
+  ["Bruchrechnung", "Subtraktion", "randthema", "randthema", "Grundrechenart allgemein (Oberbegriff), Brüche dort nur am Rand", "Grundrechenart allgemein (weiter Oberbegriff); Brüche nur am Rand"],
+  ["Bus (Fach: Informatik)", "Bus (Datenverarbeitung)", "passt", "passt", "", ""],
+  ["Bus (Fach: Informatik)", "Front Side Bus", "passt", "passt", "", ""],
+  ["Bus (Fach: Informatik)", "HyperTransport", "randthema", "passt", "Punkt-zu-Punkt-Verbindung zwischen Chips, kein Bus im engeren Sinn; Nachbarthema", ""],
+  ["Bus (Fach: Informatik)", "I²C", "passt", "passt", "", ""],
+  ["Bus (Fach: Informatik)", "Peripheral Component Interconnect", "passt", "passt", "", ""],
+  ["Bus (Fach: Informatik)", "Systembus", "passt", "passt", "", ""],
+  ["Bus (Fach: Informatik)", "Universal Serial Bus", "passt", "passt", "", ""],
+  ["DNA", "Chromosom", "passt", "passt", "", ""],
+  ["DNA", "DNA-Analyse", "passt", "passt", "", ""],
+  ["DNA", "DNA-Reparatur", "passt", "passt", "", ""],
+  ["DNA", "DNA-Sequenzierung", "passt", "passt", "", ""],
+  ["DNA", "Desoxyribonukleinsäure", "passt", "passt", "", ""],
+  ["DNA", "Gen", "passt", "passt", "", ""],
+  ["DNA", "Genetischer Fingerabdruck", "passt", "passt", "", ""],
+  ["DNA", "Genom", "passt", "passt", "", ""],
+  ["DNA", "Nukleotidsequenz", "passt", "passt", "", ""],
+  ["DNA", "Replikation", "passt", "passt", "", ""],
+  ["DNA", "Transkription (Biologie)", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Amazonas", "randthema", "randthema", "Artikel über den ganzen Strom, nicht über sein Mündungsgebiet; das Delta nur am Rand", "Artikel über den ganzen Strom Amazonas, nicht über ein Mündungsdelta; die Mündung höchstens am Rand"],
+  ["Delta (Fach: Geografie)", "Biosphärenreservat Donaudelta", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Delta", "andere_bedeutung", "andere_bedeutung", "der griechische Buchstabe, nicht die Mündungsform eines Flusses", "der griechische Buchstabe Delta, nicht die Flussmündung"],
+  ["Delta (Fach: Geografie)", "Flussdelta", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Gangesdelta", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Mekongdelta", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Nildelta", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Okavangodelta", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Rhein-Maas-Delta", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Wolgadelta", "passt", "passt", "", ""],
+  ["Delta (Fach: Geografie)", "Ästuar", "randthema", "randthema", "Trichtermündung, die Gegenform zum Delta; Nachbarthema", "Trichtermündung, Nachbar- und Gegenbegriff zum Delta, kein Delta"],
+  ["Demokratie", "Deliberative Demokratie", "passt", "passt", "", ""],
+  ["Demokratie", "Demokratie", "passt", "passt", "", ""],
+  ["Demokratie", "Demokratiedefizit", "passt", "passt", "", ""],
+  ["Demokratie", "Demokratiemessung", "passt", "passt", "", ""],
+  ["Demokratie", "Demokratietheorie", "passt", "passt", "", ""],
+  ["Demokratie", "Demokratisierung", "passt", "passt", "", ""],
+  ["Demokratie", "Direkte Demokratie", "passt", "passt", "", ""],
+  ["Demokratie", "Gewaltenteilung", "passt", "passt", "", ""],
+  ["Demokratie", "Liberale Demokratie", "passt", "passt", "", ""],
+  ["Demokratie", "Parlamentarisches Regierungssystem", "passt", "passt", "", ""],
+  ["Demokratie", "Parlamentarismus", "passt", "passt", "", ""],
+  ["Demokratie", "Politische Partei", "passt", "passt", "", ""],
+  ["Demokratie", "Politische Partizipation", "passt", "passt", "", ""],
+  ["Demokratie", "Präsidentielles Regierungssystem", "passt", "passt", "", ""],
+  ["Demokratie", "Rechtsstaat", "passt", "passt", "", ""],
+  ["Demokratie", "Repräsentative Demokratie", "passt", "passt", "", ""],
+  ["Demokratie", "Wahl", "passt", "passt", "", ""],
+  ["Demokratie", "Wahlrecht", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Deutsche Literatur im Mittelalter", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Gottfried von Straßburg", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Hartmann von Aue", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Heinrich von Morungen", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Hildegard von Bingen", "randthema", "randthema", "vor allem Benediktinerin, Mystikerin, Naturkundlerin und Komponistin; als Dichterin (lateinische geistliche Lieder) nur am Rand", "vor allem Benediktinerin, Mystikerin und Universalgelehrte; als Dichterin geistlicher Lieder nur am Rand"],
+  ["Dichter aus dem Mittelalter", "Meister Eckhart", "randthema", "randthema", "Theologe und Philosoph der Mystik (Predigten, Traktate), kein Dichter im engeren Sinn", "Theologe und Philosoph der Mystik, kein Dichter; nur als Prosaautor am Rand"],
+  ["Dichter aus dem Mittelalter", "Meistersinger", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Minnesang", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Neidhart", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Nibelungenlied", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Oswald von Wolkenstein", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Walther von der Vogelweide", "passt", "passt", "", ""],
+  ["Dichter aus dem Mittelalter", "Wolfram von Eschenbach", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Erklärung der Menschen- und Bürgerrechte", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Französische Revolution", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Französische Verfassung (1791)", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Jakobiner", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Koalitionskriege", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Maximilien de Robespierre", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Napoleon Bonaparte", "randthema", "randthema", "vor allem Herrscher nach der Revolution; zu ihr gehört nur sein Aufstieg bis 1799", "Biografie; Napoleon beendet die Revolution 1799, der Artikel behandelt vor allem Konsulat und Kaiserreich"],
+  ["Die Französische Revolution", "Nationalkonvent", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Sturm auf die Bastille", "passt", "passt", "", ""],
+  ["Die Französische Revolution", "Terrorherrschaft", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Dampfdruck", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Druck (Physik)", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Druckmessgerät", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Drucksensor", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Druckwelle", "randthema", "randthema", "Longitudinalwelle (Wellenlehre, Akustik); Nachbarthema des Drucks", "Wellenphänomen (Longitudinalwelle, Akustik); Nachbarthema des Drucks"],
+  ["Druck (Fach: Physik)", "Gradient", "randthema", "randthema", "allgemeiner Begriff Gradient, nicht der Druck selbst; nur am Rand", "allgemeiner Begriff Gradient statt Druckgradient; weiter Oberbegriff"],
+  ["Druck (Fach: Physik)", "Hydrostatischer Druck", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Luftdruck", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Partialdruck", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Pascal (Einheit)", "passt", "passt", "", ""],
+  ["Druck (Fach: Physik)", "Staupunktströmung", "randthema", "randthema", "Strömungsmechanik einer Umströmung, Staudruck nur Teilaspekt; Nachbarthema", "Strömungsmechanik (Umströmung eines Hindernisses), Staudruck nur Teilaspekt; Nachbarthema"],
+  ["EU", "Binnenmarkt", "randthema", "randthema", "allgemeiner VWL-Begriff, nicht speziell der EU-Binnenmarkt", "allgemeiner VWL-Begriff, nicht speziell der EU-Binnenmarkt"],
+  ["EU", "Erweiterung der Europäischen Union", "passt", "passt", "", ""],
+  ["EU", "Euro", "passt", "passt", "", ""],
+  ["EU", "Europarecht", "passt", "passt", "", ""],
+  ["EU", "Europäische Kommission", "passt", "passt", "", ""],
+  ["EU", "Europäische Union", "passt", "passt", "", ""],
+  ["EU", "Europäischer Binnenmarkt", "passt", "passt", "", ""],
+  ["EU", "Europäisches Parlament", "passt", "passt", "", ""],
+  ["EU", "Gemeinsame Außen- und Sicherheitspolitik", "passt", "passt", "", ""],
+  ["EU", "Gerichtshof der Europäischen Union", "passt", "passt", "", ""],
+  ["EU", "Geschichte der Europäischen Union", "passt", "passt", "", ""],
+  ["EU", "Liste der Mitgliedstaaten der Europäischen Union", "passt", "passt", "", ""],
+  ["EU", "Rat der Europäischen Union", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Elektrische Energie", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Elektrische Leistung", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Elektrische Spannung", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Elektrische Stromstärke", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Elektrischer Strom", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Elektrischer Widerstand", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Gleichstrom", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Ohmsches Gesetz", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Stromkreis", "passt", "passt", "", ""],
+  ["Elektrischer Strom", "Wechselstrom", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Atom", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Chemische Verbindung", "randthema", "randthema", "Gegenbegriff zum Element (Reinstoff aus mehreren Elementen); Nachbarthema", "Nachbar- und Gegenbegriff zum Element (Stoffeinteilung), behandelt Verbindungen"],
+  ["Element (Fach: Chemie)", "Chemisches Element", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Elementarteilchen", "randthema", "randthema", "Teilchenphysik (Elektron, Quarks); als Bausteine der Atome nur am Rand des chemischen Elements", "Teilchenphysik; mit dem chemischen Element nur über den Atombau verbunden"],
+  ["Element (Fach: Chemie)", "Elementsymbol", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Halbmetalle", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Isotop", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Liste der Häufigkeiten chemischer Elemente", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Liste der chemischen Elemente", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Metalle", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Nichtmetalle", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Ordnungszahl", "passt", "passt", "", ""],
+  ["Element (Fach: Chemie)", "Periodensystem", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Chemische Energie", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Elektrische Energie", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Energie", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Energieerhaltungssatz", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Energiewandler", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Erneuerbare Energien", "randthema", "randthema", "Energiequellen und Energieversorgung (Technik, Wirtschaft); Anwendung, nicht der physikalische Energiebegriff", "Energiequellen der Energieversorgung; Anwendung, nicht die physikalische Größe Energie"],
+  ["Energie (Fach: Physik)", "Innere Energie", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Kernenergie", "randthema", "randthema", "Kerntechnik zur Stromerzeugung (Atomkraft), nicht die Energieform im Atomkern; entfernte Anwendung", "Technologie der Stromerzeugung durch Kernspaltung, nicht die Energieform; entfernte Anwendung"],
+  ["Energie (Fach: Physik)", "Kinetische Energie", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Potentielle Energie", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Thermische Energie", "passt", "passt", "", ""],
+  ["Energie (Fach: Physik)", "Wärme", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Alfred Russel Wallace", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Artbildung", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Charles Darwin", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Evolution", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Evolutionstheorie", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Gendrift", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Lamarckismus", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Mutation", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Selektion (Evolution)", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Sexuelle Selektion", "passt", "passt", "", ""],
+  ["Evolutionstheorie", "Synthetische Evolutionstheorie", "passt", "passt", "", ""],
+  ["Fall (Fach: Deutsch)", "Akkusativ", "passt", "passt", "", ""],
+  ["Fall (Fach: Deutsch)", "Dativ", "passt", "passt", "", ""],
+  ["Fall (Fach: Deutsch)", "Genitiv", "passt", "passt", "", ""],
+  ["Fall (Fach: Deutsch)", "Instrumentalmusik", "andere_bedeutung", "andere_bedeutung", "Musik ohne Gesang statt des Kasus Instrumental", "Instrumentalmusik (Musik ohne Gesang) statt des grammatischen Kasus Instrumental"],
+  ["Fall (Fach: Deutsch)", "Kasus", "passt", "passt", "", ""],
+  ["Fall (Fach: Deutsch)", "Lokativ", "randthema", "randthema", "Kasus anderer Sprachen, im Deutschen nicht vorhanden; nur für den Sprachvergleich", "Kasus anderer Sprachen, im Deutschen nicht vorhanden; nur zum Vergleich"],
+  ["Fall (Fach: Deutsch)", "Nominativ", "passt", "passt", "", ""],
+  ["Fall (Fach: Deutsch)", "Vokativ", "randthema", "randthema", "Kasus, den das Deutsche nicht als eigenen Fall kennt; nur für den Sprachvergleich", "Kasus, den das Deutsche nicht kennt (Anrede steht im Nominativ); nur zum Vergleich mit anderen Sprachen"],
+  ["Feld (Fach: Physik)", "Elektrisches Feld", "passt", "passt", "", ""],
+  ["Feld (Fach: Physik)", "Elektromagnetisches Feld", "passt", "passt", "", ""],
+  ["Feld (Fach: Physik)", "Feld (Physik)", "passt", "passt", "", ""],
+  ["Feld (Fach: Physik)", "Feldtheorie (Physik)", "passt", "passt", "", ""],
+  ["Feld (Fach: Physik)", "Gravitationsfeld", "passt", "passt", "", ""],
+  ["Feld (Fach: Physik)", "Kraftfeld", "passt", "passt", "", ""],
+  ["Feld (Fach: Physik)", "Magnetismus", "passt", "passt", "", ""],
+  ["Feld (Fach: Physik)", "Quantenfeldtheorie", "randthema", "passt", "fortgeschrittenes Nachbargebiet (Quantisierung von Feldern, Teilchenphysik); der Feldbegriff selbst steht nicht im Mittelpunkt", ""],
+  ["Feld (Fach: Physik)", "Skalarfeld", "passt", "passt", "", ""],
+  ["Feld (Fach: Physik)", "Tensorfeld", "randthema", "randthema", "mathematischer Begriff der Differentialgeometrie, allgemeine Verallgemeinerung von Skalar- und Vektorfeld; für den physikalischen Feldbegriff nur am Rand", "mathematische Verallgemeinerung aus der Differentialgeometrie (Skalar- und Vektorfelder als Sonderfälle); für das physikalische Feld nur am Rand"],
+  ["Feld (Fach: Physik)", "Vektorfeld", "passt", "passt", "", ""],
+  ["Fotosynthese", "C4-Pflanze", "passt", "passt", "", ""],
+  ["Fotosynthese", "Calvin-Zyklus", "passt", "passt", "", ""],
+  ["Fotosynthese", "Chlorophylle", "passt", "passt", "", ""],
+  ["Fotosynthese", "Chloroplast", "passt", "passt", "", ""],
+  ["Fotosynthese", "Crassulaceen-Säurestoffwechsel", "passt", "passt", "", ""],
+  ["Fotosynthese", "Photorespiration", "passt", "passt", "", ""],
+  ["Fotosynthese", "Photosynthese", "passt", "passt", "", ""],
+  ["Fotosynthese", "Photosystem", "passt", "passt", "", ""],
+  ["Französische Revolution", "Direktorium (Frankreich)", "passt", "passt", "", ""],
+  ["Französische Revolution", "Erklärung der Menschen- und Bürgerrechte", "passt", "passt", "", ""],
+  ["Französische Revolution", "Französische Revolution", "passt", "passt", "", ""],
+  ["Französische Revolution", "Französische Verfassung (1791)", "passt", "passt", "", ""],
+  ["Französische Revolution", "Generalstände von 1789", "passt", "passt", "", ""],
+  ["Französische Revolution", "Girondisten", "passt", "passt", "", ""],
+  ["Französische Revolution", "Jakobiner", "passt", "passt", "", ""],
+  ["Französische Revolution", "Napoleon Bonaparte", "passt", "passt", "", ""],
+  ["Französische Revolution", "Nationalversammlung (Frankreich)", "andere_bedeutung", "andere_bedeutung", "heutiges Unterhaus des französischen Parlaments (Fünfte Republik), nicht die Nationalversammlung der Revolution von 1789", "heutiges Unterhaus des französischen Parlaments (Fünfte Republik), nicht die Nationalversammlung der Revolution ab 1789"],
+  ["Französische Revolution", "Sturm auf die Bastille", "passt", "passt", "", ""],
+  ["Französische Revolution", "Terrorherrschaft", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Direktorium (Frankreich)", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Erklärung der Menschen- und Bürgerrechte", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Französische Revolution", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Französische Verfassung (1791)", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Generalstände von 1789", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Jakobiner", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Maximilien de Robespierre", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Napoleon Bonaparte", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Nationalkonvent", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Sturm auf die Bastille", "passt", "passt", "", ""],
+  ["Französische Revolution (Fach: Geschichte)", "Terrorherrschaft", "passt", "passt", "", ""],
+  ["Funktion (Fach: Mathematik)", "Bijektive Funktion", "passt", "passt", "", ""],
+  ["Funktion (Fach: Mathematik)", "Definitionsmenge", "passt", "passt", "", ""],
+  ["Funktion (Fach: Mathematik)", "Funktion (Mathematik)", "passt", "passt", "", ""],
+  ["Funktion (Fach: Mathematik)", "Injektive Funktion", "passt", "passt", "", ""],
+  ["Funktion (Fach: Mathematik)", "Komposition (Mathematik)", "passt", "passt", "", ""],
+  ["Funktion (Fach: Mathematik)", "Reellwertige Funktion", "passt", "passt", "", ""],
+  ["Funktion (Fach: Mathematik)", "Surjektive Funktion", "passt", "passt", "", ""],
+  ["Funktion (Fach: Mathematik)", "Umkehrfunktion", "passt", "passt", "", ""],
+  ["Gedicht", "Akrostichon", "passt", "passt", "", ""],
+  ["Gedicht", "Ballade (Gedicht)", "passt", "passt", "", ""],
+  ["Gedicht", "Elegie", "passt", "passt", "", ""],
+  ["Gedicht", "Epigramm", "passt", "passt", "", ""],
+  ["Gedicht", "Haiku", "passt", "passt", "", ""],
+  ["Gedicht", "Hymne", "passt", "passt", "", ""],
+  ["Gedicht", "Lied", "randthema", "randthema", "Lied als musikalische Gattung (Komposition aus Musik und Text); Nachbarthema des Gedichts", "Lied als gesungene Musikgattung (Komposition aus Musik und Text); Nachbarthema, das Gedicht nur als Liedtext berührt"],
+  ["Gedicht", "Lyrik", "passt", "passt", "", ""],
+  ["Gedicht", "Ode", "passt", "passt", "", ""],
+  ["Gedicht", "Ode (Gedicht)", "passt", "passt", "", ""],
+  ["Gedicht", "Reim", "passt", "passt", "", ""],
+  ["Gedicht", "Reimschema", "passt", "passt", "", ""],
+  ["Gedicht", "Sonett", "passt", "passt", "", ""],
+  ["Gedicht", "Strophe", "passt", "passt", "", ""],
+  ["Gedicht", "Vers", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Bundespräsident (Deutschland)", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Bundesrat (Deutschland)", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Bundesregierung", "randthema", "randthema", "allgemeiner Begriff für Föderalregierungen, nicht die deutsche Bundesregierung", "allgemeiner Begriff Föderalregierung eines Bundesstaates, nicht speziell die deutsche Bundesregierung"],
+  ["Gewaltenteilung in Deutschland", "Bundesregierung (Deutschland)", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Bundesverfassungsgericht", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Deutscher Bundestag", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Exekutive", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Gewaltenteilung", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Grundgesetz für die Bundesrepublik Deutschland", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Judikative", "passt", "passt", "", ""],
+  ["Gewaltenteilung in Deutschland", "Legislative", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Arbeiterbewegung", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Dampfmaschine", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Digitale Revolution", "randthema", "randthema", "Digitale Revolution der Gegenwart; nur als Vergleich zur historischen industriellen Revolution am Rand", "Digitale Revolution seit dem späten 20. Jahrhundert; nur über die Analogie zur industriellen Revolution verbunden"],
+  ["Industrielle Revolution", "Eisenbahn", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Fabrik", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Industrialisierung", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Industrie 4.0", "randthema", "randthema", "heutiges Projekt zur Digitalisierung der Produktion; nur als Ausblick am Rand", "Digitalisierungsprojekt der Gegenwart; nur über den Namen vierte industrielle Revolution mit dem historischen Thema verbunden"],
+  ["Industrielle Revolution", "Industrielle Revolution", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Industrielle Revolution in Deutschland", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Manchesterkapitalismus", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Power Loom", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Soziale Frage", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Spinning Jenny", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Textilindustrie", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Urbanisierung", "passt", "passt", "", ""],
+  ["Industrielle Revolution", "Zweite industrielle Revolution", "passt", "passt", "", ""],
+  ["Inklusion im Sportunterricht", "Barrierefreiheit", "randthema", "randthema", "Barrierefreiheit allgemein (Bauten, Verkehr, IT); Sportunterricht nur am Rand", "allgemeine barrierefreie Gestaltung von Umwelt und Technik; nur am Rand des inklusiven Sportunterrichts"],
+  ["Inklusion im Sportunterricht", "Behindertensport", "passt", "randthema", "", "Sport von Menschen mit Behinderung allgemein (Breiten- und Leistungssport); Nachbarthema"],
+  ["Inklusion im Sportunterricht", "Inklusion (Soziologie)", "randthema", "randthema", "Soziologischer Inklusionsbegriff (Parsons, Luhmann), nicht der pädagogische; Nachbarthema", "soziologischer Begriff (Parsons, Luhmann); nur theoretischer Hintergrund"],
+  ["Inklusion im Sportunterricht", "Inklusive Pädagogik", "passt", "passt", "", ""],
+  ["Inklusion im Sportunterricht", "Integration (Soziologie)", "randthema", "randthema", "Soziale Integration von Gruppen allgemein (Wertgemeinschaft); nur am Rand zur Inklusion im Sportunterricht", "allgemeiner soziologischer Integrationsbegriff; weit weg vom Sportunterricht"],
+  ["Inklusion im Sportunterricht", "Integrative Pädagogik", "passt", "randthema", "", "Nachbar- bzw. Vorläuferkonzept der Inklusion"],
+  ["Inklusion im Sportunterricht", "Paralympische Spiele", "randthema", "randthema", "Wettkampfveranstaltung des Leistungssports für Menschen mit Behinderung; außerhalb von Schule und Inklusion im engeren Sinn", "Leistungssport-Wettkämpfe außerhalb der Schule; Nachbarthema"],
+  ["Inklusion im Sportunterricht", "Schulsport", "passt", "passt", "", ""],
+  ["Inklusion im Sportunterricht", "Sonderpädagogik", "passt", "randthema", "", "Nachbarfach Sonderpädagogik; nicht spezifisch für inklusiven Sportunterricht"],
+  ["Inklusion im Sportunterricht", "Special Olympics", "randthema", "randthema", "Sportbewegung für Menschen mit geistiger Beeinträchtigung außerhalb der Schule; Nachbarthema", "Sportbewegung für Menschen mit geistiger Beeinträchtigung außerhalb der Schule; Nachbarthema"],
+  ["Inklusion im Sportunterricht", "Sportpädagogik", "randthema", "randthema", "Wissenschaftliche Disziplin Sport und Erziehung allgemein; weiter Oberbegriff", "wissenschaftliche Disziplin Sport und Erziehung; weiter Oberbegriff"],
+  ["Inklusion im Sportunterricht", "Sportunterricht", "passt", "passt", "", ""],
+  ["Inklusion im Sportunterricht", "Übereinkommen über die Rechte von Menschen mit Behinderungen", "passt", "passt", "", ""],
+  ["Intervall (Fach: Musik)", "Enharmonische Verwechslung", "randthema", "randthema", "Umdeutung gleich klingender Töne; betrifft die Benennung von Intervallen nur am Rand", "Umdeutung von Tönen (Notation, Modulation); nur am Rand zu Intervallen"],
+  ["Intervall (Fach: Musik)", "Gleichstufige Stimmung", "randthema", "randthema", "Stimmungssystem (Temperatur); Nachbarthema zu den Intervallen", "Stimmungssystem; Nachbarthema, berührt Intervalle nur über die Größe der Halbtonschritte"],
+  ["Intervall (Fach: Musik)", "Intervall (Mathematik)", "andere_bedeutung", "andere_bedeutung", "Intervall als Teilmenge in der Mathematik, nicht der musikalische Tonabstand", "mathematischer Intervallbegriff (Teilmenge einer geordneten Menge), nicht das musikalische Intervall"],
+  ["Intervall (Fach: Musik)", "Intervall (Musik)", "passt", "passt", "", ""],
+  ["Intervall (Fach: Musik)", "Intervallschachtelung", "andere_bedeutung", "andere_bedeutung", "mathematisches Beweisprinzip mit Intervallen im Sinn der Analysis, nicht der musikalische Tonabstand", "Beweisprinzip der Analysis mit dem mathematischen Intervallbegriff, nicht das musikalische Intervall"],
+  ["Intervall (Fach: Musik)", "Konsonanz und Dissonanz", "passt", "passt", "", ""],
+  ["Intervall (Fach: Musik)", "Oktave", "passt", "passt", "", ""],
+  ["Intervall (Fach: Musik)", "Quarte", "passt", "passt", "", ""],
+  ["Intervall (Fach: Musik)", "Reine Stimmung", "randthema", "randthema", "Stimmungssystem; berührt Intervalle nur über ihre Frequenzverhältnisse", "Stimmungssystem; Nachbarthema, berührt Intervalle nur über ihre Frequenzverhältnisse"],
+  ["Intervall (Fach: Musik)", "Sekunde (Musik)", "passt", "passt", "", ""],
+  ["Intervall (Fach: Musik)", "Septime", "passt", "passt", "", ""],
+  ["Intervall (Fach: Musik)", "Sexte", "passt", "passt", "", ""],
+  ["Intervall (Fach: Musik)", "Terz (Musik)", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Anpassung an die globale Erwärmung", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Folgen der globalen Erwärmung", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Globale Erwärmung", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Kippelemente im Erdklimasystem", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Klimakrise", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Klimamodell", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Klimapolitik", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Klimaschutz", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Klimawandel", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Klimawandelleugnung", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Kohlenstoffdioxid", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Treibhauseffekt", "passt", "passt", "", ""],
+  ["Klimaerwärmung", "Treibhausgas", "passt", "passt", "", ""],
+  ["Klimawandel", "Anpassung an die globale Erwärmung", "passt", "passt", "", ""],
+  ["Klimawandel", "Erneuerbare Energien", "randthema", "randthema", "Energiequellen allgemein; zum Klimawandel nur als Mittel des Klimaschutzes", "Energieversorgung; zum Klimawandel nur als Mittel des Klimaschutzes, Nachbarthema"],
+  ["Klimawandel", "Folgen der globalen Erwärmung", "passt", "passt", "", ""],
+  ["Klimawandel", "Globale Erwärmung", "passt", "passt", "", ""],
+  ["Klimawandel", "Kippelemente im Erdklimasystem", "passt", "passt", "", ""],
+  ["Klimawandel", "Klimageschichte", "passt", "passt", "", ""],
+  ["Klimawandel", "Klimakrise", "passt", "passt", "", ""],
+  ["Klimawandel", "Klimamodell", "passt", "passt", "", ""],
+  ["Klimawandel", "Klimapolitik", "passt", "passt", "", ""],
+  ["Klimawandel", "Klimaschutz", "passt", "passt", "", ""],
+  ["Klimawandel", "Klimatologie", "randthema", "randthema", "Klimatologie allgemein (Klimawissenschaft), weiter Oberbegriff; der Klimawandel ist nur eines ihrer Themen", "Klimatologie als allgemeine Klimawissenschaft; weiter Oberbegriff, der Klimawandel ist nur ein Teilgebiet"],
+  ["Klimawandel", "Klimawandel", "passt", "passt", "", ""],
+  ["Klimawandel", "Klimawandelleugnung", "passt", "passt", "", ""],
+  ["Klimawandel", "Paläoklimatologie", "passt", "passt", "", ""],
+  ["Klimawandel", "Treibhausgas", "passt", "passt", "", ""],
+  ["Klimawandel", "Umweltflüchtling", "passt", "passt", "", ""],
+  ["Klimawandels", "Anpassung an die globale Erwärmung", "passt", "passt", "", ""],
+  ["Klimawandels", "Folgen der globalen Erwärmung", "passt", "passt", "", ""],
+  ["Klimawandels", "Globale Erwärmung", "passt", "passt", "", ""],
+  ["Klimawandels", "Klimakrise", "passt", "passt", "", ""],
+  ["Klimawandels", "Klimamodell", "passt", "passt", "", ""],
+  ["Klimawandels", "Klimapolitik", "passt", "passt", "", ""],
+  ["Klimawandels", "Klimaschutz", "passt", "passt", "", ""],
+  ["Klimawandels", "Klimawandel", "passt", "passt", "", ""],
+  ["Klimawandels", "Klimawandelleugnung", "passt", "passt", "", ""],
+  ["Klimawandels", "Treibhauseffekt", "passt", "passt", "", ""],
+  ["Klimawandels", "Treibhausgas", "passt", "passt", "", ""],
+  ["Klimawandels", "Umweltflüchtling", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Antonio Salieri", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Carl Philipp Emanuel Bach", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Christoph Willibald Gluck", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Johann Christian Bach", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Johann Nepomuk Hummel", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Joseph Haydn", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Ludwig van Beethoven", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Luigi Boccherini", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Muzio Clementi", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Wiener Klassik", "passt", "passt", "", ""],
+  ["Komponisten der Klassik", "Wolfgang Amadeus Mozart", "passt", "passt", "", ""],
+  ["Kreislauf des Kohlenstoffs", "Fossile Energie", "passt", "passt", "", ""],
+  ["Kreislauf des Kohlenstoffs", "Kohlenstoffdioxid", "passt", "passt", "", ""],
+  ["Kreislauf des Kohlenstoffs", "Kohlenstoffsenke", "passt", "passt", "", ""],
+  ["Kreislauf des Kohlenstoffs", "Kohlenstoffzyklus", "passt", "passt", "", ""],
+  ["Kreislauf des Kohlenstoffs", "Photosynthese", "passt", "passt", "", ""],
+  ["Kreislauf des Kohlenstoffs", "Versauerung der Meere", "randthema", "passt", "Folge der CO2-Aufnahme im Meer (pH-Wert, Meereslebewesen), nicht der Kreislauf selbst", ""],
+  ["Kreislauf des Kohlenstoffs", "Zellatmung", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Abfluss", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Evapotranspiration", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Grundwasser", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Kondensation", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Niederschlag", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Schneeschmelze", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Transpiration", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Verdunstung", "passt", "passt", "", ""],
+  ["Kreislauf des Wassers", "Wasserkreislauf", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "Adaptives Lernen", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "Bildung", "randthema", "randthema", "sehr weiter Oberbegriff (Bildungsbegriff allgemein)", "sehr weiter Oberbegriff (allgemeiner Bildungsbegriff)"],
+  ["Künstliche Intelligenz im Unterricht", "ChatGPT", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "Chatbot", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "Datenschutz", "randthema", "randthema", "allgemeiner Artikel zum Datenschutz; für KI im Unterricht nur eine Rahmenbedingung am Rand", "allgemeiner Datenschutzbegriff; für KI im Unterricht nur ein Nebenaspekt"],
+  ["Künstliche Intelligenz im Unterricht", "Deep Learning", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "E-Learning", "randthema", "randthema", "E-Learning allgemein; weiter Oberbegriff digital gestützten Lernens, nicht KI-spezifisch", "Oberbegriff für elektronisch gestütztes Lernen, nicht KI-spezifisch"],
+  ["Künstliche Intelligenz im Unterricht", "Intelligentes tutorielles System", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "Künstliche Intelligenz", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "Large Language Model", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "Lehrtechnologie", "randthema", "randthema", "Bildungstechnologie (EdTech) allgemein; weiter Oberbegriff, nicht KI-spezifisch", "weiter Oberbegriff Bildungstechnologie (EdTech); KI nur ein Teilbereich"],
+  ["Künstliche Intelligenz im Unterricht", "Lernplattform", "randthema", "randthema", "Lernplattformen/LMS sind digitale Lernumgebungen, keine KI; Nachbarthema", "Nachbarthema: Lernplattformen bzw. LMS allgemein, keine KI"],
+  ["Künstliche Intelligenz im Unterricht", "Maschinelles Lernen", "passt", "passt", "", ""],
+  ["Künstliche Intelligenz im Unterricht", "Mediendidaktik", "randthema", "randthema", "Teildisziplin der Pädagogik zu technischen Medien im Unterricht allgemein; weiter Oberbegriff, nicht KI-spezifisch", "Oberbegriff für technische Medien im Unterricht allgemein; KI wird nicht eigens behandelt"],
+  ["Künstliche Intelligenz im Unterricht", "Medienkompetenz", "randthema", "randthema", "Medienkompetenz allgemein (Baacke); weiter Oberbegriff, KI-Kompetenz ist nur ein Teil davon", "Oberbegriff; KI-Kompetenz ist nur ein Teil der Medienkompetenz"],
+  ["Künstliche Intelligenz im Unterricht", "Neuronales Netz", "andere_bedeutung", "andere_bedeutung", "neurowissenschaftlicher Begriff (Verband biologischer Neuronen im Nervensystem), nicht das künstliche neuronale Netz der KI", "biologisches neuronales Netz der Neurowissenschaften, nicht das künstliche neuronale Netz der Informatik"],
+  ["Künstliche Intelligenz im Unterricht", "Plagiat", "randthema", "randthema", "allgemeiner Artikel zum Plagiat; berührt KI im Unterricht nur am Rand (Täuschung mit KI-Texten)", "allgemeiner Plagiatsbegriff; zum Thema gehört nur der Teilaspekt KI-erzeugter Texte"],
+  ["Künstliche Intelligenz im Unterricht", "Sprachmodell", "passt", "passt", "", ""],
+  ["Leistung (Fach: Physik)", "Arbeit (Physik)", "passt", "passt", "", ""],
+  ["Leistung (Fach: Physik)", "Blindleistung", "passt", "randthema", "", "Größe der Wechselstromtechnik (Elektrotechnik), nur am Rand des Physikthemas Leistung"],
+  ["Leistung (Fach: Physik)", "Elektrische Leistung", "passt", "passt", "", ""],
+  ["Leistung (Fach: Physik)", "Energie", "passt", "passt", "", ""],
+  ["Leistung (Fach: Physik)", "Leistung (Physik)", "passt", "passt", "", ""],
+  ["Leistung (Fach: Physik)", "Leistungsdichte", "passt", "randthema", "", "abgeleitete Größe (Leistung je Fläche, Volumen oder Masse), Nachbarbegriff"],
+  ["Leistung (Fach: Physik)", "Scheinleistung", "passt", "randthema", "", "elektrotechnische Rechengröße der Wechselstromtechnik, nur am Rand des Physikthemas Leistung"],
+  ["Leistung (Fach: Physik)", "Strahlungsleistung", "passt", "passt", "", ""],
+  ["Leistung (Fach: Physik)", "Wattstunde", "randthema", "passt", "Wattstunde ist eine Einheit der Energie, nicht der Leistung; Nachbarbegriff", ""],
+  ["Leistung (Fach: Physik)", "Wirkungsgrad", "randthema", "passt", "Wirkungsgrad als Verhältnis von Nutz- zu zugeführter Energie; Nachbarthema", ""],
+  ["Leiter (Fach: Physik)", "Elektrische Leitfähigkeit", "passt", "passt", "", ""],
+  ["Leiter (Fach: Physik)", "Halbleiter", "passt", "passt", "", ""],
+  ["Leiter (Fach: Physik)", "Isolator (Elektrotechnik)", "randthema", "randthema", "Bauteil zum Befestigen blanker Leitungen, nicht der Nichtleiter als Stoff; nur eine Anwendung am Rand", "Bauteil der Energietechnik zum Befestigen blanker Leiter, nicht der Nichtleiter als Stoff; nur eine Anwendung am Rand"],
+  ["Leiter (Fach: Physik)", "Leiter (Physik)", "passt", "passt", "", ""],
+  ["Leiter (Fach: Physik)", "Supraleiter", "passt", "passt", "", ""],
+  ["Leiter (Fach: Physik)", "Wärmeleitung", "passt", "passt", "", ""],
+  ["Lichtlehre", "Beugung (Physik)", "passt", "passt", "", ""],
+  ["Lichtlehre", "Brechung (Physik)", "passt", "passt", "", ""],
+  ["Lichtlehre", "Elektromagnetische Welle", "randthema", "passt", "elektromagnetische Wellen allgemein (Radio- bis Gammastrahlung), weiter Oberbegriff zu Licht", ""],
+  ["Lichtlehre", "Farbe", "passt", "passt", "", ""],
+  ["Lichtlehre", "Geometrische Optik", "passt", "passt", "", ""],
+  ["Lichtlehre", "Licht", "passt", "passt", "", ""],
+  ["Lichtlehre", "Lichtgeschwindigkeit", "passt", "passt", "", ""],
+  ["Lichtlehre", "Optik", "passt", "passt", "", ""],
+  ["Lichtlehre", "Photon", "passt", "passt", "", ""],
+  ["Lichtlehre", "Quantenoptik", "passt", "passt", "", ""],
+  ["Lichtlehre", "Reflexion (Physik)", "passt", "passt", "", ""],
+  ["Lichtlehre", "Visuelle Wahrnehmung", "randthema", "randthema", "Wahrnehmung und Verarbeitung in Auge und Gehirn (Biologie/Psychologie), Nachbarthema der Optik", "Wahrnehmungspsychologie und Neurobiologie des Sehens; zur Lichtlehre nur am Rand"],
+  ["Lichtlehre", "Wellenoptik", "passt", "passt", "", ""],
+  ["Lineare Funktion", "Affine Abbildung", "randthema", "randthema", "Verallgemeinerung aus Geometrie und linearer Algebra, weiter Oberbegriff", "Verallgemeinerung aus Geometrie und linearer Algebra, weit über das Schulthema hinaus"],
+  ["Lineare Funktion", "Funktion (Mathematik)", "randthema", "passt", "weiter Oberbegriff", ""],
+  ["Lineare Funktion", "Geradengleichung", "passt", "passt", "", ""],
+  ["Lineare Funktion", "Koordinatensystem", "randthema", "randthema", "allgemeines Hilfsmittel und Vorwissen, nicht spezifisch für lineare Funktionen", "allgemeines Hilfsmittel für Graphen, nicht spezifisch für lineare Funktionen"],
+  ["Lineare Funktion", "Lineare Abbildung", "randthema", "randthema", "Abbildung zwischen Vektorräumen, Verallgemeinerung aus der linearen Algebra", "Begriff der linearen Algebra (Vektorräume); Verallgemeinerung, f(x)=mx+n mit n ungleich 0 ist keine lineare Abbildung"],
+  ["Lineare Funktion", "Lineare Algebra", "randthema", "randthema", "Teilgebiet über Vektorräume und Matrizen, nur entfernt verwandt", "weites Teilgebiet über Vektorräume; Oberbegriff ohne direkten Bezug zum Schulthema"],
+  ["Lineare Funktion", "Lineare Funktion", "passt", "passt", "", ""],
+  ["Lineare Funktion", "Lineare Gleichung", "randthema", "randthema", "Nachbarthema Gleichungslehre, nicht die Funktion selbst", "Nachbarthema Gleichungslehre; berührt die lineare Funktion nur über Nullstellen"],
+  ["Lineare Funktion", "Lineares Gleichungssystem", "randthema", "randthema", "Nachbarthema Gleichungssysteme, nur über die grafische Lösung verbunden", "Nachbarthema; berührt die lineare Funktion nur über die zeichnerische Lösung"],
+  ["Lineare Funktion", "Proportionalität", "passt", "passt", "", ""],
+  ["Lineare Funktion", "Steigung", "passt", "passt", "", ""],
+  ["Lineare Funktionen", "Affine Abbildung", "randthema", "randthema", "Verallgemeinerung in Geometrie und linearer Algebra (affine Räume), weit über die Schulfunktion hinaus", "Verallgemeinerung in Geometrie und linearer Algebra (affine Räume), weit über die Schulfunktion hinaus"],
+  ["Lineare Funktionen", "Geradengleichung", "passt", "passt", "", ""],
+  ["Lineare Funktionen", "Koordinatensystem", "passt", "passt", "", ""],
+  ["Lineare Funktionen", "Lineare Abbildung", "randthema", "randthema", "Vektorraumbegriff der linearen Algebra; nur Verallgemeinerung, f(x) = mx + n ist dort gar nicht linear", "Begriff der linearen Algebra (Vektorraumhomomorphismus), weiter Oberbegriff; dort sind nur Ursprungsgeraden linear"],
+  ["Lineare Funktionen", "Lineare Funktion", "passt", "passt", "", ""],
+  ["Lineare Funktionen", "Lineare Gleichung", "passt", "passt", "", ""],
+  ["Lineare Funktionen", "Lineare Regression", "randthema", "randthema", "statistisches Verfahren; nur eine Anwendung linearer Funktionen (Ausgleichsgerade)", "statistisches Verfahren, entfernte Anwendung linearer Funktionen"],
+  ["Lineare Funktionen", "Lineares Gleichungssystem", "randthema", "randthema", "Nachbarthema; berührt lineare Funktionen nur über den Schnittpunkt zweier Geraden", "Nachbarthema der linearen Algebra; nur der Schnittpunkt zweier Geraden berührt lineare Funktionen"],
+  ["Lineare Funktionen", "Proportionalität", "passt", "passt", "", ""],
+  ["Lineare Funktionen", "Steigung", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Abbildungsfehler", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Asphärische Linse", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Brennweite", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Dünne Linse", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Fresnel-Linse", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Kontaktlinse", "randthema", "randthema", "Sehhilfe; der Artikel behandelt das Medizinprodukt, für die Physik der Linse nur eine entfernte Anwendung", "Sehhilfe als Produkt (Arten, Tragen); Linsenoptik nur am Rand"],
+  ["Linse (Fach: Physik)", "Linse (Auge)", "randthema", "randthema", "Augenlinse aus der Biologie; als Sammellinse nur eine Anwendung am Rand der Optik", "Augenlinse aus der Anatomie; als Sammellinse nur Anwendungsbeispiel"],
+  ["Linse (Fach: Physik)", "Linse (Optik)", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Linsengleichung", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Lupe", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Optische Abbildung", "passt", "passt", "", ""],
+  ["Linse (Fach: Physik)", "Sammellinse", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Dissoziation (Chemie)", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Elektrolyt", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Fällungsreaktion", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Konzentration (Chemie)", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Löslichkeit", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Löslichkeitsgleichgewicht", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Lösung (Chemie)", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Lösungsenthalpie", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Lösungsmittel", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Massenwirkungsgesetz", "randthema", "randthema", "allgemeines Gesetz des chemischen Gleichgewichts; zu Lösungen nur über das Löslichkeitsprodukt", "chemisches Gleichgewicht allgemein; mit Lösungen nur über das Löslichkeitsprodukt verbunden"],
+  ["Lösung (Fach: Chemie)", "Redoxreaktion", "passt_nicht", "passt_nicht", "eigener Reaktionstyp (Elektronenübertragung), gehört nicht zum Thema Lösung", "Elektronenübertragungsreaktion; gehört nicht zum Thema Lösung"],
+  ["Lösung (Fach: Chemie)", "Solvatisierung", "passt", "passt", "", ""],
+  ["Lösung (Fach: Chemie)", "Säure-Base-Reaktion", "randthema", "randthema", "eigener Reaktionstyp (Protonenübertragung); berührt Lösungen nur über saure und alkalische Lösungen", "Protonenübertragung; Nachbarthema, berührt Lösungen nur über saure und basische Lösungen"],
+  ["Lösung (Fach: Chemie)", "Wässrige Lösung", "passt", "passt", "", ""],
+  ["Masse (Fach: Physik)", "Higgs-Mechanismus", "passt", "passt", "", ""],
+  ["Masse (Fach: Physik)", "Masse (Physik)", "passt", "passt", "", ""],
+  ["Masse (Fach: Physik)", "Massendefekt", "passt", "passt", "", ""],
+  ["Masse (Fach: Physik)", "Massenkonzentration", "randthema", "randthema", "Chemische Gehaltsgröße für Mischungen; nur am Rand zur Masse", "chemische Gehaltsgröße für Stoffgemische; entfernte Anwendung"],
+  ["Masse (Fach: Physik)", "Massenmittelpunkt", "randthema", "randthema", "Schwerpunkt eines Körpers; Nachbarthema der Mechanik", "Schwerpunkt eines Körpers; Nachbarbegriff der Mechanik"],
+  ["Masse (Fach: Physik)", "Relativistische Massenzunahme", "passt", "passt", "", ""],
+  ["Masse (Fach: Physik)", "Schwerpunktsenergie", "randthema", "randthema", "Schwerpunktsenergie von Stoßprozessen in der Teilchenphysik; entfernte Anwendung", "Stoßenergie im Schwerpunktsystem in der Teilchenphysik; entfernte Anwendung"],
+  ["Masse (Fach: Physik)", "Äquivalenz von Masse und Energie", "passt", "passt", "", ""],
+  ["Maus (Fach: Informatik)", "Computermaus", "passt", "passt", "", ""],
+  ["Maus (Fach: Informatik)", "Grafiktablett", "randthema", "randthema", "anderes Zeigegerät, Nachbarthema", "anderes Zeigegerät, Nachbarthema zur Maus"],
+  ["Maus (Fach: Informatik)", "Jog Dial", "passt", "passt", "", ""],
+  ["Maus (Fach: Informatik)", "Mauszeiger", "passt", "passt", "", ""],
+  ["Maus (Fach: Informatik)", "Optische Maus", "passt", "passt", "", ""],
+  ["Maus (Fach: Informatik)", "Touchpad", "randthema", "randthema", "Mausersatz am Notebook, Nachbarthema", "Mausersatz in Notebooks, Nachbarthema"],
+  ["Maus (Fach: Informatik)", "Trackball", "randthema", "randthema", "eigenes Zeigegerät neben der Maus, Nachbarthema", "anderes Zeigegerät (Rollkugel), Nachbarthema zur Maus"],
+  ["Menge (Fach: Mathematik)", "Element (Mathematik)", "passt", "passt", "", ""],
+  ["Menge (Fach: Mathematik)", "Kartesisches Produkt", "passt", "passt", "", ""],
+  ["Menge (Fach: Mathematik)", "Komplement (Mengenlehre)", "passt", "passt", "", ""],
+  ["Menge (Fach: Mathematik)", "Menge (Mathematik)", "passt", "passt", "", ""],
+  ["Menge (Fach: Mathematik)", "Mengenlehre", "passt", "passt", "", ""],
+  ["Menge (Fach: Mathematik)", "Mächtigkeit (Mathematik)", "passt", "passt", "", ""],
+  ["Menge (Fach: Mathematik)", "Potenzmenge", "passt", "passt", "", ""],
+  ["Menge (Fach: Mathematik)", "Teilmenge", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Ethernet", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Internet", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Local Area Network", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Netzwerkprotokoll", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "OSI-Modell", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Rechnernetz", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Router", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Routing", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "TCP/IP-Referenzmodell", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Topologie (Rechnernetz)", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Wide Area Network", "passt", "passt", "", ""],
+  ["Netzwerk (Fach: Informatik)", "Wireless Local Area Network", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Bindebogen", "passt", "randthema", "", "Artikulationszeichen (Legato), Nachbarthema der Notenschrift"],
+  ["Note (Fach: Musik)", "Musikalien", "randthema", "randthema", "Notendrucke als Druckerzeugnis und Handelsware, nicht die Note als Zeichen; Nachbarthema", "Notendrucke und Musikhandelswaren, nicht die Note als Zeichen"],
+  ["Note (Fach: Musik)", "Notation (Musik)", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Note (Musik)", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Notenschlüssel", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Notensystem (Musik)", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Notenwert", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Punktierung (Musik)", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Takt (Musik)", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Tonhöhe", "passt", "passt", "", ""],
+  ["Note (Fach: Musik)", "Vorzeichen (Musik)", "passt", "passt", "", ""],
+  ["OER-Förderungen", "Bildung für nachhaltige Entwicklung", "passt_nicht", "passt_nicht", "UN-Bildungskampagne zur Nachhaltigkeit; hat mit der Förderung offener Bildungsmaterialien nichts zu tun", "UN-Bildungskampagne zur Nachhaltigkeit; mit der Förderung freier Bildungsmaterialien hat sie nichts zu tun"],
+  ["OER-Förderungen", "Creative Commons", "randthema", "randthema", "Lizenzorganisation; Grundlage offener Lizenzen, zur OER-Förderung selbst nur am Rand", "Lizenzorganisation; offene Lizenzen sind Voraussetzung von OER, die Förderung selbst behandelt der Artikel nicht"],
+  ["OER-Förderungen", "Open Educational Resources", "passt", "passt", "", ""],
+  ["Optik", "Beugung (Physik)", "passt", "passt", "", ""],
+  ["Optik", "Brechung (Physik)", "passt", "passt", "", ""],
+  ["Optik", "Elektromagnetische Welle", "passt", "passt", "", ""],
+  ["Optik", "Geometrische Optik", "passt", "passt", "", ""],
+  ["Optik", "Interferenz (Physik)", "passt", "passt", "", ""],
+  ["Optik", "Licht", "passt", "passt", "", ""],
+  ["Optik", "Linse (Optik)", "passt", "passt", "", ""],
+  ["Optik", "Optik", "passt", "passt", "", ""],
+  ["Optik", "Polarisation", "passt", "passt", "", ""],
+  ["Optik", "Quantenoptik", "passt", "passt", "", ""],
+  ["Optik", "Reflexion (Physik)", "passt", "passt", "", ""],
+  ["Optik", "Spektroskopie", "randthema", "randthema", "Messverfahren, die über die Optik hinausreichen (auch Zerlegung nach Masse); Anwendung, Nachbargebiet", "Gruppe von Messmethoden der Spektralzerlegung, reicht über die Optik hinaus; Anwendung bzw. Nachbargebiet"],
+  ["Optik", "Spiegel", "passt", "passt", "", ""],
+  ["Optik", "Visuelle Wahrnehmung", "randthema", "randthema", "Wahrnehmung über Auge und Gehirn (Biologie, Psychologie); Nachbarthema der Optik", "Wahrnehmung über Auge und Gehirn (Physiologie, Psychologie); Nachbarthema der Optik"],
+  ["Optik", "Wellenoptik", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Beugung (Physik)", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Brechung (Physik)", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Elektromagnetisches Spektrum", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Geometrische Optik", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Interferenz (Physik)", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Licht", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Linse (Optik)", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Optik", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Quantenoptik", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Reflexion (Physik)", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Spiegel", "passt", "passt", "", ""],
+  ["Optik (Fach: Physik)", "Wellenoptik", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "Aufklärung", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "Charles de Secondat, Baron de Montesquieu", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "David Hume", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "Denis Diderot", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "Gotthold Ephraim Lessing", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "Immanuel Kant", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "Jean-Jacques Rousseau", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "John Locke", "passt", "passt", "", ""],
+  ["Philosophen der Aufklärung", "Voltaire", "passt", "passt", "", ""],
+  ["Photosynthese", "C4-Pflanze", "passt", "passt", "", ""],
+  ["Photosynthese", "Calvin-Zyklus", "passt", "passt", "", ""],
+  ["Photosynthese", "Chlorophylle", "passt", "passt", "", ""],
+  ["Photosynthese", "Chloroplast", "passt", "passt", "", ""],
+  ["Photosynthese", "Crassulaceen-Säurestoffwechsel", "passt", "passt", "", ""],
+  ["Photosynthese", "Photosynthese", "passt", "passt", "", ""],
+  ["Photosynthese", "Photosystem", "passt", "passt", "", ""],
+  ["Photosynthese bei Pflanzen", "C4-Pflanze", "passt", "passt", "", ""],
+  ["Photosynthese bei Pflanzen", "Calvin-Zyklus", "passt", "passt", "", ""],
+  ["Photosynthese bei Pflanzen", "Chlorophylle", "passt", "passt", "", ""],
+  ["Photosynthese bei Pflanzen", "Chloroplast", "passt", "passt", "", ""],
+  ["Photosynthese bei Pflanzen", "Crassulaceen-Säurestoffwechsel", "passt", "passt", "", ""],
+  ["Photosynthese bei Pflanzen", "Photorespiration", "passt", "passt", "", ""],
+  ["Photosynthese bei Pflanzen", "Photosynthese", "passt", "passt", "", ""],
+  ["Photosynthese bei Pflanzen", "Photosystem", "passt", "passt", "", ""],
+  ["Plattentektonik", "Erdbeben", "passt", "passt", "", ""],
+  ["Plattentektonik", "Kontinentaldrift", "passt", "passt", "", ""],
+  ["Plattentektonik", "Mittelozeanischer Rücken", "passt", "passt", "", ""],
+  ["Plattentektonik", "Ozeanbodenspreizung", "passt", "passt", "", ""],
+  ["Plattentektonik", "Plattentektonik", "passt", "passt", "", ""],
+  ["Plattentektonik", "Subduktion", "passt", "passt", "", ""],
+  ["Plattentektonik", "Supervulkan", "randthema", "randthema", "besondere Vulkanart (Caldera, VEI 8), mit der Plattentektonik nur mittelbar verbunden", "Vulkantyp nach der Größe der Ausbrüche; mit der Plattentektonik nur mittelbar verbunden"],
+  ["Plattentektonik", "Transformstörung", "passt", "passt", "", ""],
+  ["Plattentektonik", "Wilson-Zyklus", "passt", "passt", "", ""],
+  ["Programmiersprache", "Compiler", "passt", "passt", "", ""],
+  ["Programmiersprache", "Funktionale Programmierung", "passt", "passt", "", ""],
+  ["Programmiersprache", "Interpreter", "passt", "passt", "", ""],
+  ["Programmiersprache", "Liste von Programmiersprachen", "passt", "passt", "", ""],
+  ["Programmiersprache", "Maschinensprache", "passt", "passt", "", ""],
+  ["Programmiersprache", "Objektorientierte Programmierung", "passt", "passt", "", ""],
+  ["Programmiersprache", "Programmierparadigma", "passt", "passt", "", ""],
+  ["Programmiersprache", "Programmierschnittstelle", "randthema", "randthema", "Software-Schnittstelle (API); Nachbarthema der Programmierung, nicht der Programmiersprachen", "Software-Schnittstelle (API), Nachbarthema aus der Softwaretechnik, keine Programmiersprache"],
+  ["Programmiersprache", "Programmiersprache", "passt", "passt", "", ""],
+  ["Programmiersprache", "Skriptsprache", "passt", "passt", "", ""],
+  ["Programmiersprache", "Typisierung (Informatik)", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Biedermeier", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Deutscher Bund", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Heilige Allianz", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Julirevolution von 1830", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Karlsbader Beschlüsse", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Klemens Wenzel Lothar von Metternich", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Metternichsches System", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Restauration (Geschichte)", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Vormärz", "passt", "passt", "", ""],
+  ["Restauration (Fach: Geschichte)", "Wiener Kongress", "passt", "passt", "", ""],
+  ["Römisches Reich", "Byzantinisches Reich", "randthema", "passt", "Ostrom bis 1453, überwiegend mittelalterliches Byzanz; nur Teilbezug zum Römischen Reich", ""],
+  ["Römisches Reich", "Dominat", "passt", "passt", "", ""],
+  ["Römisches Reich", "Prinzipat", "passt", "passt", "", ""],
+  ["Römisches Reich", "Romanisierung", "passt", "passt", "", ""],
+  ["Römisches Reich", "Römische Kaiserzeit", "passt", "passt", "", ""],
+  ["Römisches Reich", "Römische Legion", "passt", "passt", "", ""],
+  ["Römisches Reich", "Römische Provinz", "passt", "passt", "", ""],
+  ["Römisches Reich", "Römische Republik", "passt", "passt", "", ""],
+  ["Römisches Reich", "Römisches Recht", "passt", "passt", "", ""],
+  ["Römisches Reich", "Römisches Reich", "passt", "passt", "", ""],
+  ["Römisches Reich", "Spätantike", "passt", "passt", "", ""],
+  ["Römisches Reich", "Weströmisches Reich", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Deklarativsatz", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Fragesatz", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Hauptsatz (Grammatik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Hauptsatzreihe", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Imperativ (Modus)", "randthema", "passt", "behandelt den Verbmodus Imperativ (Wortlehre), nicht die Satzart Aufforderungssatz; nahes Nachbarthema", ""],
+  ["Satz (Fach: Deutsch)", "Nebensatz", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Satz (Grammatik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Satzart", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Satzgefüge", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Satzglied", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Satzzeichen", "passt", "passt", "", ""],
+  ["Satz (Fach: Deutsch)", "Syntax", "passt", "passt", "", ""],
+  ["Satz (Fach: Mathematik)", "Aussage (Logik)", "passt", "randthema", "", "weiter Oberbegriff aus der Logik (jede wahrheitsfähige Aussage)"],
+  ["Satz (Fach: Mathematik)", "Axiom", "passt", "passt", "", ""],
+  ["Satz (Fach: Mathematik)", "Beweis (Mathematik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Mathematik)", "Hilfssatz", "passt", "passt", "", ""],
+  ["Satz (Fach: Mathematik)", "Kontraposition", "randthema", "randthema", "logische Schlussregel; berührt Sätze nur über Umformung und indirekten Beweis", "logischer Umkehrschluss einer Implikation bzw. Beweistechnik; Nachbarthema aus der Logik"],
+  ["Satz (Fach: Mathematik)", "Korollar", "passt", "passt", "", ""],
+  ["Satz (Fach: Mathematik)", "Reductio ad absurdum", "randthema", "randthema", "Beweistechnik der Logik; zum Begriff Satz nur ein Nachbarthema", "Beweistechnik der Logik (Widerspruchsbeweis); Nachbarthema zum Begriff des Satzes"],
+  ["Satz (Fach: Mathematik)", "Satz (Mathematik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Mathematik)", "Theorem", "passt", "passt", "", ""],
+  ["Satz (Fach: Mathematik)", "Vermutung (Mathematik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Mathematik)", "Vollständige Induktion", "randthema", "randthema", "einzelnes Beweisverfahren; gehört zum Beweisen, zum Begriff Satz nur am Rand", "Beweisverfahren; Nachbarthema zum Begriff des Satzes"],
+  ["Satz (Fach: Musik)", "Fuge (Musik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Harmonielehre", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Homophonie (Musik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Kanon (Musik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Kontrapunkt", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Liedform", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Musiktheorie", "randthema", "randthema", "weiter Oberbegriff (ganze Disziplin), Satz nur eines ihrer Teilgebiete", "weiter Oberbegriff (ganze Musiktheorie: Harmonielehre, Kontrapunkt, Formenlehre, Analyse)"],
+  ["Satz (Fach: Musik)", "Polyphonie", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Rondo (Musik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Sonatensatzform", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Tonsatz", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Variation (Musik)", "passt", "passt", "", ""],
+  ["Satz (Fach: Musik)", "Vierstimmiger Satz", "passt", "passt", "", ""],
+  ["Satz des Pythagoras", "Pythagoras", "randthema", "randthema", "Person, Namensgeber des Satzes; nur geschichtlicher Hintergrund", "Biografie des Namensgebers; zum Satz nur historischer Hintergrund"],
+  ["Satz des Pythagoras", "Pythagoras-Baum", "randthema", "randthema", "Fraktal aus der Satzfigur, entfernte Anwendung", "Fraktal; entfernte Anwendung des Satzes"],
+  ["Satz des Pythagoras", "Pythagoreisches Komma", "andere_bedeutung", "andere_bedeutung", "Musikintervall der pythagoreischen Stimmung; nur namensverwandt, Begriff der Musik statt der Geometrie", "Intervall der Musiktheorie (pythagoreische Stimmung); mit dem Satz verbindet es nur der Name"],
+  ["Satz des Pythagoras", "Pythagoreisches Tripel", "passt", "passt", "", ""],
+  ["Satz des Pythagoras", "Satz des Pythagoras", "passt", "passt", "", ""],
+  ["Satz des Pythagoras", "Satzgruppe des Pythagoras", "passt", "passt", "", ""],
+  ["Schleife (Fach: Informatik)", "Endlosschleife (Programmierung)", "passt", "passt", "", ""],
+  ["Schleife (Fach: Informatik)", "For-Schleife", "passt", "passt", "", ""],
+  ["Schleife (Fach: Informatik)", "Kontrollstruktur", "passt", "passt", "", ""],
+  ["Schleife (Fach: Informatik)", "Programmiersprache", "randthema", "randthema", "weiter Oberbegriff", "weiter Oberbegriff"],
+  ["Schleife (Fach: Informatik)", "Rekursion", "randthema", "randthema", "allgemeiner Begriff Rekursion, Nachbarkonzept zur Schleife", "Nachbarthema (Alternative zur Iteration), allgemeiner Begriff"],
+  ["Schleife (Fach: Informatik)", "Schleife (Programmierung)", "passt", "passt", "", ""],
+  ["Sinfonie", "Orchester", "passt", "passt", "", ""],
+  ["Sinfonie", "Sinfonie", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Elektrische Spannung", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Elektrisches Feld", "passt", "randthema", "", "Feldbegriff der Elektrodynamik; Nachbarbegriff"],
+  ["Spannung (Fach: Physik)", "Elektrisches Potential", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Elektrochemische Spannungsreihe", "randthema", "randthema", "Redoxreihe der Elektrochemie; Nachbarthema aus der Chemie", "Elektrochemie (Redoxpaare nach Elektrodenpotential); Nachbarthema"],
+  ["Spannung (Fach: Physik)", "Elektromagnetische Induktion", "passt", "randthema", "", "Induktion ist ein eigenes Nachbarthema; die Induktionsspannung ist nur ein Teil davon"],
+  ["Spannung (Fach: Physik)", "Elektromotorische Kraft", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Galvanische Zelle", "passt", "randthema", "", "elektrochemische Vorrichtung; Nachbarthema Chemie, nur als Beispiel einer Spannungsquelle"],
+  ["Spannung (Fach: Physik)", "Gleichspannung", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Hochspannung", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Klemmenspannung", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Mechanische Spannung", "andere_bedeutung", "andere_bedeutung", "Mechanische Spannung (Beanspruchung, stress), nicht die elektrische Spannung", "mechanische Beanspruchung eines Körpers (stress), nicht die elektrische Spannung"],
+  ["Spannung (Fach: Physik)", "Oberflächenspannung", "andere_bedeutung", "andere_bedeutung", "Oberflächenspannung von Flüssigkeiten, nicht die elektrische Spannung", "Grenzflächenerscheinung bei Flüssigkeiten, nicht die elektrische Spannung"],
+  ["Spannung (Fach: Physik)", "Spannungsmessgerät", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Spannungsquelle", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Volt", "passt", "passt", "", ""],
+  ["Spannung (Fach: Physik)", "Wechselspannung", "passt", "passt", "", ""],
+  ["Stamm (Fach: Biologie)", "Abteilung (Biologie)", "passt", "passt", "", ""],
+  ["Stamm (Fach: Biologie)", "Bast (Pflanze)", "passt_nicht", "passt", "Gewebe des Baumstamms, gehört nicht zur Rangstufe Stamm", ""],
+  ["Stamm (Fach: Biologie)", "Baum", "andere_bedeutung", "randthema", "Baumstamm im botanischen Sinn statt Rangstufe Stamm der Systematik", "Artikel über den ganzen Baum (weiter Oberbegriff), der Stamm ist nur ein Teil davon"],
+  ["Stamm (Fach: Biologie)", "Holz", "passt_nicht", "passt", "Holz gehört zum Baumstamm; Thema gelesen als Rangstufe Stamm (Phylum) der Systematik", ""],
+  ["Stamm (Fach: Biologie)", "Klasse (Biologie)", "randthema", "randthema", "benachbarte Rangstufe unterhalb des Stammes", "Nachbar-Rangstufe unterhalb des Stammes, nicht der Stamm selbst"],
+  ["Stamm (Fach: Biologie)", "Leitbündel", "passt_nicht", "passt", "Pflanzenanatomie, gehört nicht zur Rangstufe Stamm", ""],
+  ["Stamm (Fach: Biologie)", "Ordnung (Biologie)", "randthema", "randthema", "andere, entferntere Rangstufe der Systematik", "andere Rangstufe, zwei Stufen unter dem Stamm"],
+  ["Stamm (Fach: Biologie)", "Phylogenese", "randthema", "randthema", "Stammesgeschichte, Nachbarthema der Systematik", "Stammesgeschichte (Phylogenie), Nachbarthema zur Rangstufe Stamm"],
+  ["Stamm (Fach: Biologie)", "Reich (Biologie)", "randthema", "randthema", "benachbarte Rangstufe oberhalb des Stammes", "Nachbar-Rangstufe oberhalb des Stammes, nicht der Stamm selbst"],
+  ["Stamm (Fach: Biologie)", "Rhizom", "passt_nicht", "randthema", "botanisch (Erdspross), gehört nicht zur Rangstufe Stamm", "unterirdische Sprossachse (Erdspross), kein Stamm; Nachbarthema"],
+  ["Stamm (Fach: Biologie)", "Sprossachse", "andere_bedeutung", "passt", "Sprossachse = Stamm/Stängel im botanischen Sinn, nicht die Rangstufe", ""],
+  ["Stamm (Fach: Biologie)", "Stamm (Biologie)", "passt", "passt", "", ""],
+  ["Stamm (Fach: Biologie)", "Systematik (Biologie)", "passt", "passt", "", ""],
+  ["Stamm (Fach: Biologie)", "Taxon", "passt", "passt", "", ""],
+  ["Stamm (Fach: Biologie)", "Wurzel (Pflanze)", "passt_nicht", "randthema", "Pflanzenorgan, gehört nicht zur Rangstufe Stamm", "Nachbarorgan der Sprossachse, nicht der Stamm"],
+  ["Strom", "Bedarf an elektrischer Energie", "passt", "passt", "", ""],
+  ["Strom", "Elektrische Energie", "passt", "passt", "", ""],
+  ["Strom", "Elektrische Leistung", "passt", "passt", "", ""],
+  ["Strom", "Elektrische Spannung", "passt", "passt", "", ""],
+  ["Strom", "Elektrische Stromstärke", "passt", "passt", "", ""],
+  ["Strom", "Elektrischer Strom", "passt", "passt", "", ""],
+  ["Strom", "Elektrischer Widerstand", "passt", "passt", "", ""],
+  ["Strom", "Gleichstrom", "passt", "passt", "", ""],
+  ["Strom", "Meeresströmung", "andere_bedeutung", "andere_bedeutung", "Strömung des Meerwassers (Meeresstrom), nicht der elektrische Strom", "Wasserbewegung im Meer (Strom im Sinn von Strömung), nicht der elektrische Strom"],
+  ["Strom", "Ohmsches Gesetz", "passt", "passt", "", ""],
+  ["Strom", "Strom (Gewässerart)", "andere_bedeutung", "andere_bedeutung", "Strom als großer Fluss (Gewässer), nicht der elektrische Strom", "großer Fluss (Gewässerart), nicht der elektrische Strom"],
+  ["Strom", "Stromausfall", "randthema", "randthema", "Störung der Stromversorgung im Netz; nur eine entfernte Anwendung am Rand des Themas", "Störung der Stromversorgung im Netz; nur Randaspekt der Energieversorgung, nicht des Stroms selbst"],
+  ["Strom", "Stromerzeugung", "passt", "passt", "", ""],
+  ["Strom", "Stromkreis", "passt", "passt", "", ""],
+  ["Strom", "Stromnetz", "passt", "passt", "", ""],
+  ["Strom", "Wechselstrom", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Einzugsgebiet", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Fluss", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Flussdelta", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Flusssystem", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Gezeitenströmung", "andere_bedeutung", "randthema", "Strom im Sinne von Strömung: Gezeitenströmung in Küstenmeeren, kein Strom als großer Fluss", "Gezeitenströmung an Küsten (Strom im Sinn von Strömung), kein großer Fluss; nur Nachbarthema"],
+  ["Strom (Fach: Geografie)", "Liste der längsten Flüsse der Erde", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Mündung (Gewässer)", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Strom (Gewässerart)", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Stromschnelle", "passt", "passt", "", ""],
+  ["Strom (Fach: Geografie)", "Stromtal", "andere_bedeutung", "andere_bedeutung", "ehemaliges Naturschutzgebiet in der Uckermark am Fluss namens Strom (ein Ort), kein geografischer Fachbegriff", "ehemaliges Naturschutzgebiet in der Uckermark am Flüsschen Strom, nicht das Tal eines Stroms"],
+  ["Strom (Fach: Geografie)", "Wasserfall", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Elektrische Energie", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Elektrische Leistung", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Elektrische Spannung", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Elektrische Stromstärke", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Elektrischer Strom", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Elektrischer Widerstand", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Gleichstrom", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Ohmsches Gesetz", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Stromkreis", "passt", "passt", "", ""],
+  ["Strom (Fach: Physik)", "Wechselstrom", "passt", "passt", "", ""],
+  ["Säure", "Aminosäuren", "randthema", "randthema", "Bausteine der Proteine (Biochemie); als Ampholyte nur am Rand des Säurethemas", "Bausteine der Proteine (Biochemie); die Säuregruppe ist nur ein Merkmal"],
+  ["Säure", "Carbonsäuren", "passt", "passt", "", ""],
+  ["Säure", "Essigsäure", "passt", "passt", "", ""],
+  ["Säure", "Fettsäuren", "randthema", "randthema", "Carbonsäuren der Fette; der Artikel gehört vor allem zu Fetten und Ernährung, der Säurecharakter nur am Rand", "langkettige Carbonsäuren als Bausteine der Fette; der Säurecharakter steht nicht im Mittelpunkt"],
+  ["Säure", "Lewis-Säure-Base-Konzept", "passt", "passt", "", ""],
+  ["Säure", "Mineralsäuren", "passt", "passt", "", ""],
+  ["Säure", "Nukleinsäuren", "passt_nicht", "randthema", "Erbsubstanz DNA/RNA, ein Thema der Biologie; ihr Säurecharakter spielt für das Thema Säure keine Rolle", "Biomoleküle der Erbinformation; ihr Säurecharakter ist nur Namensgeber, nicht Gegenstand"],
+  ["Säure", "Organische Säuren", "passt", "passt", "", ""],
+  ["Säure", "Salpetersäure", "passt", "passt", "", ""],
+  ["Säure", "Salzsäure", "passt", "passt", "", ""],
+  ["Säure", "Saurer Regen", "passt", "passt", "", ""],
+  ["Säure", "Schwache Säuren", "passt", "passt", "", ""],
+  ["Säure", "Schwefelsäure", "passt", "passt", "", ""],
+  ["Säure", "Starke Säuren", "passt", "passt", "", ""],
+  ["Säure", "Säure-Base-Konzepte", "passt", "passt", "", ""],
+  ["Säure", "Säure-Base-Reaktion", "passt", "passt", "", ""],
+  ["Säure", "Säurekonstante", "passt", "passt", "", ""],
+  ["Säure", "Säuren", "passt", "passt", "", ""],
+  ["Säure-Base-Konzepte", "Basen (Chemie)", "passt", "passt", "", ""],
+  ["Säure-Base-Konzepte", "HSAB-Konzept", "passt", "passt", "", ""],
+  ["Säure-Base-Konzepte", "Indikator (Chemie)", "randthema", "randthema", "allgemeiner Artikel über Indikatoren; Säure-Base-Indikatoren nur als Anwendung am Rand", "allgemeiner Artikel über Indikatoren in der Chemie; Anwendung, Nachbarthema der Säure-Base-Konzepte"],
+  ["Säure-Base-Konzepte", "Lewis-Säure-Base-Konzept", "passt", "passt", "", ""],
+  ["Säure-Base-Konzepte", "PH-Wert", "passt", "passt", "", ""],
+  ["Säure-Base-Konzepte", "Säure-Base-Konzepte", "passt", "passt", "", ""],
+  ["Säure-Base-Konzepte", "Säure-Base-Reaktion", "passt", "passt", "", ""],
+  ["Säure-Base-Konzepte", "Säuren", "passt", "passt", "", ""],
+  ["Takt (Fach: Musik)", "Metrum (Musik)", "passt", "passt", "", ""],
+  ["Takt (Fach: Musik)", "Polymetrik", "passt", "passt", "", ""],
+  ["Takt (Fach: Musik)", "Synkope (Musik)", "passt", "passt", "", ""],
+  ["Takt (Fach: Musik)", "Takt (Musik)", "passt", "passt", "", ""],
+  ["Takt (Fach: Musik)", "Taktstrich", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Albedo", "passt", "randthema", "", "Rückstrahlvermögen von Oberflächen; Nachbarbegriff im Strahlungshaushalt"],
+  ["Treibhauseffekt", "Distickstoffmonoxid", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Globale Erwärmung", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Klimasensitivität", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Klimawandel", "randthema", "randthema", "Klimawandel allgemein (auch natürlich, auch andere Planeten); weiter Oberbegriff", "Klimaänderungen allgemein, auch natürliche; weiter Oberbegriff"],
+  ["Treibhauseffekt", "Kohlenstoffdioxid", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Methan", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Strahlungshaushalt der Erde", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Treibhauseffekt", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Treibhausgas", "passt", "passt", "", ""],
+  ["Treibhauseffekt", "Wasserdampf", "passt", "passt", "", ""],
+  ["Ursachen der Französischen Revolution", "Amerikanische Revolution", "randthema", "passt", "eigenes Ereignis in Nordamerika; für die Ursachen der Französischen Revolution nur als Vorbild am Rand", ""],
+  ["Ursachen der Französischen Revolution", "Amerikanischer Unabhängigkeitskrieg", "randthema", "passt", "Krieg in Nordamerika; für die Ursachen nur über Frankreichs Kriegsschulden und als Vorbild am Rand", ""],
+  ["Ursachen der Französischen Revolution", "Ancien Régime", "passt", "passt", "", ""],
+  ["Ursachen der Französischen Revolution", "Aufklärung", "passt", "passt", "", ""],
+  ["Ursachen der Französischen Revolution", "Ernte", "passt_nicht", "passt_nicht", "allgemeiner Artikel über landwirtschaftliche Erntearbeit; die Missernten vor 1789 als Ursache sind nicht sein Gegenstand", "allgemeiner Landwirtschaftsartikel über Erntearbeiten; die Missernten vor 1789 als Ursache behandelt er nicht"],
+  ["Ursachen der Französischen Revolution", "Französische Revolution", "passt", "passt", "", ""],
+  ["Ursachen der Französischen Revolution", "Generalstände von 1789", "passt", "passt", "", ""],
+  ["Ursachen der Französischen Revolution", "Steuersubvention", "andere_bedeutung", "andere_bedeutung", "moderner finanzpolitischer Begriff (Steuervergünstigung als Lenkungsinstrument), nicht die Steuerfreiheit von Adel und Klerus im Ancien Régime", "moderner finanzwissenschaftlicher Begriff (Steuervergünstigung als Politikinstrument), nicht die Steuerfreiheit von Klerus und Adel im Ancien Régime"],
+  ["Ursachen der Französischen Revolution", "Ständegesellschaft", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Attentat von Sarajevo", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Bosnische Annexionskrise", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Bündnispolitik Otto von Bismarcks", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Erste Marokkokrise", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Imperialismus", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Julikrise", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Militarismus", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Nationalismus", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Schlieffen-Plan", "passt", "randthema", "", "Kriegsplan für den Kriegsbeginn, eher Kriegsverlauf als Ursache; nur am Rand (Eskalation)"],
+  ["Ursachen des Ersten Weltkriegs", "Weltpolitik", "passt", "passt", "", ""],
+  ["Ursachen des Ersten Weltkriegs", "Wettrüsten", "passt", "passt", "", ""],
+  ["Virus (Fach: Informatik)", "Antivirenprogramm", "passt", "passt", "", ""],
+  ["Virus (Fach: Informatik)", "Bootvirus", "passt", "passt", "", ""],
+  ["Virus (Fach: Informatik)", "Computervirus", "passt", "passt", "", ""],
+  ["Virus (Fach: Informatik)", "Computerwurm", "randthema", "randthema", "eigene Art von Schadsoftware, verbreitet sich ohne Wirtsdatei; Nachbarthema zur Abgrenzung", "eigene Art von Schadprogramm, verbreitet sich ohne Wirtsdatei; Nachbarthema zur Abgrenzung vom Virus"],
+  ["Virus (Fach: Informatik)", "Informationssicherheit", "randthema", "randthema", "Informationssicherheit allgemein (Schutzziele), weiter Oberbegriff", "Informationssicherheit allgemein; weiter Oberbegriff"],
+  ["Virus (Fach: Informatik)", "Makrovirus", "passt", "passt", "", ""],
+  ["Virus (Fach: Informatik)", "Ransomware", "randthema", "randthema", "Erpressungssoftware, eigene Art von Schadsoftware, kein Virus", "Erpressungssoftware, nach der Schadfunktion bestimmt; Nachbarthema"],
+  ["Virus (Fach: Informatik)", "Rootkit", "randthema", "randthema", "Tarnwerkzeug nach einem Einbruch, eigene Art von Schadsoftware, kein Virus", "Tarnwerkzeug, eine eigene Art von Schadsoftware, kein Virus; Nachbarthema"],
+  ["Virus (Fach: Informatik)", "Schadprogramm", "passt", "passt", "", ""],
+  ["Virus (Fach: Informatik)", "Spyware", "randthema", "randthema", "Spähsoftware, eigene Art von Schadsoftware, kein Virus", "Spähsoftware, eigene Art von Schadprogramm; Nachbarthema"],
+  ["Virus (Fach: Informatik)", "Trojanisches Pferd (Computerprogramm)", "randthema", "randthema", "getarnte Schadsoftware ohne Selbstverbreitung, kein Virus; Nachbarthema", "getarntes Programm ohne Selbstverbreitung; Nachbarthema zur Abgrenzung vom Virus"],
+  ["Vulkane", "Hotspot (Geologie)", "passt", "passt", "", ""],
+  ["Vulkane", "Lava", "passt", "passt", "", ""],
+  ["Vulkane", "Magma", "passt", "passt", "", ""],
+  ["Vulkane", "Magmakammer", "passt", "passt", "", ""],
+  ["Vulkane", "Plattentektonik", "randthema", "passt", "übergeordnete Theorie der Erdkrustenbewegung; Vulkanismus ist nur eine ihrer Folgen (Oberbegriff/Nachbarthema)", ""],
+  ["Vulkane", "Schichtvulkan", "passt", "passt", "", ""],
+  ["Vulkane", "Schildvulkan", "passt", "passt", "", ""],
+  ["Vulkane", "Supervulkan", "passt", "passt", "", ""],
+  ["Vulkane", "Vulkan", "passt", "passt", "", ""],
+  ["Vulkane", "Vulkanausbruch", "passt", "passt", "", ""],
+  ["Vulkane", "Vulkanexplosivitätsindex", "passt", "passt", "", ""],
+  ["Vulkane", "Vulkanische Asche", "passt", "passt", "", ""],
+  ["Vulkane", "Vulkanischer Winter", "passt", "passt", "", ""],
+  ["Vulkane", "Vulkanismus", "passt", "passt", "", ""],
+  ["Vulkane", "Vulkanologie", "passt", "passt", "", ""],
+  ["Wasserkreislauf", "Abfluss", "passt", "passt", "", ""],
+  ["Wasserkreislauf", "Evapotranspiration", "passt", "passt", "", ""],
+  ["Wasserkreislauf", "Grundwasser", "passt", "passt", "", ""],
+  ["Wasserkreislauf", "Kondensation", "passt", "passt", "", ""],
+  ["Wasserkreislauf", "Niederschlag", "passt", "passt", "", ""],
+  ["Wasserkreislauf", "Transpiration", "passt", "passt", "", ""],
+  ["Wasserkreislauf", "Verdunstung", "passt", "passt", "", ""],
+  ["Wasserkreislauf", "Wasserkreislauf", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Außenpolitik der Weimarer Republik", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Deutsche Inflation 1914 bis 1923", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Friedensvertrag von Versailles", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Goldene Zwanziger", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Kapp-Putsch", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Machtergreifung", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Novemberrevolution", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Präsidialkabinett", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Weimarer Koalition", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Weimarer Republik", "passt", "passt", "", ""],
+  ["Weimarer Republik", "Weltwirtschaftskrise", "passt", "passt", "", ""],
+  ["Welle", "Elektromagnetische Welle", "passt", "passt", "", ""],
+  ["Welle", "Gravitationswelle", "passt", "passt", "", ""],
+  ["Welle", "Licht", "passt", "passt", "", ""],
+  ["Welle", "Materiewelle", "passt", "passt", "", ""],
+  ["Welle", "Mechanische Welle", "passt", "passt", "", ""],
+  ["Welle", "Schall", "passt", "passt", "", ""],
+  ["Welle", "Stoßwelle", "passt", "passt", "", ""],
+  ["Welle", "Wasserwelle", "passt", "passt", "", ""],
+  ["Welle", "Welle", "passt", "passt", "", ""],
+  ["Welle", "Wellenfunktion", "randthema", "randthema", "quantenmechanische Zustandsbeschreibung, Nachbarthema", "Zustandsbeschreibung der Quantenmechanik; Nachbarthema, keine Welle im Sinn der Wellenlehre"],
+  ["Welle", "Wellenlänge", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Amplitude", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Beugung (Physik)", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Elektromagnetische Welle", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Frequenz", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Interferenz (Physik)", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Materiewelle", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Mechanische Welle", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Schall", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Stehende Welle", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Wasserwelle", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Welle", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Wellenfunktion", "randthema", "randthema", "quantenmechanische Zustandsbeschreibung; zum Wellenbegriff nur ein Nachbarthema", "quantenmechanische Zustandsbeschreibung; Nachbarthema aus der Quantenmechanik"],
+  ["Welle (Fach: Physik)", "Wellengleichung", "passt", "passt", "", ""],
+  ["Welle (Fach: Physik)", "Wellenlänge", "passt", "passt", "", ""],
+  ["Wende (Fach: Geschichte)", "Berliner Mauer", "passt", "passt", "", ""],
+  ["Wende (Fach: Geschichte)", "Deutsche Wiedervereinigung", "passt", "passt", "", ""],
+  ["Wende (Fach: Geschichte)", "Montagsdemonstrationen 1989/1990 in der DDR", "passt", "passt", "", ""],
+  ["Wende (Fach: Geschichte)", "Treuhandanstalt", "passt", "passt", "", ""],
+  ["Wende (Fach: Geschichte)", "Wende und friedliche Revolution in der DDR", "passt", "passt", "", ""],
+  ["Wende (Fach: Geschichte)", "Wir sind das Volk", "passt", "passt", "", ""],
+  ["Wende (Fach: Geschichte)", "Zwei-plus-Vier-Vertrag", "passt", "passt", "", ""],
+  ["Zelle", "Cytoplasma", "passt", "passt", "", ""],
+  ["Zelle", "Endoplasmatisches Retikulum", "passt", "passt", "", ""],
+  ["Zelle", "Eukaryoten", "passt", "passt", "", ""],
+  ["Zelle", "Golgi-Apparat", "passt", "passt", "", ""],
+  ["Zelle", "Lysosom", "passt", "passt", "", ""],
+  ["Zelle", "Mitochondrium", "passt", "passt", "", ""],
+  ["Zelle", "Organell", "passt", "passt", "", ""],
+  ["Zelle", "Prokaryoten", "passt", "passt", "", ""],
+  ["Zelle", "Ribosom", "passt", "passt", "", ""],
+  ["Zelle", "Zellbiologie", "passt", "passt", "", ""],
+  ["Zelle", "Zelle (Biologie)", "passt", "passt", "", ""],
+  ["Zelle", "Zellkern", "passt", "passt", "", ""],
+  ["Zelle", "Zellmembran", "passt", "passt", "", ""],
+  ["Zelle", "Zellteilung", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Cytoplasma", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Endoplasmatisches Retikulum", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Eukaryoten", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Golgi-Apparat", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Mitochondrium", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Organell", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Prokaryoten", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Ribosom", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Zellbiologie", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Zelle (Biologie)", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Zellkern", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Zellmembran", "passt", "passt", "", ""],
+  ["Zelle (Biologie)", "Zellteilung", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Chloroplast", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Cytoplasma", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Endoplasmatisches Retikulum", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Eukaryoten", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Golgi-Apparat", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Lysosom", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Mitochondrium", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Organell", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Prokaryoten", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Ribosom", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Zellbiologie", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Zelle (Biologie)", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Zellkern", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Zellmembran", "passt", "passt", "", ""],
+  ["Zelle (Fach: Biologie)", "Zellteilung", "passt", "passt", "", ""],
+  ["photosynthese", "C4-Pflanze", "passt", "passt", "", ""],
+  ["photosynthese", "Calvin-Zyklus", "passt", "passt", "", ""],
+  ["photosynthese", "Chlorophylle", "passt", "passt", "", ""],
+  ["photosynthese", "Chloroplast", "passt", "passt", "", ""],
+  ["photosynthese", "Crassulaceen-Säurestoffwechsel", "passt", "passt", "", ""],
+  ["photosynthese", "Photorespiration", "passt", "passt", "", ""],
+  ["photosynthese", "Photosynthese", "passt", "passt", "", ""],
+  ["photosynthese", "Photosystem", "passt", "passt", "", ""],
+  ["Ökosystem", "Biotop", "passt", "passt", "", ""],
+  ["Ökosystem", "Biozönose", "passt", "passt", "", ""],
+  ["Ökosystem", "Energiefluss", "randthema", "randthema", "allgemeiner physikalisch-technischer Begriff; der Energiefluss im Ökosystem ist nur ein Sonderfall", "allgemeiner physikalisch-technischer Begriff (Energieübertragung, Leistung); der Energiefluss im Ökosystem nur als entfernte Anwendung"],
+  ["Ökosystem", "Nahrungskette", "passt", "passt", "", ""],
+  ["Ökosystem", "Stoffkreislauf", "passt", "passt", "", ""],
+  ["Ökosystem", "Ökologie", "passt", "passt", "", ""],
+  ["Ökosystem", "Ökologische Nische", "passt", "passt", "", ""],
+  ["Ökosystem", "Ökosystem", "passt", "passt", "", ""],
+  ["Ökosystem", "Ökosystemleistung", "passt", "passt", "", ""]
+ ]
+}

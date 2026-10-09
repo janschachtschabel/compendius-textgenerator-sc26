@@ -1,4 +1,4 @@
-# Ergebnisse der Messungen M1 bis M87
+# Ergebnisse der Messungen M1 bis M88
 
 Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23.09. bis 09.10.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
@@ -101,6 +101,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M85 | Holt der Klexikon-Zwilling über einen Alias Absätze einer anderen Bedeutung, und was hilft? | ja: bei 13 von 59 Gold-Anfragen kommt er über einen Alias, sechs davon setzen einen fremden Absatz unter „Themendefinition“ (Flüsse bei „Elektrischer Strom“); nur der exakte Titel (D100) senkt die unpassenden Klexikon-Absätze von 12 auf 2 (`llm-free`), von 13 und 10 auf 2 (`balanced`) und an 35 zurückgehaltenen Anfragen von 10 auf 2 und 7 auf 1, für 4 passende Zwillinge | `m85_klexikon_zwillinge.txt` | `m85_urteil.json`, `m85_urteil_zweitgutachter.json` |
 | M86 | Was ändern doppeltes, vierfaches und zehnfaches Bausteinbudget an Zeit, Kosten und Güte, und wo sättigt es? | Zeit nirgends; Tokens nur in `best-quality-generated` (19 % mehr bei ×4, 33 % bei ×10); der Nutzen steigt in jedem Profil (bei ×10 1,5 auf 2,8, 2,0 auf 4,3 und 3,8 auf 4,9), `best-quality-generated` wird vollständiger (3,8 auf 4,6); die wörtlichen Texte werden 2,8- und 4,2-mal so lang und etwas schwerer lesbar; am Gold bleibt die Precision bis zur Sättigung (×20 bis ×30), ×4 holt die Hälfte des möglichen F1-Gewinns, ×10 82 und 85 %; im Text von `balanced` bleiben unpassende Absätze bis ×4 bei 3 %, bei ×10 5 % | – | `m86_bausteinbudget.json`, `m86_bausteinbudget_erster_durchgang.json`, `m86_gold_erweitert.json`, `m86_absaetze.json` |
 | M87 | Was kostete ein Vektorindex über alle Absätze der Wikipedia? | rund 28 Mio. Absätze; auf dem Entwicklungsrechner ohne GPU Model2Vec 1,1 Stunden, `multilingual-e5-small` 11 Tage, `bge-m3` rund 4 Monate; verworfen (D101) | – | `m87_vektorindex.json` |
+| M88 | Wie oft trifft ein Artikel, den N zu einem Thema nennt, eine andere Bedeutung, warum, und was kostet eine Prüfung? | selten: 16 von 3.309 genannten Artikeln, 61 von 12.447 gedruckten Absätzen, in 14 von 500 Läufen; über Weiterleitungen, gleichnamige Artikel, die Übersicht ohne Klammerzusatz oder weil N selbst ein anderes Fach nennt; den Artikelanfang zu prüfen kostet 604, die Verlinkung 159 passende Artikel; zwei enge Regeln treffen 4 der 16 ohne Preis | – | `m88_genannte_artikel.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

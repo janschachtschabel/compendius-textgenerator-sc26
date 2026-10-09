@@ -4697,3 +4697,155 @@ Tage.
 
 Rohdaten: `m87_vektorindex.json` (Stichprobe, Tempo, Hochrechnung). Die 3.000 Absätze der Stichprobe bleiben außerhalb
 des Repositorys.
+
+## M88 Genannte Artikel einer anderen Bedeutung (Nebenbefund von M86, 09.10.2026)
+
+In M86 nannte die Frage N (D63) für Optik einmal „Linsen“ und meinte die optischen Linsen; das Archiv führt unter
+diesem Titel die Pflanzengattung, und `balanced` druckte bei vierfachem Budget deren Botanik unter „Gliederung“.
+`_look_up` in `app/knowledge/topic_articles.py` nimmt den Artikel eines genannten Titels, wie das Archiv ihn führt,
+Weiterleitungen eingeschlossen; nur eine Begriffsklärung fällt heraus, und `_add_named` nimmt jeden gefundenen Teil
+ungeprüft in den Korpus. M88 misst, wie oft ein genannter Artikel eine andere Bedeutung hat, woher sie kommt und was
+eine Prüfung an passenden Artikeln kostete. Gemessen am Stand 2.18.2 (der Code ist seit `9cf4928` unverändert) mit dem
+ausgelieferten Bausteinbudget (×1).
+
+**Aufbau.**
+
+- Die Anfragen von M82: die 94 Goldanfragen der Artikelwahl (`eval/artikelwahl`) und die sechs Sammel- und
+  Aspektthemen des Profilvergleichs (M48, M52), die dort fehlen. Aus den 100 Anfragen hörte N 94 verschiedene Themen:
+  Zusätze wie „in Klasse 7“ fallen weg, ein Fach kommt als „(Fach: Physik)“ dazu.
+- Je Anfrage fünf Läufe `balanced`, Teil 1, durch `service.generate` (`mc_n_bedeutung.py fragen`), `gpt-6-luna` über
+  OpenAI direkt in drei Einmal-Containern nebeneinander, eine Runde über alle Anfragen vor der nächsten: 500 Läufe ohne
+  Fehler, 582 LLM-Aufrufe (500 Fragen N, 70 Artikelwahlen, 12 Trefferprüfungen), 247.199 Tokens, im Median 319 je
+  Lauf.
+- Jeder Lauf hält jede Antwort des LLM fest; die Varianten (`titel`, `varianten`) hören dieselben Antworten. `heute`
+  druckte damit in allen 500 Läufen genau, was der erste Durchgang gedruckt hatte. Neu gefragt wurden nur 33
+  Trefferprüfungen, wo eine Variante alle genannten Teile eines Laufs verwarf und der Dienst auf die verlinkten
+  Unterartikel zurückfiel (`anfang` 27, `verlinkt` 6).
+- Güte: 1.017 Paare aus gehörtem Thema und Artikel, jeder Artikel, den eine Variante zu einem Thema lieferte, auf acht
+  blinden Bögen (`mc_n_bedeutung_boegen.py --seed=88`), je Bogen zwei neue Claude-Gutachter. Sie sahen das Thema, wie N
+  es hörte, den genannten Titel, den Titel im Archiv und den Anfang des ersten Absatzes (400 Zeichen) und urteilten:
+  passt, Randthema, andere Bedeutung (der Artikel behandelt etwas anderes gleichen oder ähnlichen Namens) oder passt
+  nicht. Sie urteilten bei 978 Artikeln gleich (κ 0,86), bei „andere Bedeutung oder nicht“ bei 1.014 (κ 0,90). Gezählt
+  ist unten, was beide so sahen; in Klammern steht die Zahl mit den Fällen, die nur einer so sah.
+
+**Wie die Titel von N im Archiv ankommen.** Von 3.729 genannten Teilen (ohne die Übersicht) fand das Archiv 2.536
+(68 %) unter ihrem Titel, 501 (13 %) über eine Weiterleitung, 159 (4 %) über eine Weiterleitung in einen Abschnitt und
+4 in anderer Schreibweise. Still aus fallen 437 Titel (12 %), die es im Archiv nicht gibt, 168 davon mit einem
+Klammerzusatz, den es nicht gibt („Bruch (Mathematik)“ 15-mal, „Infiltration (Boden)“, „Welle (Physik)“, „Sinfonie
+Nr. 5 (Beethoven)“), und 92 Begriffsklärungen (2,5 %). Von den 500 Übersichten kamen 419 unter ihrem Titel, 45 über
+eine Weiterleitung oder Schreibweise, 33 nicht; dreimal half der weggelassene Klammerzusatz (V1a, M49), alle drei Male
+bei „Erdkunde: Delta“. Ohne Wiederholungen blieben 3.309 Artikel.
+
+**Von Lauf zu Lauf** wechseln sie stark: Je Lauf kamen im Median 6,9 Artikel, über fünf Läufe 11 verschiedene, und nur
+41 % davon kamen in allen fünf. Zwei Läufe derselben Anfrage teilen im Median zwei Drittel ihrer Artikel (Jaccard
+0,67), ebenso ihrer gedruckten Quellen. Die Übersicht war bei 85 von 100 Anfragen in allen fünf Läufen dieselbe, der
+Hauptartikel bei allen 100.
+
+**Wie oft eine andere Bedeutung kommt** (heute; die Artikel, die das Archiv für die Übersicht und die Teile lieferte):
+
+| Art der Anfrage | Anfragen | Läufe | genannte Artikel | davon andere Bedeutung | Läufe mit einem solchen Artikel | davon mit gedrucktem Absatz | gedruckte Absätze daraus |
+|---|---|---|---|---|---|---|---|
+| gewöhnliches Thema (auch mit Zusatz, anders geschrieben oder umschrieben) | 53 | 265 | 1.809 | 4 | 4 | 4 | 8 von 6.685 |
+| mehrdeutiges Wort mit Fach | 38 | 190 | 1.190 | 10 (15) | 9 (12) | 8 | 49 (95) von 4.512 |
+| mehrdeutiges Wort ohne Kontext | 3 | 15 | 115 | 1 | 1 | 1 | 1 von 373 |
+| Sammelthema | 3 | 15 | 126 | 0 | 0 | 0 | 0 von 349 |
+| Thema mit Aspekt | 3 | 15 | 69 | 1 | 1 | 1 | 3 von 528 |
+| zusammen | 100 | 500 | 3.309 | 16 (21) | 15 (18) | 14 | 61 (107) von 12.447 |
+
+Einer von 200 genannten Artikeln hat eine andere Bedeutung (0,5 %), ebenso einer von 200 gedruckten Absätzen; in 14
+von 500 Läufen erreicht ein solcher Artikel den Text, bei 11 von 100 Anfragen (mit einem Gutachter 12). Zwei Drittel
+der Fälle kommen bei mehrdeutigen Wörtern mit Fach. „Linsen“ kam nicht wieder: In den 20 Läufen zu Optik, „Optik in
+Klasse 7“, „Physik: Optik (Sek I)“ und „Lichtlehre“ nannte N die Linse sechsmal als „Linse (Optik)“, einmal als
+„Linse“ (eine Begriffsklärung, sie fiel aus) und einmal als „Linsenoptik“ (fehlt im Archiv).
+
+**Die Fälle und woher sie kommen** (13 Paare, die beide Gutachter so sahen, und drei, die einer so sah):
+
+| Thema, wie N es hörte | genannt | Artikel im Archiv | Läufe | gedruckte Absätze | Ursache |
+|---|---|---|---|---|---|
+| Delta (Fach: Geografie) | Delta (Geografie), Delta (Geographie) | *Delta*, der griechische Buchstabe | 3 | 18 | Archiv: Die Übersicht gibt es mit diesem Klammerzusatz nicht, ohne ihn (V1a) ist es der Buchstabe |
+| Fall (Fach: Deutsch) | Instrumental | *Instrumentalmusik* | 2 | 16 | Archiv: Weiterleitung; der Kasus heißt *Instrumentalis* |
+| Ursachen der Französischen Revolution | Steuerprivileg | *Steuersubvention* | 1 | 2 | Archiv: Weiterleitung auf den heutigen Begriff |
+| Barockliteratur | Friedrich von Spee | *Friedrich von Spee*, ein Landrat (1882–1959) | 1 | 1 | Archiv: gleichnamiger Artikel; der Dichter heißt *Friedrich Spee* |
+| Künstliche Intelligenz im Unterricht | Neuronales Netz | *Neuronales Netz*, das biologische | 1 | 3 | Archiv: gleichnamiger Artikel; das gemeinte heißt *Künstliches neuronales Netz* |
+| Strom (Fach: Geografie) | Stromtal | *Stromtal*, ein ehemaliges Naturschutzgebiet | 1 | 0 | Archiv: gleichnamiger Artikel; den gemeinten Begriff hat es nicht |
+| Französische Revolution | Nationalversammlung (Frankreich) | das heutige Unterhaus | 1 | 2 | Archiv: Der Klammerzusatz trifft eine andere Zeit; die Versammlung von 1789 hat keinen eigenen Artikel |
+| Intervall (Fach: Musik) | Intervall (Mathematik), Intervallschachtelung | ebenso | 1 und 1 | 5 und 3 | N nennt Begriffe der Mathematik |
+| Satz des Pythagoras | Pythagoreisches Komma | ebenso | 1 | 3 | N nennt ein Intervall der Musik |
+| Spannung (Fach: Physik) | Mechanische Spannung, Oberflächenspannung | ebenso | 1 | 1 und 6 | N liest Spannung mechanisch; gemeint ist die elektrische |
+| Strom | Meeresströmung | ebenso | 1 | 1 | N liest Strom als Strömung; gemeint ist der elektrische |
+| Stamm (Fach: Biologie), ein Gutachter | Stamm (Botanik), Sprossachse | *Baum* (Weiterleitung in einen Abschnitt), *Sprossachse* | 2 und 2 | 38 und 8 | N liest Stamm botanisch; gemeint ist die Rangstufe |
+| Strom (Fach: Geografie), ein Gutachter | Gezeitenstrom | *Gezeitenströmung* | 1 | 0 | N liest Strom als Strömung |
+
+Zehn der 16 Artikel lieferte das Archiv, obwohl N das Richtige meinte: über eine Weiterleitung (3), einen
+gleichnamigen Artikel, unter dessen Titel etwas anderes steht (4), und die Übersicht ohne Klammerzusatz (3). Sechs
+nannte N selbst: Begriffe eines anderen Fachs (3) und eine andere Lesart eines mehrdeutigen Themas (3, dazu die drei
+Fälle nur eines Gutachters). Die vermuteten Wege kamen nicht vor: kein Fall über Mehrzahl oder Einzahl, keiner über
+eine Begriffsklärung (sie fällt heraus), und keiner trägt im Archiv ein Zeichen von Mehrdeutigkeit, an dem eine
+Prüfung ansetzen könnte (eine Seite „… (Begriffsklärung)“, eine Einzahl mit Begriffsklärung, ein Vor- oder
+Familienname). Dem fehlenden Klammerzusatz von „Linsen“ am nächsten sind die gleichnamigen Artikel: Der gemeinte
+Artikel hat dort einen anderen Titel.
+
+**Die Varianten**, je auf denselben Antworten im Ablauf des Dienstes (`mc_n_bedeutung.py varianten`; ein Lauf wird nur
+neu erzeugt, wo eine Variante seinen Korpus ändert):
+
+- `klammer` (den Klammerzusatz zum Fach bevorzugen): Ein genannter Titel ohne Klammer wird zu „Titel (Wort)“ oder
+  „Einzahl (Wort)“, wenn das Archiv einen solchen Artikel hat und das Wort eines der Anfrage ist: ein Fach, ein
+  Klammerzusatz aus der Antwort von N, ein Wort des Themas oder der Übersicht, auch in der Einzahl. Aus „Linsen“ für
+  Optik würde „Linse (Optik)“.
+- `anfang` (den Artikelanfang prüfen): Ein genannter Teil kommt nur in den Korpus, wenn sein erster Absatz ein Wort des
+  Themas, eines Fachs oder der Übersicht nennt (`TopicMention`).
+- `verlinkt`: nur, wenn er mit dem Hauptartikel oder der Übersicht verlinkt ist, in einer der beiden Richtungen
+  (`LinkedTo`, wie seit M25 bei Volltexttreffern); die Übersicht kam dazu, weil bei „Physik: Strom“ der Hauptartikel
+  *Strom (Physik)* kaum Links hat.
+- `mehrdeutig`: Nur ein Titel, den das Archiv als mehrdeutig zeigt (eine Seite „Titel (Begriffsklärung)“, eine Einzahl
+  mit Begriffsklärung, ein Vor- oder Familienname), bekommt den Klammerzusatz wie in `klammer` und braucht ohne ihn
+  `anfang` oder `verlinkt`.
+- Zwei enge Regeln nach den Fällen: `fachfremd`: Ein Titel, dessen Klammerzusatz ein anderes Schulfach des Katalogs
+  (`config/subjects.yaml`) nennt als die Anfrage, fällt weg. `uebersicht`: die Übersicht ohne Klammerzusatz (V1a) nur,
+  wenn ihr erster Absatz das Wort aus der Klammer nennt.
+
+| Variante | Läufe mit anderem Korpus | genannte Artikel im Korpus | davon andere Bedeutung | passende Artikel weg (dazu Randthema) | passende Artikel neu | gedruckte Absätze anderer Bedeutung | Läufe mit solchem Absatz | gedruckte Absätze | gefüllte Bausteine |
+|---|---|---|---|---|---|---|---|---|---|
+| `heute` | – | 2.837 | 16 | – | – | 61 | 14 | 12.447 | 3.221 |
+| `klammer` | 34 | 2.873 | 17 | 5 (1) | 39 | 61 | 14 | 12.474 | 3.221 |
+| `anfang` | 309 | 2.114 | 9 | 604 (87) | – | 37 | 8 | 11.726 | 3.037 |
+| `verlinkt` | 131 | 2.574 | 6 | 159 (59) | – | 26 | 6 | 12.229 | 3.178 |
+| `mehrdeutig` | 10 | 2.838 | 16 | 7 | 8 | 61 | 14 | 12.458 | 3.220 |
+| `fachfremd` | 1 | 2.836 | 15 | 0 | – | 56 | 13 | 12.443 | 3.220 |
+| `uebersicht` | 3 | 2.834 | 13 | 0 | – | 43 | 11 | 12.435 | 3.218 |
+| `fachfremd` und `uebersicht` (sie ändern verschiedene Läufe) | 4 | 2.833 | 12 | 0 | – | 38 | 10 | 12.431 | 3.217 |
+
+- `klammer` nimmt keinen der 16 heraus: Ihre Titel haben schon eine Klammer, sind die Übersicht oder haben keinen
+  Zwilling mit einem Wort der Anfrage. Es holt aber Artikel zurück, deren Titel ohne Klammer heute als Begriffsklärung
+  oder fehlend ausfällt, 34 passende mehr: *Ballade (Gedicht)*, *Hauptsatz (Grammatik)*, *Endlosschleife
+  (Programmierung)*, *Mündung (Gewässer)*, *Linse (Optik)* für „Linse“; fünfmal tauscht es *Ode* gegen *Ode
+  (Gedicht)*. Gedruckt werden 45 Absätze aus passenden Artikeln mehr. Neu ist ein Fehlgriff: Zu „Strom“ ohne Fach wird
+  das genannte „Strom“ zu *Strom (Gewässerart)*, weil in derselben Antwort „Fluss (Gewässer)“ stand.
+- `anfang` nimmt 7 der 16 heraus, aber auch 604 passende Artikel, ein Viertel aller passenden im Korpus, und 87 vom
+  Rand: Viele passende Artikel nennen das Thema im ersten Absatz nicht (*Brechung (Physik)*, *Quantenoptik* und *Licht*
+  zu Optik). Der Text verliert 721 Absätze und 184 gefüllte Bausteine (6 %); 27-mal fiel ein Lauf auf die alten
+  Nebenartikel zurück, weil kein Teil blieb.
+- `verlinkt` nimmt 10 der 16 heraus und kostet 159 passende Artikel (6 %) und 59 vom Rand, darunter Vertreter und
+  Aspekte, mit denen der Hauptartikel nicht verlinkt ist: *Hartmann von Aue* und *Walther von der Vogelweide* zu
+  „Dichter aus dem Mittelalter“, *Nationalismus* und *Imperialismus* zu „Ursachen des Ersten Weltkriegs“,
+  *Klimapolitik* zu „Klimawandel“. Der Text verliert 218 Absätze und 43 gefüllte Bausteine.
+- `mehrdeutig` ändert an den 16 nichts, weil keiner als mehrdeutig erkennbar ist, und kostet zweimal *Schall* zu
+  „Welle (Fach: Physik)“, dessen erster Absatz eine Tabelle ist.
+- `fachfremd` und `uebersicht` treffen genau ihre Fälle und in 500 Läufen nichts anderes: zusammen 4 der 16 Artikel und
+  23 der 61 Absätze, ohne Preis. `uebersicht` nähme aber auch den Fall zurück, für den V1a gebaut wurde: Für
+  „Philosophen der Aufklärung“ nannte N in M48 „Aufklärung (Philosophie)“, und der erste Absatz von *Aufklärung* nennt
+  die Philosophie nicht. In M88 nannte N dort in allen fünf Läufen „Aufklärung“ ohne Klammer; V1a griff in 500 Läufen
+  nur bei Delta.
+
+**Schluss.** Artikel einer anderen Bedeutung sind selten (einer von 200 genannten Artikeln, einer von 200 gedruckten
+Absätzen, 14 von 500 Läufen mit Absätzen daraus), und ihre Wege sind verschieden. Keine allgemeine Prüfung trifft sie,
+ohne ein Vielfaches an passenden Artikeln zu verlieren: `anfang` 604 für 7, `verlinkt` 159 für 10. `klammer` behebt
+keinen Fall, holt aber 34 passende Artikel zurück, die heute ausfallen, für einen neuen Fehlgriff. Zwei enge Regeln
+nehmen 4 der 16 ohne gemessenen Preis heraus. Mit mehr Budget (Punkt 17) druckt jeder Fehlgriff mehr Absätze (M86). Zu
+entscheiden: Entscheidungsvorlage, Punkt 18.
+
+Rohdaten: `m88_genannte_artikel.json` (Ablauf, Auflösung der Titel, Streuung, Häufigkeit je Art der Anfrage, die Fälle
+mit Ursache, je Variante die Artikel, die sie nahm und brachte, und die Urteile beider Gutachter je Paar, ohne
+Artikeltexte). Skripte: `mc_n_bedeutung.py` (Schritte `fragen`, `titel`, `varianten`), `mc_n_bedeutung_boegen.py`,
+`mc_n_bedeutung_auswertung.py`. Die aufgezeichneten Antworten, die gedruckten Texte und die Bögen bleiben außerhalb
+des Repositorys.

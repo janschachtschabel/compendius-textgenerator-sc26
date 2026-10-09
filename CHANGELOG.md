@@ -15,6 +15,9 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
   `bausteinbudget.svg` (lineare Achse), `bausteinbudget_gold.svg` und `bausteinbudget_absaetze.svg`. Am Dienst ändert
   sich nichts.
 - **Doku (D101, M87):** Kein Vektorindex über die Absätze der Wikipedia; Umfang und Tempo der Einbettung geschätzt.
+- **Doku (M88):** Wie oft ein Artikel, den die Frage N zu einem Thema nennt, eine andere Bedeutung hat (einer von 200),
+  woher es kommt und was sechs Prüfungen an passenden Artikeln kosten; Entscheidungsvorlage Punkt 18. Am Dienst ändert
+  sich nichts.
 
 ## 2.18.2 – 2026-10-09
 
