@@ -2,7 +2,7 @@
 
 import os
 
-__version__ = "2.18.1"
+__version__ = "2.18.2"
 
 
 def revision() -> str | None:

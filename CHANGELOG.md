@@ -9,6 +9,13 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+Noch nichts.
+
+## 2.18.2 – 2026-10-09
+
+Der Klexikon-Zwilling kommt nur noch über den exakten Titel (D100, M85); dazu die Quellen nach M84 (D99) und der
+Plattenbedarf mit der Wikipedia-Ausgabe 2026-10.
+
 - **Behoben (D100, M85):** Der Zwilling eines Themas aus einem weiteren Archiv, praktisch das Klexikon, kommt nur noch
   über den exakten Titel des Hauptartikels, eine Weiterleitung dieses Titels eingeschlossen, nicht mehr über dessen
   Aliasse. Über einen Alias kam oft eine andere Bedeutung, deren erster Absatz unter „Themendefinition“ stand: Flüsse
