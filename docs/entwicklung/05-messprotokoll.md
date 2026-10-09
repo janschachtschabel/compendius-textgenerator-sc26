@@ -4465,3 +4465,172 @@ Rohdaten: `m85_klexikon_zwillinge.txt` (die Tabellen aller fünf Läufe, mit den
 Klexikon-Seite und Text); Auswertung `mc_klexikon_zwillinge_auswertung.py`, Übereinstimmung
 `mc_klexikon_zwillinge_uebereinstimmung.py`. Die Läufe mit den gedruckten Absätzen (57 MB) und der Bogen mit den Texten
 bleiben außerhalb des Repositorys.
+
+## M86 Bausteinbudget ×1 bis ×10: Zeit, Kosten und Güte (09.10.2026)
+
+Jan nach M84: „der größte hebel ist das bausteinbudget - das sehe ich auch so. vom team gewünscht war, das die
+kompendiale texte umfangreich und vollständig sind. wir sollten mal mit begrenzen messungen unterschiedliche budgets an
+3-5 themen testen - ausgehend vom aktuellen wert und dann einmal mit dem doppelten budget, dem vierfachen und
+zehnfachen. dabei analysieren wir wie sich zeit kosten und qualität verändern und dokumentieren dies“. Gemessen am Stand
+2.18.2 (`483421a`).
+
+**Was der Faktor ändert.** Jeder Inhaltsbaustein der Vorlage `sc26` hat ein Budget: höchstens 3 bis 6 Absätze
+(`max_chunks`, zusammen 46 in zehn Bausteinen) und eine Zeichenzahl, ab der ein Baustein mit genug Absätzen schließt,
+das 1,5-Fache seines Anteils an der Ziellänge. Beim Zuschnitt nach der Zuordnung (`cut_to_budgets`, nach den Regeln wie
+nach dem LLM) multipliziert `mc_kompendium_profil.py --budgets=1,2,4,10` beides mit dem Faktor. Gleich bleiben der
+Korpus (höchstens 12 Artikel und 400 Absätze), die Ziellänge von 30.000 Zeichen, die der Schreiber in
+`best-quality-generated` hört, und seine Ausgabegrenze je Baustein.
+
+**Aufbau.**
+
+- Vier Themen: Optik und Französische Revolution (eigener Artikel), Komponisten der Klassik (Sammelthema), Inklusion im
+  Sportunterricht (Aspekt). Die Profile `llm-free`, `balanced` und `best-quality-generated` (Standard mit LLM), Teil 1,
+  je Thema und Faktor ein Lauf: 48 Kompendien.
+- Einmal-Container wie M82, `gpt-6-luna` über OpenAI direkt, am Nachmittag. Je Thema zuerst ein Aufwärmlauf in
+  `llm-free`, dann die vier Faktoren, bei jedem zweiten Thema von ×10 abwärts.
+- Ein Korpus je Thema (`--fixed-corpus`): Die Fragen, die den Korpus bauen, antworten je Thema einmal, alle vier
+  Faktoren arbeiten auf denselben Artikeln. Das sind die Artikel, die das LLM zum Thema nennt (D63), in
+  `best-quality-generated` dazu die gründliche Artikelwahl. Ihre Tokens zählen in jedem Lauf; Zuordnung und Schreiben
+  antworten frisch. Ohne das wechselte der Korpus von Lauf zu Lauf (erster Durchgang, unten).
+- Damit kein Schutz eingreift, durfte eine Anfrage 1.800 s brauchen, in `best-quality-generated` 2.000.000 Tokens.
+  Keine kam an die ausgelieferten Grenzen (300 s, 180.000 Tokens) heran.
+- Güte: je Profil ein blinder Bogen (`mc_budget_boegen.py --seed=86`), je Thema die vier Faktoren als Texte A bis D,
+  Auszug und Raster wie M82 (Bausteine 1 bis 4 und 8 bis 10); je Bogen zwei neue Claude-Gutachter. Je Merkmal gaben sie
+  in 11 bis 16 von 16 Fällen dieselbe Note, sonst eine um eins verschiedene.
+- Dazu das Gold der Zuordnung (`mc_budget_gold.py`): die zehn Goldthemen im Korpus von `llm-free`, je Thema einmal
+  zugeordnet, nach den Regeln (`hybrid_light`) und durch das LLM, dann mit jedem Faktor zugeschnitten.
+
+**Text und Aufwand**, Median über die vier Themen; „gegen ×1“ ist der Median der Verhältnisse je Thema, die Zeit die von
+Zuordnung und Schreiben (die ganze Anfrage: `llm-free` und `balanced` 1 bis 2 s, `best-quality-generated` 23 bis 27 s):
+
+| Profil, Faktor | Zeichen (gegen ×1) | Belegabsätze | Zuordnung und Schreiben | Tokens (davon Prompt-Cache) | Modellwissen |
+|---|---|---|---|---|---|
+| `llm-free` ×1 | 10.407 | 22 | 0,5 s | 0 | – |
+| `llm-free` ×2 | 14.421 (×1,39) | 32,5 | 0,5 s | 0 | – |
+| `llm-free` ×4 | 22.804 (×2,00) | 47 | 0,5 s | 0 | – |
+| `llm-free` ×10 | 28.694 (×2,76) | 65,5 | 0,8 s | 0 | – |
+| `balanced` ×1 | 11.055 | 27,5 | 0,8 s | 308 | – |
+| `balanced` ×2 | 17.642 (×1,63) | 46 | 0,9 s | 308 | – |
+| `balanced` ×4 | 27.857 (×2,55) | 72 | 0,8 s | 308 | – |
+| `balanced` ×10 | 44.927 (×4,22) | 116 | 1,1 s | 308 | – |
+| `best-quality-generated` ×1 | 23.154 | 31,5 | 24,9 s | 65.179 (34.450) | 49 % |
+| `best-quality-generated` ×2 | 26.334 (×1,16) | 58 | 23,0 s | 69.561 (39.174) | 44 % |
+| `best-quality-generated` ×4 | 27.700 (×1,24) | 102,5 | 25,1 s | 77.601 (39.174) | 38 % |
+| `best-quality-generated` ×10 | 28.611 (×1,28) | 164,5 | 25,9 s | 86.399 (32.742) | 37 % |
+
+**Güte**, Mittel zweier blinder Gutachter über die vier Themen (Noten 1 bis 5); Fehler als Summe beider Gutachter über
+die vier Texte:
+
+| Profil, Faktor | Passung | Nutzen | Vollständigkeit | Lesbarkeit | Fehler, schwer und leicht |
+|---|---|---|---|---|---|
+| `llm-free` ×1 | 2,3 | 1,5 | 1,5 | 2,3 | 0 und 4 |
+| `llm-free` ×2 | 2,4 | 2,0 | 1,5 | 2,5 | 0 und 6 |
+| `llm-free` ×4 | 2,6 | 2,5 | 1,9 | 2,5 | 0 und 8 |
+| `llm-free` ×10 | 2,6 | 2,8 | 1,9 | 2,5 | 0 und 14 |
+| `balanced` ×1 | 2,8 | 2,0 | 1,3 | 3,0 | 0 und 0 |
+| `balanced` ×2 | 3,0 | 2,8 | 2,1 | 2,6 | 0 und 3 |
+| `balanced` ×4 | 3,3 | 3,4 | 2,1 | 2,4 | 0 und 6 |
+| `balanced` ×10 | 3,5 | 4,3 | 2,1 | 2,4 | 1 und 11 |
+| `best-quality-generated` ×1 | 4,5 | 3,8 | 3,8 | 4,0 | 0 und 9 |
+| `best-quality-generated` ×2 | 4,5 | 4,3 | 4,1 | 4,0 | 0 und 12 |
+| `best-quality-generated` ×4 | 4,8 | 4,5 | 4,3 | 3,6 | 2 und 12 |
+| `best-quality-generated` ×10 | 4,6 | 4,9 | 4,6 | 4,0 | 0 und 15 |
+
+- **Zeit:** In keinem Profil hängt sie am Budget. Die wörtlichen Profile brauchen für Zuordnung und Text unter 1,2 s,
+  `best-quality-generated` 23 bis 26 s; der Schreiber schreibt die Bausteine nebeneinander, und seine Ausgabe ist je
+  Baustein begrenzt.
+- **Kosten:** `llm-free` keine, `balanced` gleich (rund 310 Tokens für die genannten Artikel). `best-quality-generated`
+  braucht 7 % mehr Tokens bei ×2, 19 % bei ×4 und 33 % bei ×10. Es wächst vor allem die Eingabe (52.000 auf 71.600), die
+  Ausgabe kaum (13.600 auf 14.600). Der teuerste Lauf, Komponisten der Klassik bei ×10, brauchte 103.400 Tokens.
+- **Text:** In den wörtlichen Profilen wächst er fast mit den Belegen, bis der Korpus erschöpft ist: bei ×10 in
+  `llm-free` auf das 2,8-Fache, in `balanced` auf das 4,2-Fache (bis 62.400 Zeichen bei „Inklusion im Sportunterricht“).
+  `llm-free` nimmt für „Komponisten der Klassik“ den Artikel „Max Richter (Komponist)“; was dort zugeordnet ist, steht
+  schon bei ×2 ganz im Text (7.200 Zeichen). `best-quality-generated` schreibt nur 16 bis 28 % mehr, weil sich der
+  Schreiber an Ziellänge und Ausgabegrenze hält. Die zusätzlichen Belege (das 5,3-Fache) ersetzen dort Modellwissen (49
+  auf 37 %) und tragen mehr Belegnummern (69 bei ×1, 100 bis 131 bei ×2 bis ×10).
+- **Güte:** Mehr Budget hebt in jedem Profil den Nutzen: `llm-free` 1,5 auf 2,8, `balanced` 2,0 auf 4,3,
+  `best-quality-generated` 3,8 auf 4,9. `best-quality-generated` wird dazu vollständiger (3,8 auf 4,6) und behält
+  Passung und Lesbarkeit (4,5 bis 4,8 und 4,0, nur bei ×4 3,6). In den wörtlichen Profilen füllt mehr Budget vor allem
+  Bausteine, die schon Text haben: Die Vollständigkeit kommt nicht über 1,9 und 2,1, und die Lesbarkeit von `balanced`
+  sinkt von 3,0 auf 2,4 (lange Folgen wörtlicher Absätze mit Brüchen). Sammel- und Aspektthemen bleiben in `llm-free`
+  bei Passung 1, einmal 2: Einen falschen Hauptartikel macht mehr Budget nicht richtig.
+- **Fehler:** Die leichten wachsen mit dem wörtlichen Text, je 10.000 Zeichen etwa gleich viele. Es sind geerbte
+  Ungenauigkeiten aus Wikipedia und Klexikon (die Gutachter nennen etwa Neckers Zahlen oder „rief ein Parlament ein“)
+  und Sätze, deren Bezug ein ausgelassener Satz trug: „Ihre Verschaltung ermöglicht letztlich das Farbensehen“ steht bei
+  `balanced` ×10 hinter den Stäbchen statt den Zapfen, einmal als schwer benotet. Der schwere Fehler in
+  `best-quality-generated` ×4, Bildungsstandards der KMK für Geschichte, die es nicht gibt, ist ein Satz aus
+  Modellwissen ohne Beleg, kein zusätzlicher Absatz; beide Gutachter fanden ihn.
+
+**Am Gold der Zuordnung** (10 Themen, 597 gelabelte Absätze; gezählt sind die gedruckten Absätze mit Label):
+
+| Faktor | Regeln: gedruckt | richtig und falsch | Precision | Recall | LLM: gedruckt | richtig und falsch | Precision | Recall |
+|---|---|---|---|---|---|---|---|---|
+| ×1 | 222 | 83 und 46 | 0,64 | 0,16 | 255 | 108 und 36 | 0,75 | 0,21 |
+| ×2 | 358 | 123 und 75 | 0,62 | 0,24 | 422 | 162 und 52 | 0,76 | 0,31 |
+| ×4 | 556 | 184 und 99 | 0,65 | 0,36 | 635 | 232 und 71 | 0,77 | 0,45 |
+| ×10 | 1.009 | 290 und 160 | 0,64 | 0,56 | 1.083 | 343 und 102 | 0,77 | 0,66 |
+
+Die Precision bleibt, der Recall verdreifacht sich: Der Zuschnitt verwirft Absätze, die so oft richtig sind wie die, die
+er behält. Die Zuordnung durch das LLM kostete 228.276 Tokens für die zehn Themen, ohne Rückfall. Grenze: Das Gold kennt
+nicht alle gedruckten Absätze. Ohne Label waren bei ×1 42 % (Regeln) und 44 % (LLM), bei ×10 55 % und 59 %; über sie
+sagt die Precision nichts.
+
+**Erster Durchgang ohne festen Korpus** (`m86_bausteinbudget_erster_durchgang.json`). Die Artikel, die das LLM nennt,
+wechselten von Lauf zu Lauf: Bei „Inklusion im Sportunterricht“ hatte `balanced` bei ×2 acht Quellen, bei ×4 drei. Bei
+Optik nannte es einmal „Linsen“, im Archiv die Pflanzengattung, und ×4 druckte deren Botanik unter „Gliederung“ (ein
+Gutachter: schwerer Fehler). In `best-quality-generated` war der Korpus von Optik bei ×10 kleiner (15 statt 18 Aufrufe),
+der Lauf darum billiger als bei ×1. Die Richtung war dieselbe: `balanced` Nutzen 2,0 auf 4,1, Lesbarkeit 3,0 auf 2,5;
+`best-quality-generated` 57.000 auf 82.800 Tokens, Modellwissen 53 auf 41 %. Das Budget macht solche Fehlgriffe des
+Korpus nicht, druckt aber mehr von ihnen.
+
+**Grenzen.** Vier Themen, je Faktor ein Lauf; die Noten stammen von Claude-Gutachtern und gelten für einen Auszug (die
+Bausteine 5 bis 7 sah keiner). Eine Note eines Gutachters bei einem Thema verschiebt ein Mittel um 0,125.
+
+**Schluss.** Der Zuschnitt auf die Budgets verwirft gute Absätze. Mehr Budget macht die Texte in allen Profilen
+gehaltvoller, ohne Zeit zu kosten; `best-quality-generated` wird auch vollständiger, für 19 % (×4) bis 33 % (×10) mehr
+Tokens. Die wörtlichen Profile werden länger und etwas schwerer lesbar, ihre leeren Bausteine füllt mehr Budget nicht.
+Zu entscheiden: Entscheidungsvorlage, Punkt 17.
+
+Rohdaten: `m86_bausteinbudget.json` (je Profil und Faktor Zeit, Tokens, Text und Noten, die Läufe ohne Text, die Urteile
+ohne Zitate, die Schlüssel und das Gold), `m86_bausteinbudget_erster_durchgang.json`. Skripte: `mc_kompendium_profil.py
+--budgets --fixed-corpus`, `mc_budget_boegen.py`, `mc_budget_auswertung.py`, `mc_budget_gold.py`; Grafik
+`bausteinbudget.svg` (`mc_grafiken.py`). Die Texte und Bögen bleiben außerhalb des Repositorys.
+
+## M87 Ein Vektorindex über die Absätze der Wikipedia: Umfang und Tempo (D101, 09.10.2026)
+
+Jan nach M84: „haben wir ein zuordnungsverfahren über embeddings bzw. vektoren getestet? würde es sinn machen die
+absätze aus den artikeln (eventuell mit artikel titel zusammen) in eine vektordaten zu embedden und daraus
+artikelzuordnung und korpusbau zu steuern? Wie schätzt du qualität und aufwände u.a. für das embedden der daten ein.“
+Vektoren waren für die Zuordnung gemessen (M4: Model2Vec steckt in `hybrid_light`, MiniLM, Frage-Antwort-Modell und
+Cross-Encoder brachten im Ablauf des Dienstes nichts dazu) und für die Artikelsuche (M24: Model2Vec über alle Titel, mit
+dem Anfang 200 Kandidaten neu gerankt, findet den Artikel eines Materials fast nie). M87 schätzt, was ein Index über
+alle Absätze kostete.
+
+**Aufbau.** `mc_vektorindex_stichprobe.py` zieht zufällige Einträge der Wikipedia 2026-01, bis 2.000 Artikel gelesen
+sind (1.126 Weiterleitungen übersprungen), und zerlegt sie mit dem Parser des Dienstes. `mc_vektorindex_tempo.py` bettet
+aus diesen Artikeln Absätze ab 100 Zeichen ein (im Mittel 457 Zeichen, je Modell höchstens 256 Token), auf dem
+Entwicklungsrechner ohne GPU (Ryzen 7 7730U, 8 Kerne). Hochgerechnet über die 5,04 Mio. Einträge des Archivs: rund 3,2
+Mio. Artikel mit 28,4 Mio. Absätzen ab 100 Zeichen (8,8 je Artikel, 196 der 2.000 sind Begriffsklärungen). Lesen und
+Zerlegen kosten 15 ms je Artikel, für das Archiv rund 14 Stunden auf einem Kern.
+
+| Modell | Absätze je Sekunde | alle 28,4 Mio. Absätze | nur die 3,2 Mio. Artikelanfänge | Vektoren aller Absätze, 1 Byte je Dimension |
+|---|---|---|---|---|
+| `m2v-gte-256-edu` (Model2Vec, im Dienst) | 7.194 | 1,1 Stunden | 7 Minuten | 7,3 GB |
+| `paraphrase-multilingual-MiniLM-L12-v2` | 27,7 | 11,9 Tage | 1,3 Tage | 10,9 GB |
+| `multilingual-e5-small` | 30,0 | 11,0 Tage | 1,2 Tage | 10,9 GB |
+| `bge-m3` | 2,6 | rund 4 Monate | 14 Tage | 29,1 GB |
+
+**Einordnung.** Model2Vec bettet alles in gut einer Stunde ein, sucht aber schlecht (M24). Die Modelle, die besser
+suchen könnten, bräuchten ohne GPU Tage bis Monate, und das bei jeder neuen Ausgabe der Wikipedia; dazu kämen 7 bis 29
+GB Vektoren ohne die Struktur des Index. Ob ein solcher Index die Kompendien besser machte, ist nicht gemessen: Bei
+gewöhnlichen Themen fehlen dem Korpus keine Kandidaten, sondern Plätze (M86); offen wären Sammel- und Aspektthemen ohne
+eigenen Artikel.
+
+**Entscheidung (D101, Jan):** „wir verwerfen die idee - auch die genannten 1,4 tage sind nicht akzeptabel. man müßte
+wahrscheinlich eine api wie von openai nutzen und mit workern arbeiten - was aber geld kostet. ich versuche nochmal ein
+besseres model2vec modell zu bauen und es später zu testen.“ Die 1,4 Tage stammen aus der ersten Schätzung im Gespräch
+(3,5 Mio. Artikel, 31 Mio. Absätze); aus der Stichprobe nachgerechnet sind es 1,2 Tage, für alle Absätze 11 statt 12
+Tage.
+
+Rohdaten: `m87_vektorindex.json` (Stichprobe, Tempo, Hochrechnung). Die 3.000 Absätze der Stichprobe bleiben außerhalb
+des Repositorys.

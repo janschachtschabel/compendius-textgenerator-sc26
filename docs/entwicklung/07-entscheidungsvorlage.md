@@ -1,7 +1,7 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
 [Übersicht](README.md) · Stand 09.10.2026, Release 2.17.0 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis
-M84; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
+M87; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
 `/entities`: [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit
 und Tokens je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
@@ -366,6 +366,9 @@ mit dem Code vom 25.09.2026 auf 0,447 bei den gelabelten und 0,459 bei allen Abs
   wie die Regeln; die Policy liegt auch bei ihren sicheren Absätzen zu 39 % falsch (M12). Verworfen.
 - **Mögliche Vereinfachung ohne Qualitätsverlust:** BM25 mit Model2Vec erreicht 0,43 (alle Absätze 0,44) in 0,05 statt
   0,30 s. Als Strategie ist das nicht wählbar.
+- **Das Budget je Baustein verwirft gute Absätze.** Mit doppeltem bis zehnfachem Budget bleibt die Precision des
+  Gedruckten am Gold gleich (Regeln 0,64, LLM 0,75 bis 0,77), der Recall steigt von 0,16 auf 0,56 und von 0,21 auf
+  0,66 (M86, Punkt 17).
 
 ## Schritt 4: Text bauen und optional umformulieren
 
@@ -1033,6 +1036,37 @@ Passung 4,56 und Nutzen 4,31.
     der Ausgabe 2026-10; die sechs gemessenen Archive sind gelöscht (`mc_kiwix_laden.py` holt sie für eine
     Wiederholung). Lokal bleibt die Januar-Ausgabe der Wikipedia, weil für zwei Ausgaben der Platz fehlt. Katalog,
     Gutenberg und alle Zahlen: M84.
+
+17. **Bausteinbudget** (Jan, 09.10.2026: „der größte hebel ist das bausteinbudget … vom team gewünscht war, das die
+    kompendiale texte umfangreich und vollständig sind“): gemessen in M86 mit dem Faktor 1, 2, 4 und 10 auf die Absätze
+    und Zeichen je Baustein, an vier Themen in `llm-free`, `balanced` und `best-quality-generated`; zu entscheiden.
+
+    ![Bausteinbudget ×1 bis ×10: Text, Belege, Kosten und Noten (M86)](bilder/bausteinbudget.svg)
+
+    **Empfehlung:** das Budget der Bausteine vervierfachen, als einstellbaren Faktor mit Vorgabe 4, angewandt wie in M86
+    auf die Höchstzahl der Absätze und auf die Zeichen, ab denen ein Baustein schließt; die Vorlagen bleiben, wie sie
+    sind. Bei ×4 wird jedes Profil gehaltvoller (Nutzen in `llm-free` 1,5 auf 2,5, in `balanced` 2,0 auf 3,4, in
+    `best-quality-generated` 3,8 auf 4,5) und `best-quality-generated` auch vollständiger (3,8 auf 4,3), ohne dass eine
+    Anfrage länger dauert. Es kostet dort 19 % mehr Tokens (Teil 1 im Median 77.600 statt 65.200), in den wörtlichen
+    Profilen nichts; deren Texte kommen damit in die Nähe der Ziellänge (22.800 und 27.900 statt 10.400 und 11.100
+    Zeichen). ×10 brachte `best-quality-generated` noch etwas mehr (Nutzen 4,9, Vollständigkeit 4,6) für 33 % mehr
+    Tokens, machte die Texte von `balanced` aber im Median 45.000 Zeichen lang, länger als die Ziellänge und nicht
+    vollständiger.
+
+    **Beobachtungen:**
+
+    - Mehr Budget kostet in keinem Profil Zeit und nur in `best-quality-generated` Tokens; dort wächst die Eingabe, kaum
+      die Ausgabe. Kein Lauf kam an die Grenze von 180.000 Tokens je Anfrage (der teuerste: 103.400 bei ×10).
+    - Der Zuschnitt verwirft gute Absätze: Am Gold der Zuordnung bleibt die Precision bis ×10 gleich (Regeln 0,64, LLM
+      0,75 bis 0,77), der Recall verdreifacht sich (0,16 auf 0,56 und 0,21 auf 0,66).
+    - Die wörtlichen Profile füllen mit mehr Budget die Bausteine, die schon Text haben, nicht die leeren
+      (Vollständigkeit höchstens 2,1); ihre Texte werden länger, etwas schwerer lesbar (`balanced` 3,0 auf 2,4) und
+      erben mehr leichte Fehler der Quellen. `best-quality-generated` setzt die zusätzlichen Belege an die Stelle von
+      Modellwissen (49 auf 37 %).
+
+    Nebenbefund: Die Artikel, die das LLM zu einem Thema nennt (D63), wechselten von Lauf zu Lauf; einmal kam für Optik
+    „Linsen“, im Archiv die Pflanzengattung, und ein größeres Budget druckte deren Botanik. M86 maß deshalb jedes Thema
+    auf einem festen Korpus; die genannten Artikel auf Mehrdeutigkeit zu prüfen, wäre eine eigene Messung.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

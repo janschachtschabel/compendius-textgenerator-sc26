@@ -3,12 +3,12 @@ old and new service (01-alt-und-neu.md), and methods, measurements and profiles 
 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
 prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
-text_schalter.svg, kombinationen.svg, kiwix_quellen.svg and quellen_empfehlung.svg (page 07, the last also on
-page 02), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), profile_matrix.svg, profilvergleich.svg,
-profiluebersicht.svg (pages 07 and 09), and endpunkte.svg, profile_verlauf.svg and one verfahren_*.svg per step
-(page 09). Numbers no raw file holds are written here with their source: the text switches (measured on
-2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1, 05-messprotokoll.md). No chart
-library, so the files render on GitHub, in Confluence and in a browser alike.
+text_schalter.svg, kombinationen.svg, kiwix_quellen.svg, bausteinbudget.svg and quellen_empfehlung.svg (page 07,
+the last also on page 02), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), profile_matrix.svg,
+profilvergleich.svg, profiluebersicht.svg (pages 07 and 09), and endpunkte.svg, profile_verlauf.svg and one
+verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their source: the text
+switches (measured on 2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1,
+05-messprotokoll.md). No chart library, so the files render on GitHub, in Confluence and in a browser alike.
 Rounding half up, German number format.
 
 Usage: python mc_grafiken.py <ergebnisse-dir> <bilder-dir>
@@ -1374,9 +1374,97 @@ def quellen_empfehlung() -> None:
     svg.save("quellen_empfehlung.svg")
 
 
+BUDGET_FACTORS = (1, 2, 4, 10)
+BUDGET_PROFILES = ("llm-free", "balanced", "best-quality-generated")
+BUDGET_MARKS = {"llm-free": "circle", "balanced": "square", "best-quality-generated": "diamond"}
+
+
+def marker(svg: Svg, x: float, y: float, shape: str, color: str) -> None:
+    """A data point with a ring of paper around it, so crossing lines stay apart; the shape names the profile too."""
+    if shape == "circle":
+        svg.circle(x, y, 4.5, color, PAPER, 2)
+    elif shape == "square":
+        svg.rect(x - 4.5, y - 4.5, 9, 9, color, 1, PAPER, 2)
+    else:
+        points = f"{x:.1f},{y - 6:.1f} {x + 6:.1f},{y:.1f} {x:.1f},{y + 6:.1f} {x - 6:.1f},{y:.1f}"
+        svg.items.append(f'<polygon points="{points}" fill="{color}" stroke="{PAPER}" stroke-width="2"/>')
+
+
+def bausteinbudget() -> None:
+    """The block budgets times 1, 2, 4 and 10 (M86, page 07): per profile the median of four topics - the text, the
+    paragraphs the blocks kept, the tokens and the time of assignment and writing - and the mean grades of two blind
+    raters per sheet. balanced and best-quality-generated from their rounds with one corpus per topic
+    (--fixed-corpus)."""
+    data = load("m86_bausteinbudget.json")["profiles"]
+    panels = (  # title, source, field, low, high, ticks, tick text
+        ("Textlänge, Zeichen", "runs", "chars", 0, 50_000, tuple(range(0, 50_001, 10_000)), lambda v: de(v)),
+        ("Belegabsätze nach dem Zuschnitt", "runs", "evidence", 0, 180, (0, 60, 120, 180), str),
+        ("Tokens je Anfrage", "runs", "tokens", 0, 90_000, (0, 30_000, 60_000, 90_000), lambda v: de(v)),
+        ("Zeit: Zuordnung und Schreiben", "runs", "steps_s", 0, 30, (0, 10, 20, 30), lambda v: f"{v} s"),
+        ("Note Passung", "grades", "passung", 1, 5, (1, 2, 3, 4, 5), str),
+        ("Note Nutzen", "grades", "nutzen", 1, 5, (1, 2, 3, 4, 5), str),
+        ("Note Vollständigkeit", "grades", "vollstaendigkeit", 1, 5, (1, 2, 3, 4, 5), str),
+        ("Note Lesbarkeit", "grades", "lesbarkeit", 1, 5, (1, 2, 3, 4, 5), str),
+    )
+    notes = (
+        "Teil 1 mit 30.000 Zielzeichen. Der Faktor gilt für die Absätze und Zeichen je Baustein beim Zuschnitt der "
+        "Zuordnung; Korpus und Ziellänge bleiben.",
+        "Vier Themen, je ein Lauf: Optik, Französische Revolution, Komponisten der Klassik, Inklusion im "
+        "Sportunterricht. Die beiden LLM-Profile je Thema auf einem Korpus.",
+        "Noten: Mittel aus zwei blinden Claude-Gutachtern, je Profil ein Bogen mit den vier Faktoren (Bausteine 1 bis 4 "
+        "und 8 bis 10). Tokens: llm-free 0, balanced rund 320.",
+        "gpt-6-luna über OpenAI direkt, 09.10.2026. Keine Schutzgrenze des Dienstes hätte gegriffen (180.000 Tokens, "
+        "300 s je Anfrage).",
+    )
+    plot_w, plot_h, gap, top, row_gap = 190, 120, 66, 122, 78
+    lefts = [78 + column * (plot_w + gap) for column in range(4)]
+    width = lefts[-1] + plot_w + 24
+    rows_end = top + 2 * plot_h + row_gap
+    height = rows_end + 46 + 16 * len(notes)
+    svg = Svg(width, height, "Bausteinbudget mal 1, 2, 4 und 10: Text, Belege, Kosten und Noten (M86)")
+    svg.text(24, 30, "Bausteinbudget ×1 bis ×10: Text, Belege, Kosten und Noten (M86)", 17, weight="600")
+    svg.text(24, 52, "Median über vier Themen je Profil; ×1 ist die Vorlage sc26, wie ausgeliefert", 12, MUTED,
+             limit=width - 48)
+    x = 24
+    for profile in BUDGET_PROFILES:
+        color = PROFILE_COLOR[profile]
+        svg.line(x, 74, x + 22, 74, color, 2)
+        marker(svg, x + 11, 74, BUDGET_MARKS[profile], color)
+        svg.text(x + 30, 78, profile, 12, INK)
+        x += 30 + len(profile) * 12 * CHAR_WIDTH + 28
+    for number, (title, source, field, low, high, ticks, tick_text) in enumerate(panels):
+        left, y0 = lefts[number % 4], top + (number // 4) * (plot_h + row_gap)
+        bottom = y0 + plot_h
+
+        def py(value: float, low: float = low, high: float = high, bottom: float = bottom) -> float:
+            return bottom - (min(value, high) - low) / (high - low) * plot_h
+
+        def px(index: int, left: float = left) -> float:
+            return left + plot_w * (index + 0.5) / len(BUDGET_FACTORS)
+
+        svg.text(left - 40, y0 - 16, title, 11.5, INK, weight="600", limit=plot_w + 40)
+        for tick in ticks:
+            svg.line(left, py(tick), left + plot_w, py(tick), GRID)
+            svg.text(left - 7, py(tick) + 4, tick_text(tick), 10, MUTED, "end")
+        for index, factor in enumerate(BUDGET_FACTORS):
+            svg.text(px(index), bottom + 17, f"×{factor}", 10.5, MUTED, "middle")
+        for profile in BUDGET_PROFILES:
+            color = PROFILE_COLOR[profile]
+            found = data[profile][source]
+            points = [(px(i), py(found[f"{profile}@{f}"][field])) for i, f in enumerate(BUDGET_FACTORS)
+                      if f"{profile}@{f}" in found]
+            line = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
+            svg.items.append(f'<polyline points="{line}" fill="none" stroke="{color}" stroke-width="2"/>')
+            for x, y in points:
+                marker(svg, x, y, BUDGET_MARKS[profile], color)
+    for number, note in enumerate(notes):
+        svg.text(24, rows_end + 46 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("bausteinbudget.svg")
+
+
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
               kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile,
               profilvergleich, profiluebersicht, endpunkte, profile_verlauf, kiwix_quellen,
-              quellen_empfehlung):
+              quellen_empfehlung, bausteinbudget):
     chart()

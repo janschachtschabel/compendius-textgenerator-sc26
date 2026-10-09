@@ -1,0 +1,2062 @@
+{
+ "profiles": {
+  "balanced": {
+   "runs": {
+    "balanced@1": {
+     "runs": 4,
+     "seconds": 3.2,
+     "seconds_span": [
+      2.4,
+      5.6
+     ],
+     "match_s": 0.8,
+     "write_s": 0.3,
+     "steps_s": 1.1,
+     "resolve_s": 2.1,
+     "tokens": 321.0,
+     "tokens_span": [
+      307,
+      336
+     ],
+     "prompt_tokens": 252.5,
+     "completion_tokens": 68.0,
+     "cached": 0.0,
+     "calls": 1.0,
+     "chars": 10263.0,
+     "chars_span": [
+      8746,
+      16878
+     ],
+     "chars_growth": 1.0,
+     "evidence": 26.0,
+     "evidence_growth": 1.0,
+     "cited": 25.5,
+     "blocks": 6.5,
+     "model_share": 0.0,
+     "model_share_span": [
+      0.0,
+      0.0
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "balanced@2": {
+     "runs": 4,
+     "seconds": 3.0,
+     "seconds_span": [
+      2.5,
+      7.4
+     ],
+     "match_s": 0.6,
+     "write_s": 0.4,
+     "steps_s": 1.0,
+     "resolve_s": 1.8,
+     "tokens": 319.5,
+     "tokens_span": [
+      312,
+      330
+     ],
+     "prompt_tokens": 252.5,
+     "completion_tokens": 66.5,
+     "cached": 0.0,
+     "calls": 1.0,
+     "chars": 16399.5,
+     "chars_span": [
+      15102,
+      26229
+     ],
+     "chars_growth": 1.6,
+     "evidence": 42.5,
+     "evidence_growth": 1.73,
+     "cited": 41.0,
+     "blocks": 6.0,
+     "model_share": 0.0,
+     "model_share_span": [
+      0.0,
+      0.0
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "balanced@4": {
+     "runs": 4,
+     "seconds": 2.5,
+     "seconds_span": [
+      2.3,
+      3.0
+     ],
+     "match_s": 0.5,
+     "write_s": 0.3,
+     "steps_s": 0.8,
+     "resolve_s": 1.6,
+     "tokens": 307.5,
+     "tokens_span": [
+      307,
+      327
+     ],
+     "prompt_tokens": 252.5,
+     "completion_tokens": 55.0,
+     "cached": 0.0,
+     "calls": 1.0,
+     "chars": 22973.5,
+     "chars_span": [
+      21715,
+      34535
+     ],
+     "chars_growth": 2.26,
+     "evidence": 66.5,
+     "evidence_growth": 2.56,
+     "cited": 65.0,
+     "blocks": 6.5,
+     "model_share": 0.0,
+     "model_share_span": [
+      0.0,
+      0.0
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "balanced@10": {
+     "runs": 4,
+     "seconds": 3.1,
+     "seconds_span": [
+      2.4,
+      5.1
+     ],
+     "match_s": 0.6,
+     "write_s": 0.4,
+     "steps_s": 1.1,
+     "resolve_s": 1.9,
+     "tokens": 320.0,
+     "tokens_span": [
+      312,
+      331
+     ],
+     "prompt_tokens": 252.5,
+     "completion_tokens": 67.0,
+     "cached": 0.0,
+     "calls": 1.0,
+     "chars": 39672.5,
+     "chars_span": [
+      32250,
+      61511
+     ],
+     "chars_growth": 3.67,
+     "evidence": 100.0,
+     "evidence_growth": 4.12,
+     "cited": 97.0,
+     "blocks": 6.5,
+     "model_share": 0.0,
+     "model_share_span": [
+      0.0,
+      0.0
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    }
+   },
+   "grades": {
+    "balanced@1": {
+     "passung": 3.25,
+     "nutzen": 2,
+     "vollstaendigkeit": 1.62,
+     "lesbarkeit": 3,
+     "schwere_fehler": 0,
+     "leichte_fehler": 0.12
+    },
+    "balanced@2": {
+     "passung": 3.25,
+     "nutzen": 2.5,
+     "vollstaendigkeit": 1.75,
+     "lesbarkeit": 2.75,
+     "schwere_fehler": 0,
+     "leichte_fehler": 0.62
+    },
+    "balanced@4": {
+     "passung": 3.38,
+     "nutzen": 3.25,
+     "vollstaendigkeit": 2.38,
+     "lesbarkeit": 2.75,
+     "schwere_fehler": 0.12,
+     "leichte_fehler": 0.75
+    },
+    "balanced@10": {
+     "passung": 3.75,
+     "nutzen": 4.12,
+     "vollstaendigkeit": 2.38,
+     "lesbarkeit": 2.5,
+     "schwere_fehler": 0,
+     "leichte_fehler": 1.5
+    }
+   },
+   "agreement": {
+    "passung": {
+     "same": 15,
+     "one_apart": 1,
+     "two_or_more": 0,
+     "pairs": 16
+    },
+    "nutzen": {
+     "same": 15,
+     "one_apart": 1,
+     "two_or_more": 0,
+     "pairs": 16
+    },
+    "vollstaendigkeit": {
+     "same": 13,
+     "one_apart": 3,
+     "two_or_more": 0,
+     "pairs": 16
+    },
+    "lesbarkeit": {
+     "same": 14,
+     "one_apart": 2,
+     "two_or_more": 0,
+     "pairs": 16
+    }
+   },
+   "raters": [
+    {
+     "Optik": {
+      "A": {
+       "passung": 3,
+       "nutzen": 3,
+       "vollstaendigkeit": 3,
+       "lesbarkeit": 2,
+       "fehler": []
+      },
+      "B": {
+       "passung": 4,
+       "nutzen": 4,
+       "vollstaendigkeit": 3,
+       "lesbarkeit": 2,
+       "fehler": [
+        {
+         "grund": "Radioaktive (atomare) Strahlung wie Alpha- und Betastrahlung ist Teilchenstrahlung und gehört nicht zur Optik; die Aussage ist irreführend.",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Durch eine Auslassung bezieht sich ‚Sie‘ auf die Beugung; Doppelbrechung, Fresnelsche Formeln und Brewster-Winkel betreffen die Polarisation.",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Das Farbensehen beruht auf den Zapfen; der Satz schreibt es den Stäbchen zu und widerspricht dem Satz davor.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "C": {
+       "passung": 5,
+       "nutzen": 2,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": []
+      },
+      "D": {
+       "passung": 5,
+       "nutzen": 3,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": []
+      }
+     },
+     "Französische Revolution": {
+      "A": {
+       "passung": 5,
+       "nutzen": 4,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": [
+        {
+         "grund": "Neckers Compte rendu von 1781 wies einen Überschuss aus; die Defizitzahlen (503 zu rund 630 Mio. Livres, die Hälfte für den Schuldendienst) stammen aus dem Staatsbudget von 1788.",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Ludwig XVI. führte vor 1789 nur einen großen Krieg (Amerikanischer Unabhängigkeitskrieg); die Schulden gingen großteils auf die Kriege seiner Vorgänger zurück.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "B": {
+       "passung": 5,
+       "nutzen": 3,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": []
+      },
+      "C": {
+       "passung": 5,
+       "nutzen": 5,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": [
+        {
+         "grund": "Neckers Compte rendu von 1781 wies einen Überschuss aus; die Defizitzahlen (503 zu rund 630 Mio. Livres, die Hälfte für den Schuldendienst) stammen aus dem Staatsbudget von 1788.",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Ludwig XVI. führte vor 1789 nur einen großen Krieg (Amerikanischer Unabhängigkeitskrieg); die Schulden gingen großteils auf die Kriege seiner Vorgänger zurück.",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Nach Titel VII der Verfassung von 1791 mussten drei aufeinanderfolgende Legislaturen die Änderung verlangen; erst die vierte, um 249 Mitglieder erweitert, bildete die Revisionsversammlung.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "D": {
+       "passung": 4,
+       "nutzen": 2,
+       "vollstaendigkeit": 1,
+       "lesbarkeit": 3,
+       "fehler": []
+      }
+     },
+     "Komponisten der Klassik": {
+      "A": {
+       "passung": 4,
+       "nutzen": 5,
+       "vollstaendigkeit": 3,
+       "lesbarkeit": 3,
+       "fehler": [
+        {
+         "grund": "Im Pariser Buffonistenstreit (1752–1754) standen sich die französische Tragédie lyrique (Lully, Rameau) und die italienische Opera buffa gegenüber, nicht die Opera seria.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "B": {
+       "passung": 2,
+       "nutzen": 3,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": [
+        {
+         "grund": "Im Pariser Buffonistenstreit (1752–1754) standen sich die französische Tragédie lyrique (Lully, Rameau) und die italienische Opera buffa gegenüber, nicht die Opera seria.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "C": {
+       "passung": 2,
+       "nutzen": 2,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 4,
+       "fehler": []
+      },
+      "D": {
+       "passung": 3,
+       "nutzen": 4,
+       "vollstaendigkeit": 3,
+       "lesbarkeit": 4,
+       "fehler": [
+        {
+         "grund": "Im Pariser Buffonistenstreit (1752–1754) standen sich die französische Tragédie lyrique (Lully, Rameau) und die italienische Opera buffa gegenüber, nicht die Opera seria.",
+         "schwere": "leicht"
+        }
+       ]
+      }
+     },
+     "Inklusion im Sportunterricht": {
+      "A": {
+       "passung": 2,
+       "nutzen": 2,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 2,
+       "fehler": []
+      },
+      "B": {
+       "passung": 1,
+       "nutzen": 1,
+       "vollstaendigkeit": 1,
+       "lesbarkeit": 2,
+       "fehler": [
+        {
+         "grund": "Veraltet und ungenau: Diplom- und Magisterstudiengänge sind seit der Bologna-Reform weitgehend abgeschafft und führten nicht zum Lehramt; Förderschullehrkräfte brauchen Staatsexamen oder Master of Education.",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Veraltet und widersprüchlich: DIN 18024-1 ist durch DIN 18040-3 ersetzt, wie der Text zuvor selbst angibt.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "C": {
+       "passung": 2,
+       "nutzen": 2,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 2,
+       "fehler": []
+      },
+      "D": {
+       "passung": 2,
+       "nutzen": 2,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 2,
+       "fehler": []
+      }
+     }
+    },
+    {
+     "Optik": {
+      "A": {
+       "passung": 4,
+       "nutzen": 3,
+       "vollstaendigkeit": 3,
+       "lesbarkeit": 2,
+       "fehler": [
+        {
+         "grund": "Falsche Zuordnung: Die Botanik der Pflanzengattung Lens (Speiselinse) wird in Gliederung und Fachinhalten als Optik-Inhalt dargestellt; Verwechslung mit der optischen Linse.",
+         "schwere": "schwer"
+        }
+       ]
+      },
+      "B": {
+       "passung": 4,
+       "nutzen": 4,
+       "vollstaendigkeit": 3,
+       "lesbarkeit": 2,
+       "fehler": [
+        {
+         "grund": "„Sie“ bezieht sich im Text auf die Beugung; Doppelbrechung, Fresnelsche Formeln und Brewster-Winkel betreffen die Polarisation, die durch eine Auslassung fehlt.",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Bezieht sich im Text auf die Stäbchen; das Farbensehen beruht auf den drei Zapfentypen, deren Beschreibung fehlt. Widersprüchlich und sachlich falsch.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "C": {
+       "passung": 5,
+       "nutzen": 2,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": []
+      },
+      "D": {
+       "passung": 5,
+       "nutzen": 3,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": []
+      }
+     },
+     "Französische Revolution": {
+      "A": {
+       "passung": 5,
+       "nutzen": 4,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": [
+        {
+         "grund": "Neckers Compte rendu von 1781 wies einen (geschönten) Überschuss aus; Einnahmen von 503 und Ausgaben von rund 629 Mio. Livres stammen aus dem Staatshaushalt von 1788 (Brienne).",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Ludwig XVI. berief die Generalstände 1788 wegen des drohenden Staatsbankrotts und auf Druck von Adel und Parlements ein, nicht aus Angst vor dem Volk; ständische Versammlung, kein Parlament.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "B": {
+       "passung": 5,
+       "nutzen": 3,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": []
+      },
+      "C": {
+       "passung": 5,
+       "nutzen": 5,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": [
+        {
+         "grund": "Neckers Compte rendu von 1781 wies einen (geschönten) Überschuss aus; Einnahmen von 503 und Ausgaben von rund 629 Mio. Livres stammen aus dem Staatshaushalt von 1788 (Brienne).",
+         "schwere": "leicht"
+        },
+        {
+         "grund": "Ludwig XVI. berief die Generalstände 1788 wegen des drohenden Staatsbankrotts und auf Druck von Adel und Parlements ein, nicht aus Angst vor dem Volk; ständische Versammlung, kein Parlament.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "D": {
+       "passung": 4,
+       "nutzen": 2,
+       "vollstaendigkeit": 1,
+       "lesbarkeit": 2,
+       "fehler": []
+      }
+     },
+     "Komponisten der Klassik": {
+      "A": {
+       "passung": 4,
+       "nutzen": 5,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": [
+        {
+         "grund": "Irreführende Datierung: Die musikalische Klassik wird üblicherweise auf etwa 1750 (Vorklassik ab ca. 1730) bis ca. 1820/1830 angesetzt; das frühe 18. Jahrhundert ist Spätbarock.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "B": {
+       "passung": 2,
+       "nutzen": 3,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": [
+        {
+         "grund": "Irreführende Datierung: Die musikalische Klassik wird üblicherweise auf etwa 1750 (Vorklassik ab ca. 1730) bis ca. 1820/1830 angesetzt; das frühe 18. Jahrhundert ist Spätbarock.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "C": {
+       "passung": 2,
+       "nutzen": 2,
+       "vollstaendigkeit": 1,
+       "lesbarkeit": 4,
+       "fehler": [
+        {
+         "grund": "Irreführende Datierung: Die musikalische Klassik wird üblicherweise auf etwa 1750 (Vorklassik ab ca. 1730) bis ca. 1820/1830 angesetzt; das frühe 18. Jahrhundert ist Spätbarock.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "D": {
+       "passung": 3,
+       "nutzen": 4,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 4,
+       "fehler": [
+        {
+         "grund": "Irreführende Datierung: Die musikalische Klassik wird üblicherweise auf etwa 1750 (Vorklassik ab ca. 1730) bis ca. 1820/1830 angesetzt; das frühe 18. Jahrhundert ist Spätbarock.",
+         "schwere": "leicht"
+        }
+       ]
+      }
+     },
+     "Inklusion im Sportunterricht": {
+      "A": {
+       "passung": 2,
+       "nutzen": 2,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 2,
+       "fehler": []
+      },
+      "B": {
+       "passung": 1,
+       "nutzen": 1,
+       "vollstaendigkeit": 1,
+       "lesbarkeit": 2,
+       "fehler": [
+        {
+         "grund": "Veraltet bzw. unzutreffend: Sonderschullehrkräfte werden im Lehramtsstudium (Staatsexamen bzw. B.Ed./M.Ed.) ausgebildet; Diplom- und Magisterstudiengänge sind weitgehend abgeschafft und führten nicht zum Lehramt.",
+         "schwere": "leicht"
+        }
+       ]
+      },
+      "C": {
+       "passung": 2,
+       "nutzen": 2,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 3,
+       "fehler": []
+      },
+      "D": {
+       "passung": 2,
+       "nutzen": 3,
+       "vollstaendigkeit": 2,
+       "lesbarkeit": 2,
+       "fehler": []
+      }
+     }
+    }
+   ],
+   "key": {
+    "Optik": {
+     "A": "balanced@4",
+     "B": "balanced@10",
+     "C": "balanced@1",
+     "D": "balanced@2"
+    },
+    "Französische Revolution": {
+     "A": "balanced@4",
+     "B": "balanced@2",
+     "C": "balanced@10",
+     "D": "balanced@1"
+    },
+    "Komponisten der Klassik": {
+     "A": "balanced@10",
+     "B": "balanced@2",
+     "C": "balanced@1",
+     "D": "balanced@4"
+    },
+    "Inklusion im Sportunterricht": {
+     "A": "balanced@4",
+     "B": "balanced@2",
+     "C": "balanced@1",
+     "D": "balanced@10"
+    }
+   }
+  },
+  "best-quality-generated": {
+   "runs": {
+    "best-quality-generated@1": {
+     "runs": 4,
+     "seconds": 27.8,
+     "seconds_span": [
+      24.5,
+      30.8
+     ],
+     "match_s": 11.2,
+     "write_s": 12.4,
+     "steps_s": 24.2,
+     "resolve_s": 3.5,
+     "tokens": 56982.5,
+     "tokens_span": [
+      53693,
+      78306
+     ],
+     "prompt_tokens": 43613.0,
+     "completion_tokens": 13369.5,
+     "cached": 18562.5,
+     "calls": 17.0,
+     "chars": 23756.0,
+     "chars_span": [
+      22451,
+      28426
+     ],
+     "chars_growth": 1.0,
+     "evidence": 32.0,
+     "evidence_growth": 1.0,
+     "cited": 77.0,
+     "blocks": 10.0,
+     "model_share": 0.535,
+     "model_share_span": [
+      0.417,
+      0.628
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "best-quality-generated@2": {
+     "runs": 4,
+     "seconds": 26.9,
+     "seconds_span": [
+      24.0,
+      36.4
+     ],
+     "match_s": 11.2,
+     "write_s": 13.5,
+     "steps_s": 24.7,
+     "resolve_s": 2.2,
+     "tokens": 65366.0,
+     "tokens_span": [
+      58601,
+      80073
+     ],
+     "prompt_tokens": 51311.0,
+     "completion_tokens": 14055.0,
+     "cached": 24630.5,
+     "calls": 17.5,
+     "chars": 26333.5,
+     "chars_span": [
+      21066,
+      27908
+     ],
+     "chars_growth": 1.0,
+     "evidence": 53.5,
+     "evidence_growth": 1.73,
+     "cited": 86.5,
+     "blocks": 10.0,
+     "model_share": 0.475,
+     "model_share_span": [
+      0.332,
+      0.498
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "best-quality-generated@4": {
+     "runs": 4,
+     "seconds": 28.7,
+     "seconds_span": [
+      23.1,
+      30.0
+     ],
+     "match_s": 11.6,
+     "write_s": 14.0,
+     "steps_s": 26.1,
+     "resolve_s": 2.2,
+     "tokens": 74486.0,
+     "tokens_span": [
+      64303,
+      88860
+     ],
+     "prompt_tokens": 60170.0,
+     "completion_tokens": 14316.5,
+     "cached": 29283.0,
+     "calls": 18.5,
+     "chars": 27996.0,
+     "chars_span": [
+      25516,
+      29043
+     ],
+     "chars_growth": 1.15,
+     "evidence": 99.0,
+     "evidence_growth": 3.33,
+     "cited": 119.0,
+     "blocks": 10.0,
+     "model_share": 0.366,
+     "model_share_span": [
+      0.286,
+      0.453
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    },
+    "best-quality-generated@10": {
+     "runs": 4,
+     "seconds": 28.6,
+     "seconds_span": [
+      24.7,
+      32.0
+     ],
+     "match_s": 11.1,
+     "write_s": 13.1,
+     "steps_s": 25.8,
+     "resolve_s": 2.5,
+     "tokens": 82752.0,
+     "tokens_span": [
+      47940,
+      95276
+     ],
+     "prompt_tokens": 68236.5,
+     "completion_tokens": 14515.5,
+     "cached": 10133.0,
+     "calls": 17.0,
+     "chars": 30119.5,
+     "chars_span": [
+      28381,
+      34255
+     ],
+     "chars_growth": 1.27,
+     "evidence": 138.0,
+     "evidence_growth": 4.77,
+     "cited": 131.5,
+     "blocks": 10.0,
+     "model_share": 0.406,
+     "model_share_span": [
+      0.333,
+      0.481
+     ],
+     "generation_fallbacks": 0,
+     "matching_fallbacks": 0
+    }
+   }
+  }
+ },
+ "guards": [],
+ "run_rows": [
+  {
+   "topic": "Optik",
+   "variant": "balanced@1",
+   "budget": 1,
+   "s": 2.4,
+   "timings": {
+    "resolve": 1802,
+    "corpus": 17,
+    "segment": 13,
+    "match": 333,
+    "synthesize": 267,
+    "assemble": 6
+   },
+   "main": "Optik",
+   "tokens": {
+    "prompt": 250,
+    "completion": 68,
+    "total": 318,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 8746,
+   "model_chars": 0,
+   "evidence": 27,
+   "cited": 26,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Licht",
+    "Brechung (Physik)",
+    "Reflexion (Physik)",
+    "Beugung (Physik)"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "balanced@2",
+   "budget": 2,
+   "s": 7.4,
+   "timings": {
+    "resolve": 6565,
+    "corpus": 25,
+    "segment": 20,
+    "match": 362,
+    "synthesize": 371,
+    "assemble": 6
+   },
+   "main": "Optik",
+   "tokens": {
+    "prompt": 250,
+    "completion": 66,
+    "total": 316,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 15102,
+   "model_chars": 0,
+   "evidence": 47,
+   "cited": 44,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Brechung (Physik)",
+    "Reflexion (Physik)",
+    "Beugung (Physik)",
+    "Polarisation"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "balanced@4",
+   "budget": 4,
+   "s": 2.3,
+   "timings": {
+    "resolve": 1509,
+    "corpus": 15,
+    "segment": 14,
+    "match": 419,
+    "synthesize": 302,
+    "assemble": 8
+   },
+   "main": "Optik",
+   "tokens": {
+    "prompt": 250,
+    "completion": 57,
+    "total": 307,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 21715,
+   "model_chars": 0,
+   "evidence": 73,
+   "cited": 71,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Optik",
+    "Optik",
+    "Licht",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Linsen",
+    "Spiegel"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "balanced@10",
+   "budget": 10,
+   "s": 2.4,
+   "timings": {
+    "resolve": 1558,
+    "corpus": 18,
+    "segment": 21,
+    "match": 379,
+    "synthesize": 365,
+    "assemble": 7
+   },
+   "main": "Optik",
+   "tokens": {
+    "prompt": 250,
+    "completion": 70,
+    "total": 320,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 32250,
+   "model_chars": 0,
+   "evidence": 102,
+   "cited": 97,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Licht",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Beugung (Physik)"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "balanced@10",
+   "budget": 10,
+   "s": 2.9,
+   "timings": {
+    "resolve": 2039,
+    "corpus": 19,
+    "segment": 11,
+    "match": 471,
+    "synthesize": 389,
+    "assemble": 8
+   },
+   "main": "Französische Revolution",
+   "tokens": {
+    "prompt": 251,
+    "completion": 80,
+    "total": 331,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 5,
+   "llm_blocks": 0,
+   "chars": 41390,
+   "model_chars": 0,
+   "evidence": 98,
+   "cited": 97,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Französische Verfassung (1791)",
+    "Jakobiner",
+    "Terrorherrschaft",
+    "Direktorium (Frankreich)"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "balanced@4",
+   "budget": 4,
+   "s": 2.6,
+   "timings": {
+    "resolve": 1709,
+    "corpus": 17,
+    "segment": 12,
+    "match": 484,
+    "synthesize": 319,
+    "assemble": 7
+   },
+   "main": "Französische Revolution",
+   "tokens": {
+    "prompt": 251,
+    "completion": 76,
+    "total": 327,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 5,
+   "llm_blocks": 0,
+   "chars": 24141,
+   "model_chars": 0,
+   "evidence": 60,
+   "cited": 59,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Generalstände von 1789",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Jakobiner",
+    "Terrorherrschaft",
+    "Nationalkonvent",
+    "Direktorium (Frankreich)"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "balanced@2",
+   "budget": 2,
+   "s": 2.5,
+   "timings": {
+    "resolve": 1642,
+    "corpus": 35,
+    "segment": 18,
+    "match": 492,
+    "synthesize": 320,
+    "assemble": 6
+   },
+   "main": "Französische Revolution",
+   "tokens": {
+    "prompt": 251,
+    "completion": 79,
+    "total": 330,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 5,
+   "llm_blocks": 0,
+   "chars": 15529,
+   "model_chars": 0,
+   "evidence": 38,
+   "cited": 37,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Französische Verfassung (1791)",
+    "Jakobiner",
+    "Terrorherrschaft",
+    "9. Thermidor",
+    "Direktorium (Frankreich)"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "balanced@1",
+   "budget": 1,
+   "s": 3.2,
+   "timings": {
+    "resolve": 1983,
+    "corpus": 25,
+    "segment": 22,
+    "match": 784,
+    "synthesize": 337,
+    "assemble": 5
+   },
+   "main": "Französische Revolution",
+   "tokens": {
+    "prompt": 251,
+    "completion": 85,
+    "total": 336,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 5,
+   "llm_blocks": 0,
+   "chars": 9640,
+   "model_chars": 0,
+   "evidence": 22,
+   "cited": 21,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Terrorherrschaft",
+    "Maximilien de Robespierre",
+    "Napoleon Bonaparte",
+    "Koalitionskriege"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "balanced@1",
+   "budget": 1,
+   "s": 5.6,
+   "timings": {
+    "resolve": 2777,
+    "corpus": 22,
+    "segment": 33,
+    "match": 838,
+    "synthesize": 1939,
+    "assemble": 6
+   },
+   "main": "Wiener Klassik",
+   "tokens": {
+    "prompt": 254,
+    "completion": 53,
+    "total": 307,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 10886,
+   "model_chars": 0,
+   "evidence": 25,
+   "cited": 25,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "balanced@2",
+   "budget": 2,
+   "s": 3.4,
+   "timings": {
+    "resolve": 2016,
+    "corpus": 24,
+    "segment": 42,
+    "match": 922,
+    "synthesize": 390,
+    "assemble": 7
+   },
+   "main": "Wiener Klassik",
+   "tokens": {
+    "prompt": 254,
+    "completion": 58,
+    "total": 312,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 17270,
+   "model_chars": 0,
+   "evidence": 38,
+   "cited": 38,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach",
+    "Johann Christian Bach"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "balanced@4",
+   "budget": 4,
+   "s": 3.0,
+   "timings": {
+    "resolve": 1748,
+    "corpus": 22,
+    "segment": 48,
+    "match": 890,
+    "synthesize": 319,
+    "assemble": 7
+   },
+   "main": "Wiener Klassik",
+   "tokens": {
+    "prompt": 254,
+    "completion": 53,
+    "total": 307,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 21806,
+   "model_chars": 0,
+   "evidence": 47,
+   "cited": 47,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "balanced@10",
+   "budget": 10,
+   "s": 3.4,
+   "timings": {
+    "resolve": 1868,
+    "corpus": 23,
+    "segment": 36,
+    "match": 1048,
+    "synthesize": 386,
+    "assemble": 7
+   },
+   "main": "Wiener Klassik",
+   "tokens": {
+    "prompt": 254,
+    "completion": 58,
+    "total": 312,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 6,
+   "llm_blocks": 0,
+   "chars": 37955,
+   "model_chars": 0,
+   "evidence": 79,
+   "cited": 79,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach",
+    "Johann Christian Bach"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "balanced@10",
+   "budget": 10,
+   "s": 5.1,
+   "timings": {
+    "resolve": 2027,
+    "corpus": 10,
+    "segment": 19,
+    "match": 637,
+    "synthesize": 2370,
+    "assemble": 13
+   },
+   "main": "Inklusive Pädagogik",
+   "tokens": {
+    "prompt": 256,
+    "completion": 64,
+    "total": 320,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 9,
+   "llm_blocks": 0,
+   "chars": 61511,
+   "model_chars": 0,
+   "evidence": 165,
+   "cited": 162,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Behindertensport",
+    "Paralympische Spiele",
+    "Special Olympics"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "balanced@4",
+   "budget": 4,
+   "s": 2.3,
+   "timings": {
+    "resolve": 1434,
+    "corpus": 7,
+    "segment": 15,
+    "match": 488,
+    "synthesize": 329,
+    "assemble": 7
+   },
+   "main": "Inklusive Pädagogik",
+   "tokens": {
+    "prompt": 256,
+    "completion": 52,
+    "total": 308,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 7,
+   "llm_blocks": 0,
+   "chars": 34535,
+   "model_chars": 0,
+   "evidence": 80,
+   "cited": 79,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Behindertensport"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "balanced@2",
+   "budget": 2,
+   "s": 2.7,
+   "timings": {
+    "resolve": 1512,
+    "corpus": 13,
+    "segment": 16,
+    "match": 688,
+    "synthesize": 431,
+    "assemble": 6
+   },
+   "main": "Inklusive Pädagogik",
+   "tokens": {
+    "prompt": 256,
+    "completion": 67,
+    "total": 323,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 9,
+   "llm_blocks": 0,
+   "chars": 26229,
+   "model_chars": 0,
+   "evidence": 65,
+   "cited": 64,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Integrative Pädagogik",
+    "Behindertensport",
+    "Sportpädagogik",
+    "Sonderpädagogik",
+    "Barrierefreiheit",
+    "Inklusion (Soziologie)"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "balanced@1",
+   "budget": 1,
+   "s": 3.3,
+   "timings": {
+    "resolve": 2208,
+    "corpus": 16,
+    "segment": 18,
+    "match": 796,
+    "synthesize": 296,
+    "assemble": 5
+   },
+   "main": "Inklusive Pädagogik",
+   "tokens": {
+    "prompt": 256,
+    "completion": 68,
+    "total": 324,
+    "calls": 1,
+    "cached": 0
+   },
+   "blocks": 8,
+   "llm_blocks": 0,
+   "chars": 16878,
+   "model_chars": 0,
+   "evidence": 33,
+   "cited": 33,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Behindertensport",
+    "Integrative Pädagogik",
+    "Übereinkommen über die Rechte von Menschen mit Behinderungen",
+    "Sportpädagogik"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "best-quality-generated@1",
+   "budget": 1,
+   "s": 30.8,
+   "timings": {
+    "resolve": 4323,
+    "corpus": 13,
+    "segment": 14,
+    "match": 13517,
+    "synthesize": 12893,
+    "assemble": 8
+   },
+   "main": "Optik",
+   "tokens": {
+    "prompt": 41465,
+    "completion": 12228,
+    "total": 53693,
+    "calls": 17,
+    "cached": 6848
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 22451,
+   "model_chars": 11139,
+   "evidence": 35,
+   "cited": 82,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Licht",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Beugung (Physik)",
+    "Interferenz (Physik)"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "best-quality-generated@2",
+   "budget": 2,
+   "s": 26.2,
+   "timings": {
+    "resolve": 2363,
+    "corpus": 15,
+    "segment": 13,
+    "match": 10971,
+    "synthesize": 12791,
+    "assemble": 9
+   },
+   "main": "Optik",
+   "tokens": {
+    "prompt": 50908,
+    "completion": 14237,
+    "total": 65145,
+    "calls": 18,
+    "cached": 18716
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 27908,
+   "model_chars": 12850,
+   "evidence": 60,
+   "cited": 119,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Licht",
+    "Linse (Optik)",
+    "Spiegel",
+    "Interferenz (Physik)"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "best-quality-generated@4",
+   "budget": 4,
+   "s": 27.5,
+   "timings": {
+    "resolve": 2672,
+    "corpus": 23,
+    "segment": 15,
+    "match": 10545,
+    "synthesize": 14254,
+    "assemble": 8
+   },
+   "main": "Optik",
+   "tokens": {
+    "prompt": 50554,
+    "completion": 13749,
+    "total": 64303,
+    "calls": 18,
+    "cached": 28207
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 27251,
+   "model_chars": 10591,
+   "evidence": 102,
+   "cited": 144,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Licht",
+    "Reflexion (Physik)",
+    "Brechung (Physik)",
+    "Beugung (Physik)",
+    "Polarisation"
+   ]
+  },
+  {
+   "topic": "Optik",
+   "variant": "best-quality-generated@10",
+   "budget": 10,
+   "s": 24.7,
+   "timings": {
+    "resolve": 2677,
+    "corpus": 14,
+    "segment": 8,
+    "match": 9517,
+    "synthesize": 12425,
+    "assemble": 10
+   },
+   "main": "Optik",
+   "tokens": {
+    "prompt": 36598,
+    "completion": 11342,
+    "total": 47940,
+    "calls": 15,
+    "cached": 9994
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28381,
+   "model_chars": 12220,
+   "evidence": 114,
+   "cited": 138,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Optik",
+    "Optik",
+    "Geometrische Optik",
+    "Wellenoptik",
+    "Quantenoptik",
+    "Brechung (Physik)",
+    "Beugung (Physik)",
+    "Interferenz (Physik)"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "best-quality-generated@10",
+   "budget": 10,
+   "s": 30.6,
+   "timings": {
+    "resolve": 3147,
+    "corpus": 28,
+    "segment": 17,
+    "match": 11018,
+    "synthesize": 16359,
+    "assemble": 8
+   },
+   "main": "Französische Revolution",
+   "tokens": {
+    "prompt": 64229,
+    "completion": 13925,
+    "total": 78154,
+    "calls": 17,
+    "cached": 8560
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 34255,
+   "model_chars": 16460,
+   "evidence": 158,
+   "cited": 132,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Französische Verfassung (1791)",
+    "Jakobiner",
+    "Terrorherrschaft",
+    "Direktorium (Frankreich)"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "best-quality-generated@4",
+   "budget": 4,
+   "s": 30.0,
+   "timings": {
+    "resolve": 2513,
+    "corpus": 17,
+    "segment": 15,
+    "match": 13739,
+    "synthesize": 13728,
+    "assemble": 9
+   },
+   "main": "Französische Revolution",
+   "tokens": {
+    "prompt": 51704,
+    "completion": 13138,
+    "total": 64842,
+    "calls": 17,
+    "cached": 23495
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 29043,
+   "model_chars": 13156,
+   "evidence": 96,
+   "cited": 111,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Französische Verfassung (1791)",
+    "Nationalkonvent",
+    "Jakobiner",
+    "Terrorherrschaft"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "best-quality-generated@2",
+   "budget": 2,
+   "s": 36.4,
+   "timings": {
+    "resolve": 2959,
+    "corpus": 25,
+    "segment": 14,
+    "match": 13561,
+    "synthesize": 19862,
+    "assemble": 6
+   },
+   "main": "Französische Revolution",
+   "tokens": {
+    "prompt": 45358,
+    "completion": 13243,
+    "total": 58601,
+    "calls": 17,
+    "cached": 22326
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 26007,
+   "model_chars": 12715,
+   "evidence": 47,
+   "cited": 81,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Nationalkonvent",
+    "Terrorherrschaft",
+    "Girondisten",
+    "Jakobiner"
+   ]
+  },
+  {
+   "topic": "Französische Revolution",
+   "variant": "best-quality-generated@1",
+   "budget": 1,
+   "s": 26.6,
+   "timings": {
+    "resolve": 3530,
+    "corpus": 27,
+    "segment": 19,
+    "match": 11059,
+    "synthesize": 11944,
+    "assemble": 10
+   },
+   "main": "Französische Revolution",
+   "tokens": {
+    "prompt": 41684,
+    "completion": 12564,
+    "total": 54248,
+    "calls": 17,
+    "cached": 23429
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 24541,
+   "model_chars": 15418,
+   "evidence": 27,
+   "cited": 57,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Französische Revolution",
+    "Französische Revolution",
+    "Sturm auf die Bastille",
+    "Erklärung der Menschen- und Bürgerrechte",
+    "Nationalkonvent",
+    "Direktorium (Frankreich)",
+    "Sansculottes",
+    "Maximilien de Robespierre"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "best-quality-generated@1",
+   "budget": 1,
+   "s": 28.9,
+   "timings": {
+    "resolve": 3520,
+    "corpus": 23,
+    "segment": 28,
+    "match": 11259,
+    "synthesize": 14075,
+    "assemble": 10
+   },
+   "main": "Wiener Klassik",
+   "tokens": {
+    "prompt": 62621,
+    "completion": 15685,
+    "total": 78306,
+    "calls": 19,
+    "cached": 13696
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 22971,
+   "model_chars": 9569,
+   "evidence": 29,
+   "cited": 84,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach",
+    "Johann Christian Bach"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "best-quality-generated@2",
+   "budget": 2,
+   "s": 27.7,
+   "timings": {
+    "resolve": 2014,
+    "corpus": 21,
+    "segment": 33,
+    "match": 11509,
+    "synthesize": 14141,
+    "assemble": 6
+   },
+   "main": "Wiener Klassik",
+   "tokens": {
+    "prompt": 65025,
+    "completion": 15048,
+    "total": 80073,
+    "calls": 19,
+    "cached": 50884
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 21066,
+   "model_chars": 7001,
+   "evidence": 46,
+   "cited": 92,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Carl Philipp Emanuel Bach",
+    "Johann Christian Bach"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "best-quality-generated@4",
+   "budget": 4,
+   "s": 29.9,
+   "timings": {
+    "resolve": 1878,
+    "corpus": 19,
+    "segment": 30,
+    "match": 12577,
+    "synthesize": 15398,
+    "assemble": 9
+   },
+   "main": "Wiener Klassik",
+   "tokens": {
+    "prompt": 73976,
+    "completion": 14884,
+    "total": 88860,
+    "calls": 19,
+    "cached": 32834
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 25516,
+   "model_chars": 8763,
+   "evidence": 90,
+   "cited": 109,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Antonio Salieri",
+    "Carl Philipp Emanuel Bach"
+   ]
+  },
+  {
+   "topic": "Komponisten der Klassik",
+   "variant": "best-quality-generated@10",
+   "budget": 10,
+   "s": 26.6,
+   "timings": {
+    "resolve": 2355,
+    "corpus": 22,
+    "segment": 32,
+    "match": 11159,
+    "synthesize": 13059,
+    "assemble": 8
+   },
+   "main": "Wiener Klassik",
+   "tokens": {
+    "prompt": 79010,
+    "completion": 16266,
+    "total": 95276,
+    "calls": 19,
+    "cached": 27874
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 29095,
+   "model_chars": 11087,
+   "evidence": 118,
+   "cited": 126,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Wiener Klassik",
+    "Joseph Haydn",
+    "Wolfgang Amadeus Mozart",
+    "Ludwig van Beethoven",
+    "Christoph Willibald Gluck",
+    "Antonio Salieri",
+    "Muzio Clementi",
+    "Johann Nepomuk Hummel",
+    "Carl Philipp Emanuel Bach"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "best-quality-generated@10",
+   "budget": 10,
+   "s": 32.0,
+   "timings": {
+    "resolve": 1648,
+    "corpus": 9,
+    "segment": 16,
+    "match": 17138,
+    "synthesize": 13199,
+    "assemble": 10
+   },
+   "main": "Inklusive Pädagogik",
+   "tokens": {
+    "prompt": 72244,
+    "completion": 15106,
+    "total": 87350,
+    "calls": 17,
+    "cached": 10272
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 31144,
+   "model_chars": 10363,
+   "evidence": 197,
+   "cited": 131,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Behindertensport",
+    "Integrative Pädagogik",
+    "Schulsport",
+    "Sonderpädagogik"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "best-quality-generated@4",
+   "budget": 4,
+   "s": 23.1,
+   "timings": {
+    "resolve": 1437,
+    "corpus": 11,
+    "segment": 21,
+    "match": 10502,
+    "synthesize": 11120,
+    "assemble": 8
+   },
+   "main": "Inklusive Pädagogik",
+   "tokens": {
+    "prompt": 68636,
+    "completion": 15494,
+    "total": 84130,
+    "calls": 19,
+    "cached": 30359
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28741,
+   "model_chars": 8208,
+   "evidence": 137,
+   "cited": 127,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Behindertensport",
+    "Paralympische Spiele",
+    "Special Olympics"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "best-quality-generated@2",
+   "budget": 2,
+   "s": 24.0,
+   "timings": {
+    "resolve": 1546,
+    "corpus": 13,
+    "segment": 15,
+    "match": 10356,
+    "synthesize": 12033,
+    "assemble": 8
+   },
+   "main": "Inklusive Pädagogik",
+   "tokens": {
+    "prompt": 51714,
+    "completion": 13873,
+    "total": 65587,
+    "calls": 17,
+    "cached": 26935
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 26660,
+   "model_chars": 13287,
+   "evidence": 67,
+   "cited": 76,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Behindertensport",
+    "Übereinkommen über die Rechte von Menschen mit Behinderungen",
+    "Sportpädagogik"
+   ]
+  },
+  {
+   "topic": "Inklusion im Sportunterricht",
+   "variant": "best-quality-generated@1",
+   "budget": 1,
+   "s": 24.5,
+   "timings": {
+    "resolve": 1555,
+    "corpus": 11,
+    "segment": 19,
+    "match": 11080,
+    "synthesize": 11850,
+    "assemble": 8
+   },
+   "main": "Inklusive Pädagogik",
+   "tokens": {
+    "prompt": 45542,
+    "completion": 14175,
+    "total": 59717,
+    "calls": 17,
+    "cached": 26935
+   },
+   "blocks": 10,
+   "llm_blocks": 10,
+   "chars": 28426,
+   "model_chars": 16290,
+   "evidence": 36,
+   "cited": 72,
+   "fallbacks": {},
+   "matching_fallbacks": {},
+   "note": null,
+   "sources": [
+    "Inklusive Pädagogik",
+    "Sportunterricht",
+    "Behindertensport",
+    "Sportpädagogik",
+    "Integrative Pädagogik",
+    "Differenzierung (Didaktik)"
+   ]
+  }
+ ],
+ "failed": []
+}

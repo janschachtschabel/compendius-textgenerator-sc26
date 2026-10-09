@@ -50,7 +50,9 @@ Die Zuordnung läuft in drei Stufen:
    - Sicher ist eine Zuordnung erst ab 0,65.
    - Unsichere, aber themennahe Absätze gehen in den Standardbaustein Fachinhalte. Themenferne bleiben draußen:
      lieber ein leerer Baustein als ein falscher Absatz.
-   - Längenbudgets begrenzen jeden Baustein.
+   - Längenbudgets begrenzen jeden Baustein: höchstens 3 bis 6 Absätze und rund das 1,5-Fache seines Anteils an der
+     Ziellänge. Sie verwerfen dabei Absätze, die so oft richtig sind wie die behaltenen (M86, Entscheidungsvorlage
+     Punkt 17).
 
 Wählbar sind vier lokale Strategien mit derselben Policy: `hybrid_light` (Standard: Lexikon, BM25, Zeichen-TF-IDF und
 Model2Vec), `bm25`, `char_tfidf` und `lexicon_only`. Seit D34, nach v2.0.0, kommt `matcher=llm` hinzu: Ein

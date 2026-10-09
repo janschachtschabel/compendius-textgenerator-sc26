@@ -9,7 +9,10 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
-Noch nichts.
+- **Doku (M86):** Das Bausteinbudget mal 1, 2, 4 und 10 an vier Themen in `llm-free`, `balanced` und
+  `best-quality-generated` gemessen, mit Zeit, Tokens, Text, blinden Noten und dem Gold der Zuordnung;
+  Entscheidungsvorlage Punkt 17 mit der Grafik `bausteinbudget.svg`. Am Dienst ändert sich nichts.
+- **Doku (D101, M87):** Kein Vektorindex über die Absätze der Wikipedia; Umfang und Tempo der Einbettung geschätzt.
 
 ## 2.18.2 – 2026-10-09
 

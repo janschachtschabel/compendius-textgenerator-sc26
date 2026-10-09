@@ -1,0 +1,60 @@
+{
+ "note": "M87 (D101): Umfang eines Absatzindex der Wikipedia 2026-01 aus 2.000 zufälligen Artikeln (mc_vektorindex_stichprobe.py) und Tempo der Einbettung auf dem Entwicklungsrechner ohne GPU (Ryzen 7 7730U, 8 Kerne; mc_vektorindex_tempo.py, Ausgabe unter tempo_roh). Hochrechnung: Einträge des Archivs mal Anteil Artikel unter den gezogenen Einträgen, mal Absätze ab 100 Zeichen je Artikel; Speicher ein Byte je Dimension ohne Indexstruktur.",
+ "stichprobe": {
+  "artikel": 2000,
+  "weiterleitungen_gezogen": 1126,
+  "begriffsklaerungen": 196,
+  "absaetze_mittel": 12.0655,
+  "absaetze_median": 9.0,
+  "lange_absaetze_mittel": 8.8075,
+  "zeichen_mittel": 4123.372,
+  "zeichen_lang_mittel": 3960.5295,
+  "zeichen_je_langem_absatz": 449.67692307692306,
+  "lesen_ms_je_artikel": 9.39772869940498,
+  "parsen_ms_je_artikel": 5.8721229010261595,
+  "artikel_im_archiv": 5042001
+ },
+ "artikel_geschaetzt": 3225848,
+ "absaetze_ab_100_zeichen_geschaetzt": 28411660,
+ "hochrechnung": {
+  "m2v-gte-256-edu": {
+   "absaetze_je_s": 7193.5,
+   "dimensionen": 256,
+   "alle_absaetze_stunden": 1.1,
+   "alle_absaetze_tage": 0.05,
+   "artikelanfaenge_tage": 0.01,
+   "speicher_int8_gb": 7.3
+  },
+  "paraphrase-multilingual-MiniLM-L12-v2": {
+   "absaetze_je_s": 27.7,
+   "dimensionen": 384,
+   "alle_absaetze_stunden": 284.91,
+   "alle_absaetze_tage": 11.87,
+   "artikelanfaenge_tage": 1.35,
+   "speicher_int8_gb": 10.9
+  },
+  "multilingual-e5-small": {
+   "absaetze_je_s": 30.0,
+   "dimensionen": 384,
+   "alle_absaetze_stunden": 263.07,
+   "alle_absaetze_tage": 10.96,
+   "artikelanfaenge_tage": 1.24,
+   "speicher_int8_gb": 10.9
+  },
+  "bge-m3": {
+   "absaetze_je_s": 2.6,
+   "dimensionen": 1024,
+   "alle_absaetze_stunden": 3035.43,
+   "alle_absaetze_tage": 126.48,
+   "artikelanfaenge_tage": 14.36,
+   "speicher_int8_gb": 29.1
+  }
+ },
+ "tempo_roh": [
+  "device cpu, torch threads 8, 3000 paragraphs, mean 457 characters",
+  "m2v-gte-256-edu (Dienst, statisch)        3000 paragraphs in    0.42 s =    7193.5 per s, 256 dims",
+  "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 (256 Token)   400 paragraphs in   14.44 s =      27.7 per s, 384 dims",
+  "intfloat/multilingual-e5-small (256 Token)   400 paragraphs in   13.35 s =      30.0 per s, 384 dims",
+  "BAAI/bge-m3 (256 Token)                    120 paragraphs in   45.48 s =       2.6 per s, 1024 dims"
+ ]
+}

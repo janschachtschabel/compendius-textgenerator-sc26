@@ -10,7 +10,13 @@ The key comes from B_API_KEY. Per compendium 35,000 (bcg-hl) to 90,000 tokens (b
 
 ``--parts=world,curricula`` asks part 2 along (M82, the request as callers send it; part 1 alone by default) and keeps
 what part 2 found; ``--warmup`` makes every topic once in llm-free first, not recorded, so the first profile does not
-pay for reading the archive (M45, M77).
+pay for reading the archive (M45, M77). ``--budgets=1,2,4,10`` (M86) runs every variant once per factor on the block
+budgets: the paragraphs a block keeps and its characters, in the rules' assignment and in the LLM's; the target length
+the writer hears stays the request's. The variant is then named <variant>@<factor>, and the order of the factors
+turns round from topic to topic, so no factor always pays a topic's first run. ``--fixed-corpus`` (M86) asks the
+questions that build the corpus - the article choice and the articles the LLM names (D63) - once per topic and
+gives their answer to the topic's other runs, so the factors compare on one corpus; the answer's tokens count in
+every run, and the assignment and the writing stay fresh.
 
 Usage (from the project folder): python mc_kompendium_profil.py <out.json> --variants=bcg,bcg-hl,bqg <topic> [...]
 
@@ -35,6 +41,7 @@ from app.cli_common import cli_service  # noqa: E402
 from app.domain.models import CurriculaPart, SectionStatus  # noqa: E402
 from app.domain.requests import PRESETS, GenerateRequest  # noqa: E402
 from app.markup.facets import END_MARKER  # noqa: E402
+from app.matching import llm_assignment, policy  # noqa: E402
 from app.synthesis.citations import MODEL_KNOWLEDGE_OPEN  # noqa: E402
 
 if sys.platform == "win32":
@@ -74,6 +81,56 @@ def marked_model_chars(raw: str) -> int:
     return sum(len(MARK.sub("", span)) for span in MODEL_SPAN.findall(raw))
 
 
+BUDGET = {"factor": 1}  # M86: the factor on the block budgets of the run in progress
+_cut_to_budgets = policy.cut_to_budgets
+
+
+def scaled_cut(template, candidates):  # the signature of policy.cut_to_budgets
+    """The block budgets times BUDGET["factor"]: paragraphs and characters a block keeps (M86)."""
+    factor = BUDGET["factor"]
+    if factor != 1:
+        slots = [
+            slot
+            if slot.is_generated
+            else slot.model_copy(
+                update={
+                    "budget": slot.budget.model_copy(
+                        update={
+                            "max_chunks": slot.budget.max_chunks * factor,
+                            "target_chars": slot.budget.target_chars * factor,
+                        }
+                    )
+                }
+            )
+            for slot in template.slots
+        ]
+        template = template.model_copy(update={"slots": slots})
+    return _cut_to_budgets(template, candidates)
+
+
+policy.cut_to_budgets = llm_assignment.cut_to_budgets = scaled_cut
+CORPUS_QUESTIONS = ("article_choice", "topic_articles")  # M86: the questions whose answers decide the corpus
+
+
+def fix_corpus() -> None:
+    """The corpus questions answer once per wording; a later run asking the same gets the same answer (M86)."""
+    from app.llm.client import BApiClient
+
+    answers = {}
+    asked = BApiClient.chat
+
+    def chat(self, messages, **kwargs):  # the signature of BApiClient.chat
+        prompt = (kwargs.get("prompt") or "").split("@")[0]
+        if prompt not in CORPUS_QUESTIONS:
+            return asked(self, messages, **kwargs)
+        key = (prompt, json.dumps(list(messages), ensure_ascii=False, sort_keys=True))
+        if key not in answers:
+            answers[key] = asked(self, messages, **kwargs)
+        return answers[key]
+
+    BApiClient.chat = chat
+
+
 def _curricula(part: CurriculaPart | None, check: dict | None) -> dict | None:
     """What part 2 found and what its LLM check did, when part 2 was asked for (M82)."""
     if part is None:
@@ -90,61 +147,101 @@ def main() -> None:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     variants = ["bcg"]
     parts = ["world"]
+    budgets = [1]
     for a in sys.argv[1:]:
         if a.startswith("--variants="):
             variants = a.split("=", 1)[1].split(",")
         if a.startswith("--parts="):
             parts = a.split("=", 1)[1].split(",")
+        if a.startswith("--budgets="):
+            budgets = [int(factor) for factor in a.split("=", 1)[1].split(",")]
     out_path, topics = Path(args[0]), args[1:]
     if "install" in globals():  # piped in after mc_openai_direkt.py: every call goes to OpenAI direct
         install()  # noqa: F821
+    if "--fixed-corpus" in sys.argv:
+        fix_corpus()
     service = cli_service(ZIMS)
     if service.llm is None:
         raise SystemExit("LLM_ENABLED did not reach the settings")
     rows = json.loads(out_path.read_text(encoding="utf-8")) if out_path.exists() else []
     done = {(r["topic"], r["variant"]) for r in rows}
+
+    def named(variant: str, factor: int) -> str:
+        return variant if budgets == [1] else f"{variant}@{factor}"
+
     if "--warmup" in sys.argv:
         for topic in topics:
-            if any((topic, variant) not in done for variant in variants):
+            if any((topic, named(v, f)) not in done for v in variants for f in budgets):
                 service.generate(GenerateRequest(topic=topic, parts=parts, preset="llm-free"))
-    for topic in topics:
-        for variant in variants:
-            if (topic, variant) in done:
-                continue
-            start = time.monotonic()
-            try:
-                request = GenerateRequest(topic=topic, parts=parts, **REQUESTS[variant])
-                result = service.generate(request)
-            except Exception as exc:  # noqa: BLE001 - a measurement records the failure and goes on
-                rows.append({"topic": topic, "variant": variant, "error": f"{type(exc).__name__}: {exc}"[:300]})
-                out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
-                continue
-            took = time.monotonic() - start
-            content = [s for s in result.sections if s.text and s.status in CONTENT]
-            text = "\n\n".join(f"### {s.title}\n\n{MARK.sub('', s.text)}" for s in content)
-            marked = sum(marked_model_chars(s.text) for s in content)
-            llm = result.audit.llm or {}
-            generation = llm.get("generation") or {}
-            rows.append({
-                "topic": topic, "variant": variant, "s": round(took, 1), "timings": result.audit.timings_ms,
-                "heading": result.topic, "main": result.resolution.title, "method": result.resolution.method,
-                "tokens": result.audit.llm_tokens, "blocks": len(content),
-                "llm_blocks": sum(1 for s in content if s.status is SectionStatus.LLM), "chars": len(text),
-                "marked": text.count("[Modellwissen]"), "model_chars": max(model_chars(text), marked),
+    runs = [
+        (topic, variant, factor)
+        for number, topic in enumerate(topics)
+        for variant in variants
+        for factor in (budgets if number % 2 == 0 else budgets[::-1])
+    ]
+    for topic, variant, factor in runs:
+        if (topic, named(variant, factor)) in done:
+            continue
+        BUDGET["factor"] = factor
+        start = time.monotonic()
+        try:
+            request = GenerateRequest(topic=topic, parts=parts, **REQUESTS[variant])
+            result = service.generate(request)
+        except Exception as exc:  # noqa: BLE001 - a measurement records the failure and goes on
+            rows.append(
+                {
+                    "topic": topic,
+                    "variant": named(variant, factor),
+                    "budget": factor,
+                    "error": f"{type(exc).__name__}: {exc}"[:300],
+                }
+            )
+            out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
+            continue
+        took = time.monotonic() - start
+        content = [s for s in result.sections if s.text and s.status in CONTENT]
+        text = "\n\n".join(f"### {s.title}\n\n{MARK.sub('', s.text)}" for s in content)
+        marked = sum(marked_model_chars(s.text) for s in content)
+        llm = result.audit.llm or {}
+        generation = llm.get("generation") or {}
+        rows.append(
+            {
+                "topic": topic,
+                "variant": named(variant, factor),
+                "budget": factor,
+                "s": round(took, 1),
+                "timings": result.audit.timings_ms,
+                "heading": result.topic,
+                "main": result.resolution.title,
+                "method": result.resolution.method,
+                "tokens": result.audit.llm_tokens,
+                "blocks": len(content),
+                "llm_blocks": sum(1 for s in content if s.status is SectionStatus.LLM),
+                "chars": len(text),
+                "marked": text.count("[Modellwissen]"),
+                "model_chars": max(model_chars(text), marked),
                 "cited": len(re.findall(r"\[\d+(?:, ?\d+)*\]", text)),
+                "evidence": sum(len(s.chunk_ids) for s in result.sections),  # M86: the paragraphs the blocks kept
                 "sources": [source.title for source in result.sources],
-                "fallbacks": generation.get("fallbacks"), "prompts": (result.frontmatter.get("llm") or {}).get("prompts"),
-                "note": llm.get("note"), "matching_fallbacks": (llm.get("matching") or {}).get("fallbacks"),
+                "fallbacks": generation.get("fallbacks"),
+                "prompts": (result.frontmatter.get("llm") or {}).get("prompts"),
+                "note": llm.get("note"),
+                "matching_fallbacks": (llm.get("matching") or {}).get("fallbacks"),
                 "matching_asked_again": (llm.get("matching") or {}).get("asked_again"),
                 "target_length": request.target_length,
                 "parts_status": result.parts_status,
                 "curricula": _curricula(result.curricula, llm.get("curriculum_check")),
                 "text": text,
-            })
-            tokens = result.audit.llm_tokens or {}
-            print(f"{topic} | {variant} | {took:.0f} s | {result.topic} | Artikel {result.resolution.title} | "
-                  f"Zeichen {len(text)} | Tokens {tokens.get('total')} cached {tokens.get('cached')}", flush=True)
-            out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
+            }
+        )
+        tokens = result.audit.llm_tokens or {}
+        print(
+            f"{topic} | {named(variant, factor)} | {took:.0f} s | {result.topic} | "
+            f"Artikel {result.resolution.title} | Zeichen {len(text)} | Tokens {tokens.get('total')} "
+            f"cached {tokens.get('cached')}",
+            flush=True,
+        )
+        out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":

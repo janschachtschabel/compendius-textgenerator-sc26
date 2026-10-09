@@ -2353,6 +2353,12 @@ API.
   kostet 4 passende Zwillinge (6 Absätze) und an den zurückgehaltenen keinen. Eine Weiterleitung des Titels im Klexikon
   gilt weiter. Die übrigen 2 unpassenden Absätze stammen von *Welle*, einer Seite mit genau dem Titel und mehreren
   Bedeutungen; das wäre eine eigene Messung. Eine Zeile in `_add_twins`, Release 2.18.2.
+- **D101 (2026-10-09)** Kein Vektorindex über die Absätze der Wikipedia (Jan nach M87: „wir verwerfen die idee - auch
+  die genannten 1,4 tage sind nicht akzeptabel“). Gefragt war, ob ein Index aller Absätze Artikelwahl und Korpusbau
+  steuern könnte. Die rund 28 Mio. Absätze ab 100 Zeichen der 3,2 Mio. Artikel bettet Model2Vec in gut einer Stunde ein,
+  sucht aber schlecht (M24); `multilingual-e5-small` bräuchte auf dem Entwicklungsrechner ohne GPU 11 Tage, nur für die
+  Artikelanfänge 1,2 Tage, `bge-m3` rund 4 Monate, und das bei jeder neuen Ausgabe der Wikipedia. Eine Einbettungs-API
+  mit Workern kostete Geld. Jan baut ein besseres Model2Vec-Modell und misst es später im Ablauf des Dienstes.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
