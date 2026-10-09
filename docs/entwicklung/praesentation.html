@@ -92,15 +92,15 @@ footer { margin-top: 3.6rem; border-top: 1px solid var(--rule); padding-top: .8r
 <body>
 <main>
 <header class="page-head">
-<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.19.0 · Stand 09.10.2026</p>
+<p class="eyebrow">Präsentation und Entscheidungsvorlage · Kompendium-Dienst SC26 · Release 2.20.0 · Stand 09.10.2026</p>
 <h1>Kompendium-Dienst SC26: Vergleich, Methoden und Entscheidungen</h1>
 <p class="lede">Drei Seiten der Entwicklungsdoku auf einer: was der alte und der neue Dienst in den drei Teilen des
 Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Tokens, welches der fünf Profile welche
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>1886afc</code> · Zahlen:
-<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M88</p>
+<code>compendius-textgenerator-sc26</code>, Commit <code>5df43ef</code> · Zahlen:
+<a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M90</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
 <div class="toc-group"><p class="toc-head"><a href="#seite-09"><span class="num">09</span>Methoden, Messwerte und Profile</a></p><ol><li><a href="#die-fuenf-profile-und-ihre-methoden">Die fünf Profile und ihre Methoden</a></li><li><a href="#1-artikelwahl-den-hauptartikel-finden">1. Artikelwahl: den Hauptartikel finden</a></li><li><a href="#2-korpusbau-welche-artikel-neben-den-hauptartikel-kommen">2. Korpusbau: welche Artikel neben den Hauptartikel kommen</a></li><li><a href="#3-zuordnung-die-absaetze-auf-die-bausteine-verteilen">3. Zuordnung: die Absätze auf die Bausteine verteilen</a></li><li><a href="#4-text-von-teil-1-woertlich-oder-geschrieben">4. Text von Teil 1: wörtlich oder geschrieben</a></li><li><a href="#5-lehrplanschnipsel-auswaehlen-teil-2">5. Lehrplanschnipsel auswählen (Teil 2)</a></li><li><a href="#6-qa-paare-erzeugen">6. QA-Paare erzeugen</a></li><li><a href="#7-entitaeten-ermitteln">7. Entitäten ermitteln</a></li><li><a href="#messbedingungen-und-grenzen">Messbedingungen und Grenzen</a></li></ol></div>
@@ -2764,11 +2764,11 @@ auf dem Gold nicht, der Abschlag für Ausschlusswörter kostet leicht. Die Werte
 </tr>
 <tr>
 <td>das LLM wählt die Sätze aus (<code>extraction=llm</code>)</td>
-<td>am Goldstandard kein Gewinn</td>
-<td>+11 s</td>
-<td>14.000 bis 22.400</td>
-<td>in keinem Profil</td>
-<td>02-weltwissen.md</td>
+<td>am Goldstandard kein Gewinn; beim zehnfachen Bausteinbudget Nutzen 3,1 statt 3,8 (<code>balanced</code>) und 3,4 statt 4,2 (<code>best-quality</code>), lesbarer, weniger Fehler (M89)</td>
+<td>+6 bis +11 s</td>
+<td>14.000 bis 22.400, beim Zehnfachen rund 33.000</td>
+<td>in keinem Profil; Kästchen in der Prüfansicht (D103)</td>
+<td>02-weltwissen.md, M89</td>
 </tr>
 <tr>
 <td><strong>das LLM schreibt jeden Baustein, Modellwissen markiert</strong></td>
@@ -3187,7 +3187,7 @@ daneben die Messungen, aus denen eine Methode gewählt oder verworfen wurde.</li
 <div class="doc-head"><p class="doc-label">Seite 07 der Entwicklungsdoku</p><a class="to-top" href="#inhalt">Inhalt ↑</a></div>
 <h2 class="doc-title" id="seite-07-titel">Entscheidungsvorlage: Verfahren und Schalter von Teil 1</h2>
 <p class="meta"><a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">Übersicht</a> · Stand 09.10.2026, Release 2.17.0 · Zahlen: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis
-M88; Rohdaten und Zusammenfassungen in <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/messung/ergebnisse/README.md" target="_blank" rel="noopener">messung/ergebnisse</a>; Methoden und Werte von
+M90; Rohdaten und Zusammenfassungen in <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/messung/ergebnisse/README.md" target="_blank" rel="noopener">messung/ergebnisse</a>; Methoden und Werte von
 <code>/entities</code>: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/08-entitaeten-und-kennungen.md" target="_blank" rel="noopener">Entitäten und Kennungen</a>; alle Schritte mit ihren Methoden, Güte, Zeit
 und Tokens je Profil: <a href="#seite-09">Methoden, Messwerte und Profile</a></p>
 <p>Teil 1 des Kompendiums, das Weltwissen, entsteht in fünf Schritten. An vier davon lässt sich ein Sprachmodell (LLM)
@@ -5118,7 +5118,8 @@ drei Schalter auf.</p>
 </tbody>
 </table></div>
 <p><strong>Kombinierbar:</strong> <code>extraction</code> und <code>generation</code> lassen sich zusammen einschalten, <code>enrichment</code> wirkt nur mit
-<code>generation</code>. Alle LLM-Schalter teilen sich das Budget je Anfrage (<code>LLM_MAX_TOKENS_PER_REQUEST</code>, 60.000, in den
+<code>generation</code>. Ein Schalter der Anfrage geht dem Profil vor: <code>extraction=llm</code> lässt sich in jedem Profil zuschalten,
+in der Prüfansicht mit dem Kästchen „KI wählt die Sätze“ beim Profil (D103). Alle LLM-Schalter teilen sich das Budget je Anfrage (<code>LLM_MAX_TOKENS_PER_REQUEST</code>, 60.000, in den
 <code>best-quality</code>-Profilen <code>LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY</code>, 200.000, D59, D102) und, wenn gesetzt, ein
 Tagesbudget (<code>LLM_DAILY_TOKEN_BUDGET</code>; die Vorgabe 0 setzt keine Grenze, D67). Ein geschriebener Satz bleibt nur, wenn
 er eine gültige Belegnummer trägt und mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er
@@ -5144,6 +5145,12 @@ gestrichen (<code>LLM_UNSUPPORTED_SENTENCES=drop</code>) oder als Schlussfolgeru
 <td>rund 11 s</td>
 <td>14.000 bis 22.400</td>
 <td>14 richtige Absätze mehr bei gleicher Präzision (59 %) gegenüber derselben Konfiguration ohne LLM; kleine Bausteine oft falsch</td>
+</tr>
+<tr>
+<td><code>extraction=llm</code> beim zehnfachen Bausteinbudget (M89)</td>
+<td>rund 6 s mehr</td>
+<td>rund 31.000 bis 33.000 mehr</td>
+<td>Texte ein Drittel so lang, lesbarer, weniger Fehler, aber Nutzen 3,1 statt 3,8 (<code>balanced</code>) und 3,4 statt 4,2 (<code>best-quality</code>); Punkt 19</td>
 </tr>
 <tr>
 <td><code>generation=llm-fast</code></td>
@@ -5212,9 +5219,10 @@ gestrichen (<code>LLM_UNSUPPORTED_SENTENCES=drop</code>) oder als Schlussfolgeru
 <li>Für Maschinen, also Suche, KI-Assistenten und Weiterverarbeitung, ist der extraktive Text der beste: Jeder Satz
 steht wörtlich in seiner Quelle. Für Menschen liest er sich wie eine geordnete Sammlung von Auszügen; dafür ist
 <code>generation</code> gedacht.</li>
-<li><code>extraction=llm</code> wurde am 19.09.2026 ohne Model2Vec gemessen. Gegenüber dem heutigen Standard (110 gedruckte
-Absätze, 67 richtig, 61 %) sind 131 und 77 (59 %) nur ein Anhaltspunkt; in Querschnitt &amp; Bezüge landeten 7 Absätze,
-keiner richtig. Keine Empfehlung.</li>
+<li><code>extraction=llm</code> wurde am 19.09.2026 ohne Model2Vec gemessen. Gegenüber dem heutigen Standard (110 gedruckte Absätze,
+67 richtig, 61 %) sind 131 und 77 (59 %) nur ein Anhaltspunkt; in Querschnitt &amp; Bezüge landeten 7 Absätze, keiner
+richtig. Keine Empfehlung. Mit dem zehnfachen Bausteinbudget maß M89 den Schalter neu: kürzer, lesbarer, weniger
+nützlich (Punkt 19).</li>
 <li>Die übrigen Werte der Text-Schalter stammen vom 18. und 19.09.2026 an vier Themen bzw. an Optik (gpt-5.6-luna). Die
 Lesbarkeit maß M28 an sechs Themen, blind von zwei Gutachtern: Der geschriebene Text liest sich besser (4,0 statt 2,5
 von 5, in 11 von 12 Urteilen vorgezogen), trug aber im Mittel 12 Füllsätze je Thema; zwei Drittel des ergänzten
@@ -6416,6 +6424,15 @@ Zwilling nur noch über den exakten Titel (M85).</li>
 der Ausgabe 2026-10; die sechs gemessenen Archive sind gelöscht (<code>mc_kiwix_laden.py</code> holt sie für eine
 Wiederholung). Lokal bleibt die Januar-Ausgabe der Wikipedia, weil für zwei Ausgaben der Platz fehlt. Katalog,
 Gutenberg und alle Zahlen: M84.</p>
+<p><strong>Nachtrag (M90):</strong> Jan: „mich würde noch interessieren ob bei x10 im vergleich zu x1 die zusätzlichen quellen
+(wikibooks, wikiversity) einen mehrwert bieten oder die einschätzung unverändert bleibt“. Über den exakten Titel
+bekommen nur 6 von 100 Anfragen einen Zwilling aus Wikibooks oder Wikiversity, drei Seiten: <em>Optik</em>, <em>Lineare
+Funktion</em> und <em>Open Educational Resources</em>. Bei ×1 druckt <code>llm-free</code> daraus 3 Absätze, bei ×10 70; von den 30
+verschiedenen sind 22,5 zum Thema und 6,5 am Rand. Der Zwilling belegt einen Korpusplatz und verdrängt den letzten
+Artikel der Wikipedia: bei Optik vor allem <em>Röntgenoptik</em> mit ebenso passenden Absätzen, bei „Lineare Funktion“
+<em>Lineare Algebra</em> mit 36 unpassenden, bei „OER-Förderungen“ <em>Open Access</em> und <em>Open Source</em>. Wo ein Zwilling kommt,
+wird der Text bei ×10 also nicht schlechter, bei zwei der drei Seiten besser; an der Empfehlung ändert das wenig,
+weil es selten trifft. Die beiden Archive kosten 4,1 GB Platte; gemessen nur in <code>llm-free</code>, für M90 neu geladen.</p>
 </li>
 <li>
 <p><strong>Bausteinbudget</strong> (Jan, 09.10.2026: „der größte hebel ist das bausteinbudget … vom team gewünscht war, das die
@@ -7265,6 +7282,87 @@ nur 41 % davon in allen fünf; der Hauptartikel blieb bei allen 100 Anfragen gle
 <li>Mit mehr Budget (Punkt 17) druckt jeder Fehlgriff mehr Absätze (M86).</li>
 </ul>
 </li>
+<li>
+<p><strong>Satzauswahl der KI beim zehnfachen Bausteinbudget</strong> (Jan, 09.10.2026: „vielleicht sollten wir es trotzdem mal mit
+antesten … es wäre interessant zu wissen welche qualität balance + extraction llm oder max quality + extraction llm
+haben“): gemessen in M89 an den neun Themen von M82, <code>balanced</code> und <code>best-quality</code> je ohne und mit <code>extraction=llm</code>,
+beim ausgelieferten Budget (×10); zu entscheiden. Kein Profil setzt den Schalter; seit D103 steht er als Kästchen
+„KI wählt die Sätze“ beim Profil.</p>
+<div class="table-wrap"><table class="profiles" style="min-width: 900px">
+<thead>
+<tr>
+<th>Neun Themen</th>
+<th class="p-balanced"><code>balanced</code></th>
+<th>mit Satzauswahl</th>
+<th class="p-best"><code>best-quality</code></th>
+<th>mit Satzauswahl</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Passung / Nutzen</td>
+<td>3,2 / 3,8</td>
+<td>3,1 / 3,1</td>
+<td>3,6 / 4,2</td>
+<td>3,8 / 3,4</td>
+</tr>
+<tr>
+<td>Vollständigkeit / Lesbarkeit</td>
+<td>2,3 / 2,4</td>
+<td>2,4 / 2,6</td>
+<td>2,8 / 2,5</td>
+<td>2,9 / 3,0</td>
+</tr>
+<tr>
+<td>Fehler, schwer und leicht, zwei Gutachter</td>
+<td>9 und 32</td>
+<td>2 und 15</td>
+<td>7 und 34</td>
+<td>0 und 24</td>
+</tr>
+<tr>
+<td>Zeichen (Median)</td>
+<td>60.700</td>
+<td>21.100</td>
+<td>53.300</td>
+<td>23.200</td>
+</tr>
+<tr>
+<td>Tokens je Anfrage (Median)</td>
+<td>310</td>
+<td>33.500</td>
+<td>40.500</td>
+<td>71.400</td>
+</tr>
+<tr>
+<td>Dauer der Anfrage (Median)</td>
+<td>4,8 s</td>
+<td>10,8 s</td>
+<td>16,8 s</td>
+<td>22,3 s</td>
+</tr>
+<tr>
+<td>Gold der Zuordnung ×10: Precision / Recall</td>
+<td>0,64 / 0,56</td>
+<td>0,70 / 0,26</td>
+<td>0,77 / 0,67</td>
+<td>0,72 / 0,34</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Nutzen:</strong> sinkt in beiden Profilen um rund 0,75 Noten. Die Auswahl schließt beim Zeichenbudget der Vorlage,
+nicht bei dem von D102: Die Texte werden ein Drittel so lang, und am Gold halbiert sich der Recall.</li>
+<li><strong>Lesbarkeit und Fehler:</strong> etwas lesbarer, weniger Fehler, vor allem weil weniger Text dasteht.</li>
+<li><strong>Bausteine:</strong> Die Auswahl füllt mehr Bausteine (im Median 9 statt 6 und 7), weil sie auch die nächstbesten
+Absätze eines Bausteins bekommt, dem die Zuordnung keinen gab; die Vollständigkeit steigt dadurch kaum.</li>
+<li><strong>Kosten:</strong> rund 33.000 Tokens mehr in <code>balanced</code> (das Hundertfache), rund 31.000 in <code>best-quality</code>, je rund 6 s;
+keine Anfrage kam an die ausgelieferten Grenzen, keine fiel zurück.</li>
+</ul>
+<p><strong>Empfehlung:</strong> In keinem Profil voreinstellen; der Schalter bleibt für Anfragen und die Prüfansicht. Soll die
+Auswahl die Länge von D102 halten, müsste sie beim Zeichenbudget mal <code>BLOCK_BUDGET_FACTOR</code> schließen; ob sie dann
+den Nutzen hält und lesbarer bleibt, wäre neu zu messen.</p>
+</li>
 </ol>
 <p>Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden
@@ -7369,7 +7467,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>1886afc</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>5df43ef</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
