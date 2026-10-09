@@ -99,7 +99,7 @@ Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Toke
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>31ec2fb</code> · Zahlen:
+<code>compendius-textgenerator-sc26</code>, Commit <code>9157f6a</code> · Zahlen:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M91</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
@@ -2940,7 +2940,7 @@ auf dem Gold nicht, der Abschlag für Ausschlusswörter kostet leicht. Die Werte
 <tr>
 <td>das LLM wählt die Sätze aus (<code>extraction=llm</code>)</td>
 <td>am Goldstandard kein Gewinn; beim zehnfachen Bausteinbudget Nutzen 3,1 statt 3,8 (<code>balanced</code>) und 3,4 statt 4,2 (<code>best-quality</code>), lesbarer, weniger Fehler (M89)</td>
-<td>+6 bis +11 s</td>
+<td>+8 bis +11 s</td>
 <td>14.000 bis 22.400, beim Zehnfachen rund 33.000</td>
 <td>in keinem Profil; Kästchen in der Prüfansicht (D103)</td>
 <td>02-weltwissen.md, M89</td>
@@ -5578,7 +5578,7 @@ gestrichen (<code>LLM_UNSUPPORTED_SENTENCES=drop</code>) oder als Schlussfolgeru
 </tr>
 <tr>
 <td><code>extraction=llm</code> beim zehnfachen Bausteinbudget (M89)</td>
-<td>rund 6 s mehr</td>
+<td>rund 8 bis 9 s mehr</td>
 <td>rund 31.000 bis 33.000 mehr</td>
 <td>Texte ein Drittel so lang, lesbarer, weniger Fehler, aber Nutzen 3,1 statt 3,8 (<code>balanced</code>) und 3,4 statt 4,2 (<code>best-quality</code>); Punkt 19</td>
 </tr>
@@ -7961,8 +7961,10 @@ nicht bei dem von D102: Die Texte werden ein Drittel so lang, und am Gold halbie
 <li><strong>Lesbarkeit und Fehler:</strong> etwas lesbarer, weniger Fehler, vor allem weil weniger Text dasteht.</li>
 <li><strong>Bausteine:</strong> Die Auswahl füllt mehr Bausteine (im Median 9 statt 6 und 7), weil sie auch die nächstbesten
 Absätze eines Bausteins bekommt, dem die Zuordnung keinen gab; die Vollständigkeit steigt dadurch kaum.</li>
-<li><strong>Kosten:</strong> rund 33.000 Tokens mehr in <code>balanced</code> (das Hundertfache), rund 31.000 in <code>best-quality</code>, je rund 6 s;
-keine Anfrage kam an die ausgelieferten Grenzen, keine fiel zurück.</li>
+<li><strong>Kosten:</strong> rund 33.000 Tokens mehr in <code>balanced</code> (das Hundertfache), rund 31.000 in <code>best-quality</code>, dazu rund 8
+bis 9 s (die Satzauswahl selbst im Median 9,4 und 8,2 s; die Dauer in der Tabelle steigt nur um 6 s, weil die
+Varianten ohne Auswahl zuerst liefen und die Korpusfragen stellten); keine Anfrage kam an die ausgelieferten
+Grenzen, keine fiel zurück.</li>
 </ul>
 <p><strong>Empfehlung:</strong> In keinem Profil voreinstellen; der Schalter bleibt für Anfragen und die Prüfansicht. Soll die
 Auswahl die Länge von D102 halten, müsste sie beim Zeichenbudget mal <code>BLOCK_BUDGET_FACTOR</code> schließen; ob sie dann
@@ -8172,7 +8174,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>31ec2fb</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>9157f6a</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
