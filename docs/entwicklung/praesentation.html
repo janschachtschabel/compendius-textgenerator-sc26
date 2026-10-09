@@ -99,7 +99,7 @@ Kompendiums liefern; je Schritt die gemessenen Methoden mit Güte, Zeit und Toke
 nutzt und welches Profil wofür taugt; die Entscheidungsvorlage mit den Empfehlungen je Profil und den offenen
 Punkten.</p>
 <p class="meta">Quelle: <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/README.md" target="_blank" rel="noopener">docs/entwicklung</a> im Repository
-<code>compendius-textgenerator-sc26</code>, Commit <code>d42ef74</code> · Zahlen:
+<code>compendius-textgenerator-sc26</code>, Commit <code>35111eb</code> · Zahlen:
 <a href="https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/05-messprotokoll.md" target="_blank" rel="noopener">Messprotokoll</a>, M1 bis M82</p>
 <nav class="toc" id="inhalt" aria-label="Inhalt">
 <div class="toc-group"><p class="toc-head"><a href="#seite-01"><span class="num">01</span>Alter und neuer Dienst im Vergleich</a></p><ol><li><a href="#die-drei-teile-soll-alter-und-neuer-dienst">Die drei Teile: Soll, alter und neuer Dienst</a></li><li><a href="#guete-zeit-und-kosten">Güte, Zeit und Kosten</a></li><li><a href="#teil-1-weltwissen">Teil 1: Weltwissen</a></li><li><a href="#teil-2-lehrplanbezuege">Teil 2: Lehrplanbezüge</a></li><li><a href="#teil-3-sammlungsueberblick">Teil 3: Sammlungsüberblick</a></li><li><a href="#zusatzfunktionen-des-neuen-dienstes">Zusatzfunktionen des neuen Dienstes</a></li><li><a href="#probleme-des-alten-dienstes-und-was-der-neue-dagegen-setzt">Probleme des alten Dienstes und was der neue dagegen setzt</a></li></ol></div>
@@ -1851,6 +1851,141 @@ gleich lang; tagsüber antwortet der Anbieter langsamer (M78).</p>
 Frage N bringt bei großen Themen bis 400 Absätze in den Korpus; die Prüfung von Teil 2 kostet im Median rund 4.000
 Tokens aus einem eigenen Budget (D94). Gegenüber M78 (08.10., nachmittags) sind die Zeiten der <code>best-quality</code>-Profile
 nachts 17 bis 26 % kürzer, die Tokens gleich.</p>
+<p>Wie sich Zeit und Tokens je Profil seit M45 bewegt haben; zwischen den Messungen änderten sich Code, Themen und
+Tageszeit, die Anmerkungen unter der Grafik nennen es:</p>
+<figure class="chart" role="group" aria-label="Zeit und Tokens je Profil von M45 bis M82"><svg xmlns="http://www.w3.org/2000/svg" width="1004" height="564" viewBox="0 0 1004 564" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Zeit und Tokens je Profil von M45 bis M82"><title>Zeit und Tokens je Profil von M45 bis M82</title><rect width="1004" height="564" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Zeit und Tokens je Profil von M45 bis M82</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Kompendium mit Teil 1 und 2, Median je Anfrage; zwischen den Messungen änderten sich Code, Themen und Tageszeit (unten)</text>
+<rect x="24.0" y="68.0" width="12.0" height="12.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="3 2"/>
+<text x="42.0" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">M45 · 28.09. · Release 2.2.2</text>
+<rect x="244.3" y="68.0" width="12.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="262.3" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">M75 · 08.10. · vor D93</text>
+<rect x="426.0" y="68.0" width="12.0" height="12.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="444.0" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">M78 · 08.10. · nach D93</text>
+<rect x="614.1" y="68.0" width="12.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="632.1" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">M82 · 09.10. · Release 2.17.0</text>
+<text x="244.0" y="98.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Zeit je Anfrage</text>
+<line x1="244.0" y1="124.0" x2="244.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="244.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">0 s</text>
+<line x1="319.0" y1="124.0" x2="319.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="319.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">10 s</text>
+<line x1="394.0" y1="124.0" x2="394.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="394.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">20 s</text>
+<line x1="469.0" y1="124.0" x2="469.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="469.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">30 s</text>
+<line x1="544.0" y1="124.0" x2="544.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="544.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">40 s</text>
+<text x="624.0" y="98.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Tokens je Anfrage</text>
+<line x1="624.0" y1="124.0" x2="624.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="624.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">0</text>
+<line x1="699.0" y1="124.0" x2="699.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="699.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">25.000</text>
+<line x1="774.0" y1="124.0" x2="774.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="774.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">50.000</text>
+<line x1="849.0" y1="124.0" x2="849.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="849.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">75.000</text>
+<line x1="924.0" y1="124.0" x2="924.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="924.0" y="118.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">100.000</text>
+<text x="24.0" y="140.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">llm-free</text>
+<text x="624.0" y="159.5" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">keine Tokens</text>
+<text x="236.0" y="139.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M45</text>
+<rect x="244.0" y="130.0" width="31.6" height="10.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="3 2"/>
+<text x="281.6" y="139.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">4,2 s</text>
+<text x="236.0" y="152.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M75</text>
+<rect x="244.0" y="143.0" width="54.5" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="304.5" y="152.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">7,3 s</text>
+<text x="236.0" y="165.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M78</text>
+<rect x="244.0" y="156.0" width="35.2" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="285.2" y="165.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">4,7 s</text>
+<text x="236.0" y="178.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M82</text>
+<rect x="244.0" y="169.0" width="19.5" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="269.5" y="178.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">2,6 s</text>
+<text x="24.0" y="208.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">balanced</text>
+<text x="236.0" y="207.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M45</text>
+<rect x="244.0" y="198.0" width="66.0" height="10.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="3 2"/>
+<text x="316.0" y="207.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">8,8 s</text>
+<rect x="624.0" y="198.0" width="1.7" height="10.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="3 2"/>
+<text x="631.7" y="207.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">580</text>
+<text x="236.0" y="220.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M75</text>
+<rect x="244.0" y="211.0" width="38.1" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="288.1" y="220.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">5,1 s</text>
+<rect x="624.0" y="211.0" width="1.0" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="631.0" y="220.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">320</text>
+<text x="236.0" y="233.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M78</text>
+<rect x="244.0" y="224.0" width="32.9" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="282.9" y="233.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">4,4 s</text>
+<rect x="624.0" y="224.0" width="0.9" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="630.9" y="233.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">310</text>
+<text x="236.0" y="246.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M82</text>
+<rect x="244.0" y="237.0" width="34.5" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="284.5" y="246.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">4,6 s</text>
+<rect x="624.0" y="237.0" width="0.9" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="630.9" y="246.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">310</text>
+<text x="24.0" y="276.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality</text>
+<text x="236.0" y="275.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M45</text>
+<rect x="244.0" y="266.0" width="194.1" height="10.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="3 2"/>
+<text x="444.1" y="275.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">25,9 s</text>
+<rect x="624.0" y="266.0" width="147.1" height="10.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="3 2"/>
+<text x="777.1" y="275.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">49.000</text>
+<text x="236.0" y="288.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M75</text>
+<rect x="244.0" y="279.0" width="152.7" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="402.7" y="288.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">20,4 s</text>
+<rect x="624.0" y="279.0" width="145.6" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="775.6" y="288.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">48.500</text>
+<text x="236.0" y="301.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M78</text>
+<rect x="244.0" y="292.0" width="113.2" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="363.2" y="301.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">15,1 s</text>
+<rect x="624.0" y="292.0" width="170.0" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="800.0" y="301.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">56.700</text>
+<text x="236.0" y="314.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M82</text>
+<rect x="244.0" y="305.0" width="94.5" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="344.5" y="314.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">12,6 s</text>
+<rect x="624.0" y="305.0" width="178.0" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="808.0" y="314.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">59.300</text>
+<text x="24.0" y="344.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-quality-generated</text>
+<text x="236.0" y="343.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M45</text>
+<rect x="244.0" y="334.0" width="266.5" height="10.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="3 2"/>
+<text x="516.5" y="343.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">35,5 s</text>
+<rect x="624.0" y="334.0" width="181.1" height="10.0" rx="2" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="3 2"/>
+<text x="811.1" y="343.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">60.400</text>
+<text x="236.0" y="356.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M75</text>
+<rect x="244.0" y="347.0" width="254.3" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="504.3" y="356.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">33,9 s</text>
+<rect x="624.0" y="347.0" width="226.9" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="856.9" y="356.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">75.600</text>
+<text x="236.0" y="369.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M78</text>
+<rect x="244.0" y="360.0" width="223.6" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="473.6" y="369.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">29,8 s</text>
+<rect x="624.0" y="360.0" width="203.8" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="833.8" y="369.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">67.900</text>
+<text x="236.0" y="382.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M82</text>
+<rect x="244.0" y="373.0" width="174.0" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="424.0" y="382.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">23,2 s</text>
+<rect x="624.0" y="373.0" width="189.4" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="819.4" y="382.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">63.100</text>
+<text x="24.0" y="412.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">best-coverage-generated</text>
+<text x="236.0" y="411.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M45</text>
+<text x="244.0" y="411.0" font-size="10" fill="#52606d" text-anchor="start" font-weight="normal">gab es noch nicht</text>
+<text x="236.0" y="424.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M75</text>
+<rect x="244.0" y="415.0" width="279.8" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="529.8" y="424.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">37,3 s</text>
+<rect x="624.0" y="415.0" width="270.2" height="10.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1.2"/>
+<text x="900.2" y="424.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">90.100</text>
+<text x="236.0" y="437.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M78</text>
+<rect x="244.0" y="428.0" width="275.4" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="525.4" y="437.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">36,7 s</text>
+<rect x="624.0" y="428.0" width="275.5" height="10.0" rx="2" fill="#9aa5b1" stroke="none" stroke-width="1.2"/>
+<text x="905.5" y="437.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">91.800</text>
+<text x="236.0" y="450.0" font-size="10" fill="#52606d" text-anchor="end" font-weight="normal">M82</text>
+<rect x="244.0" y="441.0" width="204.8" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="454.8" y="450.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">27,3 s</text>
+<rect x="624.0" y="441.0" width="261.7" height="10.0" rx="2" fill="#52606d" stroke="none" stroke-width="1.2"/>
+<text x="891.7" y="450.0" font-size="10" fill="#1f2933" text-anchor="start" font-weight="normal">87.200</text>
+<text x="24.0" y="484.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Kompendium mit Teil 1 und 2, Median je Anfrage. M75, M78 und M82: die neun Themen von M52 im Einmal-Container, gpt-6-luna über OpenAI direkt.</text>
+<text x="24.0" y="500.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">M45: der laufende Entwicklungscontainer über HTTP, das LLM über die b-api, je LLM-Profil sechs eigene Themen, llm-free 18; best-coverage-generated kam mit D69.</text>
+<text x="24.0" y="516.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Zwischen M45 und M75: 30.000 statt 12.000 Zielzeichen (D70), best-quality-generated schreibt leere Bausteine aus Modellwissen (D72),</text>
+<text x="24.0" y="532.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">N, Artikelwahl und Lehrplanprüfung fragen ohne Denken (D81). Zwischen M75 und M78: D93, Teil 2 und 3 neben Teil 1, die Zuordnung in Zeilen,</text>
+<text x="24.0" y="548.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">20 gleichzeitige Aufrufe. M78 lief am Nachmittag, M82 nachts.</text></svg><figcaption>Zeit und Tokens je Profil von M45 bis M82</figcaption></figure>
 <h4>Die übrigen Endpunkte</h4>
 <p>Median je Anfrage (M82), im Einmal-Container des Entwicklungsrechners, <code>gpt-6-luna</code> über OpenAI.</p>
 <div class="table-wrap"><table class="profiles" style="min-width: 600px">
@@ -1909,6 +2044,207 @@ nachts 17 bis 26 % kürzer, die Tokens gleich.</p>
 </tr>
 </tbody>
 </table></div>
+<figure class="chart" role="group" aria-label="Die übrigen Endpunkte: Zeit und Tokens je Profil (M82, der Kreis zeigt M45)"><svg xmlns="http://www.w3.org/2000/svg" width="1104" height="790" viewBox="0 0 1104 790" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die übrigen Endpunkte: Zeit und Tokens je Profil"><title>Die übrigen Endpunkte: Zeit und Tokens je Profil</title><rect width="1104" height="790" fill="#ffffff"/>
+<text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Die übrigen Endpunkte: Zeit und Tokens je Profil</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Release 2.17.0, Median je Anfrage (M82); der Kreis zeigt M45 (Release 2.2.2), wo es dieselbe Anfrage gab</text>
+<rect x="24.0" y="68.0" width="12.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="42.0" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Median</text>
+<rect x="102.6" y="68.0" width="12.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<text x="120.6" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">bis zur längsten Anfrage</text>
+<circle cx="303.2" cy="74.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="315.2" y="78.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">M45, Release 2.2.2</text>
+<text x="274.0" y="96.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Zeit je Anfrage</text>
+<line x1="274.0" y1="122.0" x2="274.0" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="274.0" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">0 s</text>
+<line x1="336.5" y1="122.0" x2="336.5" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="336.5" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">5 s</text>
+<line x1="399.0" y1="122.0" x2="399.0" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="399.0" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">10 s</text>
+<line x1="461.5" y1="122.0" x2="461.5" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="461.5" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">15 s</text>
+<line x1="524.0" y1="122.0" x2="524.0" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="524.0" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">20 s</text>
+<text x="594.0" y="96.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Tokens je Anfrage</text>
+<line x1="594.0" y1="122.0" x2="594.0" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="594.0" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">0</text>
+<line x1="656.5" y1="122.0" x2="656.5" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="656.5" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">5.000</text>
+<line x1="719.0" y1="122.0" x2="719.0" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="719.0" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">10.000</text>
+<line x1="781.5" y1="122.0" x2="781.5" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="781.5" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">15.000</text>
+<line x1="844.0" y1="122.0" x2="844.0" y2="684.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="844.0" y="116.0" font-size="10" fill="#52606d" text-anchor="middle" font-weight="normal">20.000</text>
+<text x="914.0" y="96.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="600">Ergebnis, Median</text>
+<line x1="20.0" y1="130.0" x2="1084.0" y2="130.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="146.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">/knowledge: die Artikel eines Themas</text>
+<text x="36.0" y="169.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="274.0" y="159.0" width="23.1" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="159.0" width="7.1" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="281.4" cy="165.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="303.1" y="169.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0,57 s</text>
+<rect x="594.0" y="159.0" width="0.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="159.0" width="0.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="600.0" y="169.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="914.0" y="169.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">10 Artikel</text>
+<text x="36.0" y="191.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="274.0" y="181.0" width="26.4" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="181.0" width="22.9" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="331.8" cy="187.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="342.8" y="191.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,8 s</text>
+<rect x="594.0" y="181.0" width="4.1" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="181.0" width="3.9" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="600.2" cy="187.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="611.2" y="191.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">313</text>
+<text x="914.0" y="191.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">8 Artikel</text>
+<text x="36.0" y="213.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="274.0" y="203.0" width="78.9" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="203.0" width="45.6" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="345.0" cy="209.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="358.9" y="213.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,6 s</text>
+<rect x="594.0" y="203.0" width="29.8" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="203.0" width="9.4" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="605.3" cy="209.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="629.8" y="213.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">751</text>
+<text x="914.0" y="213.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">7 Artikel</text>
+<line x1="20.0" y1="222.0" x2="1084.0" y2="222.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="238.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">/lehrplan/search mit Suchwort</text>
+<text x="36.0" y="261.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="274.0" y="251.0" width="0.5" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="251.0" width="0.2" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="274.1" cy="257.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="285.1" y="261.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0,02 s</text>
+<rect x="594.0" y="251.0" width="0.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="251.0" width="0.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="600.0" y="261.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="914.0" y="261.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">63,5 Treffer</text>
+<text x="36.0" y="283.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="274.0" y="273.0" width="44.6" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="273.0" width="33.5" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="377.9" cy="279.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="388.9" y="283.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,7 s</text>
+<rect x="594.0" y="273.0" width="212.3" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="273.0" width="56.7" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="657.6" cy="279.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="812.3" y="283.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4.533</text>
+<text x="914.0" y="283.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">61,5 Treffer</text>
+<line x1="20.0" y1="292.0" x2="1084.0" y2="292.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="308.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">/lehrplan/search mit Thema (mode=topic)</text>
+<text x="36.0" y="331.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="274.0" y="321.0" width="11.6" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="321.0" width="7.1" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="291.6" y="331.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0,57 s</text>
+<rect x="594.0" y="321.0" width="0.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="321.0" width="0.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="600.0" y="331.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="914.0" y="331.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">63,5 Treffer</text>
+<text x="36.0" y="353.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="274.0" y="343.0" width="30.9" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="343.0" width="28.6" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="310.9" y="353.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,3 s</text>
+<rect x="594.0" y="343.0" width="4.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="343.0" width="3.9" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="604.0" y="353.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">313</text>
+<text x="914.0" y="353.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">65 Treffer</text>
+<text x="36.0" y="375.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="274.0" y="365.0" width="244.2" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="365.0" width="55.5" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="524.2" y="375.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,4 s</text>
+<rect x="594.0" y="365.0" width="241.6" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="365.0" width="61.6" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="841.6" y="375.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4.925</text>
+<text x="914.0" y="375.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">61 Treffer</text>
+<line x1="20.0" y1="384.0" x2="1084.0" y2="384.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="400.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">/qa mit Text, 20 Paare verlangt</text>
+<text x="36.0" y="423.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="274.0" y="413.0" width="15.1" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="413.0" width="6.1" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="290.9" cy="419.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="301.9" y="423.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0,49 s</text>
+<rect x="594.0" y="413.0" width="0.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="413.0" width="0.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="600.0" y="423.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="914.0" y="423.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">16 Paare</text>
+<text x="36.0" y="445.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="274.0" y="435.0" width="79.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="435.0" width="72.1" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="352.8" cy="441.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="363.8" y="445.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,8 s</text>
+<rect x="594.0" y="435.0" width="169.3" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="435.0" width="102.6" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="683.2" cy="441.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="769.3" y="445.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">8.209</text>
+<text x="914.0" y="445.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">20 Paare</text>
+<line x1="20.0" y1="454.0" x2="1084.0" y2="454.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="470.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">/qa mit Thema: Teil 1 ohne LLM, dann die Paare</text>
+<text x="36.0" y="493.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="274.0" y="483.0" width="55.6" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="483.0" width="42.2" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="335.6" y="493.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3,4 s</text>
+<rect x="594.0" y="483.0" width="0.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="483.0" width="0.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="600.0" y="493.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="914.0" y="493.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">20 Paare</text>
+<text x="36.0" y="515.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">best-quality</text>
+<rect x="274.0" y="505.0" width="140.8" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="505.0" width="108.9" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="420.8" y="515.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">8,7 s</text>
+<rect x="594.0" y="505.0" width="110.9" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="505.0" width="40.4" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="710.9" y="515.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3.234</text>
+<text x="914.0" y="515.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">20 Paare</text>
+<line x1="20.0" y1="524.0" x2="1084.0" y2="524.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="540.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">/entities an 1.500 Zeichen</text>
+<text x="36.0" y="563.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="274.0" y="553.0" width="42.5" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="553.0" width="29.8" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="298.8" cy="559.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="322.5" y="563.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">2,4 s</text>
+<rect x="594.0" y="553.0" width="0.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="553.0" width="0.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="600.0" y="563.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="914.0" y="563.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">43,5 Entitäten</text>
+<text x="36.0" y="585.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="274.0" y="575.0" width="83.9" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="575.0" width="72.5" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="358.7" cy="581.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="369.7" y="585.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">5,8 s</text>
+<rect x="594.0" y="575.0" width="17.7" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="575.0" width="15.2" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<circle cx="610.0" cy="581.0" r="4.5" fill="#ffffff" stroke="#1f2933" stroke-width="1.5"/>
+<text x="621.0" y="585.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1.214</text>
+<text x="914.0" y="585.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">12,5 Entitäten</text>
+<text x="36.0" y="607.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">balanced, link_check: llm</text>
+<rect x="274.0" y="597.0" width="156.6" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="597.0" width="130.6" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="436.6" y="607.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">10,4 s</text>
+<rect x="594.0" y="597.0" width="42.6" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="597.0" width="38.6" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="642.6" y="607.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">3.089</text>
+<text x="914.0" y="607.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">6,5 Entitäten</text>
+<line x1="20.0" y1="616.0" x2="1084.0" y2="616.0" stroke="#dde2e8" stroke-width="1"/>
+<text x="24.0" y="632.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">/compendium aus einem Material, Teil 1</text>
+<text x="36.0" y="655.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">llm-free</text>
+<rect x="274.0" y="645.0" width="16.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="645.0" width="14.4" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="296.0" y="655.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1,2 s</text>
+<rect x="594.0" y="645.0" width="0.0" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="645.0" width="0.0" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="600.0" y="655.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">0</text>
+<text x="914.0" y="655.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">18.875 Zeichen</text>
+<text x="36.0" y="677.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">balanced</text>
+<rect x="274.0" y="667.0" width="142.5" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="274.0" y="667.0" width="58.1" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="422.5" y="677.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">4,7 s</text>
+<rect x="594.0" y="667.0" width="13.4" height="12.0" rx="2" fill="#bcc4ce" stroke="none" stroke-width="1"/>
+<rect x="594.0" y="667.0" width="13.4" height="12.0" rx="2" fill="#52606d" stroke="none" stroke-width="1"/>
+<text x="613.4" y="677.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">1.071</text>
+<text x="914.0" y="677.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">18.016 Zeichen</text>
+<text x="24.0" y="710.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Release 2.17.0 im Einmal-Container des Entwicklungsrechners, gpt-6-luna über OpenAI direkt, nachts (M82, 09.10.2026); je Zeile sechs Anfragen, beim Material drei.</text>
+<text x="24.0" y="726.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Tokens aus den Zählern des Dienstes (/metrics) je Route. best-quality steht für die drei Profile ab best-quality, die an diesen Endpunkten gleich arbeiten.</text>
+<text x="24.0" y="742.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">/qa und /entities lesen Teil 1 der llm-free-Kompendien von sechs Themen (rund 26.500 Zeichen, /entities die ersten 1.500).</text>
+<text x="24.0" y="758.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Die Lehrplansuche gab bis zu 500 Treffer zurück, in M45 bis zu 50. Entitäten: Die Regeln finden mehr, das LLM trifft besser (F1 0,38 und 0,78, M36).</text>
+<text x="24.0" y="774.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Kreis: M45, 28.09.2026, der laufende Entwicklungscontainer über HTTP, das LLM über die b-api.</text></svg><figcaption>Die übrigen Endpunkte: Zeit und Tokens je Profil (M82, der Kreis zeigt M45)</figcaption></figure>
 <h3 id="1-artikelwahl-den-hauptartikel-finden">1. Artikelwahl: den Hauptartikel finden</h3>
 <figure class="chart" role="group" aria-label="Artikelwahl: Methoden und Profile"><svg xmlns="http://www.w3.org/2000/svg" width="1110" height="330" viewBox="0 0 1110 330" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Artikelwahl: den Hauptartikel finden"><title>Artikelwahl: den Hauptartikel finden</title><rect width="1110" height="330" fill="#ffffff"/>
 <text x="24.0" y="30.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="600">Artikelwahl: den Hauptartikel finden</text>
@@ -5913,7 +6249,7 @@ aufgelösten Namen (bis 20.000); <em>Deutschland</em> braucht im ersten Korpus w
 </li>
 </ol>
 </section>
-<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>d42ef74</code>; Grafiken von
+<footer>Erzeugt mit <code>messung/mc_praesentation.py</code> aus <code>docs/entwicklung</code>, Commit <code>35111eb</code>; Grafiken von
 <code>messung/mc_grafiken.py</code>. Links auf weitere Seiten der Doku führen zu GitHub.</footer>
 </main>
 </body>
