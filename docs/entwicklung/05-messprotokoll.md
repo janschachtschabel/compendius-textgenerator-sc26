@@ -4240,10 +4240,10 @@ und `m82_lastprobe.json`; ausgewertet mit `mc_profilvergleich_auswertung.py`, `m
 
 Jan: „die b-api unterstützt ab sofort ein optionales provider übergreifendes routing … zum testen kannst du für meinen
 hinterlegen b api key mal eine persönliche route anlegen“. M83 prüft D97 an der Staging-b-api mit Jans Schlüssel und
-einer eigenen Route `kompendium-test`: Priorität 0 `gpt-6-luna`, Priorität 1 `gpt-5.6-luna` als Reserve,
-`maxAttempts` 2. Vorab bestätigt: `gpt-5.6-luna` versteht dieselben Parameter wie `gpt-6-luna`, auch
-`reasoning_effort: none` (je ein Aufruf über `openai/<modell>` ohne Route, 200). Der Dienst lief mit dem Arbeitsstand
-vor Release 2.18.0 im Einmal-Container (`mc_routing.py`), das LLM über die b-api.
+einer eigenen Route `kompendium-test`: Priorität 0 `gpt-6-luna`, Priorität 1 `gpt-5.6-luna` als Reserve, `maxAttempts`
+2. Vorab bestätigt: `gpt-5.6-luna` versteht dieselben Parameter wie `gpt-6-luna`, auch `reasoning_effort: none` (je ein
+Aufruf über `openai/<modell>` ohne Route, 200 nach 1,5 und 0,9 s). Der Dienst lief mit dem Arbeitsstand vor Release
+2.18.0 im Einmal-Container (`mc_routing.py`), das LLM über die b-api.
 
 **Die Antworten des Routers**, je ein Aufruf mit `curl`:
 
@@ -4266,14 +4266,15 @@ Vergleich:
 | Thema, Profil | über die Route | direkt über `openai` |
 |---|---|---|
 | Optik, `balanced` | 5,5 s, 311 Tokens | 4,8 s, 307 Tokens |
-| Optik, `best-quality-generated` | 26,8 s, 65.112 Tokens | 27,3 s, 65.540 Tokens |
+| Optik, `best-quality-generated` | 26,9 s, 65.112 Tokens | 27,3 s, 65.540 Tokens |
 | Photosynthese, `balanced` | 4,0 s, 313 Tokens | 3,2 s, 313 Tokens |
 | Photosynthese, `best-quality-generated` | 26,0 s, 93.181 Tokens | 20,6 s, 93.904 Tokens |
 
-Kein Rückfall, gleich viele Aufrufe (1, 21 und 23), und das Frontmatter nennt `provider: router`, die Route und
-`model: gpt-6-luna`. Die Zeiten streuen in beide Richtungen. Zehn kleine Aufrufe je Weg, abwechselnd („Antworte nur mit
-OK.“, eigener `safety_identifier`), dauerten über die Route im Median 0,82 s (0,68 bis 2,69), direkt 0,86 s (0,74 bis
-1,19): Die Route kostet keine messbare Zeit.
+Kein Rückfall, gleich viele Aufrufe (1, 21 und 23), und das Frontmatter nennt `provider: router`, die Route und `model:
+gpt-6-luna`. Über die Route dauerten drei der vier Kompendien länger, zusammen 62,4 gegen 55,9 s; bei je einem Lauf sagt
+das wenig. Die Tokens wichen um höchstens 1,3 % ab. Zehn kleine Aufrufe je Weg, abwechselnd („Antworte nur mit OK.“,
+eigener `safety_identifier`), dauerten über die Route im Median 0,82 s (0,68 bis 2,69), direkt 0,86 s (0,74 bis 1,19):
+Die Route kostet keine messbare Zeit.
 
 **Ausweichen.** Mit abgeschaltetem Hauptmodell antwortete die Reserve: Das Log meldet einmal `b-api routing: route
 'kompendium-test' answers with gpt-5.6-luna`, das Frontmatter `model: gpt-5.6-luna` (Optik, `balanced`, 4,1 s,
@@ -4284,8 +4285,11 @@ OK.“, eigener `safety_identifier`), dauerten über die Route im Median 0,82 s 
 meldet `available: false` mit demselben Grund, und ein Kompendium in `balanced` lief mit den Regeln; seine
 Ergebniszeile ist eine WARNING mit dem Grund.
 
-Nur offline in den Tests geprüft: eine Route, die nach dem Start verschwindet (400, zehn Minuten Pause mit Grund),
-ein Modell ohne Preis oder ohne Chat hinter der Route (503, zehn Minuten) und eine Route ohne freies Modell im Betrieb
-(503, eine Minute), jeweils ohne Wiederholung, mit den hier aufgenommenen Antworten.
+Nur offline in den Tests geprüft: eine Route, die nach dem Start verschwindet (400, zehn Minuten Pause mit Grund), ein
+Modell ohne Preis oder ohne Chat hinter der Route (503, zehn Minuten) und eine Route ohne freies Modell im Betrieb (503,
+eine Minute), jeweils ohne Wiederholung, mit den hier aufgenommenen Antworten. Die Antwort für Modelle ohne Chat
+(`NOT_ELIGIBLE` in einer Liste von Versuchen) und die 400 für eine abgeschaltete Route stammen aus der b-api-Doku vom
+02.10., nicht aus M83.
 
-Rohdaten: `m83_routing.json` (die Läufe, die Einzelaufrufe und die Antworten des Routers, ohne Texte).
+Rohdaten: `m83_routing.json` (die Läufe, die Einzelaufrufe, die Proben vorab und die Antworten des Routers mit
+ihren Zeiten, ohne Texte).

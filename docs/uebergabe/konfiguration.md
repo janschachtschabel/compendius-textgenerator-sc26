@@ -5,7 +5,7 @@
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu vier, die Compose selbst auswertet
 (`IMAGE`, `API_BIND`, `API_MEMORY`, `API_STOP_GRACE_PERIOD`). Eine fehlende Variable nimmt ihre Vorgabe; die Vorlage
-[`.env.example`](../../.env.example) listet alle 75 des Dienstes mit ihrer Vorgabe. Die ausführliche Beschreibung jeder
+[`.env.example`](../../.env.example) listet alle 79 des Dienstes mit ihrer Vorgabe. Die ausführliche Beschreibung jeder
 Variable steht im [README](../../README.md), Abschnitt „Konfiguration“.
 
 ## Für den Betrieb
@@ -49,7 +49,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 ## Alle Variablen
 
-79 Variablen: 75 des Dienstes und 4 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
+83 Variablen: 79 des Dienstes und 4 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
 `docker-compose.yml`; „Betrieb“ nennt die Empfehlung, wo sie davon abweicht.
 
 ### Zugang und Sicherheit
@@ -75,7 +75,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen 3,4 GiB Prozesse mit 2 Workern, dazu Seiten-Cache |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 1,7 GiB, mit 3 Workern `API_MEMORY=8g` |
 | `API_STOP_GRACE_PERIOD` | `630s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; deckt academiccloud (600 s) und OpenAI (300 s), über `REQUEST_TIMEOUT_S` plus 15 s halten |
-| `REQUEST_TIMEOUT_S` | leer: `openai` 300, `academiccloud` 600 | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM. Ein gesetzter Wert gilt für jeden Anbieter |
+| `REQUEST_TIMEOUT_S` | leer: `openai` 300, `academiccloud` 600, `router` 300 | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM. Ein gesetzter Wert gilt für jeden Anbieter |
 | `UVICORN_HTTP` | `h11` | wie Vorgabe | HTTP-Parser von uvicorn |
 | `LOG_LEVEL` | `INFO` | wie Vorgabe | Protokollstufe der Zeilen des Dienstes und der Updater: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` (`WARN` gilt als `WARNING`); ein unbekannter Wert hält den Start an |
 | `LOG_FORMAT` | `text` | `json`, wenn ein Log-Sammler die Zeilen liest | eine Zeile Text oder ein JSON-Objekt je Ereignis nach stderr, mit Prozess- und Anfrage-ID, auch für die Zeilen von uvicorn und die Updater-Schleifen (docs/betrieb.md, Abschnitt „Logs“) |
@@ -97,7 +97,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LLM_VERBOSITY` | `low` | wie Vorgabe | Ausführlichkeit von Reasoning-Modellen |
 | `LLM_TEMPERATURE` | `0.2` | wie Vorgabe | nur klassische Modelle |
 | `LLM_TIMEOUT_S` | `120` | wie Vorgabe | Frist je LLM-Aufruf |
-| `LLM_MAX_CONCURRENCY` | leer: `openai` 20, `academiccloud` 2 | wie Vorgabe | gleichzeitige LLM-Aufrufe je Worker-Prozess; ein gesetzter Wert gilt für jeden Anbieter |
+| `LLM_MAX_CONCURRENCY` | leer: `openai` 20, `academiccloud` 2, `router` 20 | wie Vorgabe | gleichzeitige LLM-Aufrufe je Worker-Prozess; ein gesetzter Wert gilt für jeden Anbieter |
 | `LLM_ATTEMPTS` | `3` | wie Vorgabe | Versuche je Aufruf |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | wie Vorgabe | Tokens je Anfrage in `llm-free` und `balanced` |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | wie Vorgabe | Tokens je Anfrage in den drei Profilen ab `best-quality` |

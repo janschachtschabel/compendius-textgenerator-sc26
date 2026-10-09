@@ -11,6 +11,24 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 Noch nichts.
 
+## 2.18.1 – 2026-10-09
+
+Die Befunde des Reviews der Routing-Anpassungen behoben (D98).
+
+- **Behoben:** Eine 503 des Routers, die nur vorübergehend gescheiterte Versuche auflistet (429 oder 5xx des Providers),
+  hielt alle Aufrufe eine Minute an, mit einem Modell ohne Chat in der Liste sogar zehn; der Dienst wiederholt sie jetzt
+  wie jede 503, und zehn Minuten hält nur eine Liste aus lauter `NOT_ELIGIBLE`. Ein Stopp verkürzt keinen längeren mehr,
+  auch ohne Routing, und ein verlängerter steht im Log. `B_API_MODEL=openai/gpt-6-luna` bekommt die Parameter von
+  gpt-6-luna statt `max_tokens` und `temperature`. Eine b-api ohne Routing (404) sagt das in Modellprüfung und Grund des
+  Stopps statt „nicht erreichbar“. Der Name des antwortenden Modells steht auf einer Zeile im Log, höchstens 32 Namen je
+  Worker. Der Hinweis auf die Parameterfamilie kommt nur noch bei `unsupported_parameter`.
+- **Neu:** `/health` nennt unter `components.llm.reason`, warum das LLM nicht verfügbar ist, auch nach einem Stopp zur
+  Laufzeit; bisher stand dort nur `available: false`. Der Start warnt, wenn `B_API_ROUTE` als `provider/modell` ein
+  Modell einer anderen Parameterfamilie nennt als `B_API_MODEL`.
+- **[Betrieb](docs/betrieb.md#updates):** Keine neue Einstellung.
+- **Doku:** README, docs/betrieb.md und die Übergabe beschreiben Wiederholung, Stopps, Rückweg und was `/health` bei
+  Erfolg zeigt; M83 trägt die Zeiten der Antworten des Routers in den Rohdaten.
+
 ## 2.18.0 – 2026-10-09
 
 Das Routing der b-api als Provider (D97); dazu die Messung aller Profile und Funktionen mit 2.17.0 (M82).
@@ -18,19 +36,19 @@ Das Routing der b-api als Provider (D97); dazu die Messung aller Profile und Fun
 - **Neu:** `B_API_PROVIDER=router` fragt das Routing der b-api mit dem Namen einer Route, die vorab global oder für den
   Schlüssel angelegt wurde (`B_API_ROUTE`, ohne Eintrag eine Route, die wie `B_API_MODEL` heißt); `B_API_MODEL` nennt
   die Modellfamilie der Route und damit die Parameter. Die Modellprüfung sucht die Route, `/health` und das Frontmatter
-  nennen sie, das Log sagt einmal je Modell, wer hinter der Route antwortet. Eine fehlende oder abgeschaltete Route
-  und ein Modell ohne Preis oder ohne Chat halten die Aufrufe zehn Minuten mit dem Grund zurück, eine Route ohne
-  freies Modell eine Minute, statt sie dreimal zu wiederholen; lehnt ein Modell der Route die Parameter ab, nennt die
-  Warnung `B_API_MODEL`.
+  nennen sie, das Log sagt einmal je Modell, wer hinter der Route antwortet. Eine fehlende oder abgeschaltete Route und
+  ein Modell ohne Preis oder ohne Chat halten die Aufrufe zehn Minuten mit dem Grund zurück, eine Route ohne freies
+  Modell eine Minute, statt jede Frage einzeln scheitern zu lassen oder sie bei 503 bis zu dreimal zu versuchen; lehnt
+  ein Modell der Route die Parameter ab, nennt die Warnung `B_API_MODEL`.
 - **[Betrieb](docs/betrieb.md#updates):** Eine neue Einstellung, `B_API_ROUTE` (leer); ohne `B_API_PROVIDER=router`
   ändert sich nichts. `/health` nennt unter `components.llm` zusätzlich `route`.
-- **Gemessen:** M83, der Dienst über eine eigene Route aus `gpt-6-luna` und `gpt-5.6-luna` als Reserve: dieselben
-  Tokens wie direkt über `openai`, je Aufruf kein messbarer Aufschlag, die Reserve antwortet bei abgeschaltetem
-  Hauptmodell. M82, Release 2.17.0 in allen Profilen und Funktionen nach Güte, Zeit und Tokens: Jede Funktion hält
-  die Güte ihrer letzten Messung; ein Kompendium mit Teil 1 und 2 braucht im Median 2,6 / 4,6 / 12,6 / 23,2 / 27,3 s
-  und 0 / 314 / 59.335 / 63.117 / 87.225 Tokens (`llm-free` bis `best-coverage-generated`). Neue Messskripte für die
-  Endpunkte, die Auswertung der KI-Fragen und den QA-Bogen; `mc_kompendium_profil.py` zählt das Modellwissen an den
-  Markierungen im Markup, denn seit D76 steht der sichtbare Vermerk nur auf Wunsch im Text.
+- **Gemessen:** M83, der Dienst über eine eigene Route aus `gpt-6-luna` und `gpt-5.6-luna` als Reserve: praktisch
+  dieselben Tokens wie direkt über `openai` (bis 1,3 % Abweichung), je Aufruf kein messbarer Aufschlag, die Reserve
+  antwortet bei abgeschaltetem Hauptmodell. M82, Release 2.17.0 in allen Profilen und Funktionen nach Güte, Zeit und
+  Tokens: Jede Funktion hält die Güte ihrer letzten Messung; ein Kompendium mit Teil 1 und 2 braucht im Median 2,6 / 4,6
+  / 12,6 / 23,2 / 27,3 s und 0 / 314 / 59.335 / 63.117 / 87.225 Tokens (`llm-free` bis `best-coverage-generated`). Neue
+  Messskripte für die Endpunkte, die Auswertung der KI-Fragen und den QA-Bogen; `mc_kompendium_profil.py` zählt das
+  Modellwissen an den Markierungen im Markup, denn seit D76 steht der sichtbare Vermerk nur auf Wunsch im Text.
 - **Doku:** die Entwicklungsdoku auf dem Stand 2.17.0 (Übersicht, Seiten 01, 07, 08 und 09, Grafiken, Messprotokoll
   und Ergebnisübersicht), im README die Werte der Profile und der KI-Schalter aus M82.
 

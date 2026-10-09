@@ -154,6 +154,9 @@ Abschnittsmarker von Teil 1.
 - Ergebniszeile für alle Endpunkte mit KI (D96, Release 2.17.0): `/qa`, `/entities`, `/knowledge` und die
   Lehrplansuche schreiben bei einer Anfrage mit LLM die Zeile eines Kompendiums mit KI-Anteil und Rückfällen nach
   Ursache; ein fehlendes LLM ist eine eigene Ursache und eine WARNING mit Grund (docs/betrieb.md, „Logs“).
+- b-api-Routing (D97, D98, Releases 2.18.0 und 2.18.1): `B_API_PROVIDER=router` fragt den Router der b-api mit
+  einer vorab angelegten Route (`B_API_ROUTE`); was der Router nicht heilen lässt, hält die Aufrufe mit dem Grund
+  zurück, und `/health` nennt ihn unter `components.llm.reason` (Abschnitt „b-api-Routing“, M83).
 
 ## Installation
 
@@ -812,58 +815,62 @@ Dienst ein Modell nur am Namen (`gpt-5`, `gpt-6`, `o1`, `o3`, `o4`). Schreibt ei
 (`reasoning`, `reasoning_content`), gilt das als Antwort, außer es brach an der Grenze der Ausgabe ab
 (`finish_reason=length`): Dann zählt der Aufruf als leere Antwort, und die Regeln entscheiden (Audit 2026-09-29, L2).
 
-**b-api-Routing (D97).** Mit `B_API_PROVIDER=router` fragt der Dienst den Router der b-api
-(`/api/v1/llm/router/chat/completions`) und schickt im Feld `model` den Namen einer Route: `B_API_ROUTE`, ohne
-Eintrag eine Route, die wie `B_API_MODEL` heißt. Eine Route bündelt Modelle nach Priorität und Gewicht; antwortet
-eines nicht, fragt die b-api das nächste. Routen legen Administratoren in der b-api an, global oder für den Schlüssel
-(Recht `LLM_ROUTE_MANAGE`); der Dienst verwaltet keine und setzt eine angelegte Route voraus. Der Router reicht die
-Anfrage unverändert an das gewählte Modell weiter. Darum darf eine Route nur Modelle einer Parameterfamilie bündeln,
-und `B_API_MODEL` nennt diese Familie: Mit `gpt-6-luna` schickt der Dienst `max_completion_tokens`,
-`reasoning_effort` und `verbosity`, wie für jedes Modell der Serien GPT-5, GPT-6 und o. Ein Modell, das diese Parameter
-nicht kennt, lehnt jede Frage mit 400 ab, und die Warnung im Log nennt dann die Familie. Die Modellprüfung beim
-Start sucht die Route in `GET /api/v1/llm/router/models`; `provider/modell` (etwa `openai/gpt-6-luna`) erreicht das
-Modell auch ohne Route,
-steht dort aber nie und gilt ohne Prüfung. `/health` nennt unter `components.llm` die Route, das Frontmatter
-`llm.route` und in `llm.model` das Modell, das geantwortet hat; das Log sagt einmal je Modell, wer hinter der Route
-antwortet (`b-api routing: route 'kompendium-test' answers with gpt-6-luna`), ein neues Modell zeigt das Ausweichen
-auf die Reserve. Antworten des Routers, die keine Wiederholung heilt, halten die Aufrufe mit dem Grund zurück, statt
-sie dreimal zu wiederholen: eine Route, die es nicht oder nur abgeschaltet gibt (400), und ein Modell der Route ohne
-Preis oder ohne Chat (503) für zehn Minuten, eine Route ohne aktives oder erreichbares Modell (503) für eine Minute;
-in der Zeit antworten die Regeln, und Ergebniszeile und `/health` nennen den Grund. Die Vorgaben je Provider sind die
-von `openai` (20 Aufrufe zugleich, 300 s je Anfrage); bündelt eine Route Modelle der AcademicCloud, gehören deren
-Werte in `LLM_MAX_CONCURRENCY` und `REQUEST_TIMEOUT_S` (2 und 600 s). Ohne `B_API_RESPONSE_CACHE` trägt auch hier
-jeder Aufruf einen eigenen `safety_identifier`. Geprüft am 09.10.2026 auf Staging mit einer Route aus `gpt-6-luna` und
-`gpt-5.6-luna` als Reserve (M83): Die Kompendien kosteten über die Route dieselben Tokens wie direkt über `openai`,
-ein einzelner Aufruf dauerte im Median 0,82 statt 0,86 s, und mit abgeschaltetem Hauptmodell antwortete die Reserve.
+**b-api-Routing (D97, D98).** Mit `B_API_PROVIDER=router` fragt der Dienst den Router der b-api
+(`/api/v1/llm/router/chat/completions`) und schickt im Feld `model` den Namen einer Route: `B_API_ROUTE`, ohne Eintrag
+eine Route, die wie `B_API_MODEL` heißt. Eine Route bündelt Modelle nach Priorität und Gewicht; antwortet eines nicht,
+fragt die b-api das nächste. Routen legen Administratoren in der b-api an, global oder für den Schlüssel (Recht
+`LLM_ROUTE_MANAGE`); der Dienst verwaltet keine und setzt eine angelegte Route voraus. Der Router reicht die Anfrage
+unverändert an das gewählte Modell weiter. Darum darf eine Route nur Modelle einer Parameterfamilie bündeln, und
+`B_API_MODEL` nennt diese Familie: Mit `gpt-6-luna` schickt der Dienst `max_completion_tokens`, `reasoning_effort` und
+`verbosity`, wie für jedes Modell der Serien GPT-5, GPT-6 und o, auch mit dem Provider davor (`openai/gpt-6-luna`).
+Lehnt ein OpenAI-Modell der Route diese Parameter ab (`unsupported_parameter`, ein 400 bei jeder Frage), nennt die
+Warnung im Log die Familie; nennt `B_API_ROUTE` als `provider/modell` ein Modell einer anderen Familie als
+`B_API_MODEL`, warnt schon der Start. Die Modellprüfung beim Start sucht die Route in `GET /api/v1/llm/router/models`;
+`provider/modell` erreicht das Modell auch ohne Route, steht dort aber nie und gilt ohne Prüfung. Eine b-api, die das
+Routing noch nicht kennt, antwortet mit 404, und Modellprüfung und Stopp sagen das. `/health` nennt unter
+`components.llm` die Route, das Frontmatter `llm.route` und in `llm.model` das Modell, das geantwortet hat. Das Log sagt
+einmal je Modell und Worker, wer hinter der Route antwortet (`b-api routing: route 'kompendium-test' answers with
+gpt-6-luna`); bei einer Route nach Prioritäten zeigt ein neues Modell das Ausweichen auf die Reserve, bei Gewichten
+wechseln die Modelle ohnehin. Antworten des Routers, die keine Wiederholung heilt, halten alle Aufrufe mit dem Grund
+zurück, statt jede Frage einzeln mit 400 scheitern zu lassen oder sie bei 503 bis zu dreimal zu versuchen: eine Route,
+die es nicht oder nur abgeschaltet gibt (400), ein Modell der Route ohne Preis und eine Route, deren Modelle keinen Chat
+können (503), für zehn Minuten, eine Route ohne aktives oder erreichbares Modell (`no deployment left`, 503) für eine
+Minute. Listet eine 503 Versuche auf, die nur vorübergehend scheiterten (429 oder 5xx des Providers), wiederholt der
+Dienst sie wie jede 503, und kein Stopp verkürzt einen längeren. In der Zeit antworten die Regeln; Ergebniszeile und
+`/health` (`components.llm.reason`) nennen den Grund. Die Vorgaben je Provider sind die von `openai` (20 Aufrufe
+zugleich, 300 s je Anfrage); bündelt eine Route Modelle der AcademicCloud, gehören deren Werte in `LLM_MAX_CONCURRENCY`
+und `REQUEST_TIMEOUT_S` (2 und 600 s). Ohne `B_API_RESPONSE_CACHE` trägt auch hier jeder Aufruf einen eigenen
+`safety_identifier`. Geprüft am 09.10.2026 auf Staging mit einer Route aus `gpt-6-luna` und `gpt-5.6-luna` als Reserve
+(M83): Die Kompendien kosteten über die Route praktisch dieselben Tokens wie direkt über `openai` (bis 1,3 % Abweichung)
+und dauerten in drei von vier Fällen etwas länger, bei je einem Lauf; ein einzelner Aufruf dauerte im Median 0,82 statt
+0,86 s, und mit abgeschaltetem Hauptmodell antwortete die Reserve.
 
-Betrieb: Die Modellprüfung ist ein einzelner Versuch mit 10 s Timeout (Start, danach höchstens alle zehn
-Minuten, solange das Modell fehlt); `/health` ruft die b-api nie selbst. Alle Versuche eines Aufrufs teilen sich
-seine Frist; eine Wiederholung wartet 1,5 s, dann 3 s, je mit einer Streuung zwischen der Hälfte und dem
-Anderthalbfachen, oder so lange, wie `Retry-After` verlangt, wenn das noch in die Frist passt. Nach einem Timeout oder
-drei Fehlversuchen in Folge (Verbindungsfehler, 429, 500, 502, 503 oder 504, über alle Aufrufe; jeder davon wird
-wiederholt, ein 501 nicht) setzt ein Schutzschalter die b-api 60 s aus, Anfragen laufen dann sofort im Regelmodus;
-danach probiert ein einzelner Aufruf, ob sie wieder antwortet. Ein 401, 403 oder 404 setzt sie zehn Minuten aus,
-`/health` nennt den Grund (Schlüssel, Berechtigung oder Modell). Ein Versuch, der das Modell erreicht haben kann
-(Timeout nach dem Senden, 502 oder 504), belastet das Budget mit den Tokens seiner Eingabe, auch wenn ein späterer
-Versuch antwortet; eine Antwort, die sich nicht lesen lässt, ebenso, oder mit dem Verbrauch, den sie meldet.
-Jeder Aufruf reserviert sein Token-Budget vorab (je Anfrage das des Profils,
-`LLM_MAX_TOKENS_PER_REQUEST` oder in den `best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, bei `/qa`
-für Teil 1 und die Paare zusammen; die Prüfung von Teil 2 aus `LLM_MAX_TOKENS_CURRICULUM_CHECK`;
-`LLM_DAILY_TOKEN_BUDGET` je Tag, wenn gesetzt), den Text eines Aufrufers (`/entities`, `/qa`)
-nach seinen UTF-8-Bytes: So viele Tokens kann er höchstens werden, wie man ihn auch formt; zufällige Zeichenfolgen
-kamen bei `gpt-6-luna` auf bis zu 4,3-mal so viele Tokens wie geschätzt (Audit 2026-09-28, SE-20).
-Passt er nicht mehr neben die laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung, solange danach noch
-ein Aufruf rechtzeitig starten kann (D39); ein gesetztes Tagesbudget weist dagegen sofort ab. Die Wiederholung nach einem Versuch,
-der das Modell erreicht haben kann, reserviert dessen Eingabe erneut und wartet nicht: Ist dafür kein Platz mehr, endet
-der Aufruf ohne sie (Audit 2026-09-29, L1). Der Tageszähler liegt in
+Betrieb: Die Modellprüfung ist ein einzelner Versuch mit 10 s Timeout (Start, danach höchstens alle zehn Minuten,
+solange das Modell fehlt); `/health` ruft die b-api nie selbst. Alle Versuche eines Aufrufs teilen sich seine Frist;
+eine Wiederholung wartet 1,5 s, dann 3 s, je mit einer Streuung zwischen der Hälfte und dem Anderthalbfachen, oder so
+lange, wie `Retry-After` verlangt, wenn das noch in die Frist passt. Nach einem Timeout oder drei Fehlversuchen in Folge
+(Verbindungsfehler, 429, 500, 502, 503 oder 504, über alle Aufrufe; jeder davon wird wiederholt, ein 501 nicht) setzt
+ein Schutzschalter die b-api 60 s aus, Anfragen laufen dann sofort im Regelmodus; danach probiert ein einzelner Aufruf,
+ob sie wieder antwortet. Ein 401, 403 oder 404 setzt sie zehn Minuten aus, `/health` nennt den Grund unter
+`components.llm.reason` (Schlüssel, Berechtigung oder Modell). Ein Versuch, der das Modell erreicht haben kann (Timeout
+nach dem Senden, 502 oder 504), belastet das Budget mit den Tokens seiner Eingabe, auch wenn ein späterer Versuch
+antwortet; eine Antwort, die sich nicht lesen lässt, ebenso, oder mit dem Verbrauch, den sie meldet. Jeder Aufruf
+reserviert sein Token-Budget vorab (je Anfrage das des Profils, `LLM_MAX_TOKENS_PER_REQUEST` oder in den
+`best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, bei `/qa` für Teil 1 und die Paare zusammen; die
+Prüfung von Teil 2 aus `LLM_MAX_TOKENS_CURRICULUM_CHECK`; `LLM_DAILY_TOKEN_BUDGET` je Tag, wenn gesetzt), den Text eines
+Aufrufers (`/entities`, `/qa`) nach seinen UTF-8-Bytes: So viele Tokens kann er höchstens werden, wie man ihn auch
+formt; zufällige Zeichenfolgen kamen bei `gpt-6-luna` auf bis zu 4,3-mal so viele Tokens wie geschätzt (Audit
+2026-09-28, SE-20). Passt er nicht mehr neben die laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung,
+solange danach noch ein Aufruf rechtzeitig starten kann (D39); ein gesetztes Tagesbudget weist dagegen sofort ab. Die
+Wiederholung nach einem Versuch, der das Modell erreicht haben kann, reserviert dessen Eingabe erneut und wartet nicht:
+Ist dafür kein Platz mehr, endet der Aufruf ohne sie (Audit 2026-09-29, L1). Der Tageszähler liegt in
 `STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts; dort liegen auch die Reservierungen
 laufender Aufrufe, geprüft und geschrieben in einem Schritt, sodass zwei Worker nicht beide die letzten Tokens des Tages
-bekommen. Die Reservierung eines abgestürzten Workers zählt nach zehn Minuten nicht mehr. Die Schätzung vor einem
-Aufruf rechnet drei Zeichen je Token und ab U+0800, etwa bei Chinesisch, ein Token je Zeichen (gemessen mit
-`gpt-6-luna`: Deutsch 4,62 Zeichen je Token, Russisch 3,96, Arabisch 3,27, Chinesisch 1,28).
-`REQUEST_TIMEOUT_S` begrenzt die LLM-Arbeit und das Lesen des Repositorys einer Anfrage: jeder Aufruf
-bekommt höchstens die Restzeit, bei weniger als 5 s Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung, Fehlerkörper
-der b-api nur im Log.
+bekommen. Die Reservierung eines abgestürzten Workers zählt nach zehn Minuten nicht mehr. Die Schätzung vor einem Aufruf
+rechnet drei Zeichen je Token und ab U+0800, etwa bei Chinesisch, ein Token je Zeichen (gemessen mit `gpt-6-luna`:
+Deutsch 4,62 Zeichen je Token, Russisch 3,96, Arabisch 3,27, Chinesisch 1,28). `REQUEST_TIMEOUT_S` begrenzt die
+LLM-Arbeit und das Lesen des Repositorys einer Anfrage: jeder Aufruf bekommt höchstens die Restzeit, bei weniger als 5 s
+Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung, Fehlerkörper der b-api nur im Log.
 
 ```bash
 LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --generation llm-fast --zim … --out optik.md
@@ -946,7 +953,7 @@ Diese vier liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 |---|---|---|
 | `LOG_LEVEL` | `INFO` | Protokollstufe der Zeilen des Dienstes und der Updater: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`, in beliebiger Schreibung, `WARN` gilt als `WARNING`; ein unbekannter Wert hält den Start an. Die Zeilen von uvicorn (Start, Stopp, ein beendeter Worker) bleiben auf `INFO`, `httpx` und `httpcore` schreiben erst ab `WARNING` |
 | `LOG_FORMAT` | `text` | `text`: eine Zeile je Ereignis mit Zeit, Stufe, Prozess-ID, Logger, Anfrage-ID und Meldung; `json`: ein JSON-Objekt je Zeile mit `time` (UTC), `level`, `pid`, `logger`, `request_id`, `message`, bei Fehlern `exc` mit dem Traceback, und den Feldern des Ereignisses (eine Anfrage: `method`, `path`, `route`, `status`, `duration_ms`, `client`), für einen Log-Sammler (Audit 2026-09-18, OPS-03). Das gilt auch für die Zeilen von uvicorn (Start und Stopp, ein beendeter Worker) und für die Meldungen der Updater in ihrer Schleife. Die Zeilen gehen nach stderr; ein einmaliger Aufruf der Kommandozeile druckt seinen Bericht für Menschen auf stdout. Was wann im Log steht: docs/betrieb.md, Abschnitt „Logs“ |
-| `REQUEST_TIMEOUT_S` | leer: je Anbieter, `openai` 300, `academiccloud` 600 | Frist je Anfrage für die LLM-Arbeit und das Lesen des Repositorys (Sammlung und Knoten der Anfrage, Teil 3, Materialtexte); die lokalen Schritte (Archivsuche, Zuordnung der Regeln, Ausgabe) laufen zu Ende, die Frist ist also kein hartes Ende-zu-Ende-Limit. Aufrufe bekommen höchstens die Restzeit; danach entsteht der Rest extraktiv, das Repository wird nicht mehr gefragt, nicht geholte Materialtexte bleiben draußen (`audit.knowledge.timed_out`). Bis 120 s vor M75; gemessen brauchte `best-coverage-generated` 35 bis 43 s, einmal 126 s hinter einer langsamen Antwort, mit 2 gleichzeitigen Aufrufen (academiccloud) rund 120 s schon in der Geschwindigkeit von `gpt-6-luna`. Über 615 s mit `API_STOP_GRACE_PERIOD` heben, sonst beendet Docker bei einem Update laufende Anfragen. Bis 10 s bleibt dem LLM kaum ein Aufruf — einer beginnt nur, solange noch 5 s bleiben —, und seine Schritte fallen auf die Regeln zurück; mit LLM warnt dann der Start |
+| `REQUEST_TIMEOUT_S` | leer: je Anbieter, `openai` 300, `academiccloud` 600, `router` 300 | Frist je Anfrage für die LLM-Arbeit und das Lesen des Repositorys (Sammlung und Knoten der Anfrage, Teil 3, Materialtexte); die lokalen Schritte (Archivsuche, Zuordnung der Regeln, Ausgabe) laufen zu Ende, die Frist ist also kein hartes Ende-zu-Ende-Limit. Aufrufe bekommen höchstens die Restzeit; danach entsteht der Rest extraktiv, das Repository wird nicht mehr gefragt, nicht geholte Materialtexte bleiben draußen (`audit.knowledge.timed_out`). Bis 120 s vor M75; gemessen brauchte `best-coverage-generated` 35 bis 43 s, einmal 126 s hinter einer langsamen Antwort, mit 2 gleichzeitigen Aufrufen (academiccloud) rund 120 s schon in der Geschwindigkeit von `gpt-6-luna`. Über 615 s mit `API_STOP_GRACE_PERIOD` heben, sonst beendet Docker bei einem Update laufende Anfragen. Bis 10 s bleibt dem LLM kaum ein Aufruf — einer beginnt nur, solange noch 5 s bleiben —, und seine Schritte fallen auf die Regeln zurück; mit LLM warnt dann der Start |
 | `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf `compendium`, `knowledge`, `entities`, `qa`, `nodes/{id}`, `collections/overview` und `lehrplan/search`, je Worker gezählt; `0` schaltet es ab |
 | `REQUEST_BODY_MAX_BYTES` | `1000000` | Obergrenze eines Anfragekörpers, mindestens 10.000; ein größerer ist ein 413, bevor der Dienst ihn liest. `POST /api/v2/compendium` und `PUT /api/v2/templates/{id}` nehmen bis 13.000.000 Byte (`existing_markdown`, ein ganzes Template) |
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | Hinter einem Reverse-Proxy sieht uvicorn nur dessen Adresse, und alle Clients teilen sich ein Rate-Limit-Fenster. Diese Variable sagt uvicorn, welchen Absendern es `X-Forwarded-For` glauben darf: einzelne Adressen, Netze in CIDR-Schreibweise, mehrere durch Komma getrennt. **Nur das eigene Proxy-Netz eintragen** — `*` lässt jeden Aufrufer seine Adresse frei wählen und hängt damit das Rate-Limit aus. Im Container kommt auch ein Proxy auf dem Host nicht von `127.0.0.1`, sondern vom Gateway des Compose-Netzes (siehe docs/installation.md, Abschnitt 8) |
@@ -1082,13 +1089,13 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api: `openai`, `academiccloud` oder `router`, das Routing der b-api über eine vorab angelegte Route (`B_API_ROUTE`, D97, Abschnitt „b-api-Routing“) |
 | `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`). Ohne Eintrag, auch bei leerem Wert, gilt `gpt-6-luna`. Gemessen an der Staging-b-api; ob eine andere b-api es führt, zeigt `/health` unter `components.llm`. Mit `B_API_PROVIDER=router` die Modellfamilie der Route: Ihre Parameter schickt der Dienst |
 | `B_API_ROUTE` | leer | Nur mit `B_API_PROVIDER=router`: die Route, die der Dienst im Feld `model` an den Router der b-api schickt (D97). Leer: eine Route, die wie `B_API_MODEL` heißt. Anlegen müssen sie Administratoren, global oder für den Schlüssel; der Dienst verwaltet keine. `openai/gpt-6-luna` erreicht das Modell ohne Route und ohne Ausweichen. Mit einem anderen Provider ohne Wirkung, der Start warnt |
-| `B_API_RESPONSE_CACHE` | `false` | Ob die b-api eine wortgleiche Anfrage aus ihrem Speicher beantworten darf (D70). Sie tut es, ohne dass ein Schalter es abstellt: gleiche Antwort-ID, gleicher Text, 0,4 statt 3,8 s, auch nach einer unbrauchbaren Antwort und in jeder Wiederholung einer Messung. Aus: Jeder Aufruf trägt einen eigenen `safety_identifier` und wird neu beantwortet; das Prompt-Caching des Anbieters (gleicher Anfang des Prompts, `cached` im Audit) bleibt dabei erhalten, anders als mit `user` (gemessen am 01.10.2026) |
+| `B_API_RESPONSE_CACHE` | `false` | Ob die b-api eine wortgleiche Anfrage aus ihrem Speicher beantworten darf (D70). Sie tut es, ohne dass ein Schalter es abstellt: gleiche Antwort-ID, gleicher Text, 0,4 statt 3,8 s, auch nach einer unbrauchbaren Antwort und in jeder Wiederholung einer Messung. Aus: Jeder Aufruf trägt einen eigenen `safety_identifier` und wird neu beantwortet; das Prompt-Caching des Anbieters (gleicher Anfang des Prompts, `cached` im Audit) bleibt dabei erhalten, anders als mit `user` (gemessen am 01.10.2026). Am 09.10.2026 griff der Speicher bei zwei wortgleichen Anfragen nicht, mit und ohne Identifier (M83) |
 | `LLM_REASONING_EFFORT` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Denkaufwand jeder Frage, die `LLM_REASONING_EFFORTS` nicht nennt. Bekannt sind `none`, `minimal`, `low`, `medium`, `high` und `xhigh`; einen anderen Wert schickt der Dienst trotzdem, und der Start warnt: ein Tippfehler lässt vermutlich jeden Aufruf mit 400 scheitern |
 | `LLM_REASONING_EFFORTS` | `topic_articles=none,article_choice=none,curriculum_check=none,topic_wording=none,qa_pairs=none` | Fragen mit eigenem Denkaufwand, als Prompt=Aufwand mit Komma getrennt (D81). Die ausgelieferten antworteten ohne Denken gleich gut, in etwa der halben Zeit (M59). Der Start warnt bei einer Frage, die der Dienst nicht stellt, und bei einem unbekannten Aufwand |
 | `LLM_VERBOSITY` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Bekannt sind `low`, `medium` und `high`; bei einem anderen Wert warnt der Start |
 | `LLM_TEMPERATURE` | `0.2` | Nur klassische Modelle; Reasoning-Modelle nutzen stattdessen die beiden Zeilen darüber |
 | `LLM_TIMEOUT_S` | `120` | Frist je einzelnem LLM-Aufruf |
-| `LLM_MAX_CONCURRENCY` | leer: je Anbieter, `openai` 20, `academiccloud` 2 | Gleichzeitige LLM-Aufrufe je Worker-Prozess (bei zwei Workern doppelt so viele); die Zuordnung stellt etwa 6 bis 8 zugleich, das Schreiben 10, die Prüfung von Teil 2 bei breiten Themen bis 14 neben der Zuordnung, und Anfragen können sich einen Worker teilen (M75, D93). Ein gesetzter Wert gilt für jeden Anbieter |
+| `LLM_MAX_CONCURRENCY` | leer: je Anbieter, `openai` 20, `academiccloud` 2, `router` 20 | Gleichzeitige LLM-Aufrufe je Worker-Prozess (bei zwei Workern doppelt so viele); die Zuordnung stellt etwa 6 bis 8 zugleich, das Schreiben 10, die Prüfung von Teil 2 bei breiten Themen bis 14 neben der Zuordnung, und Anfragen können sich einen Worker teilen (M75, D93). Ein gesetzter Wert gilt für jeden Anbieter |
 | `LLM_ATTEMPTS` | `3` | Versuche je Aufruf, bevor aufgegeben wird |
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Anfrage in den Profilen `llm-free` und `balanced` (ein Kompendium; bei `/qa` Teil 1 und die Paare zusammen). Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500, `matcher=llm` bis rund 46.000 (M14). Parallele Aufrufe reservieren vorab ihren Höchstbedarf; was nicht mehr hineinpasst, wartet auf die laufenden (D39) |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `180000` | Kostenschutz je Anfrage in `best-quality`, `best-quality-generated` und `best-coverage-generated` (D59, D69): Artikelwahl, Zuordnung durch das LLM (im Median rund 26.000 Tokens) und Schreiben; die Prüfung von Teil 2 hat ihr eigenes Budget (`LLM_MAX_TOKENS_CURRICULUM_CHECK`, D94). Das breiteste Thema, Demokratie mit rund 400 Absätzen, brauchte mit Teil 1 und 2 140.600 Tokens in `best-quality-generated` und 160.900 in `best-coverage-generated`, davon die Prüfung 66.200 (M79). Gilt in jedem Endpunkt dieser Profile, auch in `/qa`, `/knowledge` und der Lehrplansuche |

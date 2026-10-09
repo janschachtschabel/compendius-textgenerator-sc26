@@ -2302,24 +2302,36 @@ API.
   Von der Artikelwahl las sie nur deren eigenen Rückfall, nicht die der Trefferprüfung und der Artikelfrage (D63), und
   ein fehlendes LLM, das nur eine Stufe nannte, zählte als Fehler der b-api und blieb eine INFO; es ist jetzt die
   Ursache `unavailable` und macht die Zeile zur WARNING mit dem Grund.
-- **D97 (2026-10-09)** Das Routing der b-api als Provider `router` (Jan: „die b-api unterstützt ab sofort ein
-  optionales provider übergreifendes routing … als extra provider … die verwaltung der routen selbst wollen wir nicht
-  integrieren – wir gehen davon aus das später eine globale route oder eine schlüsselbezogene route im vorfeld angelegt
-  wurde“). `B_API_PROVIDER=router` schickt jede KI-Frage an `/api/v1/llm/router/chat/completions`, mit dem Namen der
-  Route im Feld `model`: `B_API_ROUTE`, ohne Eintrag eine Route, die wie `B_API_MODEL` heißt (der Umstiegsweg der
-  b-api-Doku). Der Router reicht die Anfrage unverändert an ein Modell der Route; darum bestimmt weiter `B_API_MODEL`
-  die Parameter, und eine Route muss Modelle dieser Familie bündeln. Die Modellprüfung sucht die Route in
-  `/router/models`; `provider/modell` ohne Route steht dort nie und gilt ungeprüft. Was keine Wiederholung heilt,
-  stoppt die Aufrufe mit dem Grund, statt sie dreimal zu wiederholen (im Test der b-api kam dieselbe Antwort nach
-  15 s): eine unbekannte oder abgeschaltete Route (400) und ein Modell ohne Preis oder ohne Chat (503) für zehn
-  Minuten, kein aktives oder erreichbares Modell (503) für eine Minute. Das Log nennt einmal je Modell, wer hinter der
-  Route antwortet, und bei einer Route aus einer anderen Parameterfamilie die Ursache; `/health` und Frontmatter nennen
-  die Route. Vorgaben je Provider wie `openai` (20 Aufrufe, 300 s). Verworfen: die Familie aus `GET /router/routes`
-  lesen (braucht das Recht `LLM_ROUTE_MANAGE`, das nicht in Schlüssel von Anwendungen gehört) und ein eigener Schalter
-  für die Familie (doppelt zu `B_API_MODEL`). Geprüft auf Staging mit Jans Schlüssel und einer eigenen Route
-  `kompendium-test` (`gpt-6-luna`, Reserve `gpt-5.6-luna`, M83): gleiche Tokens wie direkt über `openai`, je Aufruf
-  kein messbarer Aufschlag (Median 0,82 gegen 0,86 s), die Reserve antwortet bei abgeschaltetem Hauptmodell, und eine
-  fehlende Route meldet sich beim Start und in jeder Ergebniszeile mit Grund und Abhilfe.
+- **D97 (2026-10-09)** Das Routing der b-api als Provider `router` (Jan: „die b-api unterstützt ab sofort ein optionales
+  provider übergreifendes routing … als extra provider … die verwaltung der routen selbst wollen wir nicht integrieren –
+  wir gehen davon aus das später eine globale route oder eine schlüsselbezogene route im vorfeld angelegt wurde“).
+  `B_API_PROVIDER=router` schickt jede KI-Frage an `/api/v1/llm/router/chat/completions`, mit dem Namen der Route im
+  Feld `model`: `B_API_ROUTE`, ohne Eintrag eine Route, die wie `B_API_MODEL` heißt (der Umstiegsweg der b-api-Doku).
+  Der Router reicht die Anfrage unverändert an ein Modell der Route; darum bestimmt weiter `B_API_MODEL` die Parameter,
+  und eine Route muss Modelle dieser Familie bündeln. Die Modellprüfung sucht die Route in `/router/models`;
+  `provider/modell` ohne Route steht dort nie und gilt ungeprüft. Was keine Wiederholung heilt, stoppt die Aufrufe mit
+  dem Grund, statt jede Frage einzeln scheitern zu lassen oder sie bei 503 bis zu dreimal zu versuchen (im Test der
+  b-api kam dieselbe Antwort nach 15 s): eine unbekannte oder abgeschaltete Route (400) und ein Modell ohne Preis oder
+  ohne Chat (503) für zehn Minuten, kein aktives oder erreichbares Modell (503) für eine Minute. Das Log nennt einmal je
+  Modell, wer hinter der Route antwortet, und bei einer Route aus einer anderen Parameterfamilie die Ursache; `/health`
+  und Frontmatter nennen die Route. Vorgaben je Provider wie `openai` (20 Aufrufe, 300 s). Verworfen: die Familie aus
+  `GET /router/routes` lesen (braucht das Recht `LLM_ROUTE_MANAGE`, das nicht in Schlüssel von Anwendungen gehört) und
+  ein eigener Schalter für die Familie (doppelt zu `B_API_MODEL`). Geprüft auf Staging mit Jans Schlüssel und einer
+  eigenen Route `kompendium-test` (`gpt-6-luna`, Reserve `gpt-5.6-luna`, M83): praktisch dieselben Tokens wie direkt
+  über `openai`, je Aufruf kein messbarer Aufschlag (Median 0,82 gegen 0,86 s), die Reserve antwortet bei abgeschaltetem
+  Hauptmodell, und eine fehlende Route meldet sich beim Start und in jeder Ergebniszeile mit Grund und Abhilfe.
+- **D98 (2026-10-09)** Die Befunde eines Reviews der Routing-Anpassungen behoben (Jan: „mach bitte nochmal ein review
+  über die anpassungen für das routing“, dann „die befunde alle beheben“). Zwei Prüfer ohne Vorwissen fanden 14 kleine
+  Befunde und 3 Kleinigkeiten, keinen schweren. Das Wissen über den Router steht jetzt in `app/llm/routing.py` (Name der
+  Route, Antworten, die keine Wiederholung heilt, Hinweis zur Familie), aus dem Client und Einstellungen lesen. Eine 503
+  mit Versuchen, die nur vorübergehend scheiterten, wird wiederholt wie jede 503; vorher hielt sie alle Aufrufe eine
+  Minute an. Zehn Minuten hält nur eine Liste aus lauter `NOT_ELIGIBLE`; das Format der Liste stammt aus der b-api-Doku,
+  M83 sah keine solche Liste. Ein Stopp verkürzt keinen längeren mehr, auch beim Schutzschalter ohne Routing. `/health`
+  nennt den Grund (`components.llm.reason`), den das README schon versprach. Die Familie eines Modells mit Provider
+  davor ist die des Modells, und der Start warnt bei `B_API_ROUTE=provider/modell` aus einer anderen Familie. Eine b-api
+  ohne Routing (404) sagt das. Der Name des antwortenden Modells kommt bereinigt und höchstens 32-mal je Worker ins Log,
+  der Familienhinweis nur bei `unsupported_parameter`. Dazu die Doku: Wiederholung, Stopps, Rückweg, was `/health` bei
+  Erfolg zeigt, und die Zeiten der Antworten des Routers in M83.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
