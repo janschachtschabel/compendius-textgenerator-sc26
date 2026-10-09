@@ -150,10 +150,20 @@ const TYPES = {
     return input(spec, ctx, { type: 'number', inputmode: 'numeric', step: 1, min, max, placeholder }, numberOf);
   },
   check(spec, ctx) {
-    const control = h('input', { id: uid(spec.name), name: spec.name, type: 'checkbox' });
+    // A box that needs an LLM is locked on a server without one, as the comparison of two profiles is
+    const locked = Boolean(spec.needsLlm) && !ctx.options.llm_configured;
+    const control = h('input', { id: uid(spec.name), name: spec.name, type: 'checkbox', disabled: locked });
     const error = h('p', { class: 'field-error', hidden: true });
-    ctx.controls.set(spec.name, { name: spec.name, read: () => control.checked, write: (value) => (control.checked = Boolean(value)), error, focus: control });
-    return h('div', { class: 'check' }, control, h('label', { for: control.id }, spec.label), error);
+    // A box for a value (spec.value) holds that value when ticked and nothing when not, the others true or false
+    const access = spec.value
+      ? { read: () => (control.checked ? spec.value : ''), write: (value) => (control.checked = value === spec.value) }
+      : { read: () => control.checked, write: (value) => (control.checked = Boolean(value)) };
+    ctx.controls.set(spec.name, { name: spec.name, ...access, error, focus: control });
+    const name = h('label', { for: control.id }, spec.label);
+    if (!spec.help) return h('div', { class: 'check' }, control, name, error);
+    const help = h('p', { class: 'help', id: `${control.id}-hilfe` }, locked ? `${spec.help} Braucht eine KI auf dem Server.` : spec.help);
+    control.setAttribute('aria-describedby', help.id);
+    return h('div', { class: 'field' }, h('div', { class: 'check' }, control, name), help, error);
   },
   select(spec, ctx) {
     const control = h('select', { id: uid(spec.name), name: spec.name });

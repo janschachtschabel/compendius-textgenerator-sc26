@@ -111,6 +111,25 @@ test('a comparison asks twice, once per profile, and leaves the steps to the pro
   assert.ok(runs.every((run) => !('matcher' in run.request.body)));
 });
 
+test('the box beside the profile has the AI choose the sentences in any profile, in a comparison in both', () => {
+  const [single] = buildRequests('compendium', form('compendium', { topic: 'Optik', preset: 'llm-free', extraction: 'llm' }), options);
+  const runs = buildRequests('compendium', form('compendium', { topic: 'Optik', compare: true, preset: 'balanced', preset_b: 'best-quality', extraction: 'llm', matcher: 'llm' }), options);
+
+  assert.equal(single.request.body.extraction, 'llm');
+  assert.deepEqual(runs.map((run) => run.request.body.extraction), ['llm', 'llm']);
+  assert.ok(runs.every((run) => !('matcher' in run.request.body)), 'the other steps stay with the profiles');
+});
+
+test('unticked the profile chooses the sentences; the box follows the profile and left "Erweitert"', () => {
+  const [run] = buildRequests('compendium', form('compendium', { topic: 'Optik' }), options);
+  const names = FORMS.compendium.fields.map((field) => field.name);
+  const steps = FORMS.compendium.fields.find((field) => field.type === 'steps').steps;
+
+  assert.equal('extraction' in run.request.body, false);
+  assert.equal(names.indexOf('extraction'), names.indexOf('preset') + 1);
+  assert.equal(steps.includes('extraction'), false);
+});
+
 test('the compendium form refuses what the endpoint would refuse, in words a reader understands', () => {
   assert.ok(problems('compendium', form('compendium', {}), options).topic);
   const collection = { node: COLLECTION, node_kind: 'collection' };

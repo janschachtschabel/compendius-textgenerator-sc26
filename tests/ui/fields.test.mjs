@@ -61,3 +61,22 @@ test('an example changes its own fields and its input, and leaves profile, compa
     );
   }
 });
+
+test('the box beside the profile reads llm when ticked and nothing when not, and is locked without an LLM', () => {
+  const { form, field } = compendiumForm();
+  const box = field('extraction');
+
+  assert.equal(box.getAttribute('type'), 'checkbox');
+  assert.equal(form.read().extraction, '');
+  box.checked = true;
+  assert.equal(form.read().extraction, 'llm');
+  form.write({ extraction: '' });
+  assert.equal(box.checked, false);
+  form.write({ extraction: 'llm' });
+  assert.equal(box.checked, true);
+
+  installDocument();
+  const withoutLlm = buildForm('compendium', { ...OPTIONS, llm_configured: false }, { onSubmit() {}, onExample() {} });
+  const locked = withoutLlm.element.descendants().find((node) => node.getAttribute('name') === 'extraction');
+  assert.equal(locked.hasAttribute('disabled'), true);
+});

@@ -897,8 +897,9 @@ er ist („Sammlung „Optik“ · Physik · Sekundarstufe I“), und sagt, wie 
 Thema, für Teil 3, mit Stufe und Fach. Bei einer Sammlung lassen sich ihre Materialien als Quelle für Teil 1
 zuschalten, mit Volltexten und Untersammlungen; eine andere Sammlung als Quelle geht nur über die API. Teil 3 unter
 „Teile“ ist gesperrt („braucht eine Sammlung“), bis eine Sammlung des Server-Repositorys erkannt ist. Unter
-„Erweitert“ lassen sich die Methoden einzelner Schritte setzen, die sonst das Profil wählt. Rechts steht der Text
-gerendert:
+„Erweitert“ lassen sich die Methoden einzelner Schritte setzen, die sonst das Profil wählt; die Satzauswahl der KI
+(`extraction=llm`) steht als Kästchen „KI wählt die Sätze“ direkt unter dem Profil und gilt für jedes Profil, im
+Vergleich für beide (D103). Rechts steht der Text gerendert:
 
 - **Herkunft je Absatz** (abschaltbar, ebenso die Belegnummern): Jeder Baustein von Teil 1 sagt, wie sein Text
   entstand — wörtlich aus den Quellen, von der KI ausgewählt, von der KI formuliert oder automatisch

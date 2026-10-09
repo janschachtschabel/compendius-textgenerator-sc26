@@ -9,7 +9,9 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
-Noch nichts.
+- **Neu (D103):** Die Prüfansicht hat direkt unter dem Profil das Kästchen „KI wählt die Sätze“ (`extraction=llm`).
+  Es gilt für jedes Profil, im Vergleich für beide, und steht nicht mehr unter „Erweitert“; ohne KI auf dem Server
+  ist es gesperrt. Am Dienst ändert sich nichts.
 
 ## 2.19.0 – 2026-10-09
 

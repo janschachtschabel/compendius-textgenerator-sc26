@@ -29,6 +29,17 @@ export const asCollection = (v, options) => v.node_kind === 'collection' && !fro
 const asSource = (v, options) => asCollection(v, options) && Boolean(v.knowledge_source);
 const SUBJECT = { name: 'subject', type: 'subject', label: 'Fach', optional: true, help: 'Entscheidet mehrdeutige Wörter und grenzt die Lehrpläne ein.' };
 const PRESET = { name: 'preset', type: 'preset', label: 'Profil' };
+// The AI's choice of sentences (extraction=llm, D33) beside the profile instead of under "Erweitert", for every profile
+// and in a comparison for both (Jan, 2026-10-09: "einen gut sichtbaren schalter im bereich der profilauswahl")
+const EXTRACTION = {
+  name: 'extraction',
+  type: 'check',
+  value: 'llm',
+  needsLlm: true,
+  label: 'KI wählt die Sätze',
+  help: 'Je Baustein wählt die KI Sätze aus den zugeordneten Absätzen; der Wortlaut bleibt der der Quelle, jeder Satz behält seine Belegnummer. Gilt für jedes Profil, auch im Vergleich.',
+};
+const FORM_STEPS = COMPENDIUM_STEPS.filter((step) => step !== EXTRACTION.name);
 
 export const FORMS = {
   compendium: {
@@ -42,11 +53,12 @@ export const FORMS = {
       SUBJECT,
       { name: 'parts', type: 'parts', label: 'Teile' },
       PRESET,
+      EXTRACTION,
       { name: 'facets_visible', type: 'check', label: 'Facetten im Text zeigen', option: true },
       { name: 'empty_note', type: 'check', label: 'Leere Bausteine mit Hinweis zeigen', option: true },
       { name: 'model_knowledge_label', type: 'check', label: 'Vermerk [Modellwissen] im Text zeigen', option: true },
       REPOSITORY,
-      { name: 'steps', type: 'steps', label: 'Methode je Schritt', advanced: true, steps: COMPENDIUM_STEPS },
+      { name: 'steps', type: 'steps', label: 'Methode je Schritt', advanced: true, steps: FORM_STEPS },
       { name: 'target_length', type: 'number', label: 'Ziellänge in Zeichen', advanced: true, help: 'Eine Richtgröße: Wörtliche Texte werden so lang, wie die Quellen tragen; in best-coverage-generated ist sie eine Untergrenze.' },
       { name: 'max_articles', type: 'number', label: 'Höchstens Artikel', advanced: true },
       { name: 'template_id', type: 'template', label: 'Vorlage', advanced: true },
@@ -188,8 +200,9 @@ export function fromExample(mode, example) {
   return values;
 }
 
-/** The requests a form makes: one, or one per profile when it compares two. A comparison leaves every step to the
- * profiles, so the two answers differ by their profile and nothing else. */
+/** The requests a form makes: one, or one per profile when it compares two. A comparison leaves the steps under
+ * "Erweitert" to the profiles and sends the box beside the profile to both, so the two answers differ by their
+ * profile and nothing else. */
 export function buildRequests(mode, values, options) {
   const presets = values.compare ? [values.preset, values.preset_b] : [values.preset];
   return presets.map((preset) => ({ preset, request: BUILDERS[mode]({ ...values, preset }, !values.compare, options) }));
@@ -220,7 +233,8 @@ const BUILDERS = {
     collectionOrNode(body, v, options);
     body.parts = [...v.parts];
     body.preset = v.preset;
-    if (withSteps) for (const step of COMPENDIUM_STEPS) put(body, step, v[step]);
+    if (withSteps) for (const step of FORM_STEPS) put(body, step, v[step]);
+    put(body, EXTRACTION.name, v[EXTRACTION.name]); // the box beside the profile holds in a comparison as well
     put(body, 'target_length', number(v.target_length));
     put(body, 'max_articles', number(v.max_articles));
     put(body, 'template_id', text(v.template_id));

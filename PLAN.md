@@ -2371,6 +2371,11 @@ API.
   Test fielen sie mit dem Zehnfachen auf die Regeln zurück. Am breitesten Thema, Demokratie, brauchte Teil 1
   bei ×10 in `best-quality-generated` 109.100 und in `best-coverage-generated` 132.100 Tokens, in keinem
   Profil mehr Zeit; `best-quality` druckte dort 105.000 statt 15.500 Zeichen. Release 2.19.0.
+- **D103 (2026-10-09)** Die Prüfansicht zeigt die Satzauswahl der KI (`extraction=llm`) als Kästchen „KI wählt die
+  Sätze“ direkt unter dem Profil statt unter „Erweitert“ (Jan: „haben wir im ui einen gut sichtbaren schalter im
+  bereich der profilauswahl um das aktivieren?“ - „jetzt einbauen“). Das Kästchen gilt für jedes Profil und im
+  Vergleich für beide Profile; die übrigen Schritte unter „Erweitert“ bleiben im Vergleich bei den Profilen. Ohne
+  KI auf dem Server ist es gesperrt. Am Dienst ändert sich nichts; gemessen wird der Schalter in M89.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
