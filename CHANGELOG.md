@@ -9,6 +9,13 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+Noch nichts.
+
+## 2.19.0 – 2026-10-09
+
+Das Bausteinbudget mal zehn als einstellbare Vorgabe und 200.000 Tokens je Anfrage in den `best-quality`-Profilen
+(D102, M86); dazu M87 und M88.
+
 - **Neu (D102, M86):** `BLOCK_BUDGET_FACTOR` (Vorgabe 10, 1 bis 100) vervielfacht beim Zuschnitt der Zuordnung das
   Budget jedes Inhaltsbausteins, nach den Regeln wie nach dem LLM: die Absätze, die er behält (`max_chunks` der Vorlage,
   aufgerundet), und die Zeichen, ab denen er mit genug Absätzen schließt. Die Ziellänge des Schreibers bleibt die der
