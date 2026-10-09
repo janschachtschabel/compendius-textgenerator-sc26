@@ -11,6 +11,7 @@ from pydantic import Field, ValidationInfo, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.domain.requests import Preset
+from app.llm.routing import route_name
 
 Provider = Literal["openai", "academiccloud", "router"]
 FacetsLevel = Literal["minimal", "full"]
@@ -241,7 +242,7 @@ class Settings(BaseSettings):
         ge=1,
         le=64,
         description="Parallel LLM requests per worker process; empty takes the provider's default (openai 20, "
-        "academiccloud 2)",
+        "academiccloud 2, router 20)",
     )
     llm_attempts: int = Field(
         3, ge=1, le=6, description="Attempts per LLM request (429/502/503/504, connection errors)"
@@ -299,7 +300,7 @@ class Settings(BaseSettings):
         ge=5,
         description="Time budget per request - a compendium, or part 1 and the pairs of /qa together - for LLM "
         "calls and every repository read: the collection and node of the request, part 3, the knowledge collection; "
-        "empty takes the provider's default (openai 300 s, academiccloud 600 s)",
+        "empty takes the provider's default (openai 300 s, academiccloud 600 s, router 300 s)",
     )
     rate_limit: int = Field(
         60, ge=0, description="Requests per minute and client on the generating endpoints (per worker); 0 = off"
@@ -381,10 +382,8 @@ class Settings(BaseSettings):
     @property
     def b_api_route_name(self) -> str:
         """The route the router gets (D97): B_API_ROUTE, else one named like B_API_MODEL; "" for the other providers,
-        which take the model itself."""
-        if self.b_api_provider != "router":
-            return ""
-        return self.b_api_route.strip() or self.b_api_model
+        which take the model itself. The rule lives in app/llm/routing.py, which the client follows too (D98)."""
+        return route_name(self.b_api_provider, self.b_api_model, self.b_api_route)
 
     @property
     def api_key_list(self) -> list[str]:

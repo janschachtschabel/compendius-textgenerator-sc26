@@ -11,6 +11,7 @@ deployment left)", each within 0.15 s; a model of another parameter family answe
 from __future__ import annotations
 
 import logging
+import threading
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -294,7 +295,7 @@ def test_health_names_the_route(settings: Settings) -> None:
         llm = client.get("/health").json()["components"]["llm"]
 
     assert llm["provider"] == "router" and llm["route"] == ROUTE and llm["model"] == "gpt-6-luna"
-    assert llm["available"] and llm["check"]["model"] == ROUTE
+    assert llm["available"] and llm["check"]["model"] == ROUTE and llm["reason"] is None
 
 
 def test_the_compendium_names_the_route_beside_the_model_that_answered(
@@ -307,3 +308,222 @@ def test_the_compendium_names_the_route_beside_the_model_that_answered(
     llm = result.frontmatter["llm"]
     assert llm["provider"] == "router" and llm["route"] == ROUTE
     assert llm["model"] == "gpt-5.6-luna", "the model that answered, as the router's answer names it"
+
+
+# Review of 2026-10-09 (D98). The causes in a list of attempts follow the b-api's doc, "attempts: <deployment>:<cause>
+# (HTTP <status>)"; only NOT_ELIGIBLE was named there, the other causes are assumed.
+LISTED = "No deployment could serve model '" + ROUTE + "' (attempts: {})"
+
+
+@pytest.mark.parametrize(
+    "attempts",
+    [
+        "luna-6:UPSTREAM_ERROR (HTTP 500), luna-5-6-reserve:RATE_LIMITED (HTTP 429)",
+        "luna-6:UPSTREAM_ERROR (HTTP 500), luna-5-6-reserve:NOT_ELIGIBLE (HTTP 403)",
+    ],
+)
+def test_a_503_whose_attempts_may_pass_is_retried(attempts: str) -> None:
+    """An answer listing attempts that failed for a while - a 429 or 5xx of the provider - took a 60 s stop of every
+    call, a list with one model that cannot chat ten minutes; through openai the same failure was retried."""
+    router = Router((503, {"error": LISTED.format(attempts)}, {}))
+    client, sleeps = routed(router)
+
+    assert client.chat(MESSAGES, max_output_tokens=10).text == "OK"
+    assert len(router.chats) == 2 and sleeps == [1.5] and not client.suspended
+
+
+@pytest.mark.parametrize("longer_first", [True, False])
+def test_a_shorter_stop_never_cuts_a_longer_one_short(caplog: pytest.LogCaptureFixture, longer_first: bool) -> None:
+    """With calls in flight a 60 s stop overwrote the ten minutes another answer had set, and its reason, without a
+    line; a longer stop after a shorter one replaces it and says so."""
+    long_stop: Answer = (503, {"error": LISTED.format("luna-6:NOT_ELIGIBLE (HTTP 403)")}, {})
+    short_stop: Answer = (503, {"error": f"No deployment could serve model '{ROUTE}' (no deployment left)"}, {})
+    answers = [long_stop, short_stop] if longer_first else [short_stop, long_stop]
+    both_sent, first_back = threading.Barrier(2), threading.Event()
+    taken: dict[int, int] = {}
+    lock = threading.Lock()
+
+    def transport(request: httpx.Request) -> httpx.Response:
+        both_sent.wait(timeout=5)  # both calls are out before either answer comes back
+        with lock:
+            index = taken[threading.get_ident()] = len(taken)
+        if index == 1:
+            first_back.wait(timeout=5)  # the second answer arrives after the first one's stop
+        status, body, headers = answers[index]
+        return httpx.Response(status, json=body, headers=headers)
+
+    now = [1000.0]
+    client, _ = routed(transport, clock=lambda: now[0])
+    outcomes: list[str] = []
+
+    def call() -> None:
+        try:
+            client.chat(MESSAGES, max_output_tokens=10)
+            outcomes.append("answered")
+        except LlmError as exc:
+            outcomes.append(type(exc).__name__)
+        finally:
+            if taken.get(threading.get_ident()) == 0:
+                first_back.set()
+
+    with caplog.at_level(logging.WARNING, logger="app.llm.client"):
+        threads = [threading.Thread(target=call) for _ in range(2)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join(timeout=10)
+
+    assert outcomes == ["LlmError", "LlmError"]
+    assert "Chat" in client.suspension_reason
+    held = [line for line in client_lines(caplog) if "held back" in line]
+    assert held[-1].startswith("b-api calls held back for 600 s")
+    assert len(held) == (1 if longer_first else 2)
+    now[0] += 599
+    assert client.suspended, "the ten minutes of the longer stop hold"
+    now[0] += 2
+    assert not client.suspended
+
+
+def test_after_a_route_stop_one_call_probes_and_stops_again_or_resumes(caplog: pytest.LogCaptureFixture) -> None:
+    now = [1000.0]
+    router = Router((400, NO_ROUTE, {}), (400, NO_ROUTE, {}))
+    client, _ = routed(router, clock=lambda: now[0])
+
+    with caplog.at_level(logging.INFO, logger="app.llm.client"):
+        with pytest.raises(LlmError):
+            client.chat(MESSAGES, max_output_tokens=10)
+        now[0] += 601
+        with pytest.raises(LlmError, match=ROUTE):
+            client.chat(MESSAGES, max_output_tokens=10)  # the probe meets the same answer
+        assert client.suspended and len(router.chats) == 2
+        now[0] += 601
+        assert client.chat(MESSAGES, max_output_tokens=10).text == "OK"  # the route is back
+
+    assert "b-api answers again; the calls resume" in client_lines(caplog)
+    assert not client.suspended
+
+
+def test_the_family_of_a_model_named_with_its_provider_is_the_models() -> None:
+    """B_API_MODEL=openai/gpt-6-luna sent max_tokens and temperature to gpt-6-luna, which refuses both."""
+    fake = FakeBApi()
+    client, _ = routed(fake, model="openai/gpt-6-luna", route="")
+
+    client.chat(MESSAGES, max_output_tokens=50)
+
+    body = fake.bodies[0]
+    assert body["model"] == "openai/gpt-6-luna" and body["max_completion_tokens"] == 50
+    assert "max_tokens" not in body and "temperature" not in body
+
+
+@pytest.mark.parametrize(("route", "warned"), [("openai/gpt-4.1-mini", True), ("openai/gpt-5.6-luna", False)])
+def test_a_route_naming_a_model_of_another_family_is_named_at_start(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture, route: str, warned: bool
+) -> None:
+    """provider/model names its model: one of another family than B_API_MODEL refuses every call with a 400."""
+    monkeypatch.setattr(
+        "app.wiring.BApiClient",
+        lambda *args, **kwargs: BApiClient(*args, transport=httpx.MockTransport(Router()), **kwargs),
+    )
+    settings = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", b_api_provider="router", b_api_route=route)
+
+    with caplog.at_level(logging.WARNING):
+        build_llm(settings)
+
+    assert (route in caplog.text and "B_API_MODEL" in caplog.text) is warned
+
+
+def test_health_names_the_route_while_the_llm_is_off(tmp_path: Path) -> None:
+    settings = make_settings([], tmp_path, zim_dir=tmp_path, b_api_provider="router", b_api_route=ROUTE)
+
+    with TestClient(create_app(settings)) as client:
+        llm = client.get("/health").json()["components"]["llm"]
+
+    assert llm["enabled"] is False and llm["provider"] == "router" and llm["route"] == ROUTE
+
+
+def test_the_start_line_names_the_route_and_the_family(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    monkeypatch.setattr(
+        "app.wiring.BApiClient",
+        lambda *args, **kwargs: BApiClient(*args, transport=httpx.MockTransport(Router()), **kwargs),
+    )
+    settings = make_settings(
+        sample_zims.values(),
+        tmp_path / "state",
+        llm_enabled=True,
+        b_api_key="k",
+        b_api_provider="router",
+        b_api_route=ROUTE,
+    )
+
+    with caplog.at_level(logging.INFO, logger="app.main"):
+        create_app(settings).state.service.close()
+
+    [line] = [record.getMessage() for record in caplog.records if record.getMessage().startswith("Kompendium-API ")]
+    assert f"LLM router {ROUTE} (parameters of gpt-6-luna)" in line
+
+
+def test_health_names_why_the_router_stopped_the_calls(settings: Settings) -> None:
+    """After a stop at runtime /health said available false beside a check that found the route, without a reason."""
+    app = create_app(settings)
+    gateway = routed_gateway(Router((400, NO_ROUTE, {})))
+    gateway.check_model()
+    app.state.llm = gateway
+    with pytest.raises(LlmError):
+        gateway.client.chat(MESSAGES, max_output_tokens=10)
+
+    with TestClient(app) as client:
+        llm = client.get("/health").json()["components"]["llm"]
+
+    assert llm["available"] is False and llm["check"]["ok"], "the check at the start found the route"
+    assert ROUTE in llm["reason"] and "B_API_ROUTE" in llm["reason"]
+
+
+def test_a_b_api_without_the_router_says_so() -> None:
+    """A b-api that has no routing yet answers 404: the check said "b-api nicht erreichbar", the stop "Schlüssel,
+    Berechtigung oder Modell prüfen"."""
+    client, _ = routed(lambda request: httpx.Response(404, json={"error": "Not Found"}))
+
+    check = client.check_model()
+
+    assert not check.ok and "Routing" in check.message and "404" in check.message
+    assert client.suspended and "Routing" in client.suspension_reason
+
+
+def test_the_name_of_an_answering_model_stays_on_one_line_and_the_names_are_bounded(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """The field model comes from upstream: a line break forged a record of the text log, and every new name stayed
+    in memory for the life of the worker."""
+    names = ["gpt-6-luna\nFAKE: a forged line", *(f"modell-{number}" for number in range(40))]
+    router = Router(*((200, answered_by(name), {}) for name in names))
+    client, _ = routed(router)
+
+    with caplog.at_level(logging.INFO, logger="app.llm.client"):
+        for _ in names:
+            client.chat(MESSAGES, max_output_tokens=10)
+
+    lines = [line for line in client_lines(caplog) if "answers with" in line]
+    assert lines[0] == f"b-api routing: route {ROUTE!r} answers with gpt-6-luna FAKE: a forged line"
+    assert len(lines) == 32
+
+
+def test_a_refused_value_gets_no_hint_on_the_family(caplog: pytest.LogCaptureFixture) -> None:
+    """unsupported_value is also OpenAI's answer to an effort or verbosity the model lacks, within the right family."""
+    value = {
+        "error": {
+            "message": "Unsupported value: 'reasoning_effort' does not support 'none' with this model.",
+            "type": "invalid_request_error",
+            "param": "reasoning_effort",
+            "code": "unsupported_value",
+        }
+    }
+    client, _ = routed(Router((400, value, UPSTREAM)))
+
+    with caplog.at_level(logging.WARNING, logger="app.llm.client"):
+        with pytest.raises(LlmError):
+            client.chat(MESSAGES, max_output_tokens=10)
+
+    [warning] = client_lines(caplog)
+    assert "B_API_MODEL" not in warning

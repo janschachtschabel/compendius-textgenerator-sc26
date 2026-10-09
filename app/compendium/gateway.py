@@ -104,12 +104,16 @@ class LlmGateway:
 
     def status(self) -> dict[str, Any]:
         """Component status for ``/health``: the last known check, never a call to the b-api."""
+        available = self.check is not None and self.check.ok and not self.client.suspended
         return {
             "enabled": True,
             "provider": self.client.provider,
             "model": self.client.model,
             "route": self.client.route or None,  # the b-api's routing (D97)
-            "available": self.check is not None and self.check.ok and not self.client.suspended,
+            "available": available,
+            # why not: the check names what it found at the start; a stop of the breaker, a key refused or a route
+            # gone, said nothing here (review of 2026-10-09, D98)
+            "reason": None if available else self.unavailable_reason,
             "check": asdict(self.check) if self.check is not None else None,
             "budget": {
                 "per_request": self.budget.per_request,

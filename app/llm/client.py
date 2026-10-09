@@ -31,6 +31,7 @@ import httpx
 from app.http_body import ACCEPT_ENCODING, UnreadableAnswerError, read_bounded
 from app.llm.budget import estimate_tokens
 from app.llm.deadline import MIN_CALL_S, Deadline
+from app.llm.routing import ROUTER, family_hint, route_name, route_stop
 
 log = logging.getLogger(__name__)
 
@@ -67,35 +68,10 @@ MAX_USAGE = 10_000_000
 # not measured. Parsed, JSON of many small objects takes 19 times its size (review of 2026-10-08)
 MAX_ANSWER_BYTES = 16 * 1024 * 1024
 _KEPT_HEADERS = frozenset({"content-type", "retry-after"})  # what the attempts read of an answer's headers
-ROUTER = "router"  # the provider path of the b-api's routing (D97)
-# The router's answers no retry mends (staging, 2026-10-09): a route unknown or switched off, a model of it without a
-# price or one that cannot chat. It answers within 0.15 s, having tried its deployments; a retry got the same answer
-# after 15 s (b-api test of 2026-10-01). With no deployment left the calls wait as after an outage: deployments the
-# router paused after errors come back. Status, words of the answer, seconds held back, why
-ROUTE_STOPS = (
-    (
-        400,
-        "No route configured",
-        AUTH_SUSPEND_S,
-        "Route {route!r} ist in der b-api weder für den Schlüssel noch global aktiv; Route anlegen oder "
-        "B_API_ROUTE prüfen",
-    ),
-    (
-        503,
-        "NOT_ELIGIBLE",
-        AUTH_SUSPEND_S,
-        "ein Modell der Route {route!r} beantwortet keine Chat-Anfragen (NOT_ELIGIBLE); Modelle der Route prüfen",
-    ),
-    (
-        503,
-        "Model pricing unavailable",
-        AUTH_SUSPEND_S,
-        "ein Modell der Route {route!r} hat in der b-api keinen Preis; Modellnamen der Route prüfen",
-    ),
-    (503, "No deployment could serve", BREAKER_S, "kein Modell der Route {route!r} ist aktiv oder erreichbar"),
-)
-# OpenAI's codes for a parameter the model does not take: a route of another family than B_API_MODEL refuses so
-_FAMILY_CODES = ("unsupported_parameter", "unsupported_value")
+# The names of models answering behind a route a worker notes in its log: the field comes from upstream (D98)
+MAX_NOTED_MODELS = 32
+# A b-api without the routing answers the router's paths with 404 (D98)
+_NO_ROUTER = "die b-api kennt kein Routing; B_API_PROVIDER und B_API_BASE_URL prüfen, nicht jede b-api hat es schon"
 
 Message = Mapping[str, str]
 
@@ -158,8 +134,9 @@ class ModelCheck:
 
 
 def is_reasoning_model(model: str) -> bool:
-    """GPT-5, GPT-6 and o-series models: completion-token limit, reasoning effort, verbosity, no temperature."""
-    return model.lower().startswith(_REASONING_PREFIXES)
+    """GPT-5, GPT-6 and o-series models: completion-token limit, reasoning effort, verbosity, no temperature. A model
+    named with its provider, as the router takes it (openai/gpt-6-luna), is judged by the model (D98)."""
+    return model.lower().rpartition("/")[2].startswith(_REASONING_PREFIXES)
 
 
 def needs_thinking_off(model: str) -> bool:
@@ -210,7 +187,7 @@ class BApiClient:
         self.model = model
         # The route the router gets; without one a route named like the model, the b-api's way to switch without an
         # outage. The other providers take the model itself (D97)
-        self.route = (route.strip() or model) if provider == ROUTER else ""
+        self.route = route_name(provider, model, route)
         self._answering: set[str] = set()  # the models that answered behind the route
         self.timeout_s = timeout_s
         self.attempts = max(1, attempts)
@@ -312,6 +289,9 @@ class BApiClient:
         try:
             infos = self.models()
         except LlmError as exc:
+            if self.route and exc.status == 404:
+                message = f"{_NO_ROUTER} (HTTP 404 auf /api/v1/llm/{ROUTER}/models)"
+                return ModelCheck(False, name, False, None, None, message)
             return ModelCheck(False, name, False, None, None, f"b-api nicht erreichbar: {exc}")
         info = next((m for m in infos if m.id == name), None)
         if info is None:
@@ -447,7 +427,7 @@ class BApiClient:
                         "b-api answered HTTP %s: %s%s",
                         status,
                         " ".join(self._redact(response.text)[:200].split()),
-                        self._family_hint(status, response.text),
+                        family_hint(status, response.text, self.route, self.model),
                     )
                     if stop is not None:
                         seconds, why = stop
@@ -497,34 +477,32 @@ class BApiClient:
         return True
 
     def _route_stop(self, status: int, text: str) -> tuple[float, str] | None:
-        """How long the calls wait and why, when the router answered what no retry mends (``ROUTE_STOPS``)."""
-        for code, words, seconds, why in ROUTE_STOPS:
-            if status == code and words in text:
-                return seconds, why.format(route=self.route)
-        return None
-
-    def _family_hint(self, status: int, text: str) -> str:
-        """Behind a route the provider's refusal of a parameter: the route bundles models of another family than
-        B_API_MODEL, whose parameters the service sends (D97)."""
-        if not self.route or status != 400 or not any(code in text for code in _FAMILY_CODES):
-            return ""
-        return (
-            f" - route {self.route!r} leads to a model that refuses the parameters of B_API_MODEL={self.model}; a "
-            "route bundles models of one parameter family"
-        )
+        """How long the calls wait and why, when the router answered what no retry mends (``routing.route_stop``):
+        ten minutes for what lasts, as after a refused key, one minute for no deployment left, as after an outage."""
+        stop = route_stop(status, text, self.route)
+        if stop is None:
+            return None
+        lasting, why = stop
+        return (AUTH_SUSPEND_S if lasting else BREAKER_S), why
 
     def _note_model(self, model: str) -> None:
-        """Name once which model answers behind the route: the answer names the model, not the deployment, and a
-        new one shows the route turned to another, its reserve (D97)."""
+        """Name once per worker which model answers behind the route: the answer names the model, not the
+        deployment, and a new one shows the route turned to another, its reserve (D97). The name comes from upstream:
+        on one line and of a sane length, and no more than ``MAX_NOTED_MODELS`` of them (D98)."""
+        name = " ".join(model[:100].split())
         with self._state:
-            new = model not in self._answering
-            self._answering.add(model)
+            new = name not in self._answering and len(self._answering) < MAX_NOTED_MODELS
+            if new:
+                self._answering.add(name)
         if new:
-            log.info("b-api routing: route %r answers with %s", self.route, model)
+            log.info("b-api routing: route %r answers with %s", self.route, name)
 
     def _refused(self, status: int) -> None:
         minutes = round(AUTH_SUSPEND_S / 60)
-        reason = f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, Schlüssel, Berechtigung oder Modell prüfen"
+        if self.route and status == 404:
+            reason = f"b-api-Routing {minutes} Minuten ausgesetzt: HTTP 404, {_NO_ROUTER}"
+        else:
+            reason = f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, Schlüssel, Berechtigung oder Modell prüfen"
         self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}")
 
     @contextmanager
@@ -568,14 +546,19 @@ class BApiClient:
         return httpx.Response(streamed.status_code, headers=kept, content=body, request=request)
 
     def _trip(self, seconds: float = BREAKER_S, reason: str = SUSPENDED_MESSAGE, *, cause: str) -> None:
-        """Hold the calls back for ``seconds``. The change is logged once, with what caused it: the breaker wrote no
-        line, while every call that met it logged a WARNING (logging review of 2026-10-08)."""
+        """Hold the calls back for ``seconds``. Each change is logged once, with what caused it: the breaker wrote no
+        line, while every call that met it logged a WARNING (logging review of 2026-10-08). A stop never cuts a longer
+        one short: calls in flight answer after it, and a minute of no deployment left overwrote the ten minutes of a
+        route that cannot chat, its reason too (D98)."""
         with self._state:
-            opening = self._clock() >= self._open_until  # closed, or waiting for its probe
-            self._open_until = self._clock() + seconds
-            self._suspension = reason
+            now = self._clock()
+            opening = now >= self._open_until  # closed, or waiting for its probe
+            changed = opening or now + seconds > self._open_until
+            if changed:
+                self._open_until = now + seconds
+                self._suspension = reason
             self._probing = False
-        if opening:
+        if changed:
             log.warning("b-api calls held back for %.0f s: %s (%s)", seconds, reason, cause)
 
     def _close(self) -> None:
