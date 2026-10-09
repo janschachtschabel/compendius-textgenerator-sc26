@@ -9,7 +9,7 @@
 <text x="200.0" y="118.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1,2 bis 3,4 s</text>
 <rect x="420.0" y="82.0" width="0.0" height="20.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
 <text x="426.0" y="97.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">0</text>
-<text x="420.0" y="118.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tagesbudget 2 Mio.: ohne Grenze</text>
+<text x="420.0" y="118.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1 Mio. Tokens: ohne Grenze</text>
 <text x="640.0" y="91.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Artikel: 87 von 94</text>
 <text x="640.0" y="109.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Zuordnung: 0,45</text>
 <text x="640.0" y="127.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Text: wörtlich</text>
@@ -19,7 +19,7 @@
 <text x="200.0" y="188.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">5,6 bis 9,5 s</text>
 <rect x="420.0" y="152.0" width="1.5" height="20.0" rx="2" fill="#7a5aa6" stroke="none" stroke-width="1"/>
 <text x="427.5" y="167.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">576</text>
-<text x="420.0" y="188.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tagesbudget 2 Mio.: rund 3.475 je Tag</text>
+<text x="420.0" y="188.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1 Mio. Tokens: 1.738 Kompendien</text>
 <text x="640.0" y="161.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Artikel: 91 von 94</text>
 <text x="640.0" y="179.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Zuordnung: 0,50²</text>
 <text x="640.0" y="197.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Text: wörtlich</text>
@@ -29,7 +29,7 @@
 <text x="200.0" y="258.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">18,6 bis 28,8 s</text>
 <rect x="420.0" y="222.0" width="126.0" height="20.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
 <text x="552.0" y="237.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">49.000</text>
-<text x="420.0" y="258.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tagesbudget 2 Mio.: rund 41 je Tag</text>
+<text x="420.0" y="258.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1 Mio. Tokens: 20 Kompendien</text>
 <text x="640.0" y="231.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Artikel: 93 von 94</text>
 <text x="640.0" y="249.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Zuordnung: 0,70</text>
 <text x="640.0" y="267.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Text: wörtlich</text>
@@ -39,7 +39,7 @@
 <text x="200.0" y="328.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">30,5 bis 45,6 s</text>
 <rect x="420.0" y="292.0" width="155.2" height="20.0" rx="2" fill="#b24c63" stroke="none" stroke-width="1"/>
 <text x="581.2" y="307.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">60.400</text>
-<text x="420.0" y="328.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Tagesbudget 2 Mio.: rund 33 je Tag</text>
+<text x="420.0" y="328.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">1 Mio. Tokens: 17 Kompendien</text>
 <text x="640.0" y="301.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Artikel: 93 von 94</text>
 <text x="640.0" y="319.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Zuordnung: 0,70</text>
 <text x="640.0" y="337.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Text: vom LLM geschrieben</text>

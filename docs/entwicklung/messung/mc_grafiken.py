@@ -514,7 +514,7 @@ def kombinationen() -> None:
     M19)."""
     zeit = server_seconds()
     tokens = load("m45_profile_endpunkte.json")["compendium"]["zusammenfassung"]
-    budget = 2_000_000  # LLM_DAILY_TOKEN_BUDGET
+    per = 1_000_000  # compendia per million tokens; D67 left the daily budget unset
     profiles = [  # label, articles right of 94, macro-F1 at the gold paragraphs, what the text is, color
         ("llm-free", 87, "0,45", "wörtlich", LOCAL),
         ("balanced", 91, "0,50²", "wörtlich", "#7a5aa6"),
@@ -538,8 +538,8 @@ def kombinationen() -> None:
         tx = x0 + width + 40
         svg.rect(tx, y, width * used / 70_000, bar, color, 2)
         svg.text(tx + width * used / 70_000 + 6, y + 15, de(round(used, -2) if used > 5_000 else used), 11.5, MUTED)
-        daily = "ohne Grenze" if not used else f"rund {de(budget / used)} je Tag"
-        svg.text(tx, y + bar + 16, f"Tagesbudget 2 Mio.: {daily}", 11, MUTED)
+        count = "ohne Grenze" if not used else f"{de(per / used)} Kompendien"
+        svg.text(tx, y + bar + 16, f"1 Mio. Tokens: {count}", 11, MUTED, limit=220)
         svg.text(640, y + 9, f"Artikel: {articles} von 94", 11.5, INK)
         svg.text(640, y + 27, f"Zuordnung: {f1}", 11.5, INK)
         svg.text(640, y + 45, f"Text: {kind}", 11.5, INK)
@@ -959,7 +959,7 @@ def profiluebersicht() -> None:
          "Teil 1 mit 30.000 Zielzeichen, gpt-6-luna über OpenAI (M82, 09.10.2026). Tokens aus dem Prompt-Cache zahlt der Anbieter günstiger."),
         "Die fünf Profile: Güte, Zeit und Kosten (M82)",
         overview=True,
-        time_label="Teil 1 und 2, Median",
+        time_label="Teil 1 + 2, Median",
     )
 
 
