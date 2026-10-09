@@ -1,0 +1,2361 @@
+{
+ "messung": "M82, 09.10.2026: alle Endpunkte je Profil, Release 2.17.0, Einmal-Container, OpenAI direkt",
+ "stand": {
+  "version": "2.17.0",
+  "revision": "7def24e4a11c1d6012b4d0cdfa64a98fbe1fdea6",
+  "modell": "gpt-6-luna"
+ },
+ "themen": {
+  "texte": [
+   "Bienen",
+   "Gezeiten",
+   "Seidenstraße",
+   "Logarithmus",
+   "Fabel",
+   "Katalysator"
+  ],
+  "knowledge": [
+   "Dinosaurier",
+   "Tsunami",
+   "Burg",
+   "Savanne",
+   "Münze",
+   "Impfung"
+  ],
+  "lehrplan": [
+   "Pilze",
+   "Insekten",
+   "Kläranlage",
+   "Trinkwasser",
+   "Lautsprecher",
+   "Glas"
+  ],
+  "materialien": [
+   "19e322f0-afa5-440f-8dc0-fca1dcde71d8",
+   "8e4ee58d-c18c-470b-8f84-c3a634a041c3",
+   "c6c569d7-87c3-40d6-be6f-d92ee5409782"
+  ]
+ },
+ "texte": {
+  "laeufe": {
+   "llm-free": {
+    "Bienen": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 5.34,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 46,
+      "corpus": 2573,
+      "segment": 17,
+      "match": 1399,
+      "synthesize": 1276,
+      "assemble": 5
+     },
+     "hauptartikel": "Bienen",
+     "ueberschrift": "Bienen",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 39673
+    },
+    "Gezeiten": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.96,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 101,
+      "corpus": 2907,
+      "segment": 44,
+      "match": 375,
+      "synthesize": 1517,
+      "assemble": 5
+     },
+     "hauptartikel": "Gezeiten",
+     "ueberschrift": "Gezeiten",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 16433
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 5.32,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 76,
+      "corpus": 2826,
+      "segment": 26,
+      "match": 484,
+      "synthesize": 1890,
+      "assemble": 5
+     },
+     "hauptartikel": "Seidenstraße",
+     "ueberschrift": "Seidenstraße",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 34462
+    },
+    "Logarithmus": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 4.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 164,
+      "corpus": 2009,
+      "segment": 42,
+      "match": 278,
+      "synthesize": 1504,
+      "assemble": 4
+     },
+     "hauptartikel": "Logarithmus",
+     "ueberschrift": "Logarithmus",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 26896
+    },
+    "Fabel": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 1.9,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 32,
+      "corpus": 1012,
+      "segment": 7,
+      "match": 279,
+      "synthesize": 557,
+      "assemble": 4
+     },
+     "hauptartikel": "Fabel",
+     "ueberschrift": "Fabel",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 23488
+    },
+    "Katalysator": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 3.88,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 21,
+      "corpus": 1474,
+      "segment": 33,
+      "match": 384,
+      "synthesize": 1951,
+      "assemble": 5
+     },
+     "hauptartikel": "Katalysator",
+     "ueberschrift": "Katalysator",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 26620
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 4.484999999999999,
+     "min": 1.9,
+     "max": 5.34
+    },
+    "zeichen_teil1": {
+     "median": 26758.0,
+     "min": 16433,
+     "max": 39673
+    }
+   }
+  }
+ },
+ "knowledge": {
+  "laeufe": {
+   "llm-free": {
+    "Dinosaurier": {
+     "status": 200,
+     "sekunden": 0.58,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 205396,
+     "artikelwahl": {
+      "used": null,
+      "asked": null,
+      "articles_asked": null,
+      "hits_checked": null
+     }
+    },
+    "Tsunami": {
+     "status": 200,
+     "sekunden": 0.55,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 11,
+     "zeichen": 245855,
+     "artikelwahl": {
+      "used": null,
+      "asked": null,
+      "articles_asked": null,
+      "hits_checked": null
+     }
+    },
+    "Burg": {
+     "status": 200,
+     "sekunden": 1.85,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 135767,
+     "artikelwahl": {
+      "used": null,
+      "asked": null,
+      "articles_asked": null,
+      "hits_checked": null
+     }
+    },
+    "Savanne": {
+     "status": 200,
+     "sekunden": 0.32,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 11,
+     "zeichen": 173962,
+     "artikelwahl": {
+      "used": null,
+      "asked": null,
+      "articles_asked": null,
+      "hits_checked": null
+     }
+    },
+    "Münze": {
+     "status": 200,
+     "sekunden": 0.68,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 9,
+     "zeichen": 118465,
+     "artikelwahl": {
+      "used": null,
+      "asked": null,
+      "articles_asked": null,
+      "hits_checked": null
+     }
+    },
+    "Impfung": {
+     "status": 200,
+     "sekunden": 0.34,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "artikel": 12,
+     "zeichen": 704565,
+     "artikelwahl": {
+      "used": null,
+      "asked": null,
+      "articles_asked": null,
+      "hits_checked": null
+     }
+    }
+   },
+   "balanced": {
+    "Dinosaurier": {
+     "status": 200,
+     "sekunden": 2.11,
+     "tokens": 321,
+     "prompt": 250,
+     "completion": 71,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 8,
+     "zeichen": 167666,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Tsunami": {
+     "status": 200,
+     "sekunden": 1.82,
+     "tokens": 331,
+     "prompt": 250,
+     "completion": 81,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 4,
+     "zeichen": 177261,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Burg": {
+     "status": 200,
+     "sekunden": 1.84,
+     "tokens": 310,
+     "prompt": 249,
+     "completion": 61,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 8,
+     "zeichen": 129852,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Savanne": {
+     "status": 200,
+     "sekunden": 2.0,
+     "tokens": 308,
+     "prompt": 250,
+     "completion": 58,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 9,
+     "zeichen": 89292,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Münze": {
+     "status": 200,
+     "sekunden": 1.71,
+     "tokens": 316,
+     "prompt": 250,
+     "completion": 66,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 8,
+     "zeichen": 97580,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Impfung": {
+     "status": 200,
+     "sekunden": 1.49,
+     "tokens": 307,
+     "prompt": 250,
+     "completion": 57,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 6,
+     "zeichen": 219317,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    }
+   },
+   "best-quality": {
+    "Dinosaurier": {
+     "status": 200,
+     "sekunden": 3.04,
+     "tokens": 754,
+     "prompt": 675,
+     "completion": 79,
+     "aufrufe": {
+      "answered": 2
+     },
+     "artikel": 9,
+     "zeichen": 262318,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": true,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Tsunami": {
+     "status": 200,
+     "sekunden": 3.78,
+     "tokens": 1196,
+     "prompt": 1102,
+     "completion": 94,
+     "aufrufe": {
+      "answered": 2
+     },
+     "artikel": 5,
+     "zeichen": 223646,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": true,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Burg": {
+     "status": 200,
+     "sekunden": 6.31,
+     "tokens": 2383,
+     "prompt": 2306,
+     "completion": 77,
+     "aufrufe": {
+      "answered": 2
+     },
+     "artikel": 6,
+     "zeichen": 87038,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": true,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Savanne": {
+     "status": 200,
+     "sekunden": 1.5,
+     "tokens": 310,
+     "prompt": 250,
+     "completion": 60,
+     "aufrufe": {
+      "answered": 1
+     },
+     "artikel": 8,
+     "zeichen": 85905,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": false,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Münze": {
+     "status": 200,
+     "sekunden": 3.51,
+     "tokens": 748,
+     "prompt": 669,
+     "completion": 79,
+     "aufrufe": {
+      "answered": 2
+     },
+     "artikel": 8,
+     "zeichen": 101066,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": true,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    },
+    "Impfung": {
+     "status": 200,
+     "sekunden": 3.89,
+     "tokens": 744,
+     "prompt": 667,
+     "completion": 77,
+     "aufrufe": {
+      "answered": 2
+     },
+     "artikel": 6,
+     "zeichen": 219317,
+     "artikelwahl": {
+      "used": "llm",
+      "asked": true,
+      "articles_asked": true,
+      "hits_checked": 0
+     }
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.565,
+     "min": 0.32,
+     "max": 1.85
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "artikel": {
+     "median": 10.0,
+     "min": 9,
+     "max": 12
+    }
+   },
+   "balanced": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 1.83,
+     "min": 1.49,
+     "max": 2.11
+    },
+    "tokens": {
+     "median": 313.0,
+     "min": 307,
+     "max": 331
+    },
+    "artikel": {
+     "median": 8.0,
+     "min": 4,
+     "max": 9
+    }
+   },
+   "best-quality": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 3.6449999999999996,
+     "min": 1.5,
+     "max": 6.31
+    },
+    "tokens": {
+     "median": 751.0,
+     "min": 310,
+     "max": 2383
+    },
+    "artikel": {
+     "median": 7.0,
+     "min": 5,
+     "max": 9
+    }
+   }
+  }
+ },
+ "lehrplan_suche": {
+  "laeufe": {
+   "keyword llm-free": {
+    "Pilze": {
+     "status": 200,
+     "sekunden": 0.02,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": null,
+     "treffer_gesamt": 85,
+     "treffer": 82,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Insekten": {
+     "status": 200,
+     "sekunden": 0.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": null,
+     "treffer_gesamt": 45,
+     "treffer": 45,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Kläranlage": {
+     "status": 200,
+     "sekunden": 0.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": null,
+     "treffer_gesamt": 16,
+     "treffer": 16,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Trinkwasser": {
+     "status": 200,
+     "sekunden": 0.02,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": null,
+     "treffer_gesamt": 88,
+     "treffer": 88,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Lautsprecher": {
+     "status": 200,
+     "sekunden": 0.01,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": null,
+     "treffer_gesamt": 19,
+     "treffer": 19,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Glas": {
+     "status": 200,
+     "sekunden": 0.04,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": null,
+     "treffer_gesamt": 323,
+     "treffer": 245,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    }
+   },
+   "keyword best-quality": {
+    "Pilze": {
+     "status": 200,
+     "sekunden": 3.57,
+     "tokens": 5397,
+     "prompt": 4979,
+     "completion": 418,
+     "aufrufe": {
+      "answered": 2
+     },
+     "thema": null,
+     "treffer_gesamt": 85,
+     "treffer": 78,
+     "pruefung": {
+      "used": "llm",
+      "rated": 82,
+      "answered": 82,
+      "dropped": 4,
+      "fallbacks": {}
+     }
+    },
+    "Insekten": {
+     "status": 200,
+     "sekunden": 2.46,
+     "tokens": 3669,
+     "prompt": 3440,
+     "completion": 229,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": null,
+     "treffer_gesamt": 45,
+     "treffer": 45,
+     "pruefung": {
+      "used": "llm",
+      "rated": 45,
+      "answered": 45,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Kläranlage": {
+     "status": 200,
+     "sekunden": 1.91,
+     "tokens": 1448,
+     "prompt": 1364,
+     "completion": 84,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": null,
+     "treffer_gesamt": 16,
+     "treffer": 16,
+     "pruefung": {
+      "used": "llm",
+      "rated": 16,
+      "answered": 16,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Trinkwasser": {
+     "status": 200,
+     "sekunden": 2.9,
+     "tokens": 6003,
+     "prompt": 5555,
+     "completion": 448,
+     "aufrufe": {
+      "answered": 2
+     },
+     "thema": null,
+     "treffer_gesamt": 88,
+     "treffer": 87,
+     "pruefung": {
+      "used": "llm",
+      "rated": 88,
+      "answered": 88,
+      "dropped": 1,
+      "fallbacks": {}
+     }
+    },
+    "Lautsprecher": {
+     "status": 200,
+     "sekunden": 1.65,
+     "tokens": 1925,
+     "prompt": 1826,
+     "completion": 99,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": null,
+     "treffer_gesamt": 19,
+     "treffer": 14,
+     "pruefung": {
+      "used": "llm",
+      "rated": 19,
+      "answered": 19,
+      "dropped": 5,
+      "fallbacks": {}
+     }
+    },
+    "Glas": {
+     "status": 200,
+     "sekunden": 3.44,
+     "tokens": 16984,
+     "prompt": 15739,
+     "completion": 1245,
+     "aufrufe": {
+      "answered": 5
+     },
+     "thema": null,
+     "treffer_gesamt": 323,
+     "treffer": 181,
+     "pruefung": {
+      "used": "llm",
+      "rated": 245,
+      "answered": 245,
+      "dropped": 64,
+      "fallbacks": {}
+     }
+    }
+   },
+   "topic llm-free": {
+    "Pilze": {
+     "status": 200,
+     "sekunden": 0.32,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": "Pilze",
+     "treffer_gesamt": 85,
+     "treffer": 82,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Insekten": {
+     "status": 200,
+     "sekunden": 0.59,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": "Insekten",
+     "treffer_gesamt": 50,
+     "treffer": 45,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Kläranlage": {
+     "status": 200,
+     "sekunden": 0.93,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": "Kläranlage",
+     "treffer_gesamt": 16,
+     "treffer": 16,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Trinkwasser": {
+     "status": 200,
+     "sekunden": 0.55,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": "Trinkwasser",
+     "treffer_gesamt": 88,
+     "treffer": 88,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Lautsprecher": {
+     "status": 200,
+     "sekunden": 0.75,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": "Lautsprecher",
+     "treffer_gesamt": 19,
+     "treffer": 19,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    },
+    "Glas": {
+     "status": 200,
+     "sekunden": 0.51,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "thema": "Glas",
+     "treffer_gesamt": 323,
+     "treffer": 245,
+     "pruefung": {
+      "used": null,
+      "rated": null,
+      "answered": null,
+      "dropped": null,
+      "fallbacks": null
+     }
+    }
+   },
+   "topic balanced": {
+    "Pilze": {
+     "status": 200,
+     "sekunden": 1.83,
+     "tokens": 312,
+     "prompt": 250,
+     "completion": 62,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": "Pilze",
+     "treffer_gesamt": 85,
+     "treffer": 85,
+     "pruefung": {
+      "used": "rule-based",
+      "rated": 0,
+      "answered": 0,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Insekten": {
+     "status": 200,
+     "sekunden": 2.45,
+     "tokens": 313,
+     "prompt": 251,
+     "completion": 62,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": "Insekten",
+     "treffer_gesamt": 50,
+     "treffer": 45,
+     "pruefung": {
+      "used": "rule-based",
+      "rated": 0,
+      "answered": 0,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Kläranlage": {
+     "status": 200,
+     "sekunden": 1.81,
+     "tokens": 314,
+     "prompt": 251,
+     "completion": 63,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": "Kläranlage",
+     "treffer_gesamt": 16,
+     "treffer": 16,
+     "pruefung": {
+      "used": "rule-based",
+      "rated": 0,
+      "answered": 0,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Trinkwasser": {
+     "status": 200,
+     "sekunden": 2.41,
+     "tokens": 313,
+     "prompt": 250,
+     "completion": 63,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": "Trinkwasser",
+     "treffer_gesamt": 88,
+     "treffer": 88,
+     "pruefung": {
+      "used": "rule-based",
+      "rated": 0,
+      "answered": 0,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Lautsprecher": {
+     "status": 200,
+     "sekunden": 2.16,
+     "tokens": 317,
+     "prompt": 250,
+     "completion": 67,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": "Lautsprecher",
+     "treffer_gesamt": 62,
+     "treffer": 33,
+     "pruefung": {
+      "used": "rule-based",
+      "rated": 0,
+      "answered": 0,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Glas": {
+     "status": 200,
+     "sekunden": 2.47,
+     "tokens": 301,
+     "prompt": 249,
+     "completion": 52,
+     "aufrufe": {
+      "answered": 1
+     },
+     "thema": "Glas",
+     "treffer_gesamt": 323,
+     "treffer": 245,
+     "pruefung": {
+      "used": "rule-based",
+      "rated": 0,
+      "answered": 0,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    }
+   },
+   "topic best-quality": {
+    "Pilze": {
+     "status": 200,
+     "sekunden": 4.16,
+     "tokens": 5868,
+     "prompt": 5380,
+     "completion": 488,
+     "aufrufe": {
+      "answered": 3
+     },
+     "thema": "Pilze",
+     "treffer_gesamt": 85,
+     "treffer": 81,
+     "pruefung": {
+      "used": "llm",
+      "rated": 85,
+      "answered": 85,
+      "dropped": 4,
+      "fallbacks": {}
+     }
+    },
+    "Insekten": {
+     "status": 200,
+     "sekunden": 3.59,
+     "tokens": 3982,
+     "prompt": 3691,
+     "completion": 291,
+     "aufrufe": {
+      "answered": 2
+     },
+     "thema": "Insekten",
+     "treffer_gesamt": 50,
+     "treffer": 45,
+     "pruefung": {
+      "used": "llm",
+      "rated": 45,
+      "answered": 45,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Kläranlage": {
+     "status": 200,
+     "sekunden": 6.14,
+     "tokens": 1765,
+     "prompt": 1615,
+     "completion": 150,
+     "aufrufe": {
+      "answered": 2
+     },
+     "thema": "Kläranlage",
+     "treffer_gesamt": 16,
+     "treffer": 16,
+     "pruefung": {
+      "used": "llm",
+      "rated": 16,
+      "answered": 16,
+      "dropped": 0,
+      "fallbacks": {}
+     }
+    },
+    "Trinkwasser": {
+     "status": 200,
+     "sekunden": 4.21,
+     "tokens": 6317,
+     "prompt": 5805,
+     "completion": 512,
+     "aufrufe": {
+      "answered": 3
+     },
+     "thema": "Trinkwasser",
+     "treffer_gesamt": 88,
+     "treffer": 77,
+     "pruefung": {
+      "used": "llm",
+      "rated": 88,
+      "answered": 88,
+      "dropped": 11,
+      "fallbacks": {}
+     }
+    },
+    "Lautsprecher": {
+     "status": 200,
+     "sekunden": 4.67,
+     "tokens": 3789,
+     "prompt": 3554,
+     "completion": 235,
+     "aufrufe": {
+      "answered": 2
+     },
+     "thema": "Lautsprecher",
+     "treffer_gesamt": 62,
+     "treffer": 13,
+     "pruefung": {
+      "used": "llm",
+      "rated": 33,
+      "answered": 33,
+      "dropped": 20,
+      "fallbacks": {}
+     }
+    },
+    "Glas": {
+     "status": 200,
+     "sekunden": 19.54,
+     "tokens": 19325,
+     "prompt": 18013,
+     "completion": 1312,
+     "aufrufe": {
+      "answered": 7
+     },
+     "thema": "Glas",
+     "treffer_gesamt": 323,
+     "treffer": 178,
+     "pruefung": {
+      "used": "llm",
+      "rated": 245,
+      "answered": 245,
+      "dropped": 67,
+      "fallbacks": {}
+     }
+    }
+   }
+  },
+  "zusammenfassung": {
+   "keyword llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.015,
+     "min": 0.01,
+     "max": 0.04
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "treffer": {
+     "median": 63.5,
+     "min": 16,
+     "max": 245
+    }
+   },
+   "keyword best-quality": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 2.6799999999999997,
+     "min": 1.65,
+     "max": 3.57
+    },
+    "tokens": {
+     "median": 4533.0,
+     "min": 1448,
+     "max": 16984
+    },
+    "treffer": {
+     "median": 61.5,
+     "min": 14,
+     "max": 181
+    }
+   },
+   "topic llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.5700000000000001,
+     "min": 0.32,
+     "max": 0.93
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "treffer": {
+     "median": 63.5,
+     "min": 16,
+     "max": 245
+    }
+   },
+   "topic balanced": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 2.285,
+     "min": 1.81,
+     "max": 2.47
+    },
+    "tokens": {
+     "median": 313.0,
+     "min": 301,
+     "max": 317
+    },
+    "treffer": {
+     "median": 65.0,
+     "min": 16,
+     "max": 245
+    }
+   },
+   "topic best-quality": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 4.4399999999999995,
+     "min": 3.59,
+     "max": 19.54
+    },
+    "tokens": {
+     "median": 4925.0,
+     "min": 1765,
+     "max": 19325
+    },
+    "treffer": {
+     "median": 61.0,
+     "min": 13,
+     "max": 178
+    }
+   }
+  }
+ },
+ "qa": {
+  "laeufe": {
+   "text llm-free": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 1.21,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 15,
+     "zeichen": 39434,
+     "hinweis": "15 statt 20 Paare: mehr Fragen gibt der Text für rule-based nicht her; das LLM (llm) fragt freier"
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 0.32,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 10,
+     "zeichen": 16315,
+     "hinweis": "10 statt 20 Paare: mehr Fragen gibt der Text für rule-based nicht her; das LLM (llm) fragt freier"
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 0.76,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 34213,
+     "hinweis": null
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 0.45,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 10,
+     "zeichen": 26636,
+     "hinweis": "10 statt 20 Paare: mehr Fragen gibt der Text für rule-based nicht her; das LLM (llm) fragt freier"
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 0.45,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 17,
+     "zeichen": 23300,
+     "hinweis": "17 statt 20 Paare: mehr Fragen gibt der Text für rule-based nicht her; das LLM (llm) fragt freier"
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 0.52,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 26362,
+     "hinweis": null
+    }
+   },
+   "topic llm-free": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 3.18,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 23840,
+     "hinweis": null
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 2.93,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 12,
+     "zeichen": 3854,
+     "hinweis": "12 statt 20 Paare: mehr Fragen gibt der Text für rule-based nicht her; das LLM (llm) fragt freier"
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 4.45,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 17956,
+     "hinweis": null
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 3.64,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 18,
+     "zeichen": 8035,
+     "hinweis": "18 statt 20 Paare: mehr Fragen gibt der Text für rule-based nicht her; das LLM (llm) fragt freier"
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 1.76,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 9076,
+     "hinweis": null
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 3.58,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "verfahren": "rule-based",
+     "paare": 20,
+     "zeichen": 10275,
+     "hinweis": null
+    }
+   },
+   "text best-quality": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 5.48,
+     "tokens": 13545,
+     "prompt": 12979,
+     "completion": 566,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 39434,
+     "hinweis": null
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 5.2,
+     "tokens": 5394,
+     "prompt": 4746,
+     "completion": 648,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 16315,
+     "hinweis": null
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 6.24,
+     "tokens": 9958,
+     "prompt": 9316,
+     "completion": 642,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 34213,
+     "hinweis": null
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 6.05,
+     "tokens": 8573,
+     "prompt": 7810,
+     "completion": 763,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 26636,
+     "hinweis": null
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 5.35,
+     "tokens": 7300,
+     "prompt": 6684,
+     "completion": 616,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 23300,
+     "hinweis": null
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 6.32,
+     "tokens": 7845,
+     "prompt": 7145,
+     "completion": 700,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 26362,
+     "hinweis": null
+    }
+   },
+   "topic best-quality": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 7.54,
+     "tokens": 8874,
+     "prompt": 8315,
+     "completion": 559,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 23840,
+     "hinweis": null
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 8.58,
+     "tokens": 1755,
+     "prompt": 1088,
+     "completion": 667,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 3854,
+     "hinweis": null
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 11.26,
+     "tokens": 5312,
+     "prompt": 4501,
+     "completion": 811,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 17956,
+     "hinweis": null
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 8.84,
+     "tokens": 3077,
+     "prompt": 2406,
+     "completion": 671,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 8035,
+     "hinweis": null
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 7.25,
+     "tokens": 2942,
+     "prompt": 2343,
+     "completion": 599,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 9076,
+     "hinweis": null
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 10.04,
+     "tokens": 3391,
+     "prompt": 2623,
+     "completion": 768,
+     "aufrufe": {
+      "answered": 1
+     },
+     "verfahren": "llm",
+     "paare": 20,
+     "zeichen": 10275,
+     "hinweis": null
+    }
+   }
+  },
+  "zusammenfassung": {
+   "text llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 0.485,
+     "min": 0.32,
+     "max": 1.21
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "paare": {
+     "median": 16.0,
+     "min": 10,
+     "max": 20
+    },
+    "zeichen": {
+     "median": 26499.0,
+     "min": 16315,
+     "max": 39434
+    }
+   },
+   "topic llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 3.38,
+     "min": 1.76,
+     "max": 4.45
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "paare": {
+     "median": 20.0,
+     "min": 12,
+     "max": 20
+    },
+    "zeichen": {
+     "median": 9675.5,
+     "min": 3854,
+     "max": 23840
+    }
+   },
+   "text best-quality": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 5.765000000000001,
+     "min": 5.2,
+     "max": 6.32
+    },
+    "tokens": {
+     "median": 8209.0,
+     "min": 5394,
+     "max": 13545
+    },
+    "paare": {
+     "median": 20.0,
+     "min": 20,
+     "max": 20
+    },
+    "zeichen": {
+     "median": 26499.0,
+     "min": 16315,
+     "max": 39434
+    }
+   },
+   "topic best-quality": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 8.71,
+     "min": 7.25,
+     "max": 11.26
+    },
+    "tokens": {
+     "median": 3234.0,
+     "min": 1755,
+     "max": 8874
+    },
+    "paare": {
+     "median": 20.0,
+     "min": 20,
+     "max": 20
+    },
+    "zeichen": {
+     "median": 9675.5,
+     "min": 3854,
+     "max": 23840
+    }
+   }
+  }
+ },
+ "entities": {
+  "laeufe": {
+   "llm-free": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 0.51,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 45,
+     "verknuepft": 37,
+     "mit_wikidata": 35,
+     "mit_gnd": 26,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 2.06,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 48,
+     "verknuepft": 39,
+     "mit_wikidata": 35,
+     "mit_gnd": 32,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 2.65,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 44,
+     "verknuepft": 27,
+     "mit_wikidata": 27,
+     "mit_gnd": 26,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 2.28,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 39,
+     "verknuepft": 35,
+     "mit_wikidata": 33,
+     "mit_gnd": 30,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 3.4,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 43,
+     "verknuepft": 42,
+     "mit_wikidata": 39,
+     "mit_gnd": 34,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 2.49,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "wege": [
+      "ner",
+      "dictionary"
+     ],
+     "entitaeten": 34,
+     "verknuepft": 20,
+     "mit_wikidata": 19,
+     "mit_gnd": 17,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    }
+   },
+   "balanced": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 6.71,
+     "tokens": 1213,
+     "prompt": 563,
+     "completion": 650,
+     "aufrufe": {
+      "answered": 1
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 12,
+     "verknuepft": 12,
+     "mit_wikidata": 12,
+     "mit_gnd": 9,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 5.66,
+     "tokens": 1204,
+     "prompt": 528,
+     "completion": 676,
+     "aufrufe": {
+      "answered": 1
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 18,
+     "verknuepft": 18,
+     "mit_wikidata": 16,
+     "mit_gnd": 12,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 5.37,
+     "tokens": 1261,
+     "prompt": 593,
+     "completion": 668,
+     "aufrufe": {
+      "answered": 1
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 13,
+     "verknuepft": 13,
+     "mit_wikidata": 13,
+     "mit_gnd": 11,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 5.75,
+     "tokens": 1096,
+     "prompt": 524,
+     "completion": 572,
+     "aufrufe": {
+      "answered": 1
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 10,
+     "verknuepft": 10,
+     "mit_wikidata": 10,
+     "mit_gnd": 10,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 5.85,
+     "tokens": 1215,
+     "prompt": 529,
+     "completion": 686,
+     "aufrufe": {
+      "answered": 1
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 10,
+     "verknuepft": 10,
+     "mit_wikidata": 10,
+     "mit_gnd": 9,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 6.55,
+     "tokens": 1416,
+     "prompt": 565,
+     "completion": 851,
+     "aufrufe": {
+      "answered": 1
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 20,
+     "verknuepft": 20,
+     "mit_wikidata": 20,
+     "mit_gnd": 18,
+     "gestrichen": 0,
+     "rueckfall": null,
+     "zeichen": 1500
+    }
+   },
+   "balanced link_check": {
+    "Bienen": {
+     "status": 200,
+     "sekunden": 11.69,
+     "tokens": 3119,
+     "prompt": 1791,
+     "completion": 1328,
+     "aufrufe": {
+      "answered": 2
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 9,
+     "verknuepft": 9,
+     "mit_wikidata": 9,
+     "mit_gnd": 6,
+     "gestrichen": 5,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Gezeiten": {
+     "status": 200,
+     "sekunden": 10.97,
+     "tokens": 3380,
+     "prompt": 2188,
+     "completion": 1192,
+     "aufrufe": {
+      "answered": 2
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 11,
+     "verknuepft": 11,
+     "mit_wikidata": 11,
+     "mit_gnd": 6,
+     "gestrichen": 10,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Seidenstraße": {
+     "status": 200,
+     "sekunden": 9.92,
+     "tokens": 3059,
+     "prompt": 1977,
+     "completion": 1082,
+     "aufrufe": {
+      "answered": 2
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 5,
+     "verknuepft": 5,
+     "mit_wikidata": 5,
+     "mit_gnd": 4,
+     "gestrichen": 8,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Logarithmus": {
+     "status": 200,
+     "sekunden": 9.37,
+     "tokens": 2550,
+     "prompt": 1604,
+     "completion": 946,
+     "aufrufe": {
+      "answered": 2
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 7,
+     "verknuepft": 7,
+     "mit_wikidata": 7,
+     "mit_gnd": 7,
+     "gestrichen": 6,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Fabel": {
+     "status": 200,
+     "sekunden": 9.27,
+     "tokens": 2594,
+     "prompt": 1615,
+     "completion": 979,
+     "aufrufe": {
+      "answered": 2
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 3,
+     "verknuepft": 3,
+     "mit_wikidata": 3,
+     "mit_gnd": 3,
+     "gestrichen": 6,
+     "rueckfall": null,
+     "zeichen": 1500
+    },
+    "Katalysator": {
+     "status": 200,
+     "sekunden": 12.53,
+     "tokens": 3405,
+     "prompt": 2198,
+     "completion": 1207,
+     "aufrufe": {
+      "answered": 2
+     },
+     "wege": [
+      "llm"
+     ],
+     "entitaeten": 6,
+     "verknuepft": 6,
+     "mit_wikidata": 6,
+     "mit_gnd": 5,
+     "gestrichen": 11,
+     "rueckfall": null,
+     "zeichen": 1500
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 2.385,
+     "min": 0.51,
+     "max": 3.4
+    },
+    "tokens": {
+     "median": 0.0,
+     "min": 0,
+     "max": 0
+    },
+    "entitaeten": {
+     "median": 43.5,
+     "min": 34,
+     "max": 48
+    },
+    "verknuepft": {
+     "median": 36.0,
+     "min": 20,
+     "max": 42
+    },
+    "mit_wikidata": {
+     "median": 34.0,
+     "min": 19,
+     "max": 39
+    },
+    "mit_gnd": {
+     "median": 28.0,
+     "min": 17,
+     "max": 34
+    }
+   },
+   "balanced": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 5.8,
+     "min": 5.37,
+     "max": 6.71
+    },
+    "tokens": {
+     "median": 1214.0,
+     "min": 1096,
+     "max": 1416
+    },
+    "entitaeten": {
+     "median": 12.5,
+     "min": 10,
+     "max": 20
+    },
+    "verknuepft": {
+     "median": 12.5,
+     "min": 10,
+     "max": 20
+    },
+    "mit_wikidata": {
+     "median": 12.5,
+     "min": 10,
+     "max": 20
+    },
+    "mit_gnd": {
+     "median": 10.5,
+     "min": 9,
+     "max": 18
+    }
+   },
+   "balanced link_check": {
+    "anfragen": 6,
+    "ok": 6,
+    "sekunden": {
+     "median": 10.445,
+     "min": 9.27,
+     "max": 12.53
+    },
+    "tokens": {
+     "median": 3089.0,
+     "min": 2550,
+     "max": 3405
+    },
+    "entitaeten": {
+     "median": 6.5,
+     "min": 3,
+     "max": 11
+    },
+    "verknuepft": {
+     "median": 6.5,
+     "min": 3,
+     "max": 11
+    },
+    "mit_wikidata": {
+     "median": 6.5,
+     "min": 3,
+     "max": 11
+    },
+    "mit_gnd": {
+     "median": 5.5,
+     "min": 3,
+     "max": 7
+    }
+   }
+  }
+ },
+ "material": {
+  "laeufe": {
+   "llm-free": {
+    "19e322f0-afa5-440f-8dc0-fca1dcde71d8": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 1.15,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 95,
+      "corpus": 528,
+      "segment": 18,
+      "match": 180,
+      "synthesize": 311,
+      "assemble": 4
+     },
+     "hauptartikel": "Zahnrad",
+     "ueberschrift": "Zahnrad",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 21617
+    },
+    "8e4ee58d-c18c-470b-8f84-c3a634a041c3": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 1.28,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 110,
+      "corpus": 669,
+      "segment": 15,
+      "match": 143,
+      "synthesize": 331,
+      "assemble": 5
+     },
+     "hauptartikel": "Planck-Konstante",
+     "ueberschrift": "Planck-Konstante",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 17677
+    },
+    "c6c569d7-87c3-40d6-be6f-d92ee5409782": {
+     "status": 200,
+     "profil": "llm-free",
+     "sekunden": 0.95,
+     "tokens": 0,
+     "prompt": 0,
+     "completion": 0,
+     "aufrufe": {},
+     "phasen_ms": {
+      "resolve": 108,
+      "corpus": 311,
+      "segment": 33,
+      "match": 164,
+      "synthesize": 314,
+      "assemble": 5
+     },
+     "hauptartikel": "Galvanometer",
+     "ueberschrift": "Galvanometer",
+     "llm_schritte": {},
+     "llm_hinweis": null,
+     "zeichen_teil1": 18875
+    }
+   },
+   "balanced": {
+    "19e322f0-afa5-440f-8dc0-fca1dcde71d8": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 11.4,
+     "tokens": 1071,
+     "prompt": 839,
+     "completion": 232,
+     "aufrufe": {
+      "answered": 2
+     },
+     "phasen_ms": {
+      "resolve": 2417,
+      "corpus": 3779,
+      "hit_check": 1393,
+      "segment": 45,
+      "match": 423,
+      "synthesize": 3321,
+      "assemble": 6
+     },
+     "hauptartikel": "Getriebe",
+     "ueberschrift": "Getriebe",
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based",
+      "model_knowledge_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 18016
+    },
+    "8e4ee58d-c18c-470b-8f84-c3a634a041c3": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 3.61,
+     "tokens": 979,
+     "prompt": 862,
+     "completion": 117,
+     "aufrufe": {
+      "answered": 2
+     },
+     "phasen_ms": {
+      "resolve": 1491,
+      "corpus": 632,
+      "hit_check": 1054,
+      "segment": 15,
+      "match": 103,
+      "synthesize": 303,
+      "assemble": 4
+     },
+     "hauptartikel": "Planck-Konstante",
+     "ueberschrift": "Planck-Konstante",
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based",
+      "model_knowledge_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 17677
+    },
+    "c6c569d7-87c3-40d6-be6f-d92ee5409782": {
+     "status": 200,
+     "profil": "balanced",
+     "sekunden": 4.65,
+     "tokens": 1075,
+     "prompt": 823,
+     "completion": 252,
+     "aufrufe": {
+      "answered": 2
+     },
+     "phasen_ms": {
+      "resolve": 1469,
+      "corpus": 273,
+      "hit_check": 2470,
+      "segment": 21,
+      "match": 123,
+      "synthesize": 274,
+      "assemble": 4
+     },
+     "hauptartikel": "Galvanometer",
+     "ueberschrift": "Galvanometer",
+     "llm_schritte": {
+      "article_choice": "llm",
+      "matching": "rule-based",
+      "extraction": "rule-based",
+      "generation": "rule-based",
+      "curriculum_check": "rule-based",
+      "model_knowledge_check": "rule-based"
+     },
+     "llm_hinweis": null,
+     "zeichen_teil1": 18875
+    }
+   }
+  },
+  "zusammenfassung": {
+   "llm-free": {
+    "anfragen": 3,
+    "ok": 3,
+    "sekunden": {
+     "median": 1.15,
+     "min": 0.95,
+     "max": 1.28
+    },
+    "tokens": {
+     "median": 0,
+     "min": 0,
+     "max": 0
+    },
+    "zeichen_teil1": {
+     "median": 18875,
+     "min": 17677,
+     "max": 21617
+    }
+   },
+   "balanced": {
+    "anfragen": 3,
+    "ok": 3,
+    "sekunden": {
+     "median": 4.65,
+     "min": 3.61,
+     "max": 11.4
+    },
+    "tokens": {
+     "median": 1071,
+     "min": 979,
+     "max": 1075
+    },
+    "zeichen_teil1": {
+     "median": 18016,
+     "min": 17677,
+     "max": 18875
+    }
+   }
+  }
+ }
+}

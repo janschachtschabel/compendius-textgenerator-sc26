@@ -1,4 +1,4 @@
-# Messprotokoll (23.09. bis 02.10.2026)
+# Messprotokoll (23.09. bis 09.10.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -4072,3 +4072,166 @@ Gebaut (`3c2632a`): Innerhalb einer Rolle kommen die Lehrpläne reihum dran. Mit
 „ein“ und „und“ zeigen den Grenzfall; als Nebenwort fallen sie vorher heraus (Häufigkeitsfilter, M58), nur ein so
 lautender Titel käme hierher. Die 81 Themen brauchen zusammen 1,66 s vorher und 1,76 s nachher. Rohdaten:
 `m81_lastprobe.json`, `m81_teil2_grenze.json`.
+
+## M82 Stand 2.17.0: alle Profile und Funktionen (09.10.2026)
+
+Jan: „bitte ich darum mit dem aktuellen stand nochmal alle profile und funktionen zu vermessen hinsichtlich
+geschwindigkeit, tokenverbrauch und qualität. damit wir den aktuellen stand dokumentiert haben - bitte für alle
+funktionen“. M82 misst Release 2.17.0 (`7def24e`) an jeder Funktion, deren Güte, Zeit oder Kosten vom Profil abhängen,
+jeweils mit dem Verfahren ihrer letzten Messung, damit die Zahlen vergleichbar bleiben: das Kompendium in fünf Profilen
+wie M52, die Endpunkte wie M45, die KI-Fragen einzeln wie M59. Alle Läufe im Einmal-Container des
+Entwicklungsrechners mit den Archiven, dem Lehrplan-Cache, den Wikidata- und GND-Indexen, Model2Vec und spaCy des
+Entwicklungscontainers; das LLM `gpt-6-luna` über OpenAI direkt (`mc_openai_direkt.py`), wie ausgeliefert: der
+Denkaufwand je Frage nach D81, 20 gleichzeitige Aufrufe. Gemessen am 09.10.2026 zwischen 1:20 und 2:30 Uhr. Nachts
+antwortete der Anbieter schneller als tagsüber; die Zeiten der KI-Schritte liegen darum eher unter dem, was eine
+Anfrage am Tag braucht (M78 lief am Nachmittag).
+
+**Das Kompendium in fünf Profilen.** Teil 1 und 2, wie Aufrufer sie anfragen, mit 30.000 Zielzeichen an den neun
+Themen von M48 und M52, je ein Lauf nach einem Aufwärmdurchgang, der nicht zählt (`mc_kompendium_profil.py
+--parts=world,curricula --warmup`). Zwei neue blinde Gutachter benoteten Teil 1 mit den Bögen von M52
+(`mc_profilvergleich_boegen.py --seed=82`). Bei der Passung gaben sie in 37 von 45 Fällen dieselbe Note (M52: 38),
+sonst eine um eins verschiedene, bei Nutzen, Vollständigkeit und Lesbarkeit in 39, 40 und 38 Fällen. Kein Lauf fiel an
+die Regeln zurück; 1.939.860 Tokens für die 45 Kompendien, davon 864.899 aus dem Prompt-Cache.
+
+| | `llm-free` | `balanced` | `best-quality` | `best-quality-generated` | `best-coverage-generated` |
+|---|---|---|---|---|---|
+| **Güte**, Noten von 1 bis 5 |  |  |  |  |  |
+| Passung, Thema mit eigenem Artikel | 3,3 | 4,0 | 4,5 | 4,8 | **5,0** |
+| Passung, Sammelthema | 1,2 | 2,0 | 2,5 | 4,0 | **5,0** |
+| Passung, Thema mit Aspekt | 1,0 | 1,3 | 1,8 | 3,8 | **5,0** |
+| Nutzen | 1,7 | 2,0 | 2,7 | 3,8 | **4,7** |
+| Vollständigkeit | 1,2 | 1,4 | 2,1 | 3,7 | **5,0** |
+| Lesbarkeit | 2,1 | 1,9 | 2,1 | 3,6 | **4,1** |
+| Fehler je Text, schwer und leicht | 0 und 0,78 | 0,11 und 0,72 | 0 und 1,06 | 0,11 und 1,17 | 0 und 0,67 |
+| Überschrift ist das angefragte Thema | 9 von 9 | 9 von 9 | 9 von 9 | 9 von 9 | 9 von 9 |
+| Hauptartikel richtig, 94 Goldanfragen (unten) | 87 von 94 | 91 von 94 | 91 von 94 | 91 von 94 | 91 von 94 |
+| **Zeit**, Anfrage mit Teil 1 und 2, Median (Spanne) | 2,6 s (1,6 bis 3,8) | 4,6 s (2,7 bis 6,1) | 12,6 s (10,1 bis 16,0) | 23,2 s (20,4 bis 25,4) | 27,3 s (25,0 bis 28,3) |
+| davon Zuordnung und Schreiben | – | – | 10,0 s und – | 10,3 und 10,4 s | 9,8 und 15,5 s |
+| **Kosten** |  |  |  |  |  |
+| Tokens, Median (Spanne) | 0 | 314 (307 bis 1.234) | 59.335 (29.663 bis 73.304) | 63.117 (48.758 bis 92.436) | 87.225 (63.683 bis 115.269) |
+| davon aus dem Prompt-Cache | – | 0 | 11.984 | 32.346 | 50.637 |
+| **Text** |  |  |  |  |  |
+| Zeichen von Teil 1, Median | 9.718 | 11.146 | 12.914 | 24.711 | 54.309 |
+| Bausteine mit Text, von 10 | 7 | 7 | 8 | 10 | 10 |
+| Modellwissen am Text, Median (zweiter Lauf) | 0 % | 0 % | 0 % | 51 % (43 bis 69 %) | 82 % (77 bis 87 %) |
+| Lehrplanelemente in Teil 2, Median | 0 | 88 | 68 | 68 | 68 |
+
+- **Güte:** Die Reihenfolge ist dieselbe wie in M52. `best-coverage-generated` hält jedes Thema (Passung 5,0 bei allen
+  drei Arten, Vollständigkeit 5,0). `best-quality-generated` bleibt bei Sammel- und Aspektthemen eine Stufe darunter
+  (4,0 und 3,8); die Gutachter gaben ihm dort elfmal eine 4 und einmal eine 3. In M52 lag es bei 4,7 und 4,2, mit
+  längeren Texten (27.800 statt 24.700 Zeichen) und mehr Modellwissen (62 % statt 51 %). Ob das an den Läufen liegt
+  oder an Änderungen seit D72, sagt eine Runde nicht; Noten verschiedener Runden sind nur begrenzt vergleichbar (M52).
+  Die wörtlichen Profile bleiben bei Sammel- und Aspektthemen beim Oberbegriff oder bei einem Vertreter (Passung
+  höchstens 2,5); `llm-free` landete dort auf „Max Richter (Komponist)“, „Böse Philosophen“ und „Halluzination
+  (Künstliche Intelligenz)“.
+- **Zeit:** gegenüber M78 (Teil 1 und 2, nachmittags) `best-quality` 12,6 statt 15,1 s, `best-quality-generated` 23,2
+  statt 29,8 s und `best-coverage-generated` 27,3 statt 36,7 s; gewonnen haben vor allem das Schreiben (10,4 statt 13,7
+  und 15,5 statt 21,5 s) und die Zuordnung (rund 10 statt 12 s), beides Schritte, deren Dauer an der
+  Schreibgeschwindigkeit des Modells hängt: Das spricht für die Tageszeit, nicht für einen geänderten Ablauf.
+  `llm-free` 2,6 statt 4,7 s und `balanced` 4,6 statt 4,4 s.
+- **Kosten:** wie in M78 (`best-quality` 59.335 statt 56.700, `best-quality-generated` 63.117 statt 67.900,
+  `best-coverage-generated` 87.225 statt 91.800); die Tokens folgen der Größe des Korpus. `balanced` fragt einmal (N),
+  rund 310 Tokens; nur bei „OER-Förderungen“ fragte es die Artikelwahl dazu (zwei Aufrufe, 1.234 Tokens).
+- **Teil 2:** Ohne N findet `llm-free` bei Sammel- und Aspektthemen keine Lehrplanelemente (fünf von neun Themen ohne
+  Treffer, wie M57); mit N findet `balanced` dort bis 200. Die Prüfung der `best-quality`-Profile strich bei den
+  Sammelthemen rund ein Viertel (Komponisten der Klassik 20 von 88, Philosophen der Aufklärung 56 bis 61 von 218), bei
+  den übrigen Themen höchstens fünf.
+
+**Die Endpunkte.** Die Anfragen von M45 (Release 2.2.2) an dessen Themen und Suchwörtern, jetzt in jedem Profil, das
+anders arbeitet (`mc_endpunkte.py`): je Block ein Aufwärmdurchgang in `llm-free`, dann je Anfrage Sekunden und die
+Tokens aus den Zählern des Dienstes (`/metrics`, je Route). `/qa` und `/entities` lesen Teil 1 der
+`llm-free`-Kompendien von sechs Themen (rund 27.000 Zeichen, für `/entities` die ersten 1.500); Material als Eingang
+mit drei Materialien von eval/materialwahl. Die Lehrplansuche gibt bis zu 500 Treffer zurück (`limit=500`, in M45 die
+Vorgabe 50), die Trefferzahlen sind darum nicht vergleichbar. Median (Spanne) je Anfrage:
+
+| Endpunkt | Profil | Zeit | Tokens | Ergebnis | M45 (Release 2.2.2) |
+|---|---|---|---|---|---|
+| `/knowledge` | `llm-free` | 0,57 s (0,32 bis 1,85) | 0 | 10 Artikel | 0,59 s im Container |
+| | `balanced` (Frage N) | 1,83 s (1,49 bis 2,11) | 313 | 8 Artikel | 4,62 s, 494 Tokens |
+| | `best-quality` (dazu die gründliche Wahl) | 3,64 s (1,50 bis 6,31) | 751 | 7 Artikel | 5,68 s, 903 Tokens |
+| `/lehrplan/search`, Suchwort | `llm-free` | 0,02 s | 0 | 63,5 Treffer | 0,01 s |
+| | `best-quality` (KI prüft jeden Treffer) | 2,68 s (1,65 bis 3,57) | 4.533 | 61,5 Treffer | 8,32 s, 5.085 Tokens |
+| `/lehrplan/search`, Thema (`mode=topic`) | `llm-free` | 0,57 s | 0 | 63,5 Treffer | – |
+| | `balanced` | 2,29 s (1,81 bis 2,47) | 313 | 65 Treffer | – |
+| | `best-quality` | 4,44 s (3,59 bis 19,54) | 4.925 | 61 Treffer | – |
+| `/qa`, Text (20 Paare verlangt) | `llm-free` (Regeln) | 0,49 s (0,32 bis 1,21) | 0 | 16 Paare | 1,35 s im Container, 14 Paare |
+| | `best-quality` (KI) | 5,77 s (5,20 bis 6,32) | 8.209 | 20 Paare | 6,31 s, 7.137 Tokens |
+| `/qa`, Thema (Teil 1 ohne LLM, dann die Paare) | `llm-free` | 3,38 s (1,76 bis 4,45) | 0 | 20 Paare | – |
+| | `best-quality` | 8,71 s (7,25 bis 11,26) | 3.234 | 20 Paare | – |
+| `/entities`, 1.500 Zeichen | `llm-free` | 2,39 s (0,51 bis 3,40) | 0 | 43,5 Entitäten, 36 verknüpft | 1,98 s im Container |
+| | `balanced` (KI nennt sie) | 5,80 s (5,37 bis 6,71) | 1.214 | 12,5 Entitäten, alle verknüpft | 6,78 s, 1.284 Tokens |
+| | `balanced` und `link_check: llm` | 10,45 s (9,27 bis 12,53) | 3.089 | 6,5 Entitäten | – |
+| `/compendium` aus einem Material, Teil 1 | `llm-free` | 1,15 s (0,95 bis 1,28) | 0 | dreimal ein akzeptierter Artikel | – |
+| | `balanced` (KI nennt den Artikel) | 4,65 s (3,61 bis 11,40) | 1.071 | dreimal ein akzeptierter Artikel | – |
+
+- Seit D81 fragen N, die Artikelwahl, die Lehrplanprüfung und die QA-Paare ohne Denken: `/knowledge` in `balanced` 1,8
+  statt 4,6 s, die Lehrplansuche mit Prüfung 2,7 statt 8,3 s. Die Tokens von `/qa` wachsen mit dem Text (8.209 bei
+  rund 26.500 Zeichen, in M45 7.137 bei rund 23.000). `/entities` denkt weiter (D81) und kostet wie in M45.
+- Die Spanne der Lehrplansuche im Themenmodus kommt von „Glas“: 245 Treffer geprüft, 67 gestrichen, 19,5 s und
+  19.325 Tokens.
+- Die Kennungen folgen der Verknüpfung (M43): In `llm-free` tragen 188 von 200 Verknüpfungen der sechs Texte eine
+  Wikidata-Nummer und 165 eine GND, in `balanced` 81 von 83 und 69 (M45: 73 von 74 mit Wikidata-Nummer).
+
+**Die KI-Fragen einzeln**, wie M59, mit den Eingaben und dem Gold von dort (`mc_reasoning.py` in der ausgelieferten
+Einstellung, Auswertung wie M59). Mit * markierte Zeiten liefen neben bis zu zwei weiteren Messungen; ihre lokalen
+Schritte sind dadurch langsamer als allein.
+
+| Funktion (Profil, Eingaben) | Güte M82 | vorher | Zeit je Anfrage, Median | Tokens je Anfrage, Median |
+|---|---|---|---|---|
+| Artikelwahl, Regeln (`llm-free`, 94 Goldanfragen von eval/artikelwahl) | 87 richtig | 87 (M35) | 3,0 s* | 0 |
+| Artikelwahl mit Frage N (`balanced`) | 91 richtig, je Art dieselben wie M59 | 91 (M59) | 2,4 s | 320 |
+| gründliche Artikelwahl (`best-quality`) | 91 richtig; falsch „Lichtlehre“ (*Licht*), „Deutsch: Artikel“ und „Ursachen des Ersten Weltkriegs“ (*Julikrise*, wie in M39) | 93 (M59), 92 (M63) | 3,0 s | 748 |
+| Zuordnung am Gold, Regeln (`hybrid_light`, 10 Themen) | macro-F1 0,455, micro-F1 0,662 | 0,447 und 0,653 (M59) | 7 s für das ganze Gold | 0 |
+| Zuordnung durch das LLM (50 Absätze à 250 Zeichen je Aufruf, Antwort in Zeilen; zwei Läufe, 595 Absätze) | macro-F1 0,661 und 0,675, micro-F1 0,775 und 0,798; kein Rückfall | 0,682 und 0,791 (M77, Mittel aus vier Läufen) | 77 und 84 s für das ganze Gold, 4 Aufrufe zugleich | 93.327 und 93.669 für das ganze Gold, je 18 Aufrufe |
+| Lehrplanprüfung (`best-quality`, die 57 Themen von M57; 53 mit demselben Artikel wie in M59) | Note 2 passt bei gewöhnlichen Themen 80 %, bei Gruppen 55 %, bei Aspekten 19 %; von den passenden behält sie 100 % und zeigt 97, 89 und 79 % einzeln; kein Rückfall | 81, 57 und 19 %; 100 %; 95, 89 und 88 % (M59, gleich gerechnet) | 5,4 s* | 4.075 |
+| Artikel eines Materials ohne Thema, Regeln (`llm-free`, 40 Materialien von eval/materialwahl) | 21 richtig, klar 16 von 31; zehnmal kein Artikel (404) | – | 4,2 s* | 0 |
+| Artikel eines Materials mit LLM (`balanced`) | 36 richtig, klar 30 von 31, unscharf 5 von 7 | 34 (M59) | 6,3 s* | 435 |
+| `/entities` an den 40 Materialien, Regeln (`llm-free`; Noten von eval/entitaeten) | passend 29 %, unpassend 16 %, von den passenden gefunden 55 % | 0,29 und 0,55 (M36) | 0,9 s* | 0 |
+| `/entities` mit LLM (`balanced`) | passend 69 %, unpassend 1 %, von den passenden gefunden 81 % | 73 und 84 % (M59) | 5,5 s* | 887 |
+| Themenformulierung (die 8 Eingaben von M51) | 6 wörtlich wie in M59, 2 gleichwertig („Entstehung der blauen Himmelsfarbe“ statt „Blaue Farbe des Himmels“) | M59 | 1,1 bis 2,3 s | 336 bis 357 |
+| QA-Paare mit Thema, Regeln (`llm-free`, 6 Themen à 5, zwei Gutachter, Noten 0 bis 2) | Note 0,80 und 0,77; Note 2 bei 4 von 30 Paaren; 1 und 2 falsche Antworten | – | 5,8 s* mit Teil 1 | 0 |
+| QA-Paare mit Thema, LLM (`best-quality`) | Note 1,37 und 1,47; Note 2 bei 15 und 16 von 30; je eine falsche Antwort; beide Gutachter nennen den Satz des LLM in allen sechs Themen besser | Note 1,47 und 1,50 (M59, ohne Denken) | 6,9 s* mit Teil 1 | 2.819 |
+
+- Die Güte hält in jeder Funktion: Artikelwahl, Zuordnung, Lehrplanprüfung, Material und Themenformulierung liegen
+  auf den Werten der letzten Messung oder innerhalb der Streuung eines Laufs (bei 94 Goldanfragen ein bis zwei
+  Anfragen, bei rund 250 benoteten Verknüpfungen rund drei Punkte). Verknüpfungen, die die Noten von M36 nicht
+  kennen, zählen wie in M59 nicht mit (61 von 703).
+- `best-quality` trifft in diesem Lauf 91 statt 93 Hauptartikel; die drei Fehlgriffe sind bekannte Grenzfälle, an
+  denen die Antworten des Modells zwischen Läufen wechseln (M19, M39).
+- QA-Paare: Die Gutachter gaben bei 56 von 60 Paaren dieselbe Note. Die Regeln erreichen die Note 2 bei 4 von 30
+  Paaren, das LLM bei 15 und 16; seine Paare sind in jedem Thema besser, ohne mehr falsche Antworten.
+
+**Teil 3**, der Sammlungsüberblick, fragt kein LLM (`mc_tempo.py --part3`): Die vier Sammlungen von M75 auf der
+Staging-Umgebung brauchten ohne Cache 0,8 bis 6,1 s (Photosynthese 0,8, Wellenoptik 2,9, Geometrische Optik 4,1, Optik
+6,1 s), mit Cache 0,00 bis 0,04 s (M75: 0,8 bis 5,9 und 0,00 bis 0,03 s).
+
+**Last** wie M81 (`mc_lastprobe.py`, `llm-free`, die 81 Themen von M65, gegen den Entwicklungscontainer mit zwei
+Workern): einmal nacheinander, dann zweimal mit 20 Anfragen zugleich. Alle 243 Anfragen antworteten mit 200, ohne 429,
+ohne Neustart und ohne Fehlerzeile im Log, und jeder Text unter Last glich dem aus dem Durchgang nacheinander.
+Nacheinander 746 s (je Anfrage im Median 6,5 s; M81 598 s und 5,3 s), mit 20 zugleich 182 und 163 s (M81 194 und
+193 s). Der erste Durchgang las die Archivseiten dieser Themen vermutlich kalt; M81 lief am selben Tag wie M80, das
+dieselben Themen las. Unter Last ist 2.17.0 so schnell wie 2.15.0 oder schneller: Die Zeile je Anfrage und die
+Ergebniszeilen (D95, D96) kosten nichts Messbares.
+
+**Ergebnis:** Release 2.17.0 hält in jeder Funktion die Güte der letzten Messung; die Unterschiede liegen in der
+Streuung eines Laufs. Die Reihenfolge der Profile ist dieselbe wie in M52: `best-coverage-generated` schreibt jedes
+Thema vollständig (Passung 5,0 bei allen drei Arten, 27 s, 87.000 Tokens), `best-quality-generated`, der Standard
+(D82), lesbar und zur Hälfte aus Modellwissen (Passung 4,8, 4,0 und 3,8; 23 s, 63.000 Tokens), die wörtlichen
+Profile belegt, aber bei Sammel- und Aspektthemen beim Oberbegriff. Seit D81 fragen N, die Artikelwahl und die
+Lehrplanprüfung ohne Denken: `/knowledge` braucht in `balanced` 1,8 statt 4,6 s, die Lehrplansuche mit Prüfung 2,7 statt
+8,3 s (M45). Nachts dauerten die Anfragen der drei `best-quality`-Profile 17 bis 26 % weniger als am Nachmittag in M78;
+die Tokens sind gleich.
+
+**Grenzen:** je Thema und Profil ein Lauf, neun Themen; die Gutachter sind Claude-Subagenten, keine Lehrkräfte, und
+Noten verschiedener Runden sind nur begrenzt vergleichbar. Gemessen auf dem Entwicklungsrechner: Die Schritte ohne
+LLM dauern auf dem Server etwa halb so lange (M45). Die mit * markierten Zeiten liefen neben weiteren Messungen. Den
+Anteil des Modellwissens zählte der erste Lauf nicht: Seit D76 kennzeichnet der Dienst es sichtbar nur auf Wunsch,
+und `mc_kompendium_profil.py` zählte die sichtbare Kennzeichnung; es zählt jetzt die Markierungen im Markup, der Anteil
+stammt aus einem zweiten Lauf der beiden schreibenden Profile (Teil 1, 18 Texte, ohne Rückfall), dessen Zeiten neben
+anderen Messungen lagen und hier nicht zählen.
+
+Rohdaten: `m82_profiluebersicht.json` (Noten, Zeiten, Tokens und Zählungen je Lauf, ohne Texte und Zitate),
+`m82_endpunkte.json`, `m82_funktionen.json` (die KI-Fragen einzeln mit den QA-Paaren, dem Schlüssel und den Urteilen,
+Teil 2 wie in M59 nur mit den benoteten Elementen), `m82_eingaben.json` (Themen und Texte der Läufe), `m82_teil3.json`
+und `m82_lastprobe.json`; ausgewertet mit `mc_profilvergleich_auswertung.py`, `mc_profiltabelle.py` und
+`mc_funktionen_auswertung.py`.

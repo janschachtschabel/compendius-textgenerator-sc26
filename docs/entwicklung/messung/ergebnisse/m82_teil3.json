@@ -1,0 +1,30 @@
+[
+ {
+  "collection": "9e7ae956-e9df-430f-bace-f3db4b910013",
+  "title": "Optik",
+  "cold_s": 6.11,
+  "warm_s": 0.039,
+  "chars": 85299
+ },
+ {
+  "collection": "d38101c1-9a43-414b-a51f-e2dcff0add44",
+  "title": "Photosynthese",
+  "cold_s": 0.8,
+  "warm_s": 0.001,
+  "chars": 2419
+ },
+ {
+  "collection": "f35c17d1-a29e-4b26-9d22-802682fad43d",
+  "title": "Geometrische Optik",
+  "cold_s": 4.12,
+  "warm_s": 0.022,
+  "chars": 55523
+ },
+ {
+  "collection": "bf729405-18ff-440b-9d5b-dd466ff563c3",
+  "title": "Wellenoptik",
+  "cold_s": 2.86,
+  "warm_s": 0.008,
+  "chars": 27562
+ }
+]

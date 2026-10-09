@@ -1,0 +1,41 @@
+{
+ "basis": "Entwicklungscontainer 2.17.0 (7def24e), 2 Worker, Wikipedia-Archiv 2026-01 und Klexikon",
+ "parallel": 20,
+ "themen": 81,
+ "durchgaenge": {
+  "nacheinander": {
+   "sekunden": 746.1,
+   "status": {
+    "200": 81
+   },
+   "je_anfrage_median_s": 6.48,
+   "je_anfrage_max_s": 58.85,
+   "wiederholt_429": 0,
+   "texte_anders": []
+  },
+  "parallel_1": {
+   "sekunden": 181.8,
+   "status": {
+    "200": 81
+   },
+   "je_anfrage_median_s": 36.82,
+   "je_anfrage_max_s": 125.2,
+   "wiederholt_429": 0,
+   "texte_anders": []
+  },
+  "parallel_2": {
+   "sekunden": 163.0,
+   "status": {
+    "200": 81
+   },
+   "je_anfrage_median_s": 29.71,
+   "je_anfrage_max_s": 121.39,
+   "wiederholt_429": 0,
+   "texte_anders": []
+  }
+ },
+ "container": {
+  "neustarts": 0,
+  "fehlerzeilen_im_log": 0
+ }
+}
