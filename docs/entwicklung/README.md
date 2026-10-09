@@ -1,6 +1,6 @@
 # Kompendium-Dienst SC26: Entwicklung und Methoden
 
-Stand 09.10.2026 · neuer Dienst Release 2.17.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
+Stand 09.10.2026 · neuer Dienst Release 2.18.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
 alter Dienst v0.2.0 (`alterCode/compendious`) · was seit v2.0.0 dazukam, steht unter „Die wichtigsten
 Entscheidungen“ und im Entwicklungsweg; die Messwerte der Profile und Funktionen gelten für Release 2.17.0 (M82)
 
@@ -127,6 +127,7 @@ Vergleich](01-alt-und-neu.md).
 | `best-quality-generated` ist das Standardprofil (D82) | Jan: im UI und in der Muster-Env das schreibende Profil als Standard; ohne LLM läuft eine Anfrage ohne Profil weiter mit `llm-free` | eine Anfrage ohne Profil braucht mit LLM 23 bis 30 s und rund 63.000 Tokens statt 5 s und 310 mit `balanced` (M78, M82) |
 | Zeit und Ausfälle des LLM: Teil 2 und 3 neben Teil 1, die Zuordnung antwortet in Zeilen, Grenzen je Anbieter (D93) | `best-quality` wurde rund 5 s schneller, `best-quality-generated` rund 4 s (M78); acht Arten kaputter Antworten enden in jedem Profil in einem Rückfall mit Grund, nie in einem Fehler | – |
 | Die Prüfung von Teil 2 rechnet aus einem eigenen Budget (D94) | Lehrpläne weiterer Länder und Schularten sollen Teil 1 nichts wegnehmen; unbewertet bleibt ein Element nach den Regeln stehen | eine Anfrage darf zusätzlich bis 400.000 Tokens für die Prüfung brauchen |
+| Das Routing der b-api als Provider `router` (D97) | Eine Route bündelt Modelle mit Reserve; die Ausfallsicherheit liegt in der b-api, der Dienst setzt eine angelegte Route voraus und verwaltet keine | Eine Route darf nur Modelle einer Parameterfamilie bündeln, `B_API_MODEL` nennt sie; je Aufruf kein messbarer Aufschlag (M83) |
 | Lieber leer als falsch | Ein falscher Absatz schadet mehr als ein ehrlich leerer Baustein. | kleine Bausteine bleiben oft leer |
 | Lehrpläne aus einem MEM-Vollabzug, keine Abfrage zur Laufzeit | schnell, keine Last und kein Ausfallrisiko beim Anbieter | Inhalte bis zu einem Monat alt; vier Länder |
 | Teil 3 zur Anfragezeit aus edu-sharing | aktuell bis auf einen Zwischenspeicher von einer Stunde, kein eigener Datenbestand | hängt an der Erreichbarkeit des Repositorys |
@@ -191,7 +192,7 @@ sie neu, nachdem sich eine der drei Seiten oder eine Grafik geändert hat, und n
 | 03.10. | Audit vom 02.10. und sein Nachgang (D78, D79, M54 bis M56); Teil 2 zeigt nach der Prüfung nur einzeln, was passt (D80, M57, M58); der Denkaufwand je KI-Frage (D81, M59); `best-quality-generated` als Standardprofil (D82); Formeln als Text (D83, D84, M60, M61); „kein Kandidat passt“ (D85, M63); der KI-Zuordner denkt weiter (D86, M62); eine Regel für die Stämme eines Themas und weniger Faktoren der Zuordnungsregeln (D87, D88, M65, M66); Teil 2 sucht mit Titel, Aliassen und Untertiteln (D89, M64); Themenauflösung und Korpusbau in `app/knowledge` (D90); Releases 2.9.0 bis 2.12.0 |
 | 04.10. | Externes Audit vom 03.10. geprüft (D91); Belegprüfung, Cookie-Filter, Korpusdeckel und lange Eingaben gemessen (M67 bis M70); Releases 2.12.1 und 2.12.2 |
 | 08.10. | Die Empfehlungen zum Audit vom 03.10. gemessen und gebaut, der Ort einer Sammlung im Themenbaum (D92, M71 bis M74); Zeit, Tokens und Ausfälle des LLM (D93, M75 bis M79); offene Befunde und ein eigenes Budget für Teil 2 (D94, M80); die letzten Audit-Befunde und eine Prüfung des Loggings (D95, M81); Releases 2.13.0 bis 2.16.0 |
-| 09.10. | Die Ergebniszeile eines Kompendiums auch für `/qa`, `/entities`, `/knowledge` und die Lehrplansuche (D96, Release 2.17.0); alle Profile und Funktionen mit Release 2.17.0 nachgemessen (M82) |
+| 09.10. | Die Ergebniszeile eines Kompendiums auch für `/qa`, `/entities`, `/knowledge` und die Lehrplansuche (D96, Release 2.17.0); alle Profile und Funktionen mit Release 2.17.0 nachgemessen (M82); das Routing der b-api als Provider, geprüft mit einer eigenen Route (D97, M83, Release 2.18.0) |
 
 ## Begriffe
 

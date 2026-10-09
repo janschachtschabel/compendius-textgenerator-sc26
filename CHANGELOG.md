@@ -9,7 +9,24 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
-- **Gemessen:** M82, Release 2.17.0 in allen Profilen und Funktionen nach Güte, Zeit und Tokens: Jede Funktion hält
+Noch nichts.
+
+## 2.18.0 – 2026-10-09
+
+Das Routing der b-api als Provider (D97); dazu die Messung aller Profile und Funktionen mit 2.17.0 (M82).
+
+- **Neu:** `B_API_PROVIDER=router` fragt das Routing der b-api mit dem Namen einer Route, die vorab global oder für den
+  Schlüssel angelegt wurde (`B_API_ROUTE`, ohne Eintrag eine Route, die wie `B_API_MODEL` heißt); `B_API_MODEL` nennt
+  die Modellfamilie der Route und damit die Parameter. Die Modellprüfung sucht die Route, `/health` und das Frontmatter
+  nennen sie, das Log sagt einmal je Modell, wer hinter der Route antwortet. Eine fehlende oder abgeschaltete Route
+  und ein Modell ohne Preis oder ohne Chat halten die Aufrufe zehn Minuten mit dem Grund zurück, eine Route ohne
+  freies Modell eine Minute, statt sie dreimal zu wiederholen; lehnt ein Modell der Route die Parameter ab, nennt die
+  Warnung `B_API_MODEL`.
+- **[Betrieb](docs/betrieb.md#updates):** Eine neue Einstellung, `B_API_ROUTE` (leer); ohne `B_API_PROVIDER=router`
+  ändert sich nichts. `/health` nennt unter `components.llm` zusätzlich `route`.
+- **Gemessen:** M83, der Dienst über eine eigene Route aus `gpt-6-luna` und `gpt-5.6-luna` als Reserve: dieselben
+  Tokens wie direkt über `openai`, je Aufruf kein messbarer Aufschlag, die Reserve antwortet bei abgeschaltetem
+  Hauptmodell. M82, Release 2.17.0 in allen Profilen und Funktionen nach Güte, Zeit und Tokens: Jede Funktion hält
   die Güte ihrer letzten Messung; ein Kompendium mit Teil 1 und 2 braucht im Median 2,6 / 4,6 / 12,6 / 23,2 / 27,3 s
   und 0 / 314 / 59.335 / 63.117 / 87.225 Tokens (`llm-free` bis `best-coverage-generated`). Neue Messskripte für die
   Endpunkte, die Auswertung der KI-Fragen und den QA-Bogen; `mc_kompendium_profil.py` zählt das Modellwissen an den

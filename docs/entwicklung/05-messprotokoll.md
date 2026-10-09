@@ -4235,3 +4235,57 @@ Rohdaten: `m82_profiluebersicht.json` (Noten, Zeiten, Tokens und Zählungen je L
 Teil 2 wie in M59 nur mit den benoteten Elementen), `m82_eingaben.json` (Themen und Texte der Läufe), `m82_teil3.json`
 und `m82_lastprobe.json`; ausgewertet mit `mc_profilvergleich_auswertung.py`, `mc_profiltabelle.py` und
 `mc_funktionen_auswertung.py`.
+
+## M83 b-api-Routing als Provider (D97, 09.10.2026)
+
+Jan: „die b-api unterstützt ab sofort ein optionales provider übergreifendes routing … zum testen kannst du für meinen
+hinterlegen b api key mal eine persönliche route anlegen“. M83 prüft D97 an der Staging-b-api mit Jans Schlüssel und
+einer eigenen Route `kompendium-test`: Priorität 0 `gpt-6-luna`, Priorität 1 `gpt-5.6-luna` als Reserve,
+`maxAttempts` 2. Vorab bestätigt: `gpt-5.6-luna` versteht dieselben Parameter wie `gpt-6-luna`, auch
+`reasoning_effort: none` (je ein Aufruf über `openai/<modell>` ohne Route, 200). Der Dienst lief mit dem Arbeitsstand
+vor Release 2.18.0 im Einmal-Container (`mc_routing.py`), das LLM über die b-api.
+
+**Die Antworten des Routers**, je ein Aufruf mit `curl`:
+
+| Anfrage | Status | Antwort | Zeit |
+|---|---|---|---|
+| Route `kompendium-test` mit den Parametern des Dienstes | 200 | Antwort im OpenAI-Format, `model: gpt-6-luna` | 1,2 s |
+| eine Route, die es nicht gibt | 400 | `No route configured for model '…'` | 0,14 s |
+| `max_tokens` an die Route (andere Parameterfamilie) | 400 | der Fehler von OpenAI, `code: unsupported_parameter`; Kopfzeilen `X-Error-Source: upstream`, `X-Upstream-Status: 400` | 0,39 s |
+| `openai/gpt-6-lunaa` ohne Route (Tippfehler) | 503 | `Model pricing unavailable for 'gpt-6-lunaa' - cannot enforce cost quota` | 0,14 s |
+| die Route mit beiden Modellen abgeschaltet | 503 | `No deployment could serve model '…' (no deployment left)` | 0,13 s |
+
+Die Dauerfehler kamen in 0,13 bis 0,14 s, nicht nach 15 s wie im Test der b-api vom 01.10. Ihr Cache griff nicht:
+Zwei wortgleiche Anfragen bekamen zwei ids, mit gleichem `safety_identifier` und ohne.
+
+**Der Dienst über die Route.** Die Modellprüfung fand die Route („Route kompendium-test verfügbar, Parameter wie
+gpt-6-luna“), die Startzeile nennt `LLM router kompendium-test (parameters of gpt-6-luna)`, `/health` `provider:
+router` und `route: kompendium-test`. Je zwei Kompendien mit Teil 1 und 2, dieselben Anfragen direkt über `openai` zum
+Vergleich:
+
+| Thema, Profil | über die Route | direkt über `openai` |
+|---|---|---|
+| Optik, `balanced` | 5,5 s, 311 Tokens | 4,8 s, 307 Tokens |
+| Optik, `best-quality-generated` | 26,8 s, 65.112 Tokens | 27,3 s, 65.540 Tokens |
+| Photosynthese, `balanced` | 4,0 s, 313 Tokens | 3,2 s, 313 Tokens |
+| Photosynthese, `best-quality-generated` | 26,0 s, 93.181 Tokens | 20,6 s, 93.904 Tokens |
+
+Kein Rückfall, gleich viele Aufrufe (1, 21 und 23), und das Frontmatter nennt `provider: router`, die Route und
+`model: gpt-6-luna`. Die Zeiten streuen in beide Richtungen. Zehn kleine Aufrufe je Weg, abwechselnd („Antworte nur mit
+OK.“, eigener `safety_identifier`), dauerten über die Route im Median 0,82 s (0,68 bis 2,69), direkt 0,86 s (0,74 bis
+1,19): Die Route kostet keine messbare Zeit.
+
+**Ausweichen.** Mit abgeschaltetem Hauptmodell antwortete die Reserve: Das Log meldet einmal `b-api routing: route
+'kompendium-test' answers with gpt-5.6-luna`, das Frontmatter `model: gpt-5.6-luna` (Optik, `balanced`, 4,1 s,
+317 Tokens). Danach war die Route wiederhergestellt.
+
+**Fehlende Route.** Mit `B_API_ROUTE=kompendium-gibt-es-nicht` warnt der Start „LLM unavailable … Route
+'kompendium-gibt-es-nicht' steht nicht in /models des Routers … Route anlegen oder B_API_ROUTE prüfen“, `/health`
+meldet `available: false` mit demselben Grund, und ein Kompendium in `balanced` lief mit den Regeln; seine
+Ergebniszeile ist eine WARNING mit dem Grund.
+
+Nur offline in den Tests geprüft: eine Route, die nach dem Start verschwindet (400, zehn Minuten Pause mit Grund),
+ein Modell ohne Preis oder ohne Chat hinter der Route (503, zehn Minuten) und eine Route ohne freies Modell im Betrieb
+(503, eine Minute), jeweils ohne Wiederholung, mit den hier aufgenommenen Antworten.
+
+Rohdaten: `m83_routing.json` (die Läufe, die Einzelaufrufe und die Antworten des Routers, ohne Texte).

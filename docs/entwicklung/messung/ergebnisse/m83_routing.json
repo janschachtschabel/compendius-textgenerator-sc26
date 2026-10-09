@@ -1,0 +1,348 @@
+{
+ "messung": "M83, 09.10.2026: das Routing der b-api als Provider router (D97), Staging, Jans Schlüssel, eigene Route kompendium-test (Priorität 0 gpt-6-luna, Priorität 1 gpt-5.6-luna, maxAttempts 2)",
+ "stand": "Arbeitsstand vor Release 2.18.0, im Einmal-Container eingehängt (Image 2.17.0)",
+ "kompendien": {
+  "router": {
+   "label": "router",
+   "runs": [
+    {
+     "topic": "Optik",
+     "preset": "balanced",
+     "status": 200,
+     "seconds": 5.53,
+     "tokens": 311,
+     "calls": 1,
+     "provider": "router",
+     "route": "kompendium-test",
+     "model": "gpt-6-luna",
+     "note": null
+    },
+    {
+     "topic": "Optik",
+     "preset": "best-quality-generated",
+     "status": 200,
+     "seconds": 26.85,
+     "tokens": 65112,
+     "calls": 21,
+     "provider": "router",
+     "route": "kompendium-test",
+     "model": "gpt-6-luna",
+     "note": null
+    },
+    {
+     "topic": "Photosynthese",
+     "preset": "balanced",
+     "status": 200,
+     "seconds": 4.01,
+     "tokens": 313,
+     "calls": 1,
+     "provider": "router",
+     "route": "kompendium-test",
+     "model": "gpt-6-luna",
+     "note": null
+    },
+    {
+     "topic": "Photosynthese",
+     "preset": "best-quality-generated",
+     "status": 200,
+     "seconds": 26.03,
+     "tokens": 93181,
+     "calls": 23,
+     "provider": "router",
+     "route": "kompendium-test",
+     "model": "gpt-6-luna",
+     "note": null
+    }
+   ],
+   "health": {
+    "enabled": true,
+    "provider": "router",
+    "model": "gpt-6-luna",
+    "route": "kompendium-test",
+    "available": true,
+    "check": "Route kompendium-test verfügbar, Parameter wie gpt-6-luna"
+   }
+  },
+  "openai": {
+   "label": "openai",
+   "runs": [
+    {
+     "topic": "Optik",
+     "preset": "balanced",
+     "status": 200,
+     "seconds": 4.76,
+     "tokens": 307,
+     "calls": 1,
+     "provider": "openai",
+     "route": null,
+     "model": "gpt-6-luna",
+     "note": null
+    },
+    {
+     "topic": "Optik",
+     "preset": "best-quality-generated",
+     "status": 200,
+     "seconds": 27.33,
+     "tokens": 65540,
+     "calls": 21,
+     "provider": "openai",
+     "route": null,
+     "model": "gpt-6-luna",
+     "note": null
+    },
+    {
+     "topic": "Photosynthese",
+     "preset": "balanced",
+     "status": 200,
+     "seconds": 3.19,
+     "tokens": 313,
+     "calls": 1,
+     "provider": "openai",
+     "route": null,
+     "model": "gpt-6-luna",
+     "note": null
+    },
+    {
+     "topic": "Photosynthese",
+     "preset": "best-quality-generated",
+     "status": 200,
+     "seconds": 20.64,
+     "tokens": 93904,
+     "calls": 23,
+     "provider": "openai",
+     "route": null,
+     "model": "gpt-6-luna",
+     "note": null
+    }
+   ],
+   "health": {
+    "enabled": true,
+    "provider": "openai",
+    "model": "gpt-6-luna",
+    "route": null,
+    "available": true,
+    "check": "Modell gpt-6-luna verfügbar"
+   }
+  }
+ },
+ "fehlende_route": {
+  "label": "fehlt",
+  "runs": [
+   {
+    "topic": "Optik",
+    "preset": "balanced",
+    "status": 200,
+    "seconds": 6.94,
+    "tokens": null,
+    "calls": null,
+    "provider": "router",
+    "route": "kompendium-gibt-es-nicht",
+    "model": "gpt-6-luna",
+    "note": "LLM nicht verfügbar (Route 'kompendium-gibt-es-nicht' steht nicht in /models des Routers: In der b-api ist weder für den Schlüssel noch global eine aktive Route dieses Namens; Route anlegen oder B_API_ROUTE prüfen); Regelmodus verwendet"
+   }
+  ],
+  "health": {
+   "enabled": true,
+   "provider": "router",
+   "model": "gpt-6-luna",
+   "route": "kompendium-gibt-es-nicht",
+   "available": false,
+   "check": "Route 'kompendium-gibt-es-nicht' steht nicht in /models des Routers: In der b-api ist weder für den Schlüssel noch global eine aktive Route dieses Namens; Route anlegen oder B_API_ROUTE prüfen"
+  }
+ },
+ "reserve": {
+  "label": "reserve",
+  "runs": [
+   {
+    "topic": "Optik",
+    "preset": "balanced",
+    "status": 200,
+    "seconds": 4.07,
+    "tokens": 317,
+    "calls": 1,
+    "provider": "router",
+    "route": "kompendium-test",
+    "model": "gpt-5.6-luna",
+    "note": null
+   }
+  ],
+  "health": {
+   "enabled": true,
+   "provider": "router",
+   "model": "gpt-6-luna",
+   "route": "kompendium-test",
+   "available": true,
+   "check": "Route kompendium-test verfügbar, Parameter wie gpt-6-luna"
+  }
+ },
+ "einzelaufrufe": {
+  "anfrage": "Antworte nur mit OK., max_completion_tokens 300, reasoning_effort none, eigener safety_identifier, abwechselnd",
+  "zusammenfassung": {
+   "router": {
+    "anzahl": 10,
+    "median_s": 0.82,
+    "min_s": 0.67574,
+    "max_s": 2.688042
+   },
+   "openai": {
+    "anzahl": 10,
+    "median_s": 0.86,
+    "min_s": 0.741361,
+    "max_s": 1.192475
+   }
+  },
+  "aufrufe": [
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 2.688042
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.897084
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 0.73066
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.942205
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 0.722913
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.915482
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 1.006403
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.826873
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 0.67574
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.858213
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 0.830397
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.860927
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 0.821876
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.741361
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 0.834827
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.785798
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 0.815744
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 1.192475
+   },
+   {
+    "weg": "router",
+    "status": 200,
+    "sekunden": 0.822555
+   },
+   {
+    "weg": "openai",
+    "status": 200,
+    "sekunden": 0.783054
+   }
+  ]
+ },
+ "antworten_des_routers": {
+  "route": {
+   "was": "Aufruf über die Route",
+   "status": 200,
+   "kopfzeilen": [],
+   "antwort": {
+    "model": "gpt-6-luna"
+   }
+  },
+  "unbekannt": {
+   "was": "unbekannte Route",
+   "status": 400,
+   "kopfzeilen": [],
+   "antwort": {
+    "error": "No route configured for model 'kompendium-gibt-es-nicht'"
+   }
+  },
+  "familie": {
+   "was": "max_tokens an eine Route mit gpt-6-luna",
+   "status": 400,
+   "kopfzeilen": [
+    "X-Error-Source: upstream",
+    "X-Upstream-Status: 400"
+   ],
+   "antwort": {
+    "error": {
+     "message": "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.",
+     "type": "invalid_request_error",
+     "param": "max_tokens",
+     "code": "unsupported_parameter"
+    }
+   }
+  },
+  "tippfehler": {
+   "was": "openai/gpt-6-lunaa ohne Route",
+   "status": 503,
+   "kopfzeilen": [],
+   "antwort": {
+    "error": "Model pricing unavailable for 'gpt-6-lunaa' - cannot enforce cost quota"
+   }
+  },
+  "leer": {
+   "was": "Route mit beiden Deployments abgeschaltet",
+   "status": 503,
+   "kopfzeilen": [],
+   "antwort": {
+    "error": "No deployment could serve model 'kompendium-test' (no deployment left)"
+   }
+  }
+ },
+ "cache": "zwei wortgleiche Anfragen an openai/gpt-6-luna bekamen am 09.10. zwei ids, mit gleichem safety_identifier und ohne: kein Treffer"
+}
