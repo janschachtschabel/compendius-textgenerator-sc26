@@ -1092,7 +1092,7 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `LLM_ENABLED` | `false` | Hauptschalter der LLM-Schicht |
-| `LLM_EXTRACTION_CANDIDATES` | `8` | Bei `extraction=llm` angebotene Absätze je Baustein: alle, die die Policy dem Baustein zuordnet (bis zu dessen `max_chunks`, auch über diese Zahl hinaus), dann die nächstbesten nach Score bis zu dieser Zahl |
+| `LLM_EXTRACTION_CANDIDATES` | `8` | Bei `extraction=llm` angebotene Absätze je Baustein: alle, die die Policy dem Baustein zuordnet (bis zu dessen `max_chunks` mal `BLOCK_BUDGET_FACTOR`, auch über diese Zahl hinaus), dann die nächstbesten nach Score bis zu dieser Zahl |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Welche Bausteine `llm-fast` schreibt |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg: `drop` (verwerfen) oder `mark` (als Schlussfolgerung kennzeichnen) |
 | `B_API_KEY` | leer | Schlüssel der b-api. Gehört in die `.env`, nicht in die Vorlage |
