@@ -1,7 +1,7 @@
 # Entscheidungsvorlage: Verfahren und Schalter von Teil 1
 
 [Übersicht](README.md) · Stand 09.10.2026, Release 2.17.0 · Zahlen: [Messprotokoll](05-messprotokoll.md), M1 bis
-M88; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
+M90; Rohdaten und Zusammenfassungen in [messung/ergebnisse](messung/ergebnisse/README.md); Methoden und Werte von
 `/entities`: [Entitäten und Kennungen](08-entitaeten-und-kennungen.md); alle Schritte mit ihren Methoden, Güte, Zeit
 und Tokens je Profil: [Methoden, Messwerte und Profile](09-methoden-und-profile.md)
 
@@ -402,6 +402,7 @@ gestrichen (`LLM_UNSUPPORTED_SENTENCES=drop`) oder als Schlussfolgerung markiert
 |---|---|---|---|
 | extraktiv (ohne LLM) | 1,1 s auf dem Server, samt Akteuren, Quellen, Glossar | 0 | jeder Satz wörtlich im zitierten Absatz (432 von 432) |
 | `extraction=llm` | rund 11 s | 14.000 bis 22.400 | 14 richtige Absätze mehr bei gleicher Präzision (59 %) gegenüber derselben Konfiguration ohne LLM; kleine Bausteine oft falsch |
+| `extraction=llm` beim zehnfachen Bausteinbudget (M89) | rund 6 s mehr | rund 31.000 bis 33.000 mehr | Texte ein Drittel so lang, lesbarer, weniger Fehler, aber Nutzen 3,1 statt 3,8 (`balanced`) und 3,4 statt 4,2 (`best-quality`); Punkt 19 |
 | `generation=llm-fast` | 9 bis 15 s | 2.300 bis 4.000 | flüssiger Einstieg; Belegprüfung |
 | `generation=llm` | 16 bis 20 s | 10.500 bis 14.500 | flüssiger Text; Belegprüfung, im Median 73 % der Inhaltswörter im zitierten Absatz |
 | beide auf `llm` | 18 s (Optik) | 27.205 (Optik) bis rund 37.000 | |
@@ -414,9 +415,10 @@ gestrichen (`LLM_UNSUPPORTED_SENTENCES=drop`) oder als Schlussfolgerung markiert
 - Für Maschinen, also Suche, KI-Assistenten und Weiterverarbeitung, ist der extraktive Text der beste: Jeder Satz
   steht wörtlich in seiner Quelle. Für Menschen liest er sich wie eine geordnete Sammlung von Auszügen; dafür ist
   `generation` gedacht.
-- `extraction=llm` wurde am 19.09.2026 ohne Model2Vec gemessen. Gegenüber dem heutigen Standard (110 gedruckte
-  Absätze, 67 richtig, 61 %) sind 131 und 77 (59 %) nur ein Anhaltspunkt; in Querschnitt & Bezüge landeten 7 Absätze,
-  keiner richtig. Keine Empfehlung.
+- `extraction=llm` wurde am 19.09.2026 ohne Model2Vec gemessen. Gegenüber dem heutigen Standard (110 gedruckte Absätze,
+  67 richtig, 61 %) sind 131 und 77 (59 %) nur ein Anhaltspunkt; in Querschnitt & Bezüge landeten 7 Absätze, keiner
+  richtig. Keine Empfehlung. Mit dem zehnfachen Bausteinbudget maß M89 den Schalter neu: kürzer, lesbarer, weniger
+  nützlich (Punkt 19).
 - Die übrigen Werte der Text-Schalter stammen vom 18. und 19.09.2026 an vier Themen bzw. an Optik (gpt-5.6-luna). Die
   Lesbarkeit maß M28 an sechs Themen, blind von zwei Gutachtern: Der geschriebene Text liest sich besser (4,0 statt 2,5
   von 5, in 11 von 12 Urteilen vorgezogen), trug aber im Mittel 12 Füllsätze je Thema; zwei Drittel des ergänzten
@@ -1045,6 +1047,16 @@ Passung 4,56 und Nutzen 4,31.
     Wiederholung). Lokal bleibt die Januar-Ausgabe der Wikipedia, weil für zwei Ausgaben der Platz fehlt. Katalog,
     Gutenberg und alle Zahlen: M84.
 
+    **Nachtrag (M90):** Jan: „mich würde noch interessieren ob bei x10 im vergleich zu x1 die zusätzlichen quellen
+    (wikibooks, wikiversity) einen mehrwert bieten oder die einschätzung unverändert bleibt“. Über den exakten Titel
+    bekommen nur 6 von 100 Anfragen einen Zwilling aus Wikibooks oder Wikiversity, drei Seiten: *Optik*, *Lineare
+    Funktion* und *Open Educational Resources*. Bei ×1 druckt `llm-free` daraus 3 Absätze, bei ×10 70; von den 30
+    verschiedenen sind 22,5 zum Thema und 6,5 am Rand. Der Zwilling belegt einen Korpusplatz und verdrängt den letzten
+    Artikel der Wikipedia: bei Optik vor allem *Röntgenoptik* mit ebenso passenden Absätzen, bei „Lineare Funktion“
+    *Lineare Algebra* mit 36 unpassenden, bei „OER-Förderungen“ *Open Access* und *Open Source*. Wo ein Zwilling kommt,
+    wird der Text bei ×10 also nicht schlechter, bei zwei der drei Seiten besser; an der Empfehlung ändert das wenig,
+    weil es selten trifft. Die beiden Archive kosten 4,1 GB Platte; gemessen nur in `llm-free`, für M90 neu geladen.
+
 17. **Bausteinbudget** (Jan, 09.10.2026: „der größte hebel ist das bausteinbudget … vom team gewünscht war, das die
     kompendiale texte umfangreich und vollständig sind“; nach den ersten Zahlen: „zu prüfen wäre was möglicherweise
     dagegen sprechen könnte … vielleicht kann man dann mit einem f1 sagen wo die verbesserungen gesättigt sind“):
@@ -1164,6 +1176,34 @@ Passung 4,56 und Nutzen 4,31.
     - Die genannten Artikel wechseln stark von Lauf zu Lauf: Über fünf Läufe kamen je Anfrage im Median 11 verschiedene,
       nur 41 % davon in allen fünf; der Hauptartikel blieb bei allen 100 Anfragen gleich.
     - Mit mehr Budget (Punkt 17) druckt jeder Fehlgriff mehr Absätze (M86).
+
+19. **Satzauswahl der KI beim zehnfachen Bausteinbudget** (Jan, 09.10.2026: „vielleicht sollten wir es trotzdem mal mit
+    antesten … es wäre interessant zu wissen welche qualität balance + extraction llm oder max quality + extraction llm
+    haben“): gemessen in M89 an den neun Themen von M82, `balanced` und `best-quality` je ohne und mit `extraction=llm`,
+    beim ausgelieferten Budget (×10); zu entscheiden. Kein Profil setzt den Schalter; seit D103 steht er als Kästchen
+    „KI wählt die Sätze“ beim Profil.
+
+    | Neun Themen | `balanced` | mit Satzauswahl | `best-quality` | mit Satzauswahl |
+    |---|---|---|---|---|
+    | Passung / Nutzen | 3,2 / 3,8 | 3,1 / 3,1 | 3,6 / 4,2 | 3,8 / 3,4 |
+    | Vollständigkeit / Lesbarkeit | 2,3 / 2,4 | 2,4 / 2,6 | 2,8 / 2,5 | 2,9 / 3,0 |
+    | Fehler, schwer und leicht, zwei Gutachter | 9 und 32 | 2 und 15 | 7 und 34 | 0 und 24 |
+    | Zeichen (Median) | 60.700 | 21.100 | 53.300 | 23.200 |
+    | Tokens je Anfrage (Median) | 310 | 33.500 | 40.500 | 71.400 |
+    | Dauer der Anfrage (Median) | 4,8 s | 10,8 s | 16,8 s | 22,3 s |
+    | Gold der Zuordnung ×10: Precision / Recall | 0,64 / 0,56 | 0,70 / 0,26 | 0,77 / 0,67 | 0,72 / 0,34 |
+
+    - **Nutzen:** sinkt in beiden Profilen um rund 0,75 Noten. Die Auswahl schließt beim Zeichenbudget der Vorlage,
+      nicht bei dem von D102: Die Texte werden ein Drittel so lang, und am Gold halbiert sich der Recall.
+    - **Lesbarkeit und Fehler:** etwas lesbarer, weniger Fehler, vor allem weil weniger Text dasteht.
+    - **Bausteine:** Die Auswahl füllt mehr Bausteine (im Median 9 statt 6 und 7), weil sie auch die nächstbesten
+      Absätze eines Bausteins bekommt, dem die Zuordnung keinen gab; die Vollständigkeit steigt dadurch kaum.
+    - **Kosten:** rund 33.000 Tokens mehr in `balanced` (das Hundertfache), rund 31.000 in `best-quality`, je rund 6 s;
+      keine Anfrage kam an die ausgelieferten Grenzen, keine fiel zurück.
+
+    **Empfehlung:** In keinem Profil voreinstellen; der Schalter bleibt für Anfragen und die Prüfansicht. Soll die
+    Auswahl die Länge von D102 halten, müsste sie beim Zeichenbudget mal `BLOCK_BUDGET_FACTOR` schließen; ob sie dann
+    den Nutzen hält und lesbarer bleibt, wäre neu zu messen.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

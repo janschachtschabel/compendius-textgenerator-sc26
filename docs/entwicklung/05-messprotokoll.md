@@ -4909,3 +4909,135 @@ mit Ursache, je Variante die Artikel, die sie nahm und brachte, und die Urteile 
 Artikeltexte). Skripte: `mc_n_bedeutung.py` (Schritte `fragen`, `titel`, `varianten`), `mc_n_bedeutung_boegen.py`,
 `mc_n_bedeutung_auswertung.py`. Die aufgezeichneten Antworten, die gedruckten Texte und die Bögen bleiben außerhalb
 des Repositorys.
+
+## M89 Die Satzauswahl der KI beim zehnfachen Bausteinbudget (D103, 09.10.2026)
+
+Jan: „vielleicht sollten wir es trotzdem mal mit antesten … es wäre interessant zu wissen welche qualität balance +
+extraction llm oder max quality + extraction llm haben“, dazu ein gut sichtbarer Schalter in der Prüfansicht (D103).
+Gemessen am Stand 2.19.0 (`a23e5e7`) mit dem ausgelieferten Bausteinbudget, dem Zehnfachen der Vorlage (D102).
+
+**Was der Schalter tut.** `extraction=llm` setzt nach Zuordnung und Zuschnitt an: je Inhaltsbaustein ein Aufruf, alle
+nebeneinander. Das LLM nennt aus den Kandidaten des Bausteins - allen Absätzen, die ihm der Zuschnitt lässt, aufgefüllt
+mit den nächstbesten bis acht - Satznummern; der Wortlaut bleibt der der Quelle, jeder Satz behält die Belegnummer
+seines Absatzes. Die Auswahl schließt beim Zeichenbudget der Vorlage, ohne `BLOCK_BUDGET_FACTOR`. Kein Profil setzt den
+Schalter; eine Anfrage kann ihn in jedem setzen, die Prüfansicht seit D103 mit dem Kästchen „KI wählt die Sätze“.
+
+**Aufbau.**
+
+- Die neun Themen von M48 und M82 in drei Arten, Teil 1, `balanced` und `best-quality` je ohne und mit `extraction=llm`
+  (`mc_kompendium_profil.py --variants=balanced,balanced+ex` und `--variants=best-quality,best-quality+ex`, je `--warmup
+  --fixed-corpus`): 36 Kompendien, je Thema und Profil ein Korpus. Das Skript zählt jetzt die Tokens je Prompt, die der
+  Satzauswahl unter `passage_selection`.
+- Einmal-Container, `gpt-6-luna` über OpenAI direkt; die Grenzen hochgesetzt (2.000.000 Tokens, 1.800 s), damit kein
+  Schutz eingreift. Keine Anfrage kam an die ausgelieferten (60.000 in `balanced`, 200.000 in `best-quality`), keine
+  fiel zurück.
+- Güte: je Art von Thema ein blinder Bogen mit allen vier Varianten als Texte A bis D (`mc_profilvergleich_boegen.py
+  --seed=89`), Auszug und Raster wie M48 und M86, je Bogen zwei neue Claude-Gutachter; der Schlüssel lag in einem
+  eigenen Ordner. Gleiche Note bei Passung in 33 von 36 Fällen, bei Nutzen und Vollständigkeit in 29, bei Lesbarkeit in
+  31, sonst um eins verschieden.
+- Dazu das Gold der Zuordnung (`mc_extraktion_gold.py`): die zehn Goldthemen im Korpus von `llm-free`, zugeordnet nach
+  den Regeln (×1 und ×10) und durch das LLM (×10), gedruckt einmal ohne, einmal mit der Satzauswahl; mit ihr zählt ein
+  Absatz, von dem der Text Sätze druckt, in dem Baustein, der die meisten druckt.
+
+**Text und Aufwand**, Median über die neun Themen:
+
+| Variante | ganze Anfrage | Tokens (davon Satzauswahl) | Zeichen | gefüllte Inhaltsbausteine | Belegabsätze |
+|---|---|---|---|---|---|
+| `balanced` | 4,8 s | 314 | 60.704 | 6 | 137 |
+| `balanced` mit `extraction=llm` | 10,8 s | 33.498 (33.189) | 21.068 | 9 | 49 |
+| `best-quality` | 16,8 s | 40.523 | 53.324 | 7 | 128 |
+| `best-quality` mit `extraction=llm` | 22,3 s | 71.386 (35.499) | 23.222 | 9 | 55 |
+
+**Güte**, Mittel zweier blinder Gutachter über die neun Themen (Noten 1 bis 5); Fehler als Summe beider Gutachter über
+die neun Texte:
+
+| Variante | Passung | Nutzen | Vollständigkeit | Lesbarkeit | Fehler, schwer und leicht |
+|---|---|---|---|---|---|
+| `balanced` | 3,22 | 3,83 | 2,28 | 2,39 | 9 und 32 |
+| `balanced` mit `extraction=llm` | 3,06 | 3,06 | 2,39 | 2,61 | 2 und 15 |
+| `best-quality` | 3,56 | 4,17 | 2,83 | 2,50 | 7 und 34 |
+| `best-quality` mit `extraction=llm` | 3,78 | 3,44 | 2,89 | 3,00 | 0 und 24 |
+
+**Am Gold der Zuordnung** (gedruckte Absätze mit Label, wie M86):
+
+| Zuordnung, Faktor | ohne Auswahl: gedruckt, Precision, Recall, F1 | mit Auswahl: gedruckt, Precision, Recall, F1 | Tokens der Auswahl, zehn Themen |
+|---|---|---|---|
+| Regeln ×1 | 222; 0,64; 0,16; 0,26 | 259; 0,59; 0,16; 0,25 | 182.000 |
+| Regeln ×10 | 1.009; 0,64; 0,56; 0,60 | 367; 0,70; 0,26; 0,37 | 291.000 |
+| LLM ×10 | 1.085; 0,77; 0,67; 0,72 | 453; 0,72; 0,34; 0,46 | 299.000 |
+
+- **Nutzen:** Mit der Satzauswahl sinkt er in beiden Profilen um rund 0,75 Noten (3,83 auf 3,06 und 4,17 auf 3,44). Die
+  Texte werden ein Drittel so lang, weil die Auswahl beim Zeichenbudget der Vorlage schließt; am Gold halbiert sich der
+  Recall (0,56 auf 0,26 nach den Regeln, 0,67 auf 0,34 nach dem LLM).
+- **Lesbarkeit und Fehler:** etwas lesbarer (2,39 auf 2,61 und 2,50 auf 3,00), weniger Fehler (schwere 9 auf 2 und 7 auf
+  0, leichte 32 auf 15 und 34 auf 24), vor allem weil weniger Text dasteht.
+- **Bausteine:** Die Auswahl füllt mehr Bausteine (im Median 9 statt 6 und 7), weil sie auch die nächstbesten Absätze
+  eines Bausteins bekommt, dem die Zuordnung keinen gab. Die Vollständigkeit steigt dadurch kaum (2,28 auf 2,39 und 2,83
+  auf 2,89).
+- **Passung und Precision:** `balanced` 3,22 auf 3,06, `best-quality` 3,56 auf 3,78; die Aspektthemen bleiben in allen
+  vier Varianten bei 1,5 bis 2,0. Am Gold steigt die Precision nach den Regeln von 0,64 auf 0,70 und fällt nach dem LLM
+  von 0,77 auf 0,72; bei ×1 bringt die Auswahl keine besseren Absätze (0,64 auf 0,59), wie am 19.09.
+- **Kosten:** rund 33.000 Tokens mehr in `balanced` (das Hundertfache seiner Tokens), rund 31.000 in `best-quality`, je
+  rund 6 s.
+
+**Schluss.** Beim zehnfachen Bausteinbudget macht die Satzauswahl der KI die Texte kürzer, lesbarer und fehlerärmer,
+aber weniger nützlich, für ein Vielfaches an Tokens; sie nimmt einen Teil von D102 zurück. Für keines der beiden Profile
+ist sie ein Gewinn an Nutzen. Zu entscheiden: Entscheidungsvorlage, Punkt 19.
+
+Rohdaten: `m89_extraktion_auswertung.json` (je Variante und Art von Thema Zeit, Tokens, Text und Noten, die Läufe ohne
+Text, die Urteile ohne Zitate, der Schlüssel) und `m89_extraktion_gold.json` (das Gold je Lauf und Thema). Skripte:
+`mc_kompendium_profil.py` (Varianten `<profil>+ex`), `mc_profilvergleich_boegen.py`, `mc_profilvergleich_auswertung.py`,
+`mc_extraktion_gold.py`. Die Texte und die Bögen bleiben außerhalb des Repositorys.
+
+## M90 Wikibooks und Wikiversity beim zehnfachen Bausteinbudget (09.10.2026)
+
+Jan: „mich würde noch interessieren ob bei x10 im vergleich zu x1 die zusätzlichen quellen (wikibooks, wikiversity)
+einen mehrwert bieten oder die einschätzung unverändert bleibt“. M11 maß die beiden Archive mit den Budgets der Vorlage
+an 20 Themen, M84 weitere Archive über Titel und Volltext. Der Dienst nimmt aus einem weiteren Archiv nur den Artikel
+mit dem exakten Titel des Hauptartikels, den Zwilling (D100). Archive: `wikibooks_de_all_nopic_2026-01` (2,87 GB) und
+`wikiversity_de_all_nopic_2026-07` (1,22 GB), dieselben Ausgaben wie in M11 und M84, neu geladen.
+
+**Aufbau.** Die 94 Anfragen von `eval/artikelwahl` und die neun Themen von M82, zusammen 100 verschiedene, in `llm-free`
+ohne LLM mit dem Bausteinbudget mal 1 und mal 10, je einmal mit Wikipedia und Klexikon und einmal zusätzlich mit
+Wikibooks und Wikiversity (`mc_zusatzquellen_budget.py`): 400 Kompendien. Die gedruckten Absätze aus Wikibooks und
+Wikiversity und die Absätze der Wikipedia, die sie verdrängten - gedruckt ohne die weiteren Archive, nicht mit ihnen -,
+bewerteten zwei neue Claude-Gutachter blind, gemischt unter ihrem Baustein, wie die Absätze in M86
+(`mc_zusatzquellen_boegen.py`). Beim Thema urteilten sie in 89 von 92 Fällen gleich (κ 0,95).
+
+| | ×1 | ×10 |
+|---|---|---|
+| Anfragen mit einem Zwilling aus Wikibooks oder Wikiversity | 6 von 100 | 6 von 100 |
+| gedruckte Absätze daraus (verschiedene) | 3 (2) | 70 (30) |
+| dafür verdrängte Absätze aus Wikipedia (verschiedene) | 18 (9) | 134 (61) |
+
+Die Urteile, Mittel beider Gutachter; „im falschen Baustein“ zählt unter den Absätzen, die nicht daneben sind:
+
+| verschiedene Absätze | zum Thema | am Rand | daneben | im falschen Baustein |
+|---|---|---|---|---|
+| gewonnen bei ×1 (2) | 1 | 1 | 0 | 1 |
+| verdrängt bei ×1 (9) | 1 | 0,5 | 7,5 | 0 |
+| gewonnen bei ×10 (30) | 22,5 | 6,5 | 1 | 10 |
+| verdrängt bei ×10 (61) | 17 | 4 | 40 | 5 |
+
+- Die drei Seiten: Wikibooks *Optik* (bei „Optik“, „Optik in Klasse 7“ und „Physik: Optik (Sek I)“), Wikiversity
+  *Lineare Funktion* (bei „Lineare Funktion“ und „Lineare Funktionen“) und Wikiversity *Open Educational Resources* (bei
+  „OER-Förderungen“). Alle 94 übrigen Anfragen bleiben gleich.
+- Der Zwilling belegt einen der zwölf Korpusplätze, dafür fällt der letzte Artikel der Wikipedia heraus, wie M11 bei
+  „Lineare Funktion“ sah. Bei Optik ist das *Röntgenoptik* (12 der 16 verdrängten Absätze): 16 Absätze aus Wikibooks,
+  15,5 davon zum Thema, gegen 16 aus der Wikipedia, 15 davon zum Thema, ein Tausch ohne Gewinn. Bei „Lineare Funktion“
+  fällt *Lineare Algebra* heraus: 8 Absätze aus Wikiversity, 7 davon zum Thema, gegen 41 aus der Wikipedia, 36 davon
+  daneben. Bei „OER-Förderungen“ stehen 6 Absätze am Rand gegen 4 daneben (*Open Access*, *Open Source*).
+- Bei ×1 druckt der Dienst aus den Zwillingen 3 Absätze, bei ×10 70; erst das Zehnfache lässt sie im Text ankommen. Im
+  falschen Baustein steht ein Drittel der gewonnenen.
+- Grenze: nur `llm-free`. Ab `balanced` nennt das LLM die Artikel des Korpus (D63); welcher Artikel dort herausfällt,
+  ist nicht gemessen.
+
+**Schluss.** Die Einschätzung von M11, M84 und D99 bleibt im Kern: Über den Titel treffen Wikibooks und Wikiversity
+selten, bei 6 von 100 Anfragen. Dort druckt das Zehnfache aber deutlich mehr von ihnen als die Budgets der Vorlage,
+überwiegend Passendes, und der Text wird nicht schlechter, bei zwei der drei Seiten besser, weil der Zwilling einen
+schwachen Korpusartikel verdrängt. Ein seltener, kleiner Gewinn für 4,1 GB Platte; Entscheidungsvorlage, Punkt 16.
+
+Rohdaten: `m90_zusatzquellen.json` (je Anfrage und Faktor Hauptartikel, Zahl der Quellen, gedruckte Absätze und Zeichen
+je Projekt, die Zwillinge und die verdrängten Absätze, ohne Texte) und `m90_zusatz_auswertung.json` (die Urteile je Art,
+Faktor und Thema, mit der Übereinstimmung). Skripte: `mc_zusatzquellen_budget.py`, `mc_zusatzquellen_boegen.py`. Die
+Absatztexte und der Bogen bleiben außerhalb des Repositorys.

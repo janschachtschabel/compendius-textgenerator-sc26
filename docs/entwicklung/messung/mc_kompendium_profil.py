@@ -21,6 +21,10 @@ every run, and the assignment and the writing stay fresh.
 From release 2.19.0 the service widens the budgets itself (BLOCK_BUDGET_FACTOR, default 10, D102); to measure the
 factors as M86 did, start the container with -e BLOCK_BUDGET_FACTOR=1.
 
+M89: every profile also as <profile>+ex, with extraction=llm (the AI chooses the sentences); a run keeps what
+audit.llm.extraction says and the tokens of its answers per prompt (tokens_by_prompt, the choice under
+passage_selection).
+
 Usage (from the project folder): python mc_kompendium_profil.py <out.json> --variants=bcg,bcg-hl,bqg <topic> [...]
 
 In the one-off container with OpenAI direct (M82; the archives from ZIM_PATHS of the container):
@@ -33,6 +37,7 @@ import json
 import os
 import re
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -62,8 +67,11 @@ REQUESTS = {
     "bcg-hl": {"preset": "best-coverage-generated", "matcher": "hybrid_light"},
     "bqg": {"preset": "best-quality-generated"},
     **{name: {"preset": name} for name in PRESETS},
+    **{f"{name}+ex": {"preset": name, "extraction": "llm"} for name in PRESETS},  # M89: the AI chooses the sentences
 }
 CONTENT = (SectionStatus.LLM, SectionStatus.EXTRACTIVE, SectionStatus.LLM_SELECTED)
+# What audit.llm.extraction says of the choice of sentences (M89)
+EXTRACTION_KEYS = ("requested", "used", "sections", "emptied", "fallbacks", "offered", "sentences", "cut_sentences")
 MARK = re.compile(r"<!--[^>]*-->\n?")
 # A sentence ends at its punctuation, unless the label of model knowledge follows ("Satz. [Modellwissen]"), then there
 SENTENCE_END = re.compile(r"(?<=[.!?])\s+(?!\[Modellwissen\])|(?<=\[Modellwissen\])\s+")
@@ -134,6 +142,27 @@ def fix_corpus() -> None:
     BApiClient.chat = chat
 
 
+TALLY: dict[str, int] = {}  # M89: the tokens of the run in progress per prompt
+TALLY_LOCK = threading.Lock()  # the blocks ask in parallel
+
+
+def tally_tokens() -> None:
+    """Every answer's tokens per prompt, for the run in progress (M89: what the choice of sentences costs); answers
+    of the fixed corpus count in every run, as in the audit."""
+    from app.llm.client import BApiClient
+
+    asked = BApiClient.chat
+
+    def chat(self, messages, **kwargs):  # the signature of BApiClient.chat
+        answer = asked(self, messages, **kwargs)
+        prompt = (kwargs.get("prompt") or "").split("@")[0] or "?"
+        with TALLY_LOCK:
+            TALLY[prompt] = TALLY.get(prompt, 0) + (getattr(answer, "total_tokens", 0) or 0)
+        return answer
+
+    BApiClient.chat = chat
+
+
 def _curricula(part: CurriculaPart | None, check: dict | None) -> dict | None:
     """What part 2 found and what its LLM check did, when part 2 was asked for (M82)."""
     if part is None:
@@ -163,6 +192,7 @@ def main() -> None:
         install()  # noqa: F821
     if "--fixed-corpus" in sys.argv:
         fix_corpus()
+    tally_tokens()
     service = cli_service(ZIMS)
     if service.llm is None:
         raise SystemExit("LLM_ENABLED did not reach the settings")
@@ -186,6 +216,7 @@ def main() -> None:
         if (topic, named(variant, factor)) in done:
             continue
         BUDGET["factor"] = factor
+        TALLY.clear()
         start = time.monotonic()
         try:
             request = GenerateRequest(topic=topic, parts=parts, **REQUESTS[variant])
@@ -231,6 +262,8 @@ def main() -> None:
                 "note": llm.get("note"),
                 "matching_fallbacks": (llm.get("matching") or {}).get("fallbacks"),
                 "matching_asked_again": (llm.get("matching") or {}).get("asked_again"),
+                "extraction": {key: (llm.get("extraction") or {}).get(key) for key in EXTRACTION_KEYS},  # M89
+                "tokens_by_prompt": dict(TALLY),
                 "target_length": request.target_length,
                 "parts_status": result.parts_status,
                 "curricula": _curricula(result.curricula, llm.get("curriculum_check")),

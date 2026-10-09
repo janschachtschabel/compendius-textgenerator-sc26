@@ -1,0 +1,5804 @@
+[
+ {
+  "topic": "Barockliteratur",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Barockliteratur",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 6476
+   },
+   "s": 8.4,
+   "quellen": 2
+  },
+  "mit": {
+   "main": "Barockliteratur",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 6476
+   },
+   "s": 1.6,
+   "quellen": 2
+  }
+ },
+ {
+  "topic": "Barockliteratur",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Barockliteratur",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 9346
+   },
+   "s": 0.5,
+   "quellen": 2
+  },
+  "mit": {
+   "main": "Barockliteratur",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 9346
+   },
+   "s": 0.5,
+   "quellen": 2
+  }
+ },
+ {
+  "topic": "Bruchrechnung",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 5,
+    "klexikon": 3
+   },
+   "chars": {
+    "wikipedia": 1978,
+    "klexikon": 698
+   },
+   "s": 4.4,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 5,
+    "klexikon": 3
+   },
+   "chars": {
+    "wikipedia": 1978,
+    "klexikon": 698
+   },
+   "s": 3.2,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Bruchrechnung",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 52,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 13022,
+    "klexikon": 1100
+   },
+   "s": 0.6,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 52,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 13022,
+    "klexikon": 1100
+   },
+   "s": 0.6,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Demokratie",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Demokratie",
+   "printed": {
+    "wikipedia": 28,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 13115,
+    "klexikon": 420
+   },
+   "s": 3.7,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Demokratie",
+   "printed": {
+    "wikipedia": 28,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 13115,
+    "klexikon": 420
+   },
+   "s": 2.3,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Demokratie",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Demokratie",
+   "printed": {
+    "wikipedia": 197,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 91484,
+    "klexikon": 2264
+   },
+   "s": 1.4,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Demokratie",
+   "printed": {
+    "wikipedia": 197,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 91484,
+    "klexikon": 2264
+   },
+   "s": 1.3,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Französische Revolution",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12264,
+    "klexikon": 196
+   },
+   "s": 4.2,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12264,
+    "klexikon": 196
+   },
+   "s": 3.3,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Französische Revolution",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 74,
+    "klexikon": 13
+   },
+   "chars": {
+    "wikipedia": 41467,
+    "klexikon": 3356
+   },
+   "s": 1.4,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 74,
+    "klexikon": 13
+   },
+   "chars": {
+    "wikipedia": 41467,
+    "klexikon": 3356
+   },
+   "s": 1.3,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Klimawandel",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 11168,
+    "klexikon": 204
+   },
+   "s": 13.9,
+   "quellen": 6
+  },
+  "mit": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 11168,
+    "klexikon": 204
+   },
+   "s": 5.6,
+   "quellen": 6
+  }
+ },
+ {
+  "topic": "Klimawandel",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 120,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 66162,
+    "klexikon": 2280
+   },
+   "s": 1.4,
+   "quellen": 6
+  },
+  "mit": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 120,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 66162,
+    "klexikon": 2280
+   },
+   "s": 1.1,
+   "quellen": 6
+  }
+ },
+ {
+  "topic": "Optik",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 29,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9755,
+    "klexikon": 155
+   },
+   "s": 2.2,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 30,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 10099,
+    "klexikon": 155
+   },
+   "s": 1.9,
+   "quellen": 11,
+   "weitere_quellen": [
+    "Optik (wikibooks)"
+   ]
+  }
+ },
+ {
+  "topic": "Optik",
+  "factor": 10,
+  "verdraengt": 16,
+  "ohne": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 93,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30190,
+    "klexikon": 1014
+   },
+   "s": 0.7,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 77,
+    "klexikon": 5,
+    "wikibooks": 16
+   },
+   "chars": {
+    "wikipedia": 25772,
+    "klexikon": 1014,
+    "wikibooks": 6785
+   },
+   "s": 0.7,
+   "quellen": 11,
+   "weitere_quellen": [
+    "Optik (wikibooks)"
+   ]
+  },
+  "weitere": [
+   "wikibooks: Optik"
+  ],
+  "weitere_absaetze": 16
+ },
+ {
+  "topic": "Photosynthese",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 3.6,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 3.2,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Photosynthese",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.6,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.4,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Programmiersprache",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Programmiersprache",
+   "printed": {
+    "wikipedia": 31
+   },
+   "chars": {
+    "wikipedia": 12143
+   },
+   "s": 3.9,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Programmiersprache",
+   "printed": {
+    "wikipedia": 31
+   },
+   "chars": {
+    "wikipedia": 12143
+   },
+   "s": 2.5,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Programmiersprache",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Programmiersprache",
+   "printed": {
+    "wikipedia": 126
+   },
+   "chars": {
+    "wikipedia": 47177
+   },
+   "s": 1.0,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Programmiersprache",
+   "printed": {
+    "wikipedia": 126
+   },
+   "chars": {
+    "wikipedia": 47177
+   },
+   "s": 1.0,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Säure-Base-Konzepte",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Säure-Base-Konzepte",
+   "printed": {
+    "wikipedia": 9
+   },
+   "chars": {
+    "wikipedia": 3794
+   },
+   "s": 4.2,
+   "quellen": 3
+  },
+  "mit": {
+   "main": "Säure-Base-Konzepte",
+   "printed": {
+    "wikipedia": 9
+   },
+   "chars": {
+    "wikipedia": 3794
+   },
+   "s": 3.1,
+   "quellen": 3
+  }
+ },
+ {
+  "topic": "Säure-Base-Konzepte",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Säure-Base-Konzepte",
+   "printed": {
+    "wikipedia": 43
+   },
+   "chars": {
+    "wikipedia": 11650
+   },
+   "s": 0.9,
+   "quellen": 3
+  },
+  "mit": {
+   "main": "Säure-Base-Konzepte",
+   "printed": {
+    "wikipedia": 43
+   },
+   "chars": {
+    "wikipedia": 11650
+   },
+   "s": 1.0,
+   "quellen": 3
+  }
+ },
+ {
+  "topic": "Sinfonie",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Sinfonie",
+   "printed": {
+    "wikipedia": 28
+   },
+   "chars": {
+    "wikipedia": 12554
+   },
+   "s": 3.7,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Sinfonie",
+   "printed": {
+    "wikipedia": 28
+   },
+   "chars": {
+    "wikipedia": 12554
+   },
+   "s": 2.2,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Sinfonie",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Sinfonie",
+   "printed": {
+    "wikipedia": 125
+   },
+   "chars": {
+    "wikipedia": 55783
+   },
+   "s": 1.5,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Sinfonie",
+   "printed": {
+    "wikipedia": 125
+   },
+   "chars": {
+    "wikipedia": 55783
+   },
+   "s": 1.2,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Plattentektonik",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Plattentektonik",
+   "printed": {
+    "wikipedia": 13,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 7078,
+    "klexikon": 253
+   },
+   "s": 10.8,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Plattentektonik",
+   "printed": {
+    "wikipedia": 13,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 7078,
+    "klexikon": 253
+   },
+   "s": 2.1,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Plattentektonik",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Plattentektonik",
+   "printed": {
+    "wikipedia": 62,
+    "klexikon": 23
+   },
+   "chars": {
+    "wikipedia": 25854,
+    "klexikon": 4627
+   },
+   "s": 0.9,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Plattentektonik",
+   "printed": {
+    "wikipedia": 62,
+    "klexikon": 23
+   },
+   "chars": {
+    "wikipedia": 25854,
+    "klexikon": 4627
+   },
+   "s": 0.8,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Ökosystem",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Ökosystem",
+   "printed": {
+    "wikipedia": 27,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12181,
+    "klexikon": 190
+   },
+   "s": 2.6,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Ökosystem",
+   "printed": {
+    "wikipedia": 27,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12181,
+    "klexikon": 190
+   },
+   "s": 1.3,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Ökosystem",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Ökosystem",
+   "printed": {
+    "wikipedia": 110,
+    "klexikon": 4
+   },
+   "chars": {
+    "wikipedia": 53387,
+    "klexikon": 952
+   },
+   "s": 0.7,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Ökosystem",
+   "printed": {
+    "wikipedia": 110,
+    "klexikon": 4
+   },
+   "chars": {
+    "wikipedia": 53387,
+    "klexikon": 952
+   },
+   "s": 0.7,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Atommodell",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Liste der Atommodelle",
+   "printed": {
+    "wikipedia": 9
+   },
+   "chars": {
+    "wikipedia": 4086
+   },
+   "s": 5.4,
+   "quellen": 4
+  },
+  "mit": {
+   "main": "Liste der Atommodelle",
+   "printed": {
+    "wikipedia": 9
+   },
+   "chars": {
+    "wikipedia": 4086
+   },
+   "s": 3.6,
+   "quellen": 4
+  }
+ },
+ {
+  "topic": "Atommodell",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Liste der Atommodelle",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 8642
+   },
+   "s": 0.6,
+   "quellen": 4
+  },
+  "mit": {
+   "main": "Liste der Atommodelle",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 8642
+   },
+   "s": 0.6,
+   "quellen": 4
+  }
+ },
+ {
+  "topic": "Industrielle Revolution",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Industrielle Revolution",
+   "printed": {
+    "wikipedia": 28,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12079,
+    "klexikon": 223
+   },
+   "s": 3.9,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Industrielle Revolution",
+   "printed": {
+    "wikipedia": 28,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12079,
+    "klexikon": 223
+   },
+   "s": 2.6,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Industrielle Revolution",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Industrielle Revolution",
+   "printed": {
+    "wikipedia": 98,
+    "klexikon": 14
+   },
+   "chars": {
+    "wikipedia": 46108,
+    "klexikon": 3414
+   },
+   "s": 1.1,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Industrielle Revolution",
+   "printed": {
+    "wikipedia": 98,
+    "klexikon": 14
+   },
+   "chars": {
+    "wikipedia": 46108,
+    "klexikon": 3414
+   },
+   "s": 1.1,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Elektrischer Strom",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Elektrischer Strom",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 12467
+   },
+   "s": 3.3,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Elektrischer Strom",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 12467
+   },
+   "s": 2.1,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Elektrischer Strom",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Elektrischer Strom",
+   "printed": {
+    "wikipedia": 102
+   },
+   "chars": {
+    "wikipedia": 33456
+   },
+   "s": 0.6,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Elektrischer Strom",
+   "printed": {
+    "wikipedia": 102
+   },
+   "chars": {
+    "wikipedia": 33456
+   },
+   "s": 0.6,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Wasserkreislauf",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Wasserkreislauf",
+   "printed": {
+    "wikipedia": 11,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 4481,
+    "klexikon": 372
+   },
+   "s": 3.3,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Wasserkreislauf",
+   "printed": {
+    "wikipedia": 11,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 4481,
+    "klexikon": 372
+   },
+   "s": 2.0,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Wasserkreislauf",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Wasserkreislauf",
+   "printed": {
+    "wikipedia": 17,
+    "klexikon": 12
+   },
+   "chars": {
+    "wikipedia": 5542,
+    "klexikon": 2507
+   },
+   "s": 0.7,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Wasserkreislauf",
+   "printed": {
+    "wikipedia": 17,
+    "klexikon": 12
+   },
+   "chars": {
+    "wikipedia": 5542,
+    "klexikon": 2507
+   },
+   "s": 0.7,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Römisches Reich",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Römisches Reich",
+   "printed": {
+    "wikipedia": 34,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 14935,
+    "klexikon": 456
+   },
+   "s": 5.7,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Römisches Reich",
+   "printed": {
+    "wikipedia": 34,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 14935,
+    "klexikon": 456
+   },
+   "s": 4.0,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Römisches Reich",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Römisches Reich",
+   "printed": {
+    "wikipedia": 166,
+    "klexikon": 14
+   },
+   "chars": {
+    "wikipedia": 68413,
+    "klexikon": 3116
+   },
+   "s": 1.5,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Römisches Reich",
+   "printed": {
+    "wikipedia": 166,
+    "klexikon": 14
+   },
+   "chars": {
+    "wikipedia": 68413,
+    "klexikon": 3116
+   },
+   "s": 1.4,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Lineare Funktion",
+  "factor": 1,
+  "verdraengt": 9,
+  "ohne": {
+   "main": "Lineare Funktion",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 6378
+   },
+   "s": 3.1,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Lineare Funktion",
+   "printed": {
+    "wikipedia": 15,
+    "wikiversity": 1
+   },
+   "chars": {
+    "wikipedia": 5212,
+    "wikiversity": 260
+   },
+   "s": 2.4,
+   "quellen": 8,
+   "weitere_quellen": [
+    "Lineare Funktion (wikiversity)"
+   ]
+  },
+  "weitere": [
+   "wikiversity: Lineare Funktion"
+  ],
+  "weitere_absaetze": 1
+ },
+ {
+  "topic": "Lineare Funktion",
+  "factor": 10,
+  "verdraengt": 41,
+  "ohne": {
+   "main": "Lineare Funktion",
+   "printed": {
+    "wikipedia": 93
+   },
+   "chars": {
+    "wikipedia": 20607
+   },
+   "s": 0.6,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Lineare Funktion",
+   "printed": {
+    "wikipedia": 54,
+    "wikiversity": 8
+   },
+   "chars": {
+    "wikipedia": 11850,
+    "wikiversity": 1522
+   },
+   "s": 0.5,
+   "quellen": 8,
+   "weitere_quellen": [
+    "Lineare Funktion (wikiversity)"
+   ]
+  },
+  "weitere": [
+   "wikiversity: Lineare Funktion"
+  ],
+  "weitere_absaetze": 8
+ },
+ {
+  "topic": "Zelle (Biologie)",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 8144
+   },
+   "s": 3.1,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 8144
+   },
+   "s": 1.7,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Zelle (Biologie)",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 82
+   },
+   "chars": {
+    "wikipedia": 32053
+   },
+   "s": 0.8,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 82
+   },
+   "chars": {
+    "wikipedia": 32053
+   },
+   "s": 0.6,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Gedicht",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Lyrik",
+   "printed": {
+    "wikipedia": 27,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 11428,
+    "klexikon": 282
+   },
+   "s": 2.7,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Lyrik",
+   "printed": {
+    "wikipedia": 27,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 11428,
+    "klexikon": 282
+   },
+   "s": 1.5,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Gedicht",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Lyrik",
+   "printed": {
+    "wikipedia": 113,
+    "klexikon": 3
+   },
+   "chars": {
+    "wikipedia": 49411,
+    "klexikon": 503
+   },
+   "s": 0.9,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Lyrik",
+   "printed": {
+    "wikipedia": 113,
+    "klexikon": 3
+   },
+   "chars": {
+    "wikipedia": 49411,
+    "klexikon": 503
+   },
+   "s": 0.8,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Optik in Klasse 7",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 29,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9755,
+    "klexikon": 155
+   },
+   "s": 1.4,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 30,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 10099,
+    "klexikon": 155
+   },
+   "s": 1.4,
+   "quellen": 11,
+   "weitere_quellen": [
+    "Optik (wikibooks)"
+   ]
+  }
+ },
+ {
+  "topic": "Optik in Klasse 7",
+  "factor": 10,
+  "verdraengt": 16,
+  "ohne": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 93,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30190,
+    "klexikon": 1014
+   },
+   "s": 0.6,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 77,
+    "klexikon": 5,
+    "wikibooks": 16
+   },
+   "chars": {
+    "wikipedia": 25772,
+    "klexikon": 1014,
+    "wikibooks": 6785
+   },
+   "s": 0.7,
+   "quellen": 11,
+   "weitere_quellen": [
+    "Optik (wikibooks)"
+   ]
+  },
+  "weitere": [
+   "wikibooks: Optik"
+  ],
+  "weitere_absaetze": 16
+ },
+ {
+  "topic": "Physik: Optik (Sek I)",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 29,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9755,
+    "klexikon": 155
+   },
+   "s": 0.6,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 30,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 10099,
+    "klexikon": 155
+   },
+   "s": 0.7,
+   "quellen": 11,
+   "weitere_quellen": [
+    "Optik (wikibooks)"
+   ]
+  }
+ },
+ {
+  "topic": "Physik: Optik (Sek I)",
+  "factor": 10,
+  "verdraengt": 16,
+  "ohne": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 93,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30190,
+    "klexikon": 1014
+   },
+   "s": 0.6,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Optik",
+   "printed": {
+    "wikipedia": 77,
+    "klexikon": 5,
+    "wikibooks": 16
+   },
+   "chars": {
+    "wikipedia": 25772,
+    "klexikon": 1014,
+    "wikibooks": 6785
+   },
+   "s": 0.7,
+   "quellen": 11,
+   "weitere_quellen": [
+    "Optik (wikibooks)"
+   ]
+  },
+  "weitere": [
+   "wikibooks: Optik"
+  ],
+  "weitere_absaetze": 16
+ },
+ {
+  "topic": "Photosynthese für die Grundschule",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 2.6,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 2.7,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Photosynthese für die Grundschule",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.0,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.1,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Bruchrechnung Klasse 6",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 5,
+    "klexikon": 3
+   },
+   "chars": {
+    "wikipedia": 1978,
+    "klexikon": 698
+   },
+   "s": 3.2,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 5,
+    "klexikon": 3
+   },
+   "chars": {
+    "wikipedia": 1978,
+    "klexikon": 698
+   },
+   "s": 3.4,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Bruchrechnung Klasse 6",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 52,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 13022,
+    "klexikon": 1100
+   },
+   "s": 0.6,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 52,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 13022,
+    "klexikon": 1100
+   },
+   "s": 0.6,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Demokratie in der Sekundarstufe I",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Demokratie",
+   "printed": {
+    "wikipedia": 28,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 13115,
+    "klexikon": 420
+   },
+   "s": 2.2,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Demokratie",
+   "printed": {
+    "wikipedia": 28,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 13115,
+    "klexikon": 420
+   },
+   "s": 2.0,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Demokratie in der Sekundarstufe I",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Demokratie",
+   "printed": {
+    "wikipedia": 197,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 91484,
+    "klexikon": 2264
+   },
+   "s": 1.3,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Demokratie",
+   "printed": {
+    "wikipedia": 197,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 91484,
+    "klexikon": 2264
+   },
+   "s": 1.4,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Thema: Klimawandel",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 11168,
+    "klexikon": 204
+   },
+   "s": 2.6,
+   "quellen": 6
+  },
+  "mit": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 11168,
+    "klexikon": 204
+   },
+   "s": 2.7,
+   "quellen": 6
+  }
+ },
+ {
+  "topic": "Thema: Klimawandel",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 120,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 66162,
+    "klexikon": 2280
+   },
+   "s": 1.1,
+   "quellen": 6
+  },
+  "mit": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 120,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 66162,
+    "klexikon": 2280
+   },
+   "s": 1.1,
+   "quellen": 6
+  }
+ },
+ {
+  "topic": "Geschichte: Französische Revolution",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12264,
+    "klexikon": 196
+   },
+   "s": 2.6,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12264,
+    "klexikon": 196
+   },
+   "s": 2.6,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Geschichte: Französische Revolution",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 74,
+    "klexikon": 13
+   },
+   "chars": {
+    "wikipedia": 41467,
+    "klexikon": 3356
+   },
+   "s": 1.3,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 74,
+    "klexikon": 13
+   },
+   "chars": {
+    "wikipedia": 41467,
+    "klexikon": 3356
+   },
+   "s": 1.3,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Plattentektonik (Oberstufe)",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Plattentektonik",
+   "printed": {
+    "wikipedia": 13,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 7078,
+    "klexikon": 253
+   },
+   "s": 1.9,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Plattentektonik",
+   "printed": {
+    "wikipedia": 13,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 7078,
+    "klexikon": 253
+   },
+   "s": 1.9,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Plattentektonik (Oberstufe)",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Plattentektonik",
+   "printed": {
+    "wikipedia": 62,
+    "klexikon": 23
+   },
+   "chars": {
+    "wikipedia": 25854,
+    "klexikon": 4627
+   },
+   "s": 0.8,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Plattentektonik",
+   "printed": {
+    "wikipedia": 62,
+    "klexikon": 23
+   },
+   "chars": {
+    "wikipedia": 25854,
+    "klexikon": 4627
+   },
+   "s": 0.9,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Physik: Welle",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Welle",
+   "printed": {
+    "wikipedia": 27,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 8958,
+    "klexikon": 362
+   },
+   "s": 3.2,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Welle",
+   "printed": {
+    "wikipedia": 27,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 8958,
+    "klexikon": 362
+   },
+   "s": 2.0,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Physik: Welle",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Welle",
+   "printed": {
+    "wikipedia": 93,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 30029,
+    "klexikon": 669
+   },
+   "s": 1.2,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Welle",
+   "printed": {
+    "wikipedia": 93,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 30029,
+    "klexikon": 669
+   },
+   "s": 1.0,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Physik: Leiter",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Leiter (Physik)",
+   "printed": {
+    "wikipedia": 30
+   },
+   "chars": {
+    "wikipedia": 10357
+   },
+   "s": 5.7,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Leiter (Physik)",
+   "printed": {
+    "wikipedia": 30
+   },
+   "chars": {
+    "wikipedia": 10357
+   },
+   "s": 3.2,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Physik: Leiter",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Leiter (Physik)",
+   "printed": {
+    "wikipedia": 155
+   },
+   "chars": {
+    "wikipedia": 64131
+   },
+   "s": 1.3,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Leiter (Physik)",
+   "printed": {
+    "wikipedia": 155
+   },
+   "chars": {
+    "wikipedia": 64131
+   },
+   "s": 1.2,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Physik: Strom",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Strom (Physik)",
+   "printed": {
+    "wikipedia": 31
+   },
+   "chars": {
+    "wikipedia": 9133
+   },
+   "s": 3.6,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Strom (Physik)",
+   "printed": {
+    "wikipedia": 31
+   },
+   "chars": {
+    "wikipedia": 9133
+   },
+   "s": 2.1,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Physik: Strom",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Strom (Physik)",
+   "printed": {
+    "wikipedia": 92
+   },
+   "chars": {
+    "wikipedia": 27251
+   },
+   "s": 0.7,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Strom (Physik)",
+   "printed": {
+    "wikipedia": 92
+   },
+   "chars": {
+    "wikipedia": 27251
+   },
+   "s": 0.7,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Physik: Leistung",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Leistung (Physik)",
+   "printed": {
+    "wikipedia": 20
+   },
+   "chars": {
+    "wikipedia": 5842
+   },
+   "s": 4.0,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Leistung (Physik)",
+   "printed": {
+    "wikipedia": 20
+   },
+   "chars": {
+    "wikipedia": 5842
+   },
+   "s": 2.7,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Physik: Leistung",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Leistung (Physik)",
+   "printed": {
+    "wikipedia": 80
+   },
+   "chars": {
+    "wikipedia": 19425
+   },
+   "s": 0.8,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Leistung (Physik)",
+   "printed": {
+    "wikipedia": 80
+   },
+   "chars": {
+    "wikipedia": 19425
+   },
+   "s": 0.8,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Physik: Arbeit",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Arbeit (Physik)",
+   "printed": {
+    "wikipedia": 30
+   },
+   "chars": {
+    "wikipedia": 11045
+   },
+   "s": 5.2,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Arbeit (Physik)",
+   "printed": {
+    "wikipedia": 30
+   },
+   "chars": {
+    "wikipedia": 11045
+   },
+   "s": 3.2,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Physik: Arbeit",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Arbeit (Physik)",
+   "printed": {
+    "wikipedia": 125
+   },
+   "chars": {
+    "wikipedia": 37748
+   },
+   "s": 1.5,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Arbeit (Physik)",
+   "printed": {
+    "wikipedia": 125
+   },
+   "chars": {
+    "wikipedia": 37748
+   },
+   "s": 1.4,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Biologie: Zelle",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 8144
+   },
+   "s": 2.8,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 8144
+   },
+   "s": 2.0,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Biologie: Zelle",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 82
+   },
+   "chars": {
+    "wikipedia": 32053
+   },
+   "s": 0.8,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 82
+   },
+   "chars": {
+    "wikipedia": 32053
+   },
+   "s": 0.8,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Chemie: Bindung",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Chemische Bindung",
+   "printed": {
+    "wikipedia": 15
+   },
+   "chars": {
+    "wikipedia": 5982
+   },
+   "s": 3.2,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Chemische Bindung",
+   "printed": {
+    "wikipedia": 15
+   },
+   "chars": {
+    "wikipedia": 5982
+   },
+   "s": 1.9,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Chemie: Bindung",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Chemische Bindung",
+   "printed": {
+    "wikipedia": 50
+   },
+   "chars": {
+    "wikipedia": 19328
+   },
+   "s": 0.7,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Chemische Bindung",
+   "printed": {
+    "wikipedia": 50
+   },
+   "chars": {
+    "wikipedia": 19328
+   },
+   "s": 0.8,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Mathematik: Funktion",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Funktion (Mathematik)",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 6349
+   },
+   "s": 4.5,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Funktion (Mathematik)",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 6349
+   },
+   "s": 3.1,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Mathematik: Funktion",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Funktion (Mathematik)",
+   "printed": {
+    "wikipedia": 119
+   },
+   "chars": {
+    "wikipedia": 31247
+   },
+   "s": 1.2,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Funktion (Mathematik)",
+   "printed": {
+    "wikipedia": 119
+   },
+   "chars": {
+    "wikipedia": 31247
+   },
+   "s": 1.0,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Mathematik: Satz",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Satz (Mathematik)",
+   "printed": {
+    "wikipedia": 14
+   },
+   "chars": {
+    "wikipedia": 4357
+   },
+   "s": 5.7,
+   "quellen": 6
+  },
+  "mit": {
+   "main": "Satz (Mathematik)",
+   "printed": {
+    "wikipedia": 14
+   },
+   "chars": {
+    "wikipedia": 4357
+   },
+   "s": 3.5,
+   "quellen": 6
+  }
+ },
+ {
+  "topic": "Mathematik: Satz",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Satz (Mathematik)",
+   "printed": {
+    "wikipedia": 19
+   },
+   "chars": {
+    "wikipedia": 6144
+   },
+   "s": 1.4,
+   "quellen": 6
+  },
+  "mit": {
+   "main": "Satz (Mathematik)",
+   "printed": {
+    "wikipedia": 19
+   },
+   "chars": {
+    "wikipedia": 6144
+   },
+   "s": 1.5,
+   "quellen": 6
+  }
+ },
+ {
+  "topic": "Deutsch: Satz",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Satz (Grammatik)",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 5430
+   },
+   "s": 3.4,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Satz (Grammatik)",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 5430
+   },
+   "s": 2.3,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Deutsch: Satz",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Satz (Grammatik)",
+   "printed": {
+    "wikipedia": 51
+   },
+   "chars": {
+    "wikipedia": 12469
+   },
+   "s": 1.4,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Satz (Grammatik)",
+   "printed": {
+    "wikipedia": 51
+   },
+   "chars": {
+    "wikipedia": 12469
+   },
+   "s": 1.3,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Musik: Takt",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Takt (Musik)",
+   "printed": {
+    "wikipedia": 11
+   },
+   "chars": {
+    "wikipedia": 4349
+   },
+   "s": 5.9,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Takt (Musik)",
+   "printed": {
+    "wikipedia": 11
+   },
+   "chars": {
+    "wikipedia": 4349
+   },
+   "s": 3.6,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Musik: Takt",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Takt (Musik)",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 9831
+   },
+   "s": 1.3,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Takt (Musik)",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 9831
+   },
+   "s": 1.1,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Informatik: Baum",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Baum (Datenstruktur)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 7310
+   },
+   "s": 4.5,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Baum (Datenstruktur)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 7310
+   },
+   "s": 2.6,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Informatik: Baum",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Baum (Datenstruktur)",
+   "printed": {
+    "wikipedia": 79
+   },
+   "chars": {
+    "wikipedia": 23481
+   },
+   "s": 0.8,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Baum (Datenstruktur)",
+   "printed": {
+    "wikipedia": 79
+   },
+   "chars": {
+    "wikipedia": 23481
+   },
+   "s": 0.9,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Informatik: Maus",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Computermaus",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 8925
+   },
+   "s": 4.9,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Computermaus",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 8925
+   },
+   "s": 2.7,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Informatik: Maus",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Computermaus",
+   "printed": {
+    "wikipedia": 105
+   },
+   "chars": {
+    "wikipedia": 41078
+   },
+   "s": 1.0,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Computermaus",
+   "printed": {
+    "wikipedia": 105
+   },
+   "chars": {
+    "wikipedia": 41078
+   },
+   "s": 1.0,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Informatik: Virus",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Computervirus",
+   "printed": {
+    "wikipedia": 28
+   },
+   "chars": {
+    "wikipedia": 11044
+   },
+   "s": 3.8,
+   "quellen": 3
+  },
+  "mit": {
+   "main": "Computervirus",
+   "printed": {
+    "wikipedia": 28
+   },
+   "chars": {
+    "wikipedia": 11044
+   },
+   "s": 2.3,
+   "quellen": 3
+  }
+ },
+ {
+  "topic": "Informatik: Virus",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Computervirus",
+   "printed": {
+    "wikipedia": 124
+   },
+   "chars": {
+    "wikipedia": 41389
+   },
+   "s": 1.1,
+   "quellen": 3
+  },
+  "mit": {
+   "main": "Computervirus",
+   "printed": {
+    "wikipedia": 124
+   },
+   "chars": {
+    "wikipedia": 41389
+   },
+   "s": 0.8,
+   "quellen": 3
+  }
+ },
+ {
+  "topic": "Erdkunde: Strom",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Strom (Gewässerart)",
+   "printed": {
+    "wikipedia": 26
+   },
+   "chars": {
+    "wikipedia": 9302
+   },
+   "s": 3.8,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Strom (Gewässerart)",
+   "printed": {
+    "wikipedia": 26
+   },
+   "chars": {
+    "wikipedia": 9302
+   },
+   "s": 2.5,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Erdkunde: Strom",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Strom (Gewässerart)",
+   "printed": {
+    "wikipedia": 46
+   },
+   "chars": {
+    "wikipedia": 16935
+   },
+   "s": 0.9,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Strom (Gewässerart)",
+   "printed": {
+    "wikipedia": 46
+   },
+   "chars": {
+    "wikipedia": 16935
+   },
+   "s": 0.9,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Geschichte: Wende",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Wende (Einheit)",
+   "printed": {
+    "wikipedia": 10
+   },
+   "chars": {
+    "wikipedia": 3428
+   },
+   "s": 3.0,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Wende (Einheit)",
+   "printed": {
+    "wikipedia": 10
+   },
+   "chars": {
+    "wikipedia": 3428
+   },
+   "s": 1.9,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Geschichte: Wende",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Wende (Einheit)",
+   "printed": {
+    "wikipedia": 10
+   },
+   "chars": {
+    "wikipedia": 3428
+   },
+   "s": 0.8,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Wende (Einheit)",
+   "printed": {
+    "wikipedia": 10
+   },
+   "chars": {
+    "wikipedia": 3428
+   },
+   "s": 0.5,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Strom",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Elektrischer Strom",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 12467
+   },
+   "s": 4.2,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Elektrischer Strom",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 12467
+   },
+   "s": 1.9,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Strom",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Elektrischer Strom",
+   "printed": {
+    "wikipedia": 102
+   },
+   "chars": {
+    "wikipedia": 33456
+   },
+   "s": 0.7,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Elektrischer Strom",
+   "printed": {
+    "wikipedia": 102
+   },
+   "chars": {
+    "wikipedia": 33456
+   },
+   "s": 0.9,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Zelle",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 8144
+   },
+   "s": 1.4,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 8144
+   },
+   "s": 1.3,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Zelle",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 82
+   },
+   "chars": {
+    "wikipedia": 32053
+   },
+   "s": 0.7,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 82
+   },
+   "chars": {
+    "wikipedia": 32053
+   },
+   "s": 0.7,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Welle",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Welle",
+   "printed": {
+    "wikipedia": 27,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 8958,
+    "klexikon": 362
+   },
+   "s": 2.0,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Welle",
+   "printed": {
+    "wikipedia": 27,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 8958,
+    "klexikon": 362
+   },
+   "s": 1.9,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Welle",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Welle",
+   "printed": {
+    "wikipedia": 93,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 30029,
+    "klexikon": 669
+   },
+   "s": 0.9,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Welle",
+   "printed": {
+    "wikipedia": 93,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 30029,
+    "klexikon": 669
+   },
+   "s": 0.9,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Fotosynthese",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 2.9,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 2.6,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Fotosynthese",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.0,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.0,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "photosynthese",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 1.0,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 1.2,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "photosynthese",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.2,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.1,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Lichtlehre",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Ernst Adalbert Voretzsch",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 6458
+   },
+   "s": 3.4,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Ernst Adalbert Voretzsch",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 6458
+   },
+   "s": 2.3,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Lichtlehre",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Ernst Adalbert Voretzsch",
+   "printed": {
+    "wikipedia": 24
+   },
+   "chars": {
+    "wikipedia": 12783
+   },
+   "s": 0.7,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Ernst Adalbert Voretzsch",
+   "printed": {
+    "wikipedia": 24
+   },
+   "chars": {
+    "wikipedia": 12783
+   },
+   "s": 0.6,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Klimaerwärmung",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Globale Erwärmung",
+   "printed": {
+    "wikipedia": 29
+   },
+   "chars": {
+    "wikipedia": 13220
+   },
+   "s": 5.3,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Globale Erwärmung",
+   "printed": {
+    "wikipedia": 29
+   },
+   "chars": {
+    "wikipedia": 13220
+   },
+   "s": 3.8,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Klimaerwärmung",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Globale Erwärmung",
+   "printed": {
+    "wikipedia": 182
+   },
+   "chars": {
+    "wikipedia": 86353
+   },
+   "s": 1.6,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Globale Erwärmung",
+   "printed": {
+    "wikipedia": 182
+   },
+   "chars": {
+    "wikipedia": 86353
+   },
+   "s": 1.5,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "DNA",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Desoxyribonukleinsäure",
+   "printed": {
+    "wikipedia": 13
+   },
+   "chars": {
+    "wikipedia": 4731
+   },
+   "s": 3.4,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Desoxyribonukleinsäure",
+   "printed": {
+    "wikipedia": 13
+   },
+   "chars": {
+    "wikipedia": 4731
+   },
+   "s": 2.3,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "DNA",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Desoxyribonukleinsäure",
+   "printed": {
+    "wikipedia": 75
+   },
+   "chars": {
+    "wikipedia": 28829
+   },
+   "s": 1.1,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Desoxyribonukleinsäure",
+   "printed": {
+    "wikipedia": 75
+   },
+   "chars": {
+    "wikipedia": 28829
+   },
+   "s": 0.9,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "EU",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Europäische Union",
+   "printed": {
+    "wikipedia": 34,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 14417,
+    "klexikon": 224
+   },
+   "s": 7.7,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Europäische Union",
+   "printed": {
+    "wikipedia": 34,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 14417,
+    "klexikon": 224
+   },
+   "s": 5.8,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "EU",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Europäische Union",
+   "printed": {
+    "wikipedia": 143,
+    "klexikon": 11
+   },
+   "chars": {
+    "wikipedia": 60802,
+    "klexikon": 2526
+   },
+   "s": 1.5,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Europäische Union",
+   "printed": {
+    "wikipedia": 143,
+    "klexikon": 11
+   },
+   "chars": {
+    "wikipedia": 60802,
+    "klexikon": 2526
+   },
+   "s": 1.7,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Bruchrechnen",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 5,
+    "klexikon": 3
+   },
+   "chars": {
+    "wikipedia": 1978,
+    "klexikon": 698
+   },
+   "s": 3.3,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 5,
+    "klexikon": 3
+   },
+   "chars": {
+    "wikipedia": 1978,
+    "klexikon": 698
+   },
+   "s": 3.3,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Bruchrechnen",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 52,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 13022,
+    "klexikon": 1100
+   },
+   "s": 0.6,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Bruchrechnung",
+   "printed": {
+    "wikipedia": 52,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 13022,
+    "klexikon": 1100
+   },
+   "s": 0.6,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Lineare Funktionen",
+  "factor": 1,
+  "verdraengt": 9,
+  "ohne": {
+   "main": "Lineare Funktion",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 6378
+   },
+   "s": 2.3,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Lineare Funktion",
+   "printed": {
+    "wikipedia": 15,
+    "wikiversity": 1
+   },
+   "chars": {
+    "wikipedia": 5212,
+    "wikiversity": 260
+   },
+   "s": 2.1,
+   "quellen": 8,
+   "weitere_quellen": [
+    "Lineare Funktion (wikiversity)"
+   ]
+  },
+  "weitere": [
+   "wikiversity: Lineare Funktion"
+  ],
+  "weitere_absaetze": 1
+ },
+ {
+  "topic": "Lineare Funktionen",
+  "factor": 10,
+  "verdraengt": 41,
+  "ohne": {
+   "main": "Lineare Funktion",
+   "printed": {
+    "wikipedia": 93
+   },
+   "chars": {
+    "wikipedia": 20607
+   },
+   "s": 0.6,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Lineare Funktion",
+   "printed": {
+    "wikipedia": 54,
+    "wikiversity": 8
+   },
+   "chars": {
+    "wikipedia": 11850,
+    "wikiversity": 1522
+   },
+   "s": 0.5,
+   "quellen": 8,
+   "weitere_quellen": [
+    "Lineare Funktion (wikiversity)"
+   ]
+  },
+  "weitere": [
+   "wikiversity: Lineare Funktion"
+  ],
+  "weitere_absaetze": 8
+ },
+ {
+  "topic": "Gewaltenteilung in Deutschland",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Gewaltenteilung",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 4
+   },
+   "chars": {
+    "wikipedia": 8661,
+    "klexikon": 1076
+   },
+   "s": 3.2,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Gewaltenteilung",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 4
+   },
+   "chars": {
+    "wikipedia": 8661,
+    "klexikon": 1076
+   },
+   "s": 2.2,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Gewaltenteilung in Deutschland",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Gewaltenteilung",
+   "printed": {
+    "wikipedia": 61,
+    "klexikon": 16
+   },
+   "chars": {
+    "wikipedia": 24701,
+    "klexikon": 3926
+   },
+   "s": 0.9,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Gewaltenteilung",
+   "printed": {
+    "wikipedia": 61,
+    "klexikon": 16
+   },
+   "chars": {
+    "wikipedia": 24701,
+    "klexikon": 3926
+   },
+   "s": 0.9,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Die Französische Revolution",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12264,
+    "klexikon": 196
+   },
+   "s": 2.8,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12264,
+    "klexikon": 196
+   },
+   "s": 2.5,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Die Französische Revolution",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 74,
+    "klexikon": 13
+   },
+   "chars": {
+    "wikipedia": 41467,
+    "klexikon": 3356
+   },
+   "s": 1.3,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 74,
+    "klexikon": 13
+   },
+   "chars": {
+    "wikipedia": 41467,
+    "klexikon": 3356
+   },
+   "s": 1.3,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Photosynthese bei Pflanzen",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 3.0,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 21,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9250,
+    "klexikon": 193
+   },
+   "s": 3.0,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Photosynthese bei Pflanzen",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.3,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Photosynthese",
+   "printed": {
+    "wikipedia": 84,
+    "klexikon": 5
+   },
+   "chars": {
+    "wikipedia": 30559,
+    "klexikon": 1090
+   },
+   "s": 1.2,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Kreislauf des Wassers",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Wasserkreislauf",
+   "printed": {
+    "wikipedia": 11,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 4481,
+    "klexikon": 372
+   },
+   "s": 1.8,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Wasserkreislauf",
+   "printed": {
+    "wikipedia": 11,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 4481,
+    "klexikon": 372
+   },
+   "s": 1.8,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Kreislauf des Wassers",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Wasserkreislauf",
+   "printed": {
+    "wikipedia": 17,
+    "klexikon": 12
+   },
+   "chars": {
+    "wikipedia": 5542,
+    "klexikon": 2507
+   },
+   "s": 0.7,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Wasserkreislauf",
+   "printed": {
+    "wikipedia": 17,
+    "klexikon": 12
+   },
+   "chars": {
+    "wikipedia": 5542,
+    "klexikon": 2507
+   },
+   "s": 0.7,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Physik: Spannung",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Elektrische Spannung",
+   "printed": {
+    "wikipedia": 30
+   },
+   "chars": {
+    "wikipedia": 10906
+   },
+   "s": 3.4,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Elektrische Spannung",
+   "printed": {
+    "wikipedia": 30
+   },
+   "chars": {
+    "wikipedia": 10906
+   },
+   "s": 2.4,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Physik: Spannung",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Elektrische Spannung",
+   "printed": {
+    "wikipedia": 126
+   },
+   "chars": {
+    "wikipedia": 38074
+   },
+   "s": 0.8,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Elektrische Spannung",
+   "printed": {
+    "wikipedia": 126
+   },
+   "chars": {
+    "wikipedia": 38074
+   },
+   "s": 0.8,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Physik: Linse",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Linse (Botanik)",
+   "printed": {
+    "wikipedia": 26
+   },
+   "chars": {
+    "wikipedia": 7646
+   },
+   "s": 4.6,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Linse (Botanik)",
+   "printed": {
+    "wikipedia": 26
+   },
+   "chars": {
+    "wikipedia": 7646
+   },
+   "s": 3.0,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Physik: Linse",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Linse (Botanik)",
+   "printed": {
+    "wikipedia": 53
+   },
+   "chars": {
+    "wikipedia": 13642
+   },
+   "s": 0.8,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Linse (Botanik)",
+   "printed": {
+    "wikipedia": 53
+   },
+   "chars": {
+    "wikipedia": 13642
+   },
+   "s": 0.9,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Chemie: Element",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Chemisches Element",
+   "printed": {
+    "wikipedia": 24
+   },
+   "chars": {
+    "wikipedia": 7946
+   },
+   "s": 3.3,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Chemisches Element",
+   "printed": {
+    "wikipedia": 24
+   },
+   "chars": {
+    "wikipedia": 7946
+   },
+   "s": 2.4,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Chemie: Element",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Chemisches Element",
+   "printed": {
+    "wikipedia": 105
+   },
+   "chars": {
+    "wikipedia": 34158
+   },
+   "s": 1.0,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Chemisches Element",
+   "printed": {
+    "wikipedia": 105
+   },
+   "chars": {
+    "wikipedia": 34158
+   },
+   "s": 0.9,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Musik: Intervall",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Intervall (Musik)",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 8713
+   },
+   "s": 4.8,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Intervall (Musik)",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 8713
+   },
+   "s": 3.3,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Musik: Intervall",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Intervall (Musik)",
+   "printed": {
+    "wikipedia": 85
+   },
+   "chars": {
+    "wikipedia": 31202
+   },
+   "s": 1.0,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Intervall (Musik)",
+   "printed": {
+    "wikipedia": 85
+   },
+   "chars": {
+    "wikipedia": 31202
+   },
+   "s": 1.0,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Deutsch: Artikel",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Artikel (Wortart)",
+   "printed": {
+    "wikipedia": 17
+   },
+   "chars": {
+    "wikipedia": 5534
+   },
+   "s": 3.4,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Artikel (Wortart)",
+   "printed": {
+    "wikipedia": 17
+   },
+   "chars": {
+    "wikipedia": 5534
+   },
+   "s": 2.2,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Deutsch: Artikel",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Artikel (Wortart)",
+   "printed": {
+    "wikipedia": 103
+   },
+   "chars": {
+    "wikipedia": 27179
+   },
+   "s": 0.9,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Artikel (Wortart)",
+   "printed": {
+    "wikipedia": 103
+   },
+   "chars": {
+    "wikipedia": 27179
+   },
+   "s": 1.0,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Erdkunde: Delta",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Delta",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 7034,
+    "klexikon": 191
+   },
+   "s": 7.2,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Delta",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 7034,
+    "klexikon": 191
+   },
+   "s": 4.4,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Erdkunde: Delta",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Delta",
+   "printed": {
+    "wikipedia": 87,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 20533,
+    "klexikon": 385
+   },
+   "s": 1.5,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Delta",
+   "printed": {
+    "wikipedia": 87,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 20533,
+    "klexikon": 385
+   },
+   "s": 1.5,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Biologie: Stamm",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Stamm (Biologie)",
+   "printed": {
+    "wikipedia": 13
+   },
+   "chars": {
+    "wikipedia": 4965
+   },
+   "s": 4.4,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Stamm (Biologie)",
+   "printed": {
+    "wikipedia": 13
+   },
+   "chars": {
+    "wikipedia": 4965
+   },
+   "s": 2.7,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Biologie: Stamm",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Stamm (Biologie)",
+   "printed": {
+    "wikipedia": 32
+   },
+   "chars": {
+    "wikipedia": 12631
+   },
+   "s": 0.8,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Stamm (Biologie)",
+   "printed": {
+    "wikipedia": 32
+   },
+   "chars": {
+    "wikipedia": 12631
+   },
+   "s": 0.8,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Informatik: Netzwerk",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Netzwerk",
+   "printed": {
+    "wikipedia": 31
+   },
+   "chars": {
+    "wikipedia": 11513
+   },
+   "s": 4.7,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Netzwerk",
+   "printed": {
+    "wikipedia": 31
+   },
+   "chars": {
+    "wikipedia": 11513
+   },
+   "s": 3.5,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Informatik: Netzwerk",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Netzwerk",
+   "printed": {
+    "wikipedia": 119
+   },
+   "chars": {
+    "wikipedia": 39898
+   },
+   "s": 1.7,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Netzwerk",
+   "printed": {
+    "wikipedia": 119
+   },
+   "chars": {
+    "wikipedia": 39898
+   },
+   "s": 1.5,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Mathematik: Ableitung",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Differentialrechnung",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 8307
+   },
+   "s": 4.7,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Differentialrechnung",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 8307
+   },
+   "s": 3.9,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Mathematik: Ableitung",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Differentialrechnung",
+   "printed": {
+    "wikipedia": 128
+   },
+   "chars": {
+    "wikipedia": 31251
+   },
+   "s": 0.9,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Differentialrechnung",
+   "printed": {
+    "wikipedia": 128
+   },
+   "chars": {
+    "wikipedia": 31251
+   },
+   "s": 0.9,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Vulkane",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Vulkan",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 8410,
+    "klexikon": 134
+   },
+   "s": 3.9,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Vulkan",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 8410,
+    "klexikon": 134
+   },
+   "s": 2.6,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Vulkane",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Vulkan",
+   "printed": {
+    "wikipedia": 104,
+    "klexikon": 12
+   },
+   "chars": {
+    "wikipedia": 31453,
+    "klexikon": 2420
+   },
+   "s": 1.1,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Vulkan",
+   "printed": {
+    "wikipedia": 104,
+    "klexikon": 12
+   },
+   "chars": {
+    "wikipedia": 31453,
+    "klexikon": 2420
+   },
+   "s": 1.3,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Ursachen des Ersten Weltkriegs",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Erster Weltkrieg",
+   "printed": {
+    "wikipedia": 30,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 13659,
+    "klexikon": 402
+   },
+   "s": 9.6,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Erster Weltkrieg",
+   "printed": {
+    "wikipedia": 30,
+    "klexikon": 2
+   },
+   "chars": {
+    "wikipedia": 13659,
+    "klexikon": 402
+   },
+   "s": 7.6,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Ursachen des Ersten Weltkriegs",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Erster Weltkrieg",
+   "printed": {
+    "wikipedia": 159,
+    "klexikon": 17
+   },
+   "chars": {
+    "wikipedia": 75826,
+    "klexikon": 3977
+   },
+   "s": 2.3,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Erster Weltkrieg",
+   "printed": {
+    "wikipedia": 159,
+    "klexikon": 17
+   },
+   "chars": {
+    "wikipedia": 75826,
+    "klexikon": 3977
+   },
+   "s": 2.3,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Aufbau der Zelle",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 8144
+   },
+   "s": 1.4,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 8144
+   },
+   "s": 1.3,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Aufbau der Zelle",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 82
+   },
+   "chars": {
+    "wikipedia": 32053
+   },
+   "s": 0.6,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Zelle (Biologie)",
+   "printed": {
+    "wikipedia": 82
+   },
+   "chars": {
+    "wikipedia": 32053
+   },
+   "s": 0.6,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Physik: Feld",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Feld (Physik)",
+   "printed": {
+    "wikipedia": 20
+   },
+   "chars": {
+    "wikipedia": 9180
+   },
+   "s": 4.3,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Feld (Physik)",
+   "printed": {
+    "wikipedia": 20
+   },
+   "chars": {
+    "wikipedia": 9180
+   },
+   "s": 3.1,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Physik: Feld",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Feld (Physik)",
+   "printed": {
+    "wikipedia": 29
+   },
+   "chars": {
+    "wikipedia": 12270
+   },
+   "s": 0.9,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Feld (Physik)",
+   "printed": {
+    "wikipedia": 29
+   },
+   "chars": {
+    "wikipedia": 12270
+   },
+   "s": 0.7,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Physik: Masse",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Masse (Physik)",
+   "printed": {
+    "wikipedia": 26
+   },
+   "chars": {
+    "wikipedia": 11741
+   },
+   "s": 5.6,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Masse (Physik)",
+   "printed": {
+    "wikipedia": 26
+   },
+   "chars": {
+    "wikipedia": 11741
+   },
+   "s": 3.9,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Physik: Masse",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Masse (Physik)",
+   "printed": {
+    "wikipedia": 125
+   },
+   "chars": {
+    "wikipedia": 46882
+   },
+   "s": 1.8,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Masse (Physik)",
+   "printed": {
+    "wikipedia": 125
+   },
+   "chars": {
+    "wikipedia": 46882
+   },
+   "s": 1.8,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Physik: Druck",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Druck (Physik)",
+   "printed": {
+    "wikipedia": 32
+   },
+   "chars": {
+    "wikipedia": 11093
+   },
+   "s": 4.5,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Druck (Physik)",
+   "printed": {
+    "wikipedia": 32
+   },
+   "chars": {
+    "wikipedia": 11093
+   },
+   "s": 3.2,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Physik: Druck",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Druck (Physik)",
+   "printed": {
+    "wikipedia": 121
+   },
+   "chars": {
+    "wikipedia": 45739
+   },
+   "s": 1.7,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Druck (Physik)",
+   "printed": {
+    "wikipedia": 121
+   },
+   "chars": {
+    "wikipedia": 45739
+   },
+   "s": 1.9,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Chemie: Lösung",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Lösung (Chemie)",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 6322
+   },
+   "s": 3.2,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Lösung (Chemie)",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 6322
+   },
+   "s": 2.2,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Chemie: Lösung",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Lösung (Chemie)",
+   "printed": {
+    "wikipedia": 66
+   },
+   "chars": {
+    "wikipedia": 21095
+   },
+   "s": 1.1,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Lösung (Chemie)",
+   "printed": {
+    "wikipedia": 66
+   },
+   "chars": {
+    "wikipedia": 21095
+   },
+   "s": 0.8,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Chemie: Base",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Basen (Chemie)",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 8530
+   },
+   "s": 4.8,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Basen (Chemie)",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 8530
+   },
+   "s": 3.3,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Chemie: Base",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Basen (Chemie)",
+   "printed": {
+    "wikipedia": 78
+   },
+   "chars": {
+    "wikipedia": 24647
+   },
+   "s": 1.1,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Basen (Chemie)",
+   "printed": {
+    "wikipedia": 78
+   },
+   "chars": {
+    "wikipedia": 24647
+   },
+   "s": 1.1,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Mathematik: Menge",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Menge (Mathematik)",
+   "printed": {
+    "wikipedia": 24
+   },
+   "chars": {
+    "wikipedia": 6397
+   },
+   "s": 4.7,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Menge (Mathematik)",
+   "printed": {
+    "wikipedia": 24
+   },
+   "chars": {
+    "wikipedia": 6397
+   },
+   "s": 2.9,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Mathematik: Menge",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Menge (Mathematik)",
+   "printed": {
+    "wikipedia": 93
+   },
+   "chars": {
+    "wikipedia": 28636
+   },
+   "s": 1.0,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Menge (Mathematik)",
+   "printed": {
+    "wikipedia": 93
+   },
+   "chars": {
+    "wikipedia": 28636
+   },
+   "s": 0.9,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Informatik: Schleife",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Schleife (Programmierung)",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 8727
+   },
+   "s": 3.0,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Schleife (Programmierung)",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 8727
+   },
+   "s": 1.9,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Informatik: Schleife",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Schleife (Programmierung)",
+   "printed": {
+    "wikipedia": 71
+   },
+   "chars": {
+    "wikipedia": 20176
+   },
+   "s": 0.6,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Schleife (Programmierung)",
+   "printed": {
+    "wikipedia": 71
+   },
+   "chars": {
+    "wikipedia": 20176
+   },
+   "s": 0.6,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Informatik: Bus",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Bus (Datenverarbeitung)",
+   "printed": {
+    "wikipedia": 18
+   },
+   "chars": {
+    "wikipedia": 7061
+   },
+   "s": 5.6,
+   "quellen": 3
+  },
+  "mit": {
+   "main": "Bus (Datenverarbeitung)",
+   "printed": {
+    "wikipedia": 18
+   },
+   "chars": {
+    "wikipedia": 7061
+   },
+   "s": 3.5,
+   "quellen": 3
+  }
+ },
+ {
+  "topic": "Informatik: Bus",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Bus (Datenverarbeitung)",
+   "printed": {
+    "wikipedia": 53
+   },
+   "chars": {
+    "wikipedia": 18936
+   },
+   "s": 1.0,
+   "quellen": 3
+  },
+  "mit": {
+   "main": "Bus (Datenverarbeitung)",
+   "printed": {
+    "wikipedia": 53
+   },
+   "chars": {
+    "wikipedia": 18936
+   },
+   "s": 1.3,
+   "quellen": 3
+  }
+ },
+ {
+  "topic": "Musik: Note",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Note (Musik)",
+   "printed": {
+    "wikipedia": 18
+   },
+   "chars": {
+    "wikipedia": 7277
+   },
+   "s": 4.5,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Note (Musik)",
+   "printed": {
+    "wikipedia": 18
+   },
+   "chars": {
+    "wikipedia": 7277
+   },
+   "s": 3.2,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Musik: Note",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Note (Musik)",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 9085
+   },
+   "s": 1.4,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Note (Musik)",
+   "printed": {
+    "wikipedia": 23
+   },
+   "chars": {
+    "wikipedia": 9085
+   },
+   "s": 1.4,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Musik: Satz",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Satz (Musikstück)",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 6603
+   },
+   "s": 5.0,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Satz (Musikstück)",
+   "printed": {
+    "wikipedia": 16
+   },
+   "chars": {
+    "wikipedia": 6603
+   },
+   "s": 3.7,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Musik: Satz",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Satz (Musikstück)",
+   "printed": {
+    "wikipedia": 25
+   },
+   "chars": {
+    "wikipedia": 10168
+   },
+   "s": 0.9,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Satz (Musikstück)",
+   "printed": {
+    "wikipedia": 25
+   },
+   "chars": {
+    "wikipedia": 10168
+   },
+   "s": 1.0,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Deutsch: Fall",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Schlacht an der Sutjeska",
+   "printed": {
+    "wikipedia": 19
+   },
+   "chars": {
+    "wikipedia": 8638
+   },
+   "s": 5.3,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Schlacht an der Sutjeska",
+   "printed": {
+    "wikipedia": 19
+   },
+   "chars": {
+    "wikipedia": 8638
+   },
+   "s": 3.3,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Deutsch: Fall",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Schlacht an der Sutjeska",
+   "printed": {
+    "wikipedia": 71
+   },
+   "chars": {
+    "wikipedia": 28758
+   },
+   "s": 1.0,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Schlacht an der Sutjeska",
+   "printed": {
+    "wikipedia": 71
+   },
+   "chars": {
+    "wikipedia": 28758
+   },
+   "s": 0.8,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Biologie: Art",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Art (Biologie)",
+   "printed": {
+    "wikipedia": 25
+   },
+   "chars": {
+    "wikipedia": 11674
+   },
+   "s": 4.3,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Art (Biologie)",
+   "printed": {
+    "wikipedia": 25
+   },
+   "chars": {
+    "wikipedia": 11674
+   },
+   "s": 2.5,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Biologie: Art",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Art (Biologie)",
+   "printed": {
+    "wikipedia": 93
+   },
+   "chars": {
+    "wikipedia": 46394
+   },
+   "s": 1.1,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Art (Biologie)",
+   "printed": {
+    "wikipedia": 93
+   },
+   "chars": {
+    "wikipedia": 46394
+   },
+   "s": 1.1,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Geschichte: Restauration",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Restauration (Geschichte)",
+   "printed": {
+    "wikipedia": 19
+   },
+   "chars": {
+    "wikipedia": 6338
+   },
+   "s": 5.1,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Restauration (Geschichte)",
+   "printed": {
+    "wikipedia": 19
+   },
+   "chars": {
+    "wikipedia": 6338
+   },
+   "s": 3.4,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Geschichte: Restauration",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Restauration (Geschichte)",
+   "printed": {
+    "wikipedia": 95
+   },
+   "chars": {
+    "wikipedia": 39366
+   },
+   "s": 1.5,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Restauration (Geschichte)",
+   "printed": {
+    "wikipedia": 95
+   },
+   "chars": {
+    "wikipedia": 39366
+   },
+   "s": 1.4,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Treibhauseffekt",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Treibhauseffekt",
+   "printed": {
+    "wikipedia": 25,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 11383,
+    "klexikon": 204
+   },
+   "s": 3.0,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Treibhauseffekt",
+   "printed": {
+    "wikipedia": 25,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 11383,
+    "klexikon": 204
+   },
+   "s": 2.6,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Treibhauseffekt",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Treibhauseffekt",
+   "printed": {
+    "wikipedia": 57,
+    "klexikon": 26
+   },
+   "chars": {
+    "wikipedia": 23925,
+    "klexikon": 6499
+   },
+   "s": 0.7,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Treibhauseffekt",
+   "printed": {
+    "wikipedia": 57,
+    "klexikon": 26
+   },
+   "chars": {
+    "wikipedia": 23925,
+    "klexikon": 6499
+   },
+   "s": 0.7,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Weimarer Republik",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Weimarer Republik",
+   "printed": {
+    "wikipedia": 33,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 16230,
+    "klexikon": 199
+   },
+   "s": 4.1,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Weimarer Republik",
+   "printed": {
+    "wikipedia": 33,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 16230,
+    "klexikon": 199
+   },
+   "s": 3.3,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Weimarer Republik",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Weimarer Republik",
+   "printed": {
+    "wikipedia": 203,
+    "klexikon": 14
+   },
+   "chars": {
+    "wikipedia": 89506,
+    "klexikon": 2825
+   },
+   "s": 1.8,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Weimarer Republik",
+   "printed": {
+    "wikipedia": 203,
+    "klexikon": 14
+   },
+   "chars": {
+    "wikipedia": 89506,
+    "klexikon": 2825
+   },
+   "s": 1.8,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Satz des Pythagoras",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Satz des Pythagoras",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 6558
+   },
+   "s": 4.9,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Satz des Pythagoras",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 6558
+   },
+   "s": 3.8,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Satz des Pythagoras",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Satz des Pythagoras",
+   "printed": {
+    "wikipedia": 90
+   },
+   "chars": {
+    "wikipedia": 24208
+   },
+   "s": 1.4,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Satz des Pythagoras",
+   "printed": {
+    "wikipedia": 90
+   },
+   "chars": {
+    "wikipedia": 24208
+   },
+   "s": 1.0,
+   "quellen": 10
+  }
+ },
+ {
+  "topic": "Physik: Energie",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Energie",
+   "printed": {
+    "wikipedia": 28,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9469,
+    "klexikon": 196
+   },
+   "s": 3.5,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Energie",
+   "printed": {
+    "wikipedia": 28,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9469,
+    "klexikon": 196
+   },
+   "s": 2.7,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Physik: Energie",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Energie",
+   "printed": {
+    "wikipedia": 91,
+    "klexikon": 6
+   },
+   "chars": {
+    "wikipedia": 30333,
+    "klexikon": 1523
+   },
+   "s": 1.2,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Energie",
+   "printed": {
+    "wikipedia": 91,
+    "klexikon": 6
+   },
+   "chars": {
+    "wikipedia": 30333,
+    "klexikon": 1523
+   },
+   "s": 1.0,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Säure",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Säuren",
+   "printed": {
+    "wikipedia": 31
+   },
+   "chars": {
+    "wikipedia": 10647
+   },
+   "s": 4.7,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Säuren",
+   "printed": {
+    "wikipedia": 31
+   },
+   "chars": {
+    "wikipedia": 10647
+   },
+   "s": 3.5,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Säure",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Säuren",
+   "printed": {
+    "wikipedia": 164
+   },
+   "chars": {
+    "wikipedia": 53408
+   },
+   "s": 1.6,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Säuren",
+   "printed": {
+    "wikipedia": 164
+   },
+   "chars": {
+    "wikipedia": 53408
+   },
+   "s": 1.6,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Klimawandels",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 11168,
+    "klexikon": 204
+   },
+   "s": 2.6,
+   "quellen": 6
+  },
+  "mit": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 20,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 11168,
+    "klexikon": 204
+   },
+   "s": 2.5,
+   "quellen": 6
+  }
+ },
+ {
+  "topic": "Klimawandels",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 120,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 66162,
+    "klexikon": 2280
+   },
+   "s": 1.2,
+   "quellen": 6
+  },
+  "mit": {
+   "main": "Klimawandel",
+   "printed": {
+    "wikipedia": 120,
+    "klexikon": 10
+   },
+   "chars": {
+    "wikipedia": 66162,
+    "klexikon": 2280
+   },
+   "s": 1.1,
+   "quellen": 6
+  }
+ },
+ {
+  "topic": "Evolutionstheorie",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Evolutionstheorie",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 11479
+   },
+   "s": 3.1,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Evolutionstheorie",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 11479
+   },
+   "s": 2.0,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Evolutionstheorie",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Evolutionstheorie",
+   "printed": {
+    "wikipedia": 105
+   },
+   "chars": {
+    "wikipedia": 51613
+   },
+   "s": 0.9,
+   "quellen": 9
+  },
+  "mit": {
+   "main": "Evolutionstheorie",
+   "printed": {
+    "wikipedia": 105
+   },
+   "chars": {
+    "wikipedia": 51613
+   },
+   "s": 0.9,
+   "quellen": 9
+  }
+ },
+ {
+  "topic": "Aufbau der Atome",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Atom",
+   "printed": {
+    "wikipedia": 24,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9407,
+    "klexikon": 284
+   },
+   "s": 2.3,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Atom",
+   "printed": {
+    "wikipedia": 24,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 9407,
+    "klexikon": 284
+   },
+   "s": 1.8,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Aufbau der Atome",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Atom",
+   "printed": {
+    "wikipedia": 100,
+    "klexikon": 17
+   },
+   "chars": {
+    "wikipedia": 40009,
+    "klexikon": 3201
+   },
+   "s": 0.9,
+   "quellen": 12
+  },
+  "mit": {
+   "main": "Atom",
+   "printed": {
+    "wikipedia": 100,
+    "klexikon": 17
+   },
+   "chars": {
+    "wikipedia": 40009,
+    "klexikon": 3201
+   },
+   "s": 0.8,
+   "quellen": 12
+  }
+ },
+ {
+  "topic": "Ursachen der Französischen Revolution",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12264,
+    "klexikon": 196
+   },
+   "s": 2.7,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 23,
+    "klexikon": 1
+   },
+   "chars": {
+    "wikipedia": 12264,
+    "klexikon": 196
+   },
+   "s": 2.6,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Ursachen der Französischen Revolution",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 74,
+    "klexikon": 13
+   },
+   "chars": {
+    "wikipedia": 41467,
+    "klexikon": 3356
+   },
+   "s": 1.3,
+   "quellen": 11
+  },
+  "mit": {
+   "main": "Französische Revolution",
+   "printed": {
+    "wikipedia": 74,
+    "klexikon": 13
+   },
+   "chars": {
+    "wikipedia": 41467,
+    "klexikon": 3356
+   },
+   "s": 1.3,
+   "quellen": 11
+  }
+ },
+ {
+  "topic": "Kreislauf des Kohlenstoffs",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Kohlenstoffzyklus",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 5995
+   },
+   "s": 2.8,
+   "quellen": 4
+  },
+  "mit": {
+   "main": "Kohlenstoffzyklus",
+   "printed": {
+    "wikipedia": 21
+   },
+   "chars": {
+    "wikipedia": 5995
+   },
+   "s": 2.0,
+   "quellen": 4
+  }
+ },
+ {
+  "topic": "Kreislauf des Kohlenstoffs",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Kohlenstoffzyklus",
+   "printed": {
+    "wikipedia": 75
+   },
+   "chars": {
+    "wikipedia": 20525
+   },
+   "s": 0.7,
+   "quellen": 4
+  },
+  "mit": {
+   "main": "Kohlenstoffzyklus",
+   "printed": {
+    "wikipedia": 75
+   },
+   "chars": {
+    "wikipedia": 20525
+   },
+   "s": 0.7,
+   "quellen": 4
+  }
+ },
+ {
+  "topic": "Dichter aus dem Mittelalter",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Sangspruchdichtung",
+   "printed": {
+    "wikipedia": 15
+   },
+   "chars": {
+    "wikipedia": 6032
+   },
+   "s": 2.2,
+   "quellen": 4
+  },
+  "mit": {
+   "main": "Sangspruchdichtung",
+   "printed": {
+    "wikipedia": 15
+   },
+   "chars": {
+    "wikipedia": 6032
+   },
+   "s": 1.7,
+   "quellen": 4
+  }
+ },
+ {
+  "topic": "Dichter aus dem Mittelalter",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Sangspruchdichtung",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 11384
+   },
+   "s": 1.0,
+   "quellen": 4
+  },
+  "mit": {
+   "main": "Sangspruchdichtung",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 11384
+   },
+   "s": 1.0,
+   "quellen": 4
+  }
+ },
+ {
+  "topic": "Komponisten der Klassik",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Max Richter (Komponist)",
+   "printed": {
+    "wikipedia": 20
+   },
+   "chars": {
+    "wikipedia": 6363
+   },
+   "s": 7.4,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Max Richter (Komponist)",
+   "printed": {
+    "wikipedia": 20
+   },
+   "chars": {
+    "wikipedia": 6363
+   },
+   "s": 6.2,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Komponisten der Klassik",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Max Richter (Komponist)",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 6831
+   },
+   "s": 1.4,
+   "quellen": 7
+  },
+  "mit": {
+   "main": "Max Richter (Komponist)",
+   "printed": {
+    "wikipedia": 22
+   },
+   "chars": {
+    "wikipedia": 6831
+   },
+   "s": 1.6,
+   "quellen": 7
+  }
+ },
+ {
+  "topic": "Philosophen der Aufklärung",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Böse Philosophen",
+   "printed": {
+    "wikipedia": 9
+   },
+   "chars": {
+    "wikipedia": 3360
+   },
+   "s": 4.2,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Böse Philosophen",
+   "printed": {
+    "wikipedia": 9
+   },
+   "chars": {
+    "wikipedia": 3360
+   },
+   "s": 3.6,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "Philosophen der Aufklärung",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Böse Philosophen",
+   "printed": {
+    "wikipedia": 14
+   },
+   "chars": {
+    "wikipedia": 6151
+   },
+   "s": 1.4,
+   "quellen": 5
+  },
+  "mit": {
+   "main": "Böse Philosophen",
+   "printed": {
+    "wikipedia": 14
+   },
+   "chars": {
+    "wikipedia": 6151
+   },
+   "s": 1.3,
+   "quellen": 5
+  }
+ },
+ {
+  "topic": "OER-Förderungen",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Open Educational Resources",
+   "printed": {
+    "wikipedia": 40
+   },
+   "chars": {
+    "wikipedia": 21436
+   },
+   "s": 2.7,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Open Educational Resources",
+   "printed": {
+    "wikipedia": 40,
+    "wikiversity": 1
+   },
+   "chars": {
+    "wikipedia": 21436,
+    "wikiversity": 361
+   },
+   "s": 2.5,
+   "quellen": 11,
+   "weitere_quellen": [
+    "Open Educational Resources (wikiversity)"
+   ]
+  },
+  "weitere": [
+   "wikiversity: Open Educational Resources"
+  ],
+  "weitere_absaetze": 1
+ },
+ {
+  "topic": "OER-Förderungen",
+  "factor": 10,
+  "verdraengt": 4,
+  "ohne": {
+   "main": "Open Educational Resources",
+   "printed": {
+    "wikipedia": 156
+   },
+   "chars": {
+    "wikipedia": 69767
+   },
+   "s": 1.2,
+   "quellen": 10
+  },
+  "mit": {
+   "main": "Open Educational Resources",
+   "printed": {
+    "wikipedia": 153,
+    "wikiversity": 6
+   },
+   "chars": {
+    "wikipedia": 68212,
+    "wikiversity": 1476
+   },
+   "s": 1.3,
+   "quellen": 11,
+   "weitere_quellen": [
+    "Open Educational Resources (wikiversity)"
+   ]
+  },
+  "weitere": [
+   "wikiversity: Open Educational Resources"
+  ],
+  "weitere_absaetze": 6
+ },
+ {
+  "topic": "Inklusion im Sportunterricht",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Sportdidaktik",
+   "printed": {
+    "wikipedia": 17
+   },
+   "chars": {
+    "wikipedia": 10205
+   },
+   "s": 2.2,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Sportdidaktik",
+   "printed": {
+    "wikipedia": 17
+   },
+   "chars": {
+    "wikipedia": 10205
+   },
+   "s": 1.7,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Inklusion im Sportunterricht",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Sportdidaktik",
+   "printed": {
+    "wikipedia": 42
+   },
+   "chars": {
+    "wikipedia": 24834
+   },
+   "s": 0.6,
+   "quellen": 8
+  },
+  "mit": {
+   "main": "Sportdidaktik",
+   "printed": {
+    "wikipedia": 42
+   },
+   "chars": {
+    "wikipedia": 24834
+   },
+   "s": 0.8,
+   "quellen": 8
+  }
+ },
+ {
+  "topic": "Künstliche Intelligenz im Unterricht",
+  "factor": 1,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Halluzination (Künstliche Intelligenz)",
+   "printed": {
+    "wikipedia": 15
+   },
+   "chars": {
+    "wikipedia": 6089
+   },
+   "s": 2.1,
+   "quellen": 3
+  },
+  "mit": {
+   "main": "Halluzination (Künstliche Intelligenz)",
+   "printed": {
+    "wikipedia": 15
+   },
+   "chars": {
+    "wikipedia": 6089
+   },
+   "s": 1.9,
+   "quellen": 3
+  }
+ },
+ {
+  "topic": "Künstliche Intelligenz im Unterricht",
+  "factor": 10,
+  "verdraengt": 0,
+  "ohne": {
+   "main": "Halluzination (Künstliche Intelligenz)",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 12143
+   },
+   "s": 0.7,
+   "quellen": 3
+  },
+  "mit": {
+   "main": "Halluzination (Künstliche Intelligenz)",
+   "printed": {
+    "wikipedia": 34
+   },
+   "chars": {
+    "wikipedia": 12143
+   },
+   "s": 0.7,
+   "quellen": 3
+  }
+ }
+]

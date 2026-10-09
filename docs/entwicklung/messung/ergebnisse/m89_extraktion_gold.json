@@ -1,0 +1,441 @@
+{
+ "hybrid_light@1": {
+  "ohne_auswahl": {
+   "gedruckt": 222,
+   "richtig": 83,
+   "falsch_zugeordnet": 46,
+   "nicht_hinein": 14,
+   "ohne_label": 93,
+   "verpasst": 434,
+   "precision": 0.643,
+   "recall": 0.161,
+   "f1": 0.257,
+   "macro_f1": 0.318
+  },
+  "mit_auswahl": {
+   "gedruckt": 259,
+   "richtig": 82,
+   "falsch_zugeordnet": 56,
+   "nicht_hinein": 12,
+   "ohne_label": 121,
+   "verpasst": 435,
+   "precision": 0.594,
+   "recall": 0.159,
+   "f1": 0.25,
+   "macro_f1": 0.303
+  },
+  "tokens_zuordnung": 0,
+  "tokens_auswahl": 181990,
+  "aufrufe_auswahl": 100,
+  "sekunden_auswahl": 97.6,
+  "angeboten": 736,
+  "saetze": 701,
+  "gekuerzt": 0,
+  "leer": 21,
+  "rueckfaelle": 0,
+  "themen": [
+   {
+    "thema": "Barockliteratur",
+    "ohne": 16,
+    "mit": 16,
+    "tokens_auswahl": 20068,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_8",
+     "sc26_9",
+     "sc26_10",
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Bruchrechnung",
+    "ohne": 8,
+    "mit": 13,
+    "tokens_auswahl": 13694,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_5",
+     "sc26_7",
+     "sc26_9",
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Demokratie",
+    "ohne": 32,
+    "mit": 38,
+    "tokens_auswahl": 19467,
+    "rueckfaelle": {},
+    "leer": []
+   },
+   {
+    "thema": "Französische Revolution",
+    "ohne": 24,
+    "mit": 30,
+    "tokens_auswahl": 20973,
+    "rueckfaelle": {},
+    "leer": []
+   },
+   {
+    "thema": "Klimawandel",
+    "ohne": 22,
+    "mit": 24,
+    "tokens_auswahl": 21091,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_7",
+     "sc26_8",
+     "sc26_9",
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Optik",
+    "ohne": 30,
+    "mit": 34,
+    "tokens_auswahl": 17091,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Photosynthese",
+    "ohne": 22,
+    "mit": 24,
+    "tokens_auswahl": 18225,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_8",
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Programmiersprache",
+    "ohne": 31,
+    "mit": 36,
+    "tokens_auswahl": 16901,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Säure-Base-Konzepte",
+    "ohne": 9,
+    "mit": 18,
+    "tokens_auswahl": 15207,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_4",
+     "sc26_7",
+     "sc26_8",
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Sinfonie",
+    "ohne": 28,
+    "mit": 26,
+    "tokens_auswahl": 19273,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_8"
+    ]
+   }
+  ]
+ },
+ "hybrid_light@10": {
+  "ohne_auswahl": {
+   "gedruckt": 1009,
+   "richtig": 290,
+   "falsch_zugeordnet": 160,
+   "nicht_hinein": 50,
+   "ohne_label": 559,
+   "verpasst": 227,
+   "precision": 0.644,
+   "recall": 0.561,
+   "f1": 0.6,
+   "macro_f1": 0.445
+  },
+  "mit_auswahl": {
+   "gedruckt": 367,
+   "richtig": 132,
+   "falsch_zugeordnet": 58,
+   "nicht_hinein": 12,
+   "ohne_label": 177,
+   "verpasst": 385,
+   "precision": 0.695,
+   "recall": 0.255,
+   "f1": 0.373,
+   "macro_f1": 0.333
+  },
+  "tokens_zuordnung": 0,
+  "tokens_auswahl": 290917,
+  "aufrufe_auswahl": 100,
+  "sekunden_auswahl": 98.0,
+  "angeboten": 1430,
+  "saetze": 976,
+  "gekuerzt": 118,
+  "leer": 23,
+  "rueckfaelle": 0,
+  "themen": [
+   {
+    "thema": "Barockliteratur",
+    "ohne": 23,
+    "mit": 15,
+    "tokens_auswahl": 19475,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_7",
+     "sc26_8",
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Bruchrechnung",
+    "ohne": 62,
+    "mit": 35,
+    "tokens_auswahl": 18289,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_5",
+     "sc26_7",
+     "sc26_9",
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Demokratie",
+    "ohne": 215,
+    "mit": 56,
+    "tokens_auswahl": 44563,
+    "rueckfaelle": {},
+    "leer": []
+   },
+   {
+    "thema": "Französische Revolution",
+    "ohne": 87,
+    "mit": 34,
+    "tokens_auswahl": 32649,
+    "rueckfaelle": {},
+    "leer": []
+   },
+   {
+    "thema": "Klimawandel",
+    "ohne": 131,
+    "mit": 29,
+    "tokens_auswahl": 42227,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_7",
+     "sc26_8",
+     "sc26_9",
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Optik",
+    "ohne": 101,
+    "mit": 43,
+    "tokens_auswahl": 24552,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Photosynthese",
+    "ohne": 91,
+    "mit": 38,
+    "tokens_auswahl": 27480,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_8",
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Programmiersprache",
+    "ohne": 128,
+    "mit": 51,
+    "tokens_auswahl": 28541,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_7",
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Säure-Base-Konzepte",
+    "ohne": 46,
+    "mit": 26,
+    "tokens_auswahl": 18389,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_4",
+     "sc26_7",
+     "sc26_8",
+     "sc26_9",
+     "sc26_10",
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Sinfonie",
+    "ohne": 125,
+    "mit": 40,
+    "tokens_auswahl": 34752,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_11"
+    ]
+   }
+  ]
+ },
+ "llm@10": {
+  "ohne_auswahl": {
+   "gedruckt": 1085,
+   "richtig": 348,
+   "falsch_zugeordnet": 104,
+   "nicht_hinein": 30,
+   "ohne_label": 633,
+   "verpasst": 169,
+   "precision": 0.77,
+   "recall": 0.673,
+   "f1": 0.718,
+   "macro_f1": 0.652
+  },
+  "mit_auswahl": {
+   "gedruckt": 453,
+   "richtig": 176,
+   "falsch_zugeordnet": 70,
+   "nicht_hinein": 12,
+   "ohne_label": 207,
+   "verpasst": 341,
+   "precision": 0.715,
+   "recall": 0.34,
+   "f1": 0.461,
+   "macro_f1": 0.505
+  },
+  "tokens_zuordnung": 227319,
+  "tokens_auswahl": 299246,
+  "aufrufe_auswahl": 100,
+  "sekunden_auswahl": 82.5,
+  "angeboten": 1471,
+  "saetze": 1138,
+  "gekuerzt": 131,
+  "leer": 20,
+  "rueckfaelle": 0,
+  "themen": [
+   {
+    "thema": "Barockliteratur",
+    "ohne": 17,
+    "mit": 17,
+    "tokens_auswahl": 19701,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_7",
+     "sc26_8",
+     "sc26_9",
+     "sc26_10",
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Bruchrechnung",
+    "ohne": 81,
+    "mit": 43,
+    "tokens_auswahl": 18870,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_7",
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Demokratie",
+    "ohne": 252,
+    "mit": 74,
+    "tokens_auswahl": 49023,
+    "rueckfaelle": {},
+    "leer": []
+   },
+   {
+    "thema": "Französische Revolution",
+    "ohne": 101,
+    "mit": 43,
+    "tokens_auswahl": 35764,
+    "rueckfaelle": {},
+    "leer": []
+   },
+   {
+    "thema": "Klimawandel",
+    "ohne": 144,
+    "mit": 40,
+    "tokens_auswahl": 41366,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_7",
+     "sc26_8"
+    ]
+   },
+   {
+    "thema": "Optik",
+    "ohne": 87,
+    "mit": 55,
+    "tokens_auswahl": 22307,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_11"
+    ]
+   },
+   {
+    "thema": "Photosynthese",
+    "ohne": 99,
+    "mit": 48,
+    "tokens_auswahl": 28805,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_8",
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Programmiersprache",
+    "ohne": 132,
+    "mit": 55,
+    "tokens_auswahl": 29799,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_7",
+     "sc26_9"
+    ]
+   },
+   {
+    "thema": "Säure-Base-Konzepte",
+    "ohne": 46,
+    "mit": 30,
+    "tokens_auswahl": 19367,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_4",
+     "sc26_7",
+     "sc26_8",
+     "sc26_9",
+     "sc26_10"
+    ]
+   },
+   {
+    "thema": "Sinfonie",
+    "ohne": 126,
+    "mit": 48,
+    "tokens_auswahl": 34244,
+    "rueckfaelle": {},
+    "leer": [
+     "sc26_8"
+    ]
+   }
+  ]
+ }
+}

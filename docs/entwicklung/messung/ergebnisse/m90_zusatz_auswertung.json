@@ -1,0 +1,131 @@
+{
+ "raters": [
+  "urteil_zusatz_g1",
+  "urteil_zusatz_g2"
+ ],
+ "alle": {
+  "gewonnen@1": {
+   "passt": 1.0,
+   "rand": 1.0,
+   "daneben": 0.0,
+   "falscher_baustein": 1.0,
+   "absaetze": 2
+  },
+  "gewonnen@10": {
+   "passt": 22.5,
+   "rand": 6.5,
+   "daneben": 1.0,
+   "falscher_baustein": 10.0,
+   "absaetze": 30
+  },
+  "verdraengt@1": {
+   "passt": 1.0,
+   "rand": 0.5,
+   "daneben": 7.5,
+   "falscher_baustein": 0.0,
+   "absaetze": 9
+  },
+  "verdraengt@10": {
+   "passt": 17.0,
+   "rand": 4.0,
+   "daneben": 40.0,
+   "falscher_baustein": 5.0,
+   "absaetze": 61
+  }
+ },
+ "themen": {
+  "Lineare Funktion": {
+   "gewonnen@1": {
+    "passt": 1.0,
+    "rand": 0.0,
+    "daneben": 0.0,
+    "falscher_baustein": 1.0,
+    "absaetze": 1
+   },
+   "gewonnen@10": {
+    "passt": 7.0,
+    "rand": 0.0,
+    "daneben": 1.0,
+    "falscher_baustein": 2.0,
+    "absaetze": 8
+   },
+   "verdraengt@1": {
+    "passt": 1.0,
+    "rand": 0.5,
+    "daneben": 7.5,
+    "falscher_baustein": 0.0,
+    "absaetze": 9
+   },
+   "verdraengt@10": {
+    "passt": 2.0,
+    "rand": 3.0,
+    "daneben": 36.0,
+    "falscher_baustein": 1.5,
+    "absaetze": 41
+   }
+  },
+  "OER-Förderungen": {
+   "gewonnen@1": {
+    "passt": 0.0,
+    "rand": 1.0,
+    "daneben": 0.0,
+    "falscher_baustein": 0.0,
+    "absaetze": 1
+   },
+   "gewonnen@10": {
+    "passt": 0.0,
+    "rand": 6.0,
+    "daneben": 0.0,
+    "falscher_baustein": 4.0,
+    "absaetze": 6
+   },
+   "verdraengt@10": {
+    "passt": 0.0,
+    "rand": 0.0,
+    "daneben": 4.0,
+    "falscher_baustein": 0.0,
+    "absaetze": 4
+   }
+  },
+  "Optik": {
+   "gewonnen@10": {
+    "passt": 15.5,
+    "rand": 0.5,
+    "daneben": 0.0,
+    "falscher_baustein": 4.0,
+    "absaetze": 16
+   },
+   "verdraengt@10": {
+    "passt": 15.0,
+    "rand": 1.0,
+    "daneben": 0.0,
+    "falscher_baustein": 3.5,
+    "absaetze": 16
+   }
+  }
+ },
+ "agreement": {
+  "thema_gleich": 89,
+  "thema_kappa": 0.945,
+  "absaetze": 92
+ },
+ "projekte": {
+  "wikipedia": 62,
+  "wikibooks": 16,
+  "wikiversity": 14
+ },
+ "artikel": {
+  "wikipedia: Röntgenoptik": 12,
+  "wikibooks: Optik": 16,
+  "wikipedia: Auge": 1,
+  "wikipedia: Optik": 2,
+  "wikipedia: Wellenoptik": 1,
+  "wikipedia: Lineare Funktion": 3,
+  "wikipedia: Lineare Algebra": 36,
+  "wikipedia: Lineare Abbildung": 3,
+  "wikiversity: Lineare Funktion": 8,
+  "wikiversity: Open Educational Resources": 6,
+  "wikipedia: Open Access": 2,
+  "wikipedia: Open Source": 2
+ }
+}
