@@ -3,12 +3,13 @@ old and new service (01-alt-und-neu.md), and methods, measurements and profiles 
 
 Reads the raw files in ergebnisse/ and the relevance gold of eval/artikelwahl, and writes prozess.svg,
 prozess_optionen.svg, artikelwahl.svg, korpus.svg, zuordnung_guete_zeit.svg, zuordnung_bausteine.svg,
-text_schalter.svg, kombinationen.svg, kiwix_quellen.svg, bausteinbudget.svg and quellen_empfehlung.svg (page 07,
-the last also on page 02), qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), profile_matrix.svg,
-profilvergleich.svg, profiluebersicht.svg (pages 07 and 09), and endpunkte.svg, profile_verlauf.svg and one
-verfahren_*.svg per step (page 09). Numbers no raw file holds are written here with their source: the text
-switches (measured on 2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1,
-05-messprotokoll.md). No chart library, so the files render on GitHub, in Confluence and in a browser alike.
+text_schalter.svg, kombinationen.svg, kiwix_quellen.svg, bausteinbudget.svg, bausteinbudget_gold.svg,
+bausteinbudget_absaetze.svg and quellen_empfehlung.svg (page 07, the last also on page 02),
+qualitaet_zeit_kosten.svg and alt_neu_teile.svg (page 01), profile_matrix.svg, profilvergleich.svg,
+profiluebersicht.svg (pages 07 and 09), and endpunkte.svg, profile_verlauf.svg and one verfahren_*.svg per step
+(page 09). Numbers no raw file holds are written here with their source: the text switches (measured on
+2026-09-18 and 19, 02-weltwissen.md) and the step times of the server (M1, 05-messprotokoll.md). No chart library,
+so the files render on GitHub, in Confluence and in a browser alike.
 Rounding half up, German number format.
 
 Usage: python mc_grafiken.py <ergebnisse-dir> <bilder-dir>
@@ -1390,11 +1391,16 @@ def marker(svg: Svg, x: float, y: float, shape: str, color: str) -> None:
         svg.items.append(f'<polygon points="{points}" fill="{color}" stroke="{PAPER}" stroke-width="2"/>')
 
 
+def factor_x(left: float, width: float, factor: float, last: float = 10) -> float:
+    """The x of a budget factor on a linear axis from 1 to ``last``, so that linear growth draws a straight line."""
+    return left + 8 + (factor - 1) / (last - 1) * (width - 16)
+
+
 def bausteinbudget() -> None:
     """The block budgets times 1, 2, 4 and 10 (M86, page 07): per profile the median of four topics - the text, the
     paragraphs the blocks kept, the tokens and the time of assignment and writing - and the mean grades of two blind
-    raters per sheet. balanced and best-quality-generated from their rounds with one corpus per topic
-    (--fixed-corpus)."""
+    raters per sheet, over a linear axis of the factor: a straight line would be linear growth. balanced and
+    best-quality-generated from their rounds with one corpus per topic (--fixed-corpus)."""
     data = load("m86_bausteinbudget.json")["profiles"]
     panels = (  # title, source, field, low, high, ticks, tick text
         ("Textlänge, Zeichen", "runs", "chars", 0, 50_000, tuple(range(0, 50_001, 10_000)), lambda v: de(v)),
@@ -1411,8 +1417,8 @@ def bausteinbudget() -> None:
         "Zuordnung; Korpus und Ziellänge bleiben.",
         "Vier Themen, je ein Lauf: Optik, Französische Revolution, Komponisten der Klassik, Inklusion im "
         "Sportunterricht. Die beiden LLM-Profile je Thema auf einem Korpus.",
-        "Noten: Mittel aus zwei blinden Claude-Gutachtern, je Profil ein Bogen mit den vier Faktoren (Bausteine 1 bis 4 "
-        "und 8 bis 10). Tokens: llm-free 0, balanced rund 320.",
+        "Noten: Mittel aus zwei blinden Claude-Gutachtern, je Profil ein Bogen mit den vier Faktoren "
+        "(Bausteine 1 bis 4 und 8 bis 10). Tokens: llm-free 0, balanced rund 310.",
         "gpt-6-luna über OpenAI direkt, 09.10.2026. Keine Schutzgrenze des Dienstes hätte gegriffen (180.000 Tokens, "
         "300 s je Anfrage).",
     )
@@ -1423,8 +1429,8 @@ def bausteinbudget() -> None:
     height = rows_end + 46 + 16 * len(notes)
     svg = Svg(width, height, "Bausteinbudget mal 1, 2, 4 und 10: Text, Belege, Kosten und Noten (M86)")
     svg.text(24, 30, "Bausteinbudget ×1 bis ×10: Text, Belege, Kosten und Noten (M86)", 17, weight="600")
-    svg.text(24, 52, "Median über vier Themen je Profil; ×1 ist die Vorlage sc26, wie ausgeliefert", 12, MUTED,
-             limit=width - 48)
+    svg.text(24, 52, "Median über vier Themen je Profil, ×1 = Vorlage sc26; die Achse des Faktors ist linear, "
+             "ein gleichmäßiger Zuwachs wäre eine Gerade", 12, MUTED, limit=width - 48)
     x = 24
     for profile in BUDGET_PROFILES:
         color = PROFILE_COLOR[profile]
@@ -1439,19 +1445,17 @@ def bausteinbudget() -> None:
         def py(value: float, low: float = low, high: float = high, bottom: float = bottom) -> float:
             return bottom - (min(value, high) - low) / (high - low) * plot_h
 
-        def px(index: int, left: float = left) -> float:
-            return left + plot_w * (index + 0.5) / len(BUDGET_FACTORS)
-
         svg.text(left - 40, y0 - 16, title, 11.5, INK, weight="600", limit=plot_w + 40)
         for tick in ticks:
             svg.line(left, py(tick), left + plot_w, py(tick), GRID)
             svg.text(left - 7, py(tick) + 4, tick_text(tick), 10, MUTED, "end")
-        for index, factor in enumerate(BUDGET_FACTORS):
-            svg.text(px(index), bottom + 17, f"×{factor}", 10.5, MUTED, "middle")
+        for factor in BUDGET_FACTORS:
+            svg.line(factor_x(left, plot_w, factor), y0, factor_x(left, plot_w, factor), bottom, GRID, 1, "2 3")
+            svg.text(factor_x(left, plot_w, factor), bottom + 17, f"×{factor}", 10.5, MUTED, "middle")
         for profile in BUDGET_PROFILES:
             color = PROFILE_COLOR[profile]
             found = data[profile][source]
-            points = [(px(i), py(found[f"{profile}@{f}"][field])) for i, f in enumerate(BUDGET_FACTORS)
+            points = [(factor_x(left, plot_w, f), py(found[f"{profile}@{f}"][field])) for f in BUDGET_FACTORS
                       if f"{profile}@{f}" in found]
             line = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
             svg.items.append(f'<polyline points="{line}" fill="none" stroke="{color}" stroke-width="2"/>')
@@ -1462,9 +1466,169 @@ def bausteinbudget() -> None:
     svg.save("bausteinbudget.svg")
 
 
+def halo_text(svg: Svg, x: float, y: float, content: str, size: float, anchor: str = "start") -> None:
+    """Bold ink text with a ring of paper, readable where it crosses a line."""
+    svg.items.append(f'<text x="{x:.1f}" y="{y:.1f}" font-size="{size}" fill="{INK}" text-anchor="{anchor}" '
+                     f'font-weight="600" stroke="{PAPER}" stroke-width="3" paint-order="stroke">{esc(content)}</text>')
+
+
+GOLD_LINES = (("precision", "Precision", FITS, "square"), ("recall", "Recall", LOCAL, "circle"),
+              ("micro_f1", "F1", INK, "diamond"))
+
+
+def bausteinbudget_gold() -> None:
+    """The paragraphs printed at the assignment gold against the block budget (M86, page 07): precision, recall and F1
+    of the rules and of the LLM over a linear axis of the factor, until every assigned paragraph is printed (×30;
+    ×50 and ×1000 print the same), and how many paragraphs the ten gold topics print."""
+    data = load("m86_gold_erweitert.json")
+    factors = (1, 2, 3, 4, 5, 6, 8, 10, 15, 20, 30)
+    matchers = (("hybrid_light", "Regeln (hybrid_light: llm-free, balanced)"),
+                ("llm", "LLM (matcher llm: best-quality-Profile)"))
+    plot_w, plot_h, top = 290, 200, 128
+    lefts = (80, 80 + plot_w + 70, 80 + 2 * (plot_w + 70))
+    width = lefts[-1] + plot_w + 30
+    bottom = top + plot_h
+    notes = (
+        "Gold der Zuordnung: zehn Themen, 597 gelabelte Absätze; gezählt sind die gedruckten Absätze mit Label. "
+        "Precision: im richtigen Baustein; Recall: von den gelabelten gedruckt.",
+        "Jedes Thema einmal zugeordnet, dann je Faktor neu zugeschnitten "
+        "(Absätze und Zeichen je Baustein mal dem Faktor). Ab ×30 ist alles Zugeordnete gedruckt.",
+        "Anteil am möglichen F1-Gewinn (von ×1 bis zur Sättigung): ×2 21 und 24 %, ×4 49 und 50 %, ×10 82 und 85 %, "
+        "×20 98 %. LLM: gpt-6-luna, 227.679 Tokens.",
+    )
+    title = "Bausteinbudget am Gold der Zuordnung: Precision, Recall und F1 (M86)"
+    svg = Svg(width, bottom + 70 + 16 * len(notes), title)
+    svg.text(24, 30, title, 17, weight="600")
+    svg.text(24, 52, "Die Precision bleibt bei jedem Faktor gleich, der Recall steigt, "
+             "bis alles Zugeordnete gedruckt ist; Achse des Faktors linear", 12, MUTED, limit=width - 48)
+    x = 24
+    for _, label, color, shape in GOLD_LINES:
+        svg.line(x, 74, x + 22, 74, color, 2)
+        marker(svg, x + 11, 74, shape, color)
+        svg.text(x + 30, 78, label, 12, INK)
+        x += 30 + len(label) * 12 * CHAR_WIDTH + 28
+
+    def guides(left: float) -> None:
+        for factor in (1, 4, 10, 20, 30):
+            gx = factor_x(left, plot_w, factor, 30)
+            svg.line(gx, top, gx, bottom, GRID, 1, "2 3")
+            svg.text(gx, bottom + 17, f"×{factor}", 10.5, MUTED, "middle")
+
+    for (matcher, title), left in zip(matchers, lefts[:2], strict=True):
+
+        def py(value: float) -> float:
+            return bottom - value * plot_h
+
+        svg.text(left - 50, top - 18, title, 11.5, INK, weight="600", limit=plot_w + 50)
+        for tick in (0, 0.2, 0.4, 0.6, 0.8, 1.0):
+            svg.line(left, py(tick), left + plot_w, py(tick), GRID)
+            svg.text(left - 7, py(tick) + 4, de(tick, "0.1"), 10, MUTED, "end")
+        guides(left)
+        for field, _, color, shape in GOLD_LINES:
+            points = [(factor_x(left, plot_w, f, 30), py(data[f"{matcher}@{f}"][field])) for f in factors]
+            line = " ".join(f"{px:.1f},{y:.1f}" for px, y in points)
+            sw = 2.5 if field == "micro_f1" else 2
+            svg.items.append(f'<polyline points="{line}" fill="none" stroke="{color}" stroke-width="{sw}"/>')
+            for px, y in points:
+                marker(svg, px, y, shape, color)
+        for factor in (4, 10):
+            value = data[f"{matcher}@{factor}"]["micro_f1"]
+            label = f"F1 {de(value, '0.01')}"
+            halo_text(svg, factor_x(left, plot_w, factor, 30) - 7, py(value) - 8, label, 10.5, "end")
+    left = lefts[2]
+    maximum = 1600
+
+    def py_count(value: float) -> float:
+        return bottom - value / maximum * plot_h
+
+    svg.text(left - 50, top - 18, "Gedruckte Absätze, zehn Themen", 11.5, INK, weight="600", limit=plot_w + 50)
+    for tick in (0, 400, 800, 1200, 1600):
+        svg.line(left, py_count(tick), left + plot_w, py_count(tick), GRID)
+        svg.text(left - 7, py_count(tick) + 4, de(tick), 10, MUTED, "end")
+    guides(left)
+    for matcher, color, shape, label in (("hybrid_light", OLD, "circle", "Regeln"), ("llm", LLM, "diamond", "LLM")):
+        points = [(factor_x(left, plot_w, f, 30), py_count(data[f"{matcher}@{f}"]["gedruckt"])) for f in factors]
+        line = " ".join(f"{px:.1f},{y:.1f}" for px, y in points)
+        svg.items.append(f'<polyline points="{line}" fill="none" stroke="{color}" stroke-width="2"/>')
+        for px, y in points:
+            marker(svg, px, y, shape, color)
+        legend_y = bottom - (40 if matcher == "hybrid_light" else 20)
+        svg.line(left + plot_w - 96, legend_y - 4, left + plot_w - 74, legend_y - 4, color, 2)
+        marker(svg, left + plot_w - 85, legend_y - 4, shape, color)
+        svg.text(left + plot_w - 66, legend_y, label, 11, INK)
+    for number, note in enumerate(notes):
+        svg.text(24, bottom + 56 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("bausteinbudget_gold.svg")
+
+
+def bausteinbudget_absaetze() -> None:
+    """The paragraphs the verbatim profiles print per block budget (M86, page 07), judged by two blind raters: on the
+    topic, at its edge or off it, as stacked bars over the four topics; above each bar the share off the topic, below
+    it the share off the topic among the paragraphs the factor added."""
+    data = load("m86_absaetze.json")
+    classes = (("passt", "zum Thema", FITS), ("rand", "am Rand", RELATED), ("daneben", "daneben", UNFIT))
+    factors = ("×1", "×2", "×4", "×10")
+    profiles = ("llm-free", "balanced")
+    plot_w, plot_h, top, bar_w, maximum = 380, 220, 128, 46, 500
+    lefts = (80, 80 + plot_w + 90)
+    width = lefts[-1] + plot_w + 30
+    bottom = top + plot_h
+    notes = (
+        "Jeder Absatz, den llm-free oder balanced bei einem Faktor drucken, blind benotet von zwei Claude-Gutachtern "
+        "(Mittel); Summe der vier Themen.",
+        "Über dem Balken: alle Absätze und ihr Anteil daneben. Darunter: die neuen Absätze gegenüber dem "
+        "nächstkleineren Faktor und ihr Anteil daneben.",
+        "Was ×1 druckt, drucken alle größeren Faktoren auch (gleicher Korpus je Thema).",
+    )
+    title = "Bausteinbudget: passende und unpassende Absätze im Text (M86)"
+    svg = Svg(width, bottom + 92 + 16 * len(notes), title)
+    svg.text(24, 30, title, 17, weight="600")
+    svg.text(24, 52, "Wörtliche Profile, vier Themen: die gedruckten Absätze je Faktor nach ihrem Bezug zum "
+             "angefragten Thema", 12, MUTED, limit=width - 48)
+    x = 24
+    for _, label, color in classes:
+        svg.rect(x, 64, 12, 12, color, 2)
+        svg.text(x + 18, 74, label, 12, MUTED)
+        x += 18 + len(label) * 12 * CHAR_WIDTH + 22
+    for profile, left in zip(profiles, lefts, strict=True):
+        rows = data["profiles"][profile]["alle"]
+
+        def py(value: float) -> float:
+            return bottom - value / maximum * plot_h
+
+        svg.text(left - 50, top - 18, profile, 12, INK, weight="600")
+        for tick in range(0, maximum + 1, 100):
+            svg.line(left, py(tick), left + plot_w, py(tick), GRID)
+            svg.text(left - 7, py(tick) + 4, de(tick), 10, MUTED, "end")
+        step = plot_w / len(factors)
+        for index, factor in enumerate(factors):
+            row = rows[factor]
+            raters = list(row["je_gutachter"].values())
+            mean = {name: sum(r[name] for r in raters) / len(raters) for name, _, _ in classes}
+            added = list(row["hinzu_je_gutachter"].values())
+            added_off = sum(r["daneben"] for r in added) / len(added)
+            x0 = left + step * index + (step - bar_w) / 2
+            height = 0.0
+            for name, _, color in classes:
+                y_top = py(height + mean[name])
+                svg.rect(x0, y_top, bar_w, py(height) - y_top, color)
+                height += mean[name]
+            share = mean["daneben"] / row["gedruckt"] if row["gedruckt"] else 0
+            svg.text(x0 + bar_w / 2, py(height) - 20, f"{row['gedruckt']}", 11, INK, "middle", "600")
+            svg.text(x0 + bar_w / 2, py(height) - 6, f"{de(share * 100, '1')} % daneben", 10, MUTED, "middle")
+            svg.text(x0 + bar_w / 2, bottom + 17, factor, 11, INK, "middle")
+            if index:
+                new_share = added_off / row["hinzu"] if row["hinzu"] else 0
+                svg.text(x0 + bar_w / 2, bottom + 33, f"neu {row['hinzu']}: {de(new_share * 100, '1')} %", 10, MUTED,
+                         "middle")
+    for number, note in enumerate(notes):
+        svg.text(24, bottom + 64 + 16 * number, note, 10.5, MUTED, limit=width - 48)
+    svg.save("bausteinbudget_absaetze.svg")
+
+
 OUT.mkdir(parents=True, exist_ok=True)
 for chart in (prozess, prozess_optionen, artikelwahl, korpus, zuordnung_guete_zeit, zuordnung_bausteine, text_schalter,
               kombinationen, qualitaet_zeit_kosten, profile_matrix, verfahren_charts, verfahren_text, alt_neu_teile,
               profilvergleich, profiluebersicht, endpunkte, profile_verlauf, kiwix_quellen,
-              quellen_empfehlung, bausteinbudget):
+              quellen_empfehlung, bausteinbudget, bausteinbudget_gold, bausteinbudget_absaetze):
     chart()

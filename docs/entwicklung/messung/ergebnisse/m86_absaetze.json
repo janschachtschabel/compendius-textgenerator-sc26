@@ -1,0 +1,1320 @@
+{
+ "absaetze": 603,
+ "raters": [
+  "g1",
+  "g2"
+ ],
+ "profiles": {
+  "balanced": {
+   "alle": {
+    "×1": {
+     "gedruckt": 108,
+     "je_gutachter": {
+      "g1": {
+       "passt": 69,
+       "rand": 36,
+       "daneben": 3,
+       "falscher_baustein": 31
+      },
+      "g2": {
+       "passt": 66,
+       "rand": 39,
+       "daneben": 3,
+       "falscher_baustein": 30
+      }
+     },
+     "hinzu": 108,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 69,
+       "rand": 36,
+       "daneben": 3,
+       "falscher_baustein": 31
+      },
+      "g2": {
+       "passt": 66,
+       "rand": 39,
+       "daneben": 3,
+       "falscher_baustein": 30
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 178,
+     "je_gutachter": {
+      "g1": {
+       "passt": 107,
+       "rand": 67,
+       "daneben": 4,
+       "falscher_baustein": 58
+      },
+      "g2": {
+       "passt": 104,
+       "rand": 70,
+       "daneben": 4,
+       "falscher_baustein": 54
+      }
+     },
+     "hinzu": 70,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 38,
+       "rand": 31,
+       "daneben": 1,
+       "falscher_baustein": 27
+      },
+      "g2": {
+       "passt": 38,
+       "rand": 31,
+       "daneben": 1,
+       "falscher_baustein": 24
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 269,
+     "je_gutachter": {
+      "g1": {
+       "passt": 153,
+       "rand": 109,
+       "daneben": 7,
+       "falscher_baustein": 75
+      },
+      "g2": {
+       "passt": 152,
+       "rand": 109,
+       "daneben": 8,
+       "falscher_baustein": 71
+      }
+     },
+     "hinzu": 91,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 46,
+       "rand": 42,
+       "daneben": 3,
+       "falscher_baustein": 17
+      },
+      "g2": {
+       "passt": 48,
+       "rand": 39,
+       "daneben": 4,
+       "falscher_baustein": 17
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 451,
+     "je_gutachter": {
+      "g1": {
+       "passt": 240,
+       "rand": 184,
+       "daneben": 27,
+       "falscher_baustein": 127
+      },
+      "g2": {
+       "passt": 237,
+       "rand": 197,
+       "daneben": 17,
+       "falscher_baustein": 131
+      }
+     },
+     "hinzu": 182,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 87,
+       "rand": 75,
+       "daneben": 20,
+       "falscher_baustein": 52
+      },
+      "g2": {
+       "passt": 85,
+       "rand": 88,
+       "daneben": 9,
+       "falscher_baustein": 60
+      }
+     }
+    }
+   },
+   "Französische Revolution": {
+    "×1": {
+     "gedruckt": 22,
+     "je_gutachter": {
+      "g1": {
+       "passt": 19,
+       "rand": 3,
+       "daneben": 0,
+       "falscher_baustein": 7
+      },
+      "g2": {
+       "passt": 19,
+       "rand": 3,
+       "daneben": 0,
+       "falscher_baustein": 7
+      }
+     },
+     "hinzu": 22,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 19,
+       "rand": 3,
+       "daneben": 0,
+       "falscher_baustein": 7
+      },
+      "g2": {
+       "passt": 19,
+       "rand": 3,
+       "daneben": 0,
+       "falscher_baustein": 7
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 39,
+     "je_gutachter": {
+      "g1": {
+       "passt": 35,
+       "rand": 4,
+       "daneben": 0,
+       "falscher_baustein": 9
+      },
+      "g2": {
+       "passt": 35,
+       "rand": 4,
+       "daneben": 0,
+       "falscher_baustein": 10
+      }
+     },
+     "hinzu": 17,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 16,
+       "rand": 1,
+       "daneben": 0,
+       "falscher_baustein": 2
+      },
+      "g2": {
+       "passt": 16,
+       "rand": 1,
+       "daneben": 0,
+       "falscher_baustein": 3
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 63,
+     "je_gutachter": {
+      "g1": {
+       "passt": 54,
+       "rand": 9,
+       "daneben": 0,
+       "falscher_baustein": 12
+      },
+      "g2": {
+       "passt": 54,
+       "rand": 8,
+       "daneben": 1,
+       "falscher_baustein": 13
+      }
+     },
+     "hinzu": 24,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 19,
+       "rand": 5,
+       "daneben": 0,
+       "falscher_baustein": 3
+      },
+      "g2": {
+       "passt": 19,
+       "rand": 4,
+       "daneben": 1,
+       "falscher_baustein": 3
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 99,
+     "je_gutachter": {
+      "g1": {
+       "passt": 88,
+       "rand": 11,
+       "daneben": 0,
+       "falscher_baustein": 14
+      },
+      "g2": {
+       "passt": 87,
+       "rand": 11,
+       "daneben": 1,
+       "falscher_baustein": 15
+      }
+     },
+     "hinzu": 36,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 34,
+       "rand": 2,
+       "daneben": 0,
+       "falscher_baustein": 2
+      },
+      "g2": {
+       "passt": 33,
+       "rand": 3,
+       "daneben": 0,
+       "falscher_baustein": 2
+      }
+     }
+    }
+   },
+   "Inklusion im Sportunterricht": {
+    "×1": {
+     "gedruckt": 30,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 28,
+       "daneben": 2,
+       "falscher_baustein": 11
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 28,
+       "daneben": 2,
+       "falscher_baustein": 10
+      }
+     },
+     "hinzu": 30,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 28,
+       "daneben": 2,
+       "falscher_baustein": 11
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 28,
+       "daneben": 2,
+       "falscher_baustein": 10
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 53,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 50,
+       "daneben": 3,
+       "falscher_baustein": 25
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 50,
+       "daneben": 3,
+       "falscher_baustein": 20
+      }
+     },
+     "hinzu": 23,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 22,
+       "daneben": 1,
+       "falscher_baustein": 14
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 22,
+       "daneben": 1,
+       "falscher_baustein": 10
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 79,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 76,
+       "daneben": 3,
+       "falscher_baustein": 30
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 76,
+       "daneben": 3,
+       "falscher_baustein": 25
+      }
+     },
+     "hinzu": 26,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 26,
+       "daneben": 0,
+       "falscher_baustein": 5
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 26,
+       "daneben": 0,
+       "falscher_baustein": 5
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 148,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 131,
+       "daneben": 17,
+       "falscher_baustein": 50
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 142,
+       "daneben": 6,
+       "falscher_baustein": 51
+      }
+     },
+     "hinzu": 69,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 55,
+       "daneben": 14,
+       "falscher_baustein": 20
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 66,
+       "daneben": 3,
+       "falscher_baustein": 26
+      }
+     }
+    }
+   },
+   "Komponisten der Klassik": {
+    "×1": {
+     "gedruckt": 25,
+     "je_gutachter": {
+      "g1": {
+       "passt": 21,
+       "rand": 4,
+       "daneben": 0,
+       "falscher_baustein": 10
+      },
+      "g2": {
+       "passt": 22,
+       "rand": 3,
+       "daneben": 0,
+       "falscher_baustein": 10
+      }
+     },
+     "hinzu": 25,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 21,
+       "rand": 4,
+       "daneben": 0,
+       "falscher_baustein": 10
+      },
+      "g2": {
+       "passt": 22,
+       "rand": 3,
+       "daneben": 0,
+       "falscher_baustein": 10
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 35,
+     "je_gutachter": {
+      "g1": {
+       "passt": 25,
+       "rand": 10,
+       "daneben": 0,
+       "falscher_baustein": 17
+      },
+      "g2": {
+       "passt": 27,
+       "rand": 8,
+       "daneben": 0,
+       "falscher_baustein": 17
+      }
+     },
+     "hinzu": 10,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 4,
+       "rand": 6,
+       "daneben": 0,
+       "falscher_baustein": 7
+      },
+      "g2": {
+       "passt": 5,
+       "rand": 5,
+       "daneben": 0,
+       "falscher_baustein": 7
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 47,
+     "je_gutachter": {
+      "g1": {
+       "passt": 30,
+       "rand": 17,
+       "daneben": 0,
+       "falscher_baustein": 24
+      },
+      "g2": {
+       "passt": 34,
+       "rand": 13,
+       "daneben": 0,
+       "falscher_baustein": 24
+      }
+     },
+     "hinzu": 12,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 5,
+       "rand": 7,
+       "daneben": 0,
+       "falscher_baustein": 7
+      },
+      "g2": {
+       "passt": 7,
+       "rand": 5,
+       "daneben": 0,
+       "falscher_baustein": 7
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 76,
+     "je_gutachter": {
+      "g1": {
+       "passt": 58,
+       "rand": 18,
+       "daneben": 0,
+       "falscher_baustein": 41
+      },
+      "g2": {
+       "passt": 62,
+       "rand": 14,
+       "daneben": 0,
+       "falscher_baustein": 44
+      }
+     },
+     "hinzu": 29,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 28,
+       "rand": 1,
+       "daneben": 0,
+       "falscher_baustein": 17
+      },
+      "g2": {
+       "passt": 28,
+       "rand": 1,
+       "daneben": 0,
+       "falscher_baustein": 20
+      }
+     }
+    }
+   },
+   "Optik": {
+    "×1": {
+     "gedruckt": 31,
+     "je_gutachter": {
+      "g1": {
+       "passt": 29,
+       "rand": 1,
+       "daneben": 1,
+       "falscher_baustein": 3
+      },
+      "g2": {
+       "passt": 25,
+       "rand": 5,
+       "daneben": 1,
+       "falscher_baustein": 3
+      }
+     },
+     "hinzu": 31,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 29,
+       "rand": 1,
+       "daneben": 1,
+       "falscher_baustein": 3
+      },
+      "g2": {
+       "passt": 25,
+       "rand": 5,
+       "daneben": 1,
+       "falscher_baustein": 3
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 51,
+     "je_gutachter": {
+      "g1": {
+       "passt": 47,
+       "rand": 3,
+       "daneben": 1,
+       "falscher_baustein": 7
+      },
+      "g2": {
+       "passt": 42,
+       "rand": 8,
+       "daneben": 1,
+       "falscher_baustein": 7
+      }
+     },
+     "hinzu": 20,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 18,
+       "rand": 2,
+       "daneben": 0,
+       "falscher_baustein": 4
+      },
+      "g2": {
+       "passt": 17,
+       "rand": 3,
+       "daneben": 0,
+       "falscher_baustein": 4
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 80,
+     "je_gutachter": {
+      "g1": {
+       "passt": 69,
+       "rand": 7,
+       "daneben": 4,
+       "falscher_baustein": 9
+      },
+      "g2": {
+       "passt": 64,
+       "rand": 12,
+       "daneben": 4,
+       "falscher_baustein": 9
+      }
+     },
+     "hinzu": 29,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 22,
+       "rand": 4,
+       "daneben": 3,
+       "falscher_baustein": 2
+      },
+      "g2": {
+       "passt": 22,
+       "rand": 4,
+       "daneben": 3,
+       "falscher_baustein": 2
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 128,
+     "je_gutachter": {
+      "g1": {
+       "passt": 94,
+       "rand": 24,
+       "daneben": 10,
+       "falscher_baustein": 22
+      },
+      "g2": {
+       "passt": 88,
+       "rand": 30,
+       "daneben": 10,
+       "falscher_baustein": 21
+      }
+     },
+     "hinzu": 48,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 25,
+       "rand": 17,
+       "daneben": 6,
+       "falscher_baustein": 13
+      },
+      "g2": {
+       "passt": 24,
+       "rand": 18,
+       "daneben": 6,
+       "falscher_baustein": 12
+      }
+     }
+    }
+   }
+  },
+  "llm-free": {
+   "alle": {
+    "×1": {
+     "gedruckt": 91,
+     "je_gutachter": {
+      "g1": {
+       "passt": 32,
+       "rand": 28,
+       "daneben": 31,
+       "falscher_baustein": 16
+      },
+      "g2": {
+       "passt": 32,
+       "rand": 30,
+       "daneben": 29,
+       "falscher_baustein": 16
+      }
+     },
+     "hinzu": 91,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 32,
+       "rand": 28,
+       "daneben": 31,
+       "falscher_baustein": 16
+      },
+      "g2": {
+       "passt": 32,
+       "rand": 30,
+       "daneben": 29,
+       "falscher_baustein": 16
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 129,
+     "je_gutachter": {
+      "g1": {
+       "passt": 49,
+       "rand": 42,
+       "daneben": 38,
+       "falscher_baustein": 28
+      },
+      "g2": {
+       "passt": 49,
+       "rand": 47,
+       "daneben": 33,
+       "falscher_baustein": 29
+      }
+     },
+     "hinzu": 38,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 17,
+       "rand": 14,
+       "daneben": 7,
+       "falscher_baustein": 12
+      },
+      "g2": {
+       "passt": 17,
+       "rand": 17,
+       "daneben": 4,
+       "falscher_baustein": 13
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 177,
+     "je_gutachter": {
+      "g1": {
+       "passt": 76,
+       "rand": 61,
+       "daneben": 40,
+       "falscher_baustein": 37
+      },
+      "g2": {
+       "passt": 76,
+       "rand": 66,
+       "daneben": 35,
+       "falscher_baustein": 38
+      }
+     },
+     "hinzu": 48,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 27,
+       "rand": 19,
+       "daneben": 2,
+       "falscher_baustein": 9
+      },
+      "g2": {
+       "passt": 27,
+       "rand": 19,
+       "daneben": 2,
+       "falscher_baustein": 9
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 249,
+     "je_gutachter": {
+      "g1": {
+       "passt": 140,
+       "rand": 67,
+       "daneben": 42,
+       "falscher_baustein": 52
+      },
+      "g2": {
+       "passt": 137,
+       "rand": 77,
+       "daneben": 35,
+       "falscher_baustein": 53
+      }
+     },
+     "hinzu": 72,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 64,
+       "rand": 6,
+       "daneben": 2,
+       "falscher_baustein": 15
+      },
+      "g2": {
+       "passt": 61,
+       "rand": 11,
+       "daneben": 0,
+       "falscher_baustein": 15
+      }
+     }
+    }
+   },
+   "Französische Revolution": {
+    "×1": {
+     "gedruckt": 24,
+     "je_gutachter": {
+      "g1": {
+       "passt": 13,
+       "rand": 11,
+       "daneben": 0,
+       "falscher_baustein": 6
+      },
+      "g2": {
+       "passt": 13,
+       "rand": 10,
+       "daneben": 1,
+       "falscher_baustein": 6
+      }
+     },
+     "hinzu": 24,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 13,
+       "rand": 11,
+       "daneben": 0,
+       "falscher_baustein": 6
+      },
+      "g2": {
+       "passt": 13,
+       "rand": 10,
+       "daneben": 1,
+       "falscher_baustein": 6
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 38,
+     "je_gutachter": {
+      "g1": {
+       "passt": 22,
+       "rand": 15,
+       "daneben": 1,
+       "falscher_baustein": 9
+      },
+      "g2": {
+       "passt": 22,
+       "rand": 14,
+       "daneben": 2,
+       "falscher_baustein": 10
+      }
+     },
+     "hinzu": 14,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 9,
+       "rand": 4,
+       "daneben": 1,
+       "falscher_baustein": 3
+      },
+      "g2": {
+       "passt": 9,
+       "rand": 4,
+       "daneben": 1,
+       "falscher_baustein": 4
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 51,
+     "je_gutachter": {
+      "g1": {
+       "passt": 32,
+       "rand": 17,
+       "daneben": 2,
+       "falscher_baustein": 12
+      },
+      "g2": {
+       "passt": 32,
+       "rand": 16,
+       "daneben": 3,
+       "falscher_baustein": 13
+      }
+     },
+     "hinzu": 13,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 10,
+       "rand": 2,
+       "daneben": 1,
+       "falscher_baustein": 3
+      },
+      "g2": {
+       "passt": 10,
+       "rand": 2,
+       "daneben": 1,
+       "falscher_baustein": 3
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 87,
+     "je_gutachter": {
+      "g1": {
+       "passt": 68,
+       "rand": 17,
+       "daneben": 2,
+       "falscher_baustein": 12
+      },
+      "g2": {
+       "passt": 67,
+       "rand": 17,
+       "daneben": 3,
+       "falscher_baustein": 13
+      }
+     },
+     "hinzu": 36,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 36,
+       "rand": 0,
+       "daneben": 0,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 35,
+       "rand": 1,
+       "daneben": 0,
+       "falscher_baustein": 0
+      }
+     }
+    }
+   },
+   "Inklusion im Sportunterricht": {
+    "×1": {
+     "gedruckt": 17,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 8,
+       "daneben": 9,
+       "falscher_baustein": 4
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 9,
+       "daneben": 8,
+       "falscher_baustein": 4
+      }
+     },
+     "hinzu": 17,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 8,
+       "daneben": 9,
+       "falscher_baustein": 4
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 9,
+       "daneben": 8,
+       "falscher_baustein": 4
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 26,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 13,
+       "daneben": 13,
+       "falscher_baustein": 6
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 17,
+       "daneben": 9,
+       "falscher_baustein": 6
+      }
+     },
+     "hinzu": 9,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 5,
+       "daneben": 4,
+       "falscher_baustein": 2
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 8,
+       "daneben": 1,
+       "falscher_baustein": 2
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 41,
+     "je_gutachter": {
+      "g1": {
+       "passt": 1,
+       "rand": 26,
+       "daneben": 14,
+       "falscher_baustein": 8
+      },
+      "g2": {
+       "passt": 1,
+       "rand": 30,
+       "daneben": 10,
+       "falscher_baustein": 8
+      }
+     },
+     "hinzu": 15,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 1,
+       "rand": 13,
+       "daneben": 1,
+       "falscher_baustein": 2
+      },
+      "g2": {
+       "passt": 1,
+       "rand": 13,
+       "daneben": 1,
+       "falscher_baustein": 2
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 42,
+     "je_gutachter": {
+      "g1": {
+       "passt": 1,
+       "rand": 27,
+       "daneben": 14,
+       "falscher_baustein": 8
+      },
+      "g2": {
+       "passt": 1,
+       "rand": 31,
+       "daneben": 10,
+       "falscher_baustein": 8
+      }
+     },
+     "hinzu": 1,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 1,
+       "daneben": 0,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 1,
+       "daneben": 0,
+       "falscher_baustein": 0
+      }
+     }
+    }
+   },
+   "Komponisten der Klassik": {
+    "×1": {
+     "gedruckt": 20,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 20,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 20,
+       "falscher_baustein": 0
+      }
+     },
+     "hinzu": 20,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 20,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 20,
+       "falscher_baustein": 0
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 22,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 22,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 22,
+       "falscher_baustein": 0
+      }
+     },
+     "hinzu": 2,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 2,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 2,
+       "falscher_baustein": 0
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 22,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 22,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 22,
+       "falscher_baustein": 0
+      }
+     },
+     "hinzu": 0,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 0,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 0,
+       "falscher_baustein": 0
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 22,
+     "je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 22,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 22,
+       "falscher_baustein": 0
+      }
+     },
+     "hinzu": 0,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 0,
+       "falscher_baustein": 0
+      },
+      "g2": {
+       "passt": 0,
+       "rand": 0,
+       "daneben": 0,
+       "falscher_baustein": 0
+      }
+     }
+    }
+   },
+   "Optik": {
+    "×1": {
+     "gedruckt": 30,
+     "je_gutachter": {
+      "g1": {
+       "passt": 19,
+       "rand": 9,
+       "daneben": 2,
+       "falscher_baustein": 6
+      },
+      "g2": {
+       "passt": 19,
+       "rand": 11,
+       "daneben": 0,
+       "falscher_baustein": 6
+      }
+     },
+     "hinzu": 30,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 19,
+       "rand": 9,
+       "daneben": 2,
+       "falscher_baustein": 6
+      },
+      "g2": {
+       "passt": 19,
+       "rand": 11,
+       "daneben": 0,
+       "falscher_baustein": 6
+      }
+     }
+    },
+    "×2": {
+     "gedruckt": 43,
+     "je_gutachter": {
+      "g1": {
+       "passt": 27,
+       "rand": 14,
+       "daneben": 2,
+       "falscher_baustein": 13
+      },
+      "g2": {
+       "passt": 27,
+       "rand": 16,
+       "daneben": 0,
+       "falscher_baustein": 13
+      }
+     },
+     "hinzu": 13,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 8,
+       "rand": 5,
+       "daneben": 0,
+       "falscher_baustein": 7
+      },
+      "g2": {
+       "passt": 8,
+       "rand": 5,
+       "daneben": 0,
+       "falscher_baustein": 7
+      }
+     }
+    },
+    "×4": {
+     "gedruckt": 63,
+     "je_gutachter": {
+      "g1": {
+       "passt": 43,
+       "rand": 18,
+       "daneben": 2,
+       "falscher_baustein": 17
+      },
+      "g2": {
+       "passt": 43,
+       "rand": 20,
+       "daneben": 0,
+       "falscher_baustein": 17
+      }
+     },
+     "hinzu": 20,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 16,
+       "rand": 4,
+       "daneben": 0,
+       "falscher_baustein": 4
+      },
+      "g2": {
+       "passt": 16,
+       "rand": 4,
+       "daneben": 0,
+       "falscher_baustein": 4
+      }
+     }
+    },
+    "×10": {
+     "gedruckt": 98,
+     "je_gutachter": {
+      "g1": {
+       "passt": 71,
+       "rand": 23,
+       "daneben": 4,
+       "falscher_baustein": 32
+      },
+      "g2": {
+       "passt": 69,
+       "rand": 29,
+       "daneben": 0,
+       "falscher_baustein": 32
+      }
+     },
+     "hinzu": 35,
+     "hinzu_je_gutachter": {
+      "g1": {
+       "passt": 28,
+       "rand": 5,
+       "daneben": 2,
+       "falscher_baustein": 15
+      },
+      "g2": {
+       "passt": 26,
+       "rand": 9,
+       "daneben": 0,
+       "falscher_baustein": 15
+      }
+     }
+    }
+   }
+  }
+ },
+ "agreement": {
+  "thema_gleich": 566,
+  "thema_kappa": 0.895,
+  "baustein_gleich": 560,
+  "daneben_beide": 50,
+  "absaetze": 603
+ }
+}

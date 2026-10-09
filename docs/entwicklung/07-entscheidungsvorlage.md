@@ -1038,35 +1038,69 @@ Passung 4,56 und Nutzen 4,31.
     Gutenberg und alle Zahlen: M84.
 
 17. **Bausteinbudget** (Jan, 09.10.2026: „der größte hebel ist das bausteinbudget … vom team gewünscht war, das die
-    kompendiale texte umfangreich und vollständig sind“): gemessen in M86 mit dem Faktor 1, 2, 4 und 10 auf die Absätze
-    und Zeichen je Baustein, an vier Themen in `llm-free`, `balanced` und `best-quality-generated`; zu entscheiden.
+    kompendiale texte umfangreich und vollständig sind“; nach den ersten Zahlen: „zu prüfen wäre was möglicherweise
+    dagegen sprechen könnte … vielleicht kann man dann mit einem f1 sagen wo die verbesserungen gesättigt sind“):
+    gemessen in M86 mit dem Faktor 1, 2, 4 und 10 auf die Absätze und Zeichen je Baustein an vier Themen in `llm-free`,
+    `balanced` und `best-quality-generated`, dazu am Gold der Zuordnung bis ×1000 und mit einem Urteil zu jedem
+    gedruckten Absatz; zu entscheiden.
 
     ![Bausteinbudget ×1 bis ×10: Text, Belege, Kosten und Noten (M86)](bilder/bausteinbudget.svg)
 
-    **Empfehlung:** das Budget der Bausteine vervierfachen, als einstellbaren Faktor mit Vorgabe 4, angewandt wie in M86
-    auf die Höchstzahl der Absätze und auf die Zeichen, ab denen ein Baustein schließt; die Vorlagen bleiben, wie sie
-    sind. Bei ×4 wird jedes Profil gehaltvoller (Nutzen in `llm-free` 1,5 auf 2,5, in `balanced` 2,0 auf 3,4, in
-    `best-quality-generated` 3,8 auf 4,5) und `best-quality-generated` auch vollständiger (3,8 auf 4,3), ohne dass eine
-    Anfrage länger dauert. Es kostet dort 19 % mehr Tokens (Teil 1 im Median 77.600 statt 65.200), in den wörtlichen
-    Profilen nichts; deren Texte kommen damit in die Nähe der Ziellänge (22.800 und 27.900 statt 10.400 und 11.100
-    Zeichen). ×10 brachte `best-quality-generated` noch etwas mehr (Nutzen 4,9, Vollständigkeit 4,6) für 33 % mehr
-    Tokens, machte die Texte von `balanced` aber im Median 45.000 Zeichen lang, länger als die Ziellänge und nicht
-    vollständiger.
+    | Median über vier Themen | ×1 | ×2 | ×4 | ×10 |
+    |---|---|---|---|---|
+    | `llm-free`: Zeichen | 10.400 | 14.400 | 22.800 | 28.700 |
+    | `llm-free`: Nutzen / Vollständigkeit / Lesbarkeit | 1,5 / 1,5 / 2,3 | 2,0 / 1,5 / 2,5 | 2,5 / 1,9 / 2,5 | 2,8 / 1,9 / 2,5 |
+    | `balanced`: Zeichen | 11.100 | 17.600 | 27.900 | 44.900 |
+    | `balanced`: Nutzen / Vollständigkeit / Lesbarkeit | 2,0 / 1,3 / 3,0 | 2,8 / 2,1 / 2,6 | 3,4 / 2,1 / 2,4 | 4,3 / 2,1 / 2,4 |
+    | `balanced`: Absätze daneben im Text, Summe der Themen | 3 (3 %) | 4 (2 %) | 7,5 (3 %) | 22 (5 %) |
+    | wörtliche Profile: Zuordnung und Text | 0,5 und 0,8 s | 0,5 und 0,9 s | 0,5 und 0,8 s | 0,8 und 1,1 s |
+    | `best-quality-generated`: Zeichen | 23.200 | 26.300 | 27.700 | 28.600 |
+    | `best-quality-generated`: Tokens je Anfrage | 65.200 | 69.600 (+7 %) | 77.600 (+19 %) | 86.400 (+33 %) |
+    | `best-quality-generated`: Nutzen / Vollständigkeit / Lesbarkeit | 3,8 / 3,8 / 4,0 | 4,3 / 4,1 / 4,0 | 4,5 / 4,3 / 3,6 | 4,9 / 4,6 / 4,0 |
+    | `best-quality-generated`: Zuordnung und Schreiben | 24,9 s | 23,0 s | 25,1 s | 25,9 s |
+    | Gold der Zuordnung: F1 der Regeln und des LLM | 0,26 und 0,35 | 0,34 und 0,46 | 0,46 und 0,58 | 0,60 und 0,74 |
 
-    **Beobachtungen:**
+    **Was dagegen sprechen könnte, gemessen:**
 
-    - Mehr Budget kostet in keinem Profil Zeit und nur in `best-quality-generated` Tokens; dort wächst die Eingabe, kaum
-      die Ausgabe. Kein Lauf kam an die Grenze von 180.000 Tokens je Anfrage (der teuerste: 103.400 bei ×10).
-    - Der Zuschnitt verwirft gute Absätze: Am Gold der Zuordnung bleibt die Precision bis ×10 gleich (Regeln 0,64, LLM
-      0,75 bis 0,77), der Recall verdreifacht sich (0,16 auf 0,56 und 0,21 auf 0,66).
-    - Die wörtlichen Profile füllen mit mehr Budget die Bausteine, die schon Text haben, nicht die leeren
-      (Vollständigkeit höchstens 2,1); ihre Texte werden länger, etwas schwerer lesbar (`balanced` 3,0 auf 2,4) und
-      erben mehr leichte Fehler der Quellen. `best-quality-generated` setzt die zusätzlichen Belege an die Stelle von
-      Modellwissen (49 auf 37 %).
+    - **Kosten:** Mehr Tokens braucht mehr Budget nur in `best-quality-generated`: 7 % bei ×2, 19 % bei ×4, 33 % bei
+      ×10. Es wächst die Eingabe, kaum die Ausgabe; der teuerste Lauf brauchte 103.400 der erlaubten 180.000 Tokens.
+      `llm-free` braucht keine, `balanced` gleich bleibend rund 310. Nicht gemessen: `/qa` schreibt seine Paare aus
+      einem Teil 1 von `llm-free`; mit ×4 wäre dieser Text rund doppelt so lang, und die Paare des LLM (`best-quality`,
+      M82: 3.234 Tokens je Thema) würden entsprechend teurer.
+    - **Dauer:** In keinem Profil länger (Tabelle): Das Budget greift erst nach Artikelwahl und Zuordnung, und der
+      Schreiber schreibt die Bausteine nebeneinander.
+    - **Präzision, unpassende Absätze:** Am Gold bleibt die Precision bei jedem Faktor (Regeln 0,62 bis 0,66, LLM 0,78
+      bis 0,82), auch der Anteil der Absätze, die nicht hineingehören (10 bis 14 und 4 bis 7 %). Im Text von `balanced`
+      bleibt der Anteil daneben bis ×4 bei 2 bis 3 %; ×10 bringt mehr Absätze am Rand und unter den neuen 8 % daneben,
+      vor allem beim Aspektthema und bei Optik. Die Zahl unpassender Absätze wächst mit der Länge, ihr Anteil bis ×4
+      nicht.
+    - **Länge und Lesbarkeit:** Die wörtlichen Texte werden länger und etwas schwerer lesbar (`balanced` 3,0 auf 2,4 bis
+      ×4, danach gleich). Bei ×10 ist `balanced` im Median 44.900 Zeichen lang, beim Aspektthema 62.400, deutlich über
+      der Ziellänge. `best-quality-generated` hält Länge und Lesbarkeit.
+    - **Fehler:** Die leichten Fehler, die die wörtlichen Texte aus Wikipedia und Klexikon erben, wachsen mit dem Text,
+      je 10.000 Zeichen etwa gleich viele.
+
+    **Wo es sättigt:** Nichts wächst linear; jede Einheit Budget bringt weniger als die vorige. Am Gold holt ×4 die
+    Hälfte des möglichen F1-Gewinns, ×10 82 und 85 %, ×20 98 %; ab ×30 ist alles Zugeordnete gedruckt. In den Texten
+    steigt der Nutzen je Verdopplung um einen ähnlichen Betrag; die Vollständigkeit der wörtlichen Profile ist bei ×2
+    bis ×4 am Ende, die von `best-quality-generated` steigt bis ×10.
+
+    ![Bausteinbudget am Gold der Zuordnung: Precision, Recall und F1 (M86)](bilder/bausteinbudget_gold.svg)
+
+    ![Bausteinbudget: passende und unpassende Absätze im Text (M86)](bilder/bausteinbudget_absaetze.svg)
+
+    **Empfehlung:** Faktor 4 als einstellbare Vorgabe für alle Profile, angewandt wie gemessen auf die Höchstzahl der
+    Absätze und die Zeichen, ab denen ein Baustein schließt; die Vorlagen bleiben, wie sie sind. Bei ×4 gewinnt jedes
+    Profil 0,8 bis 1,4 Noten an Nutzen und `best-quality-generated` 0,5 an Vollständigkeit, für 19 % mehr Tokens dort
+    und ohne längere Dauer; Precision und Anteil unpassender Absätze bleiben, und die wörtlichen Texte kommen in die
+    Nähe der Ziellänge. Über ×4 hinaus lohnt es nur für `best-quality-generated`: ×10 bringt dort noch 0,4 Noten an
+    Nutzen und Vollständigkeit für 14 Prozentpunkte mehr Tokens, ohne den Text zu verlängern; die wörtlichen Profile
+    bekämen bei ×10 lange Texte mit mehr Absätzen am Rand. Ein eigener, höherer Faktor für die schreibenden Profile wäre
+    eine zweite Einstellung; für `/qa` kann der Faktor bei 1 bleiben.
 
     Nebenbefund: Die Artikel, die das LLM zu einem Thema nennt (D63), wechselten von Lauf zu Lauf; einmal kam für Optik
     „Linsen“, im Archiv die Pflanzengattung, und ein größeres Budget druckte deren Botanik. M86 maß deshalb jedes Thema
-    auf einem festen Korpus; die genannten Artikel auf Mehrdeutigkeit zu prüfen, wäre eine eigene Messung.
+    auf einem festen Korpus; die genannten Artikel auf Mehrdeutigkeit zu prüfen, ist eine eigene Messung.
 
 Die KI-Prüfung der Lehrplanelemente, seit D53 offen, ist mit D58 gebaut: Jan hat die MEM-Daten am 26.09.2026 ohne
 Einschränkung freigegeben, die FWU stellt den Zugang offen bereit (github.com/FWU-DE/mem-mcp). Sie läuft in den beiden

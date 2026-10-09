@@ -4561,19 +4561,78 @@ die vier Texte:
   `best-quality-generated` ×4, Bildungsstandards der KMK für Geschichte, die es nicht gibt, ist ein Satz aus
   Modellwissen ohne Beleg, kein zusätzlicher Absatz; beide Gutachter fanden ihn.
 
-**Am Gold der Zuordnung** (10 Themen, 597 gelabelte Absätze; gezählt sind die gedruckten Absätze mit Label):
+**Nachtrag: was dagegen spricht und wo es sättigt.** Jan nach den ersten Zahlen: „zu prüfen wäre was möglicherweise
+dagegen sprechen könnte … kosten (token) müssen mit rein - eventuell längere generierungsdauer und ob bei dem dann
+längeren kompendialen text mehr unpassende absätze dabei sind … vielleicht kann man dann mit einem f1 sagen wo die
+verbesserungen gesättigt sind“. Dazu zwei weitere Messungen: das Gold der Zuordnung bis zu dem Faktor, ab dem sich
+nichts mehr ändert, und ein Urteil zu jedem Absatz, den die wörtlichen Profile drucken.
 
-| Faktor | Regeln: gedruckt | richtig und falsch | Precision | Recall | LLM: gedruckt | richtig und falsch | Precision | Recall |
-|---|---|---|---|---|---|---|---|---|
-| ×1 | 222 | 83 und 46 | 0,64 | 0,16 | 255 | 108 und 36 | 0,75 | 0,21 |
-| ×2 | 358 | 123 und 75 | 0,62 | 0,24 | 422 | 162 und 52 | 0,76 | 0,31 |
-| ×4 | 556 | 184 und 99 | 0,65 | 0,36 | 635 | 232 und 71 | 0,77 | 0,45 |
-| ×10 | 1.009 | 290 und 160 | 0,64 | 0,56 | 1.083 | 343 und 102 | 0,77 | 0,66 |
+**Am Gold der Zuordnung, bis zur Sättigung** (`mc_budget_gold.py --budgets=1,2,3,4,5,6,8,10,15,20,30,50,1000`; die zehn
+Goldthemen, 597 gelabelte Absätze; gezählt sind die gedruckten Absätze mit Label; „nicht hinein“: als zu keinem Baustein
+gehörig gelabelt und doch gedruckt, in Klammern der Anteil an den gelabelten gedruckten):
 
-Die Precision bleibt, der Recall verdreifacht sich: Der Zuschnitt verwirft Absätze, die so oft richtig sind wie die, die
-er behält. Die Zuordnung durch das LLM kostete 228.276 Tokens für die zehn Themen, ohne Rückfall. Grenze: Das Gold kennt
-nicht alle gedruckten Absätze. Ohne Label waren bei ×1 42 % (Regeln) und 44 % (LLM), bei ×10 55 % und 59 %; über sie
-sagt die Precision nichts.
+| Faktor | Regeln: gedruckt | Precision | Recall | F1 | nicht hinein | LLM: gedruckt | Precision | Recall | F1 | nicht hinein |
+|---|---|---|---|---|---|---|---|---|---|---|
+| ×1 | 222 | 0,64 | 0,16 | 0,26 | 14 (11 %) | 256 | 0,82 | 0,22 | 0,35 | 6 (4 %) |
+| ×2 | 358 | 0,62 | 0,24 | 0,34 | 28 (14 %) | 422 | 0,78 | 0,33 | 0,46 | 12 (6 %) |
+| ×3 | 461 | 0,63 | 0,30 | 0,40 | 32 (13 %) | 539 | 0,79 | 0,40 | 0,53 | 15 (6 %) |
+| ×4 | 556 | 0,65 | 0,36 | 0,46 | 33 (12 %) | 638 | 0,79 | 0,46 | 0,58 | 17 (6 %) |
+| ×6 | 730 | 0,64 | 0,43 | 0,52 | 39 (11 %) | 815 | 0,78 | 0,57 | 0,66 | 27 (7 %) |
+| ×8 | 877 | 0,64 | 0,50 | 0,56 | 46 (11 %) | 953 | 0,78 | 0,64 | 0,71 | 31 (7 %) |
+| ×10 | 1.009 | 0,64 | 0,56 | 0,60 | 50 (11 %) | 1.067 | 0,79 | 0,69 | 0,74 | 32 (7 %) |
+| ×15 | 1.230 | 0,66 | 0,63 | 0,65 | 52 (11 %) | 1.290 | 0,78 | 0,76 | 0,77 | 36 (7 %) |
+| ×20 | 1.372 | 0,66 | 0,67 | 0,67 | 54 (10 %) | 1.427 | 0,79 | 0,81 | 0,80 | 38 (7 %) |
+| ×30 bis ×1000 | 1.450 | 0,66 | 0,69 | 0,67 | 55 (10 %) | 1.439 | 0,79 | 0,82 | 0,81 | 38 (7 %) |
+
+- Die Precision bleibt bei jedem Faktor, wo sie bei ×1 lag (Regeln 0,62 bis 0,66, LLM 0,78 bis 0,82); auch die Absätze,
+  die nicht hineingehören, bleiben ein gleicher Anteil (Regeln 10 bis 14 %, LLM 4 bis 7 %). Ihre Zahl wächst mit dem
+  Text: bei den Regeln von 14 bei ×1 auf 50 bei ×10.
+- Der Recall steigt, bis bei ×30 alles gedruckt ist, was die Zuordnung einem Baustein gibt; ×50 und ×1000 drucken
+  dasselbe. Vom F1-Gewinn bis dorthin holt ×2 21 und 24 % (Regeln und LLM), ×4 49 und 50 %, ×10 82 und 85 %, ×20 98 %:
+  Am Gold sättigt die Verbesserung zwischen ×10 und ×20.
+- Das LLM ordnet von Lauf zu Lauf etwas anders zu; der erste Lauf bis ×10 (in `m86_bausteinbudget.json`) kam auf
+  Precision 0,75 bis 0,77 und Recall 0,21 bis 0,66, mit demselben Verlauf. Jede Zuordnung kostete rund 228.000 Tokens
+  für die zehn Themen, ohne Rückfall.
+- Grenze: Das Gold kennt nicht alle gedruckten Absätze. Ohne Label waren bei ×1 42 und 45 %, bei ×10 55 und 58 %, ab ×30
+  63 %; über sie sagen die Urteile im Text mehr.
+
+**Unpassende Absätze im Text** (`mc_budget_absaetze.py`). Was ×1 druckt, drucken alle größeren Faktoren auch; das gilt
+bei jedem Thema in beiden wörtlichen Profilen. Die 603 verschiedenen Absätze, die `llm-free` und `balanced` bei einem
+der Faktoren drucken, bewerteten zwei neue Claude-Gutachter blind, ohne Faktor und Profil, je Baustein gemischt:
+Behandelt der Absatz das angefragte Thema, nur einen Oberbegriff oder ein Nachbarthema (am Rand) oder nichts davon
+(daneben), und passt er zu seinem Baustein? Beim Thema urteilten sie in 566 von 603 Fällen gleich (κ 0,90), beim
+Baustein in 560. Mittel beider Gutachter, Summe der vier Themen; „im falschen Baustein“ zählt unter den Absätzen, die
+nicht daneben sind, „neu“ die Absätze, die ein Faktor zum nächstkleineren hinzufügt:
+
+| Profil, Faktor | gedruckt | zum Thema | am Rand | daneben | im falschen Baustein | neu: Absätze, davon daneben |
+|---|---|---|---|---|---|---|
+| `llm-free` ×1 | 91 | 35 % | 32 % | 30,0 (33 %) | 26 % | – |
+| `llm-free` ×2 | 129 | 38 % | 34 % | 35,5 (28 %) | 30 % | 38, 14 % |
+| `llm-free` ×4 | 177 | 43 % | 36 % | 37,5 (21 %) | 27 % | 48, 4 % |
+| `llm-free` ×10 | 249 | 56 % | 29 % | 38,5 (15 %) | 25 % | 72, 1 % |
+| `balanced` ×1 | 108 | 63 % | 35 % | 3,0 (3 %) | 29 % | – |
+| `balanced` ×2 | 178 | 59 % | 38 % | 4,0 (2 %) | 32 % | 70, 1 % |
+| `balanced` ×4 | 269 | 57 % | 41 % | 7,5 (3 %) | 28 % | 91, 4 % |
+| `balanced` ×10 | 451 | 53 % | 42 % | 22,0 (5 %) | 30 % | 182, 8 % |
+
+- In `balanced` bleibt der Anteil daneben bis ×4 bei 2 bis 3 % (3 bis 7,5 Absätze); ×10 bringt 182 neue Absätze,
+  davon 8 % daneben, und hebt die Zahl auf 22. Der Anteil am Rand wächst von 35 auf 42 %, der im falschen Baustein
+  bleibt bei 28 bis 32 %.
+- Das meiste davon trägt das Aspektthema: „Inklusion im Sportunterricht“ druckt in `balanced` keinen Absatz zum Sport,
+  nur Inklusion allgemein: bei ×1 30 Absätze (28 am Rand, 2 daneben), bei ×10 148 (136,5 am Rand, 11,5 daneben). Bei
+  Optik kommen von ×4 auf ×10 48 Absätze dazu, 17,5 am Rand und 6 daneben; Französische Revolution und Komponisten der
+  Klassik bleiben bis ×10 beim Thema (zusammen 0,5 Absätze daneben).
+- In `llm-free` sinkt der Anteil daneben mit dem Budget (33 auf 15 %): Die unpassenden stammen aus dem falschen
+  Hauptartikel „Max Richter (Komponist)“ (22 Absätze, ab ×2 ausgeschöpft) und aus „Sportdidaktik“ (12); was größere
+  Faktoren dazubringen, sind Absätze zu Optik und zur Französischen Revolution.
+
+**Linear oder gesättigt?** Keine Größe wächst linear mit dem Faktor; jede Einheit Budget bringt weniger als die vorige
+(`bausteinbudget.svg` hat dafür eine lineare Achse). Text und Belege wachsen, bis der Korpus nichts Zugeordnetes mehr
+hat: `balanced` je Einheit 6.600, 5.100 und 2.800 Zeichen (×1 auf ×2, ×2 auf ×4, ×4 auf ×10), `best-quality-generated`
+4.400, 4.000 und 1.500 Tokens. Der Nutzen steigt eher mit jeder Verdopplung um einen ähnlichen Betrag, in `balanced` um
+0,75, 0,63 und 0,66, in `best-quality-generated` um 0,5, 0,25 und 0,29; in `llm-free` hört er nach ×4 fast auf (0,19).
+Die Vollständigkeit der wörtlichen Profile endet bei 2,1 (`balanced`, ab ×2) und 1,9 (`llm-free`, ab ×4), die von
+`best-quality-generated` steigt bis ×10.
 
 **Erster Durchgang ohne festen Korpus** (`m86_bausteinbudget_erster_durchgang.json`). Die Artikel, die das LLM nennt,
 wechselten von Lauf zu Lauf: Bei „Inklusion im Sportunterricht“ hatte `balanced` bei ×2 acht Quellen, bei ×4 drei. Bei
@@ -4586,15 +4645,19 @@ Korpus nicht, druckt aber mehr von ihnen.
 **Grenzen.** Vier Themen, je Faktor ein Lauf; die Noten stammen von Claude-Gutachtern und gelten für einen Auszug (die
 Bausteine 5 bis 7 sah keiner). Eine Note eines Gutachters bei einem Thema verschiebt ein Mittel um 0,125.
 
-**Schluss.** Der Zuschnitt auf die Budgets verwirft gute Absätze. Mehr Budget macht die Texte in allen Profilen
-gehaltvoller, ohne Zeit zu kosten; `best-quality-generated` wird auch vollständiger, für 19 % (×4) bis 33 % (×10) mehr
-Tokens. Die wörtlichen Profile werden länger und etwas schwerer lesbar, ihre leeren Bausteine füllt mehr Budget nicht.
-Zu entscheiden: Entscheidungsvorlage, Punkt 17.
+**Schluss.** Der Zuschnitt auf die Budgets verwirft gute Absätze: Am Gold bleibt die Precision bis zur Sättigung bei
+×20 bis ×30 gleich. Mehr Budget macht die Texte in allen Profilen gehaltvoller, ohne Zeit zu kosten;
+`best-quality-generated` wird auch vollständiger, für 19 % (×4) bis 33 % (×10) mehr Tokens. Die wörtlichen Profile
+werden länger und etwas schwerer lesbar; ihre leeren Bausteine füllt mehr Budget nicht, und über ×4 kommen mehr Absätze
+am Rand und daneben dazu, vor allem beim Aspektthema. Zu entscheiden: Entscheidungsvorlage, Punkt 17.
 
 Rohdaten: `m86_bausteinbudget.json` (je Profil und Faktor Zeit, Tokens, Text und Noten, die Läufe ohne Text, die Urteile
-ohne Zitate, die Schlüssel und das Gold), `m86_bausteinbudget_erster_durchgang.json`. Skripte: `mc_kompendium_profil.py
---budgets --fixed-corpus`, `mc_budget_boegen.py`, `mc_budget_auswertung.py`, `mc_budget_gold.py`; Grafik
-`bausteinbudget.svg` (`mc_grafiken.py`). Die Texte und Bögen bleiben außerhalb des Repositorys.
+ohne Zitate, die Schlüssel und das Gold des ersten Laufs), `m86_bausteinbudget_erster_durchgang.json`,
+`m86_gold_erweitert.json` (das Gold bis ×1000) und `m86_absaetze.json` (die Absatzurteile je Profil, Faktor und Thema,
+mit der Übereinstimmung). Skripte: `mc_kompendium_profil.py --budgets --fixed-corpus`, `mc_budget_boegen.py`,
+`mc_budget_auswertung.py`, `mc_budget_gold.py`, `mc_budget_absaetze.py`; Grafiken `bausteinbudget.svg`,
+`bausteinbudget_gold.svg` und `bausteinbudget_absaetze.svg` (`mc_grafiken.py`). Die Texte, die Bögen und die Urteile
+je Absatz bleiben außerhalb des Repositorys.
 
 ## M87 Ein Vektorindex über die Absätze der Wikipedia: Umfang und Tempo (D101, 09.10.2026)
 

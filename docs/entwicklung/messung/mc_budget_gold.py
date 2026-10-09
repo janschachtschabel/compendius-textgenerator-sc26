@@ -4,13 +4,15 @@ The ten gold topics of eval/gold (the directory bound to /gold) in the service's
 labelled, and 30,000 characters; the whole corpus competes for the places, as in a compendium. Every topic is prepared
 once and assigned once per matcher (hybrid_light, llm); the assignment's last cut to the block budgets is caught and
 made again with the paragraphs and characters of every block times 1, 2, 4 and 10, as mc_kompendium_profil.py
---budgets does. Printed precision and recall over the labelled paragraphs, as M44 counts them (app/matching/eval); a
-printed paragraph without a label counts in neither.
+--budgets does (``--budgets=`` for other factors; 1000 sets no limit in practice). Printed precision and recall over
+the labelled paragraphs, as M44 counts them (app/matching/eval); a printed paragraph without a label counts in
+neither. A wrong one is either in another block than its label's or labelled for none at all (``nicht_hinein``).
 
 In the one-off container with OpenAI direct (M86), the budgets of a request raised so that none of them steps in:
   cat mc_openai_direkt.py mc_budget_gold.py | docker compose run --rm --no-deps -T -v <repo>/eval/gold:/gold \\
       -v <ordner>:/out -e LLM_ENABLED=true -e B_API_KEY=direct -e B_API_BASE_URL=https://b-api.invalid \\
       -e OPENAI_API_KEY -e LLM_MAX_TOKENS_PER_REQUEST=2000000 api python - /out/<lauf>.json [--matchers=a,b]
+      [--budgets=1,2,4,10]
 """
 
 import json
@@ -67,6 +69,7 @@ def main() -> None:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     options = dict(a[2:].split("=", 1) for a in sys.argv[1:] if a.startswith("--"))
     matchers = options["matchers"].split(",") if "matchers" in options else list(MATCHERS)
+    factors = [int(f) for f in options["budgets"].split(",")] if "budgets" in options else list(FACTORS)
     if "install" in globals():  # piped in after mc_openai_direkt.py: every call goes to OpenAI direct
         install()  # noqa: F821
     service = cli_service(None)
@@ -85,7 +88,7 @@ def main() -> None:
                 tokens += matched.llm.total_tokens
                 fallback += matched.llm.fallback
             cuts.append((gold, prepared, alignment, caught["last"]))
-        for factor in FACTORS:
+        for factor in factors:
             results, printed = [], 0
             for gold, prepared, alignment, (template, candidates) in cuts:
                 kept, _notes, _dropped = shipped_cut(scaled(template, factor), candidates)
@@ -96,11 +99,14 @@ def main() -> None:
                 results.append(evaluate(title, alignment.gold_by_chunk, predictions, slot_keys, matcher=matcher))
             whole = aggregate(results)
             tp, fp, fn = (sum(getattr(m, key) for m in whole.slots) for key in ("tp", "fp", "fn"))
+            not_in = sum(count for key, count in whole.confusion.items() if key.startswith("none>"))
             out[f"{matcher}@{factor}"] = {
                 "gedruckt": printed,
                 "gelabelt": whole.labeled,
                 "richtig": tp,
                 "falsch_zugeordnet": fp,
+                "nicht_hinein": not_in,  # labelled for no block, printed all the same
+                "ohne_label": printed - tp - fp,
                 "verpasst": fn,
                 "precision": round(tp / (tp + fp), 3) if tp + fp else None,
                 "recall": round(tp / (tp + fn), 3) if tp + fn else None,
