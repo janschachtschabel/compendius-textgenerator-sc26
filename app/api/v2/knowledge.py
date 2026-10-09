@@ -90,8 +90,8 @@ class KnowledgeRequest(RequestModel):
         None,
         description="The profile of a compendium request (D53); here it sets article_choice and the token budget. "
         "llm-free takes rule-based, balanced takes llm, best-quality, best-quality-generated and "
-        "best-coverage-generated take llm-thorough, and these three spend from 180,000 tokens per request instead of "
-        "60,000 (D59), which this "
+        "best-coverage-generated take llm-thorough, and these three spend from 200,000 tokens per request instead of "
+        "60,000 (D59, D102), which this "
         "endpoint does not come near. Default: PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server "
         "without an LLM (D68). An article_choice the request sets "
         "wins; llm or llm-thorough on a server without an LLM is a 503.",
