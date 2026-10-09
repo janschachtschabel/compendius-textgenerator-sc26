@@ -87,10 +87,14 @@ MATCHER_HELP = (
     "An unknown name is a 422. GET /api/v2/matching/strategies lists the same strategies."
 )
 EXTRACTION_HELP = (
-    "Who picks the passages of part 1. Default: the profile's, rule-based in all five.\n\n"
+    "Who picks the passages of part 1. Default: the profile's, rule-based in all five; a request may ask for llm in "
+    "any profile, the switch wins over it.\n\n"
     "- **rule-based**: the paragraphs the matching assigned, their first sentences.\n"
-    "- **llm**: the LLM chooses sentences by number among the best candidates of every block; the wording stays the "
-    "source's. Measured for one topic (Optik) on 2026-09-19: 10 calls, about 16 500 tokens and 11 s.\n\n"
+    "- **llm**: one call per content block, the blocks in parallel: the LLM chooses sentences by number among the "
+    "block's candidates - every paragraph the cut left it (BLOCK_BUDGET_FACTOR, D102), then the next best up to "
+    "LLM_EXTRACTION_CANDIDATES -, and the choice stops at the template's characters. The wording stays the source's, "
+    "every sentence keeps the citation of its paragraph; a block whose call fails keeps the assigned paragraphs "
+    "(audit.llm.extraction). Measured for one topic (Optik) on 2026-09-19: 10 calls, about 16 500 tokens and 11 s.\n\n"
     "llm without a configured LLM is a 503; when the b-api is not available for now it falls back to rule-based."
 )
 GENERATION_HELP = (

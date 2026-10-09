@@ -391,7 +391,8 @@ drei Schalter auf.
 | `empty_slot_policy` | `omit`, `note` | aus dem Template, bei SC26 `omit` | leere Bausteine weglassen oder mit Hinweis zeigen |
 
 **Kombinierbar:** `extraction` und `generation` lassen sich zusammen einschalten, `enrichment` wirkt nur mit
-`generation`. Alle LLM-Schalter teilen sich das Budget je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST`, 60.000, in den
+`generation`. Ein Schalter der Anfrage geht dem Profil vor: `extraction=llm` lässt sich in jedem Profil zuschalten,
+in der Prüfansicht mit dem Kästchen „KI wählt die Sätze“ beim Profil (D103). Alle LLM-Schalter teilen sich das Budget je Anfrage (`LLM_MAX_TOKENS_PER_REQUEST`, 60.000, in den
 `best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, 200.000, D59, D102) und, wenn gesetzt, ein
 Tagesbudget (`LLM_DAILY_TOKEN_BUDGET`; die Vorgabe 0 setzt keine Grenze, D67). Ein geschriebener Satz bleibt nur, wenn
 er eine gültige Belegnummer trägt und mindestens 20 % seiner Inhaltswörter im zitierten Absatz stehen; sonst wird er

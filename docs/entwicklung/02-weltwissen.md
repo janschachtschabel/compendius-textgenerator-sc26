@@ -314,7 +314,7 @@ Lesbarkeit gibt es Schalter, die ein Sprachmodell über die b-api zuschalten:
 
 | Schalter | Was das LLM tut | Gemessen mit `gpt-5.6-luna` |
 |---|---|---|
-| `extraction=llm` | wählt je Baustein Sätze aus bis zu acht Kandidatenabsätzen; der Wortlaut bleibt der Quelle | Optik am 19.09.: 10 Aufrufe, 16.467 Tokens, 11 s; zehn Goldthemen: 14.000–22.400 Tokens je Thema |
+| `extraction=llm` | wählt je Baustein Sätze aus den Absätzen, die ihm die Zuordnung gibt, aufgefüllt mit den nächstbesten bis acht; ein Aufruf je Baustein, alle nebeneinander; der Wortlaut bleibt der Quelle, jeder Satz behält seine Belegnummer | Optik am 19.09.: 10 Aufrufe, 16.467 Tokens, 11 s; zehn Goldthemen: 14.000–22.400 Tokens je Thema |
 | `generation=llm-fast` | schreibt die Bausteine Themendefinition und Querschnitt neu | vier Themen am 18.09.: 2–3 Aufrufe, 2.300–4.000 Tokens, 9–15 s |
 | `generation=llm` | schreibt alle Inhaltsbausteine neu | vier Themen am 18.09.: 8–10 Aufrufe, 10.500–14.500 Tokens, 16–20 s |
 | beide auf `llm` | Satzauswahl und Neuformulierung | Optik am 19.09.: 20 Aufrufe, 27.205 Tokens, 18 s; über die Goldthemen bis rund 37.000 Tokens |

@@ -645,7 +645,11 @@ vier Themen): `llm-fast` 2 bis 3 Aufrufe und 2.300 bis 4.000 Tokens, `llm` 8 bis
 Mit `extraction=llm` tragen die Bausteine den Status `ki-ausgewählt`, die KI-Kennzeichnung im Frontmatter nennt
 wörtliche Quellenauszüge mit KI-gestützter Auswahl. Passt kein angebotener Absatz, bleibt der Baustein leer
 (`audit.llm.extraction.emptied`); scheitert die Auswahl (b-api, Budget, Zeit, unlesbare Antwort), behält der
-Baustein die Absätze der Policy (`audit.llm.extraction.fallbacks`).
+Baustein die Absätze der Policy (`audit.llm.extraction.fallbacks`). Je Baustein geht ein Aufruf hinaus, alle
+nebeneinander (bis `LLM_MAX_CONCURRENCY`); Kandidaten sind alle Absätze, die der Zuschnitt dem Baustein lässt (seit
+D102 bis zum Zehnfachen der Vorlage), aufgefüllt bis `LLM_EXTRACTION_CANDIDATES`, und die Auswahl schließt beim
+Zeichenbudget der Vorlage. Jeder gedruckte Satz steht wörtlich in seinem Absatz und trägt dessen Belegnummer. Der
+Schalter gilt in jedem Profil; in keinem ist er voreingestellt, `best-coverage-generated` schreibt mit `generation`.
 
 **Zuordnung durch das LLM (`matcher: llm`, D34).** Statt der Policy kann das LLM jeden Absatz einem Baustein
 zuordnen oder keinem, über `matcher` oder die drei Profile ab `best-quality`. Es sieht die Bausteine mit
