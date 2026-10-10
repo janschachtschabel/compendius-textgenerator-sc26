@@ -20,7 +20,7 @@ variables:
 default:
   # Per Digest gepinnt wie die Basis-Images des Dockerfiles, mit derselben uv-Version wie Dockerfile und GitHub-CI
   # (tests/test_ci_pins.py); ab uv 0.12 gibt es das Image nur auf Debian 13 (Audit 2026-09-28, AB-06, BE-16)
-  image: ghcr.io/astral-sh/uv:0.12.19-python3.13-trixie-slim@sha256:aba5f865793af9275ceaa06d30935dfc6db8b81969c9fb099b0ebca6396b189e
+  image: ghcr.io/astral-sh/uv:0.13.0-python3.13-trixie-slim@sha256:40215b626e22e4ff65839863624c4b885b8829b1a66ce895b7be20eca7fabe6d
   # Ein neuerer Commit desselben Branches bricht die aeltere Pipeline ab (GitLab: "Auto-cancel redundant pipelines");
   # nur "docker tag" laeuft zu Ende, wenn es einmal begonnen hat
   interruptible: true
