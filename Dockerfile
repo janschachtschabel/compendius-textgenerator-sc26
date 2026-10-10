@@ -13,9 +13,9 @@ ARG SPACY_MODEL=de_core_news_md
 # vorschlaegt. uv nur im Builder, in derselben Version wie CI und Lockfile. Keine syntax-Zeile: Sie holte bei jedem
 # Bau das Frontend docker/dockerfile:1.7 ueber ein wanderndes Tag, und das Dockerfile braucht nichts, was das in
 # BuildKit eingebaute Frontend nicht kann (RUN --mount=type=cache; Audit 2026-09-29, O4).
-FROM ghcr.io/astral-sh/uv:0.12.19@sha256:04d046b13e60d6bcec73cbc5e1cad25d680dea90c8573340950a0ac2d1aef424 AS uv
+FROM ghcr.io/astral-sh/uv:0.13.0@sha256:cdc6093146eb3ff6a40107b38f008b789e050e77ad87865e381d9917da55a168 AS uv
 
-FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS builder
+FROM python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 AS builder
 COPY --from=uv /uv /uvx /bin/
 WORKDIR /app
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
@@ -73,7 +73,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     && installed=$(/app/.venv/bin/python -c "import app, pathlib; print(pathlib.Path(app.__file__).parent)") \
     && diff -r -x __pycache__ app "$installed"
 
-FROM python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26 AS runtime
+FROM python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 AS runtime
 WORKDIR /app
 # Die Modelle, die der Bau eingebacken hat: Ohne Model2Vec-Modell bleibt MODEL2VEC_PATH leer; fest /models/m2v meldete
 # jeder Start einen Fehler fuer ein Modell, das dem Image mit Absicht fehlt (Audit 2026-09-29, O9)
