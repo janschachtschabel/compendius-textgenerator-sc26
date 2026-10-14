@@ -2411,8 +2411,9 @@ API.
   „Kompendium-API v2“, `info.summary` für Endnutzende, deutsche Kurztitel statt der aus Funktionsnamen erzeugten („Zim
   Sync Now“), Beschreibungen der Gruppen. Intern und nicht in der Spezifikation: `/health`, `/ready`, `/metrics`, die
   Statusendpunkte von Archiven und Lehrplänen und die Admin-Pfade; docs/betrieb.md listet sie, und ein Test hält die
-  Liste vollständig. Die Beschreibungen der Endpunkte bleiben die Docstrings, englisch wie der Code. Ein zweiter Port
-  ist nicht gebaut: uvicorn startet über seine Kommandozeile, die nur einen Socket bindet.
+  Liste vollständig; `create_app(document_internal=True)` nimmt sie für die Tests ihrer Dokumentation ins Dokument auf.
+  Die Beschreibungen der Endpunkte bleiben die Docstrings, englisch wie der Code. Ein zweiter Port ist nicht gebaut:
+  uvicorn startet über seine Kommandozeile, die nur einen Socket bindet.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
