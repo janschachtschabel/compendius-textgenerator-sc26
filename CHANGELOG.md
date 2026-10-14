@@ -9,6 +9,13 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+- **Geändert (D104):** Der Dienst hat kein Tagesbudget mehr: Die b-api setzt die Limits je Schlüssel und schaltet das
+  LLM ab, wenn eines erreicht ist. `LLM_DAILY_TOKEN_BUDGET` wirkt nicht mehr, der Start nennt einen alten Eintrag;
+  `llm_budget.db` im Volume `state` wird nicht mehr geschrieben. Es entfallen die Gauges
+  `kompendium_llm_tokens_used_today` und `kompendium_llm_daily_budget_tokens`, die Alarme
+  `KompendiumLlmBudgetNearlySpent` und `KompendiumLlmBudgetBurnsFast` und in `/health` `budget.daily` und
+  `budget.used_today`; die Tokens eines Tages zählt `increase(kompendium_llm_tokens_total[1d])`. `RATE_LIMIT` hat die
+  Vorgabe `0` statt 60: Hinter der b-api kommen alle Anfragen von ihrer Adresse. Die Option bleibt.
 - **Doku (M91):** Alle fünf Profile beim zehnfachen Bausteinbudget an neun Themen gemessen, Teil 1 und 2, blind
   bewertet: `best-coverage-generated` in jeder Note vorn, 5 s langsamer als `best-quality-generated`, 68 % Modellwissen.
   Die Entscheidungsvorlage beginnt mit einer Zusammenfassung zu Bausteinbudget, Quellen und Profil im Betrieb (Punkt 20)

@@ -2376,6 +2376,15 @@ API.
   bereich der profilauswahl um das aktivieren?“ - „jetzt einbauen“). Das Kästchen gilt für jedes Profil und im
   Vergleich für beide Profile; die übrigen Schritte unter „Erweitert“ bleiben im Vergleich bei den Profilen. Ohne
   KI auf dem Server ist es gesperrt. Am Dienst ändert sich nichts; gemessen wird der Schalter in M89.
+- **D104 (2026-10-14)** Kein Tagesbudget im Dienst, und `RATE_LIMIT` begrenzt ohne Eintrag nichts (Jan: „wir brauchen
+  für die api kein daily cost limit - diese kontrolle macht die b-api - kann raus“; „die b-api macht die limits. wir
+  gehen von default ratelimit 0 aus lassen die option aber drin“). Die b-api setzt Limits je Schlüssel
+  (`dailyCostLimit`, `weeklyCostLimit`) und schaltet das LLM ab, wenn eines erreicht ist. Mit dem Tagesbudget gehen
+  `llm_budget.db`, der einzige Zähler, den alle Worker gemeinsam schreiben mussten (mehrere Pods hätten ihn auf einem
+  geteilten Volume gebraucht), die Gauges des Tages und ihre zwei Alarme; die Tokens eines Tages zählt Prometheus über
+  `kompendium_llm_tokens_total`. Die Grenze je Anfrage bleibt, sie schützt vor einem einzelnen ausufernden Kompendium.
+  Hinter der b-api kommen alle Anfragen von ihrer Adresse: Ein Limit je Client hielte dort für alle zusammen, darum die
+  Vorgabe 0; die Einstellung bleibt für einen Dienst, der direkt erreichbar ist.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

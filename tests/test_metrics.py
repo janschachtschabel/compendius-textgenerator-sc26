@@ -324,15 +324,16 @@ def test_without_the_gnd_index_its_gauge_says_so(sample_zims: dict[str, Path], t
     assert "kompendium_gnd_sync_failed" not in {name for name, _labels in samples}
 
 
-def test_llm_gauges_show_availability_and_the_daily_budget(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+def test_llm_gauges_show_availability(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     with _app(sample_zims, tmp_path) as client:
         gateway = make_gateway(FakeBApi(answer_from_evidence))
         gateway.check_model()  # as build_llm does at start; a scrape itself never calls the b-api
         client.app.state.llm = gateway  # type: ignore[attr-defined]
         samples = scrape(client)
     assert value(samples, "kompendium_llm_enabled") == 1 and value(samples, "kompendium_llm_available") == 1
-    assert value(samples, "kompendium_llm_daily_budget_tokens") == 2_000_000
-    assert value(samples, "kompendium_llm_tokens_used_today") == 0
+    names = {name for name, _labels in samples}
+    # D104: the b-api sets the limits; the day's tokens are increase(kompendium_llm_tokens_total[1d])
+    assert "kompendium_llm_daily_budget_tokens" not in names and "kompendium_llm_tokens_used_today" not in names
 
 
 def test_requests_are_counted_by_route_template(client: TestClient) -> None:

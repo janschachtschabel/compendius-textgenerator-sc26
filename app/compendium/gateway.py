@@ -115,9 +115,5 @@ class LlmGateway:
             # gone, said nothing here (review of 2026-10-09, D98)
             "reason": None if available else self.unavailable_reason,
             "check": asdict(self.check) if self.check is not None else None,
-            "budget": {
-                "per_request": self.budget.per_request,
-                "daily": self.budget.daily,
-                "used_today": self.budget.used_today,
-            },
+            "budget": {"per_request": self.budget.per_request},
         }

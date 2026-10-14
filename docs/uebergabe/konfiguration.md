@@ -20,7 +20,6 @@ openssl rand -hex 32   # je Schlüssel und Token einmal
 
 ```dotenv
 # Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.20.0 baut :2.20.0 und :2.20, wie auf GitHub).
-# Mindestens 2.6.0 nehmen: 2.5.0 liest LLM_DAILY_TOKEN_BUDGET=0 aus .env.example als leeres Tagesbudget.
 IMAGE=<registry>/<pfad>/compendious-text-fastapi:<version>
 
 # LLM
@@ -64,7 +63,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `UI_ENABLED` | `false` | **`true`, nur mit `API_KEYS`** | Prüfansicht `/ui/` für die Redaktion; sie fragt mit dem Schlüssel, den der Leser einträgt |
 | `API_BIND` | `0.0.0.0:8000` | **hinter Reverse-Proxy `127.0.0.1:8000`** | Compose: woran der Port der API gebunden wird; Docker leitet an der Firewall des Hosts vorbei |
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | **hinter Reverse-Proxy auf dem Host das Gateway des Compose-Netzes** | Absender, deren `X-Forwarded-For` uvicorn glaubt; sonst teilen sich alle Clients ein Rate-Limit |
-| `RATE_LIMIT` | `60` | wie Vorgabe | Anfragen je Minute und Aufrufer, je Worker gezählt; `0` schaltet es ab |
+| `RATE_LIMIT` | `0` | wie Vorgabe | Anfragen je Minute und Aufrufer, je Worker gezählt; `0` setzt keine Grenze: die b-api begrenzt je Schlüssel, und hinter ihr kommen alle Anfragen von ihrer Adresse (D104) |
 | `REQUEST_BODY_MAX_BYTES` | `1000000` | wie Vorgabe | größter Anfragekörper, sonst 413; `/compendium` nimmt bis 13.000.000 Byte (`existing_markdown`) |
 
 ### Server und Ressourcen
@@ -102,7 +101,6 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | wie Vorgabe | Tokens je Anfrage in `llm-free` und `balanced` |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `200000` | wie Vorgabe | Tokens je Anfrage in den drei Profilen ab `best-quality` |
 | `LLM_MAX_TOKENS_CURRICULUM_CHECK` | `400000` | wie Vorgabe | Tokens der KI-Prüfung von Teil 2 je Anfrage, neben denen der Anfrage (D94); was darüber hinausgeht, bleibt ungeprüft stehen |
-| `LLM_DAILY_TOKEN_BUDGET` | `0` | wie Vorgabe | Tokens je Tag für alle Worker; `0` setzt keine Grenze (D67), gezählt wird trotzdem. Eine Zahl kappt den Tag: 2.000.000 reichen für 25 bis 40 Kompendien mit `best-quality` oder rund 3.500 mit `balanced`. Ohne Grenze gehören `API_KEYS` gesetzt. Bis Release 2.5.0 hieß `0` ein leeres Budget: kein LLM-Aufruf, jeder Schritt fällt auf die Regeln zurück |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | wie Vorgabe | Sätze ohne deckenden Beleg: `drop` verwirft, `mark` kennzeichnet sie |
 | `LLM_EXTRACTION_CANDIDATES` | `8` | wie Vorgabe | Absätze je Baustein, die `extraction=llm` angeboten bekommt: die der Policy und bis zu dieser Zahl die nächstbesten |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | wie Vorgabe | Bausteine, die `generation=llm-fast` schreibt |

@@ -36,7 +36,10 @@ def test_fallbacks_are_counted_by_stage_and_cause() -> None:
                 "b": "b-api: b-api antwortete HTTP 500",
             }
         },
-        "curriculum_check": {"fallbacks": {}, "fallback": "Tagesbudget erschöpft (5 Tokens nötig, 0 frei)"},
+        "curriculum_check": {
+            "fallbacks": {},
+            "fallback": "Token-Budget der Lehrplanprüfung erschöpft (5 Tokens nötig, 0 frei)",
+        },
         "article_choice": {"fallback": "Antwort nicht lesbar"},
         "note": "not a stage",
     }

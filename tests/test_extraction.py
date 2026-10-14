@@ -68,7 +68,7 @@ def _assignment() -> AssignmentResult:
 
 def _job(fake: FakeBApi, **kwargs: Any) -> ExtractionJob:
     client = BApiClient(BASE, KEY, provider="openai", model="gpt-5.6-luna", transport=httpx.MockTransport(fake))
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     return ExtractionJob(selector=LlmSelector(client), budget=budget, topic="Optik", concurrency=2, **kwargs)
 
 

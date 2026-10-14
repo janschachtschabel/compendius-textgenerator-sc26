@@ -20,7 +20,7 @@ from tests.test_llm_deadline import Clock
 
 def test_a_granted_call_returns_the_answer_and_settles_its_real_cost() -> None:
     client, _ = make_client(FakeBApi(lambda body: "Antwort"))
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
     assert isinstance(result, ChatResult) and result.text == "Antwort"
     assert budget.used == result.total_tokens == 24
@@ -29,7 +29,7 @@ def test_a_granted_call_returns_the_answer_and_settles_its_real_cost() -> None:
 
 def test_the_request_budget_counts_the_prompt_tokens_read_from_the_cache() -> None:
     client, _ = make_client(FakeBApi(lambda body: "Antwort", cached_tokens=15))
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     for _ in range(2):
         budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
     assert budget.cached_tokens == 30
@@ -39,7 +39,7 @@ def test_no_call_starts_when_the_request_has_no_time_left() -> None:
     fake = FakeBApi()
     client, _ = make_client(fake)
     deadline = Deadline(1.0)  # below the minimum a call needs
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, deadline=deadline, what="test")
     assert result == LlmSkipped(TIME_UP)
     assert fake.requests == [] and budget.used == 0
@@ -48,7 +48,7 @@ def test_no_call_starts_when_the_request_has_no_time_left() -> None:
 def test_a_denied_budget_skips_the_call_with_the_reason() -> None:
     fake = FakeBApi()
     client, _ = make_client(fake)
-    budget = TokenBudget(per_request=50, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=50).open_request()
     result = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
     assert isinstance(result, LlmSkipped) and "Budget" in result.reason and result.calls == 0
     assert fake.requests == []
@@ -56,7 +56,7 @@ def test_a_denied_budget_skips_the_call_with_the_reason() -> None:
 
 def test_a_b_api_error_counts_one_call_and_releases_the_reservation() -> None:
     client, _ = make_client(FakeBApi(statuses=[400]))
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
     assert isinstance(result, LlmSkipped) and result.reason.startswith("b-api:") and result.calls == 1
     assert budget.used == 0 and budget.remaining == 20_000
@@ -75,7 +75,7 @@ def test_a_reasoning_model_gets_room_to_think_on_top_of_the_answer() -> None:
     # nothing (finish_reason=length) when the limit only covered the text
     fake = FakeBApi(lambda body: "Antwort")
     client, _ = make_client(fake)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
     assert fake.bodies[0]["max_completion_tokens"] == 100 + REASONING_ALLOWANCE
 
@@ -83,7 +83,7 @@ def test_a_reasoning_model_gets_room_to_think_on_top_of_the_answer() -> None:
 def test_a_classic_model_gets_exactly_the_answer_limit() -> None:
     fake = FakeBApi(lambda body: "Antwort")
     client, _ = make_client(fake, provider="academiccloud", model="qwen3-30b-a3b-instruct-2507")
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
     assert fake.bodies[0]["max_tokens"] == 100
 
@@ -91,7 +91,7 @@ def test_a_classic_model_gets_exactly_the_answer_limit() -> None:
 def test_the_reservation_covers_the_room_to_think() -> None:
     fake = FakeBApi()
     client, _ = make_client(fake)
-    budget = TokenBudget(per_request=REASONING_ALLOWANCE, daily=2_000_000).open_request()  # the answer alone fits
+    budget = TokenBudget(per_request=REASONING_ALLOWANCE).open_request()  # the answer alone fits
     result = budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="test")
     assert isinstance(result, LlmSkipped) and "Budget" in result.reason and fake.requests == []
 
@@ -114,7 +114,7 @@ def test_waiting_for_the_budget_ends_when_no_call_could_start_in_time_any_more()
     started, release = threading.Event(), threading.Event()
     fake = FakeBApi(held_until(release, started))
     client, _ = make_client(fake)
-    budget = TokenBudget(per_request=ONE_AT_A_TIME, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=ONE_AT_A_TIME).open_request()
     first = threading.Thread(
         target=lambda: budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="erster")
     )
@@ -141,7 +141,7 @@ def test_a_call_whose_wait_for_the_budget_took_the_time_releases_its_reservation
     started, release = threading.Event(), threading.Event()
     fake = FakeBApi(held_until(release, started))
     client, _ = make_client(fake)
-    budget = TokenBudget(per_request=ONE_AT_A_TIME, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=ONE_AT_A_TIME).open_request()
     results: list[ChatResult | LlmSkipped] = []
     first = threading.Thread(
         target=lambda: budgeted_chat(client, MESSAGES, max_output_tokens=100, budget=budget, what="erster")
@@ -180,7 +180,7 @@ def test_text_a_caller_shapes_is_reserved_by_its_bytes() -> None:
     room = client.completion_limit(100)
 
     def call(per_request: int, **kwargs: Any) -> Any:
-        budget = TokenBudget(per_request=per_request, daily=2_000_000).open_request()
+        budget = TokenBudget(per_request=per_request).open_request()
         return budgeted_chat(client, messages, max_output_tokens=100, budget=budget, what="test", **kwargs)
 
     assert isinstance(call(size + room - 1), ChatResult)  # the estimate alone takes it for far less
@@ -202,7 +202,7 @@ def test_every_call_with_a_callers_text_reserves_it_by_its_bytes(monkeypatch: py
     monkeypatch.setattr(entities_llm, "budgeted_chat", record)
     monkeypatch.setattr(qa, "budgeted_chat", record)
     client, _ = make_client(FakeBApi())
-    job = entities_llm.EntityLlmJob(client=client, budget=Budget(per_request=10_000, daily=100_000).open_request())
+    job = entities_llm.EntityLlmJob(client=client, budget=Budget(per_request=10_000).open_request())
 
     entities_llm.named_mentions(job, SHAPED, entities_llm.EntitiesLlmReport())
     entities_llm.grade_links(job, SHAPED, [], entities_llm.EntitiesLlmReport())
@@ -222,7 +222,7 @@ def test_the_longest_text_a_caller_may_send_still_fits_the_cap_of_balanced() -> 
         :MAX_TEXT_CHARS
     ]
     client, _ = make_client(FakeBApi(lambda body: "OK"))
-    budget = TokenBudget(per_request=60_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=60_000).open_request()
 
     answer = budgeted_chat(
         client,
@@ -240,7 +240,7 @@ def test_a_call_the_breaker_held_back_writes_no_warning_of_its_own(caplog: pytes
     """While the breaker was open each call that met it logged a WARNING; the breaker says once that it opened, and
     the line of the request counts the fallback (logging review of 2026-10-08)."""
     client, _ = make_client(FakeBApi(statuses=[401]))
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     budgeted_chat(client, MESSAGES, max_output_tokens=10, budget=budget, what="Baustein a")  # trips the breaker
 
     with caplog.at_level(logging.DEBUG, logger="app.llm.call"):
@@ -258,7 +258,7 @@ def test_qa_pairs_skipped_for_time_write_no_warning(caplog: pytest.LogCaptureFix
     from app.synthesis import qa
 
     client, _ = make_client(FakeBApi())
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     deadline = Deadline(0.0)
 
     with caplog.at_level(logging.DEBUG):

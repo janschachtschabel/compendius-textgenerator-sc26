@@ -13,8 +13,7 @@ from pathlib import Path
 
 from app.compendium.gateway import LlmGateway, LlmOptions
 from app.knowledge.lexicon import HeadingLexicon
-from app.llm.budget import DailyStore, TokenBudget
-from app.llm.budget_store import SqliteDailyStore
+from app.llm.budget import TokenBudget
 from app.llm.client import BApiClient, is_reasoning_model, needs_thinking_off
 from app.llm.deadline import MIN_CALL_S
 from app.llm.prompts import PROMPTS
@@ -150,10 +149,10 @@ def warn_about_llm_settings(settings: Settings) -> None:
             route,
             settings.b_api_model,
         )
-    if not settings.llm_daily_token_budget and not settings.api_key_list:
+    if not settings.api_key_list:
         log.warning(
-            "LLM_DAILY_TOKEN_BUDGET=0 and API_KEYS empty: anyone who reaches the service spends b-api tokens without a "
-            "daily cap. Set API_KEYS, or a cap in LLM_DAILY_TOKEN_BUDGET (D67)"
+            "API_KEYS empty: anyone who reaches the service spends the tokens of B_API_KEY, up to the limits the b-api "
+            "sets for that key (D104)"
         )
     if not is_reasoning_model(settings.b_api_model):
         return  # a classic model is sent neither
@@ -214,18 +213,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
         temperature=settings.llm_temperature,
         response_cache=settings.b_api_response_cache,
     )
-    store: DailyStore | None = None
-    try:
-        store = SqliteDailyStore(settings.llm_budget_path)  # one daily counter for all workers, kept across restarts
-    except (sqlite3.Error, OSError) as exc:
-        log.warning(
-            "LLM budget store unavailable at %s (%s); the daily budget counts per process",
-            settings.llm_budget_path,
-            exc,
-        )
-    budget = TokenBudget(
-        per_request=settings.llm_max_tokens_per_request, daily=settings.llm_daily_token_budget, store=store
-    )
+    budget = TokenBudget(per_request=settings.llm_max_tokens_per_request)
     options = LlmOptions(
         fast_sections=tuple(settings.llm_fast_section_ids),
         extraction_candidates=settings.llm_extraction_candidates,

@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 
 from app.api.limits import RateLimiter, client_key
 from app.main import create_app
+from app.settings import Settings
 from tests.conftest import make_settings
 
 
@@ -30,6 +31,12 @@ def test_the_limit_answers_429_with_retry_after_and_spares_the_probes(
         limited = client.post("/api/v2/compendium", json={"topic": "Optik"})
         assert limited.status_code == 429 and int(limited.headers["Retry-After"]) >= 1
         assert [client.get(path).status_code for path in ("/health", "/ready", "/api/v2/templates")] == [200] * 3
+
+
+def test_the_limit_is_off_unless_set() -> None:
+    """Jan, 2026-10-14 (D104): the b-api sets the limits per key. Behind it every request comes from its address, so a
+    limit per client would hold for all callers together; the option stays."""
+    assert Settings(_env_file=None).rate_limit == 0
 
 
 def test_zero_switches_the_limit_off(sample_zims: dict[str, Path], tmp_path: Path) -> None:

@@ -113,7 +113,7 @@ def test_health_reports_the_llm_gateway(settings: Settings) -> None:
     with TestClient(app) as client:
         llm = client.get("/health").json()["components"]["llm"]
     assert llm["enabled"] and llm["available"] and llm["check"]["ok"]
-    assert llm["provider"] == "openai" and llm["model"] == "gpt-5.6-luna" and llm["budget"]["used_today"] == 0
+    assert llm["provider"] == "openai" and llm["model"] == "gpt-5.6-luna" and llm["budget"] == {"per_request": 20_000}
 
 
 def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
@@ -143,8 +143,8 @@ def test_build_llm_needs_the_switch_and_a_key_and_checks_the_model(
     assert gateway.synthesizer.mark_unsupported is True
     assert (gateway.client.reasoning_effort, gateway.client.verbosity) == ("low", "low")
     assert gateway.client.reasoning_efforts == settings.llm_reasoning_effort_by_prompt
-    assert gateway.budget.per_request == 60_000 and gateway.budget.daily == 0  # no daily cap unless set (D67)
-    assert (tmp_path / "llm_budget.db").exists(), "the daily counter is shared through STATE_DIR"
+    assert gateway.budget.per_request == 60_000
+    assert not (tmp_path / "llm_budget.db").exists(), "the b-api sets the daily limits; no counter in STATE_DIR (D104)"
     assert fake.requests[0].url.path.endswith("/api/v1/llm/openai/models")
 
 
@@ -251,18 +251,20 @@ def test_an_effort_per_question_the_service_does_not_know_is_named_at_start(
     assert ("LLM_REASONING_EFFORTS" in caplog.text) is warned
 
 
-@pytest.mark.parametrize(("daily", "keys", "warned"), [(0, "", True), (0, "k" * 32, False), (2_000_000, "", False)])
-def test_an_llm_open_to_anyone_without_a_daily_cap_is_named_at_start(
-    tmp_path: Path, offline_b_api: FakeBApi, caplog: pytest.LogCaptureFixture, daily: int, keys: str, warned: bool
+@pytest.mark.parametrize(("keys", "warned"), [("", True), ("k" * 32, False)])
+def test_an_llm_open_to_anyone_is_named_at_start(
+    tmp_path: Path, offline_b_api: FakeBApi, caplog: pytest.LogCaptureFixture, keys: str, warned: bool
 ) -> None:
-    """Without a daily cap (the default since D67) only API_KEYS keeps strangers from spending b-api tokens without
-    limit; a server open to all is named at start, as the review page without keys is (audit 2026-09-29, S2)."""
-    settings = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", llm_daily_token_budget=daily, api_keys=keys)
+    """Without API_KEYS anyone who reaches the service spends the tokens of B_API_KEY, up to the limits the b-api sets
+    for that key (D104); a server open to all is named at start, as the review page without keys is (audit
+    2026-09-29, S2)."""
+    settings = make_settings([], tmp_path, llm_enabled=True, b_api_key="k", api_keys=keys)
 
     with caplog.at_level(logging.WARNING):
         build_llm(settings)
 
-    assert ("LLM_DAILY_TOKEN_BUDGET" in caplog.text) is warned
+    assert ("API_KEYS empty" in caplog.text) is warned
+    assert "LLM_DAILY_TOKEN_BUDGET" not in caplog.text
 
 
 def test_test_settings_never_enable_the_llm_from_the_shell(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

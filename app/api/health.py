@@ -1,6 +1,6 @@
 """Health (process alive) and readiness (archives present).
 
-Both probes read SQLite (token budget, curriculum cache), so the reads run in the monitoring threads
+Both probes read SQLite (curriculum cache, indexes), so the reads run in the monitoring threads
 (app/api/system_threads.py): a slow volume cannot stall the event loop, and compendium requests that hold the
 default threads cannot hold up a probe. Neither probe calls a remote system.
 """

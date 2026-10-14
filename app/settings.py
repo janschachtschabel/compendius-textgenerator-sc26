@@ -293,12 +293,6 @@ class Settings(BaseSettings):
         "the curricula of more states and levels (Jan, 2026-10-08: 'möglichst nichts verlieren'). Elements beyond it "
         "stay in part 2 unrated, as the rules found them",
     )
-    llm_daily_token_budget: int = Field(
-        0,
-        ge=0,
-        description="Daily token cap of all workers together (llm_budget.db in STATE_DIR); 0, the default, sets none "
-        "- in operation the service may work through many entries a day (D67). The day's usage is counted either way",
-    )
     llm_unsupported_sentences: Literal["drop", "mark"] = Field(
         "drop",
         description="LLM sentences without a valid, covering citation: drop them, or keep them marked as conclusions",
@@ -313,7 +307,10 @@ class Settings(BaseSettings):
         "empty takes the provider's default (openai 300 s, academiccloud 600 s, router 300 s)",
     )
     rate_limit: int = Field(
-        60, ge=0, description="Requests per minute and client on the generating endpoints (per worker); 0 = off"
+        0,
+        ge=0,
+        description="Requests per minute and client on the generating endpoints (per worker); 0, the default, sets "
+        "none: the b-api limits per key, and behind it every request comes from its address (D104)",
     )
     request_body_max_bytes: int = Field(
         1_000_000,
@@ -447,10 +444,6 @@ class Settings(BaseSettings):
     @property
     def wlo_cache_path(self) -> Path:
         return Path(self.state_dir) / "wlo_cache.db"
-
-    @property
-    def llm_budget_path(self) -> Path:
-        return Path(self.state_dir) / "llm_budget.db"
 
     @property
     def llm_fast_section_ids(self) -> list[str]:

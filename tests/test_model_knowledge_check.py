@@ -61,7 +61,7 @@ def section(*sentences: str, cited: bool = True) -> LlmSection:
 
 def run(answer: Any, written: LlmSection, per_request: int = 50_000) -> tuple[Any, Any, FakeBApi]:
     fake = FakeBApi(lambda body: answer if isinstance(answer, str) else json.dumps(answer))
-    budget = TokenBudget(per_request=per_request, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=per_request).open_request()
     checked, outcome = check_section(_client(fake), written, topic="Optik", title="Fachinhalte", budget=budget)
     return checked, outcome, fake
 

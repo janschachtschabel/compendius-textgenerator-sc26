@@ -257,16 +257,9 @@ class StatusCollector:
         if llm is None:
             yield _gauge("kompendium_llm_available", "1 when the LLM switches can use the LLM now", 0)
             return
-        status = llm.status()  # the last known check and the shared daily counter; never calls the b-api
+        status = llm.status()  # the last known check; never calls the b-api
         yield _gauge(
             "kompendium_llm_available",
             "1 when the LLM switches can use the LLM now",
             int(bool(status["available"])),
-        )
-        budget = status["budget"]
-        yield _gauge("kompendium_llm_tokens_used_today", "LLM tokens spent today, all workers", budget["used_today"])
-        yield _gauge(
-            "kompendium_llm_daily_budget_tokens",
-            "Daily LLM token budget (LLM_DAILY_TOKEN_BUDGET); 0 = no daily cap",
-            budget["daily"],
         )

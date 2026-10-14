@@ -18,7 +18,7 @@ mit ihrer Bedeutung im Abschnitt *Konfiguration* der [README](../README.md#konfi
 | Volume | Inhalt | Wiederherstellung |
 |---|---|---|
 | `zim` (`ZIM_DIR`) | ZIM-Archive, `active.json`, `sync_status.json` | neu laden lassen (`ZIM_BOOTSTRAP_DOWNLOAD=true`) oder Dateien hineinkopieren; der nächste Sync übernimmt sie |
-| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `llm_budget.db`, `templates/`, `wikidata.db` mit `wikidata_status.json`, `gnd.db` mit `gnd_status.json` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wikidata.db` baut der Sidecar `wikidata-updater` selbst neu (rund 750 MB Download, dabei rund 1,5 GB frei im Volume), von Hand `docker compose run --rm --no-deps wikidata-updater compendium wikidata sync --force` (README „Entitäten und Kennungen“); `gnd.db` baut der Sidecar `gnd-updater` selbst neu (rund 65 MB), von Hand `docker compose run --rm --no-deps gnd-updater compendium gnd sync --force`; `wlo_cache.db` und `llm_budget.db` sind verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden (`PUT`/`DELETE /api/v2/templates/{id}` oder `compendium templates save|delete` schreiben dorthin) |
+| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `templates/`, `wikidata.db` mit `wikidata_status.json`, `gnd.db` mit `gnd_status.json` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wikidata.db` baut der Sidecar `wikidata-updater` selbst neu (rund 750 MB Download, dabei rund 1,5 GB frei im Volume), von Hand `docker compose run --rm --no-deps wikidata-updater compendium wikidata sync --force` (README „Entitäten und Kennungen“); `gnd.db` baut der Sidecar `gnd-updater` selbst neu (rund 65 MB), von Hand `docker compose run --rm --no-deps gnd-updater compendium gnd sync --force`; `wlo_cache.db` und `llm_budget.db` sind verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden (`PUT`/`DELETE /api/v2/templates/{id}` oder `compendium templates save|delete` schreiben dorthin) |
 
 **`ZIM_PATHS` umgeht dieses Volume.** Sind dort Pfade eingetragen, liest der Dienst genau diese Dateien:
 `active.json` wird nicht gelesen, der Sync-Job verwaltet die Archive nicht, und ein Wechsel braucht einen
@@ -80,6 +80,7 @@ Update daher:
 | 2.7.0 (D76) | Sätze aus Modellwissen enden nicht mehr sichtbar mit `[Modellwissen]`, weder im Markdown noch im Text der Bausteine: So geht ein fertiger Text an Endkunden. Das Markup kennzeichnet sie weiter (`<!-- f: Evidenzgrad=Modellwissen -->`). Wer den Vermerk braucht, setzt in der Anfrage `"model_knowledge_label": true` (CLI `--model-knowledge-label`, in der Prüfansicht „Vermerk [Modellwissen] im Text zeigen“). Keine Einstellung in der `.env`, keine neue `docker-compose.yml`. |
 | 2.8.0 (D77) | Eine Sammlung in `node_id` bekommt im Kompendium Teil 3 wie mit `collection_id`, wenn das Feld leer ist und die Sammlung im eingestellten Repository liegt; bis dahin stand Teil 3 dann auf `unavailable`. `parts: ["collection"]` mit einem Material in `node_id` ist ein 503 statt eines 422. Die Prüfansicht hat ein Feld „Sammlung oder Material“ statt dreier und liest den Knoten über `GET /api/v2/nodes/{id}` (mit dem eingetragenen Schlüssel). Keine Einstellung in der `.env`, keine neue `docker-compose.yml`. |
 | 2.9.0 (Audit 2026-10-02, D78) | Keine neue Einstellung. `REQUEST_TIMEOUT_S` gilt jetzt auch für die ersten Lesezugriffe aufs Repository (Sammlung und Knoten der Anfrage, Prüfung der Wissens-Sammlung): Hängt das Repository, endet eine Anfrage in der Frist statt nach bis zu drei mal zwei Versuchen à `EDU_SHARING_TIMEOUT_S`. Ein Materialtext hält `KNOWLEDGE_MAX_CHARS` auch im ersten Absatz, eine Zeile über 2.000 Zeichen wird an Satzenden geteilt. Mit Materialien ohne freie Lizenz (frei: gemeinfrei, CC BY, CC BY-SA) nennt der Quellenblock sie und stellt nur den übrigen Text von Teil 1 unter CC BY-SA 4.0; ihr Eintrag und der Baustein tragen keine Facette `Zugang`, `audit.lint` meldet dann `facet-required` für den Quellenbaustein. Die Nebenartikel einer Stufe teilen sich, was `CORPUS_MAX_CHUNKS` lässt: große Themen haben mehr Quellen im Korpus (Deutschland 9 statt 3), gleich viele Absätze. Ein belegter Satz mit einer Zahl, die sein Beleg nicht nennt, gilt als ungestützt (weg oder als Modellwissen). Ein unlesbarer Eintrag im Repository-Cache ist ein Fehltreffer statt eines Fehlers. |
+| Unveröffentlicht (D104) | Eine Einstellung weniger und eine neue Vorgabe. `LLM_DAILY_TOKEN_BUDGET` gibt es nicht mehr: Die b-api setzt die Limits je Schlüssel und schaltet das LLM ab, wenn eines erreicht ist; ein alter Eintrag wirkt nicht, der Start nennt ihn. `llm_budget.db` im Volume `state` wird nicht mehr geschrieben und kann weg. Die Gauges `kompendium_llm_tokens_used_today` und `kompendium_llm_daily_budget_tokens` und die Alarme `KompendiumLlmBudgetNearlySpent` und `KompendiumLlmBudgetBurnsFast` entfallen; die Tokens eines Tages zählt `increase(kompendium_llm_tokens_total[1d])`. `RATE_LIMIT` hat die Vorgabe `0`, keine Grenze (bisher 60): Hinter der b-api kommen alle Anfragen von ihrer Adresse. Wer eine Grenze will, setzt den Wert. |
 | 2.20.0 (D103) | Keine neue Einstellung. Die Prüfansicht zeigt die Satzauswahl der KI (`extraction=llm`) als Kästchen „KI wählt die Sätze“ direkt unter dem Profil statt unter „Erweitert“; es gilt für jedes Profil, im Vergleich für beide, und ist ohne KI auf dem Server gesperrt. Kein Profil setzt den Schalter; gesetzt kostet er in `balanced` rund 33.000 Tokens je Kompendium (M89). Am Dienst ändert sich nichts. |
 | 2.19.0 (D102) | Eine neue Einstellung und eine neue Vorgabe. `BLOCK_BUDGET_FACTOR` (10) vervielfacht beim Zuschnitt das Budget jedes Bausteins, Absätze und Zeichen; die Texte werden länger, in den wörtlichen Profilen deutlich (Demokratie in `best-quality` 105.000 statt 15.500 Zeichen), `best-quality-generated` und `best-coverage-generated` brauchen rund ein Drittel mehr Tokens, keines mehr Zeit (M86). `1` stellt das Verhalten bis 2.18.2 her. `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` hat 200000 als Vorgabe (vorher 180000); wer den Wert gesetzt hat, setzt 200000. `/qa` baut Teil 1 weiter mit den Budgets der Vorlage. |
 | 2.18.2 (D100, D99) | Keine neue Einstellung. Der Klexikon-Zwilling kommt nur noch über den exakten Titel des Hauptartikels (D100): Fehlt der Titel im Klexikon, hat ein Kompendium keinen Klexikon-Zwilling mehr, statt eines Artikels zu einem Nebennamen. Kiwix bietet seit dem 01.10.2026 eine neue deutsche Wikipedia ohne Bilder (`wikipedia_de_all_nopic_2026-10`, 18,6 statt 14,6 GB, gebaut mit mwoffliner 2.0.1). Der `zim-updater` lädt sie bei seiner nächsten Prüfung (`ZIM_SYNC_INTERVAL`), wenn das Volume `zim` sie und 1 GB darüber fasst; sonst meldet er den fehlenden Platz. Beim Wechsel liegen rund 33 GB im Volume, danach baut der `wikidata-updater` seinen Index neu (rund 1,5 GB frei im Volume `state`). Die Platte für den Betrieb steigt auf mindestens 50 GB (installation.md). Danach prüfen: `/health` nennt unter `components.zim.archives` die Datei `wikipedia_de_all_nopic_2026-10.zim` mit `date` 2026-10-01, und Kompendien zu bekannten Themen haben Abschnitte, Absätze und Formeln wie vorher (M84 las drei Artikel gleich). Weitere Archive von Kiwix nicht abonnieren: `extended` ist nicht empfohlen (D99) |
@@ -129,25 +130,21 @@ Budget: kein LLM-Aufruf. Ab 2.7.0 nennt jede Zeile ihr Release; sie stehen ab 2.
 `GET /metrics` liefert Zustand und Laufzeitmetriken für Prometheus (Liste im README). Die Alarmregeln in
 `monitoring/alerts.yml` decken die Störungen unten ab: `KompendiumDown`, `KompendiumNotReady`,
 `KompendiumHighErrorRate`, `KompendiumStatusIncomplete`, `KompendiumVolumeFull` (weniger als 2 GiB frei),
-`KompendiumSlowCompendia`, `KompendiumZimSyncErrors`,
-`KompendiumZimSyncStale`,
-`KompendiumZimSyncHangs`, `KompendiumZimSyncSilent` (der Updater schweigt seit drei Stunden oder lief nie),
-`KompendiumLehrplanCacheMissing`, `KompendiumLehrplanCacheStale`, `KompendiumLehrplanHarvestFailed`,
-`KompendiumLehrplanHarvestSilent`,
-`KompendiumWikidataIndexMissing`, `KompendiumWikidataSyncFailed`, `KompendiumGndIndexMissing`, `KompendiumGndSyncFailed`,
-`KompendiumWikidataSyncStale`, `KompendiumGndSyncStale` (ein Sidecar hat drei Tage nicht geprüft),
-`KompendiumWikidataSyncSilent`, `KompendiumGndSyncSilent` (der Sidecar schweigt seit drei Stunden oder lief nie),
-`KompendiumLlmUnavailable`, `KompendiumLlmCallsFailing` (jeder LLM-Aufruf scheitert, über alle Endpunkte),
-`KompendiumLlmBudgetNearlySpent`, `KompendiumLlmBudgetBurnsFast` (ein Viertel des Tagesbudgets in einer Stunde; beide
-nur mit gesetztem `LLM_DAILY_TOKEN_BUDGET`) und `KompendiumLlmFallbacks`. Nach einer Änderung
-an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen lassen. Die Sidecars haben keinen eigenen
-Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien. Wer `/metrics` nicht offen lassen
-will, setzt `METRICS_TOKEN` und gibt es dem Scrape-Job: in der Datei `monitoring/metrics_token`, lesbar für `nobody`,
-unter dem Prometheus im Image läuft, und mit dem Block `authorization` in `monitoring/prometheus.yml`
-([installation.md](installation.md), Abschnitt 10). Sonst antwortet `/metrics` mit 401, und `KompendiumDown` steht
-dauerhaft. Die Regeln lösen in
-Prometheus aus; jemanden erreichen sie erst über einen Alertmanager, den das Repo nicht mitbringt (Eintrag `alerting`
-in `monitoring/prometheus.yml`). Ohne ihn stehen sie nur unter `/alerts` in der Oberfläche von Prometheus.
+`KompendiumSlowCompendia`, `KompendiumZimSyncErrors`, `KompendiumZimSyncStale`, `KompendiumZimSyncHangs`,
+`KompendiumZimSyncSilent` (der Updater schweigt seit drei Stunden oder lief nie), `KompendiumLehrplanCacheMissing`,
+`KompendiumLehrplanCacheStale`, `KompendiumLehrplanHarvestFailed`, `KompendiumLehrplanHarvestSilent`,
+`KompendiumWikidataIndexMissing`, `KompendiumWikidataSyncFailed`, `KompendiumGndIndexMissing`,
+`KompendiumGndSyncFailed`, `KompendiumWikidataSyncStale`, `KompendiumGndSyncStale` (ein Sidecar hat drei Tage nicht
+geprüft), `KompendiumWikidataSyncSilent`, `KompendiumGndSyncSilent` (der Sidecar schweigt seit drei Stunden oder lief
+nie), `KompendiumLlmUnavailable`, `KompendiumLlmCallsFailing` (jeder LLM-Aufruf scheitert, über alle Endpunkte) und
+`KompendiumLlmFallbacks`. Nach einer Änderung an den Regeln `promtool test rules monitoring/alerts_test.yml` laufen
+lassen. Die Sidecars haben keinen eigenen Endpunkt; ihren Stand melden die Zustandswerte der API aus den Statusdateien.
+Wer `/metrics` nicht offen lassen will, setzt `METRICS_TOKEN` und gibt es dem Scrape-Job: in der Datei
+`monitoring/metrics_token`, lesbar für `nobody`, unter dem Prometheus im Image läuft, und mit dem Block `authorization`
+in `monitoring/prometheus.yml` ([installation.md](installation.md), Abschnitt 10). Sonst antwortet `/metrics` mit 401,
+und `KompendiumDown` steht dauerhaft. Die Regeln lösen in Prometheus aus; jemanden erreichen sie erst über einen
+Alertmanager, den das Repo nicht mitbringt (Eintrag `alerting` in `monitoring/prometheus.yml`). Ohne ihn stehen sie nur
+unter `/alerts` in der Oberfläche von Prometheus.
 
 ## Logs
 

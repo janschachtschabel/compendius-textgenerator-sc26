@@ -567,7 +567,7 @@ def test_the_best_quality_profiles_ask_from_a_budget_of_their_own(
 def test_the_note_says_why_the_llm_call_did_not_happen(with_llm: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
     """A spent budget used to read as an answer without pairs."""
     gateway = with_llm.app.state.service.llm  # type: ignore[attr-defined]
-    monkeypatch.setattr(gateway, "open_budget", lambda limit=None: RequestBudget(gateway.budget, 10))
+    monkeypatch.setattr(gateway, "open_budget", lambda limit=None: RequestBudget(10))
     body = with_llm.post("/api/v2/qa", json={"text": TEXT, "method": "llm"}).json()
     assert body["method"] == "rule-based" and "Token-Budget der Anfrage" in body["note"], body["note"]
 
@@ -669,7 +669,7 @@ def test_pairs_the_budget_left_to_the_rules_are_a_warning_in_one_line(
 ) -> None:
     """The line takes the place of "QA fell back to the rules", an INFO that named the reason and not the cost."""
     gateway = with_llm.app.state.service.llm  # type: ignore[attr-defined]
-    monkeypatch.setattr(gateway, "open_budget", lambda limit=None: RequestBudget(gateway.budget, 10))
+    monkeypatch.setattr(gateway, "open_budget", lambda limit=None: RequestBudget(10))
 
     with caplog.at_level(logging.INFO):
         with_llm.post("/api/v2/qa", json={"text": TEXT, "preset": "best-quality"})

@@ -42,7 +42,7 @@ MODEL_TEXT = [
 @pytest.mark.parametrize("answer", MODEL_TEXT)
 def test_a_block_the_model_wrote_carries_no_markup(answer: str, enrich: bool) -> None:
     fake = FakeBApi(lambda body: answer)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
 
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=4, budget=budget, enrich=enrich
@@ -78,7 +78,7 @@ def test_only_the_checked_numbers_and_the_label_of_model_knowledge_stay_markup(
     sentence of model knowledge, both as the service's markup, and the label stayed on a cited sentence, with
     sources-only as well (audit 2026-09-29, T3). The words stay, as typed."""
     for enrich, expected in ((False, sources_only), (True, enriched)):
-        budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+        budget = TokenBudget(per_request=20_000).open_request()
         result = LlmSynthesizer(_client(FakeBApi(lambda body: answer))).write_section(
             _slot(), SCORED, SOURCES, topic="Thema", citation_start=4, budget=budget, enrich=enrich
         )

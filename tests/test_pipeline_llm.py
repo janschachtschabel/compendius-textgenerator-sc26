@@ -50,7 +50,7 @@ def make_gateway(fake: FakeBApi, per_request: int = 20_000, **options: Any) -> L
         "concurrency": 2,
     }
     settings.update(options)
-    return LlmGateway(client, TokenBudget(per_request=per_request, daily=2_000_000), LlmOptions(**settings))
+    return LlmGateway(client, TokenBudget(per_request=per_request), LlmOptions(**settings))
 
 
 @pytest.fixture
@@ -187,7 +187,7 @@ def test_every_question_sends_the_reasoning_effort_the_settings_give_it(
         BASE, KEY, provider="openai", model="gpt-6-luna", transport=httpx.MockTransport(fake), reasoning_efforts=efforts
     )
     options = LlmOptions(fast_sections=("sc26_1", "sc26_11"), concurrency=2)
-    monkeypatch.setattr(service, "llm", LlmGateway(client, TokenBudget(per_request=20_000, daily=2_000_000), options))
+    monkeypatch.setattr(service, "llm", LlmGateway(client, TokenBudget(per_request=20_000), options))
 
     service.generate(GenerateRequest(topic="Optik", parts=["world"], preset="best-quality-generated"))
 
@@ -223,7 +223,7 @@ def test_gateway_status_for_health(fake: FakeBApi) -> None:
     status = gateway.status()
     assert status["enabled"] is True and status["available"] is True
     assert status["check"]["ok"] is True and status["model"] == "gpt-5.6-luna"
-    assert status["budget"]["daily"] == 2_000_000 and status["budget"]["used_today"] == 0
+    assert status["budget"] == {"per_request": 20_000}
     assert gateway.generation_slots("llm-fast", {"sc26_1", "sc26_2", "sc26_11"}) == {"sc26_1", "sc26_11"}
     assert gateway.generation_slots("llm", {"sc26_1", "sc26_2"}) == {"sc26_1", "sc26_2"}
     assert gateway.generation_slots("rule-based", {"sc26_1"}) == set()
@@ -282,7 +282,7 @@ def test_gateway_rechecks_an_unavailable_model_only_after_the_interval() -> None
     client = BApiClient(
         BASE, KEY, provider="openai", model="gpt-5.6-luna", transport=httpx.MockTransport(fake), clock=lambda: now[0]
     )
-    gateway = LlmGateway(client, TokenBudget(per_request=20_000, daily=2_000_000), LlmOptions(), clock=lambda: now[0])
+    gateway = LlmGateway(client, TokenBudget(per_request=20_000), LlmOptions(), clock=lambda: now[0])
     assert gateway.available is False and len(fake.requests) == 1
     now[0] += 300
     assert gateway.available is False and len(fake.requests) == 1, "no second probe within RECHECK_S"
@@ -302,7 +302,7 @@ def test_gateway_is_unavailable_while_the_client_is_suspended() -> None:
         clock=lambda: now[0],
         sleep=lambda seconds: None,  # the backoff of the three attempts waited 4.5 s for real (audit TE-10)
     )
-    gateway = LlmGateway(client, TokenBudget(per_request=20_000, daily=2_000_000), LlmOptions(), clock=lambda: now[0])
+    gateway = LlmGateway(client, TokenBudget(per_request=20_000), LlmOptions(), clock=lambda: now[0])
     assert gateway.available is True
     fake.transport_failures = 3
     with pytest.raises(LlmError):

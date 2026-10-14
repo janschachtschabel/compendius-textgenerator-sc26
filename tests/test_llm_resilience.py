@@ -161,7 +161,7 @@ def test_a_refused_key_or_model_suspends_the_llm_and_says_why(status: int) -> No
     clock = Clock()
     fake = FakeBApi(statuses=[status])
     client = client_for(fake, clock)
-    gateway = LlmGateway(client, TokenBudget(per_request=20_000, daily=2_000_000), LlmOptions(), clock=clock)
+    gateway = LlmGateway(client, TokenBudget(per_request=20_000), LlmOptions(), clock=clock)
     assert gateway.available
 
     with pytest.raises(LlmError):
@@ -197,23 +197,21 @@ PROMPT = [{"role": "user", "content": "Licht wird an der Grenze zweier Medien ge
 def test_a_failed_call_that_reached_the_model_charges_its_prompt(error: Exception, charged: bool) -> None:
     """A timeout or a 502/504 counted no token, though the model may have read the prompt (KO-06)."""
     fake = FakeBApi(transport_failures=3, transport_error=error)
-    budget = TokenBudget(per_request=100_000, daily=1_000_000)
+    budget = TokenBudget(per_request=100_000).open_request()
 
-    answer = budgeted_chat(
-        client_for(fake, Clock()), PROMPT, max_output_tokens=10, budget=budget.open_request(), what="Probe"
-    )
+    answer = budgeted_chat(client_for(fake, Clock()), PROMPT, max_output_tokens=10, budget=budget, what="Probe")
 
     assert isinstance(answer, LlmSkipped)
     prompt_tokens = estimate_tokens(PROMPT[0]["content"])
-    assert budget.used_today == (prompt_tokens if charged else 0)
+    assert budget.used == (prompt_tokens if charged else 0)
     assert answer.prompt_tokens == (prompt_tokens if charged else 0)
 
 
 def test_every_attempt_that_met_a_504_charges_the_prompt() -> None:
     """Behind a 504 the model may have read the prompt each time; a 503 or 429 turned the request away (KO-06)."""
     fake = FakeBApi(statuses=[504, 503, 504])
-    budget = TokenBudget(per_request=100_000, daily=1_000_000)
+    budget = TokenBudget(per_request=100_000).open_request()
 
-    budgeted_chat(client_for(fake, Clock()), PROMPT, max_output_tokens=10, budget=budget.open_request(), what="Probe")
+    budgeted_chat(client_for(fake, Clock()), PROMPT, max_output_tokens=10, budget=budget, what="Probe")
 
-    assert budget.used_today == 2 * estimate_tokens(PROMPT[0]["content"])
+    assert budget.used == 2 * estimate_tokens(PROMPT[0]["content"])

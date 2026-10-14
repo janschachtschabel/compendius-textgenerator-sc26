@@ -80,7 +80,7 @@ def _answer(*ids: str) -> FakeBApi:
 
 
 def _select(fake: FakeBApi, candidates: list[ScoredChunk] = CANDIDATES, **kwargs: Any) -> Selection | LlmSkipped:
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     slot = kwargs.pop("slot", _slot())
     return LlmSelector(_client(fake)).select(slot, candidates, SOURCES, topic="Optik", budget=budget, **kwargs)
 
@@ -164,7 +164,7 @@ def test_an_unreadable_answer_falls_back_with_the_cost_of_the_call() -> None:
 
 def test_an_exhausted_budget_makes_no_call() -> None:
     fake = _answer("1.1")
-    budget = TokenBudget(per_request=50, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=50).open_request()
     result = LlmSelector(_client(fake)).select(_slot(), CANDIDATES, SOURCES, topic="Optik", budget=budget)
     assert isinstance(result, LlmSkipped) and "Budget" in result.reason and fake.requests == []
 

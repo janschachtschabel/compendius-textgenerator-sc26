@@ -873,20 +873,18 @@ nach dem Senden, 502 oder 504), belastet das Budget mit den Tokens seiner Eingab
 antwortet; eine Antwort, die sich nicht lesen lässt, ebenso, oder mit dem Verbrauch, den sie meldet. Jeder Aufruf
 reserviert sein Token-Budget vorab (je Anfrage das des Profils, `LLM_MAX_TOKENS_PER_REQUEST` oder in den
 `best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, bei `/qa` für Teil 1 und die Paare zusammen; die
-Prüfung von Teil 2 aus `LLM_MAX_TOKENS_CURRICULUM_CHECK`; `LLM_DAILY_TOKEN_BUDGET` je Tag, wenn gesetzt), den Text eines
-Aufrufers (`/entities`, `/qa`) nach seinen UTF-8-Bytes: So viele Tokens kann er höchstens werden, wie man ihn auch
-formt; zufällige Zeichenfolgen kamen bei `gpt-6-luna` auf bis zu 4,3-mal so viele Tokens wie geschätzt (Audit
-2026-09-28, SE-20). Passt er nicht mehr neben die laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung,
-solange danach noch ein Aufruf rechtzeitig starten kann (D39); ein gesetztes Tagesbudget weist dagegen sofort ab. Die
-Wiederholung nach einem Versuch, der das Modell erreicht haben kann, reserviert dessen Eingabe erneut und wartet nicht:
-Ist dafür kein Platz mehr, endet der Aufruf ohne sie (Audit 2026-09-29, L1). Der Tageszähler liegt in
-`STATE_DIR/llm_budget.db`, gilt für alle Worker gemeinsam und übersteht Neustarts; dort liegen auch die Reservierungen
-laufender Aufrufe, geprüft und geschrieben in einem Schritt, sodass zwei Worker nicht beide die letzten Tokens des Tages
-bekommen. Die Reservierung eines abgestürzten Workers zählt nach zehn Minuten nicht mehr. Die Schätzung vor einem Aufruf
-rechnet drei Zeichen je Token und ab U+0800, etwa bei Chinesisch, ein Token je Zeichen (gemessen mit `gpt-6-luna`:
-Deutsch 4,62 Zeichen je Token, Russisch 3,96, Arabisch 3,27, Chinesisch 1,28). `REQUEST_TIMEOUT_S` begrenzt die
-LLM-Arbeit und das Lesen des Repositorys einer Anfrage: jeder Aufruf bekommt höchstens die Restzeit, bei weniger als 5 s
-Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung, Fehlerkörper der b-api nur im Log.
+Prüfung von Teil 2 aus `LLM_MAX_TOKENS_CURRICULUM_CHECK`), den Text eines Aufrufers (`/entities`, `/qa`) nach seinen
+UTF-8-Bytes: So viele Tokens kann er höchstens werden, wie man ihn auch formt; zufällige Zeichenfolgen kamen bei
+`gpt-6-luna` auf bis zu 4,3-mal so viele Tokens wie geschätzt (Audit 2026-09-28, SE-20). Passt er nicht mehr neben die
+laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung, solange danach noch ein Aufruf rechtzeitig starten
+kann (D39). Die Wiederholung nach einem Versuch, der das Modell erreicht haben kann, reserviert dessen Eingabe erneut
+und wartet nicht: Ist dafür kein Platz mehr, endet der Aufruf ohne sie (Audit 2026-09-29, L1). Eine Grenze je Tag setzt
+der Dienst nicht: Die Limits je Schlüssel setzt die b-api und schaltet das LLM ab, wenn eines erreicht ist (D104). Die
+Schätzung vor einem Aufruf rechnet drei Zeichen je Token und ab U+0800, etwa bei Chinesisch, ein Token je Zeichen
+(gemessen mit `gpt-6-luna`: Deutsch 4,62 Zeichen je Token, Russisch 3,96, Arabisch 3,27, Chinesisch 1,28).
+`REQUEST_TIMEOUT_S` begrenzt die LLM-Arbeit und das Lesen des Repositorys einer Anfrage: jeder Aufruf bekommt höchstens
+die Restzeit, bei weniger als 5 s Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung,
+Fehlerkörper der b-api nur im Log.
 
 ```bash
 LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --generation llm-fast --zim … --out optik.md
@@ -971,13 +969,13 @@ Diese vier liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 | `LOG_LEVEL` | `INFO` | Protokollstufe der Zeilen des Dienstes und der Updater: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`, in beliebiger Schreibung, `WARN` gilt als `WARNING`; ein unbekannter Wert hält den Start an. Die Zeilen von uvicorn (Start, Stopp, ein beendeter Worker) bleiben auf `INFO`, `httpx` und `httpcore` schreiben erst ab `WARNING` |
 | `LOG_FORMAT` | `text` | `text`: eine Zeile je Ereignis mit Zeit, Stufe, Prozess-ID, Logger, Anfrage-ID und Meldung; `json`: ein JSON-Objekt je Zeile mit `time` (UTC), `level`, `pid`, `logger`, `request_id`, `message`, bei Fehlern `exc` mit dem Traceback, und den Feldern des Ereignisses (eine Anfrage: `method`, `path`, `route`, `status`, `duration_ms`, `client`), für einen Log-Sammler (Audit 2026-09-18, OPS-03). Das gilt auch für die Zeilen von uvicorn (Start und Stopp, ein beendeter Worker) und für die Meldungen der Updater in ihrer Schleife. Die Zeilen gehen nach stderr; ein einmaliger Aufruf der Kommandozeile druckt seinen Bericht für Menschen auf stdout. Was wann im Log steht: docs/betrieb.md, Abschnitt „Logs“ |
 | `REQUEST_TIMEOUT_S` | leer: je Anbieter, `openai` 300, `academiccloud` 600, `router` 300 | Frist je Anfrage für die LLM-Arbeit und das Lesen des Repositorys (Sammlung und Knoten der Anfrage, Teil 3, Materialtexte); die lokalen Schritte (Archivsuche, Zuordnung der Regeln, Ausgabe) laufen zu Ende, die Frist ist also kein hartes Ende-zu-Ende-Limit. Aufrufe bekommen höchstens die Restzeit; danach entsteht der Rest extraktiv, das Repository wird nicht mehr gefragt, nicht geholte Materialtexte bleiben draußen (`audit.knowledge.timed_out`). Bis 120 s vor M75; gemessen brauchte `best-coverage-generated` 35 bis 43 s, einmal 126 s hinter einer langsamen Antwort, mit 2 gleichzeitigen Aufrufen (academiccloud) rund 120 s schon in der Geschwindigkeit von `gpt-6-luna`. Über 615 s mit `API_STOP_GRACE_PERIOD` heben, sonst beendet Docker bei einem Update laufende Anfragen. Bis 10 s bleibt dem LLM kaum ein Aufruf — einer beginnt nur, solange noch 5 s bleiben —, und seine Schritte fallen auf die Regeln zurück; mit LLM warnt dann der Start |
-| `RATE_LIMIT` | `60` | Anfragen je Minute und Client auf `compendium`, `knowledge`, `entities`, `qa`, `nodes/{id}`, `collections/overview` und `lehrplan/search`, je Worker gezählt; `0` schaltet es ab |
+| `RATE_LIMIT` | `0` | Anfragen je Minute und Client auf `compendium`, `knowledge`, `entities`, `qa`, `nodes/{id}`, `collections/overview` und `lehrplan/search`, je Worker gezählt. `0`, die Vorgabe seit D104, setzt keine Grenze: Die b-api begrenzt je Schlüssel, und hinter ihr kommen alle Anfragen von ihrer Adresse; bis 2.20.0 galten 60 |
 | `REQUEST_BODY_MAX_BYTES` | `1000000` | Obergrenze eines Anfragekörpers, mindestens 10.000; ein größerer ist ein 413, bevor der Dienst ihn liest. `POST /api/v2/compendium` und `PUT /api/v2/templates/{id}` nehmen bis 13.000.000 Byte (`existing_markdown`, ein ganzes Template) |
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | Hinter einem Reverse-Proxy sieht uvicorn nur dessen Adresse, und alle Clients teilen sich ein Rate-Limit-Fenster. Diese Variable sagt uvicorn, welchen Absendern es `X-Forwarded-For` glauben darf: einzelne Adressen, Netze in CIDR-Schreibweise, mehrere durch Komma getrennt. **Nur das eigene Proxy-Netz eintragen** — `*` lässt jeden Aufrufer seine Adresse frei wählen und hängt damit das Rate-Limit aus. Im Container kommt auch ein Proxy auf dem Host nicht von `127.0.0.1`, sondern vom Gateway des Compose-Netzes (siehe docs/installation.md, Abschnitt 8) |
 | `UVICORN_HTTP` | `h11` | Der HTTP-Parser von uvicorn; `app/serve.py` setzt h11, wenn die Variable fehlt oder leer ist. h11 antwortet auf Anfragezeile und Kopfzeilen über etwa 16 KB mit 400; `httptools`, sonst uvicorns Wahl, nahm einen `X-Request-ID` von 12 MB an. Weitere Optionen liest uvicorn als `UVICORN_*` selbst; `UVICORN_LIMIT_CONCURRENCY` zählt auch Verbindungen, die ihre Kopfzeilen nie beenden, und hilft darum nicht gegen langsame Aufrufer (siehe docs/installation.md, Abschnitt 8) |
 | `WEB_CONCURRENCY` | `2` | Worker-Prozesse der API; uvicorn liest die Variable selbst. Ein Worker nimmt mehrere Anfragen zugleich an, rechnet sie aber weitgehend nacheinander: Lesen der Archive und Zuordnung halten die Interpreter-Sperre. Gemessen am 2026-09-29 mit zwei Workern: fünf gleichzeitige Kompendien je 9 bis 26 s statt 7 s allein, mit 2, 4 und 16 Kernen gleich lang. Jeder Worker kostet nach dem Aufwärmen rund 1,7 GiB (`docs/uebergabe/README.md`, Lastmessung) |
 | `API_DOCS_ENABLED` | `true` | `/docs`, `/redoc` und `/openapi.json` ausliefern. Die beiden Seiten laden Swagger UI und ReDoc von cdn.jsdelivr.net, in fester Version mit Prüfsumme (SRI: der Browser führt keine veränderte Datei aus); ihre Content-Security-Policy lässt deren Skripte nur mit dem Dienst sprechen. Auf einem öffentlichen Server, der sie nicht braucht, oder wenn die Leser cdn.jsdelivr.net nicht erreichen: `false` (docs/betrieb.md, Regeln) |
-| `UI_ENABLED` | `false` | Die Prüfansicht unter `/ui/` ausliefern (siehe „Prüfansicht“). Sie besteht nur aus Seite und Skripten und fragt die Endpunkte mit dem Schlüssel, den der Leser einträgt; `API_KEYS` schützt sie also wie die API. Ohne `API_KEYS` warnt der Start: dann kann jeder über `/ui/` die Profile mit LLM nutzen, ohne Tagesgrenze, solange `LLM_DAILY_TOKEN_BUDGET` keine setzt |
+| `UI_ENABLED` | `false` | Die Prüfansicht unter `/ui/` ausliefern (siehe „Prüfansicht“). Sie besteht nur aus Seite und Skripten und fragt die Endpunkte mit dem Schlüssel, den der Leser einträgt; `API_KEYS` schützt sie also wie die API. Ohne `API_KEYS` warnt der Start: dann kann jeder über `/ui/` die Profile mit LLM nutzen, bis zu den Limits, die die b-api für `B_API_KEY` setzt |
 | `ADMIN_TOKEN` | leer | Admin-Endpunkte (ZIM-Katalog, Sync-Anstoß, Löschen, Harvest-Anstoß, Templates schreiben und löschen) nur mit diesem Token, mindestens 16 Zeichen (kürzer: der Dienst startet nicht; länger ist besser, etwa `openssl rand -hex 32`); leer schaltet sie ab |
 | `API_KEYS` | leer | Schlüssel, kommagetrennt, je mindestens 16 Zeichen, am besten erzeugt (`openssl rand -hex 32`). Gesetzt, verlangen alle Endpunkte mit einem Profil — `compendium`, `knowledge`, `qa`, `entities`, `lehrplan/search`, `nodes/{id}` und `collections/overview` — einen davon im Header `X-API-Key`, sonst 401; `/health`, `/ready`, `/docs`, Templates und Statusendpunkte bleiben offen. Leer: Die Endpunkte antworten jedem. Auf einem öffentlichen Server setzen |
 
@@ -999,7 +997,7 @@ Diese vier liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen de
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
-| `STATE_DIR` | `/data/state` | Zustandsvolume: Lehrplan-Cache, Sammlungs-Cache, Tagesbudget, eigene Templates, optional der Wikidata-Index `wikidata.db` |
+| `STATE_DIR` | `/data/state` | Zustandsvolume: Lehrplan-Cache, Sammlungs-Cache, eigene Templates, optional der Wikidata-Index `wikidata.db` |
 | `CONFIG_DIR` | `config` | Verzeichnis mit `facets.yaml`, `heading_lexicon.yaml`, `subjects.yaml`, `zim_subscriptions.yaml` und den Fachvokabularen (`vocabs/`). Die Templates liegen nicht hier: die eingebauten in `app/templates/builtin`, eigene in `STATE_DIR/templates` |
 | `EVAL_GOLD_DIR` | `eval/gold` | Goldstandard für `compendium eval`; im Image nicht enthalten |
 
@@ -1118,7 +1116,6 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | `LLM_MAX_TOKENS_PER_REQUEST` | `60000` | Kostenschutz je Anfrage in den Profilen `llm-free` und `balanced` (ein Kompendium; bei `/qa` Teil 1 und die Paare zusammen). Für *Optik* wurden mit beiden Schaltern 27.205 Tokens gemessen; über die zehn Gold-Themen kostet allein die Auswahl 14.000 bis 22.400, das Schreiben 10.500 bis 14.500, `matcher=llm` bis rund 46.000 (M14). Parallele Aufrufe reservieren vorab ihren Höchstbedarf; was nicht mehr hineinpasst, wartet auf die laufenden (D39) |
 | `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY` | `200000` | Kostenschutz je Anfrage in `best-quality`, `best-quality-generated` und `best-coverage-generated` (D59, D69, D102): Artikelwahl, Zuordnung durch das LLM (im Median rund 26.000 Tokens) und Schreiben; die Prüfung von Teil 2 hat ihr eigenes Budget (`LLM_MAX_TOKENS_CURRICULUM_CHECK`, D94). Das breiteste Thema, Demokratie mit rund 400 Absätzen, brauchte mit Teil 1 und 2 140.600 Tokens in `best-quality-generated` und 160.900 in `best-coverage-generated`, davon die Prüfung 66.200 (M79); mit dem zehnfachen Bausteinbudget brauchte Teil 1 allein 109.100 und 132.100 Tokens (M86). Gilt in jedem Endpunkt dieser Profile, auch in `/qa`, `/knowledge` und der Lehrplansuche |
 | `LLM_MAX_TOKENS_CURRICULUM_CHECK` | `400000` | Kostenschutz der KI-Prüfung von Teil 2 (`curriculum_check=llm`) je Anfrage, neben dem Budget der Anfrage, im Kompendium und in der Lehrplansuche (D94): Die Prüfung bewertet jedes Element, das die Regeln fanden, rund 70 bis 85 Tokens je Element (M76: Demokratie 819 Elemente, 66.200 Tokens); 400.000 reichen für rund 4.800, Raum für die Lehrpläne weiterer Länder und Bildungsbereiche. Elemente darüber hinaus bleiben ungeprüft in Teil 2, wie die Regeln sie fanden; der Rückfallgrund nennt das Token-Budget der Lehrplanprüfung |
-| `LLM_DAILY_TOKEN_BUDGET` | `0` | Tokens je Tag für alle Worker zusammen. `0`, die Vorgabe seit D67, setzt keine Grenze: Im Betrieb können an einem Tag viele Einträge anfallen. Eine Zahl kappt den Tag; der Zähler liegt in `STATE_DIR/llm_budget.db`, gilt samt den Reservierungen laufender Aufrufe für alle Worker gemeinsam und übersteht Neustarts. Kann ein Worker die Datei nicht lesen oder schreiben, zählt er für sich weiter (das Log meldet es): Der Dienst bleibt verfügbar, die Grenze gilt dann aber je Worker, nicht für alle zusammen. Gezählt wird auch ohne Grenze (`/health`, `kompendium_llm_tokens_used_today`). Mit Grenze melden `KompendiumLlmBudgetNearlySpent` 90 % und `KompendiumLlmBudgetBurnsFast` ein Viertel in einer Stunde. Ohne Grenze und ohne `API_KEYS` warnt der Start: Dann kann jeder Tokens ohne Grenze verbrauchen |
 
 ### Metriken
 
@@ -1214,19 +1211,18 @@ gesetztes Token sind sie deaktiviert. Dieselben Schreibwege gibt es in der CLI:
 `compendium templates save datei.json` und `compendium templates delete id`; `compendium templates`
 ohne Verb listet wie bisher.
 
-`POST /api/v2/compendium`, `/knowledge`, `/entities` und `/qa`, `GET /api/v2/nodes/{node_id}`,
-`GET /api/v2/collections/{id}/overview` und `GET /api/v2/lehrplan/search` sind je Client auf `RATE_LIMIT` Anfragen
-pro Minute begrenzt (Standard 60 wie im alten Dienst, je Worker,
-0 schaltet ab); darüber antworten sie 429 mit `Retry-After`. Eine IPv6-Adresse zählt mit ihrem ganzen /64, und je
-Worker bleiben höchstens 10.000 Fenster; darüber fällt der am längsten nicht gesehene Client heraus und beginnt
-neu. Hinter einem Reverse-Proxy sieht uvicorn die
-Client-Adresse nur mit `FORWARDED_ALLOW_IPS`. Eine Anmeldung gibt es nicht, aber `API_KEYS` macht einen
-Schlüssel im Header `X-API-Key` zur Bedingung für diese sieben Endpunkte; die Prüfung läuft nach dem Rate-Limit,
-ein Fehlversuch zählt also als Anfrage. `/docs` bietet den Schlüssel unter „Authorize“ an. Admin-Endpunkte
-zählen ebenfalls gegen `RATE_LIMIT`. `API_DOCS_ENABLED=false` schaltet `/docs`, `/redoc` und
-`/openapi.json` ab. `GET /health` meldet `version` und `revision` (den Commit, aus dem das Image entstand; leer bei
-einem lokalen Bau) sowie `zim`, `lehrplan_cache`, `edu_sharing` und `llm`; Fehlermeldungen
-nennen keine Serverpfade und keine Antworttexte des Repositorys (die stehen im Log).
+`POST /api/v2/compendium`, `/knowledge`, `/entities` und `/qa`, `GET /api/v2/nodes/{node_id}`, `GET
+/api/v2/collections/{id}/overview` und `GET /api/v2/lehrplan/search` lassen sich je Client auf `RATE_LIMIT` Anfragen pro
+Minute begrenzen (je Worker; Vorgabe 0, keine Grenze: die b-api begrenzt je Schlüssel, D104); darüber antworten sie 429
+mit `Retry-After`. Eine IPv6-Adresse zählt mit ihrem ganzen /64, und je Worker bleiben höchstens 10.000 Fenster; darüber
+fällt der am längsten nicht gesehene Client heraus und beginnt neu. Hinter einem Reverse-Proxy sieht uvicorn die
+Client-Adresse nur mit `FORWARDED_ALLOW_IPS`. Eine Anmeldung gibt es nicht, aber `API_KEYS` macht einen Schlüssel im
+Header `X-API-Key` zur Bedingung für diese sieben Endpunkte; die Prüfung läuft nach dem Rate-Limit, ein Fehlversuch
+zählt also als Anfrage. `/docs` bietet den Schlüssel unter „Authorize“ an. Admin-Endpunkte zählen ebenfalls gegen
+`RATE_LIMIT`. `API_DOCS_ENABLED=false` schaltet `/docs`, `/redoc` und `/openapi.json` ab. `GET /health` meldet `version`
+und `revision` (den Commit, aus dem das Image entstand; leer bei einem lokalen Bau) sowie `zim`, `lehrplan_cache`,
+`edu_sharing` und `llm`; Fehlermeldungen nennen keine Serverpfade und keine Antworttexte des Repositorys (die stehen im
+Log).
 
 Betrieb, Störungen und Wiederherstellung: [docs/betrieb.md](docs/betrieb.md).
 
@@ -1251,7 +1247,7 @@ Laufs; die Variable setzt nur der API-Befehl `python -m app.serve`, die Sidecars
 | `kompendium_wikidata_index_available`, `kompendium_wikidata_index_dump_timestamp_seconds`, `kompendium_wikidata_sync_failed`, `kompendium_wikidata_sync_last_run_timestamp_seconds`, `kompendium_wikidata_sync_alive_timestamp_seconds` | Wikidata-Index (`wikidata.db`, Datum seines Dumps) und Wikidata-Sidecar (`wikidata_status.json`; Ende des letzten Laufs oder der täglichen Prüfung); `_alive_` ist das Lebenszeichen seiner Schleife (`wikidata_alive`) |
 | `kompendium_gnd_index_available`, `kompendium_gnd_index_release_timestamp_seconds`, `kompendium_gnd_sync_failed`, `kompendium_gnd_sync_last_run_timestamp_seconds`, `kompendium_gnd_sync_alive_timestamp_seconds` | GND-Index (`gnd.db`, Datum der Ausgabe der DNB) und GND-Sidecar (`gnd_status.json`; Ende des letzten Laufs oder der täglichen Prüfung); `_alive_` ist das Lebenszeichen seiner Schleife (`gnd_alive`) |
 | `kompendium_volume_free_bytes{volume}` | Freier Platz auf der Platte der Volumes `zim` und `state`; ohne das Verzeichnis kein Wert |
-| `kompendium_llm_enabled`, `kompendium_llm_available`, `kompendium_llm_tokens_used_today`, `kompendium_llm_daily_budget_tokens` | b-api und Tagesbudget (`0`: keine Tagesgrenze); `_available` ist der Stand des antwortenden Workers |
+| `kompendium_llm_enabled`, `kompendium_llm_available` | b-api; `_available` ist der Stand des antwortenden Workers. Die Tokens eines Tages zählt `increase(kompendium_llm_tokens_total[1d])`; die Gauges des Tagesbudgets entfielen mit D104 |
 | `kompendium_edu_sharing_enabled`, `kompendium_build_info{version,revision}` | Konfiguration, Version und Commit |
 | `kompendium_status_section_failed{section}` | 1, wenn ein Abschnitt dieser Zustandswerte nicht gelesen werden konnte (seine Werte fehlen dann) |
 | `kompendium_http_requests_total{method,route,status}`, `kompendium_http_request_duration_seconds{method,route}` | Anfragen je Routen-Template (unbekannte Pfade als `unmatched`; ein 413, das vor dem Routing antwortet, unter dem Template seines Pfads) |

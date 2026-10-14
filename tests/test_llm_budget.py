@@ -1,29 +1,20 @@
-"""Token budget: reservations against a per-request and a shared daily limit, UTC rollover, token estimate."""
+"""Token budget: reservations against the limit of a request, token estimate. The daily cap is gone (D104)."""
 
 from __future__ import annotations
 
-import sqlite3
+import logging
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
 
 import pytest
 
 from app.llm.budget import RequestBudget, TokenBudget, estimate_tokens
-from app.llm.budget_store import RESERVATION_STALE_S, SqliteDailyStore
-
-
-class Clock:
-    def __init__(self, now: float) -> None:
-        self.now = now
-
-    def __call__(self) -> float:
-        return self.now
+from app.main import warn_about_removed_settings
 
 
 def test_request_budget_caps_one_compendium_and_settles_to_the_actual_usage() -> None:
-    budget = TokenBudget(per_request=1000, daily=1_000_000)
+    budget = TokenBudget(per_request=1000)
     request = budget.open_request()
     assert isinstance(request, RequestBudget)
     assert request.reserve(600) is None
@@ -35,8 +26,8 @@ def test_request_budget_caps_one_compendium_and_settles_to_the_actual_usage() ->
 
 
 def test_a_request_may_open_with_a_limit_of_its_own() -> None:
-    """The best-quality profiles spend more per request than the others (D59); the daily budget stays one."""
-    budget = TokenBudget(per_request=1000, daily=1_000_000)
+    """The best-quality profiles spend more per request than the others (D59)."""
+    budget = TokenBudget(per_request=1000)
     assert budget.open_request().limit == 1000
     larger = budget.open_request(2500)
     assert larger.limit == 2500 and larger.reserve(2000) is None
@@ -44,7 +35,7 @@ def test_a_request_may_open_with_a_limit_of_its_own() -> None:
 
 
 def test_reservations_count_until_they_are_settled_or_released() -> None:
-    request = TokenBudget(per_request=1000, daily=10_000).open_request()
+    request = TokenBudget(per_request=1000).open_request()
     assert request.reserve(600) is None
     assert request.reserve(600) is not None, "a second parallel draft must not overshoot the limit"
     request.release(600)  # the call failed and cost nothing
@@ -52,36 +43,9 @@ def test_reservations_count_until_they_are_settled_or_released() -> None:
     assert request.reserve(600) is None
 
 
-def test_daily_budget_is_shared_between_requests_and_named_in_the_denial() -> None:
-    budget = TokenBudget(per_request=10_000, daily=1000)
-    first = budget.open_request()
-    assert first.reserve(700) is None
-    first.settle(700, 700)
-    second = budget.open_request()
-    assert budget.used_today == 700 and budget.remaining_today == 300
-    denial = second.reserve(400)
-    assert denial is not None and "Tagesbudget" in denial and "300" in denial
-    assert second.reserve(300) is None
-    second.settle(300, 300)
-    assert budget.exhausted
-    assert budget.open_request().reserve(1) is not None
-
-
-def test_daily_budget_resets_at_the_utc_day_boundary() -> None:
-    clock = Clock(now=86_400 * 20_000 + 3_600)  # one hour into a day
-    budget = TokenBudget(per_request=10_000, daily=1000, clock=clock)
-    request = budget.open_request()
-    assert request.reserve(1000) is None
-    request.settle(1000, 1000)
-    assert budget.exhausted
-    clock.now += 86_400
-    assert not budget.exhausted and budget.used_today == 0
-    assert budget.open_request().reserve(1000) is None
-
-
 def test_parallel_reservations_never_exceed_the_limit() -> None:
     """Measured by the review: check-then-act let four parallel drafts spend 20,000 tokens on a 6,000 budget."""
-    request = TokenBudget(per_request=6000, daily=1_000_000).open_request()
+    request = TokenBudget(per_request=6000).open_request()
     barrier = threading.Barrier(8)
 
     def reserve() -> bool:
@@ -106,7 +70,7 @@ def reserve_in_thread(
 def test_a_denied_reservation_waits_for_the_calls_of_the_request_in_flight() -> None:
     """M13: parallel batches of matcher=llm reserved about 13,000 tokens each and spent about 8,000, so a budget of
     60,000 turned batches away at once that the real spend had room for."""
-    request = TokenBudget(per_request=1000, daily=1_000_000).open_request()
+    request = TokenBudget(per_request=1000).open_request()
     assert request.reserve(600) is None  # a call in flight
     waiting, result = reserve_in_thread(request, 600, wait_s=10)
     waiting.join(0.2)
@@ -117,7 +81,7 @@ def test_a_denied_reservation_waits_for_the_calls_of_the_request_in_flight() -> 
 
 
 def test_the_wait_ends_as_soon_as_no_settlement_can_make_room() -> None:
-    request = TokenBudget(per_request=1000, daily=1_000_000).open_request()
+    request = TokenBudget(per_request=1000).open_request()
     assert request.reserve(400) is None and request.reserve(400) is None  # two calls in flight
     waiting, result = reserve_in_thread(request, 500, wait_s=None)  # no time limit: the calls in flight bound it
     request.settle(400, 400)
@@ -134,7 +98,7 @@ def test_the_wait_ends_as_soon_as_no_settlement_can_make_room() -> None:
 
 
 def test_waiting_for_the_budget_ends_after_wait_s() -> None:
-    request = TokenBudget(per_request=1000, daily=1_000_000).open_request()
+    request = TokenBudget(per_request=1000).open_request()
     assert request.reserve(600) is None  # a call in flight that does not settle in time
     began = time.monotonic()
     denial = request.reserve(600, wait_s=0.2)
@@ -142,18 +106,8 @@ def test_waiting_for_the_budget_ends_after_wait_s() -> None:
     assert 0.15 < time.monotonic() - began < 2.0
 
 
-def test_the_daily_budget_turns_a_call_away_without_waiting() -> None:
-    """The daily cap belongs to all requests and workers; near its end a call falls back instead of queueing."""
-    request = TokenBudget(per_request=10_000, daily=1000).open_request()
-    assert request.reserve(700) is None
-    began = time.monotonic()
-    denial = request.reserve(400, wait_s=5)
-    assert denial is not None and "Tagesbudget" in denial
-    assert time.monotonic() - began < 1.0
-
-
 def test_waiting_reservations_take_turns_within_the_limit() -> None:
-    request = TokenBudget(per_request=6000, daily=1_000_000).open_request()
+    request = TokenBudget(per_request=6000).open_request()
     barrier = threading.Barrier(8)
 
     def call() -> bool:
@@ -177,138 +131,6 @@ def test_estimate_tokens_is_positive_and_grows_with_the_text() -> None:
     assert long <= len("Licht bricht sich an der Grenze. " * 20)
 
 
-def test_daily_usage_is_shared_between_workers_and_survives_a_restart(tmp_path: Path) -> None:
-    """The image runs two uvicorn workers; a counter per process doubled the daily cap and forgot it on restart."""
-    path = tmp_path / "llm_budget.db"
-    clock = Clock(now=86_400 * 20_000 + 100)
-    worker_a = TokenBudget(per_request=10_000, daily=1000, clock=clock, store=SqliteDailyStore(path))
-    worker_b = TokenBudget(per_request=10_000, daily=1000, clock=clock, store=SqliteDailyStore(path))
-    request = worker_a.open_request()
-    assert request.reserve(700) is None
-    request.settle(700, 700)
-    assert worker_b.used_today == 700 and worker_b.remaining_today == 300
-    denial = worker_b.open_request().reserve(400)
-    assert denial is not None and "Tagesbudget" in denial
-
-    restarted = TokenBudget(per_request=10_000, daily=1000, clock=clock, store=SqliteDailyStore(path))
-    assert restarted.used_today == 700
-    clock.now += 86_400
-    assert restarted.used_today == 0 and worker_b.open_request().reserve(1000) is None
-
-
-def test_a_failing_store_leaves_the_process_counter_in_charge(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
-) -> None:
-    store = SqliteDailyStore(tmp_path / "llm_budget.db")
-    budget = TokenBudget(per_request=10_000, daily=1000, store=store)
-
-    def locked(*args: object, **kwargs: object) -> sqlite3.Connection:
-        raise sqlite3.OperationalError("database is locked")
-
-    monkeypatch.setattr(store, "_connect", locked)
-    request = budget.open_request()
-    assert request.reserve(600) is None
-    request.settle(600, 600)
-    assert budget.used_today == 600, "the guard keeps counting in memory"
-    assert budget.open_request().reserve(600) is not None
-    assert "llm budget store" in caplog.text.lower()
-
-
-class FlakyStore:
-    """In-memory stand-in for the shared store that can be switched to failing."""
-
-    def __init__(self) -> None:
-        self.days: dict[int, int] = {}
-        self.fail = False
-
-    def used(self, day: int) -> int | None:
-        return None if self.fail else self.days.get(day, 0)
-
-    def reserve(self, owner: str, held: int, tokens: int, day: int, limit: int, now: float) -> bool | None:
-        return None  # a store that keeps no reservations: the process decides alone
-
-    def settle(self, owner: str, held: int, day: int, tokens: int, now: float) -> bool:
-        if self.fail:
-            return False
-        self.days[day] = self.days.get(day, 0) + tokens
-        return True
-
-    def held_elsewhere(self, owner: str, now: float) -> int | None:
-        return None if self.fail else 0
-
-
-def test_tokens_spent_during_a_store_outage_are_neither_lost_nor_hidden_by_other_workers() -> None:
-    clock = Clock(now=86_400 * 20_000 + 100)
-    day = 20_000
-    store = FlakyStore()
-    store.days[day] = 300  # another worker spent 300 today
-    budget = TokenBudget(per_request=10_000, daily=1000, clock=clock, store=store)
-    store.fail = True
-    request = budget.open_request()
-    assert request.reserve(400) is None
-    request.settle(400, 400)  # cannot be saved
-    store.fail = False
-    assert budget.used_today == 700, "300 of the other worker plus the 400 that could not be saved"
-    again = budget.open_request()
-    assert again.reserve(100) is None
-    again.settle(100, 100)
-    assert store.days[day] == 800, "the unsaved tokens are written with the next successful update"
-    assert budget.used_today == 800
-    clock.now += 86_400
-    assert budget.used_today == 0
-
-
-def two_workers(path: Path, clock: Clock, daily: int = 1000) -> tuple[TokenBudget, TokenBudget]:
-    return (
-        TokenBudget(per_request=10_000, daily=daily, clock=clock, store=SqliteDailyStore(path)),
-        TokenBudget(per_request=10_000, daily=daily, clock=clock, store=SqliteDailyStore(path)),
-    )
-
-
-def test_a_reservation_of_one_worker_counts_for_the_other(tmp_path: Path) -> None:
-    """Reservations stayed in their process: two workers each reserved 700 of 1,000 and spent 1,400 (audit
-    2026-09-27, KO-06)."""
-    worker_a, worker_b = two_workers(tmp_path / "llm_budget.db", Clock(now=86_400 * 20_000 + 100))
-
-    assert worker_a.open_request().reserve(700) is None
-    denial = worker_b.open_request().reserve(700)
-
-    assert denial is not None and "Tagesbudget" in denial and "300 frei" in denial
-    assert worker_b.remaining_today == 300
-
-
-def test_a_settled_reservation_frees_what_the_call_did_not_spend(tmp_path: Path) -> None:
-    worker_a, worker_b = two_workers(tmp_path / "llm_budget.db", Clock(now=86_400 * 20_000 + 100))
-    request = worker_a.open_request()
-    assert request.reserve(700) is None
-
-    request.settle(700, 500)
-
-    assert worker_b.open_request().reserve(501) is not None
-    assert worker_b.open_request().reserve(500) is None
-
-
-def test_the_reservation_of_a_crashed_worker_stops_counting(tmp_path: Path) -> None:
-    clock = Clock(now=86_400 * 20_000 + 100)
-    worker_a, worker_b = two_workers(tmp_path / "llm_budget.db", clock)
-    assert worker_a.open_request().reserve(700) is None  # never settled: the worker died with its call
-
-    clock.now += RESERVATION_STALE_S + 1
-
-    assert worker_b.open_request().reserve(700) is None
-
-
-def test_parallel_workers_never_reserve_more_than_the_day(tmp_path: Path) -> None:
-    path = tmp_path / "llm_budget.db"
-    clock = Clock(now=86_400 * 20_000 + 100)
-    workers = [TokenBudget(per_request=10_000, daily=1000, clock=clock, store=SqliteDailyStore(path)) for _ in range(4)]
-
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        granted = list(pool.map(lambda i: workers[i % 4].open_request().reserve(100) is None, range(40)))
-
-    assert sum(granted) == 10
-
-
 @pytest.mark.parametrize(
     ("text", "characters_per_token"),
     [
@@ -325,29 +147,28 @@ def test_the_estimate_stays_above_what_the_model_counts(text: str, characters_pe
     assert estimate_tokens(text) >= len(text) / characters_per_token
 
 
-def test_a_daily_budget_of_zero_caps_nothing_and_still_counts() -> None:
-    """LLM_DAILY_TOKEN_BUDGET=0, the default since D67: in operation the service may work through many entries a day,
-    so no daily cap turns a call away; the cap per request still does, and the day's usage is counted for /health and
-    /metrics."""
-    budget = TokenBudget(per_request=10_000, daily=0)
+def test_requests_share_no_cap_beyond_their_own() -> None:
+    """Jan, 2026-10-14 (D104): the b-api sets the limits per key and switches the LLM off when one is reached, so the
+    service keeps only the cap of a request. Fifty requests spend what each may."""
+    budget = TokenBudget(per_request=10_000)
 
     for _ in range(50):
         request = budget.open_request()
         assert request.reserve(9_000) is None
         request.settle(9_000, 8_000)
 
-    assert budget.used_today == 400_000 and budget.remaining_today is None and not budget.exhausted
     denial = budget.open_request().reserve(10_001)
     assert denial is not None and "Anfrage" in denial
 
 
-def test_without_a_daily_cap_the_workers_still_share_their_count(tmp_path: Path) -> None:
-    worker_a, worker_b = two_workers(tmp_path / "llm_budget.db", Clock(now=86_400 * 20_000 + 100), daily=0)
+def test_a_leftover_daily_budget_is_named_at_start(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """D104 removed LLM_DAILY_TOKEN_BUDGET; unknown names are ignored, so a value left in an environment would change
+    nothing without a word."""
+    monkeypatch.setenv("LLM_DAILY_TOKEN_BUDGET", "2000000")
 
-    for worker in (worker_a, worker_b):
-        request = worker.open_request()
-        assert request.reserve(9_000) is None
-        request.settle(9_000, 3_000)
+    with caplog.at_level(logging.WARNING):
+        warn_about_removed_settings()
 
-    assert worker_a.used_today == worker_b.used_today == 6_000
-    assert worker_b.open_request().reserve(10_000) is None
+    assert "LLM_DAILY_TOKEN_BUDGET" in caplog.text and "D104" in caplog.text and "b-api" in caplog.text

@@ -89,7 +89,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     close_indexes(app)
 
 
-# D33, D53 and D57 removed these; unknown names are ignored, so a stale value would change nothing without a word
+# D33, D53, D57 and D104 removed these; unknown names are ignored, so a stale value would change nothing without a word
 REMOVED_SETTINGS = ("LLM_MODE_DEFAULT", "LLM_ROUTER_ENABLED", "LLM_ROUTER_MAX_CHUNKS")
 REMOVED_DEFAULTS = (
     "MATCHER_DEFAULT",
@@ -99,6 +99,7 @@ REMOVED_DEFAULTS = (
     "LLM_ENRICHMENT_DEFAULT",
 )
 REMOVED_QA_MODELS = ("QG_MODEL_PATH", "QA_MODEL_PATH")
+REMOVED_DAILY_BUDGET = "LLM_DAILY_TOKEN_BUDGET"
 
 
 def warn_about_removed_settings() -> None:
@@ -115,6 +116,12 @@ def warn_about_removed_settings() -> None:
     models = [name for name in REMOVED_QA_MODELS if os.environ.get(name)]
     if models:
         log.warning("%s no longer exist (D57): /api/v2/qa asks with the rules or the LLM", ", ".join(models))
+    if os.environ.get(REMOVED_DAILY_BUDGET):
+        log.warning(
+            "%s no longer exists (D104): the b-api sets the limits per key and switches the LLM off when one is "
+            "reached; the service keeps only the cap per request",
+            REMOVED_DAILY_BUDGET,
+        )
 
 
 def describe_matching(settings: Settings) -> dict[str, Any]:

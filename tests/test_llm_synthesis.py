@@ -291,7 +291,7 @@ def test_a_marker_after_an_abbreviation_inside_a_sentence_stays_where_it_is() ->
 
 def test_shift_citations_moves_text_markers_and_citation_numbers_together() -> None:
     fake = FakeBApi(lambda body: ANSWER)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     local = LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget
     )
@@ -308,7 +308,7 @@ def test_renumber_maps_local_to_global_numbers() -> None:
 
 def test_write_section_returns_verified_text_with_global_citations() -> None:
     fake = FakeBApi(lambda body: ANSWER)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=5, budget=budget
     )
@@ -327,7 +327,7 @@ def test_write_section_returns_verified_text_with_global_citations() -> None:
 
 def test_write_section_skips_when_the_budget_is_exhausted() -> None:
     fake = FakeBApi(lambda body: ANSWER)
-    budget = TokenBudget(per_request=50, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=50).open_request()
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget
     )
@@ -337,7 +337,7 @@ def test_write_section_skips_when_the_budget_is_exhausted() -> None:
 
 def test_write_section_skips_on_an_api_error() -> None:
     fake = FakeBApi(statuses=[400])
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget
     )
@@ -346,7 +346,7 @@ def test_write_section_skips_on_an_api_error() -> None:
 
 def test_write_section_skips_when_no_sentence_survives() -> None:
     fake = FakeBApi(lambda body: "Nur Behauptungen ohne jeden Beleg. Und noch eine [42].")
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget
     )
@@ -356,7 +356,7 @@ def test_write_section_skips_when_no_sentence_survives() -> None:
 
 def test_write_section_without_evidence_makes_no_call() -> None:
     fake = FakeBApi(lambda body: ANSWER)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(), [], SOURCES, topic="T", citation_start=0, budget=budget
     )
@@ -369,7 +369,7 @@ def test_write_section_drops_marked_sentences_without_support_in_the_evidence() 
         "Gesellschaftliche Debatten prägen die politische Bewertung wirtschaftlicher Interessen nachhaltig [2]."
     )
     fake = FakeBApi(lambda body: answer)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget
     )
@@ -382,7 +382,7 @@ def test_write_section_drops_marked_sentences_without_support_in_the_evidence() 
 def test_write_section_reports_an_empty_answer_as_such() -> None:
     """Measured 2026-09-18: the model answers with nothing when the evidence does not fit the block."""
     fake = FakeBApi(lambda body: "")
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget
     )
@@ -393,7 +393,7 @@ def test_write_section_reports_an_empty_answer_as_such() -> None:
 def test_a_thought_cut_off_at_the_output_limit_is_no_block() -> None:
     """A thinking model's field became the block, its sentences marked as model knowledge (audit 2026-09-29, L2)."""
     thought = "Ich soll einen Baustein schreiben. Beleg [1] sagt, das Thema handelt vom Licht. Vielleicht sollte ich"
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
 
     result = LlmSynthesizer(_client(FakeBApi(raw=thought_only(thought, "length")))).write_section(
         _slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, enrich=True
@@ -413,7 +413,7 @@ def cut_off(text: str) -> dict[str, Any]:
 def written(answer: dict[str, Any] | str) -> LlmSection | LlmSkipped:
     """A block written with model knowledge from ``answer``: a whole completion, or the text of one that finished."""
     fake = FakeBApi(raw=answer) if isinstance(answer, dict) else FakeBApi(lambda body: answer)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     return LlmSynthesizer(_client(fake)).write_section(
         _slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, enrich=True
     )
@@ -592,7 +592,7 @@ def test_write_section_in_mark_mode_reports_conclusions_and_needs_one_cited_sent
         "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. Das ist eine Folgerung ohne Beleg. "
         "Gesellschaftliche Debatten prägen die politische Bewertung wirtschaftlicher Interessen nachhaltig [2]."
     )
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: answer)), mark_unsupported=True)
     result = synthesizer.write_section(_slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget)
     assert isinstance(result, LlmSection)
@@ -634,7 +634,7 @@ def test_enrichment_marks_model_knowledge_instead_of_dropping_it() -> None:
         "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. "
         "Linsen bündeln Licht, weil sie es an ihren Grenzflächen brechen."
     )
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: answer)))
     result = synthesizer.write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget, enrich=True
@@ -650,7 +650,7 @@ def test_full_enrichment_writes_a_block_without_evidence_from_model_knowledge() 
     fake = FakeBApi(
         lambda body: "Förderprogramme unterstützen offene Materialien. Sie werden öffentlich ausgeschrieben."
     )
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(fake)).write_section(
         _slot(),
         [],
@@ -672,7 +672,7 @@ def test_full_enrichment_keeps_the_cited_sentences_and_marks_the_rest() -> None:
         "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. "
         "Linsen bündeln Licht, weil sie es an ihren Grenzflächen brechen."
     )
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(FakeBApi(lambda body: answer))).write_section(
         _slot(), SCORED, SOURCES, topic="Optik im Alltag", citation_start=0, budget=budget, coverage=COVERAGE
     )
@@ -683,7 +683,7 @@ def test_full_enrichment_keeps_the_cited_sentences_and_marks_the_rest() -> None:
 def test_full_enrichment_gives_a_block_room_beyond_its_target_length() -> None:
     """Jan, 2026-10-01: the text may be long and complete; in this mode the target length is no ceiling."""
     fake = FakeBApi(lambda body: "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1].")
-    budget = TokenBudget(per_request=50_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=50_000).open_request()
     synthesizer = LlmSynthesizer(_client(fake))
     synthesizer.write_section(_slot(), SCORED, SOURCES, topic="Optik", citation_start=0, budget=budget, enrich=True)
     synthesizer.write_section(
@@ -701,7 +701,7 @@ def test_a_question_without_evidence_is_dropped_not_kept_as_model_knowledge() ->
         "Wie wird die gewonnene Energie verfügbar gemacht? "
         "Linsen bündeln Licht, weil sie es an ihren Grenzflächen brechen."
     )
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: answer)))
     result = synthesizer.write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget, enrich=True
@@ -810,7 +810,7 @@ def test_without_enrichment_the_same_answer_loses_the_unsupported_sentence() -> 
         "Das Thema ist ein Gebiet der Physik und handelt vom Licht [1]. "
         "Linsen bündeln Licht, weil sie es an ihren Grenzflächen brechen."
     )
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     result = LlmSynthesizer(_client(FakeBApi(lambda body: answer))).write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget
     )
@@ -823,7 +823,7 @@ def test_enrichment_keeps_a_written_block_that_cites_nothing_as_model_knowledge(
     """Until 2026-10-02 a block with evidence needed one cited sentence, else the extractive text took over (docs/
     umbau.md U4): a text of best-quality-generated then switched to verbatim paragraphs in one block. Jan, D72: "ki
     sollte ergänzen und texte glätten" - such a block stays written, every sentence marked, as one without evidence."""
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: "Alles nur aus dem Modellwissen geschöpft.")))
     result = synthesizer.write_section(
         _slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget, enrich=True
@@ -834,7 +834,7 @@ def test_enrichment_keeps_a_written_block_that_cites_nothing_as_model_knowledge(
 
 def test_without_enrichment_a_block_that_cites_nothing_stays_with_the_rules() -> None:
     """sources-only: every sentence needs its evidence; an answer without any leaves the extractive text."""
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     synthesizer = LlmSynthesizer(_client(FakeBApi(lambda body: "Alles nur aus dem Modellwissen geschöpft.")))
     result = synthesizer.write_section(_slot(), SCORED, SOURCES, topic="Thema", citation_start=0, budget=budget)
     assert isinstance(result, LlmSkipped) and "belegt" in result.reason

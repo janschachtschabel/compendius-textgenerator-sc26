@@ -221,12 +221,12 @@ Der Dienst kennt keine Anmeldung, aber auf einem öffentlichen Server gehören z
 in die Variablen des Hosting-Panels):
 
 - `API_KEYS`: ein oder mehrere Schlüssel, kommagetrennt, je mindestens 16 Zeichen (`openssl rand -hex 32`). Dann
-  verlangen alle Endpunkte mit einem Profil — `/compendium`, `/knowledge`, `/qa`, `/entities`,
-  `/lehrplan/search`, `/nodes` und der Sammlungsüberblick — einen davon im Header `X-API-Key`, sonst 401. Ohne
-  Schlüssel kann jeder LLM-Tokens verbrauchen, und ohne `LLM_DAILY_TOKEN_BUDGET` gibt es dafür keine Tagesgrenze.
-  `/health`, `/ready`, `/docs`, die Templates, die Statusendpunkte und mit `UI_ENABLED` die Seite der Prüfansicht
-  bleiben offen; deren Anfragen an die Endpunkte tragen den Schlüssel, den der Leser dort einträgt. Ein eigener
-  Schlüssel je aufrufender Anwendung lässt sich einzeln zurückziehen.
+  verlangen alle Endpunkte mit einem Profil — `/compendium`, `/knowledge`, `/qa`, `/entities`, `/lehrplan/search`,
+  `/nodes` und der Sammlungsüberblick — einen davon im Header `X-API-Key`, sonst 401. Ohne Schlüssel kann jeder
+  LLM-Tokens verbrauchen, bis zu den Limits, die die b-api für `B_API_KEY` setzt. `/health`, `/ready`, `/docs`, die
+  Templates, die Statusendpunkte und mit `UI_ENABLED` die Seite der Prüfansicht bleiben offen; deren Anfragen an die
+  Endpunkte tragen den Schlüssel, den der Leser dort einträgt. Ein eigener Schlüssel je aufrufender Anwendung lässt sich
+  einzeln zurückziehen.
 - `METRICS_TOKEN`, ebenfalls mindestens 16 Zeichen: sonst liest jeder `/metrics`. Prometheus aus dem
   Compose-Profil braucht dann dasselbe Token (Abschnitt 10).
 
@@ -261,7 +261,8 @@ Drei Zeilen in `.env` gehören dann dazu:
 - `API_BIND=127.0.0.1:8000`, damit Port 8000 nur über den Proxy erreichbar ist.
 - `FORWARDED_ALLOW_IPS` auf die Gateway-Adresse von oben setzen. Sonst sieht der Dienst nur diese Adresse, und
   alle Aufrufer teilen sich **ein** Rate-Limit-Fenster.
-- `RATE_LIMIT` prüfen (Standard 60 Anfragen je Minute und Aufrufer, je Worker).
+- `RATE_LIMIT` prüfen: Vorgabe 0, keine Grenze, weil die b-api je Schlüssel begrenzt (D104); ein Wert gilt je
+  Minute und Aufrufer, je Worker.
 
 Der Proxy begrenzt auch, was uvicorn nicht begrenzt: die Zeit, in der eine Verbindung ihre Kopfzeilen schicken darf
 (`client_header_timeout`, `client_body_timeout`, `send_timeout` in nginx, die Vorgabe von 60 s passt), und die Zahl
@@ -281,8 +282,8 @@ Archive bleiben dabei im Volume; der Updater tauscht sie eigenständig gegen neu
 Betrieb ändert — neue Dienste, geänderte Vorgaben —, steht in [betrieb.md](betrieb.md) unter „Updates“. Ein
 Hosting-Panel übernimmt eine neue `docker-compose.yml` nicht von selbst, wenn es nur das Image neu zieht.
 
-Sichern muss man nur das Volume `state` — und dort genau genommen nur eigene Templates: `lehrplan.db` baut
-ein Harvest neu auf, `wikidata.db` der Wikidata-Updater, `gnd.db` der GND-Updater, `wlo_cache.db` und `llm_budget.db` sind verzichtbar.
+Sichern muss man nur das Volume `state` — und dort genau genommen nur eigene Templates: `lehrplan.db` baut ein Harvest
+neu auf, `wikidata.db` der Wikidata-Updater, `gnd.db` der GND-Updater, `wlo_cache.db` ist verzichtbar.
 
 Das Archiv gehört neben den Checkout, nicht hinein: dort landete es in `git status` und im Build-Kontext.
 

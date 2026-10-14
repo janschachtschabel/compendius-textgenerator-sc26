@@ -167,7 +167,7 @@ def test_the_review_page_without_keys_is_named_at_start(
     settings: Settings, caplog: pytest.LogCaptureFixture, ui: bool, keys: str, warned: bool
 ) -> None:
     """/ui/ calls every endpoint for whoever opens it; without API_KEYS that is anyone, and the profiles with an LLM
-    spend the daily budget of all - a test server ran just so, in public (audit 2026-09-29, S2)."""
+    spend the b-api tokens of all - a test server ran just so, in public (audit 2026-09-29, S2)."""
     with caplog.at_level("WARNING"):
         create_app(settings.model_copy(update={"ui_enabled": ui, "api_keys": keys}))
 

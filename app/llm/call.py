@@ -2,7 +2,7 @@
 
 Synthesis and passage selection both ask the model once per block. Whatever keeps a call from happening or
 from answering becomes an ``LlmSkipped``: the block then keeps its rule-based text, and the reason goes to the
-audit. A reservation is always settled, also when the call fails, so a failed call cannot shrink the day.
+audit. A reservation is always settled, also when the call fails, so a failed call cannot shrink the request.
 """
 
 from __future__ import annotations
@@ -154,7 +154,7 @@ def budgeted_chat(
             total_tokens=spent,
         )
     finally:
-        budget.settle(held, spent)  # also on unexpected errors and late starts: a leaked reservation shrinks the day
+        budget.settle(held, spent)  # also on errors and late starts: a leaked reservation shrinks the request
     budget.count_cached(answer.cached_tokens)
     _heard(
         "answered",

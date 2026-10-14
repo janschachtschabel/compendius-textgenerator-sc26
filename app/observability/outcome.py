@@ -31,7 +31,7 @@ MAX_TOPIC_CHARS = 80
 CAUSES = (
     ("unavailable", ("LLM nicht verfügbar", "LLM nicht konfiguriert")),
     ("time", ("Zeitbudget",)),
-    ("budget", ("Token-Budget", "Tagesbudget", "Budget der Anfrage")),
+    ("budget", ("Token-Budget", "Budget der Anfrage")),
     ("b-api", ("b-api",)),
 )
 # What makes the line a WARNING: the request's time or budget cut LLM work, or the LLM it wanted was not there

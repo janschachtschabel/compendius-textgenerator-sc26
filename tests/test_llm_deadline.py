@@ -72,7 +72,7 @@ def test_synthesizer_shrinks_the_timeout_and_skips_when_the_time_is_up() -> None
     clock = Clock()
     deadline = Deadline(30.0, clock=clock)
     fake = FakeBApi(lambda body: ANSWER)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
     synthesizer = LlmSynthesizer(_client(fake))
     clock.now += 18
     written = synthesizer.write_section(
@@ -216,7 +216,7 @@ def test_a_timeout_after_a_wait_in_the_queue_does_not_trip_the_breaker(monkeypat
 
 def test_a_request_with_time_left_waits_for_a_slot_instead_of_falling_back(monkeypatch: pytest.MonkeyPatch) -> None:
     client, clock = queued_client(FakeBApi(), 150.0, monkeypatch)
-    budget = TokenBudget(per_request=20_000, daily=2_000_000).open_request()
+    budget = TokenBudget(per_request=20_000).open_request()
 
     answer = budgeted_chat(
         client, MESSAGES, max_output_tokens=10, budget=budget, what="Probe", deadline=Deadline(300.0, clock=clock)

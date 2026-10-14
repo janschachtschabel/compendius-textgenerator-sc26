@@ -3,7 +3,7 @@
 The uvicorn workers keep their Prometheus values in files in ``PROMETHEUS_MULTIPROC_DIR`` and /metrics sums them.
 Files of an earlier run would be counted again, so the start removes them, and only them: the directory is
 operator configuration, and a mistaken value such as the state volume must not cost the curriculum cache or the
-budget counter. The variable is set here for uvicorn only; the sidecars never load the metrics.
+indexes. The variable is set here for uvicorn only; the sidecars never load the metrics.
 
 uvicorn parses with h11 unless ``UVICORN_HTTP`` names another parser (audit 2026-09-28, SE-19): httptools, uvicorn's
 choice where it is installed, bounds neither the URL nor the headers, and uvicorn collected a long URL piece by piece

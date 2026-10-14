@@ -32,7 +32,7 @@ TEXT = "Ernst Abbe entwickelte in Jena das Lichtmikroskop. Ein Lichtmikroskop ve
 
 def job_for(fake: FakeBApi, per_request: int = 20_000) -> EntityLlmJob:
     client = BApiClient(BASE, KEY, provider="openai", model="gpt-5.6-luna", transport=httpx.MockTransport(fake))
-    return EntityLlmJob(client, TokenBudget(per_request=per_request, daily=2_000_000).open_request())
+    return EntityLlmJob(client, TokenBudget(per_request=per_request).open_request())
 
 
 def naming(*pairs: tuple[str, str]) -> FakeBApi:

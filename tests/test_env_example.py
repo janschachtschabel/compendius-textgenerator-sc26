@@ -54,6 +54,11 @@ def test_the_example_ships_the_default_profile_and_template_of_the_code() -> Non
     assert values["TEMPLATE_DEFAULT"] == Settings.model_fields["template_default"].default == "sc26"
 
 
+def test_the_example_ships_no_rate_limit() -> None:
+    """D104: the b-api limits per key; the example carries the code's default, no limit."""
+    assert documented()["RATE_LIMIT"] == str(Settings.model_fields["rate_limit"].default) == "0"
+
+
 def test_the_example_leaves_the_limits_of_the_provider_to_the_provider() -> None:
     """A value copied from the example would hold for every provider (M75, 2026-10-08): 10 calls at once and 120 s
     slowed OpenAI's profiles down and cut academiccloud's short. Empty, the provider's defaults hold."""

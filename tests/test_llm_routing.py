@@ -281,9 +281,7 @@ def routed_gateway(transport: Callable[[httpx.Request], httpx.Response]) -> LlmG
     client = BApiClient(
         BASE, KEY, provider="router", model="gpt-6-luna", route=ROUTE, transport=httpx.MockTransport(transport)
     )
-    return LlmGateway(
-        client, TokenBudget(per_request=20_000, daily=0), LlmOptions(fast_sections=("sc26_1",), concurrency=2)
-    )
+    return LlmGateway(client, TokenBudget(per_request=20_000), LlmOptions(fast_sections=("sc26_1",), concurrency=2))
 
 
 def test_health_names_the_route(settings: Settings) -> None:

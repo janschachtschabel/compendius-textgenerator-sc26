@@ -64,7 +64,7 @@ def answer_with(
 
 def make_job(fake: FakeBApi, per_request: int = 1_000_000, concurrency: int = 1) -> AssignmentJob:
     client = BApiClient(BASE, KEY, provider="openai", model="gpt-5.6-luna", transport=httpx.MockTransport(fake))
-    budget = TokenBudget(per_request=per_request, daily=10_000_000).open_request()
+    budget = TokenBudget(per_request=per_request).open_request()
     return AssignmentJob(client=client, budget=budget, topic="Optik", concurrency=concurrency)
 
 
@@ -238,7 +238,7 @@ class CountingBudget(RequestBudget):
     """A request budget that notes every reservation asked for; ``all_asked`` is set once each batch has asked."""
 
     def __init__(self, limit: int, batches: int) -> None:
-        super().__init__(TokenBudget(per_request=limit, daily=10_000_000), limit)
+        super().__init__(limit)
         self.asked: list[int] = []
         self.batches = batches
         self.all_asked = threading.Event()
