@@ -164,7 +164,7 @@ tests:
           - exp_labels: { severity: warning }
             exp_annotations:
               summary: Keine LLM-Anfrage erreicht das LLM, alle laufen im Regelmodus
-              description: Seit 15 Minuten fällt jede LLM-Anfrage auf den Regelmodus zurück (b-api nicht erreichbar, Modell fehlt, Antworten mit 401 oder 5xx, Schutzschalter oder Tagesbudget); audit.llm.note der Antworten nennt den Grund.
+              description: Seit 15 Minuten fällt jede LLM-Anfrage auf den Regelmodus zurück (b-api nicht erreichbar, Modell fehlt, Antworten mit 401 oder 5xx, Schutzschalter oder ein Limit des Schlüssels in der b-api); audit.llm.note der Antworten nennt den Grund.
 
   - name: LLM teilweise erreichbar
     interval: 1m

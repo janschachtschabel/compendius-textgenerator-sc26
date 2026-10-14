@@ -186,7 +186,7 @@ def container() -> None:
             ("FastAPI unter uvicorn, WEB_CONCURRENCY=2 Worker, Port 8000", "text"),
             ("Speicher der Prozesse: 2,5 GiB nach dem Start, 3,4 GiB nach dem Aufwärmen", "text"),
             ("Grenze API_MEMORY: 6g (gemessen mit 4g) · CPU: 2 bis 6 CPU-Sekunden je Anfrage", "text"),
-            ("liest Archive und Indexe; schreibt Tagesbudget, Sammlungs-Cache und eigene Templates", "note"),
+            ("liest Archive und Indexe; schreibt Sammlungs-Cache und eigene Templates", "note"),
         ],
         "container",
     )
@@ -225,7 +225,7 @@ def container() -> None:
         [
             ("Volume state · 0,45 GB", "title"),
             ("lehrplan.db 277 MB, wikidata.db 139 MB, gnd.db 55 MB,", "text"),
-            ("Tagesbudget, Sammlungs-Cache, eigene Templates", "note"),
+            ("Sammlungs-Cache, eigene Templates", "note"),
         ],
         "volume",
     )

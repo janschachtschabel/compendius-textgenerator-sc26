@@ -332,7 +332,7 @@ def test_llm_gauges_show_availability(sample_zims: dict[str, Path], tmp_path: Pa
         samples = scrape(client)
     assert value(samples, "kompendium_llm_enabled") == 1 and value(samples, "kompendium_llm_available") == 1
     names = {name for name, _labels in samples}
-    # D104: the b-api sets the limits; the day's tokens are increase(kompendium_llm_tokens_total[1d])
+    # D104: the b-api sets the limits; the day's tokens are sum(increase(kompendium_llm_tokens_total{type!="cached"}[1d]))
     assert "kompendium_llm_daily_budget_tokens" not in names and "kompendium_llm_tokens_used_today" not in names
 
 

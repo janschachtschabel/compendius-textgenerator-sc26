@@ -61,7 +61,8 @@ _REASONING_PREFIXES = ("gpt-5", "gpt-6", "o1", "o3", "o4")
 # block's whole limit of 555 tokens for it and answered with nothing (finish_reason=length, 2026-09-19)
 REASONING_ALLOWANCE = 1000
 # No call spends more: the largest windows hold about a million tokens. A broken or hostile gateway's usage of 2^63
-# raised out of the budget store and stood in the day's counter until midnight (audit 2026-09-28, KO-26)
+# raised out of the day's store, gone since D104, and would inflate a request's budget and the token metrics
+# (audit 2026-09-28, KO-26)
 MAX_USAGE = 10_000_000
 # An answer is read up to this many bytes (audit 2026-10-03, F12). A completion holds at most the output limit of
 # its call, 4,000 tokens or some 16 KB of text for the longest block (MAX_FULL_OUTPUT_TOKENS); the model list was

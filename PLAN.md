@@ -920,7 +920,8 @@ Kostenmodell (Schätzung der Planung je Kompendium, historisch für die Modellkl
 `hybrid-fast` 2–3 Aufrufe × (1.500 Eingabe- + 400 Ausgabe-Tokens) ≈ 4.500/1.200;
 `hybrid-quality` 13–15 Aufrufe ≈ 20.000/5.500. Zum Vergleich alt: ~1.500 Eingabe- + bis 4.000
 Ausgabe-Tokens für den Text, plus 1–2 Linker-Aufrufe. Kostenschutz über
-`LLM_MAX_TOKENS_PER_REQUEST` und ein Tagesbudget; Tokenverbrauch steht in `pipeline_statistics` (Feld des alten
+`LLM_MAX_TOKENS_PER_REQUEST` und ein Tagesbudget (seit D104 entfallen: die Limits setzt die b-api); Tokenverbrauch
+steht in `pipeline_statistics` (Feld des alten
 v1-Vertrags; im Neubau `audit.llm_tokens`).
 **Vorkonfiguration (Entscheidung D19):** Provider `openai`, Modell `gpt-5.6-luna`. Provider,
 Modell und Basis-URL sind Konfiguration (`B_API_PROVIDER`, `B_API_MODEL`, `B_API_BASE_URL`), der
@@ -957,7 +958,8 @@ Weiter in `budget.py`: jeder Aufruf reserviert vorab seine Obergrenze (Zeichen /
 wird nach `usage` abgerechnet, atomar auch bei parallelen Entwürfen (Summe aller Reservierungen je Kompendium
 gemessen: 12.000 bis 17.000 Tokens, unter der Standardgrenze); die Ablehnung nennt, ob die Anfrage- oder die
 Tagesgrenze greift. Seit D39 wartet ein Aufruf, dem nur Reservierungen laufender Aufrufe derselben Anfrage im Weg
-stehen, auf deren Abrechnung, solange danach noch ein Aufruf rechtzeitig starten kann; das Tagesbudget weist sofort ab.
+stehen, auf deren Abrechnung, solange danach noch ein Aufruf rechtzeitig starten kann; das Tagesbudget wies sofort ab.
+Tagesgrenze und `budget_store.py` sind seit D104 entfallen: die Limits je Schlüssel setzt die b-api.
 Gemessen am 2026-09-18 gegen `b-api.staging.openeduhub.net`: `/models` openai 138 Modelle ohne `status`/`demand`,
 academiccloud 14 Modelle mit `status` und `demand` 0 bis 2; `gpt-5.6-luna` antwortet mit
 `max_completion_tokens`, `reasoning_effort` und `verbosity` in 2,4 s; identische Anfragen beantwortet die b-api aus
