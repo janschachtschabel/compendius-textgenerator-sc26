@@ -27,13 +27,19 @@ def route_name(provider: str, model: str, route: str) -> str:
     return route.strip() or model
 
 
+def no_route(status: int, text: str) -> bool:
+    """Whether the router knows no active route of the name it got, neither for the key nor for all (D97). With the key
+    of a request it speaks of that key's routes, not of the service's (D106)."""
+    return status == 400 and _NO_ROUTE in text
+
+
 def route_stop(status: int, text: str, route: str) -> tuple[bool, str] | None:
     """Whether the router answered what no retry mends, and why: lasting (``True``) for a route unknown or switched
     off, a model without a price and models that cannot chat; passing (``False``) for no deployment left, which the
     router pauses after errors and lets back. An answer listing attempts with other causes - a 429 or 5xx of the
     provider - is neither: it takes the retries of any 503 (review of 2026-10-09)."""
     name = repr(route)
-    if status == 400 and _NO_ROUTE in text:
+    if no_route(status, text):
         why = f"Route {name} ist in der b-api weder für den Schlüssel noch global aktiv"
         return True, f"{why}; Route anlegen oder B_API_ROUTE prüfen"
     if status != 503:

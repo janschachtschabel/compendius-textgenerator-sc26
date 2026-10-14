@@ -1,4 +1,4 @@
-"""b-api client (PLAN.md 7): OpenAI-compatible chat completions behind the ``X-API-KEY`` header.
+"""b-api client (PLAN.md 7): OpenAI-compatible chat completions with the key of the request or the service (D105).
 
 Measured against ``b-api.staging.openeduhub.net`` on 2026-09-17: the path is
 ``/api/v1/llm/{provider}/chat/completions``; the reasoning models - GPT-5, GPT-6 (2026-09-24, D44) and
@@ -30,8 +30,9 @@ import httpx
 
 from app.http_body import ACCEPT_ENCODING, UnreadableAnswerError, read_bounded
 from app.llm.budget import estimate_tokens
+from app.llm.credentials import X_API_KEY, RequestKey, own_key_only, request_key
 from app.llm.deadline import MIN_CALL_S, Deadline
-from app.llm.routing import ROUTER, family_hint, route_name, route_stop
+from app.llm.routing import ROUTER, family_hint, no_route, route_name, route_stop
 
 log = logging.getLogger(__name__)
 
@@ -43,8 +44,13 @@ RETRY_STATUSES = frozenset({429, 500, 502, 503, 504})
 REACHED_STATUSES = frozenset({502, 504})
 # A refused key, permission or model does not fix itself within a request: calls stop for as long as an unavailable
 # model waits for its re-check (gateway.RECHECK_S), and /health says why (audit 2026-09-27, BE-04)
-REFUSED_STATUSES = frozenset({401, 403, 404})
+REFUSED_STATUSES = frozenset({401, 402, 403, 404})
+# What the b-api answers a key it will not serve: one unknown or switched off, a limit reached - 402 is the usual answer
+# to a cost limit, which status the b-api sends was not documented on 2026-10-14 -, a right missing. With the key of a
+# request only that request loses the LLM; with the service's own, all calls wait (D106)
+KEY_REFUSALS = frozenset({401, 402, 403})
 AUTH_SUSPEND_S = 600.0
+NO_KEY = "kein b-api-Schlüssel: die Anfrage brachte keinen (Authorization oder X-API-Key), und B_API_KEY ist leer"
 HIGH_DEMAND = 3  # academiccloud reported demand 0 to 2 in normal operation (2026-09-17)
 MODEL_CHECK_TIMEOUT_S = 10.0  # the model list is a probe (start-up, health): one short attempt, no retries
 TRIP_TIMEOUT_S = 30.0  # a call cut short by the request deadline is no outage; half a minute of silence is
@@ -170,10 +176,8 @@ class BApiClient:
         clock: Callable[[], float] = time.monotonic,
         jitter: Callable[[], float] = random.random,
     ) -> None:
-        api_key = api_key.strip()  # secret files usually end with a newline
-        if not api_key:
-            raise ValueError("b-api key is empty (B_API_KEY)")
-        if not _KEY_RE.match(api_key):  # never echo the value
+        api_key = api_key.strip()  # secret files usually end with a newline; empty: each request brings its key
+        if api_key and not _KEY_RE.match(api_key):  # never echo the value
             raise ValueError("B_API_KEY contains whitespace or non-printable characters")
         self._key = api_key
         self._clock = clock
@@ -203,7 +207,8 @@ class BApiClient:
         self.max_concurrency = max(1, max_concurrency)
         self._semaphore = threading.BoundedSemaphore(self.max_concurrency)
         self._client = httpx.Client(
-            headers={"X-API-KEY": api_key, "Accept": "application/json", "Accept-Encoding": ACCEPT_ENCODING},
+            # the key goes with each call, the request's or the service's own, never both (D105)
+            headers={"Accept": "application/json", "Accept-Encoding": ACCEPT_ENCODING},
             timeout=timeout_s,
             transport=transport,
         )
@@ -219,6 +224,19 @@ class BApiClient:
     @property
     def suspension_reason(self) -> str:
         return self._suspension
+
+    @property
+    def has_own_key(self) -> bool:
+        """Whether the service has a key of its own (B_API_KEY); without one every call takes its request's (D105)."""
+        return bool(self._key)
+
+    def key_problem(self) -> str | None:
+        """Why a call of the request being handled cannot go out for its key: the request's refused by the b-api
+        (D106), or none at all; ``None`` while there is one."""
+        key = request_key()
+        if key is not None:
+            return key.refused
+        return None if self._key else NO_KEY
 
     @property
     def chat_url(self) -> str:
@@ -265,7 +283,8 @@ class BApiClient:
         return replace(result, reached_before=reached) if reached else result
 
     def models(self) -> list[ModelInfo]:
-        data, _ = self._request("GET", self.models_url, attempts=1, timeout_s=MODEL_CHECK_TIMEOUT_S)
+        with own_key_only():  # the check holds for all requests: never one caller's key decides it (D105)
+            data, _ = self._request("GET", self.models_url, attempts=1, timeout_s=MODEL_CHECK_TIMEOUT_S)
         entries = data.get("data") if isinstance(data, dict) else None
         if not isinstance(entries, list):
             raise LlmError("/models answered without a model list")
@@ -382,6 +401,9 @@ class BApiClient:
         status: int | None = None
         reached = 0
         for attempt in range(attempts):
+            problem = self.key_problem()  # no key, or another call of the request met the b-api's refusal
+            if problem is not None:
+                raise LlmHeldBackError(problem, reached=reached)
             limit = ends - self._clock()
             had = limit  # the time the attempt had for itself once it held a call slot
             try:
@@ -420,6 +442,15 @@ class BApiClient:
                         # the model answered: the attempt may have cost its prompt like one behind a 504 (A05)
                         raise LlmError("b-api antwortete ohne gültiges JSON", status, reached=reached + 1) from exc
                 stop = self._route_stop(status, response.text) if self.route else None
+                key = request_key()
+                if key is not None and (status in KEY_REFUSALS or no_route(status, response.text)):
+                    why = (
+                        f"Route {self.route!r} ist für den Schlüssel der Anfrage nicht aktiv (HTTP {status})"
+                        if status not in KEY_REFUSALS
+                        else f"b-api lehnt den Schlüssel der Anfrage ab (HTTP {status}): Limit erreicht, LLM für den "
+                        "Schlüssel abgeschaltet oder keine Berechtigung"
+                    )
+                    raise self._refuse(key, why, response.text, status, reached)
                 if status not in RETRY_STATUSES or stop is not None:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
                     # key is blanked before the cut, which otherwise left the start of an echoed key (SE-10).
@@ -443,8 +474,10 @@ class BApiClient:
                 last_error = f"HTTP {status}"
                 reached += status in REACHED_STATUSES
                 wait = _retry_after(response) or self._backoff(attempt)
-            with self._state:
-                self._failures += 1
+            if status != 429 or request_key() is None:
+                # A 429 to the key of a request speaks of that key: the breaker stays with the b-api's state (D106)
+                with self._state:
+                    self._failures += 1
             if attempt + 1 >= attempts:
                 break
             if ends - self._clock() - wait < MIN_CALL_S:
@@ -458,6 +491,10 @@ class BApiClient:
             # A 429 or 5xx retried into an answer left no trace, the seconds slept among it (logging review)
             log.info("b-api %s on attempt %d of %d, retrying in %.1f s", last_error, attempt + 1, attempts, wait)
             self._sleep(wait)
+        key = request_key()
+        if key is not None and status == 429:
+            why = f"b-api begrenzt den Schlüssel der Anfrage (HTTP 429 nach {attempt + 1} Versuchen): Limit erreicht"
+            raise self._refuse(key, why, last_error, status, reached)
         if self._failures >= self.attempts:
             self._trip(cause=f"{self._failures} failed attempts in a row, the last {last_error}")
         raise LlmError(f"b-api nach {attempt + 1} Versuchen nicht erreichbar ({last_error})", status, reached=reached)
@@ -498,10 +535,26 @@ class BApiClient:
         if new:
             log.info("b-api routing: route %r answers with %s", self.route, name)
 
+    def _refuse(self, key: RequestKey, why: str, said: str, status: int, reached: int) -> LlmError:
+        """The b-api refused the key of the request being handled (D106): the rest of that request runs without the
+        LLM, every other request keeps it. One line per request says so, with what the b-api answered."""
+        if key.refuse(why):
+            log.warning(
+                "b-api refused the key of this request: %s (b-api: %s); the request goes on without the LLM (llm-free)",
+                why,
+                " ".join(self._redact(said)[:200].split()) or "-",
+            )
+        return LlmError(why, status, reached=reached)
+
     def _refused(self, status: int) -> None:
         minutes = round(AUTH_SUSPEND_S / 60)
         if self.route and status == 404:
             reason = f"b-api-Routing {minutes} Minuten ausgesetzt: HTTP 404, {_NO_ROUTER}"
+        elif status in KEY_REFUSALS:
+            reason = (
+                f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, die b-api lehnt den Schlüssel des Dienstes ab "
+                "(Limit erreicht, LLM abgeschaltet oder keine Berechtigung); bis dahin llm-free"
+            )
         else:
             reason = f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, Schlüssel, Berechtigung oder Modell prüfen"
         self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}")
@@ -536,7 +589,7 @@ class BApiClient:
         """One HTTP attempt of at most ``limit`` seconds, made holding a call slot (``_slot``). The answer is read up
         to ``MAX_ANSWER_BYTES`` (``AnswerTooLargeError`` past it, ``UnreadableAnswerError`` in a coding it does not
         unpack) and comes back read, with the headers a caller looks at."""
-        request = self._client.build_request(method, url, json=json_body, timeout=limit)
+        request = self._client.build_request(method, url, json=json_body, timeout=limit, headers=self._key_header())
         streamed = self._client.send(request, stream=True)
         try:
             body = read_bounded(streamed, MAX_ANSWER_BYTES)
@@ -572,8 +625,19 @@ class BApiClient:
         if resumed:
             log.info("b-api answers again; the calls resume")
 
+    def _key_header(self) -> dict[str, str]:
+        """The one header that carries the key of a call (D105): the request's as it came, else the service's own."""
+        key = request_key()
+        return {key.header: key.value} if key is not None else {X_API_KEY: self._key}
+
     def _redact(self, text: str) -> str:
-        return text.replace(self._key, "***")
+        """``text`` without the keys of this call: the service's own and the request's, with and without its scheme. An
+        empty key is none: replaced, it put three stars between every two signs."""
+        key = request_key()
+        secrets = [self._key, *((key.value, key.value.partition(" ")[2]) if key is not None else ())]
+        for secret in sorted(filter(None, secrets), key=len, reverse=True):
+            text = text.replace(secret, "***")
+        return text
 
 
 def _retry_after(response: httpx.Response) -> float | None:

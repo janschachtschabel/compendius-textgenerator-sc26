@@ -123,6 +123,27 @@ def _parameters_of(model: str) -> tuple[bool, bool]:
     return is_reasoning_model(model), needs_thinking_off(model)
 
 
+def warn_about_request_keys(settings: Settings) -> None:
+    """What does not fit the keys of the requests (D105): settings the service keeps, named at start."""
+    if settings.api_key_list:
+        log.warning(
+            "B_API_KEY_SOURCE=request with API_KEYS set: X-API-Key stays the service's own key, so only Authorization "
+            "brings a b-api key. Behind the b-api's proxy API_KEYS has to stay empty: the proxy passes on its caller's "
+            "b-api key, no key of this service"
+        )
+    if settings.rate_limit:
+        log.warning(
+            "B_API_KEY_SOURCE=request with RATE_LIMIT=%d: behind the b-api every request comes from its address, so "
+            "the limit holds for all callers together; the b-api limits per key (D104)",
+            settings.rate_limit,
+        )
+    if settings.b_api_key:
+        log.info(
+            "B_API_KEY_SOURCE=request: a request without a b-api key of its own spends B_API_KEY; the service belongs "
+            "behind the b-api, out of direct reach (D105)"
+        )
+
+
 def warn_about_llm_settings(settings: Settings) -> None:
     """Settings the LLM can hardly work with, named at start; the service keeps them (a warning, not a refusal: a
     stricter check stopped all containers on 2026-09-28, BE-13)."""
@@ -149,11 +170,13 @@ def warn_about_llm_settings(settings: Settings) -> None:
             route,
             settings.b_api_model,
         )
-    if not settings.api_key_list:
+    if settings.b_api_key and not settings.api_key_list:
         log.warning(
             "API_KEYS empty: anyone who reaches the service spends the tokens of B_API_KEY, up to the limits the b-api "
             "sets for that key (D104)"
         )
+    if settings.b_api_key_source == "request":
+        warn_about_request_keys(settings)
     if not is_reasoning_model(settings.b_api_model):
         return  # a classic model is sent neither
     for name, value, known in (
@@ -190,7 +213,7 @@ def build_llm(settings: Settings) -> LlmGateway | None:
     """The b-api gateway for the LLM switches (PLAN.md 7); off without LLM_ENABLED or without a key."""
     if not settings.llm_enabled:
         return None
-    if not settings.b_api_key:
+    if not settings.b_api_key and settings.b_api_key_source != "request":
         log.warning("LLM_ENABLED is set but B_API_KEY is empty; LLM requests fall back to the rule-based path")
         return None
     base_url = resolve_b_api(settings)
@@ -221,7 +244,13 @@ def build_llm(settings: Settings) -> LlmGateway | None:
         mark_unsupported=settings.llm_unsupported_sentences == "mark",
     )
     gateway = LlmGateway(client, budget, options)
-    gateway.check_model()  # warns only; an unavailable model means rule-based answers until it is back
+    if settings.b_api_key:
+        gateway.check_model()  # warns only; an unavailable model means rule-based answers until it is back
+    else:
+        log.info(
+            "B_API_KEY_SOURCE=request without B_API_KEY: every LLM call carries the b-api key of its request, and no "
+            "model is checked at start (D105)"
+        )
     return gateway
 
 

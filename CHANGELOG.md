@@ -9,6 +9,15 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+- **Neu (D105):** `B_API_KEY_SOURCE=request` nimmt für die LLM-Aufrufe einer Anfrage den Schlüssel, den die b-api vom
+  Aufrufer weiterreicht (`Authorization`, sonst `X-API-Key`), und schickt ihn unverändert an die b-api zurück;
+  `B_API_KEY` gilt dann nur für Anfragen ohne Schlüssel und darf fehlen. Die Vorgabe `env` ändert nichts. Der Schlüssel
+  bleibt in seiner Anfrage, erscheint in keinem Log, und die Modellprüfung fragt nur mit `B_API_KEY`. `/health` nennt
+  unter `components.llm.key` die Quelle.
+- **Neu (D106):** Lehnt die b-api den Schlüssel einer Anfrage ab (401, 402, 403, ein 429 nach allen Versuchen, eine für
+  ihn nicht aktive Route), läuft der Rest dieser Anfrage ohne LLM nach den Regeln, alle anderen behalten es; eine
+  WARNING je Anfrage nennt es. Ein 402 setzt wie 401 und 403 die Aufrufe mit dem Schlüssel des Dienstes zehn Minuten
+  aus, die Meldung nennt das Limit als möglichen Grund.
 - **Geändert (D104):** Der Dienst hat kein Tagesbudget mehr: Die b-api setzt die Limits je Schlüssel und schaltet das
   LLM ab, wenn eines erreicht ist. `LLM_DAILY_TOKEN_BUDGET` wirkt nicht mehr, der Start nennt einen alten Eintrag;
   `llm_budget.db` im Volume `state` wird nicht mehr geschrieben. Es entfallen die Gauges

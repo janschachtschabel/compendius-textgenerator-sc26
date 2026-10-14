@@ -867,24 +867,25 @@ eine Wiederholung wartet 1,5 s, dann 3 s, je mit einer Streuung zwischen der Hä
 lange, wie `Retry-After` verlangt, wenn das noch in die Frist passt. Nach einem Timeout oder drei Fehlversuchen in Folge
 (Verbindungsfehler, 429, 500, 502, 503 oder 504, über alle Aufrufe; jeder davon wird wiederholt, ein 501 nicht) setzt
 ein Schutzschalter die b-api 60 s aus, Anfragen laufen dann sofort im Regelmodus; danach probiert ein einzelner Aufruf,
-ob sie wieder antwortet. Ein 401, 403 oder 404 setzt sie zehn Minuten aus, `/health` nennt den Grund unter
-`components.llm.reason` (Schlüssel, Berechtigung oder Modell). Ein Versuch, der das Modell erreicht haben kann (Timeout
-nach dem Senden, 502 oder 504), belastet das Budget mit den Tokens seiner Eingabe, auch wenn ein späterer Versuch
-antwortet; eine Antwort, die sich nicht lesen lässt, ebenso, oder mit dem Verbrauch, den sie meldet. Jeder Aufruf
-reserviert sein Token-Budget vorab (je Anfrage das des Profils, `LLM_MAX_TOKENS_PER_REQUEST` oder in den
-`best-quality`-Profilen `LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, bei `/qa` für Teil 1 und die Paare zusammen; die
-Prüfung von Teil 2 aus `LLM_MAX_TOKENS_CURRICULUM_CHECK`), den Text eines Aufrufers (`/entities`, `/qa`) nach seinen
-UTF-8-Bytes: So viele Tokens kann er höchstens werden, wie man ihn auch formt; zufällige Zeichenfolgen kamen bei
-`gpt-6-luna` auf bis zu 4,3-mal so viele Tokens wie geschätzt (Audit 2026-09-28, SE-20). Passt er nicht mehr neben die
-laufenden Aufrufe derselben Anfrage, wartet er auf deren Abrechnung, solange danach noch ein Aufruf rechtzeitig starten
-kann (D39). Die Wiederholung nach einem Versuch, der das Modell erreicht haben kann, reserviert dessen Eingabe erneut
-und wartet nicht: Ist dafür kein Platz mehr, endet der Aufruf ohne sie (Audit 2026-09-29, L1). Eine Grenze je Tag setzt
-der Dienst nicht: Die Limits je Schlüssel setzt die b-api und schaltet das LLM ab, wenn eines erreicht ist (D104). Die
-Schätzung vor einem Aufruf rechnet drei Zeichen je Token und ab U+0800, etwa bei Chinesisch, ein Token je Zeichen
-(gemessen mit `gpt-6-luna`: Deutsch 4,62 Zeichen je Token, Russisch 3,96, Arabisch 3,27, Chinesisch 1,28).
-`REQUEST_TIMEOUT_S` begrenzt die LLM-Arbeit und das Lesen des Repositorys einer Anfrage: jeder Aufruf bekommt höchstens
-die Restzeit, bei weniger als 5 s Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung,
-Fehlerkörper der b-api nur im Log.
+ob sie wieder antwortet. Ein 401, 402, 403 oder 404 auf den Schlüssel des Dienstes setzt sie zehn Minuten aus, `/health`
+nennt den Grund unter `components.llm.reason` (Schlüssel, Limit, Berechtigung oder Modell); den Schlüssel einer Anfrage
+betrifft eine Ablehnung nur für diese Anfrage (D106). Ein Versuch, der das Modell erreicht haben kann (Timeout nach dem
+Senden, 502 oder 504), belastet das Budget mit den Tokens seiner Eingabe, auch wenn ein späterer Versuch antwortet; eine
+Antwort, die sich nicht lesen lässt, ebenso, oder mit dem Verbrauch, den sie meldet. Jeder Aufruf reserviert sein
+Token-Budget vorab (je Anfrage das des Profils, `LLM_MAX_TOKENS_PER_REQUEST` oder in den `best-quality`-Profilen
+`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`, bei `/qa` für Teil 1 und die Paare zusammen; die Prüfung von Teil 2 aus
+`LLM_MAX_TOKENS_CURRICULUM_CHECK`), den Text eines Aufrufers (`/entities`, `/qa`) nach seinen UTF-8-Bytes: So viele
+Tokens kann er höchstens werden, wie man ihn auch formt; zufällige Zeichenfolgen kamen bei `gpt-6-luna` auf bis zu
+4,3-mal so viele Tokens wie geschätzt (Audit 2026-09-28, SE-20). Passt er nicht mehr neben die laufenden Aufrufe
+derselben Anfrage, wartet er auf deren Abrechnung, solange danach noch ein Aufruf rechtzeitig starten kann (D39). Die
+Wiederholung nach einem Versuch, der das Modell erreicht haben kann, reserviert dessen Eingabe erneut und wartet nicht:
+Ist dafür kein Platz mehr, endet der Aufruf ohne sie (Audit 2026-09-29, L1). Eine Grenze je Tag setzt der Dienst nicht:
+Die Limits je Schlüssel setzt die b-api und schaltet das LLM ab, wenn eines erreicht ist (D104). Die Schätzung vor einem
+Aufruf rechnet drei Zeichen je Token und ab U+0800, etwa bei Chinesisch, ein Token je Zeichen (gemessen mit
+`gpt-6-luna`: Deutsch 4,62 Zeichen je Token, Russisch 3,96, Arabisch 3,27, Chinesisch 1,28). `REQUEST_TIMEOUT_S`
+begrenzt die LLM-Arbeit und das Lesen des Repositorys einer Anfrage: jeder Aufruf bekommt höchstens die Restzeit, bei
+weniger als 5 s Rest entsteht der Baustein extraktiv. Der Schlüssel erscheint in keiner Meldung, Fehlerkörper der b-api
+nur im Log.
 
 ```bash
 LLM_ENABLED=true uv run compendium generate --topic Optik --extraction llm --generation llm-fast --zim … --out optik.md
@@ -1089,10 +1090,30 @@ gleich unter welcher Lizenz (D70).
 
 ### LLM-Schicht über die b-api
 
-Optional und standardmäßig aus. Ohne `LLM_ENABLED=true` **und** einen `B_API_KEY` läuft eine Anfrage ohne Profil
-mit `llm-free` (D68); nennt sie ein anderes Profil oder einen Schalter, der ein LLM braucht, ist sie ein 503. Ist die
-b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt die angefragten Schalter
-(`extraction_requested`, `generation_requested`).
+Optional und standardmäßig aus. Ohne `LLM_ENABLED=true` **und** einen `B_API_KEY` (oder `B_API_KEY_SOURCE=request`)
+läuft eine Anfrage ohne Profil mit `llm-free` (D68); nennt sie ein anderes Profil oder einen Schalter, der ein LLM
+braucht, ist sie ein 503. Ist die b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt die
+angefragten Schalter (`extraction_requested`, `generation_requested`).
+
+**Der Schlüssel der Anfrage (D105).** Hinter dem Proxy der b-api (`/api/v1/proxy/<dienst>`) reicht die b-api den
+Schlüssel ihres Aufrufers an den Dienst weiter: WLO setzt einen Schlüssel für angemeldete Nutzer und einen für Gäste,
+die b-api bucht jeden LLM-Aufruf auf den Schlüssel, mit dem er kommt, und setzt dessen Limits. Mit
+`B_API_KEY_SOURCE=request` nimmt der Dienst diesen Schlüssel aus `Authorization`, sonst aus `X-API-Key`, und schickt ihn
+mit jedem LLM-Aufruf der Anfrage unverändert zurück, genau einen Header, nur an die b-api. Er hält ihn nur für die
+Anfrage (die Threads ihrer LLM-Schritte erben ihn), speichert und protokolliert ihn nicht; Fehlermeldungen schwärzen
+ihn. Bringt eine Anfrage keinen Schlüssel, gilt `B_API_KEY`; ohne ihn laufen ihre LLM-Schritte nach den Regeln, und die
+Antwort nennt den Grund. Die Modellprüfung beim Start und in `/health` fragt nur mit `B_API_KEY`, ohne ihn entfällt sie.
+Mit `API_KEYS` bleibt `X-API-Key` der Schlüssel des Dienstes, und nur `Authorization` bringt einen der b-api; hinter dem
+Proxy der b-api muss `API_KEYS` leer sein. Der Dienst darf dann nur über die b-api erreichbar sein: Er prüft den
+Schlüssel nicht selbst. Die Vorgabe `env` nimmt immer `B_API_KEY` und lässt die Header des Aufrufers unberührt.
+
+**Abgelehnte Schlüssel und Limits (D106).** Die b-api setzt die Limits je Schlüssel und schaltet das LLM ab, wenn eines
+erreicht ist. Lehnt sie den Schlüssel einer Anfrage ab (401, 402 oder 403, ein 429 auch nach allen Versuchen, eine für
+den Schlüssel nicht aktive Route), läuft der Rest dieser Anfrage ohne LLM nach den Regeln (`llm-free`); alle anderen
+Anfragen behalten es. Das Log nennt es einmal je Anfrage als WARNING, `b-api refused the key of this request: …` mit der
+Antwort der b-api, und die Ergebniszeile der Anfrage nennt den Grund. Lehnt die b-api den Schlüssel des Dienstes ab
+(`B_API_KEY`), setzt sie wie bisher alle Aufrufe zehn Minuten aus, mit dem Grund in `/health` unter
+`components.llm.reason`.
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
@@ -1100,11 +1121,12 @@ b-api nur gerade nicht erreichbar, laufen die Regeln, und das Frontmatter nennt 
 | `LLM_EXTRACTION_CANDIDATES` | `8` | Bei `extraction=llm` angebotene Absätze je Baustein: alle, die die Policy dem Baustein zuordnet (bis zu dessen `max_chunks` mal `BLOCK_BUDGET_FACTOR`, auch über diese Zahl hinaus), dann die nächstbesten nach Score bis zu dieser Zahl |
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Welche Bausteine `llm-fast` schreibt |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg: `drop` (verwerfen) oder `mark` (als Schlussfolgerung kennzeichnen) |
-| `B_API_KEY` | leer | Schlüssel der b-api. Gehört in die `.env`, nicht in die Vorlage |
+| `B_API_KEY` | leer | Der eigene Schlüssel des Dienstes bei der b-api. Gehört in die `.env`, nicht in die Vorlage; mit `B_API_KEY_SOURCE=request` nur für Anfragen ohne eigenen Schlüssel |
+| `B_API_KEY_SOURCE` | `env` | Wessen Schlüssel die LLM-Aufrufe tragen (D105): `env` immer `B_API_KEY`; `request` den Schlüssel, den die b-api vom Aufrufer weiterreicht (`Authorization`, sonst `X-API-Key`; mit `API_KEYS` nur `Authorization`), unverändert zurück an die b-api, und `B_API_KEY` für eine Anfrage ohne. Für den Betrieb hinter dem Proxy der b-api, mit leerem `API_KEYS` und `RATE_LIMIT=0` (siehe „Der Schlüssel der Anfrage“) |
 | `B_API_BASE_URL` | leer | Leer lassen: dann gilt die b-api, die zum Repository oben gehört (Staging → `https://b-api.staging.openeduhub.net`, Redaktion → `https://b-api.prod.openeduhub.net`). Ein eigener Wert wird befolgt; passt er nicht zum Repository, sagt es das Log beim Start |
 | `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api: `openai`, `academiccloud` oder `router`, das Routing der b-api über eine vorab angelegte Route (`B_API_ROUTE`, D97, Abschnitt „b-api-Routing“) |
 | `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`). Ohne Eintrag, auch bei leerem Wert, gilt `gpt-6-luna`. Gemessen an der Staging-b-api; ob eine andere b-api es führt, zeigt `/health` unter `components.llm`. Mit `B_API_PROVIDER=router` die Modellfamilie der Route: Ihre Parameter schickt der Dienst |
-| `B_API_ROUTE` | leer | Nur mit `B_API_PROVIDER=router`: die Route, die der Dienst im Feld `model` an den Router der b-api schickt (D97). Leer: eine Route, die wie `B_API_MODEL` heißt. Anlegen müssen sie Administratoren, global oder für den Schlüssel; der Dienst verwaltet keine. `openai/gpt-6-luna` erreicht das Modell ohne Route und ohne Ausweichen. Mit einem anderen Provider ohne Wirkung, der Start warnt |
+| `B_API_ROUTE` | leer | Nur mit `B_API_PROVIDER=router`: die Route, die der Dienst im Feld `model` an den Router der b-api schickt (D97). Leer: eine Route, die wie `B_API_MODEL` heißt. Anlegen müssen sie Administratoren, global oder für den Schlüssel; der Dienst verwaltet keine. Mit `B_API_KEY_SOURCE=request` nur eine globale Route: Eine Route für einen Schlüssel sehen die Schlüssel der Aufrufer nicht. `openai/gpt-6-luna` erreicht das Modell ohne Route und ohne Ausweichen. Mit einem anderen Provider ohne Wirkung, der Start warnt |
 | `B_API_RESPONSE_CACHE` | `false` | Ob die b-api eine wortgleiche Anfrage aus ihrem Speicher beantworten darf (D70). Sie tut es, ohne dass ein Schalter es abstellt: gleiche Antwort-ID, gleicher Text, 0,4 statt 3,8 s, auch nach einer unbrauchbaren Antwort und in jeder Wiederholung einer Messung. Aus: Jeder Aufruf trägt einen eigenen `safety_identifier` und wird neu beantwortet; das Prompt-Caching des Anbieters (gleicher Anfang des Prompts, `cached` im Audit) bleibt dabei erhalten, anders als mit `user` (gemessen am 01.10.2026). Am 09.10.2026 griff der Speicher bei zwei wortgleichen Anfragen nicht, mit und ohne Identifier (M83) |
 | `LLM_REASONING_EFFORT` | `low` | Nur Reasoning-Modelle: GPT-5-, GPT-6- und o-Serie. Denkaufwand jeder Frage, die `LLM_REASONING_EFFORTS` nicht nennt. Bekannt sind `none`, `minimal`, `low`, `medium`, `high` und `xhigh`; einen anderen Wert schickt der Dienst trotzdem, und der Start warnt: ein Tippfehler lässt vermutlich jeden Aufruf mit 400 scheitern |
 | `LLM_REASONING_EFFORTS` | `topic_articles=none,article_choice=none,curriculum_check=none,topic_wording=none,qa_pairs=none` | Fragen mit eigenem Denkaufwand, als Prompt=Aufwand mit Komma getrennt (D81). Die ausgelieferten antworteten ohne Denken gleich gut, in etwa der halben Zeit (M59). Der Start warnt bei einer Frage, die der Dienst nicht stellt, und bei einem unbekannten Aufwand |

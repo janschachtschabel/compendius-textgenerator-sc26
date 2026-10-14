@@ -2387,6 +2387,23 @@ API.
   `kompendium_llm_tokens_total`. Die Grenze je Anfrage bleibt, sie schützt vor einem einzelnen ausufernden Kompendium.
   Hinter der b-api kommen alle Anfragen von ihrer Adresse: Ein Limit je Client hielte dort für alle zusammen, darum die
   Vorgabe 0; die Einstellung bleibt für einen Dienst, der direkt erreichbar ist.
+- **D105 (2026-10-14)** Der Dienst kann für die LLM-Aufrufe einer Anfrage den Schlüssel ihres Aufrufers nehmen
+  (`B_API_KEY_SOURCE=request`, Vorgabe `env`; Jan: „es gibt eine neue optional auth über die b-api … das würde ich gern
+  optional zur aktuellen methode unterstützen“). Hinter dem Proxy der b-api reicht die b-api `Authorization` (und
+  `X-API-Key`) an den Dienst weiter; der Dienst schickt genau diesen Header unverändert zurück, nur an die b-api, und
+  hält ihn nur in der Anfrage. Ein Schalter statt Automatik: `X-API-Key` ist mit `API_KEYS` der Schlüssel des Dienstes,
+  und ein vorgeschalteter Proxy mit Basic-Auth hätte seinen `Authorization`-Header als LLM-Schlüssel weitergegeben. Ohne
+  Schlüssel der Anfrage gilt `B_API_KEY`, die Empfehlung des Technik-Teams („liegt in der Anfrage ein virtueller Key
+  vor, wird er genutzt, sonst der Key aus der Env“). Die Modellprüfung fragt nur mit `B_API_KEY`: ihr Ergebnis gilt für
+  alle Anfragen.
+- **D106 (2026-10-14)** Lehnt die b-api einen Schlüssel ab, fällt der Dienst auf die Regeln zurück und sagt es deutlich
+  (Jan: „die b-api wird limits setzen und danach das llm abschalten wenn es erreicht ist. wir sollten dies loggen und
+  dann auf llm free zurück fallen. der log solle es aber klar zeigen“). Welchen Status die b-api bei einem erreichten
+  Limit schickt, dokumentiert ihre Spezifikation nicht (geprüft am 14.10.2026); als Ablehnung gelten 401, 402 und 403,
+  beim Schlüssel einer Anfrage auch ein 429 nach allen Versuchen und eine Route, die für ihn nicht aktiv ist. Beim
+  Schlüssel einer Anfrage verliert nur sie das LLM, eine WARNING je Anfrage mit der Antwort der b-api; der
+  Schutzschalter bleibt den anderen Schlüsseln offen. Beim Schlüssel des Dienstes setzt der Dienst wie bisher alle
+  Aufrufe zehn Minuten aus, nun auch bei 402.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

@@ -45,6 +45,7 @@ def test_health_and_ready(client: TestClient) -> None:
         "route": None,  # only the router gets one (D97)
         "available": False,
         "host": "b-api.staging.openeduhub.net",  # derived from the repository, which is staging by default
+        "key": {"source": "env", "own_key": False},  # whose key the calls carry (D105), never the key itself
     }
     assert client.get("/ready").status_code == 200
 

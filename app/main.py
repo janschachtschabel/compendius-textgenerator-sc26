@@ -16,6 +16,7 @@ from starlette.exceptions import HTTPException
 
 from app import __version__, revision
 from app.api.active_archives import FollowActiveArchives
+from app.api.b_api_key import take_b_api_key
 from app.api.body_limit import BodySizeLimit
 from app.api.docs import docs_router
 from app.api.domain_errors import DOMAIN_ERRORS
@@ -190,10 +191,14 @@ def log_defaults(settings: Settings, service: CompendiumService, templates: Temp
 
 def _llm_target(settings: Settings) -> str:
     """What the start line names of the LLM: provider and model, with the router its route and the model family whose
-    parameters the service sends (D97)."""
+    parameters the service sends (D97), and whose key the calls carry (D105)."""
     if settings.b_api_route_name:
-        return f"router {settings.b_api_route_name} (parameters of {settings.b_api_model})"
-    return f"{settings.b_api_provider} {settings.b_api_model}"
+        target = f"router {settings.b_api_route_name} (parameters of {settings.b_api_model})"
+    else:
+        target = f"{settings.b_api_provider} {settings.b_api_model}"
+    if settings.b_api_key_source == "request":
+        target += ", the key of each request" + (", else B_API_KEY" if settings.b_api_key else "")
+    return target
 
 
 def log_start(app: FastAPI, settings: Settings, service: CompendiumService) -> None:
@@ -266,7 +271,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         ),
         lifespan=lifespan,
         default_response_class=JsonResponse,
-        dependencies=[Depends(name_the_route)],
+        dependencies=[Depends(name_the_route), Depends(take_b_api_key)],
         docs_url=None,  # /docs and /redoc with a policy of their own below (audit 2026-09-29, S12)
         redoc_url=None,
         openapi_url=OPENAPI_PATH if settings.api_docs_enabled else None,

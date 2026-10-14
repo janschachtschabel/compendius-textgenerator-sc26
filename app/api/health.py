@@ -58,7 +58,9 @@ def _components(request: Request) -> dict[str, Any]:
             "available": False,
         }
     )
-    llm_status = {**llm_status, "host": _host(settings.b_api_url)}
+    # whose key the calls carry (D105); a key itself never shows
+    key = {"source": settings.b_api_key_source, "own_key": bool(settings.b_api_key)}
+    llm_status = {**llm_status, "host": _host(settings.b_api_url), "key": key}
     curricula = getattr(request.app.state, "curricula", None)
     meta = curricula.store.meta() if curricula is not None else {}
     return {

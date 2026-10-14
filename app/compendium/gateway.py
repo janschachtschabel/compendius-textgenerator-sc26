@@ -65,8 +65,12 @@ class LlmGateway:
 
     @property
     def available(self) -> bool:
+        if self.client.key_problem() is not None:  # the request brought no key, or the b-api refused it (D105, D106)
+            return False
         if self.client.suspended:  # circuit breaker open: answer rule-based now instead of failing slot by slot
             return False
+        if not self.client.has_own_key:
+            return True  # without a key of its own the service checks no model: the calls of the request tell (D105)
         check = self.check
         if check is None or (not check.ok and self._clock() - self._checked_at >= RECHECK_S):
             check = self.check_model()
@@ -74,6 +78,10 @@ class LlmGateway:
 
     @property
     def unavailable_reason(self) -> str:
+        return self.client.key_problem() or self._standing_reason()
+
+    def _standing_reason(self) -> str:
+        """Why the LLM is not there for any request: the model check, the breaker, or a check still to come."""
         if self.check is not None and not self.check.ok:
             return self.check.message  # names the cause (model missing, status, connection error)
         if self.client.suspended:
@@ -104,7 +112,10 @@ class LlmGateway:
 
     def status(self) -> dict[str, Any]:
         """Component status for ``/health``: the last known check, never a call to the b-api."""
-        available = self.check is not None and self.check.ok and not self.client.suspended
+        if self.client.has_own_key:
+            available = self.check is not None and self.check.ok and not self.client.suspended
+        else:  # no model check without a key of its own (D105); a caller's key speaks only for its request
+            available = not self.client.suspended
         return {
             "enabled": True,
             "provider": self.client.provider,
@@ -113,7 +124,7 @@ class LlmGateway:
             "available": available,
             # why not: the check names what it found at the start; a stop of the breaker, a key refused or a route
             # gone, said nothing here (review of 2026-10-09, D98)
-            "reason": None if available else self.unavailable_reason,
+            "reason": None if available else self._standing_reason(),
             "check": asdict(self.check) if self.check is not None else None,
             "budget": {"per_request": self.budget.per_request},
         }

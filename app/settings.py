@@ -222,7 +222,17 @@ class Settings(BaseSettings):
         "up to this number",
     )
     llm_fast_sections: str = Field("sc26_1,sc26_11", description="Slots the LLM writes with generation=llm-fast")
-    b_api_key: str = Field("", description="b-api key, sent as X-API-KEY header")
+    b_api_key: str = Field(
+        "",
+        description="The service's own b-api key, sent as X-API-KEY header; with B_API_KEY_SOURCE=request only for a "
+        "request that brings none",
+    )
+    b_api_key_source: Literal["env", "request"] = Field(
+        "env",
+        description="Whose key the LLM calls carry (D105): env, the service's B_API_KEY; request, the key the b-api "
+        "passes on from its caller - Authorization, else X-API-Key (only Authorization while API_KEYS is set) - sent "
+        "back unchanged, and B_API_KEY for a request without one",
+    )
     b_api_base_url: str = Field(
         "", description="b-api host, no path; empty takes the one belonging to EDU_SHARING_BASE_URL"
     )
