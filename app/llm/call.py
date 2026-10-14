@@ -12,7 +12,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass, replace
 
 from app.llm.budget import RequestBudget, estimate_tokens
-from app.llm.client import BApiClient, ChatResult, LlmError, LlmHeldBackError, Message
+from app.llm.client import BApiClient, ChatResult, LlmError, LlmHeldBackError, LlmKeyRefusedError, Message
 from app.llm.deadline import Deadline
 
 log = logging.getLogger(__name__)
@@ -137,7 +137,8 @@ def budgeted_chat(
     except LlmError as exc:
         # A call the breaker held back or the request's time left in the queue never went out: the breaker logs its
         # change once, and the line of the request counts the fallback (logging review of 2026-10-08)
-        level = logging.DEBUG if isinstance(exc, LlmHeldBackError) else logging.WARNING
+        # A refused key of the request says so once itself (D106)
+        level = logging.DEBUG if isinstance(exc, LlmHeldBackError | LlmKeyRefusedError) else logging.WARNING
         log.log(level, "LLM call for %s failed: %s", what, exc)
         # An attempt that may have reached the model may have cost its prompt: a timeout or a 502/504 counted no
         # token before, however often it happened (audit 2026-09-27, KO-06); an answer that could not be used costs

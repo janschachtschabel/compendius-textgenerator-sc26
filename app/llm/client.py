@@ -20,10 +20,12 @@ import random
 import re
 import threading
 import time
+import urllib.request
 import uuid
 from collections.abc import Callable, Iterator, Mapping, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass, replace
+from http.cookiejar import Cookie, CookieJar, DefaultCookiePolicy
 from typing import Any
 
 import httpx
@@ -83,6 +85,13 @@ _NO_ROUTER = "die b-api kennt kein Routing; B_API_PROVIDER und B_API_BASE_URL pr
 Message = Mapping[str, str]
 
 
+class _NoCookies(DefaultCookiePolicy):
+    """Takes no cookie: the b-api's answers to one caller's key must not travel with another's calls."""
+
+    def set_ok(self, cookie: Cookie, request: urllib.request.Request) -> bool:
+        return False
+
+
 class LlmError(RuntimeError):
     """The b-api did not deliver a usable answer; ``status`` is the HTTP status when there was one, ``reached`` the
     number of attempts that may have reached the model and so may have cost the prompt's tokens, ``usage`` the prompt,
@@ -95,6 +104,11 @@ class LlmError(RuntimeError):
         self.status = status
         self.reached = reached
         self.usage = usage
+
+
+class LlmKeyRefusedError(LlmError):
+    """The b-api refused the key of the request being handled (D106); the line that says so is written once per
+    request, so the calls that meet it log no line of their own."""
 
 
 class LlmHeldBackError(LlmError):
@@ -185,6 +199,9 @@ class BApiClient:
         self._state = threading.Lock()
         self._open_until = 0.0  # the breaker opens until then; after a break it stays in the past until a probe
         self._suspension = SUSPENDED_MESSAGE  # why calls fail fast
+        # The breaker opened because the b-api refused the service's own key: it holds back only the calls that carry
+        # that key, not those with a key of their request, whose limits are their own (review of D105/D106)
+        self._own_key_refused = False
         self._probing = False
         self._failures = 0  # failed attempts in a row over all calls
         self.base_url = base_url.rstrip("/")
@@ -209,6 +226,8 @@ class BApiClient:
         self._client = httpx.Client(
             # the key goes with each call, the request's or the service's own, never both (D105)
             headers={"Accept": "application/json", "Accept-Encoding": ACCEPT_ENCODING},
+            # the client serves all requests with their callers' keys: no cookie of one call reaches the next
+            cookies=CookieJar(policy=_NoCookies()),
             timeout=timeout_s,
             transport=transport,
         )
@@ -218,8 +237,13 @@ class BApiClient:
 
     @property
     def suspended(self) -> bool:
-        """True while the circuit breaker is open: after a timeout, repeated failures or a refused key or model."""
-        return self._clock() < self._open_until
+        """True while the circuit breaker holds back the calls of the request being handled: after a timeout,
+        repeated failures, a refused model, or the service's own key refused - that one not for a request with a key
+        of its own."""
+        return self._clock() < self._open_until and not self._spares_request_key()
+
+    def _spares_request_key(self) -> bool:
+        return self._own_key_refused and request_key() is not None
 
     @property
     def suspension_reason(self) -> str:
@@ -506,6 +530,8 @@ class BApiClient:
     def _admit(self) -> bool:
         """Raise while the breaker is open; ``True`` when this call is the one probe after a break."""
         with self._state:
+            if self._spares_request_key():
+                return False
             if self._clock() < self._open_until or self._probing:
                 raise LlmHeldBackError(self._suspension)
             if not self._open_until:
@@ -544,7 +570,7 @@ class BApiClient:
                 why,
                 " ".join(self._redact(said)[:200].split()) or "-",
             )
-        return LlmError(why, status, reached=reached)
+        return LlmKeyRefusedError(why, status, reached=reached)
 
     def _refused(self, status: int) -> None:
         minutes = round(AUTH_SUSPEND_S / 60)
@@ -555,6 +581,8 @@ class BApiClient:
                 f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, die b-api lehnt den Schlüssel des Dienstes ab "
                 "(Limit erreicht, LLM abgeschaltet oder keine Berechtigung); bis dahin llm-free"
             )
+            self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}", own_key=True)
+            return
         else:
             reason = f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, Schlüssel, Berechtigung oder Modell prüfen"
         self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}")
@@ -599,7 +627,9 @@ class BApiClient:
         kept = {name: value for name, value in streamed.headers.items() if name.lower() in _KEPT_HEADERS}
         return httpx.Response(streamed.status_code, headers=kept, content=body, request=request)
 
-    def _trip(self, seconds: float = BREAKER_S, reason: str = SUSPENDED_MESSAGE, *, cause: str) -> None:
+    def _trip(
+        self, seconds: float = BREAKER_S, reason: str = SUSPENDED_MESSAGE, *, cause: str, own_key: bool = False
+    ) -> None:
         """Hold the calls back for ``seconds``. Each change is logged once, with what caused it: the breaker wrote no
         line, while every call that met it logged a WARNING (logging review of 2026-10-08). A stop never cuts a longer
         one short: calls in flight answer after it, and a minute of no deployment left overwrote the ten minutes of a
@@ -611,6 +641,7 @@ class BApiClient:
             if changed:
                 self._open_until = now + seconds
                 self._suspension = reason
+                self._own_key_refused = own_key
             self._probing = False
         if changed:
             log.warning("b-api calls held back for %.0f s: %s (%s)", seconds, reason, cause)
@@ -634,7 +665,7 @@ class BApiClient:
         """``text`` without the keys of this call: the service's own and the request's, with and without its scheme. An
         empty key is none: replaced, it put three stars between every two signs."""
         key = request_key()
-        secrets = [self._key, *((key.value, key.value.partition(" ")[2]) if key is not None else ())]
+        secrets = [self._key, *((key.value, key.value.split()[-1]) if key is not None else ())]
         for secret in sorted(filter(None, secrets), key=len, reverse=True):
             text = text.replace(secret, "***")
         return text

@@ -9,6 +9,8 @@ clear line in the log; the service's own key refused holds all calls back, as be
 from __future__ import annotations
 
 import logging
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +22,7 @@ from starlette.datastructures import Headers
 from app.compendium.gateway import LlmGateway, LlmOptions
 from app.concurrency import map_in_threads
 from app.llm.budget import TokenBudget
+from app.llm.call import budgeted_chat
 from app.llm.client import BApiClient, LlmError, LlmHeldBackError
 from app.llm.credentials import (
     MAX_KEY_CHARS,
@@ -32,7 +35,7 @@ from app.main import create_app
 from app.settings import Settings
 from app.wiring import build_llm
 from tests.conftest import make_settings
-from tests.test_llm_client import BASE, KEY, MESSAGES, FakeBApi, make_client
+from tests.test_llm_client import BASE, KEY, MESSAGES, FakeBApi, completion, make_client
 
 CALLER = "Bearer caller-key-0123456789abcdef"
 
@@ -389,3 +392,108 @@ def test_the_start_names_what_does_not_fit_a_key_of_the_request(
     with caplog.at_level(logging.WARNING):
         build_llm(settings)
     assert warning in caplog.text
+
+
+# --- Review of D105/D106 ------------------------------------------------------------------------------------------
+
+
+def test_the_services_own_key_refused_leaves_the_callers_their_llm() -> None:
+    """The fallback key at its limit must not cut off the callers that bring keys of their own: the b-api limits per
+    key (review of 2026-10-14)."""
+    client, _ = make_client(FakeBApi(statuses=[403]))
+    gateway = gateway_of(client)
+    gateway.check_model()
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+    assert not gateway.available and "Schlüssel des Dienstes" in gateway.unavailable_reason
+
+    use_request_key(RequestKey("Authorization", CALLER))
+
+    assert gateway.available and not client.suspended
+    assert client.chat(MESSAGES, max_output_tokens=10).text == "OK"
+
+
+def test_an_outage_holds_back_the_callers_keys_as_well() -> None:
+    client, _ = make_client(FakeBApi(statuses=[503, 503, 503]))
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+    use_request_key(RequestKey("Authorization", CALLER))
+    assert client.suspended
+
+
+def test_a_refusal_of_the_request_key_is_one_warning_not_one_per_call(caplog: pytest.LogCaptureFixture) -> None:
+    client, _ = make_client(FakeBApi(statuses=[403]))
+    use_request_key(RequestKey("Authorization", CALLER))
+    budget = TokenBudget(per_request=20_000).open_request()
+
+    with caplog.at_level(logging.WARNING):
+        budgeted_chat(client, MESSAGES, max_output_tokens=10, budget=budget, what="sc26_1")
+        budgeted_chat(client, MESSAGES, max_output_tokens=10, budget=budget, what="sc26_2")
+
+    assert len([r for r in caplog.records if r.levelno >= logging.WARNING]) == 1
+
+
+def test_no_cookie_of_one_call_goes_with_the_next() -> None:
+    """The client is shared by all requests, which now carry different callers' keys."""
+    seen: list[httpx.Request] = []
+
+    def b_api(request: httpx.Request) -> httpx.Response:
+        seen.append(request)
+        return httpx.Response(200, json=completion("OK"), headers={"Set-Cookie": "session=caller-a; Path=/"})
+
+    client = BApiClient(BASE, KEY, provider="openai", model="gpt-5.6-luna", transport=httpx.MockTransport(b_api))
+    client.chat(MESSAGES, max_output_tokens=10)
+    client.chat(MESSAGES, max_output_tokens=10)
+
+    assert "cookie" not in seen[1].headers
+
+
+@pytest.mark.parametrize("value", ["a", "Bearer short", "x" * 15])
+def test_a_value_too_short_for_a_key_is_refused(value: str) -> None:
+    with pytest.raises(UnusableKeyError):
+        offered_key(headers(x_api_key=value))
+
+
+def test_the_token_is_blanked_whatever_the_spaces_before_it() -> None:
+    bare = CALLER.partition(" ")[2]
+    fake = FakeBApi(transport_failures=9, transport_error=httpx.LocalProtocolError(f"bad {bare}"))
+    client, _ = make_client(fake)
+    use_request_key(RequestKey("Authorization", "Bearer  " + bare))
+
+    with pytest.raises(LlmError) as failed:
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    assert bare not in str(failed.value)
+
+
+def test_parallel_requests_carry_each_its_own_key(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Isolation between requests is the point of D105: every call of a request carries that request's key."""
+    calls: list[tuple[str, str]] = []
+    lock = threading.Lock()
+
+    def b_api(request: httpx.Request) -> httpx.Response:
+        with lock:
+            calls.append((request.headers["authorization"], request.content.decode("utf-8")))
+        return httpx.Response(200, json=completion("OK"))
+
+    def offline_client(*args: Any, **kwargs: Any) -> BApiClient:
+        return BApiClient(*args, transport=httpx.MockTransport(b_api), **kwargs)
+
+    monkeypatch.setattr("app.wiring.BApiClient", offline_client)
+    keys = {"Optik": "Bearer key-for-optik-0123456789", "Programmiersprache": "Bearer key-for-programs-0123456789"}
+    with TestClient(create_app(request_mode(sample_zims, tmp_path))) as client:
+
+        def ask(topic: str) -> int:
+            body = {"topic": topic, "preset": "best-quality-generated", "parts": ["world"]}
+            return client.post("/api/v2/compendium", json=body, headers={"Authorization": keys[topic]}).status_code
+
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            assert list(pool.map(ask, list(keys) * 2)) == [200] * 4
+
+    assert calls
+    for key, body in calls:
+        topics = [topic for topic in keys if topic in body]
+        assert topics in ([], [next(t for t, k in keys.items() if k == key)]), (key, topics)
+    assert {key for key, _ in calls} == set(keys.values())

@@ -25,6 +25,8 @@ AUTHORIZATION = "Authorization"
 X_API_KEY = "X-API-KEY"  # the b-api's name; HTTP headers ignore case, so the service's own X-API-Key is the same one
 # A b-api key had 36 characters, with "Bearer " 43; anything far longer is no key, and a header is caller input
 MAX_KEY_CHARS = 1024
+# Shorter is no key: a caller's "a" would have blanked every a of the b-api's answer in the log (review of D105)
+MIN_TOKEN_CHARS = 16
 # Visible ASCII, spaces only inside: what an HTTP header carries unchanged. The b-api takes "Bearer <key>" and refuses
 # "bearer <key>" (2026-10-13); the service passes the value on as it came and leaves that judgement to the b-api
 _SENDABLE = re.compile("^[!-~](?:[ -~]*[!-~])?$")
@@ -67,7 +69,7 @@ def offered_key(headers: Mapping[str, str], *, own_x_api_key: bool = False) -> R
         value = headers.get(name.lower(), "")
         if not value:
             continue
-        if len(value) > MAX_KEY_CHARS or not _SENDABLE.match(value):
+        if len(value) > MAX_KEY_CHARS or not _SENDABLE.match(value) or len(value.split()[-1]) < MIN_TOKEN_CHARS:
             raise UnusableKeyError(f"Der Header {name} trägt keinen Schlüssel, den die b-api annehmen kann.")
         return RequestKey(name, value)
     return None

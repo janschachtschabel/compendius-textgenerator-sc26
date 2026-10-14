@@ -107,6 +107,7 @@ ignore_missing_imports = true
 # These tests assert a property, change the state behind it and assert it again. mypy keeps the narrowing of the
 # first assertion across the change and calls the second one unreachable
 module = [
+    "tests.test_b_api_request_key",
     "tests.test_lehrplan_store",
     "tests.test_llm_budget",
     "tests.test_llm_resilience",

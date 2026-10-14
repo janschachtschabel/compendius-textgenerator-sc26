@@ -16,6 +16,7 @@ from typing import Any
 
 from app.llm.budget import RequestBudget, TokenBudget
 from app.llm.client import BApiClient, ModelCheck
+from app.llm.credentials import request_key
 from app.synthesis.llm import LlmSynthesizer
 from app.synthesis.qa import LlmQaWriter
 from app.synthesis.selection import LlmSelector
@@ -69,8 +70,10 @@ class LlmGateway:
             return False
         if self.client.suspended:  # circuit breaker open: answer rule-based now instead of failing slot by slot
             return False
-        if not self.client.has_own_key:
-            return True  # without a key of its own the service checks no model: the calls of the request tell (D105)
+        if not self.client.has_own_key or request_key() is not None:
+            # without a key of its own the service checks no model, and with the key of a request a check made with
+            # the service's key does not speak for it: the calls of the request tell (D105)
+            return True
         check = self.check
         if check is None or (not check.ok and self._clock() - self._checked_at >= RECHECK_S):
             check = self.check_model()

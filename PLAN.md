@@ -2400,10 +2400,10 @@ API.
   (Jan: „die b-api wird limits setzen und danach das llm abschalten wenn es erreicht ist. wir sollten dies loggen und
   dann auf llm free zurück fallen. der log solle es aber klar zeigen“). Welchen Status die b-api bei einem erreichten
   Limit schickt, dokumentiert ihre Spezifikation nicht (geprüft am 14.10.2026); als Ablehnung gelten 401, 402 und 403,
-  beim Schlüssel einer Anfrage auch ein 429 nach allen Versuchen und eine Route, die für ihn nicht aktiv ist. Beim
+  beim Schlüssel einer Anfrage auch ein 429 nach den möglichen Versuchen und eine Route, die für ihn nicht aktiv ist. Beim
   Schlüssel einer Anfrage verliert nur sie das LLM, eine WARNING je Anfrage mit der Antwort der b-api; der
-  Schutzschalter bleibt den anderen Schlüsseln offen. Beim Schlüssel des Dienstes setzt der Dienst wie bisher alle
-  Aufrufe zehn Minuten aus, nun auch bei 402.
+  Schutzschalter bleibt den anderen Schlüsseln offen. Beim Schlüssel des Dienstes setzt der Dienst wie bisher die
+  Aufrufe mit ihm zehn Minuten aus, nun auch bei 402; Anfragen mit eigenem Schlüssel behalten das LLM (Review).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
