@@ -20,6 +20,7 @@ Image.
 | Seite | für wen | Inhalt |
 |---|---|---|
 | diese Seite | Betrieb | Aufbau, Ressourcen mit Lastmessung, Netz, CI im GitLab nach dem Muster der Plattform, Betrieb in Kürze |
+| [Checkliste des Technik-Teams](anforderungen.md) | Team 6 | die Übergabe-Checkliste Punkt für Punkt: OpenAPI, Erreichbarkeit, Header, Antwortzeiten, b-api, Monitoring, Zustand, Ressourcen, Helm, Kosten, offene Punkte; dazu [Beispiel-Values](helm-values.example.yaml) |
 | [Aufrufe](aufrufe.md) | Entwicklung der aufrufenden Systeme | alter und neuer Aufruf, Profile, die drei Teile, curl-Beispiele, Ausgabe mit jq, weitere Funktionen |
 | [Konfiguration](konfiguration.md) | Betrieb | alle Umgebungsvariablen mit Vorgabe und Empfehlung für den Betrieb |
 

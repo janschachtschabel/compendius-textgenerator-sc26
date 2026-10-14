@@ -1,0 +1,81 @@
+# Beispiel-Values für ein Helm-Chart des Kompendium-Dienstes (Vorlage, kein fertiges Chart).
+# Jeder Schlüssel unter env wird zur Umgebungsvariable gleichen Namens; Vorgaben und Bedeutung: konfiguration.md.
+# Referenz für Container, Volumes und Härtung: docker-compose.yml. Betrieb hinter dem Proxy der b-api (Variante A).
+
+image:
+  repository: ghcr.io/janschachtschabel/compendius-textgenerator-sc26
+  tag: "2.20.0"            # in Produktion immer ein Release-Tag, nie latest
+
+api:
+  replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 6)
+  port: 8000
+  resources:               # Baseline 29.09.2026 mit zwei Workern (README.md, Ressourcen)
+    requests: { cpu: "2", memory: 4Gi }
+    limits: { cpu: "4", memory: 6Gi }
+  probes:                  # am Pod, nicht über den Ingress (betrieb.md, Erreichbarkeit)
+    liveness: { path: /health, periodSeconds: 30, timeoutSeconds: 5 }
+    readiness: { path: /ready, periodSeconds: 30, timeoutSeconds: 5 }
+    startup: { path: /health, failureThreshold: 20, periodSeconds: 30 }   # Start gemessen 22 bis 31 s
+  terminationGracePeriodSeconds: 630   # laufende Anfragen enden, bevor der Pod geht (API_STOP_GRACE_PERIOD)
+  env:
+    WEB_CONCURRENCY: "2"
+    LOG_FORMAT: json
+    LOG_LEVEL: INFO
+    LLM_ENABLED: "true"
+    B_API_KEY_SOURCE: request    # Schlüssel des Aufrufers, den die b-api weiterreicht (D105)
+    B_API_PROVIDER: openai       # ohne Routing; router erst mit einer globalen Route der b-api
+    B_API_MODEL: gpt-6-luna
+    RATE_LIMIT: "0"              # die b-api begrenzt je Schlüssel (D104)
+    UI_ENABLED: "false"
+    API_DOCS_ENABLED: "true"     # /openapi.json für die b-api und den Produktkatalog
+    EDU_SHARING_BASE_URL: https://redaktion.openeduhub.net/edu-sharing/rest
+    ZIM_PROFILE: standard
+  secretEnv:                     # aus einem Secret, nie in den Values
+    B_API_KEY: ""                # optional bei B_API_KEY_SOURCE=request: nur für Anfragen ohne eigenen Schlüssel
+    API_KEYS: ""                 # hinter dem Proxy der b-api leer lassen
+    ADMIN_TOKEN: ""              # mindestens 16 Zeichen; leer schaltet die Admin-Pfade ab
+    METRICS_TOKEN: ""            # für /metrics
+    EDU_SHARING_USER: ""
+    EDU_SHARING_PASSWORD: ""
+
+# Die Sidecars nutzen dasselbe Image mit eigenem Befehl, ohne Secrets; jeder läuft genau einmal.
+sidecars:
+  zimUpdater:
+    enabled: true
+    command: [compendium, zim, sync, --loop]
+    env: { ZIM_BOOTSTRAP_DOWNLOAD: "true" }
+    volumes: [zim]
+  lehrplanUpdater:
+    enabled: true
+    command: [compendium, lehrplan, harvest, --loop]
+    volumes: [state]
+  wikidataUpdater:
+    enabled: true
+    command: [compendium, wikidata, sync, --loop]
+    volumes: [zim, state]        # zim nur lesend
+  gndUpdater:
+    enabled: true
+    command: [compendium, gnd, sync, --loop]
+    volumes: [state]
+
+volumes:
+  zim:
+    size: 60Gi             # Archive 20,5 GB, beim Wechsel der Wikipedia bis rund 38 GB
+    accessMode: ReadWriteMany
+    mountPath: /data/zim
+  state:
+    size: 5Gi              # 0,45 GB, dazu rund 1,5 GB frei für den Neubau des Wikidata-Index
+    accessMode: ReadWriteMany
+    mountPath: /data/state
+
+ingress:
+  # nur diese nach außen; die Admin-Pfade unter /api/v2/ sperren, Proben und /metrics bleiben am Pod
+  # (betrieb.md, Erreichbarkeit)
+  paths:
+    - /api/v2/
+    - /openapi.json
+  timeoutSeconds: 330      # REQUEST_TIMEOUT_S 300 plus Puffer
+
+monitoring:
+  prometheusRule:
+    enabled: true          # monitoring/alerts.yml: groups unter spec

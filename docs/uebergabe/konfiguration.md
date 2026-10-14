@@ -37,9 +37,9 @@ API_BIND=127.0.0.1:8000
 FORWARDED_ALLOW_IPS=<Gateway des Compose-Netzes>
 ```
 
-Geheim sind `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN` und, wenn gesetzt, `EDU_SHARING_PASSWORD`: nur in
-der `.env` auf dem Server, nie im Repository. Die Sidecars bekommen keines davon (`docker-compose.yml`, `x-no-secrets`).
-Wechselt der Dienst von der Staging auf die Produktion von edu-sharing, genügt
+Geheim sind `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN` und, wenn gesetzt, `EDU_SHARING_USER` und
+`EDU_SHARING_PASSWORD`: nur in der `.env` auf dem Server, nie im Repository. Die Sidecars bekommen keines davon
+(`docker-compose.yml`, `x-no-secrets`). Wechselt der Dienst von der Staging auf die Produktion von edu-sharing, genügt
 `EDU_SHARING_BASE_URL=https://redaktion.openeduhub.net/edu-sharing/rest`; die b-api folgt von selbst
 (`b-api.prod.openeduhub.net`), solange `B_API_BASE_URL` leer ist.
 
