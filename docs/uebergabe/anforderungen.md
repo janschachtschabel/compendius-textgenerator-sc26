@@ -30,11 +30,11 @@ Gebliebenes steht am Ende.
   hat einen Port (8000); Ingress und Proxy der b-api geben `/openapi.json`, `/docs`, `/redoc` und `/api/v2/` ohne die
   internen Pfade frei. Proben und Metriken laufen am Pod. Einen zweiten Port gibt es nicht; `METRICS_TOKEN` und
   `ADMIN_TOKEN` gehören gesetzt, damit ihre Pfade auch geschützt sind, wenn ein Proxy sie durchreicht.
-- **Header vom Aufrufer:** hinter der b-api `Authorization` (ihr Schlüssel des Aufrufers, D105), sonst `X-API-Key`
-  (`API_KEYS`); optional `X-Request-ID`, `x-client-trace-id` und die B3-Header (D108); `X-Admin-Token` nur für die
-  Admin-Pfade.
-- **Header zurück:** `X-Request-ID` an jeder Antwort; `Retry-After` bei 429 und 503, `ETag` beim Lesen eines Templates,
-  `WWW-Authenticate` bei 401.
+- **Header vom Aufrufer:** hinter der b-api `Authorization` oder `X-API-Key`, der Schlüssel, den die b-api vom Aufrufer
+  weiterreicht (D105); mit gesetztem `API_KEYS` trägt `X-API-Key` dessen Schlüssel; optional `X-Request-ID`,
+  `x-client-trace-id` und die B3-Header (D108); `X-Admin-Token` nur für die Admin-Pfade.
+- **Header zurück:** `X-Request-ID` an jeder Antwort; `Retry-After` bei 429 (nur mit `RATE_LIMIT` über 0), `ETag` beim
+  Lesen eines Templates, `WWW-Authenticate` bei 401.
 - **Content-Types:** Anfragen und Antworten `application/json`. Anderes liefern nur `/metrics` (Text für Prometheus),
   `/docs` und `/redoc` (HTML) und die Prüfansicht `/ui/` (HTML, JavaScript, CSS; im Betrieb aus).
 - **Antwortzeiten:** Ein Kompendium (Teil 1 und 2) brauchte im Median 3 s (`llm-free`), 4 s (`balanced`), 15 s
@@ -71,7 +71,8 @@ Gebliebenes steht am Ende.
   je Route, Rückfälle, Stand von Archiven, Indexen, Lehrplan-Cache und Sidecars, freier Platz auf den Volumes
   ([README](../../README.md), „Metriken“).
 - **Alarmregeln:** 25 Regeln in `monitoring/alerts.yml`, mit `promtool`-Tests in `monitoring/alerts_test.yml`; für Helm
-  als `PrometheusRule` übernehmen (der Inhalt von `groups` gehört unter `spec`).
+  als `PrometheusRule` übernehmen (der Inhalt von `groups` gehört unter `spec`). Die Regeln fragen `job="kompendium"`:
+  Ein ServiceMonitor braucht diesen Job-Namen (`jobLabel` oder Relabeling), sonst meldet `KompendiumDown` nie.
 - **Logs:** eine Zeile je Ereignis nach stderr (in Kubernetes wie stdout gesammelt), `LOG_FORMAT=json` für einen
   Log-Sammler, `LOG_LEVEL` für die Stufe. Jede Zeile nennt die Anfrage (`request_id`), JSON-Zeilen auch die Spur
   (`trace_id` aus `x-client-trace-id`, sonst der B3-Trace-ID).
@@ -82,10 +83,11 @@ Gebliebenes steht am Ende.
 
 - **Zustand:** Eine Anfrage hält keinen Zustand über sich hinaus; es gibt keine Sitzungen. Jeder Worker hat eigene
   Caches im Speicher (gelesene Artikel), den Schutzschalter der b-api und, wenn gesetzt, sein Rate-Limit.
-- **Daten:** Zwei Volumes ([Aufbau](README.md#aufbau)). `zim` (Archive, mindestens 50 GB) schreibt nur der
-  `zim-updater`, `state` (Lehrpläne, Indexe, Caches, eigene Templates) die anderen drei Sidecars; die API liest die
-  SQLite-Dateien nur. Selbst schreibt sie den Sammlungs-Cache `wlo_cache.db` (ein Cache, verzichtbar) und eigene
-  Templates über die Admin-Pfade.
+- **Daten:** Zwei Volumes ([Aufbau](README.md#aufbau)). `zim` (Archive, mindestens 50 GB) schreibt der `zim-updater`,
+  `state` (Lehrpläne, Indexe, Caches, eigene Templates) die anderen drei Sidecars; die API liest die SQLite-Dateien nur.
+  Selbst schreibt sie den Sammlungs-Cache `wlo_cache.db` (ein Cache, verzichtbar) und über die Admin-Pfade eigene
+  Templates, Auftragsdateien für Sync und Harvest und das Löschen eines Archivs: `zim` und `state` müssen für die API
+  darum schreibbar sein, wenn die Admin-Pfade genutzt werden.
 - **Mehrere Pods:** möglich, wenn `zim` und `state` als gemeinsames Volume (ReadWriteMany) bei allen Pods liegen und
   jeder Sidecar genau einmal läuft. `wlo_cache.db` schreiben dann mehrere Pods über das Netz; der Cache verträgt einen
   Ausfall, gemessen ist das nicht. Eigene Templates schreibt man über einen Pod.
@@ -106,7 +108,8 @@ Gebliebenes steht am Ende.
 ## 8. Konfiguration und Helm
 
 - **Variablen mit Vorgaben:** [Konfiguration](konfiguration.md), alle mit Vorgabe und Empfehlung; `.env.example` als
-  Vorlage. `docker-compose.yml` ist die Referenz für fünf Container, zwei Volumes, Grenzen und Härtung.
+  Vorlage. `docker-compose.yml` und das `Dockerfile` sind die Referenz für fünf Container, zwei Volumes, Grenzen und
+  Härtung.
 - **Beispiel-Values:** [helm-values.example.yaml](helm-values.example.yaml), auf die Variablen abgebildet.
 - **Secrets:** `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN`, `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD`. Die
   Sidecars bekommen keines davon.
@@ -114,19 +117,21 @@ Gebliebenes steht am Ende.
 ## 9. Kosten, Ansprechperson, Wartung
 
 - **Kosten:** Tokens je Kompendium (Teil 1 und 2, M91): `llm-free` 0, `balanced` rund 300, `best-quality` rund 52.000,
-  `best-quality-generated` rund 89.000, `best-coverage-generated` rund 112.000; mit `gpt-6-luna` unter einem Cent je
-  Text. Die Quellen (Kiwix, Wikimedia, DNB, MEM) kosten nichts.
+  `best-quality-generated` rund 89.000, `best-coverage-generated` rund 112.000; nach Jans Rechnung unter einem Cent je
+  Text (07-entscheidungsvorlage, M91). Die Quellen (Kiwix, Wikimedia, DNB, MEM) kosten nichts.
 - **Ansprechperson T4:** Jan Schachtschabel.
 - **Wartung:** Dependabot und ein wöchentlicher Abhängigkeits-Audit auf GitHub; im GitLab eine geplante Pipeline. Wer
   Updates anstößt und ob der Dienst dauerhaft läuft, ist zu vereinbaren.
 
 ## Offene Punkte
 
+- **Release:** D104 bis D108 stehen auf `main`, aber in keinem Image; das erste Release mit ihnen (2.21.0) steht aus.
+  Mit 2.20.0 wirkt `B_API_KEY_SOURCE` nicht, und `RATE_LIMIT` hat dort die Vorgabe 60.
 - **Status der b-api bei erreichtem Limit:** nicht dokumentiert. Der Dienst nimmt 401, 402 und 403 als Ablehnung, beim
-  Schlüssel einer Anfrage auch ein 429 nach allen Versuchen; das sollte das Team der b-api bestätigen.
+  Schlüssel einer Anfrage auch ein 429 nach den möglichen Versuchen; das sollte das Team der b-api bestätigen.
 - **Proxy-Eintrag `compendious-text-generator`:** zeigt womöglich noch auf eine alte Version des Dienstes; vor dem Test
   des durchgereichten Schlüssels `baseUrl` und `forwardApiKey` prüfen lassen.
-- **Lastmessung wiederholen:** Die Baseline stammt aus 2.4 (29.09.2026); seitdem kamen das zehnfache Bausteinbudget
+- **Lastmessung wiederholen:** Die Baseline stammt aus 2.5.0 (29.09.2026); seitdem kamen das zehnfache Bausteinbudget
   (D102) und die Wikipedia-Ausgabe 2026-10 dazu. `lasttest.py` liegt bei.
 - **Modelle im Image:** rund 380 MB der 1,1 GB. Sie ließen sich auf ein Volume legen, das ein Init-Container füllt, wenn
   der Betrieb das verlangt.

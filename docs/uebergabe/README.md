@@ -217,8 +217,9 @@ Für das neue GitLab zu klären:
 - **Prüfen:** `GET /health` nennt Version, Commit, Archive, Indexe und LLM.
 - **Update:** neues Tag in `IMAGE`, dann `docker compose pull && docker compose up -d`. Laufende Anfragen bekommen bis
   zu 630 s (`API_STOP_GRACE_PERIOD`), genug auch für academiccloud. Was sich je Release am Betrieb ändert, steht in [betrieb.md](../betrieb.md).
-- **Sicherheit:** `API_KEYS` setzen, sonst beantwortet der Dienst jeden, und jeder verbraucht LLM-Tokens bis zu den
-  Limits, die die b-api für `B_API_KEY` setzt; dazu `METRICS_TOKEN` und `ADMIN_TOKEN`, alle mit
-  `openssl rand -hex 32` erzeugt.
+- **Sicherheit:** Direkt erreichbar `API_KEYS` setzen, sonst beantwortet der Dienst jeden, und jeder verbraucht
+  LLM-Tokens bis zu den Limits, die die b-api für `B_API_KEY` setzt. Hinter dem Proxy der b-api bleibt `API_KEYS`
+  leer, und nur die b-api darf den Dienst erreichen ([Checkliste](anforderungen.md), D105). In beiden Fällen
+  `METRICS_TOKEN` und `ADMIN_TOKEN` setzen, mit `openssl rand -hex 32` erzeugt.
 - **Überwachung:** `GET /metrics` für Prometheus; `monitoring/alerts.yml` meldet unter anderem ausgefallene
   Sidecars, volles Volume, fehlende Indexe und LLM-Aufrufe ohne Antwort ([betrieb.md](../betrieb.md)).

@@ -5,7 +5,7 @@
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu vier, die Compose selbst auswertet
 (`IMAGE`, `API_BIND`, `API_MEMORY`, `API_STOP_GRACE_PERIOD`). Eine fehlende Variable nimmt ihre Vorgabe; die Vorlage
-[`.env.example`](../../.env.example) listet alle 79 des Dienstes mit ihrer Vorgabe. Die ausführliche Beschreibung jeder
+[`.env.example`](../../.env.example) listet alle 80 des Dienstes mit ihrer Vorgabe. Die ausführliche Beschreibung jeder
 Variable steht im [README](../../README.md), Abschnitt „Konfiguration“.
 
 ## Für den Betrieb
@@ -48,7 +48,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 ## Alle Variablen
 
-83 Variablen: 79 des Dienstes und 4 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
+84 Variablen: 80 des Dienstes und 4 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
 `docker-compose.yml`; „Betrieb“ nennt die Empfehlung, wo sie davon abweicht.
 
 ### Zugang und Sicherheit
@@ -128,7 +128,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 |---|---|---|---|
 | `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | wie Vorgabe | Repository; heute die Staging, für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest`; leer schaltet Sammlungen ab |
 | `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | wie Vorgabe | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf |
-| `EDU_SHARING_USER` | leer | wie Vorgabe | Basic-Auth; leer liest anonym nur Öffentliches. Nur zusammen mit `API_KEYS` setzen |
+| `EDU_SHARING_USER` | leer | wie Vorgabe | Basic-Auth; leer liest anonym nur Öffentliches. Nur zusammen mit `API_KEYS` setzen oder, hinter der b-api, wenn der Dienst allein über sie erreichbar ist |
 | `EDU_SHARING_PASSWORD` | leer | wie Vorgabe | Passwort dazu, geheim |
 | `EDU_SHARING_TIMEOUT_S` | `30` | wie Vorgabe | Frist je Anfrage an das Repository |
 | `COLLECTION_CACHE_TTL_S` | `3600` | wie Vorgabe | wie lange eine gelesene Sammlung gilt, in Sekunden |
