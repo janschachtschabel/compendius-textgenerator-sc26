@@ -32,6 +32,7 @@ from app.api.v2.entities import router as entities_router
 from app.api.v2.knowledge import router as knowledge_router
 from app.api.v2.lehrplan import admin as lehrplan_admin_router
 from app.api.v2.lehrplan import router as lehrplan_router
+from app.api.v2.lehrplan import status as lehrplan_status_router
 from app.api.v2.matching import router as matching_router
 from app.api.v2.nodes import router as nodes_router
 from app.api.v2.qa import router as qa_router
@@ -57,6 +58,21 @@ from app.wiring import build_registry, build_service, load_subscriptions, resolv
 log = logging.getLogger(__name__)
 
 OPENAPI_PATH = "/openapi.json"
+# What a catalogue shows of the service (Team 6, 2026-10-14: "Anzeigename und ein kurzer Beschreibungstext für
+# Endnutzende"); the description below is for developers
+DISPLAY_NAME = "Kompendiale Texte"
+SUMMARY = (
+    "Erstellt zu einem Thema einen kompendialen Text für Lehrende und Lernende: Weltwissen aus Wikipedia und Klexikon, "
+    "Bezüge zu den Lehrplänen der Länder und die Materialien einer WLO-Sammlung, jede Aussage mit ihrer Quelle."
+)
+# The groups of /docs in this order. Internal endpoints - probes, metrics, status, admin - stay out of the document
+# (Team 6 and Jan, 2026-10-14); docs/betrieb.md lists them under "Erreichbarkeit"
+OPENAPI_TAGS = [
+    {"name": "v2", "description": "Kompendium, Wissenstexte, Entitäten, Knoten, Frage-Antwort-Paare und Templates"},
+    {"name": "collections", "description": "Sammlungen eines edu-sharing-Repositorys im Überblick (Teil 3)"},
+    {"name": "lehrplan", "description": "Lehrplanelemente der Länder aus dem lokalen Cache (Teil 2)"},
+    {"name": "matching", "description": "Verfahren, die Absätze den Bausteinen eines Templates zuordnen"},
+]
 
 
 def close_clients(app: FastAPI) -> None:
@@ -234,8 +250,12 @@ def log_start(app: FastAPI, settings: Settings, service: CompendiumService) -> N
     )
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
-    """Build the application; nothing happens at import time."""
+def create_app(settings: Settings | None = None, *, document_internal: bool = False) -> FastAPI:
+    """Build the application; nothing happens at import time.
+
+    The OpenAPI document describes the public endpoints only; the internal ones - probes, status, admin - answer
+    all the same and are listed in docs/betrieb.md (D107). ``document_internal`` puts them into the document as well,
+    for the tests of their documentation."""
     settings = settings or get_settings()
     configure_logging(settings.log_level, settings.log_format)
     warn_about_removed_settings()
@@ -253,7 +273,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     log_defaults(settings, service, templates)
 
     app = FastAPI(
-        title="Kompendium-API v2",
+        title=DISPLAY_NAME,
+        summary=SUMMARY,
         version=__version__,
         description=(
             "Kompendiale Texte aus Kiwix-ZIM-Wissen, Lehrplanbezügen und Sammlungsmetadaten. Fünf Profile (preset) "
@@ -267,8 +288,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "Jeder Endpunkt sagt, was die Profile dort bewirken, und seine Beispiele reichen von der kürzesten Anfrage "
             "bis zu einer mit allen Parametern. Was ein LLM beigetragen hat, sagt die Antwort. Fehler kommen als "
             "Status, nie als Text mit HTTP 200. Mit UI_ENABLED zeigt der Server unter /ui/ eine Prüfansicht, auf der "
-            "Menschen die Antworten ohne Kenntnis der API prüfen."
+            "Menschen die Antworten ohne Kenntnis der API prüfen. Interne Endpunkte des Betriebs (Proben, Metriken, "
+            "Stand, Admin) stehen nicht in diesem Dokument."
         ),
+        openapi_tags=OPENAPI_TAGS,
         lifespan=lifespan,
         default_response_class=JsonResponse,
         dependencies=[Depends(name_the_route), Depends(take_b_api_key)],
@@ -294,18 +317,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.entities = describe_entities(settings)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
-    app.include_router(health_router)
+    app.include_router(health_router, include_in_schema=document_internal)
     app.include_router(v2_router)
-    app.include_router(v2_admin_router)
+    app.include_router(v2_admin_router, include_in_schema=document_internal)
     app.include_router(knowledge_router)
     app.include_router(entities_router)
     app.include_router(nodes_router)
     app.include_router(qa_router)
     app.include_router(matching_router)
-    app.include_router(zim_router)
-    app.include_router(zim_admin_router)
+    app.include_router(zim_router, include_in_schema=document_internal)
+    app.include_router(zim_admin_router, include_in_schema=document_internal)
     app.include_router(lehrplan_router)
-    app.include_router(lehrplan_admin_router)
+    app.include_router(lehrplan_status_router, include_in_schema=document_internal)
+    app.include_router(lehrplan_admin_router, include_in_schema=document_internal)
     app.include_router(collections_router)
     if settings.metrics_enabled:
         app.include_router(metrics_router)

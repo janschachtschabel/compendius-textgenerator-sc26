@@ -2404,6 +2404,15 @@ API.
   Schlüssel einer Anfrage verliert nur sie das LLM, eine WARNING je Anfrage mit der Antwort der b-api; der
   Schutzschalter bleibt den anderen Schlüsseln offen. Beim Schlüssel des Dienstes setzt der Dienst wie bisher die
   Aufrufe mit ihm zehn Minuten aus, nun auch bei 402; Anfragen mit eigenem Schlüssel behalten das LLM (Review).
+- **D107 (2026-10-14)** `/openapi.json` beschreibt nur die öffentlichen Endpunkte, als Katalogeintrag; die internen sind
+  im Repository dokumentiert (Jan: „es darf eine openapi.json geben und die angabe dieser ist sogar gewünscht - das
+  dokument sagt nur das man die endpunkte für die öffentlichkeit und nutzung von denen trennen muss die intern fürs
+  reporting sind“; „ins repo gehören die endpunkte (interne) aber auch dokumentiert“). Titel „Kompendiale Texte“ statt
+  „Kompendium-API v2“, `info.summary` für Endnutzende, deutsche Kurztitel statt der aus Funktionsnamen erzeugten („Zim
+  Sync Now“), Beschreibungen der Gruppen. Intern und nicht in der Spezifikation: `/health`, `/ready`, `/metrics`, die
+  Statusendpunkte von Archiven und Lehrplänen und die Admin-Pfade; docs/betrieb.md listet sie, und ein Test hält die
+  Liste vollständig. Die Beschreibungen der Endpunkte bleiben die Docstrings, englisch wie der Code. Ein zweiter Port
+  ist nicht gebaut: uvicorn startet über seine Kommandozeile, die nur einen Socket bindet.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

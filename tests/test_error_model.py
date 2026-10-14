@@ -39,7 +39,7 @@ def client(settings: Settings) -> TestClient:
 @pytest.fixture(scope="module")
 def admin_client(settings: Settings) -> TestClient:
     enabled = settings.model_copy(update={"admin_token": "a" * 32})
-    return TestClient(create_app(enabled))
+    return TestClient(create_app(enabled, document_internal=True))  # the internal endpoints are documented too
 
 
 def test_a_validator_answers_in_its_own_words(client: TestClient) -> None:

@@ -8,9 +8,9 @@ the refusal never repeats the value.
 
 from __future__ import annotations
 
-from typing import Any
-
 import pytest
+from fastapi import FastAPI
+from fastapi.routing import iter_route_contexts
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
@@ -68,26 +68,28 @@ def test_without_keys_the_profiles_stay_open(settings: Settings) -> None:
     assert response.status_code == 200
 
 
-def operations(schema: dict[str, Any]) -> list[tuple[str, str, list[str]]]:
-    """(method, path with a placeholder for every parameter, tags) of every operation /docs lists."""
+def operations(app: FastAPI) -> list[tuple[str, str, list[str]]]:
+    """(method, path with a placeholder for every parameter, tags) of every operation the service answers, also those
+    its OpenAPI document leaves out (D107): the admin endpoints are internal now."""
     found = []
-    for path, methods in schema["paths"].items():
-        concrete = "/".join(NODE if part.startswith("{") else part for part in path.split("/"))
-        found += [(method.upper(), concrete, operation.get("tags", [])) for method, operation in methods.items()]
+    for route in iter_route_contexts(app.routes):
+        if not route.methods or not route.path or route.path in ("/openapi.json", "/docs", "/redoc"):
+            continue
+        concrete = "/".join(NODE if part.startswith("{") else part for part in route.path.split("/"))
+        found += [(method, concrete, list(route.tags or [])) for method in sorted(route.methods) if method != "HEAD"]
     return found
 
 
 def test_the_key_and_the_rate_limit_guard_exactly_the_profile_endpoints(settings: Settings) -> None:
-    """Every endpoint /docs lists, asked twice without a key and from a client of its own: the seven profile endpoints
+    """Every endpoint the service answers, asked twice without a key and from a client of its own: the seven profile endpoints
     answer 401 and then 429, the admin endpoints - off without ADMIN_TOKEN - 404 and then 429, every other one
     neither. Both answers come from the dependencies, so no handler runs and nothing leaves the process.
 
     A structural check over ``app.routes`` passed without looking at a single route: FastAPI 0.141 keeps included
     routers there as wrappers, not as their routes (review of 2026-09-28)."""
     app = create_app(settings.model_copy(update={"api_keys": KEY_A, "rate_limit": 1}))
-    schema = TestClient(app).get("/openapi.json").json()
     profile_seen = set()
-    for number, (method, path, tags) in enumerate(operations(schema), start=1):
+    for number, (method, path, tags) in enumerate(operations(app), start=1):
         client = TestClient(app, client=(f"10.0.0.{number}", 50000))  # a window of its own for every endpoint
         body: dict[str, object] | None = {} if method in ("POST", "PUT") else None
         answers = (
@@ -110,7 +112,7 @@ def test_the_docs_offer_the_key(settings: Settings) -> None:
     [(name, scheme)] = schema["components"]["securitySchemes"].items()
     assert scheme == {"type": "apiKey", "in": "header", "name": API_KEY_HEADER, "description": scheme["description"]}
     assert schema["paths"]["/api/v2/compendium"]["post"]["security"] == [{name: []}]
-    assert "security" not in schema["paths"]["/health"]["get"]
+    assert "security" not in schema["paths"]["/api/v2/templates"]["get"]  # reading templates stays open
 
 
 @pytest.mark.parametrize("field", ["api_keys", "admin_token", "metrics_token"])

@@ -9,6 +9,10 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+- **Geändert (D107):** `/openapi.json` als Eintrag für einen Produktkatalog: Anzeigename „Kompendiale Texte“, ein Satz
+  für Endnutzende (`info.summary`), deutsche Kurztitel für alle Endpunkte, eine Beschreibung je Gruppe. Die internen
+  Endpunkte (Proben, Metriken, Stand, Admin) stehen nicht mehr darin und antworten wie bisher;
+  [docs/betrieb.md](docs/betrieb.md) listet sie unter „Erreichbarkeit“.
 - **Neu (D105):** `B_API_KEY_SOURCE=request` nimmt für die LLM-Aufrufe einer Anfrage den Schlüssel, den die b-api vom
   Aufrufer weiterreicht (`Authorization`, sonst `X-API-Key`), und schickt ihn unverändert an die b-api zurück;
   `B_API_KEY` gilt dann nur für Anfragen ohne Schlüssel und darf fehlen. Die Vorgabe `env` ändert nichts. Der Schlüssel

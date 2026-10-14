@@ -273,8 +273,10 @@ def test_a_delete_with_if_match_goes_through_only_over_that_version(client: Test
     assert current.status_code == 204 and client.get("/api/v2/templates/mein").status_code == 404
 
 
-def test_the_openapi_document_names_the_etag_of_a_template(client: TestClient) -> None:
-    paths = client.get("/openapi.json").json()["paths"]["/api/v2/templates/{template_id}"]
+def test_the_openapi_document_names_the_etag_of_a_template(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """Writing and deleting are internal (D107): the document with the internal endpoints names them."""
+    app = create_app(make_settings(sample_zims.values(), tmp_path / "state"), document_internal=True)
+    paths = TestClient(app).get("/openapi.json").json()["paths"]["/api/v2/templates/{template_id}"]
 
     assert "ETag" in paths["get"]["responses"]["200"]["headers"]
     assert "ETag" in paths["put"]["responses"]["200"]["headers"]

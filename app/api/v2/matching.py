@@ -16,7 +16,7 @@ from app.matching.registry import list_strategies
 router = APIRouter(prefix="/api/v2/matching", tags=["matching"], route_class=GatedRoute)
 
 
-@router.get("/strategies")
+@router.get("/strategies", summary="Zuordnungsverfahren auflisten")
 def matching_strategies() -> list[dict[str, Any]]:
     """The matching strategies this build offers, with cost and hardware.
 

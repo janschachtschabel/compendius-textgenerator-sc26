@@ -20,6 +20,7 @@ STAGING_COLLECTION = "9e7ae956-e9df-430f-bace-f3db4b910013"  # the collection "O
 
 @router.get(
     "/{collection_id}/overview",
+    summary="Sammlung im Überblick (Teil 3)",
     dependencies=[Depends(rate_limited), Depends(require_api_key)],
     responses=PROFILE_REFUSALS,
 )

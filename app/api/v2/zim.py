@@ -60,7 +60,7 @@ def _public_sync(status: dict[str, Any] | None) -> dict[str, Any] | None:
     }
 
 
-@router.get("/status")
+@router.get("/status", summary="Archive: Stand")
 def zim_status(request: Request) -> dict[str, Any]:
     """The archives: what is loaded, which ids are required and missing, the profile, the active set
     and the last sync (its error count; the texts are in GET /api/v2/zim/progress).
@@ -78,7 +78,7 @@ def zim_status(request: Request) -> dict[str, Any]:
     }
 
 
-@admin.get("/catalog", responses=refusals(502))
+@admin.get("/catalog", summary="Archive: Katalog von Kiwix", responses=refusals(502))
 def zim_catalog(request: Request) -> list[dict[str, Any]]:
     """The German archives Kiwix offers, each marked as subscribed and installed.
 
@@ -107,7 +107,7 @@ def zim_catalog(request: Request) -> list[dict[str, Any]]:
     ]
 
 
-@admin.get("/progress")
+@admin.get("/progress", summary="Archive: Stand des Syncs")
 def zim_progress(request: Request) -> dict[str, Any]:
     """Where the sync job stands, including a download in flight and the error texts.
 
@@ -118,7 +118,7 @@ def zim_progress(request: Request) -> dict[str, Any]:
     return read_status(request.app.state.settings.zim_dir) or {"state": "unknown", "last_run": None, "download": None}
 
 
-@admin.post("/sync", status_code=202)
+@admin.post("/sync", status_code=202, summary="Archive: Sync anstoßen")
 def zim_sync_now(request: Request) -> dict[str, Any]:
     """Ask the updater sidecar for a sync run.
 
@@ -136,7 +136,7 @@ def zim_sync_now(request: Request) -> dict[str, Any]:
     }
 
 
-@admin.delete("/{file_name}", responses=refusals(400, 409))
+@admin.delete("/{file_name}", summary="Archiv löschen", responses=refusals(400, 409))
 def zim_delete(
     file_name: Annotated[
         str,

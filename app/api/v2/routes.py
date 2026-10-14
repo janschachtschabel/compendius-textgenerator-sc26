@@ -212,7 +212,7 @@ def delete_template(
     log.info("template %s deleted", template_id)
 
 
-@router.get("/templates")
+@router.get("/templates", summary="Templates auflisten")
 def list_templates(request: Request) -> list[dict[str, Any]]:
     """The templates this service knows, built-in and custom, with their slot count and version.
 
@@ -233,7 +233,11 @@ def list_templates(request: Request) -> list[dict[str, Any]]:
     ]
 
 
-@router.get("/templates/{template_id}", responses={**refusals(404), 200: {"headers": {"ETag": ETAG_HEADER}}})
+@router.get(
+    "/templates/{template_id}",
+    summary="Template lesen",
+    responses={**refusals(404), 200: {"headers": {"ETag": ETAG_HEADER}}},
+)
 def get_template(
     template_id: Annotated[
         str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP, openapi_examples=BUILTIN_TEMPLATES)

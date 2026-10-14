@@ -80,6 +80,7 @@ Update daher:
 | 2.7.0 (D76) | Sätze aus Modellwissen enden nicht mehr sichtbar mit `[Modellwissen]`, weder im Markdown noch im Text der Bausteine: So geht ein fertiger Text an Endkunden. Das Markup kennzeichnet sie weiter (`<!-- f: Evidenzgrad=Modellwissen -->`). Wer den Vermerk braucht, setzt in der Anfrage `"model_knowledge_label": true` (CLI `--model-knowledge-label`, in der Prüfansicht „Vermerk [Modellwissen] im Text zeigen“). Keine Einstellung in der `.env`, keine neue `docker-compose.yml`. |
 | 2.8.0 (D77) | Eine Sammlung in `node_id` bekommt im Kompendium Teil 3 wie mit `collection_id`, wenn das Feld leer ist und die Sammlung im eingestellten Repository liegt; bis dahin stand Teil 3 dann auf `unavailable`. `parts: ["collection"]` mit einem Material in `node_id` ist ein 503 statt eines 422. Die Prüfansicht hat ein Feld „Sammlung oder Material“ statt dreier und liest den Knoten über `GET /api/v2/nodes/{id}` (mit dem eingetragenen Schlüssel). Keine Einstellung in der `.env`, keine neue `docker-compose.yml`. |
 | 2.9.0 (Audit 2026-10-02, D78) | Keine neue Einstellung. `REQUEST_TIMEOUT_S` gilt jetzt auch für die ersten Lesezugriffe aufs Repository (Sammlung und Knoten der Anfrage, Prüfung der Wissens-Sammlung): Hängt das Repository, endet eine Anfrage in der Frist statt nach bis zu drei mal zwei Versuchen à `EDU_SHARING_TIMEOUT_S`. Ein Materialtext hält `KNOWLEDGE_MAX_CHARS` auch im ersten Absatz, eine Zeile über 2.000 Zeichen wird an Satzenden geteilt. Mit Materialien ohne freie Lizenz (frei: gemeinfrei, CC BY, CC BY-SA) nennt der Quellenblock sie und stellt nur den übrigen Text von Teil 1 unter CC BY-SA 4.0; ihr Eintrag und der Baustein tragen keine Facette `Zugang`, `audit.lint` meldet dann `facet-required` für den Quellenbaustein. Die Nebenartikel einer Stufe teilen sich, was `CORPUS_MAX_CHUNKS` lässt: große Themen haben mehr Quellen im Korpus (Deutschland 9 statt 3), gleich viele Absätze. Ein belegter Satz mit einer Zahl, die sein Beleg nicht nennt, gilt als ungestützt (weg oder als Modellwissen). Ein unlesbarer Eintrag im Repository-Cache ist ein Fehltreffer statt eines Fehlers. |
+| Unveröffentlicht (D107) | Keine neue Einstellung. `/openapi.json` heißt „Kompendiale Texte“, trägt einen kurzen Text für Endnutzende (`info.summary`), deutsche Kurztitel und eine Beschreibung je Gruppe. Die internen Endpunkte - `/health`, `/ready`, `/metrics`, die Statusendpunkte und die Admin-Pfade - stehen nicht mehr darin und antworten wie bisher; welche Pfade nach außen gehören, steht unter „Erreichbarkeit“. |
 | Unveröffentlicht (D105, D106) | Eine neue Einstellung mit Vorgabe, `B_API_KEY_SOURCE` (`env`); ohne Eintrag ändert sich nichts. Mit `request` nimmt der Dienst den Schlüssel, den die b-api vom Aufrufer weiterreicht (`Authorization`, sonst `X-API-Key`), und schickt ihn mit den LLM-Aufrufen der Anfrage zurück; `B_API_KEY` gilt dann nur für Anfragen ohne Schlüssel und darf fehlen. Dazu `API_KEYS` leer und `RATE_LIMIT=0`, und der Dienst nur über die b-api erreichbar. Lehnt die b-api den Schlüssel einer Anfrage ab, läuft nur diese ohne LLM weiter (Log: `b-api refused the key of this request`). Ein 402 setzt wie 401 und 403 die Aufrufe mit dem Schlüssel des Dienstes zehn Minuten aus. `/health` nennt unter `components.llm.key` die Quelle und ob `B_API_KEY` gesetzt ist. |
 | Unveröffentlicht (D104) | Eine Einstellung weniger und eine neue Vorgabe. `LLM_DAILY_TOKEN_BUDGET` gibt es nicht mehr: Die b-api setzt die Limits je Schlüssel und schaltet das LLM ab, wenn eines erreicht ist; ein alter Eintrag wirkt nicht, der Start nennt ihn. `llm_budget.db` im Volume `state` wird nicht mehr geschrieben und kann weg. Die Gauges `kompendium_llm_tokens_used_today` und `kompendium_llm_daily_budget_tokens` und die Alarme `KompendiumLlmBudgetNearlySpent` und `KompendiumLlmBudgetBurnsFast` entfallen; die Tokens eines Tages zählt `sum(increase(kompendium_llm_tokens_total{type!="cached"}[1d]))`. `RATE_LIMIT` hat die Vorgabe `0`, keine Grenze (bisher 60): Hinter der b-api kommen alle Anfragen von ihrer Adresse. Wer eine Grenze will, setzt den Wert. |
 | 2.20.0 (D103) | Keine neue Einstellung. Die Prüfansicht zeigt die Satzauswahl der KI (`extraction=llm`) als Kästchen „KI wählt die Sätze“ direkt unter dem Profil statt unter „Erweitert“; es gilt für jedes Profil, im Vergleich für beide, und ist ohne KI auf dem Server gesperrt. Kein Profil setzt den Schalter; gesetzt kostet er in `balanced` rund 33.000 Tokens je Kompendium (M89). Am Dienst ändert sich nichts. |
@@ -109,6 +110,45 @@ erst 2.4.0 (Image-Tag `2.4.0`). Die Zeilen von „2026-09-29 (Lebenszeichen der 
 „2026-09-29 (Tagesbudget, D67)“ bis „2026-10-02 (D75)“ enthält 2.6.0 (Image-Tag `2.6.0`), die D74 und D75 erst 2.6.1
 und 2.6.2; im Image 2.5.0 ist die Vorgabe des Tagesbudgets noch 2.000.000, und ein gesetztes `0` heißt dort ein leeres
 Budget: kein LLM-Aufruf. Ab 2.7.0 nennt jede Zeile ihr Release; sie stehen ab 2.9.1 mit dem neuesten zuoberst.
+
+## Erreichbarkeit
+
+Der Dienst hat einen Port (8000) für alle Pfade. Öffentlich sind die Endpunkte für die Nutzung; sie stehen in
+`/openapi.json`, das die b-api und ein Produktkatalog lesen. Intern sind die Endpunkte für Proben, Metriken, Stand und
+Admin: Sie stehen nicht in `/openapi.json`, sondern nur hier, und gehören nicht nach außen (D107).
+`tests/test_openapi_catalog.py` prüft, dass jeder interne Endpunkt in dieser Liste steht.
+
+**Öffentlich** (in `/openapi.json`):
+
+| Pfade | Für wen | Schutz |
+|---|---|---|
+| `POST /api/v2/compendium`, `/api/v2/knowledge`, `/api/v2/entities`, `/api/v2/qa`; `GET /api/v2/nodes/{id}`, `/api/v2/collections/{id}/overview`, `/api/v2/lehrplan/search` | Aufrufer, über die b-api | hinter der b-api deren Schlüssel (`B_API_KEY_SOURCE=request`), direkt erreichbar `API_KEYS` |
+| `GET /api/v2/templates`, `/api/v2/templates/{id}`, `/api/v2/matching/strategies` | Aufrufer, Entwicklung | keiner, sie lesen nur |
+| `GET /openapi.json`, `/docs`, `/redoc` | b-api, Produktkatalog, Entwicklung | keiner; `API_DOCS_ENABLED=false` schaltet alle drei ab |
+
+**Intern** (nicht in `/openapi.json`, nicht nach außen):
+
+| Endpunkt | Für wen | Schutz |
+|---|---|---|
+| `GET /health` | Liveness-Probe, Docker-Healthcheck | keiner; antwortet 200, solange der Prozess lebt |
+| `GET /ready` | Readiness-Probe | keiner; 503, bis die Pflichtarchive geladen sind (gemessen 22 bis 31 s) |
+| `GET /metrics` | Prometheus | `METRICS_TOKEN` als `Authorization: Bearer` |
+| `GET /api/v2/zim/status` | Betrieb, Reporting: geladene und fehlende Archive, letzter Sync | keiner |
+| `GET /api/v2/lehrplan/status` | Betrieb, Reporting: Lehrplan-Cache und letzter Harvest | keiner |
+| `GET /api/v2/zim/catalog` | Betrieb: Archive, die Kiwix anbietet | `X-Admin-Token` (`ADMIN_TOKEN`), ohne Token 404 |
+| `GET /api/v2/zim/progress` | Betrieb: Stand des Syncs mit Fehlertexten | `X-Admin-Token` |
+| `POST /api/v2/zim/sync` | Betrieb: Sync anstoßen | `X-Admin-Token` |
+| `DELETE /api/v2/zim/{file_name}` | Betrieb: ein ungenutztes Archiv löschen | `X-Admin-Token` |
+| `POST /api/v2/lehrplan/harvest` | Betrieb: Lehrpläne neu ernten | `X-Admin-Token` |
+| `PUT /api/v2/templates/{template_id}` | Betrieb: eigenes Template anlegen oder ersetzen | `X-Admin-Token` |
+| `DELETE /api/v2/templates/{template_id}` | Betrieb: eigenes Template löschen | `X-Admin-Token` |
+| `/ui/` (Prüfansicht) | Redaktion, Test | aus ohne `UI_ENABLED`; fragt mit dem Schlüssel, den der Leser einträgt |
+
+Freigeben also `/openapi.json` und `/api/v2/` ohne die internen Pfade; `/api/v2/templates/{template_id}` ist lesend
+öffentlich, schreibend intern, die Regel braucht dort die Methode. Die Proben fragt Kubernetes am Pod, nicht über den
+Ingress. Über den Proxy der b-api erreicht den Dienst jeder Pfad, den die b-api weitergibt; ob sie Pfade filtern kann,
+ist offen. Darum schützen `METRICS_TOKEN` und `ADMIN_TOKEN` ihre Pfade auch dann, und `UI_ENABLED` bleibt im Betrieb
+aus. Ein zweiter Port für die internen Endpunkte ließe sich nachrüsten, wenn der Betrieb ihn verlangt.
 
 ## Zustand prüfen
 

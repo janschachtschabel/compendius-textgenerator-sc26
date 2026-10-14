@@ -132,8 +132,10 @@ def test_the_examples_run_from_the_shortest_request_to_every_field(spec: dict[st
         assert not missing, f"{name}: no example sets {sorted(missing)}"
 
 
-def test_the_template_examples_are_templates_the_service_takes(spec: dict[str, Any]) -> None:
-    for example in named_examples(spec["paths"]["/api/v2/templates/{template_id}"]["put"]):
+def test_the_template_examples_are_templates_the_service_takes(settings: Settings) -> None:
+    """Writing a template is internal (D107): its document comes with the internal endpoints."""
+    internal = TestClient(create_app(settings, document_internal=True)).get("/openapi.json").json()
+    for example in named_examples(internal["paths"]["/api/v2/templates/{template_id}"]["put"]):
         assert Template.model_validate(example).id == example["id"]
 
 

@@ -46,6 +46,8 @@ from app.sources.lehrplan.store import LehrplanCacheError
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"], route_class=GatedRoute)
+# The state of the cache is for operation and reporting, not for the callers: internal, out of /openapi.json (D107)
+status = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"], route_class=GatedRoute)
 # What the search takes, which the review page offers as well (app/ui/options.py)
 SearchMode = Literal["keyword", "topic"]
 QUERY_MIN_CHARS = 3
@@ -158,7 +160,7 @@ def _llm_answer(
     return {key: audit[key] for key in ("note", "article_choice", "curriculum_check")}, tokens
 
 
-@router.get("/status")
+@status.get("/status", summary="Lehrplan-Cache: Stand")
 def lehrplan_status(request: Request) -> dict[str, Any]:
     """What the curriculum cache holds and how fresh it is.
 
@@ -184,6 +186,7 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
 
 @router.get(
     "/search",
+    summary="Lehrplanelemente suchen",
     dependencies=[Depends(rate_limited), Depends(require_api_key), Depends(no_unknown_query)],
     responses=refusals(401, 404, 422, 429, 503),  # no repository behind it: no 502
 )
@@ -347,7 +350,7 @@ def lehrplan_search(
     }
 
 
-@admin.post("/harvest", status_code=202)
+@admin.post("/harvest", status_code=202, summary="Lehrpläne neu ernten")
 def lehrplan_harvest_now(request: Request) -> dict[str, Any]:
     """Ask the harvest sidecar to check MEM now.
 
