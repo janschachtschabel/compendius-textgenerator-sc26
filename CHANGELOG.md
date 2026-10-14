@@ -9,6 +9,10 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+- **Neu (D108):** Tracing nach B3: `x-client-trace-id`, die B3-Header und `traceparent`/`tracestate` einer Anfrage gehen
+  mit `X-Request-ID` unverändert mit jedem Aufruf an die b-api und an edu-sharing weiter, und jede JSON-Zeile der
+  Anfrage nennt `trace_id` (`x-client-trace-id`, sonst die B3-Trace-ID). Werte mit Zeichen, die keine Trace-ID hat,
+  bleiben weg.
 - **Geändert (D107):** `/openapi.json` als Eintrag für einen Produktkatalog: Anzeigename „Kompendiale Texte“, ein Satz
   für Endnutzende (`info.summary`), deutsche Kurztitel für alle Endpunkte, eine Beschreibung je Gruppe. Die internen
   Endpunkte (Proben, Metriken, Stand, Admin) stehen nicht mehr darin und antworten wie bisher;

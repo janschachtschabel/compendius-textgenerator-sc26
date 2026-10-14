@@ -29,6 +29,7 @@ from app.api.errors import JsonResponse
 from app.api.metrics import METRICS_PATH
 from app.logging import REQUEST_ID_HEADER, set_request_id
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request
+from app.tracing import take_trace_headers
 
 log = logging.getLogger(__name__)
 
@@ -71,6 +72,7 @@ class RequestLog:
             await self.app(scope, receive, send)
             return
         request_id = set_request_id(_header(scope, REQUEST_ID_HEADER))
+        take_trace_headers(scope["headers"], request_id)  # sent on with every call made for the request (D108)
         started = time.perf_counter()
         if scope["method"] not in READS:
             target = _target(scope)

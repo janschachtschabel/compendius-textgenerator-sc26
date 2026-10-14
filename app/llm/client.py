@@ -35,6 +35,7 @@ from app.llm.budget import estimate_tokens
 from app.llm.credentials import X_API_KEY, RequestKey, own_key_only, request_key
 from app.llm.deadline import MIN_CALL_S, Deadline
 from app.llm.routing import ROUTER, family_hint, no_route, route_name, route_stop
+from app.tracing import outgoing_headers
 
 log = logging.getLogger(__name__)
 
@@ -617,7 +618,8 @@ class BApiClient:
         """One HTTP attempt of at most ``limit`` seconds, made holding a call slot (``_slot``). The answer is read up
         to ``MAX_ANSWER_BYTES`` (``AnswerTooLargeError`` past it, ``UnreadableAnswerError`` in a coding it does not
         unpack) and comes back read, with the headers a caller looks at."""
-        request = self._client.build_request(method, url, json=json_body, timeout=limit, headers=self._key_header())
+        headers = {**outgoing_headers(), **self._key_header()}  # the trace of the request goes on (D108)
+        request = self._client.build_request(method, url, json=json_body, timeout=limit, headers=headers)
         streamed = self._client.send(request, stream=True)
         try:
             body = read_bounded(streamed, MAX_ANSWER_BYTES)

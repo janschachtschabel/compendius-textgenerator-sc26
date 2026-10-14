@@ -39,6 +39,7 @@ from app.sources.wlo.models import (
     parse_reference,
     parse_subcollection,
 )
+from app.tracing import outgoing_headers
 
 log = logging.getLogger(__name__)
 
@@ -296,7 +297,8 @@ class EduSharingClient:
                     raise TimeUpError()
                 timeout = min(timeout, left)
             try:
-                with client.stream("GET", path, params=params, timeout=timeout) as response:
+                # the trace of the request goes on with every read of the repository (D108)
+                with client.stream("GET", path, params=params, timeout=timeout, headers=outgoing_headers()) as response:
                     status = response.status_code
                     if status in missing:
                         return None

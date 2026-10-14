@@ -22,6 +22,8 @@ from contextvars import ContextVar
 from datetime import UTC, datetime
 from typing import Any
 
+from app.tracing import trace_id
+
 # The process: with two workers their lines interleave, and uvicorn names a worker that died by its pid (logging
 # review of 2026-10-08)
 _FORMAT = "%(asctime)s | %(levelname)-8s | %(process)d | %(name)s | %(request_id)s | %(message)s"
@@ -84,6 +86,9 @@ class _JsonFormatter(logging.Formatter):
             "request_id": getattr(record, "request_id", NO_REQUEST),
             "message": record.getMessage(),
         }
+        trace = trace_id()  # the trace of the platform, to filter the lines of all services for one request (D108)
+        if trace is not None:
+            event["trace_id"] = trace
         if record.exc_info:
             event["exc"] = self.formatException(record.exc_info)
         # The fields of an event (``extra={"fields": ...}``: a request's status and duration) become fields of its

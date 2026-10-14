@@ -2414,6 +2414,13 @@ API.
   Liste vollständig; `create_app(document_internal=True)` nimmt sie für die Tests ihrer Dokumentation ins Dokument auf.
   Die Beschreibungen der Endpunkte bleiben die Docstrings, englisch wie der Code. Ein zweiter Port ist nicht gebaut:
   uvicorn startet über seine Kommandozeile, die nur einen Socket bindet.
+- **D108 (2026-10-14)** Der Dienst reicht die Spur einer Anfrage weiter (Technik-Team: „Tracing ist B3-konform. Der
+  Header x-client-trace-id wird durchgereicht, damit Logs dienstübergreifend gefiltert werden können“). Er liest
+  `x-client-trace-id`, die B3-Header und `traceparent`/`tracestate`, schickt sie mit `X-Request-ID` unverändert mit
+  jedem Aufruf an die b-api und an edu-sharing und nennt in JSON-Zeilen `trace_id`. Eigene Spans erzeugt er nicht: Das
+  übernimmt die Plattform (Sidecar), der Dienst hält nur die Kette zusammen. Werte sind Eingaben des Aufrufers: Einer
+  mit Zeichen, die keine Trace-ID hat, oder über 256 Zeichen bleibt weg statt verändert, denn eine veränderte Spur
+  verbindet nichts. Die Textzeilen bleiben, wie sie sind; dort steht die Anfrage-ID.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
