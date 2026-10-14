@@ -16,10 +16,11 @@ from starlette.responses import JSONResponse
 from starlette.routing import Route
 
 from app.api.request_log import RequestLog
+from app.concurrency import map_in_threads
 from app.llm.client import BApiClient
 from app.logging import _JsonFormatter
 from app.sources.wlo.client import EduSharingClient
-from app.tracing import outgoing_headers, take_trace_headers, trace_id
+from app.tracing import _trace, outgoing_headers, take_trace_headers, trace_id
 from tests.test_llm_client import BASE, KEY, MESSAGES, FakeBApi
 
 TRACED = [
@@ -32,9 +33,10 @@ TRACED = [
 
 @pytest.fixture(autouse=True)
 def outside_a_request() -> Any:
-    take_trace_headers([], "-")
+    """Each test in a context of its own: the trace of one must reach no other test (review of D108)."""
+    token = _trace.set({})
     yield
-    take_trace_headers([], "-")
+    _trace.reset(token)
 
 
 def test_the_trace_headers_of_a_request_are_kept_as_they_came() -> None:
@@ -57,6 +59,10 @@ def test_the_trace_of_a_line_is_the_clients_else_the_b3_trace() -> None:
     assert trace_id() == "80f198ee56343ba864fe8b2a57d3eff7"
     take_trace_headers([(b"b3", b"80f198ee56343ba8-e457b5a2e4d86bd1-1")], "req-1")
     assert trace_id() == "80f198ee56343ba8"
+    take_trace_headers([(b"b3", b"0")], "req-1")
+    assert trace_id() is None, "a sampling decision alone names no trace"
+    take_trace_headers([(b"traceparent", b"00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01")], "req-1")
+    assert trace_id() == "4bf92f3577b34da6a3ce929d0e0e4736"
     take_trace_headers([], "req-1")
     assert trace_id() is None
 
@@ -113,3 +119,23 @@ def test_the_request_log_takes_the_trace_for_the_whole_request() -> None:
         "trace": "client-4711",
     }
     assert "x-client-trace-id" not in answer.headers, "the trace goes on to the services called, not back"
+
+
+def test_a_tracestate_goes_on_as_the_w3c_allows_it() -> None:
+    """Spaces after a comma, vendor keys with *, values with ~ and up to 512 signs, and repeated headers joined."""
+    long_state = "vendor=" + "a" * 500
+    found = take_trace_headers(
+        [(b"tracestate", b"rojo=00f067aa0ba902b7, congo=t61rcWkgMzE"), (b"tracestate", b"tenant*v=x~y")], "req-1"
+    )
+    assert found["tracestate"] == "rojo=00f067aa0ba902b7, congo=t61rcWkgMzE,tenant*v=x~y"
+    assert take_trace_headers([(b"tracestate", long_state.encode())], "req-1")["tracestate"] == long_state
+    assert take_trace_headers([(b"tracestate", b"a=" + bytes([1]) + b"b")], "req-1") == {}
+
+
+def test_the_threads_of_a_request_carry_its_trace() -> None:
+    """The LLM stages call the b-api from pool threads (app/concurrency.py): the trace goes with them."""
+    take_trace_headers(TRACED, "req-1")
+
+    seen = map_in_threads(lambda _: outgoing_headers(), [1, 2, 3], 3)
+
+    assert all(headers["x-client-trace-id"] == "client-4711" for headers in seen)

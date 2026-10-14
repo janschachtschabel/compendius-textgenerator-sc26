@@ -32,32 +32,49 @@ TRACE_HEADERS = (
     "traceparent",
     "tracestate",
 )
-MAX_TRACE_CHARS = 256  # tracestate holds up to 32 entries; a B3 header some 70 signs
-_TRACE_VALUE = re.compile("^[A-Za-z0-9._:@+/=,-]+$")
+MAX_TRACE_CHARS = 256  # a B3 header holds some 70 signs, a client's trace id fewer
+MAX_STATE_CHARS = 512  # W3C: vendors should pass on at least 512 signs of tracestate
+TRACE_STATE = "tracestate"
+_TRACE_VALUE = re.compile("[A-Za-z0-9._:@+/=,-]+")
+# tracestate: any visible ASCII and spaces (after a comma, as proxies join headers), nothing that ends a line
+_STATE_VALUE = re.compile("[ -~]+")
+# A trace id of B3: 16 or 32 hex signs; "0", "1" and "d" alone are sampling decisions, no trace
+_B3_ID = re.compile("[0-9a-f]{16}|[0-9a-f]{32}")
 
 _trace: ContextVar[dict[str, str]] = ContextVar("trace_headers", default={})  # noqa: B039  # never mutated
 
 
 def take_trace_headers(headers: Iterable[tuple[bytes, bytes]], request_id: str) -> dict[str, str]:
     """The trace headers among the raw headers of a request, those a trace id can have, and ``request_id``, the id the
-    service gave the request; they hold for the request."""
+    service gave the request; they hold for the request. Repeated tracestate headers are joined, as W3C has it."""
     found: dict[str, str] = {}
     for raw_name, raw_value in headers:
         name = raw_name.decode("latin-1").lower()
-        if name not in TRACE_HEADERS or name in found:
+        if name not in TRACE_HEADERS or (name in found and name != TRACE_STATE):
             continue
         value = raw_value.decode("latin-1").strip()
-        if value and len(value) <= MAX_TRACE_CHARS and _TRACE_VALUE.match(value):
+        if name == TRACE_STATE:
+            joined = f"{found[name]},{value}" if name in found else value
+            if value and len(joined) <= MAX_STATE_CHARS and _STATE_VALUE.fullmatch(joined):
+                found[name] = joined
+        elif value and len(value) <= MAX_TRACE_CHARS and _TRACE_VALUE.fullmatch(value):
             found[name] = value
     _trace.set({**found, REQUEST_ID: request_id})
     return found
 
 
 def trace_id() -> str | None:
-    """The trace a log line names: the client's trace id, else the B3 trace id; ``None`` outside a traced request."""
+    """The trace a log line names: the client's trace id, else the B3 trace id, else that of W3C traceparent; ``None``
+    outside a traced request."""
     found = _trace.get()
-    single = found.get(B3_SINGLE, "").partition("-")[0]
-    return found.get(CLIENT_TRACE) or found.get(B3_TRACE) or single or None
+    if found.get(CLIENT_TRACE):
+        return found[CLIENT_TRACE]
+    candidates = (
+        found.get(B3_TRACE, ""),
+        found.get(B3_SINGLE, "").partition("-")[0],
+        found.get("traceparent", "-").split("-")[1] if found.get("traceparent", "").count("-") >= 3 else "",
+    )
+    return next((candidate for candidate in candidates if _B3_ID.fullmatch(candidate)), None)
 
 
 def outgoing_headers() -> dict[str, str]:

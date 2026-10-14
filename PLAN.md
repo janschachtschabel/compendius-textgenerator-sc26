@@ -2420,7 +2420,10 @@ API.
   jedem Aufruf an die b-api und an edu-sharing und nennt in JSON-Zeilen `trace_id`. Eigene Spans erzeugt er nicht: Das
   übernimmt die Plattform (Sidecar), der Dienst hält nur die Kette zusammen. Werte sind Eingaben des Aufrufers: Einer
   mit Zeichen, die keine Trace-ID hat, oder über 256 Zeichen bleibt weg statt verändert, denn eine veränderte Spur
-  verbindet nichts. Die Textzeilen bleiben, wie sie sind; dort steht die Anfrage-ID.
+  verbindet nichts; `tracestate` darf, wie W3C es zulässt, Leerzeichen und bis 512 Zeichen haben, mehrfach gesendet wird
+  es verbunden. `trace_id` nimmt `x-client-trace-id`, sonst eine B3-Trace-ID aus 16 oder 32 Hexzeichen (ein `b3: 0`
+  allein ist eine Entscheidung über das Sampling, keine Spur), sonst die von `traceparent` (Review). Die Textzeilen
+  bleiben, wie sie sind; dort steht die Anfrage-ID.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown
