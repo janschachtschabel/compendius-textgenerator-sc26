@@ -164,8 +164,9 @@ class EntitiesRequest(RequestModel):
     archives: list[ArchiveId] = Field(
         default_factory=list,
         max_length=MAX_ARCHIVES,
-        description="Archive ids to ask, as GET /api/v2/zim/status lists them; empty (the default) asks every "
-        "active archive, an unknown id is a 404",
+        description="Archive ids to ask, as the field archive of an article names them - wikipedia_de_all_nopic "
+        "and klexikon_de_all_maxi in the shipped profile; empty (the default) asks every active archive, an unknown "
+        "id is a 404",
     )
     max_entities: int = Field(
         50,

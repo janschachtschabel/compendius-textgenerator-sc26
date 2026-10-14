@@ -1,4 +1,4 @@
-"""Curriculum endpoints (PLAN.md 8.2): public status and search from the local cache, admin harvest request.
+"""Curriculum endpoints (PLAN.md 8.2): public search, internal status from the local cache, admin harvest request.
 
 The API process never talks to MEM. ``POST /harvest`` leaves a request file that the harvest loop
 (``compendium lehrplan harvest --loop``) picks up; it then checks MEM and harvests when due.
@@ -270,8 +270,8 @@ def lehrplan_search(
     **When it refuses.** A profile or ``curriculum_check`` that needs an LLM on a server without one: 503. A subject
     outside the two subject vocabularies of edu-sharing: 422 that lists the school subjects; only the 37 subjects of
     config/subjects.yaml have curriculum words, any other one narrows nothing and ``subject_terms`` stays empty
-    (D51). An empty answer usually means an empty cache rather than no match; ``GET /api/v2/lehrplan/status`` says
-    which it is.
+    (D51). An empty answer usually means an empty cache rather than no match; the operator sees which it is
+    (an internal status endpoint, docs/betrieb.md).
 
     **Examples** of ``GET``, from the shortest to every parameter:
 

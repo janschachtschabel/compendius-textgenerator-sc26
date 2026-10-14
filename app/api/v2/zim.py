@@ -1,4 +1,4 @@
-"""ZIM archive endpoints: public status, admin catalog, progress, sync request and delete (PLAN.md 4.1, 8.2).
+"""ZIM archive endpoints: internal status, admin catalog, progress, sync request and delete (PLAN.md 4.1, 8.2).
 
 The API process never downloads. ``POST /sync`` leaves a request file that the updater loop picks
 up; ``DELETE`` only touches files that are neither active nor open in this process.

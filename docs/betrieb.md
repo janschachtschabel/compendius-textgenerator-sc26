@@ -132,10 +132,10 @@ Admin: Sie stehen nicht in `/openapi.json`, sondern nur hier, und gehören nicht
 |---|---|---|
 | `GET /health` | Liveness-Probe, Docker-Healthcheck | keiner; antwortet 200, solange der Prozess lebt |
 | `GET /ready` | Readiness-Probe | keiner; 503, bis die Pflichtarchive geladen sind (gemessen 22 bis 31 s) |
-| `GET /metrics` | Prometheus | `METRICS_TOKEN` als `Authorization: Bearer` |
+| `GET /metrics` | Prometheus | `METRICS_TOKEN` als `Authorization: Bearer`; ohne Token offen, `METRICS_ENABLED=false` schaltet ab |
 | `GET /api/v2/zim/status` | Betrieb, Reporting: geladene und fehlende Archive, letzter Sync | keiner |
 | `GET /api/v2/lehrplan/status` | Betrieb, Reporting: Lehrplan-Cache und letzter Harvest | keiner |
-| `GET /api/v2/zim/catalog` | Betrieb: Archive, die Kiwix anbietet | `X-Admin-Token` (`ADMIN_TOKEN`), ohne Token 404 |
+| `GET /api/v2/zim/catalog` | Betrieb: Archive, die Kiwix anbietet | `X-Admin-Token` (`ADMIN_TOKEN`); 404, solange der Server kein `ADMIN_TOKEN` hat, ohne oder mit falschem Header 403 |
 | `GET /api/v2/zim/progress` | Betrieb: Stand des Syncs mit Fehlertexten | `X-Admin-Token` |
 | `POST /api/v2/zim/sync` | Betrieb: Sync anstoßen | `X-Admin-Token` |
 | `DELETE /api/v2/zim/{file_name}` | Betrieb: ein ungenutztes Archiv löschen | `X-Admin-Token` |
@@ -144,11 +144,12 @@ Admin: Sie stehen nicht in `/openapi.json`, sondern nur hier, und gehören nicht
 | `DELETE /api/v2/templates/{template_id}` | Betrieb: eigenes Template löschen | `X-Admin-Token` |
 | `/ui/` (Prüfansicht) | Redaktion, Test | aus ohne `UI_ENABLED`; fragt mit dem Schlüssel, den der Leser einträgt |
 
-Freigeben also `/openapi.json` und `/api/v2/` ohne die internen Pfade; `/api/v2/templates/{template_id}` ist lesend
-öffentlich, schreibend intern, die Regel braucht dort die Methode. Die Proben fragt Kubernetes am Pod, nicht über den
-Ingress. Über den Proxy der b-api erreicht den Dienst jeder Pfad, den die b-api weitergibt; ob sie Pfade filtern kann,
-ist offen. Darum schützen `METRICS_TOKEN` und `ADMIN_TOKEN` ihre Pfade auch dann, und `UI_ENABLED` bleibt im Betrieb
-aus. Ein zweiter Port für die internen Endpunkte ließe sich nachrüsten, wenn der Betrieb ihn verlangt.
+Freigeben also `/openapi.json`, `/docs`, `/redoc` und `/api/v2/` ohne die internen Pfade;
+`/api/v2/templates/{template_id}` ist lesend öffentlich, schreibend intern, die Regel braucht dort die Methode. Die
+Proben fragt Kubernetes am Pod, nicht über den Ingress. Über den Proxy der b-api erreicht den Dienst jeder Pfad, den die
+b-api weitergibt; ob sie Pfade filtern kann, ist offen. Darum gehören `METRICS_TOKEN` und `ADMIN_TOKEN` gesetzt (ohne
+Token ist `/metrics` offen), und `UI_ENABLED` bleibt im Betrieb aus. Ein zweiter Port für die internen Endpunkte ließe
+sich nachrüsten, wenn der Betrieb ihn verlangt.
 
 ## Zustand prüfen
 

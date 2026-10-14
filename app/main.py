@@ -255,7 +255,7 @@ def create_app(settings: Settings | None = None, *, document_internal: bool = Fa
 
     The OpenAPI document describes the public endpoints only; the internal ones - probes, status, admin - answer
     all the same and are listed in docs/betrieb.md (D107). ``document_internal`` puts them into the document as well,
-    for the tests of their documentation."""
+    /metrics excepted, for the tests of their documentation."""
     settings = settings or get_settings()
     configure_logging(settings.log_level, settings.log_format)
     warn_about_removed_settings()

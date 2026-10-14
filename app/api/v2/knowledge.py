@@ -64,8 +64,9 @@ class KnowledgeRequest(RequestModel):
     archives: list[ArchiveId] = Field(
         default_factory=list,
         max_length=MAX_ARCHIVES,
-        description="Archive ids to ask, as GET /api/v2/zim/status lists them; empty (the default) asks every "
-        "active archive, an unknown id is a 404",
+        description="Archive ids to ask, as the field archive of an article names them - wikipedia_de_all_nopic "
+        "and klexikon_de_all_maxi in the shipped profile; empty (the default) asks every active archive, an unknown "
+        "id is a 404",
     )
     max_articles: int | None = Field(
         None,
@@ -121,7 +122,7 @@ class KnowledgeSection(BaseModel):
 
 class KnowledgeArticle(BaseModel):
     source_id: str
-    archive: str = Field(description="Archive id, as in /api/v2/zim/status")
+    archive: str = Field(description="Archive id, such as wikipedia_de_all_nopic; the value archives takes")
     project: str
     title: str
     url: str

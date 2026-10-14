@@ -27,7 +27,7 @@ STAGING = "https://repository.staging.openeduhub.net/edu-sharing/rest"
 def client(settings: Settings) -> TestClient:
     # The part 3 example names a collection of the staging repository, which the default settings point at. The fake
     # answers for the same collection, so the example runs offline instead of opening a connection to staging.
-    app = create_app(settings)
+    app = create_app(settings, document_internal=True)
     repository = EduSharingClient(BASE, transport=httpx.MockTransport(FakeRepository()), page_size=10)
     builder = CollectionBuilder(client=repository, cache=None)
     app.state.collections = builder

@@ -59,6 +59,8 @@ def test_every_group_says_what_it_holds(schema: dict[str, Any]) -> None:
 
 BETRIEB = Path(__file__).resolve().parents[1] / "docs" / "betrieb.md"
 DOCUMENT_PAGES = {"/openapi.json", "/docs", "/redoc"}  # public, but no operations of the API
+# The review page, off in operation; its row in the section names it as a whole
+REVIEW_PAGE = "/ui"
 
 
 def internal_endpoints(settings: Settings) -> set[str]:
@@ -66,7 +68,10 @@ def internal_endpoints(settings: Settings) -> set[str]:
     app = create_app(settings)
     found = set()
     for route in iter_route_contexts(app.routes):
-        if route.path in DOCUMENT_PAGES or not route.methods or getattr(route, "include_in_schema", True):
+        path = route.path or ""
+        if path in DOCUMENT_PAGES or path.startswith(REVIEW_PAGE) or not route.methods:
+            continue
+        if getattr(route, "include_in_schema", True):
             continue
         found |= {f"{method} {route.path}" for method in route.methods if method != "HEAD"}
     return found
@@ -82,7 +87,9 @@ def test_the_internal_endpoints_are_out_of_the_document(schema: dict[str, Any]) 
 
 def test_every_internal_endpoint_is_documented_in_the_repository(settings: Settings) -> None:
     """Jan, 2026-10-14: "ins repo gehören die endpunkte (interne) aber auch dokumentiert"."""
-    listed = BETRIEB.read_text(encoding="utf-8")
+    text = BETRIEB.read_text(encoding="utf-8")
+    section = text[text.index("## Erreichbarkeit") :]
+    listed = section[: section.index("\n## ", 1)]  # the section alone: other sections name endpoints too
     internal = internal_endpoints(settings)
     assert {"GET /metrics", "POST /api/v2/zim/sync", "PUT /api/v2/templates/{template_id}"} <= internal
     missing = sorted(endpoint for endpoint in internal if f"`{endpoint}`" not in listed)
