@@ -2424,6 +2424,14 @@ API.
   es verbunden. `trace_id` nimmt `x-client-trace-id`, sonst eine B3-Trace-ID aus 16 oder 32 Hexzeichen (ein `b3: 0`
   allein ist eine Entscheidung über das Sampling, keine Spur), sonst die von `traceparent` (Review). Die Textzeilen
   bleiben, wie sie sind; dort steht die Anfrage-ID.
+- **D109 (2026-10-15)** Logs nach stdout, der Repository-Cache je Pod (Jan: „bei logs nach b-3 standard und geeignet für
+  kubernetes machen“, „wäre eine optimierung der datenbanklösung aufwendig“; Technik-Team: „Logs gehen nach stdout“,
+  SQLite nur für lesende, mitgelieferte Daten). Der Server und die Updater-Schleifen schreiben nach stdout; einmalige
+  Befehle bleiben bei stderr, damit ihr Bericht auf stdout lesbar bleibt (Review der Logs vom 08.10.2026, D95). Die
+  einzige SQLite-Datei, die die API selbst schreibt, ist der Repository-Cache: `WLO_CACHE_PATH` legt ihn je Pod in ein
+  `emptyDir`, so schreiben mehrere Pods nicht eine Datei über das Netz; die Indexe schreiben nur die Sidecars, die API
+  liest sie. Redis oder PostgreSQL brächten nichts, was diese Aufteilung nicht schon leistet: Der Cache spart nur Zeit,
+  und jeder Pod füllt seinen eigenen.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

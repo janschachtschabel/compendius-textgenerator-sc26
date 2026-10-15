@@ -73,7 +73,7 @@ Gebliebenes steht am Ende.
 - **Alarmregeln:** 25 Regeln in `monitoring/alerts.yml`, mit `promtool`-Tests in `monitoring/alerts_test.yml`; für Helm
   als `PrometheusRule` übernehmen (der Inhalt von `groups` gehört unter `spec`). Die Regeln fragen `job="kompendium"`:
   Ein ServiceMonitor braucht diesen Job-Namen (`jobLabel` oder Relabeling), sonst meldet `KompendiumDown` nie.
-- **Logs:** eine Zeile je Ereignis nach stderr (in Kubernetes wie stdout gesammelt), `LOG_FORMAT=json` für einen
+- **Logs:** eine Zeile je Ereignis nach stdout (D109; einmalige Befehle der Kommandozeile nach stderr), `LOG_FORMAT=json` für einen
   Log-Sammler, `LOG_LEVEL` für die Stufe. Jede Zeile nennt die Anfrage (`request_id`), JSON-Zeilen auch die Spur
   (`trace_id` aus `x-client-trace-id`, sonst der B3-Trace-ID).
 - **Tracing:** `x-client-trace-id`, die B3-Header und `traceparent` gehen unverändert mit jedem Aufruf an die b-api und
@@ -89,8 +89,9 @@ Gebliebenes steht am Ende.
   Templates, Auftragsdateien für Sync und Harvest und das Löschen eines Archivs: `zim` und `state` müssen für die API
   darum schreibbar sein, wenn die Admin-Pfade genutzt werden.
 - **Mehrere Pods:** möglich, wenn `zim` und `state` als gemeinsames Volume (ReadWriteMany) bei allen Pods liegen und
-  jeder Sidecar genau einmal läuft. `wlo_cache.db` schreiben dann mehrere Pods über das Netz; der Cache verträgt einen
-  Ausfall, gemessen ist das nicht. Eigene Templates schreibt man über einen Pod.
+  jeder Sidecar genau einmal läuft. Den Repository-Cache bekommt jeder Pod an einem eigenen Pfad (`WLO_CACHE_PATH` in
+  einem `emptyDir`, D109), damit nicht mehrere Pods eine SQLite-Datei über das Netz schreiben. Eigene Templates schreibt
+  man über einen Pod.
 - **Datenbanken:** keine PostgreSQL, MongoDB oder Redis nötig. SQLite nur für Daten, die ein Sidecar liefert und die API
   liest (nach der Tabelle des Technik-Teams zulässig), und für den Cache.
 - **Abschaltbare Teile:** die vier Sidecars (wer Archive, Lehrpläne oder Indexe anders liefert, braucht ihren Sidecar

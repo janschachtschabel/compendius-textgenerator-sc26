@@ -40,6 +40,7 @@ api:
     B_API_MODEL: gpt-6-luna
     RATE_LIMIT: "0"              # die b-api begrenzt je Schlüssel (D104)
     UI_ENABLED: "false"
+    WLO_CACHE_PATH: /tmp/wlo_cache.db   # je Pod im emptyDir /tmp: kein SQLite-Schreiben über ein geteiltes Volume
     API_DOCS_ENABLED: "true"     # /openapi.json für die b-api und den Produktkatalog
     EDU_SHARING_BASE_URL: https://redaktion.openeduhub.net/edu-sharing/rest
   secretEnv:                     # aus einem Secret, nie in den Values

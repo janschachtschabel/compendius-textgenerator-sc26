@@ -283,10 +283,12 @@ def build_collections(settings: Settings) -> CollectionBuilder | None:
     )
     cache: TtlCache | None = None
     try:
-        cache = TtlCache(settings.wlo_cache_path)
+        cache = TtlCache(settings.collection_cache_path)
     except (sqlite3.Error, OSError) as exc:  # the cache only saves time; the repository still answers
         log.warning(
-            "repository cache unavailable at %s (%s); every read goes to the repository", settings.wlo_cache_path, exc
+            "repository cache unavailable at %s (%s); every read goes to the repository",
+            settings.collection_cache_path,
+            exc,
         )
     return CollectionBuilder(client=client, cache=cache, options=options)
 

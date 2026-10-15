@@ -6,7 +6,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import get_args
+from typing import TextIO, get_args
 
 from pydantic import ValidationError
 
@@ -295,9 +295,15 @@ def main(argv: list[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
     settings = get_settings()
-    configure_logging(settings.log_level, settings.log_format)
+    configure_logging(settings.log_level, settings.log_format, stream=log_stream(args))
     result: int = args.func(args)
     return result
+
+
+def log_stream(args: argparse.Namespace) -> TextIO:
+    """Where a command logs: the loop of an updater to stdout, as Kubernetes expects it (Team 6, 2026-10-14); a one-shot
+    command to stderr, since it prints its report on stdout (logging review of 2026-10-08)."""
+    return sys.stdout if getattr(args, "loop", False) else sys.stderr
 
 
 if __name__ == "__main__":

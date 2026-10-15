@@ -1,4 +1,4 @@
-"""Logging setup: one line per event on stderr, no secrets, level from settings, and the id of the request it
+"""Logging setup: one line per event on stdout or stderr, no secrets, level from settings, and the id of the request it
 belongs to.
 
 Every answer carries ``X-Request-ID``: the one the caller sent (its harmless signs, shortened to what a log line can
@@ -7,7 +7,8 @@ also from the threads the service uses: anyio's threads inherit the context, and
 material reads run in a copy of it (app/concurrency.py; a plain ThreadPoolExecutor does not, audit 2026-09-27,
 TE-03). Outside a request the field is ``-``.
 
-The lines go to stderr: the one-shot commands print their reports on stdout, and a report piped on began with log
+The server and the loops of the updaters log to stdout, as Kubernetes and the platform expect it (Team 6,
+2026-10-14). A one-shot command logs to stderr: it prints its report on stdout, and a report piped on began with log
 lines (logging review of 2026-10-08). Docker keeps both streams.
 """
 
@@ -20,7 +21,7 @@ import sys
 import uuid
 from contextvars import ContextVar
 from datetime import UTC, datetime
-from typing import Any
+from typing import Any, TextIO
 
 from app.tracing import trace_id
 
@@ -99,12 +100,12 @@ class _JsonFormatter(logging.Formatter):
         return json.dumps(event, ensure_ascii=False)
 
 
-def configure_logging(level: str = "INFO", format_: str = "text") -> None:
+def configure_logging(level: str = "INFO", format_: str = "text", *, stream: TextIO | None = None) -> None:
     """Configure the root logger once, as plain lines or with ``format_`` json as JSON lines; repeated calls only
     adjust the level."""
     root = logging.getLogger()
     if not root.handlers:
-        handler = logging.StreamHandler(sys.stderr)
+        handler = logging.StreamHandler(stream or sys.stderr)  # looked up now: a test may swap it
         handler.setFormatter(_JsonFormatter() if format_ == "json" else logging.Formatter(_FORMAT))
         handler.addFilter(_RequestIdFilter())
         root.addHandler(handler)
@@ -136,9 +137,9 @@ def uvicorn_log_config(level: str = "INFO", format_: str = "text") -> dict[str, 
         "formatters": {"line": line},
         "filters": {"request_id": {"()": f"{__name__}._RequestIdFilter"}},
         "handlers": {
-            "stderr": {
+            "stdout": {
                 "class": "logging.StreamHandler",
-                "stream": "ext://sys.stderr",
+                "stream": "ext://sys.stdout",  # the server logs to stdout (Team 6); it prints no report
                 "formatter": "line",
                 "filters": ["request_id"],
             }
@@ -147,5 +148,5 @@ def uvicorn_log_config(level: str = "INFO", format_: str = "text") -> dict[str, 
             UVICORN_LOGGER: {"handlers": [], "propagate": True, "level": "INFO"},
             UVICORN_ACCESS_LOGGER: {"handlers": [], "propagate": False},
         },
-        "root": {"handlers": ["stderr"], "level": level.upper()},
+        "root": {"handlers": ["stdout"], "level": level.upper()},
     }

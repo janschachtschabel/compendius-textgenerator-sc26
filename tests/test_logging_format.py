@@ -6,6 +6,7 @@ event is one line with its time, level, logger, request id and message, the trac
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 import os
@@ -15,7 +16,8 @@ from logging.config import dictConfig
 import pytest
 from uvicorn.config import LOGGING_CONFIG
 
-from app.logging import configure_logging
+from app.cli import log_stream
+from app.logging import configure_logging, uvicorn_log_config
 from app.settings import Settings
 from tests.test_threads_context import in_a_request
 
@@ -222,3 +224,32 @@ def test_an_unknown_log_level_is_refused_at_the_start(monkeypatch: pytest.Monkey
 
     with pytest.raises(ValueError, match="LOG_LEVEL"):
         Settings(_env_file=None)
+
+
+def test_the_server_logs_to_stdout_as_kubernetes_expects_it() -> None:
+    """Team 6, 2026-10-14: "Logs gehen nach stdout". uvicorn's process and its workers take this configuration before
+    the app is built, so every line of the API goes to stdout; a one-shot command keeps stderr for its log."""
+    handler = uvicorn_log_config("INFO", "json")["handlers"]["stdout"]
+
+    assert handler["stream"] == "ext://sys.stdout"
+
+
+def test_a_sidecar_loop_logs_to_stdout_and_a_one_shot_command_to_stderr() -> None:
+    """The loops of the updaters print no report; a one-shot command prints its report on stdout (logging review of
+    2026-10-08)."""
+    assert log_stream(argparse.Namespace(loop=True)) is sys.stdout
+    assert log_stream(argparse.Namespace(loop=False)) is sys.stderr
+    assert log_stream(argparse.Namespace()) is sys.stderr
+
+
+def test_configure_logging_writes_where_it_is_told(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    root = logging.getLogger()
+    monkeypatch.setattr(root, "handlers", [])
+    configure_logging("INFO", "text", stream=sys.stdout)
+    logging.getLogger("app.probe").info("Probe 7")
+
+    written = capsys.readouterr()
+
+    assert "Probe 7" in written.out and "Probe 7" not in written.err

@@ -80,6 +80,7 @@ Update daher:
 | 2.7.0 (D76) | Sätze aus Modellwissen enden nicht mehr sichtbar mit `[Modellwissen]`, weder im Markdown noch im Text der Bausteine: So geht ein fertiger Text an Endkunden. Das Markup kennzeichnet sie weiter (`<!-- f: Evidenzgrad=Modellwissen -->`). Wer den Vermerk braucht, setzt in der Anfrage `"model_knowledge_label": true` (CLI `--model-knowledge-label`, in der Prüfansicht „Vermerk [Modellwissen] im Text zeigen“). Keine Einstellung in der `.env`, keine neue `docker-compose.yml`. |
 | 2.8.0 (D77) | Eine Sammlung in `node_id` bekommt im Kompendium Teil 3 wie mit `collection_id`, wenn das Feld leer ist und die Sammlung im eingestellten Repository liegt; bis dahin stand Teil 3 dann auf `unavailable`. `parts: ["collection"]` mit einem Material in `node_id` ist ein 503 statt eines 422. Die Prüfansicht hat ein Feld „Sammlung oder Material“ statt dreier und liest den Knoten über `GET /api/v2/nodes/{id}` (mit dem eingetragenen Schlüssel). Keine Einstellung in der `.env`, keine neue `docker-compose.yml`. |
 | 2.9.0 (Audit 2026-10-02, D78) | Keine neue Einstellung. `REQUEST_TIMEOUT_S` gilt jetzt auch für die ersten Lesezugriffe aufs Repository (Sammlung und Knoten der Anfrage, Prüfung der Wissens-Sammlung): Hängt das Repository, endet eine Anfrage in der Frist statt nach bis zu drei mal zwei Versuchen à `EDU_SHARING_TIMEOUT_S`. Ein Materialtext hält `KNOWLEDGE_MAX_CHARS` auch im ersten Absatz, eine Zeile über 2.000 Zeichen wird an Satzenden geteilt. Mit Materialien ohne freie Lizenz (frei: gemeinfrei, CC BY, CC BY-SA) nennt der Quellenblock sie und stellt nur den übrigen Text von Teil 1 unter CC BY-SA 4.0; ihr Eintrag und der Baustein tragen keine Facette `Zugang`, `audit.lint` meldet dann `facet-required` für den Quellenbaustein. Die Nebenartikel einer Stufe teilen sich, was `CORPUS_MAX_CHUNKS` lässt: große Themen haben mehr Quellen im Korpus (Deutschland 9 statt 3), gleich viele Absätze. Ein belegter Satz mit einer Zahl, die sein Beleg nicht nennt, gilt als ungestützt (weg oder als Modellwissen). Ein unlesbarer Eintrag im Repository-Cache ist ein Fehltreffer statt eines Fehlers. |
+| Unveröffentlicht (D109) | Eine neue Einstellung, `WLO_CACHE_PATH` (leer: wie bisher `wlo_cache.db` in `STATE_DIR`). Die API und die Updater-Schleifen loggen nach stdout statt stderr; `docker compose logs` zeigt beides wie bisher, nur wer die Ströme getrennt sammelt, merkt es. |
 | 2.21.0 (D108) | Keine neue Einstellung. `x-client-trace-id`, die B3-Header und `traceparent`/`tracestate` einer Anfrage gehen mit `X-Request-ID` unverändert an die b-api und an edu-sharing weiter; JSON-Zeilen nennen die Spur als `trace_id`. |
 | 2.21.0 (D107) | Keine neue Einstellung. `/openapi.json` heißt „Kompendiale Texte“, trägt einen kurzen Text für Endnutzende (`info.summary`), deutsche Kurztitel und eine Beschreibung je Gruppe. Die internen Endpunkte - `/health`, `/ready`, `/metrics`, die Statusendpunkte und die Admin-Pfade - stehen nicht mehr darin und antworten wie bisher; welche Pfade nach außen gehören, steht unter „Erreichbarkeit“. |
 | 2.21.0 (D105, D106) | Eine neue Einstellung mit Vorgabe, `B_API_KEY_SOURCE` (`env`); ohne Eintrag ändert sich nichts. Mit `request` nimmt der Dienst den Schlüssel, den die b-api vom Aufrufer weiterreicht (`Authorization`, sonst `X-API-Key`), und schickt ihn mit den LLM-Aufrufen der Anfrage zurück; `B_API_KEY` gilt dann nur für Anfragen ohne Schlüssel und darf fehlen. Dazu `API_KEYS` leer und `RATE_LIMIT=0`, und der Dienst nur über die b-api erreichbar. Lehnt die b-api den Schlüssel einer Anfrage ab, läuft nur diese ohne LLM weiter (Log: `b-api refused the key of this request`). Ein 402 setzt wie 401 und 403 die Aufrufe mit dem Schlüssel des Dienstes zehn Minuten aus. `/health` nennt unter `components.llm.key` die Quelle und ob `B_API_KEY` gesetzt ist. |
@@ -191,13 +192,15 @@ unter `/alerts` in der Oberfläche von Prometheus.
 
 ## Logs
 
-Jeder Container schreibt sein Log nach stderr, `docker compose logs` zeigt es. Jede Zeile nennt Zeit, Stufe, Prozess-ID,
-Logger, Anfrage-ID (außerhalb einer Anfrage `-`) und Meldung; mit `LOG_FORMAT=json` ist sie ein JSON-Objekt mit `time`
-(UTC), `level`, `pid`, `logger`, `request_id`, `message`, bei Fehlern `exc` mit dem Traceback, und den Feldern des
-Ereignisses. Bringt eine Anfrage `x-client-trace-id` oder B3-Header mit, nennt jede JSON-Zeile sie als `trace_id`; so
-lassen sich die Zeilen aller Dienste nach einer Anfrage filtern, denn die Header gehen mit `X-Request-ID` an die b-api
-und an edu-sharing weiter (D108). `LOG_LEVEL` gilt für die Zeilen des Dienstes und der Updater; die Zeilen von uvicorn
-(Start, Stopp, ein beendeter Worker) bleiben auf `INFO`, `httpx` und `httpcore` schreiben erst ab `WARNING`.
+Die API und die Updater-Schleifen schreiben ihr Log nach stdout, wie Kubernetes es erwartet (D109; bis 2.21.0 nach
+stderr); `docker compose logs` zeigt es. Ein einmaliger Befehl der Kommandozeile schreibt sein Log nach stderr, weil er
+seinen Bericht auf stdout druckt. Jede Zeile nennt Zeit, Stufe, Prozess-ID, Logger, Anfrage-ID (außerhalb einer Anfrage
+`-`) und Meldung; mit `LOG_FORMAT=json` ist sie ein JSON-Objekt mit `time` (UTC), `level`, `pid`, `logger`,
+`request_id`, `message`, bei Fehlern `exc` mit dem Traceback, und den Feldern des Ereignisses. Bringt eine Anfrage
+`x-client-trace-id` oder B3-Header mit, nennt jede JSON-Zeile sie als `trace_id`; so lassen sich die Zeilen aller
+Dienste nach einer Anfrage filtern, denn die Header gehen mit `X-Request-ID` an die b-api und an edu-sharing weiter
+(D108). `LOG_LEVEL` gilt für die Zeilen des Dienstes und der Updater; die Zeilen von uvicorn (Start, Stopp, ein
+beendeter Worker) bleiben auf `INFO`, `httpx` und `httpcore` schreiben erst ab `WARNING`.
 
 | Was | Zeile |
 |---|---|

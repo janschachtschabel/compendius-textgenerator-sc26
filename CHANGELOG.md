@@ -9,7 +9,10 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
-Noch nichts.
+- **Geändert (D109):** Die API und die Updater-Schleifen loggen nach stdout, wie Kubernetes es erwartet; ein einmaliger
+  Befehl der Kommandozeile weiter nach stderr, weil er seinen Bericht auf stdout druckt. Neu `WLO_CACHE_PATH`: der
+  Repository-Cache an einem eigenen Pfad, für mehrere Pods auf einem geteilten Volume ein `emptyDir` je Pod; leer wie
+  bisher `wlo_cache.db` in `STATE_DIR`.
 
 ## 2.21.0 – 2026-10-15
 

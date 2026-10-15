@@ -148,7 +148,7 @@ def test_with_json_logs_uvicorn_s_own_process_writes_json_lines(
 
     logging.getLogger("uvicorn.error").warning("Child process [%d] died", 7)
 
-    [line] = capsys.readouterr().err.splitlines()
+    [line] = capsys.readouterr().out.splitlines()
     assert {key: json.loads(line)[key] for key in ("level", "logger", "message")} == {
         "level": "WARNING",
         "logger": "uvicorn.error",
@@ -165,7 +165,7 @@ def test_with_plain_logs_uvicorn_s_own_process_writes_the_service_s_lines(
 
     logging.getLogger("uvicorn.error").warning("Child process [%d] died", 7)
 
-    [line] = capsys.readouterr().err.splitlines()
+    [line] = capsys.readouterr().out.splitlines()
     assert line.split(" | ")[1:] == ["WARNING ", str(os.getpid()), "uvicorn.error", "-", "Child process [7] died"]
 
 
@@ -192,5 +192,5 @@ def test_uvicorn_names_a_dead_worker_whatever_log_level_says(
     logging.getLogger("uvicorn.error").info("Child process [%d] died", 7)
     logging.getLogger("app.probe").info("not shown")
 
-    written = capsys.readouterr().err
+    written = capsys.readouterr().out
     assert "Child process [7] died" in written and "not shown" not in written

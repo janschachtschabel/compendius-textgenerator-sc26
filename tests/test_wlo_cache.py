@@ -8,6 +8,7 @@ import pytest
 
 from app.main import create_app
 from app.sources.wlo.cache import TtlCache
+from app.wiring import build_collections
 from tests.conftest import make_settings
 
 
@@ -97,3 +98,27 @@ def test_the_sweep_of_expired_entries_uses_an_index(tmp_path: Path) -> None:
         plan = connection.execute("EXPLAIN QUERY PLAN DELETE FROM cache WHERE expires_at <= ?", (0,)).fetchall()
     # Every write sweeps; a full scan would cost time in proportion to the whole cache
     assert "USING INDEX" in " ".join(str(row[-1]) for row in plan), plan
+
+
+def test_the_cache_lives_in_state_dir_unless_a_path_of_its_own_is_set(tmp_path: Path) -> None:
+    """Several pods on one shared volume would write one SQLite file over the network; WLO_CACHE_PATH puts the cache of
+    each pod where it belongs to that pod alone, an emptyDir (Team 6, 5.2; D109)."""
+    shared = make_settings([], tmp_path / "state")
+    own = make_settings([], tmp_path / "state", wlo_cache_path=tmp_path / "pod" / "wlo_cache.db")
+
+    assert shared.collection_cache_path == tmp_path / "state" / "wlo_cache.db"
+    assert own.collection_cache_path == tmp_path / "pod" / "wlo_cache.db"
+
+
+def test_the_repository_cache_is_opened_at_its_own_path(tmp_path: Path) -> None:
+    settings = make_settings(
+        [],
+        tmp_path / "state",
+        edu_sharing_base_url="https://repository.staging.openeduhub.net/edu-sharing/rest",
+        wlo_cache_path=tmp_path / "pod" / "wlo_cache.db",
+    )
+    (tmp_path / "pod").mkdir()
+
+    build_collections(settings)
+
+    assert (tmp_path / "pod" / "wlo_cache.db").exists() and not (tmp_path / "state" / "wlo_cache.db").exists()

@@ -206,6 +206,11 @@ class Settings(BaseSettings):
     edu_sharing_password: str = Field("", description="Optional Basic-Auth password")
     edu_sharing_timeout_s: float = Field(30.0, ge=1.0, description="Timeout per repository request")
     collection_cache_ttl_s: int = Field(3600, ge=0, description="Cache of collection metadata and listings")
+    wlo_cache_path: Path | None = Field(
+        None,
+        description="File of the repository cache; empty: wlo_cache.db in STATE_DIR. Several pods on one shared volume "
+        "give each a path of its own, an emptyDir, so no two write one SQLite file over the network (D109)",
+    )
     collection_max_items: int = Field(0, ge=0, description="Optional cap of listed materials per list; 0 = all (D23)")
     material_text_cache_ttl_s: int = Field(7 * 86_400, ge=0, description="Cache of extracted material texts")
     knowledge_max_materials: int = Field(30, ge=1, le=200, description="Materials read for the knowledge collection")
@@ -452,8 +457,9 @@ class Settings(BaseSettings):
         return Path(self.config_dir) / "subjects.yaml"
 
     @property
-    def wlo_cache_path(self) -> Path:
-        return Path(self.state_dir) / "wlo_cache.db"
+    def collection_cache_path(self) -> Path:
+        """The repository cache: WLO_CACHE_PATH, else wlo_cache.db in STATE_DIR."""
+        return self.wlo_cache_path or Path(self.state_dir) / "wlo_cache.db"
 
     @property
     def llm_fast_section_ids(self) -> list[str]:
