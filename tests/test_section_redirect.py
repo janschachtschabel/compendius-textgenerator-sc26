@@ -12,7 +12,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from libzim.writer import Creator
+from libzim.writer import Creator, Hint
 
 from app.knowledge.resolution import resolve_topic
 from app.sources.zim.archive import ZimArchive
@@ -62,3 +62,20 @@ def test_the_archive_follows_a_section_redirect_only_when_asked(zim: Path) -> No
     assert article is not None and article.title == "Bruchrechnung"
     looping = archive.read_article("Kreisverweis")
     assert looping is not None and looping.title == "Kreisverweis"
+
+
+def test_a_chain_of_redirects_names_the_article_at_its_end(tmp_path: Path) -> None:
+    """libzim's get_item follows the whole chain, the title and path came from its first hop: A -> B -> C read as
+    "B" with the text of C (audit 2026-10-15)."""
+    path = tmp_path / "wikipedia_de_kette_2026-01.zim"
+    html = "<html><head><title>Ziel</title></head><body><p>Der Text des Ziels.</p></body></html>"
+    with Creator(str(path)) as creator:
+        creator.set_mainpath("Ziel")
+        creator.add_item(HtmlItem("Ziel", "Ziel", html))
+        creator.add_redirection("Mitte", "Mitte", "Ziel", {Hint.FRONT_ARTICLE: True})
+        creator.add_redirection("Anfang", "Anfang", "Mitte", {Hint.FRONT_ARTICLE: True})
+
+    article = ZimArchive(path).read("Anfang")
+
+    assert article is not None and (article.title, article.path) == ("Ziel", "Ziel")
+    assert "Der Text des Ziels" in article.html

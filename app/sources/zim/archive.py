@@ -173,8 +173,13 @@ class ZimArchive:
         entry = self._entry(identifier)
         if entry is None:
             return None
-        if entry.is_redirect:
+        # every hop: get_item() follows the whole chain, a single hop named its middle (audit 2026-10-15)
+        for _ in range(MAX_REDIRECTS):
+            if not entry.is_redirect:
+                break
             entry = entry.get_redirect_entry()
+        if entry.is_redirect:  # a chain longer than MAX_REDIRECTS is broken, as for canonical_title
+            return None
         item = entry.get_item()
         if not str(item.mimetype).startswith("text/html"):
             return None
