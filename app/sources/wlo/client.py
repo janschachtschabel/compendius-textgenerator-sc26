@@ -59,6 +59,9 @@ ATTEMPTS = 2  # the repository occasionally drops a connection; the same request
 MAX_ANSWER_BYTES = 32 * 1024 * 1024
 _BODY_EXCERPT = 200
 _DEFAULT_PORTS = {"http": 80, "https": 443}
+# A node the reader may not see counts as not found, a collection as a node does: as collection_id a 403 was a 502,
+# as knowledge_collection_id an entry in the audit, where the same collection as node_id was a 404 (review of D112)
+HIDDEN = (403, 404)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -157,17 +160,17 @@ class EduSharingClient:
 
     def collection(self, collection_id: str, *, remaining: Remaining | None = None) -> CollectionInfo:
         path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}"
-        payload = self._get(path, remaining=remaining)
+        payload = self._get(path, missing=HIDDEN, remaining=remaining)
         if payload is None:
-            raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
+            raise self._collection_not_found(collection_id)
         # the checked id, not the answer's, as for a node: part 3 links the collection by it
         return dataclasses.replace(parse_collection(payload), id=collection_id)
 
     def subcollections(self, collection_id: str, *, remaining: Remaining | None = None) -> list[SubCollection]:
         path = f"/collection/v1/collections/-home-/{validate_node_id(collection_id)}/children/collections"
-        payload = self._get(path, remaining=remaining)
+        payload = self._get(path, missing=HIDDEN, remaining=remaining)
         if payload is None:
-            raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
+            raise self._collection_not_found(collection_id)
         subs = [parse_subcollection(node) for node in json_list(payload.get("collections"), "collections")]
         # its materials are read by its id, which an empty one - or one that is no node id - failed with a
         # ValueError and a 500; a reference without one is left out of a listing too (audit 2026-09-29, A09)
@@ -196,7 +199,7 @@ class EduSharingClient:
         for _page in range(MAX_PAGES):
             params = {"maxItems": size, "skipCount": skip, "propertyFilter": "-all-"}
             try:
-                payload = self._get(path, params, remaining=remaining)
+                payload = self._get(path, params, missing=HIDDEN, remaining=remaining)
             except TimeUpError:
                 if not refs:
                     raise
@@ -205,7 +208,7 @@ class EduSharingClient:
                 )
                 return ReferenceListing(refs, CUT_TIME)
             if payload is None:
-                raise CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden")
+                raise self._collection_not_found(collection_id)
             items = json_list(payload.get("references", payload.get("nodes")), "references")
             known = len(refs)
             for node in items:
@@ -238,10 +241,9 @@ class EduSharingClient:
         see counts as not found. ``remaining`` bounds the read as in ``_get``.
         """
         path = f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/metadata"
-        payload = self._get(path, {"propertyFilter": "-all-"}, missing=(403, 404), remaining=remaining)
+        payload = self._get(path, {"propertyFilter": "-all-"}, missing=HIDDEN, remaining=remaining)
         if payload is None:
-            hidden = "für das Konto des Dienstes nicht sichtbar" if self.has_account else "nicht öffentlich"
-            raise NodeNotFoundError(f"Knoten {node_id} nicht gefunden oder {hidden} in {self.base_url}")
+            raise NodeNotFoundError(f"Knoten {node_id} nicht gefunden oder {self._hidden()} in {self.base_url}")
         if not isinstance(payload.get("node"), dict):
             raise EduSharingError("edu-sharing antwortete ohne Knoten")
         return dataclasses.replace(parse_node(payload), node_id=node_id)  # the checked id, not the answer's
@@ -254,6 +256,15 @@ class EduSharingClient:
         if not payload:
             return ""
         return str(payload.get("text") or payload.get("raw") or "").strip()
+
+    def _hidden(self) -> str:
+        """How a node the reader may not see is described: hidden from the account, or not public."""
+        return "für das Konto des Dienstes nicht sichtbar" if self.has_account else "nicht öffentlich"
+
+    def _collection_not_found(self, collection_id: str) -> CollectionNotFoundError:
+        """Unknown or hidden alike: the collection, its sub-collections and its materials. Without the repository's
+        address, unlike a node's: the message can reach the hint of part 3 in a finished text."""
+        return CollectionNotFoundError(f"Sammlung {collection_id} nicht gefunden oder {self._hidden()}")
 
     def _get(
         self,

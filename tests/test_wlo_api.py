@@ -12,7 +12,7 @@ from app.sources.wlo.cache import TtlCache
 from app.sources.wlo.client import EduSharingClient
 from app.sources.wlo.part import CollectionBuilder
 from tests.conftest import make_settings
-from tests.test_wlo_client import BASE, OPTIK, UNKNOWN, FakeRepository
+from tests.test_wlo_client import BASE, OPTIK, PRIVATE, UNKNOWN, FakeRepository
 
 
 def _client(sample_zims: dict[str, Path], tmp_path: Path, repo: FakeRepository) -> TestClient:
@@ -42,6 +42,22 @@ def test_invalid_and_unknown_collection_ids(sample_zims: dict[str, Path], tmp_pa
         assert client.post("/api/v2/compendium", json={"collection_id": UNKNOWN}).status_code == 404
 
 
+def test_a_collection_hidden_from_the_reader_is_a_404_in_every_field(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """As node_id it was a 404 already; as collection_id a 502 "HTTP 403", as knowledge_collection_id only an entry
+    in the audit (review of D112)."""
+    knowledge = {"topic": "Optik", "knowledge_collection_id": PRIVATE, "parts": ["world"]}
+    with _client(sample_zims, tmp_path, FakeRepository()) as client:
+        answers = [
+            client.get(f"/api/v2/collections/{PRIVATE}/overview"),
+            client.post("/api/v2/compendium", json={"collection_id": PRIVATE}),
+            client.post("/api/v2/compendium", json=knowledge),
+        ]
+    for answer in answers:
+        assert answer.status_code == 404 and "nicht öffentlich" in answer.text, answer.text[:300]
+
+
 def test_compendium_from_a_collection_and_repository_failure(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     with _client(sample_zims, tmp_path, FakeRepository()) as client:
         payload = {"collection_id": OPTIK, "parts": ["world", "collection"]}
@@ -58,7 +74,8 @@ def test_compendium_from_a_collection_and_repository_failure(sample_zims: dict[s
 def test_repository_errors_say_what_failed_once(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     with _client(sample_zims, tmp_path / "a", FakeRepository()) as client:
         missing = client.post("/api/v2/compendium", json={"collection_id": UNKNOWN}).json()["detail"]
-    assert missing == f"Sammlung {UNKNOWN} nicht gefunden"  # "Sammlung nicht gefunden: Sammlung … nicht gefunden"
+    # not "Sammlung nicht gefunden: Sammlung … nicht gefunden"
+    assert missing == f"Sammlung {UNKNOWN} nicht gefunden oder nicht öffentlich"
     with _client(sample_zims, tmp_path / "b", FakeRepository(fail=True)) as client:
         overview = client.get(f"/api/v2/collections/{OPTIK}/overview").json()["detail"]
         compendium = client.post("/api/v2/compendium", json={"collection_id": OPTIK}).json()["detail"]

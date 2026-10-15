@@ -414,8 +414,8 @@ class GenerateRequest(RequestModel):
         None,
         pattern=NODE_ID_PATTERN,
         description="Collection whose materials feed part 1 as sources, whatever their licence (D70), so parts has to "
-        "hold world (else a 422); an unknown one is a 404, as for collection_id, while a failing repository only shows "
-        "in audit.knowledge. By default a material brings its description; its full text comes with "
+        "hold world (else a 422); an unknown or hidden one is a 404, as for collection_id, while a failing repository "
+        "only shows in audit.knowledge. By default a material brings its description; its full text comes with "
         "knowledge_fulltext, the materials of the sub-collections with knowledge_depth. The collection's own "
         "compendium text is never read: this service writes it",
     )

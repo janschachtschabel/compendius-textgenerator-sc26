@@ -144,6 +144,18 @@ def test_errors_are_mapped_and_ids_validated() -> None:
     assert validate_node_id(OPTIK) == OPTIK
 
 
+@pytest.mark.parametrize("read", ["collection", "subcollections", "listing"])
+def test_a_collection_hidden_from_the_reader_is_not_found_and_says_so(read: str) -> None:
+    """A 403 was "HTTP 403" - a 502 as collection_id, only an audit entry as knowledge_collection_id - where the same
+    collection as node_id was a 404 (review of D112). The message names the reader, never the repository."""
+    with pytest.raises(CollectionNotFoundError, match=r"nicht öffentlich$"):
+        getattr(_client(FakeRepository()), read)(PRIVATE)
+    refused = httpx.MockTransport(lambda request: httpx.Response(403, json={"error": "DAOSecurityException"}))
+    account = EduSharingClient(BASE, user="wlo-gast", password="geheim", transport=refused)
+    with pytest.raises(CollectionNotFoundError, match=r"für das Konto des Dienstes nicht sichtbar$"):
+        getattr(account, read)(PRIVATE)
+
+
 def test_error_messages_carry_no_repository_internals(caplog: pytest.LogCaptureFixture) -> None:
     client = _client(FakeRepository())
     with caplog.at_level("DEBUG"), pytest.raises(EduSharingError) as failure:
