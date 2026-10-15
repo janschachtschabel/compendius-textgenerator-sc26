@@ -14,8 +14,9 @@ dependencies = [
     "starlette>=0.46",
     "anyio>=4.0",
     # uvicorn without its extra "standard", which brought watchfiles and websockets as well (audit 2026-09-18,
-    # DEP-02): of it the service uses uvloop, uvicorn's event loop where installed, and httptools for UVICORN_HTTP
-    "uvicorn>=0.35",
+    # DEP-02): of it the service uses uvloop, uvicorn's event loop where installed, and httptools for UVICORN_HTTP.
+    # 0.51: app/serve.py starts the two ports (D110) with Multiprocess(config, sockets), which older ones lack
+    "uvicorn>=0.51",
     "uvloop>=0.15.1; sys_platform != 'win32' and sys_platform != 'cygwin' and platform_python_implementation != 'PyPy'",
     "httptools>=0.8.0",
     "pydantic>=2.11",

@@ -261,7 +261,7 @@ requires-dist = [
     { name = "scikit-learn", specifier = ">=1.6" },
     { name = "spacy", marker = "extra == 'entities'", specifier = ">=3.8" },
     { name = "starlette", specifier = ">=0.46" },
-    { name = "uvicorn", specifier = ">=0.35" },
+    { name = "uvicorn", specifier = ">=0.51" },
     { name = "uvloop", marker = "platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32'", specifier = ">=0.15.1" },
 ]
 provides-extras = ["embeddings", "entities"]
