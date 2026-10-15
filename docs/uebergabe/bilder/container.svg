@@ -10,10 +10,10 @@
 <rect x="24.0" y="112.0" width="160.0" height="80.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="4 3"/>
 <text x="34.0" y="132.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Aufrufende Systeme</text>
 <text x="34.0" y="149.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">und Prüfansicht /ui/</text>
-<text x="34.0" y="166.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">HTTPS, X-API-Key</text>
+<text x="34.0" y="166.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">via b-api, Port 8000</text>
 <rect x="214.0" y="92.0" width="556.0" height="120.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.2"/>
 <text x="224.0" y="112.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">api</text>
-<text x="224.0" y="129.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">FastAPI unter uvicorn, WEB_CONCURRENCY=2 Worker, Port 8000</text>
+<text x="224.0" y="129.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">FastAPI unter uvicorn, 2 Worker; Port 8000 die API, Port 9000 Proben und Metriken</text>
 <text x="224.0" y="146.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Speicher der Prozesse: 2,5 GiB nach dem Start, 3,4 GiB nach dem Aufwärmen</text>
 <text x="224.0" y="163.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">Grenze API_MEMORY: 6g (gemessen mit 4g) · CPU: 2 bis 6 CPU-Sekunden je Anfrage</text>
 <text x="224.0" y="180.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">liest Archive und Indexe; schreibt Sammlungs-Cache und eigene Templates</text>
@@ -35,7 +35,7 @@
 <text x="34.0" y="316.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">monitoring</text>
 <polyline points="184.0,298.0 199.0,298.0 199.0,198.0 208.0,198.0" fill="none" stroke="#52606d" stroke-width="1.5"/>
 <polygon points="214.0,198.0 207.1,202.0 207.1,194.0" fill="#52606d"/>
-<text x="28.0" y="352.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">fragt /metrics alle 30 s</text>
+<text x="28.0" y="352.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">fragt /metrics an Port 9000</text>
 <rect x="214.0" y="262.0" width="160.0" height="72.0" rx="6" fill="#eceef1" stroke="#9aa5b1" stroke-width="1.2"/>
 <text x="224.0" y="282.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="600">Volume zim</text>
 <text x="224.0" y="299.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="normal">14,7 GB Archive</text>

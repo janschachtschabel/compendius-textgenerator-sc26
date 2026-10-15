@@ -22,7 +22,7 @@ securityContext:            # wie docker-compose.yml: kein root, nur lesendes Wu
 tmpEmptyDir: /tmp           # die API schreibt dorthin Metrikdateien und ihre Log-Konfiguration (app/serve.py)
 
 api:
-  replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 6)
+  replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 5.1)
   port: 8000               # die API, über den Ingress (API_PORT, D111)
   internalPort: 9000       # Proben, /metrics, Stand (INTERNAL_PORT, D110); kein Ingress, nur im Cluster
   resources:               # Baseline 29.09.2026 mit zwei Workern (README.md, Ressourcen)

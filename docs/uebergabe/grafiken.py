@@ -172,7 +172,7 @@ def container() -> None:
         112,
         160,
         80,
-        [("Aufrufende Systeme", "title"), ("und Prüfansicht /ui/", "text"), ("HTTPS, X-API-Key", "note")],
+        [("Aufrufende Systeme", "title"), ("und Prüfansicht /ui/", "text"), ("via b-api, Port 8000", "note")],
         "extern",
     )
     box(
@@ -183,7 +183,7 @@ def container() -> None:
         120,
         [
             ("api", "title"),
-            ("FastAPI unter uvicorn, WEB_CONCURRENCY=2 Worker, Port 8000", "text"),
+            ("FastAPI unter uvicorn, 2 Worker; Port 8000 die API, Port 9000 Proben und Metriken", "text"),
             ("Speicher der Prozesse: 2,5 GiB nach dem Start, 3,4 GiB nach dem Aufwärmen", "text"),
             ("Grenze API_MEMORY: 6g (gemessen mit 4g) · CPU: 2 bis 6 CPU-Sekunden je Anfrage", "text"),
             ("liest Archive und Indexe; schreibt Sammlungs-Cache und eigene Templates", "note"),
@@ -206,7 +206,7 @@ def container() -> None:
         "container",
     )
     svg.arrow([(184, 298), (199, 298), (199, 198), (214, 198)])
-    svg.text(28, 352, "fragt /metrics alle 30 s", 10.5, MUTED)
+    svg.text(28, 352, "fragt /metrics an Port 9000", 10.5, MUTED)
     box(
         svg,
         214,

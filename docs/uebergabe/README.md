@@ -1,10 +1,10 @@
 # Übergabe an das Technik-Team
 
-Stand 15.10.2026 · Release 2.21.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
+Stand 15.10.2026 · Release 2.22.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
 Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese drei Seiten
 fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main` und damit
-Release 2.21.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
+Release 2.22.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
 `llm-free`, solange kein LLM eingerichtet ist (D68); seit 2.7.0 endet ein Satz aus Modellwissen nur noch mit
 `"model_knowledge_label": true` sichtbar mit `[Modellwissen]` (D76), und seit 2.8.0 bekommt eine Sammlung in `node_id`
 Teil 3 wie mit `collection_id` (D77); seit 2.9.0 stellt der Quellenblock Teil 1 nur dann ganz unter CC BY-SA 4.0, wenn
@@ -16,14 +16,16 @@ eine Route, die vorab in der b-api angelegt ist (`B_API_PROVIDER=router`, D97), 
 brauchen rund ein Drittel mehr Tokens (D102). Seit 2.21.0 nimmt der Dienst hinter dem Proxy der b-api den Schlüssel des
 Aufrufers (`B_API_KEY_SOURCE=request`, D105), fällt bei einem abgelehnten Schlüssel auf die Regeln zurück (D106), hat
 kein Tagesbudget mehr (D104), beschreibt in `/openapi.json` nur die öffentlichen Endpunkte (D107) und reicht die Spur
-einer Anfrage weiter (D108); die Checkliste des Technik-Teams beantwortet [anforderungen.md](anforderungen.md). Was sich
+einer Anfrage weiter (D108). Seit 2.22.0 loggen API und Sidecars nach stdout, und jeder Pod hält seinen Repository-Cache
+für sich (D109); `/health`, `/ready`, `/metrics` und die Statusendpunkte antworten nur am internen Port 9000 (D110), und
+beide Ports sind einstellbar (D111). Die Fragen des IT-Teams beantwortet [anforderungen.md](anforderungen.md). Was sich
 je Stand für den Betrieb ändert, steht in [docs/betrieb.md](../betrieb.md) unter „Updates“. Die Speichergrenze 6g steht
 in `docker-compose.yml` und gilt mit jedem Image.
 
 | Seite | für wen | Inhalt |
 |---|---|---|
 | diese Seite | Betrieb | Aufbau, Ressourcen mit Lastmessung, Netz, CI im GitLab nach dem Muster der Plattform, Betrieb in Kürze |
-| [Checkliste des Technik-Teams](anforderungen.md) | Team 6 | die Übergabe-Checkliste Punkt für Punkt: OpenAPI, Erreichbarkeit, Header, Antwortzeiten, b-api, Monitoring, Zustand, Ressourcen, Helm, Kosten, offene Punkte; dazu [Beispiel-Values](helm-values.example.yaml) |
+| [Antworten für das IT-Team](anforderungen.md) | Team 6 | jede Frage aus „Übergaben an den Maschinenraum“ und dem Dokument zum durchgereichten Schlüssel, in deren Reihenfolge: OpenAPI, Ports, Header, Antwortzeiten, b-api, Monitoring, Logs, Images, Zustand, Datenbanken, Ressourcen, Helm, Kosten, Wartung, offene Punkte; dazu [Beispiel-Values](helm-values.example.yaml) |
 | [Aufrufe](aufrufe.md) | Entwicklung der aufrufenden Systeme | alter und neuer Aufruf, Profile, die drei Teile, curl-Beispiele, Ausgabe mit jq, weitere Funktionen |
 | [Konfiguration](konfiguration.md) | Betrieb | alle Umgebungsvariablen mit Vorgabe und Empfehlung für den Betrieb |
 
@@ -59,7 +61,7 @@ Archivprofil `standard` (vollständige deutsche Wikipedia ohne Bilder und Klexik
 | RAM | 6 GB | 8 GB | API nach dem Aufwärmen 3,4 GiB, höher stieg sie in 47 Anfragen nicht; Sidecars zusammen rund 0,4 GiB im Leerlauf, beim Bau ihrer Indexe mehr (nicht gemessen); dazu das System |
 | Grenze `API_MEMORY` | `4g` | `6g`, die Vorgabe | 4 GiB trugen alle 47 Anfragen, waren aber mit Seiten-Cache voll; 6g lässt Luft für Spitzen, etwa ein großes `existing_markdown` (bis 13 MB je Anfrage). Seit dem 29.09.2026 die Vorgabe in `docker-compose.yml`, vorher 4g |
 | Platte | 50 GB | 60 GB, SSD | Daten 16,5 GB im Betrieb, mit der Wikipedia-Ausgabe 2026-10 (18,6 GB) rund 20,5 GB; beim Update der Wikipedia liegen altes und neues Archiv 24 Stunden nebeneinander: rund 33 GB beim Wechsel auf 2026-10, bis rund 38 GB bei zwei Ausgaben dieser Größe; dazu System und Docker (D99) |
-| Netz | – | – | eingehend nur der Port der API (8000, besser hinter einem Reverse-Proxy mit TLS); ausgehend siehe [Netz](#netz) |
+| Netz | – | – | eingehend der Port der API (8000, besser hinter einem Reverse-Proxy mit TLS), der interne Port 9000 nur intern; ausgehend siehe [Netz](#netz) |
 
 Mehr gleichzeitige Anfragen: je weiterer Worker (`WEB_CONCURRENCY`) rund 1,7 GiB mehr, also `WEB_CONCURRENCY=3` mit
 `API_MEMORY=8g`, 12 GB RAM und 4 vCPU. Das Archivprofil `compact` (1,4 GB statt 14,7 GB, mit der Wikipedia 2026-10 statt
@@ -146,9 +148,11 @@ python3 docs/uebergabe/lasttest.py --name 5-balanced --preset balanced --api-key
 
 ### Netz
 
-Eingehend: nur der Port der API. Die Vorgabe `API_BIND=0.0.0.0:8000` bindet an alle Schnittstellen, und Docker leitet
-an der Firewall des Hosts vorbei; hinter einem Reverse-Proxy auf dem Host `API_BIND=127.0.0.1:8000` setzen
-([installation.md](../installation.md), Abschnitt 8).
+Eingehend: der Port der API (8000) von den Aufrufern oder der b-api, der interne Port (9000) nur aus dem Cluster oder
+vom Host (Proben, Prometheus). Die Vorgabe `API_BIND=0.0.0.0:8000` bindet an alle Schnittstellen, und Docker leitet an
+der Firewall des Hosts vorbei; hinter einem Reverse-Proxy auf dem Host `API_BIND=127.0.0.1:8000` setzen
+([installation.md](../installation.md), Abschnitt 8). `INTERNAL_BIND` bindet den internen Port nur an den Host
+(`127.0.0.1:9000`).
 
 Ausgehend, alles über HTTPS:
 
