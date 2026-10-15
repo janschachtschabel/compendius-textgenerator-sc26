@@ -27,7 +27,12 @@ UVICORN_LOGGERS = ("uvicorn", "uvicorn.error", "uvicorn.access")
 
 
 def configured(
-    monkeypatch: pytest.MonkeyPatch, *format_: str, uvicorn: bool = False, level: str = "INFO", stream: Any = None
+    monkeypatch: pytest.MonkeyPatch,
+    *format_: str,
+    uvicorn: bool = False,
+    served: bool = False,
+    level: str = "INFO",
+    stream: Any = None,
 ) -> None:
     """configure_logging on a root logger without the handlers pytest gave it, as in production; with ``uvicorn``
     after uvicorn's own logging, as it sets it up in every worker before the app is built. In the test, not in a
@@ -50,6 +55,8 @@ def configured(
     monkeypatch.setattr(logging, "_warnings_showwarning", None)
     if uvicorn:
         dictConfig(LOGGING_CONFIG)
+    if served:  # the workers of python -m app.serve apply the service's own log config, a root handler included
+        dictConfig(uvicorn_log_config(level, *format_))
     configure_logging(level, *format_, stream=stream)
 
 
@@ -270,5 +277,20 @@ def test_a_python_warning_is_a_log_line_in_the_service_s_format(
     warnings.warn("Probe 9", UserWarning, stacklevel=1)
 
     lines = lines_with("Probe 9", capsys)
+
+    assert len(lines) == 1 and json.loads(lines[0])["logger"] == "py.warnings"
+
+
+def test_a_python_warning_is_a_log_line_under_the_service_s_own_log_config(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """In the workers the root has a handler before the app is built, and the warnings were never captured: a raw
+    two-line text on stderr between the JSON lines (audit 2026-10-15)."""
+    configured(monkeypatch, "json", served=True)
+    monkeypatch.setattr(warnings, "filters", [])
+    warnings.warn("Probe 10", UserWarning, stacklevel=1)
+
+    written = capsys.readouterr()
+    lines = [line for line in (written.out + written.err).splitlines() if "Probe 10" in line]
 
     assert len(lines) == 1 and json.loads(lines[0])["logger"] == "py.warnings"

@@ -109,8 +109,9 @@ def configure_logging(level: str = "INFO", format_: str = "text", *, stream: Tex
         handler.setFormatter(_JsonFormatter() if format_ == "json" else logging.Formatter(_FORMAT))
         handler.addFilter(_RequestIdFilter())
         root.addHandler(handler)
-        # A Python warning wrote its own lines to stderr, outside the format: a JSON collector stumbled over them
-        logging.captureWarnings(True)
+    # A Python warning wrote its own lines to stderr, outside the format: a JSON collector stumbled over them. Also
+    # where the service's log config gave the root its handler before, as in every worker (audit 2026-10-15)
+    logging.captureWarnings(True)
     # uvicorn sets up its loggers in every worker before the app is built, with lines of their own: without time,
     # logger or request id, also as text between JSON lines (review of 2026-10-08). They write through the root's
     # handler instead, at INFO whatever LOG_LEVEL says: uvicorn logs a worker that died at INFO
