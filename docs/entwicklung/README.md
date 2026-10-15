@@ -1,9 +1,9 @@
 # Kompendium-Dienst SC26: Entwicklung und Methoden
 
-Stand 09.10.2026 · neuer Dienst Release 2.20.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
+Stand 15.10.2026 · neuer Dienst Release 2.21.0 (`compendious-text-fastapi`, GitHub `compendius-textgenerator-sc26`) ·
 alter Dienst v0.2.0 (`alterCode/compendious`) · was seit v2.0.0 dazukam, steht unter „Die wichtigsten
 Entscheidungen“ und im Entwicklungsweg; die Messwerte der Profile und Funktionen gelten für Release 2.17.0 (M82),
-die der Profile beim zehnfachen Bausteinbudget für Release 2.20.0 (M91)
+die der Profile beim zehnfachen Bausteinbudget für Release 2.21.0 (M91)
 
 Diese Seiten beschreiben, wie der Kompendium-Dienst für das Sommercamp 2026 (SC26) neu gebaut wurde, was vom alten
 Dienst geblieben ist und warum die Verfahren so gewählt sind. Die Messungen vom 23.09. bis 09.10.2026 stehen mit Aufbau

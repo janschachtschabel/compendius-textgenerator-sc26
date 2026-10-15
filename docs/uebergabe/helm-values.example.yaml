@@ -4,7 +4,7 @@
 
 image:
   repository: ghcr.io/janschachtschabel/compendius-textgenerator-sc26
-  tag: "2.21.0"            # das erste Release mit D104 bis D108 (steht aus); in Produktion nie latest
+  tag: "2.21.0"            # das erste Release mit D104 bis D108; in Produktion nie latest
 
 # Für alle Container, wie in Compose die gemeinsame .env
 env:

@@ -9,6 +9,18 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+Noch nichts.
+
+## 2.21.0 – 2026-10-15
+
+Der Dienst hinter dem Proxy der b-api und die Übergabe an das Technik-Team: der Schlüssel des Aufrufers für die
+LLM-Aufrufe (D105), ein klarer Rückfall, wenn die b-api einen Schlüssel ablehnt (D106), kein Tagesbudget mehr (D104),
+`/openapi.json` nur mit den öffentlichen Endpunkten (D107), Tracing nach B3 (D108); dazu M89 bis M91.
+
+- **[Betrieb](docs/betrieb.md#updates):** Eine neue Einstellung, `B_API_KEY_SOURCE` (Vorgabe `env`, ändert nichts), eine
+  entfernte (`LLM_DAILY_TOKEN_BUDGET`, der Start nennt einen alten Eintrag) und eine neue Vorgabe: `RATE_LIMIT` ohne
+  Eintrag 0 statt 60. Die Gauges und Alarme des Tagesbudgets entfallen. Ports und Routing bleiben: ein Port (8000),
+  Vorgabe `B_API_PROVIDER=openai` mit `gpt-6-luna` ohne Route; `docker-compose.yml` ändert nur einen Kommentar.
 - **Neu (D108):** Tracing nach B3: `x-client-trace-id`, die B3-Header und `traceparent`/`tracestate` einer Anfrage gehen
   mit `X-Request-ID` unverändert mit jedem Aufruf an die b-api und an edu-sharing weiter, und jede JSON-Zeile der
   Anfrage nennt `trace_id` (`x-client-trace-id`, sonst die B3-Trace-ID). Werte mit Zeichen, die keine Trace-ID hat,

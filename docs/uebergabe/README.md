@@ -1,10 +1,10 @@
 # Übergabe an das Technik-Team
 
-Stand 09.10.2026 · Release 2.20.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
+Stand 15.10.2026 · Release 2.21.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
 Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese drei Seiten
 fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main` und damit
-Release 2.20.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
+Release 2.21.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
 `llm-free`, solange kein LLM eingerichtet ist (D68); seit 2.7.0 endet ein Satz aus Modellwissen nur noch mit
 `"model_knowledge_label": true` sichtbar mit `[Modellwissen]` (D76), und seit 2.8.0 bekommt eine Sammlung in `node_id`
 Teil 3 wie mit `collection_id` (D77); seit 2.9.0 stellt der Quellenblock Teil 1 nur dann ganz unter CC BY-SA 4.0, wenn
@@ -13,9 +13,12 @@ Sammlung darüber, etwa „Grundlagen (Kernphysik)“ (D92); seit 2.18.0 kann de
 eine Route, die vorab in der b-api angelegt ist (`B_API_PROVIDER=router`, D97), seit 2.18.1 nennt `/health` unter
 `components.llm.reason`, warum das LLM nicht verfügbar ist (D98), und seit 2.19.0 vervielfacht `BLOCK_BUDGET_FACTOR`
 (Vorgabe 10) das Budget jedes Bausteins: Die Texte werden länger, die wörtlichen deutlich, und die schreibenden Profile
-brauchen rund ein Drittel mehr Tokens (D102). Was sich je Stand für den Betrieb ändert, steht in
-[docs/betrieb.md](../betrieb.md) unter „Updates“. Die Speichergrenze 6g steht in `docker-compose.yml` und gilt mit jedem
-Image.
+brauchen rund ein Drittel mehr Tokens (D102). Seit 2.21.0 nimmt der Dienst hinter dem Proxy der b-api den Schlüssel des
+Aufrufers (`B_API_KEY_SOURCE=request`, D105), fällt bei einem abgelehnten Schlüssel auf die Regeln zurück (D106), hat
+kein Tagesbudget mehr (D104), beschreibt in `/openapi.json` nur die öffentlichen Endpunkte (D107) und reicht die Spur
+einer Anfrage weiter (D108); die Checkliste des Technik-Teams beantwortet [anforderungen.md](anforderungen.md). Was sich
+je Stand für den Betrieb ändert, steht in [docs/betrieb.md](../betrieb.md) unter „Updates“. Die Speichergrenze 6g steht
+in `docker-compose.yml` und gilt mit jedem Image.
 
 | Seite | für wen | Inhalt |
 |---|---|---|

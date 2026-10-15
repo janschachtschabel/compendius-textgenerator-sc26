@@ -1,6 +1,6 @@
 # Checkliste des Technik-Teams
 
-Stand 15.10.2026 · `main` nach Release 2.20.0 (D104 bis D108, noch ohne Release)
+Stand 15.10.2026 · Release 2.21.0 (D104 bis D108)
 
 Team 6 hat festgelegt, was ein Dienst bei der Übergabe mitbringen muss („Übergaben an den Maschinenraum“). Diese
 Seite beantwortet die Checkliste Punkt für Punkt und verweist auf die Stellen, an denen es ausführlich steht. Offen
@@ -125,8 +125,6 @@ Gebliebenes steht am Ende.
 
 ## Offene Punkte
 
-- **Release:** D104 bis D108 stehen auf `main`, aber in keinem Image; das erste Release mit ihnen (2.21.0) steht aus.
-  Mit 2.20.0 wirkt `B_API_KEY_SOURCE` nicht, und `RATE_LIMIT` hat dort die Vorgabe 60.
 - **Status der b-api bei erreichtem Limit:** nicht dokumentiert. Der Dienst nimmt 401, 402 und 403 als Ablehnung, beim
   Schlüssel einer Anfrage auch ein 429 nach den möglichen Versuchen; das sollte das Team der b-api bestätigen.
 - **Proxy-Eintrag `compendious-text-generator`:** zeigt womöglich noch auf eine alte Version des Dienstes; vor dem Test
