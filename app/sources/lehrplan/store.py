@@ -180,7 +180,9 @@ class LehrplanStore:
         return self.state == "ok"
 
     def _connect(self) -> sqlite3.Connection:
-        connection = sqlite3.connect(f"{self.path.resolve().as_uri()}?mode=ro", uri=True)
+        # absolute(), not resolve(): on a mapped drive resolve() yields a UNC path, and SQLite refuses its URI (as
+        # LocalIndex, audit 2026-10-15)
+        connection = sqlite3.connect(f"{self.path.absolute().as_uri()}?mode=ro", uri=True)
         connection.row_factory = sqlite3.Row
         return connection
 
