@@ -55,7 +55,9 @@ RESPONSES: dict[int, dict[str, Any]] = {
     400: {"model": Refusal, "description": "Not a plain .zim file name: a path or a hidden file"},
     401: {
         "model": Refusal,
-        "description": "API_KEYS is set, and the header X-API-Key is missing or holds none of them",
+        "description": "API_KEYS is set, and the header X-API-Key is missing or holds none of them; with "
+        "B_API_KEY_SOURCE=request also an Authorization header - or, without API_KEYS, an X-API-Key - that no call to "
+        "the b-api could carry, on every route (D105)",
     },
     403: {"model": Refusal, "description": "Wrong admin token"},
     404: {

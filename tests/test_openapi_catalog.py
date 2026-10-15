@@ -94,3 +94,10 @@ def test_every_internal_endpoint_is_documented_in_the_repository(settings: Setti
     assert {"GET /metrics", "POST /api/v2/zim/sync", "PUT /api/v2/templates/{template_id}"} <= internal
     missing = sorted(endpoint for endpoint in internal if f"`{endpoint}`" not in listed)
     assert not missing, f"not listed in docs/betrieb.md, Erreichbarkeit: {missing}"
+
+
+def test_the_401_names_the_key_of_the_b_api_a_request_brings(schema: dict[str, Any]) -> None:
+    """With B_API_KEY_SOURCE=request an Authorization header no call to the b-api could carry is a 401 as well (D105);
+    the contract named only X-API-Key and API_KEYS (audit 2026-10-15)."""
+    described = schema["paths"]["/api/v2/compendium"]["post"]["responses"]["401"]["description"]
+    assert "Authorization" in described and "B_API_KEY_SOURCE" in described
