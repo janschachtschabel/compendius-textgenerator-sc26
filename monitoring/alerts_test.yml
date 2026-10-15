@@ -9,14 +9,14 @@ tests:
   - name: Verfügbarkeit und LLM
     interval: 1m
     input_series:
-      - series: 'up{job="kompendium", instance="api:8000"}'
+      - series: 'up{job="kompendium", instance="api:9000"}'
         values: "1x10 0x20"
-      - series: 'kompendium_zim_ready{job="kompendium", instance="api:8000"}'
+      - series: 'kompendium_zim_ready{job="kompendium", instance="api:9000"}'
         values: "1 1 0x30"
       # a ready instance beside it: only the not-ready one may fire
-      - series: 'kompendium_zim_ready{job="kompendium", instance="api:8001"}'
+      - series: 'kompendium_zim_ready{job="kompendium", instance="api:9001"}'
         values: "1x30"
-      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
+      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:9000"}'
         values: "1x30"
     alert_rule_test:
       - eval_time: 14m
@@ -43,9 +43,9 @@ tests:
   - name: Fehlerquote
     interval: 1m
     input_series:
-      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", status="200"}'
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", status="200"}'
         values: "0+10x30"
-      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", status="500"}'
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", status="500"}'
         values: "0+1x30"
     alert_rule_test:
       - eval_time: 25m
@@ -59,9 +59,9 @@ tests:
   - name: Alter von Sync und Lehrplan-Cache
     interval: 1d
     input_series:
-      - series: 'kompendium_zim_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000"}'
+      - series: 'kompendium_zim_sync_last_run_timestamp_seconds{job="kompendium", instance="api:9000"}'
         values: "0x45"
-      - series: 'kompendium_lehrplan_cache_harvested_timestamp_seconds{job="kompendium", instance="api:8000"}'
+      - series: 'kompendium_lehrplan_cache_harvested_timestamp_seconds{job="kompendium", instance="api:9000"}'
         values: "0x45"
     alert_rule_test:
       - eval_time: 30d
@@ -89,19 +89,19 @@ tests:
     interval: 1m
     input_series:
       # haengt: läuft laut Statusdatei, schreibt aber seit dem Start nicht mehr (abgestürzt, volles Volume)
-      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="haengt"}'
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:9000", fall="haengt"}'
         values: "1x480"
-      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:8000", fall="haengt"}'
+      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:9000", fall="haengt"}'
         values: "0x480"
       # laeuft: ein langer Download schreibt jede Minute seinen Fortschritt
-      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="laeuft"}'
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:9000", fall="laeuft"}'
         values: "1x480"
-      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:8000", fall="laeuft"}'
+      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:9000", fall="laeuft"}'
         values: "0+60x480"
       # ruht: zwischen zwei Läufen ist die Statusdatei alt, das ist normal
-      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="ruht"}'
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:9000", fall="ruht"}'
         values: "0x480"
-      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:8000", fall="ruht"}'
+      - series: 'kompendium_zim_sync_status_updated_timestamp_seconds{job="kompendium", instance="api:9000", fall="ruht"}'
         values: "0x480"
     alert_rule_test:
       - eval_time: 6h
@@ -118,9 +118,9 @@ tests:
   - name: Fehlerquote beim Erststart (nur /ready meldet 503)
     interval: 1m
     input_series:
-      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="GET", route="/ready", status="503"}'
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:9000", method="GET", route="/ready", status="503"}'
         values: "0+2x30"
-      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="GET", route="/health", status="200"}'
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:9000", method="GET", route="/health", status="200"}'
         values: "0+2x30"
     alert_rule_test:
       - eval_time: 25m
@@ -130,11 +130,11 @@ tests:
   - name: Fehlerquote hinter vielen Proben (die Hälfte der Kompendien scheitert)
     interval: 1m
     input_series:
-      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="GET", route="/health", status="200"}'
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:9000", method="GET", route="/health", status="200"}'
         values: "0+100x30"
-      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", status="200"}'
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", status="200"}'
         values: "0+1x30"
-      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", status="502"}'
+      - series: 'kompendium_http_requests_total{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", status="502"}'
         values: "0+1x30"
     alert_rule_test:
       - eval_time: 25m
@@ -148,11 +148,11 @@ tests:
   - name: LLM nicht erreichbar (alle LLM-Anfragen im Regelmodus)
     interval: 1m
     input_series:
-      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
+      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:9000"}'
         values: "1x40"
-      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", llm_requested="true", llm_used="false"}'
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:9000", llm_requested="true", llm_used="false"}'
         values: "0+2x40"
-      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", llm_requested="true", llm_used="true"}'
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:9000", llm_requested="true", llm_used="true"}'
         values: "5x40"
     alert_rule_test:
       - eval_time: 5m
@@ -169,11 +169,11 @@ tests:
   - name: LLM teilweise erreichbar
     interval: 1m
     input_series:
-      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
+      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:9000"}'
         values: "1x40"
-      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", llm_requested="true", llm_used="false"}'
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:9000", llm_requested="true", llm_used="false"}'
         values: "0+1x40"
-      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", llm_requested="true", llm_used="true"}'
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:9000", llm_requested="true", llm_used="true"}'
         values: "0+1x40"
     alert_rule_test:
       - eval_time: 20m
@@ -183,9 +183,9 @@ tests:
   - name: LLM abgeschaltet (LLM_ENABLED=false)
     interval: 1m
     input_series:
-      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:8000"}'
+      - series: 'kompendium_llm_enabled{job="kompendium", instance="api:9000"}'
         values: "0x40"
-      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", llm_requested="true", llm_used="false"}'
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:9000", llm_requested="true", llm_used="false"}'
         values: "0+2x40"
     alert_rule_test:
       - eval_time: 20m
@@ -195,11 +195,11 @@ tests:
   - name: Langsame Kompendien (alle zwischen 60 und 120 Sekunden)
     interval: 1m
     input_series:
-      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="60"}'
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", le="60"}'
         values: "0x40"
-      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="120"}'
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", le="120"}'
         values: "0+1x40"
-      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="+Inf"}'
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", le="+Inf"}'
         values: "0+1x40"
     alert_rule_test:
       - eval_time: 10m
@@ -216,11 +216,11 @@ tests:
   - name: Schnelle Kompendien (alle unter einer Sekunde)
     interval: 1m
     input_series:
-      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="1"}'
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", le="1"}'
         values: "0+1x40"
-      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="60"}'
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", le="60"}'
         values: "0+1x40"
-      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:8000", method="POST", route="/api/v2/compendium", le="+Inf"}'
+      - series: 'kompendium_http_request_duration_seconds_bucket{job="kompendium", instance="api:9000", method="POST", route="/api/v2/compendium", le="+Inf"}'
         values: "0+1x40"
     alert_rule_test:
       - eval_time: 35m
@@ -230,17 +230,17 @@ tests:
   - name: Datenquellen mit und ohne Fehler
     interval: 1m
     input_series:
-      - series: 'kompendium_zim_sync_last_run_errors{job="kompendium", instance="api:8000", fall="fehler"}'
+      - series: 'kompendium_zim_sync_last_run_errors{job="kompendium", instance="api:9000", fall="fehler"}'
         values: "2x90"
-      - series: 'kompendium_zim_sync_last_run_errors{job="kompendium", instance="api:8000", fall="sauber"}'
+      - series: 'kompendium_zim_sync_last_run_errors{job="kompendium", instance="api:9000", fall="sauber"}'
         values: "0x90"
-      - series: 'kompendium_lehrplan_cache_available{job="kompendium", instance="api:8000", fall="fehler"}'
+      - series: 'kompendium_lehrplan_cache_available{job="kompendium", instance="api:9000", fall="fehler"}'
         values: "0x90"
-      - series: 'kompendium_lehrplan_cache_available{job="kompendium", instance="api:8000", fall="sauber"}'
+      - series: 'kompendium_lehrplan_cache_available{job="kompendium", instance="api:9000", fall="sauber"}'
         values: "1x90"
-      - series: 'kompendium_lehrplan_harvest_failed{job="kompendium", instance="api:8000", fall="fehler"}'
+      - series: 'kompendium_lehrplan_harvest_failed{job="kompendium", instance="api:9000", fall="fehler"}'
         values: "1x90"
-      - series: 'kompendium_lehrplan_harvest_failed{job="kompendium", instance="api:8000", fall="sauber"}'
+      - series: 'kompendium_lehrplan_harvest_failed{job="kompendium", instance="api:9000", fall="sauber"}'
         values: "0x90"
     alert_rule_test:
       - eval_time: 30m
@@ -277,15 +277,15 @@ tests:
   - name: Wikidata-Index fehlt, Wikidata-Sync gescheitert
     interval: 1m
     input_series:
-      - series: 'kompendium_wikidata_index_available{job="kompendium", instance="api:8000", fall="fehler"}'
+      - series: 'kompendium_wikidata_index_available{job="kompendium", instance="api:9000", fall="fehler"}'
         values: "0x150"
-      - series: 'kompendium_wikidata_index_available{job="kompendium", instance="api:8000", fall="sauber"}'
+      - series: 'kompendium_wikidata_index_available{job="kompendium", instance="api:9000", fall="sauber"}'
         values: "1x150"
-      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:8000", fall="fehler"}'
+      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:9000", fall="fehler"}'
         values: "1x150"
-      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:8000", fall="sauber"}'
+      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:9000", fall="sauber"}'
         values: "0x150"
-      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:8000", fall="erholt"}'
+      - series: 'kompendium_wikidata_sync_failed{job="kompendium", instance="api:9000", fall="erholt"}'
         values: "1x80 0x70"
     alert_rule_test:
       - eval_time: 90m
@@ -312,13 +312,13 @@ tests:
   - name: GND-Index fehlt, GND-Sync gescheitert
     interval: 1m
     input_series:
-      - series: 'kompendium_gnd_index_available{job="kompendium", instance="api:8000", fall="fehler"}'
+      - series: 'kompendium_gnd_index_available{job="kompendium", instance="api:9000", fall="fehler"}'
         values: "0x150"
-      - series: 'kompendium_gnd_index_available{job="kompendium", instance="api:8000", fall="sauber"}'
+      - series: 'kompendium_gnd_index_available{job="kompendium", instance="api:9000", fall="sauber"}'
         values: "1x150"
-      - series: 'kompendium_gnd_sync_failed{job="kompendium", instance="api:8000", fall="fehler"}'
+      - series: 'kompendium_gnd_sync_failed{job="kompendium", instance="api:9000", fall="fehler"}'
         values: "1x150"
-      - series: 'kompendium_gnd_sync_failed{job="kompendium", instance="api:8000", fall="erholt"}'
+      - series: 'kompendium_gnd_sync_failed{job="kompendium", instance="api:9000", fall="erholt"}'
         values: "1x80 0x70"
     alert_rule_test:
       - eval_time: 90m
@@ -346,14 +346,14 @@ tests:
     interval: 1d
     input_series:
       # steht: der Sidecar prüft nicht mehr, das Ende seiner letzten Prüfung bleibt stehen
-      - series: 'kompendium_wikidata_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+      - series: 'kompendium_wikidata_sync_last_run_timestamp_seconds{job="kompendium", instance="api:9000", fall="steht"}'
         values: "0x5"
       # prueft: jede tägliche Prüfung schreibt ihr Ende, auch ohne Neubau
-      - series: 'kompendium_wikidata_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000", fall="prueft"}'
+      - series: 'kompendium_wikidata_sync_last_run_timestamp_seconds{job="kompendium", instance="api:9000", fall="prueft"}'
         values: "0+86400x5"
-      - series: 'kompendium_gnd_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+      - series: 'kompendium_gnd_sync_last_run_timestamp_seconds{job="kompendium", instance="api:9000", fall="steht"}'
         values: "0x5"
-      - series: 'kompendium_gnd_sync_last_run_timestamp_seconds{job="kompendium", instance="api:8000", fall="prueft"}'
+      - series: 'kompendium_gnd_sync_last_run_timestamp_seconds{job="kompendium", instance="api:9000", fall="prueft"}'
         values: "0+86400x5"
     alert_rule_test:
       - eval_time: 3d
@@ -381,12 +381,12 @@ tests:
     interval: 1m
     input_series:
       # voll: dauerhaft 1 GiB frei
-      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:8000", volume="state", fall="voll"}'
+      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:9000", volume="state", fall="voll"}'
         values: "1073741824x40"
       # bau: ein Wikidata-Lauf belegt den Platz nur, während er baut (hier 21 Minuten)
-      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:8000", volume="state", fall="bau"}'
+      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:9000", volume="state", fall="bau"}'
         values: "10737418240x10 1073741824x20 10737418240x9"
-      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:8000", volume="zim", fall="frei"}'
+      - series: 'kompendium_volume_free_bytes{job="kompendium", instance="api:9000", volume="zim", fall="frei"}'
         values: "10737418240x40"
     alert_rule_test:
       - eval_time: 29m
@@ -403,9 +403,9 @@ tests:
   - name: LLM-Aufrufe scheitern
     interval: 1m
     input_series:
-      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:8000", endpoint="/api/v2/entities", outcome="failed"}'
+      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:9000", endpoint="/api/v2/entities", outcome="failed"}'
         values: "0+2x40"
-      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:8000", endpoint="/api/v2/entities", outcome="answered"}'
+      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:9000", endpoint="/api/v2/entities", outcome="answered"}'
         values: "5x40"
     alert_rule_test:
       - eval_time: 30m
@@ -419,9 +419,9 @@ tests:
   - name: LLM-Aufrufe teils beantwortet
     interval: 1m
     input_series:
-      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:8000", endpoint="/api/v2/qa", outcome="failed"}'
+      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:9000", endpoint="/api/v2/qa", outcome="failed"}'
         values: "0+2x40"
-      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:8000", endpoint="/api/v2/qa", outcome="answered"}'
+      - series: 'kompendium_llm_calls_total{job="kompendium", instance="api:9000", endpoint="/api/v2/qa", outcome="answered"}'
         values: "0+1x40"
     alert_rule_test:
       - eval_time: 30m
@@ -431,7 +431,7 @@ tests:
   - name: LLM-Anfragen fallen zurück
     interval: 1m
     input_series:
-      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", llm_requested="true", llm_used="false"}'
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:9000", llm_requested="true", llm_used="false"}'
         values: "0+1x90"
     alert_rule_test:
       - eval_time: 20m
@@ -448,9 +448,9 @@ tests:
   - name: LLM-Anfragen ohne Rückfall
     interval: 1m
     input_series:
-      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", llm_requested="true", llm_used="false"}'
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:9000", llm_requested="true", llm_used="false"}'
         values: "3x90"
-      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:8000", llm_requested="true", llm_used="true"}'
+      - series: 'kompendium_compendium_requests_total{job="kompendium", instance="api:9000", llm_requested="true", llm_used="true"}'
         values: "0+1x90"
     alert_rule_test:
       - eval_time: 60m
@@ -460,9 +460,9 @@ tests:
   - name: Zustandswerte unvollständig
     interval: 1m
     input_series:
-      - series: 'kompendium_status_section_failed{job="kompendium", instance="api:8000", section="curricula"}'
+      - series: 'kompendium_status_section_failed{job="kompendium", instance="api:9000", section="curricula"}'
         values: "1x40"
-      - series: 'kompendium_status_section_failed{job="kompendium", instance="api:8000", section="archives"}'
+      - series: 'kompendium_status_section_failed{job="kompendium", instance="api:9000", section="archives"}'
         values: "0x40"
     alert_rule_test:
       - eval_time: 10m
@@ -479,26 +479,26 @@ tests:
   - name: Lebenszeichen der ZIM- und Lehrplan-Sidecars
     interval: 1m
     input_series:
-      - series: 'up{job="kompendium", instance="api:8000"}'
+      - series: 'up{job="kompendium", instance="api:9000"}'
         values: "1x300"
       # steht: die Schleife schreibt nach dem Start kein Lebenszeichen mehr
-      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="steht"}'
         values: "0x300"
-      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="steht"}'
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:9000", fall="steht"}'
         values: "0x300"
       # wartet: eine wartende Schleife schreibt laufend ein neues
-      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="wartet"}'
+      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="wartet"}'
         values: "0+60x300"
-      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="wartet"}'
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:9000", fall="wartet"}'
         values: "0x300"
       # laedt: ein langer Download, die Schleife steckt im Lauf; ob er hängt, sagt KompendiumZimSyncHangs
-      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="laedt"}'
+      - series: 'kompendium_zim_sync_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="laedt"}'
         values: "0x300"
-      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:8000", fall="laedt"}'
+      - series: 'kompendium_zim_sync_running{job="kompendium", instance="api:9000", fall="laedt"}'
         values: "1x300"
-      - series: 'kompendium_lehrplan_harvest_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+      - series: 'kompendium_lehrplan_harvest_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="steht"}'
         values: "0x300"
-      - series: 'kompendium_lehrplan_harvest_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="wartet"}'
+      - series: 'kompendium_lehrplan_harvest_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="wartet"}'
         values: "0+60x300"
     alert_rule_test:
       - eval_time: 3h
@@ -525,7 +525,7 @@ tests:
   - name: Sidecars, die nie ein Lebenszeichen gaben
     interval: 1m
     input_series:
-      - series: 'up{job="kompendium", instance="api:8000"}'
+      - series: 'up{job="kompendium", instance="api:9000"}'
         values: "1x60"
     alert_rule_test:
       - eval_time: 29m
@@ -567,17 +567,17 @@ tests:
   - name: Lebenszeichen der Wikidata- und GND-Sidecars
     interval: 1m
     input_series:
-      - series: 'up{job="kompendium", instance="api:8000"}'
+      - series: 'up{job="kompendium", instance="api:9000"}'
         values: "1x300"
       # steht: die Schleife schreibt nach dem Start kein Lebenszeichen mehr
-      - series: 'kompendium_wikidata_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+      - series: 'kompendium_wikidata_sync_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="steht"}'
         values: "0x300"
       # wartet: eine wartende Schleife schreibt laufend ein neues
-      - series: 'kompendium_wikidata_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="wartet"}'
+      - series: 'kompendium_wikidata_sync_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="wartet"}'
         values: "0+60x300"
-      - series: 'kompendium_gnd_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="steht"}'
+      - series: 'kompendium_gnd_sync_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="steht"}'
         values: "0x300"
-      - series: 'kompendium_gnd_sync_alive_timestamp_seconds{job="kompendium", instance="api:8000", fall="wartet"}'
+      - series: 'kompendium_gnd_sync_alive_timestamp_seconds{job="kompendium", instance="api:9000", fall="wartet"}'
         values: "0+60x300"
     alert_rule_test:
       - eval_time: 3h
