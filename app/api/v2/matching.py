@@ -8,15 +8,16 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
+from app.api.deps import no_unknown_query
 from app.api.gates import GatedRoute
 from app.matching.registry import list_strategies
 
 router = APIRouter(prefix="/api/v2/matching", tags=["matching"], route_class=GatedRoute)
 
 
-@router.get("/strategies", summary="Zuordnungsverfahren auflisten")
+@router.get("/strategies", summary="Zuordnungsverfahren auflisten", dependencies=[Depends(no_unknown_query)])
 def matching_strategies() -> list[dict[str, Any]]:
     """The matching strategies this build offers, with cost and hardware.
 

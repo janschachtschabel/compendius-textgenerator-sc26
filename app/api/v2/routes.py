@@ -13,7 +13,7 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Body, Depends, Header, HTTPException, Path, Request, Response
 
 from app.api.admin import require_admin
-from app.api.deps import get_service
+from app.api.deps import get_service, no_unknown_query
 from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
@@ -212,7 +212,7 @@ def delete_template(
     log.info("template %s deleted", template_id)
 
 
-@router.get("/templates", summary="Templates auflisten")
+@router.get("/templates", summary="Templates auflisten", dependencies=[Depends(no_unknown_query)])
 def list_templates(request: Request) -> list[dict[str, Any]]:
     """The templates this service knows, built-in and custom, with their slot count and version.
 
@@ -236,6 +236,7 @@ def list_templates(request: Request) -> list[dict[str, Any]]:
 @router.get(
     "/templates/{template_id}",
     summary="Template lesen",
+    dependencies=[Depends(no_unknown_query)],
     responses={**refusals(404), 200: {"headers": {"ETag": ETAG_HEADER}}},
 )
 def get_template(

@@ -6,6 +6,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Request
 
+from app.api.deps import no_unknown_query
 from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
@@ -21,7 +22,7 @@ STAGING_COLLECTION = "9e7ae956-e9df-430f-bace-f3db4b910013"  # the collection "O
 @router.get(
     "/{collection_id}/overview",
     summary="Sammlung im Überblick (Teil 3)",
-    dependencies=[Depends(rate_limited), Depends(require_api_key)],
+    dependencies=[Depends(rate_limited), Depends(require_api_key), Depends(no_unknown_query)],
     responses=PROFILE_REFUSALS,
 )
 def collection_overview(

@@ -83,6 +83,24 @@ def test_an_unknown_query_parameter_is_a_422_that_names_it(
     assert "preset" in problem["msg"] or "repository" in problem["msg"], "it names the parameters the route takes"
 
 
+@pytest.mark.parametrize(
+    "path",
+    [
+        f"/api/v2/collections/{NODE}/overview",
+        "/api/v2/templates",
+        "/api/v2/templates/sc26",
+        "/api/v2/matching/strategies",
+    ],
+)
+def test_a_route_without_query_parameters_refuses_one_too(without_repository: TestClient, path: str) -> None:
+    """These ignored any parameter: preset=best-quality on the overview, which takes none, looked as if it applied
+    (audit 2026-10-15)."""
+    answer = without_repository.get(path, params={"preset": "best-quality"})
+    assert answer.status_code == 422, answer.text
+    [problem] = answer.json()["detail"]
+    assert (problem["type"], problem["loc"]) == ("extra_forbidden", ["query", "preset"])
+
+
 @pytest.mark.parametrize("path", ["/api/v2/compendium", "/api/v2/knowledge", "/api/v2/qa"])
 def test_an_unknown_subject_is_a_422_that_lists_the_known_ones(client: TestClient, path: str) -> None:
     """Part 2 searched every subject and the article choice went on without one, and nothing said so."""
