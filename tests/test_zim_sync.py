@@ -451,3 +451,42 @@ def test_a_listed_file_gone_from_disk_gives_way_to_the_one_there(
     assert report.adopted == ["klexikon_de_sample"]
     state = read_active(tmp_path)
     assert state is not None and state.archives["klexikon_de_sample"].file == "klexikon_de_sample_2026-01.zim"
+
+
+def _tear(path: Path) -> None:
+    """Half of the file, as a crash leaves an archive whose pages never reached the disk."""
+    data = path.read_bytes()
+    path.write_bytes(data[: len(data) // 2])
+
+
+def test_an_active_archive_libzim_cannot_open_gives_way_to_one_that_opens(
+    tmp_path: Path, sources: dict[str, Path]
+) -> None:
+    """The sync looked only whether the active file exists: a torn one stayed active, the service not ready, and the
+    run reported nothing until the next dump (audit 2026-10-15)."""
+    active = _install(tmp_path, sources, "klexikon_de_sample_2026-08.zim")
+    _sync(tmp_path, None, FakeDownloader(sources)).run(COMPACT)
+    _tear(active)
+    _install(tmp_path, sources, "klexikon_de_sample_2026-01.zim")
+
+    report = _sync(tmp_path, None, FakeDownloader(sources)).run(COMPACT)
+
+    assert report.adopted == ["klexikon_de_sample"]
+    assert [e for e in report.errors if "klexikon_de_sample_2026-08.zim" in e] != []
+    state = read_active(tmp_path)
+    assert state is not None and state.archives["klexikon_de_sample"].file == "klexikon_de_sample_2026-01.zim"
+
+
+def test_a_torn_active_archive_is_fetched_again_from_the_catalog(tmp_path: Path, sources: dict[str, Path]) -> None:
+    active = _install(tmp_path, sources, "klexikon_de_sample_2026-08.zim")
+    _sync(tmp_path, None, FakeDownloader(sources)).run(COMPACT)
+    _tear(active)
+    catalog = FakeCatalog({"klexikon_de_sample": "klexikon_de_sample_2026-08.zim"}, sources)
+    downloader = FakeDownloader(sources)
+
+    report = _sync(tmp_path, catalog, downloader).run(BOOTSTRAP)
+
+    assert "klexikon_de_sample" in report.downloaded
+    assert active.read_bytes() == sources["klexikon_de_sample_2026-08.zim"].read_bytes()
+    state = read_active(tmp_path)
+    assert state is not None and state.archives["klexikon_de_sample"].file == "klexikon_de_sample_2026-08.zim"

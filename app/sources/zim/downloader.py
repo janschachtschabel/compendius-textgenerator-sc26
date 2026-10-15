@@ -21,6 +21,7 @@ from typing import Any
 
 import httpx
 
+from app.sources.local_index import to_disk
 from app.sources.zim.catalog import USER_AGENT
 
 log = logging.getLogger(__name__)
@@ -209,6 +210,9 @@ class Downloader:
             part.unlink()
             label = _HASH_LABELS.get(self.hash_name, self.hash_name)
             raise DownloadError(f"{label} mismatch for {file_name}: expected {digest}, got {got}; .part removed")
+        # on the disk before it takes its name: a crash right after left a whole-looking file with pages never
+        # written, which the sync took for active (audit 2026-10-15)
+        to_disk(part)
         os.replace(part, target)
         if progress:
             progress(transfer.progress)

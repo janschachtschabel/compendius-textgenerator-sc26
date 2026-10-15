@@ -285,3 +285,17 @@ def test_a_download_says_where_it_starts_how_it_goes_and_how_it_ends(
     assert lines[0].startswith(f"{FILE}: downloading") and "lb.download.kiwix.org" in lines[0]
     assert [line.split(" %")[0] for line in lines[1:-1]] == [f"{FILE}: {tenth}" for tenth in range(10, 100, 10)]
     assert lines[-1].startswith(f"{FILE}: downloaded and verified")
+
+
+def test_the_download_is_on_the_disk_before_it_takes_its_name(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """A crash right after the rename left a whole-looking archive with pages never written (audit 2026-10-15)."""
+    import app.sources.zim.downloader as downloader
+
+    order: list[str] = []
+    replace = downloader.os.replace
+    monkeypatch.setattr(downloader, "to_disk", lambda path: order.append(f"sync {Path(path).name}"))
+    monkeypatch.setattr(downloader.os, "replace", lambda a, b: (order.append(f"rename {Path(a).name}"), replace(a, b)))
+
+    _downloader(_server(BLOB, [])).download(URL, tmp_path, digest=SHA, size=len(BLOB))
+
+    assert order == [f"sync {FILE}.part", f"rename {FILE}.part"]

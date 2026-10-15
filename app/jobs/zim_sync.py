@@ -245,12 +245,20 @@ class ZimSync:
         lists: a generation retired before stayed on the volume for good (audit 2026-09-29, Q2).
         """
         current = state.archives.get(sub.id)
+        broken = ""
         if current is not None:
             if (self._zim_dir / current.file).exists():
-                return
-            log.warning("%s listed in active.json but missing on disk; dropping it", current.file)
+                try:
+                    ZimArchive(self._zim_dir / current.file)
+                    return
+                except Exception as exc:  # torn by a crash or a damaged disk: it never opens again (audit 2026-10-15)
+                    report.errors.append(f"{sub.id}: cannot open the active {current.file}, dropping it: {exc}")
+                    broken = current.file
+            else:
+                log.warning("%s listed in active.json but missing on disk; dropping it", current.file)
             del state.archives[sub.id]
-        candidates = [p for p in self._zim_dir.glob("*.zim") if sub.matches_file(p.name)]
+        # the broken one stays on disk: a download of the same dump replaces it
+        candidates = [p for p in self._zim_dir.glob("*.zim") if sub.matches_file(p.name) and p.name != broken]
         # the newest that opens: a newest file libzim cannot read decided alone and left none (audit 2026-09-28, KO-24)
         for path in sorted(candidates, key=lambda p: dump_date(p.name), reverse=True):
             try:
