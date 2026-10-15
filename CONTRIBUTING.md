@@ -6,7 +6,7 @@ stehen in [CLAUDE.md](CLAUDE.md); was der Dienst kann, im [README](README.md); w
 
 ## Einrichten
 
-Python 3.13 und [uv](https://docs.astral.sh/uv/) in der Version, die CI und Image nutzen (0.12.19; ein Test hält die
+Python 3.13 und [uv](https://docs.astral.sh/uv/) in der Version, die CI und Image nutzen (0.13.0; ein Test hält die
 Angaben in `Dockerfile`, CI und GitLab gleich):
 
 ```bash
@@ -28,7 +28,7 @@ uv run ruff check . && uv run ruff format --check .
 uv run mypy app scripts tests
 ```
 
-- Abhängigkeiten geändert: `uvx --from 'uv==0.12.19' uv lock --check`. Die CI installiert mit `--frozen` und prüft
+- Abhängigkeiten geändert: `uvx --from 'uv==0.13.0' uv lock --check`. Die CI installiert mit `--frozen` und prüft
   die Laufzeitpakete mit `pip-audit`.
 - Antworten der API geändert, die die Prüfansicht liest: `UI_ANSWERS=write uv run pytest tests/test_ui_answers.py`
   schreibt `tests/ui/answers` neu; danach zeigen die Node-Tests, ob die Seite sie noch liest.
@@ -96,7 +96,7 @@ danebengestellt.
 
 Ein Release X.Y.Z:
 
-1. Version in `pyproject.toml` und `app/__init__.py`, dann `uvx --from 'uv==0.12.19' uv lock`
+1. Version in `pyproject.toml` und `app/__init__.py`, dann `uvx --from 'uv==0.13.0' uv lock`
    (`tests/test_version.py` verlangt dieselbe Version an allen drei Stellen).
 2. `CHANGELOG.md`: der Abschnitt „Unveröffentlicht“ wird „X.Y.Z – Datum“; dazu der Absatz im README („Stand“), die
    Zeile in `docs/betrieb.md` („Updates“) und die Versionsangaben in `docs/installation.md` und `docs/uebergabe/`.

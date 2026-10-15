@@ -30,6 +30,10 @@ def uv_pins() -> dict[str, list[str]]:
         pins[workflow] = re.findall(r"astral-sh/setup-uv@\S+.*\n\s+with:\n\s+version: \"([\d.]+)\"", text)
     gitlab = yaml.safe_load((ROOT / ".gitlab-ci.yml").read_text(encoding="utf-8"))
     pins[".gitlab-ci.yml"] = re.findall(r"^ghcr\.io/astral-sh/uv:([\d.]+)-", gitlab["default"]["image"])
+    # the release steps lock with it: an older uv there locked unlike CI and the image (audit 2026-10-15)
+    contributing = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
+    pins["CONTRIBUTING.md"] = re.findall(r"uv==(\d+\.\d+\.\d+)|\((\d+\.\d+\.\d+); ein Test", contributing)
+    pins["CONTRIBUTING.md"] = [one or other for one, other in pins["CONTRIBUTING.md"]]
     return pins
 
 

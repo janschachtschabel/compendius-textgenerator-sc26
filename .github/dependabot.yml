@@ -35,7 +35,7 @@ updates:
     groups:
       actions:
         patterns: ["*"]
-  # Dependabot schreibt das Lockfile in Revision 3, wie uv 0.12.19 in CI und Image (am 2026-09-28 geprueft: lock
+  # Dependabot schreibt das Lockfile in Revision 3, wie uv in CI und Image (0.12.19 am 2026-09-28 geprueft, lock
   # --check gelingt). Monatlich, weil jede Aenderung die ganze Suite durchlaufen muss.
   - package-ecosystem: uv
     directory: "/"
