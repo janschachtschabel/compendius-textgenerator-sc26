@@ -91,3 +91,19 @@ def test_gitlab_builds_with_the_buildkit_github_pins() -> None:
     created = re.findall(r"--driver-opt image=(\S+)", " ".join(gitlab["docker build"]["script"]))
 
     assert len(github) == 1 and created == list(github), (github, created)
+
+
+def test_no_checkout_leaves_the_job_token_in_the_repository() -> None:
+    """actions/checkout keeps the token in .git/config for the whole job, in the publish job with packages: write,
+    readable by every step after it - the build and the smoke test included (audit 2026-10-15)."""
+    for workflow in WORKFLOWS:
+        jobs = yaml.safe_load((ROOT / ".github" / "workflows" / workflow).read_text(encoding="utf-8"))["jobs"]
+        checkouts = [
+            step
+            for job in jobs.values()
+            for step in job["steps"]
+            if str(step.get("uses", "")).startswith("actions/checkout@")
+        ]
+        assert checkouts, workflow
+        for step in checkouts:
+            assert (step.get("with") or {}).get("persist-credentials") is False, workflow
