@@ -3,6 +3,7 @@
 import gzip
 import hashlib
 import logging
+import os
 from collections.abc import Callable, Iterator
 from pathlib import Path
 
@@ -289,12 +290,18 @@ def test_a_download_says_where_it_starts_how_it_goes_and_how_it_ends(
 
 def test_the_download_is_on_the_disk_before_it_takes_its_name(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """A crash right after the rename left a whole-looking archive with pages never written (audit 2026-10-15)."""
-    import app.sources.zim.downloader as downloader
-
     order: list[str] = []
-    replace = downloader.os.replace
-    monkeypatch.setattr(downloader, "to_disk", lambda path: order.append(f"sync {Path(path).name}"))
-    monkeypatch.setattr(downloader.os, "replace", lambda a, b: (order.append(f"rename {Path(a).name}"), replace(a, b)))
+    replace = os.replace
+
+    def synced(path: Path) -> None:
+        order.append(f"sync {Path(path).name}")
+
+    def renamed(source: Path, target: Path) -> None:
+        order.append(f"rename {Path(source).name}")
+        replace(source, target)
+
+    monkeypatch.setattr("app.sources.zim.downloader.to_disk", synced)
+    monkeypatch.setattr(os, "replace", renamed)
 
     _downloader(_server(BLOB, [])).download(URL, tmp_path, digest=SHA, size=len(BLOB))
 
