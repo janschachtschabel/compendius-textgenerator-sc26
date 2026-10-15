@@ -9,10 +9,44 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+Noch nichts.
+
+## 2.23.0 – 2026-10-15
+
+Das Gastkonto der WLO auch für Knoten (D112) und die Korrekturen aus dem Audit vom 15.10.2026
+([Bericht](docs/audits/2026-10-15-audit.md): kein kritischer und kein schwerer Befund, alle mittleren behoben).
+
+- **[Betrieb](docs/betrieb.md#updates):** Keine neue Einstellung. Der Start lehnt `EDU_SHARING_BASE_URL` mit
+  Zugangsdaten in der Adresse ab (`https://name:passwort@…`); sie gehören in `EDU_SHARING_USER` und
+  `EDU_SHARING_PASSWORD`. Vor dem Update prüfen, dass die Adresse keine enthält.
 - **Geändert (D112):** Mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`, etwa einem Gastkonto der WLO, liest der Dienst
   auch Knoten (`node_id` in allen Endpunkten, `GET /api/v2/nodes/{id}`) und den Themenbaum einer Sammlung mit dem Konto:
   Sammlungen, die nicht öffentlich sind, bekommen ein Kompendium. Ohne Zugangsdaten wie bisher anonym; andere
   Repositorys aus `EDU_SHARING_REPOSITORIES` immer ohne Zugangsdaten.
+- **Geändert:** Eine Sammlung, die der Dienst nicht sehen darf (HTTP 403), ist in jedem Feld ein 404 wie als `node_id`;
+  als `collection_id` war sie ein 502 „HTTP 403“. Verweigert edu-sharing nach der Prüfung nur die Materialliste der
+  Wissens-Sammlung, steht das im Audit, und das Kompendium kommt trotzdem.
+- **Neu:** `/health` zeigt unter `components.edu_sharing.account`, ob ein Konto gesetzt ist. Falsche Zugangsdaten geben
+  den Text „edu-sharing lehnt die Zugangsdaten des Dienstes ab“, das Log nennt `EDU_SHARING_USER`; die Prüfansicht
+  zeigt den Grund. Der Start warnt bei `EDU_SHARING_PASSWORD` ohne Benutzer und bei einem Konto über `http://`.
+- **Geändert:** Der Überblick einer Sammlung, die Templates und `GET /api/v2/matching/strategies` antworten auf einen
+  unbekannten Query-Parameter mit 422, wie die Lehrplansuche und die Knotenvorschau (S10).
+- **Behoben (D106):** Eine Antwort an den Schlüssel eines Aufrufers hebt die zehnminütige Sperre des abgelehnten
+  Dienstschlüssels nicht mehr auf, und eine Routensperre mit dem Schlüssel eines Aufrufers (kein Preis, keine
+  Chat-Modelle, kein Deployment mehr) trifft nur diese Anfrage, nicht alle; trifft der Schlüssel des Dienstes sie,
+  behalten Anfragen mit eigenem Schlüssel das LLM.
+- **Behoben:** Ein ZIM-Download ist auf der Platte, bevor er seinen Namen bekommt; ein aktives Archiv, das sich nicht
+  mehr öffnen lässt, meldet der Sync und ersetzt es. `DELETE /api/v2/zim/{datei}` wartet mit 409 auf einen laufenden
+  Sync. Eine Weiterleitungskette im Archiv nennt den Titel ihres Ziels; eine mit mehr als drei Sprüngen gilt als kaputt.
+- **Behoben:** Ein Anführungszeichen im Thema hält die Frontmatter heil; ein geprüfter Block behält Text nach einer
+  eigenen `## `-Überschrift; der Ursprungsort einer übernommenen Quelle steht maskiert im Quellenblock.
+- **Behoben:** Der Körper einer Antwort von edu-sharing und b-api hat dieselbe Zeit wie ein Lesevorgang, nicht mehr
+  beliebig viele (F15). `/entities` liest `node_id` innerhalb von `REQUEST_TIMEOUT_S`. Hinter `UVICORN_ROOT_PATH`
+  gelten Größengrenze und Anfrage-Log wie ohne. Python-Warnungen kommen im Format des Logs.
+- **Behoben:** Verschachtelte LaTeX-Umgebungen behalten ihre Zellen; eine zu tief verschachtelte Formel im Archiv
+  fällt weg, statt den ganzen Artikel scheitern zu lassen.
+- **Abhängigkeiten und CI:** uvicorn ab 0.51, wie `app/serve.py` es braucht; die Checkouts der CI behalten keinen
+  Token; CONTRIBUTING sperrt mit uv 0.13.0.
 
 ## 2.22.0 – 2026-10-15
 
