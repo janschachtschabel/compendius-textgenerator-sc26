@@ -105,7 +105,7 @@ EXPOSE 8000 9000
 # Gelingt eine Probe frueher, gilt der Container sofort als healthy; die Frist verschiebt nur das Urteil
 # unhealthy fuer einen Container, der nie hochkommt. Mit 30 s stand er nach jedem Start minutenlang auf unhealthy.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=600s --retries=3 \
-    CMD ["python", "-c", "import os, sys, urllib.request; p = os.environ.get('INTERNAL_PORT', '').strip() or '9000'; p = (os.environ.get('API_PORT', '').strip() or '8000') if p == '0' else p; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:' + p + '/health', timeout=3).status == 200 else 1)"]
+    CMD ["python", "-c", "import os, sys, urllib.request; port = lambda name, default: int(os.environ.get(name, '').strip() or default); p = port('INTERNAL_PORT', 9000) or port('PUBLIC_PORT', 8000); sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:%d/health' % p, timeout=3).status == 200 else 1)"]
 # API-Prozess (app/serve.py): legt PROMETHEUS_MULTIPROC_DIR an (Standard /tmp/prometheus), loescht darin nur die
 # Metrik-Dateien eines frueheren Laufs. Mit INTERNAL_PORT (Vorgabe 9000, D110) bindet er beide Ports, bleibt der
 # Hauptprozess und fuehrt die Worker ueber uvicorns eigenen Supervisor, der SIGTERM wie die Kommandozeile an die

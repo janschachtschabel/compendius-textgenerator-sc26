@@ -38,7 +38,7 @@ def test_the_start_listens_on_api_port(tmp_path: Path, monkeypatch: pytest.Monke
     """A second service on the same host takes other ports (Jan, 2026-10-15)."""
     monkeypatch.delenv("PROMETHEUS_MULTIPROC_DIR", raising=False)
     monkeypatch.setattr(serve, "DEFAULT_DIR", str(tmp_path / "metrics"))
-    monkeypatch.setenv("API_PORT", "8123")
+    monkeypatch.setenv("PUBLIC_PORT", "8123")
     get_settings.cache_clear()
     calls: list[list[str]] = []
     monkeypatch.setattr(os, "execvpe", lambda file, args, env: calls.append(args))

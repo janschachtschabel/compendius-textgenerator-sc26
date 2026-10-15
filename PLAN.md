@@ -2443,11 +2443,13 @@ API.
   Host-Header. `INTERNAL_PORT=0` lässt alles am Port 8000 wie bis 2.21.0; Folge für Hostinger: `/health` von außen
   antwortet mit 404, der Docker-Healthcheck fragt im Container weiter.
 - **D111 (2026-10-15)** Beide Ports sind Einstellungen (Jan: „es kann sein das ich mehrere api mit internen port auf
-  einem system betreibe“). `API_PORT` kommt neben `INTERNAL_PORT`; die beiden dürfen nicht gleich sein. Mit Docker
+  einem system betreibe“). `PUBLIC_PORT` kommt neben `INTERNAL_PORT`; die beiden dürfen nicht gleich sein. Mit Docker
   trennen die Host-Ports (`API_BIND`, `INTERNAL_BIND`) mehrere Dienste, denn jeder Container hat eigene Ports; die
   Einstellungen braucht, wer ohne Container oder im Netz des Hosts startet. In `docker-compose.yml` folgt der
   Container-Port der API dem Wert, der interne bleibt 9000: Compose nimmt keinen Container-Port 0 an, und 0 ist der
-  Wert, der den internen Port abschaltet.
+  Wert, der den internen Port abschaltet. Der Name ist `PUBLIC_PORT`, nicht `API_PORT`: Kubernetes setzt
+  `API_PORT=tcp://…` in jeden Pod eines Namespace mit einem Service namens `api` (Service-Links), und der Start aller
+  Container scheiterte daran (Review vom 15.10.2026).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

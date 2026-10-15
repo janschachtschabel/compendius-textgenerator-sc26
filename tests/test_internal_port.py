@@ -88,17 +88,30 @@ def test_the_port_is_on_by_default_and_never_the_public_one() -> None:
         Settings(_env_file=None, internal_port=8000)
 
 
+def test_a_kubernetes_service_link_does_not_reach_the_ports(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Kubernetes puts API_PORT=tcp://10.0.0.7:8000 into every pod of a namespace with a Service named api (service
+    links); a setting of that name stopped all five containers at their start (review of D111)."""
+    monkeypatch.setenv("API_PORT", "tcp://10.0.0.7:8000")
+    monkeypatch.setenv("API_SERVICE_PORT", "8000")
+
+    settings = Settings(_env_file=None)
+
+    assert (settings.public_port, settings.internal_port) == (8000, INTERNAL)
+
+
 def test_both_ports_are_settings_so_several_services_share_a_host() -> None:
     """Jan, 2026-10-15: several APIs with an internal port may run on one system. Outside a container each needs ports
     of its own; the two only must not be the same."""
-    assert Settings(_env_file=None).api_port == 8000
-    assert Settings(_env_file=None, api_port=8100, internal_port=9100).internal_port == 9100
-    assert Settings(_env_file=None, api_port=8100, internal_port=8000).internal_port == 8000  # free once the API moved
-    assert Settings(_env_file=None, api_port=8100, internal_port=0).internal_port == 0
+    assert Settings(_env_file=None).public_port == 8000
+    assert Settings(_env_file=None, public_port=8100, internal_port=9100).internal_port == 9100
+    assert (
+        Settings(_env_file=None, public_port=8100, internal_port=8000).internal_port == 8000
+    )  # free once the API moved
+    assert Settings(_env_file=None, public_port=8100, internal_port=0).internal_port == 0
     with pytest.raises(ValueError, match="INTERNAL_PORT"):
-        Settings(_env_file=None, api_port=8100, internal_port=8100)
-    with pytest.raises(ValueError, match="api_port"):
-        Settings(_env_file=None, api_port=0)
+        Settings(_env_file=None, public_port=8100, internal_port=8100)
+    with pytest.raises(ValueError, match="public_port"):
+        Settings(_env_file=None, public_port=0)
 
 
 def free_port() -> int:
@@ -171,7 +184,7 @@ def test_with_the_internal_port_the_start_serves_both_ports_itself(
         monkeypatch.delenv(name)
     monkeypatch.setattr(serve, "DEFAULT_DIR", str(tmp_path / "metrics"))
     monkeypatch.setenv("INTERNAL_PORT", "9123")
-    monkeypatch.setenv("API_PORT", "8123")
+    monkeypatch.setenv("PUBLIC_PORT", "8123")
     monkeypatch.setenv("WEB_CONCURRENCY", "")
     monkeypatch.setattr(os, "execvpe", lambda *args: pytest.fail("no exec with the internal port"))
     started: list[tuple[list[str], int]] = []

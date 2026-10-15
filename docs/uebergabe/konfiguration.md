@@ -59,7 +59,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `ADMIN_TOKEN` | leer | **gesetzt** | schützt die Admin-Endpunkte (ZIM-Sync, Harvest, Templates schreiben), mindestens 16 Zeichen; leer schaltet sie ab |
 | `METRICS_TOKEN` | leer | **gesetzt** | verlangt `Authorization: Bearer <Token>` für `/metrics`; leer ist `/metrics` offen |
 | `METRICS_ENABLED` | `true` | wie Vorgabe | `/metrics` für Prometheus ausliefern |
-| `API_PORT` | `8000` | wie Vorgabe; ohne Container je Dienst ein eigener | Port der API; mehrere Dienste auf einem Host trennen sonst `API_BIND` und `INTERNAL_BIND` (D111) |
+| `PUBLIC_PORT` | `8000` | wie Vorgabe; ohne Container je Dienst ein eigener | Port der API; mehrere Dienste auf einem Host trennen sonst `API_BIND` und `INTERNAL_BIND` (D111) |
 | `INTERNAL_PORT` | `9000` | wie Vorgabe | Port für `/health`, `/ready`, `/metrics` und die Statusendpunkte; am Port der API antworten sie mit 404. `0`: alles am Port der API wie bis 2.21.0 (D110) |
 | `API_DOCS_ENABLED` | `true` | wie Vorgabe | `/docs`, `/redoc` und `/openapi.json`; die Seiten laden Swagger UI und ReDoc von cdn.jsdelivr.net |
 | `UI_ENABLED` | `false` | **`true`, nur mit `API_KEYS`** | Prüfansicht `/ui/` für die Redaktion; sie fragt mit dem Schlüssel, den der Leser einträgt |

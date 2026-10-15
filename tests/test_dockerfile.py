@@ -64,15 +64,16 @@ def healthcheck_code() -> str:
         ({"INTERNAL_PORT": ""}, "9000"),
         ({"INTERNAL_PORT": "9100"}, "9100"),
         ({"INTERNAL_PORT": "0"}, "8000"),
-        ({"INTERNAL_PORT": "0", "API_PORT": "8100"}, "8100"),
-        ({"INTERNAL_PORT": "9100", "API_PORT": "8100"}, "9100"),
+        ({"INTERNAL_PORT": "00"}, "8000"),  # Settings reads a number: 00 switches the port off as 0 does
+        ({"INTERNAL_PORT": "0", "PUBLIC_PORT": "8100"}, "8100"),
+        ({"INTERNAL_PORT": "9100", "PUBLIC_PORT": "8100"}, "9100"),
     ],
 )
 def test_the_healthcheck_asks_the_port_where_health_answers(
     monkeypatch: pytest.MonkeyPatch, environment: dict[str, str], port: str
 ) -> None:
     """/health answers on the internal port, with INTERNAL_PORT=0 on the API's (D110); both ports are settings."""
-    for name in ("INTERNAL_PORT", "API_PORT"):
+    for name in ("INTERNAL_PORT", "PUBLIC_PORT"):
         monkeypatch.delenv(name, raising=False)
     for name, value in environment.items():
         monkeypatch.setenv(name, value)

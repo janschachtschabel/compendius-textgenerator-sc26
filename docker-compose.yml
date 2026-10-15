@@ -62,7 +62,7 @@ services:
       # veroeffentlichten Port nicht: Docker leitet an ihr vorbei. Oeffentlich also API_KEYS und
       # METRICS_TOKEN setzen (docs/installation.md, Abschnitt 8); ein Reverse-Proxy auf dem Host
       # braucht API_BIND=127.0.0.1:8000 und FORWARDED_ALLOW_IPS auf das Gateway des Compose-Netzes.
-      - "${API_BIND:-0.0.0.0:8000}:${API_PORT:-8000}"
+      - "${API_BIND:-0.0.0.0:8000}:${PUBLIC_PORT:-8000}"
       # Der interne Port (D110): /health, /ready, /metrics und der Stand der Archive und Lehrpläne antworten nur
       # hier. Gebunden nur an den Host selbst: Prometheus im Compose-Netz erreicht ihn als api:9000, wer auf dem
       # Host ist, mit curl 127.0.0.1:9000/health; von außen niemand. INTERNAL_BIND ändert die Bindung.

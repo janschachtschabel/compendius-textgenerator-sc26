@@ -26,7 +26,7 @@ from uvicorn.main import main as uvicorn_cli
 from uvicorn.supervisors import Multiprocess
 
 from app.logging import uvicorn_log_config
-from app.settings import PUBLIC_PORT, get_settings
+from app.settings import DEFAULT_PUBLIC_PORT, get_settings
 
 DEFAULT_DIR = "/tmp/prometheus"  # noqa: S108  # container-local, emptied at every start
 METRIC_FILES = ("counter_*.db", "gauge_*.db", "histogram_*.db", "summary_*.db")  # prometheus_client's file names
@@ -63,8 +63,10 @@ def write_log_config(level: str, format_: str) -> Path:
     return path
 
 
-def uvicorn_command(request_timeout_s: int, log_config: Path | None = None, port: int = PUBLIC_PORT) -> list[str]:
-    """The uvicorn call on ``port`` (API_PORT); a worker keeps its healthcheck grace until well past the request
+def uvicorn_command(
+    request_timeout_s: int, log_config: Path | None = None, port: int = DEFAULT_PUBLIC_PORT
+) -> list[str]:
+    """The uvicorn call on ``port`` (PUBLIC_PORT); a worker keeps its healthcheck grace until well past the request
     budget, and a stop waits for the requests in flight."""
     return [
         *UVICORN,
@@ -125,7 +127,7 @@ def main() -> None:
     clear_metric_files(Path(directory))
     settings = get_settings()
     log_config = write_log_config(settings.log_level, settings.log_format)
-    command = uvicorn_command(settings.request_time_limit_s, log_config, port=settings.api_port)
+    command = uvicorn_command(settings.request_time_limit_s, log_config, port=settings.public_port)
     defaults = {name: value for name, value in UVICORN_DEFAULTS.items() if not os.environ.get(name, "").strip()}
     environment = {**defaults, "PROMETHEUS_MULTIPROC_DIR": directory}
     if settings.internal_port:
