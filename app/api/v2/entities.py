@@ -272,7 +272,7 @@ def entities(
     ``node_id`` instead of ``text`` reads title, description and keywords of a node of an edu-sharing repository,
     with the account of the configured repository if it has one (D112), and returns that text under ``text``;
     ``start`` and ``end`` count in it. Not both: 422. Unknown or hidden node: 404, refused ``repository``: 422,
-    failing repository: 502, none at all: 503.
+    failing repository, or one that did not answer within ``REQUEST_TIMEOUT_S``: 502, none at all: 503.
 
     **What each profile does here** (D62). ``preset`` sets ``methods`` where the request leaves it open; without it
     the server's profile applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server without an
@@ -297,13 +297,14 @@ def entities(
     check = payload.link and payload.link_check == "llm"
     needed = (["methods=llm"] if "llm" in methods else []) + (["link_check=llm"] if check else [])
     service.refuse_without_llm(needed, profile, defaulted=not payload.preset)
+    # one deadline for the whole request: the node, the LLM ways and the linking, which read up to 200 articles
+    # without one and took 6 to 19 s of CPU without an LLM (audit 2026-09-28, PE-04); the node was read without it,
+    # two attempts of EDU_SHARING_TIMEOUT_S each (review of D112)
+    deadline = Deadline(settings.request_time_limit_s)
     node, text = None, readable(payload.text or "")
     if payload.node_id:  # no archive is needed for this, so the service is asked directly
-        info, node = service.read_node(payload.node_id, payload.repository)
+        info, node = service.read_node(payload.node_id, payload.repository, remaining=deadline.remaining)
         text = _node_text(info)
-    # one deadline for the whole request: the LLM ways and the linking, which read up to 200 articles without one
-    # and took 6 to 19 s of CPU without an LLM (audit 2026-09-28, PE-04)
-    deadline = Deadline(settings.request_time_limit_s)
     report = EntitiesLlmReport() if needed else None
     job = _llm_job(service, profile, report, deadline) if report is not None else None
     notes: list[str | None] = []

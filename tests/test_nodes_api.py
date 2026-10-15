@@ -23,6 +23,7 @@ from app.sources.wlo.part import CollectionBuilder
 from tests.conftest import make_settings
 from tests.test_llm_client import FakeBApi
 from tests.test_pipeline_llm import make_gateway
+from tests.test_wlo_api import Left
 from tests.test_wlo_client import BASE, EXAM, MATERIAL, OPTIK, PRIVATE, UNKNOWN, FakeRepository, _fixture
 
 STAGING = "https://repository.staging.openeduhub.net/edu-sharing/rest"
@@ -204,6 +205,27 @@ def test_entities_read_title_description_and_keywords_of_a_node(client: TestClie
 
 def test_entities_need_a_text_or_a_node(client: TestClient) -> None:
     assert client.post("/api/v2/entities", json={}).status_code == 422
+
+
+def test_entities_read_the_node_within_the_request_time_budget(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The node was read before the deadline was set and without it: a hanging repository held the request for two
+    attempts of EDU_SHARING_TIMEOUT_S each, where /nodes and /compendium end at REQUEST_TIMEOUT_S (review of D112)."""
+    body = {"node_id": MATERIAL, "repository": STAGING}
+    repo = FakeRepository()
+    app = with_fake_repository(create_app(make_settings(sample_zims.values(), tmp_path / "spent")), repo)
+    app.state.settings.request_timeout_s = 0  # spent at once
+    response = TestClient(app).post("/api/v2/entities", json=body)
+    assert response.status_code == 502 and response.json()["detail"] == "Zeitbudget der Anfrage erschöpft"
+    assert repo.requests == []
+
+    monkeypatch.setattr("app.api.v2.entities.Deadline", Left)
+    repo = FakeRepository()
+    app = with_fake_repository(create_app(make_settings(sample_zims.values(), tmp_path / "left")), repo)
+    assert TestClient(app).post("/api/v2/entities", json=body).status_code == 200
+    timeouts = {value for request in repo.requests for value in request.extensions["timeout"].values()}
+    assert repo.requests and timeouts == {Left.LEFT_S}, "no read waits longer than the time left"
 
 
 def test_qa_takes_its_topic_from_a_node(client: TestClient) -> None:
