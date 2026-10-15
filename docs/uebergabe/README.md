@@ -18,7 +18,9 @@ Aufrufers (`B_API_KEY_SOURCE=request`, D105), fällt bei einem abgelehnten Schl�
 kein Tagesbudget mehr (D104), beschreibt in `/openapi.json` nur die öffentlichen Endpunkte (D107) und reicht die Spur
 einer Anfrage weiter (D108). Seit 2.22.0 loggen API und Sidecars nach stdout, und jeder Pod hält seinen Repository-Cache
 für sich (D109); `/health`, `/ready`, `/metrics` und die Statusendpunkte antworten nur am internen Port 9000 (D110), und
-beide Ports sind einstellbar (D111). Die Fragen des IT-Teams beantwortet [anforderungen.md](anforderungen.md). Was sich
+beide Ports sind einstellbar (D111). Seit 2.23.0 liest der Dienst mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`,
+etwa dem Gastkonto der WLO, auch Knoten und Sammlungen, die nicht öffentlich sind (D112). Die Fragen des IT-Teams
+beantwortet [anforderungen.md](anforderungen.md), den Steckbrief der Vorlage von T6 füllt [steckbrief.md](steckbrief.md). Was sich
 je Stand für den Betrieb ändert, steht in [docs/betrieb.md](../betrieb.md) unter „Updates“. Die Speichergrenze 6g steht
 in `docker-compose.yml` und gilt mit jedem Image.
 
@@ -26,6 +28,7 @@ in `docker-compose.yml` und gilt mit jedem Image.
 |---|---|---|
 | diese Seite | Betrieb | Aufbau, Ressourcen mit Lastmessung, Netz, CI im GitLab nach dem Muster der Plattform, Betrieb in Kürze |
 | [Antworten für das IT-Team](anforderungen.md) | Team 6 | jede Frage aus „Übergaben an den Maschinenraum“ und dem Dokument zum durchgereichten Schlüssel, in deren Reihenfolge: OpenAPI, Ports, Header, Antwortzeiten, b-api, Monitoring, Logs, Images, Zustand, Datenbanken, Ressourcen, Helm, Kosten, Wartung, offene Punkte; dazu [Beispiel-Values](helm-values.example.yaml) |
+| [Steckbrief](steckbrief.md) | Team 6 | die Vorlage „Technischer Service-Steckbrief“ ausgefüllt: Status je Punkt, offene Punkte, Links |
 | [Aufrufe](aufrufe.md) | Entwicklung der aufrufenden Systeme | alter und neuer Aufruf, Profile, die drei Teile, curl-Beispiele, Ausgabe mit jq, weitere Funktionen |
 | [Konfiguration](konfiguration.md) | Betrieb | alle Umgebungsvariablen mit Vorgabe und Empfehlung für den Betrieb |
 

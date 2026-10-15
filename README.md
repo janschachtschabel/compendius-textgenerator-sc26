@@ -8,7 +8,8 @@ kann optional zugeschaltet werden.
 Der vollständige Plan mit Architektur, Entscheidungen und Phasen steht in [PLAN.md](PLAN.md).
 Der alte Dienst, den dieser ablöst, gehört nicht zum Repository; die Messungen, die ihn nachstellen, beschreibt
 [docs/entwicklung](docs/entwicklung/README.md). Was der Betrieb braucht und wie Aufrufer vom alten Dienst
-umsteigen, fasst [docs/uebergabe](docs/uebergabe/README.md) für das Technik-Team zusammen.
+umsteigen, fasst [docs/uebergabe](docs/uebergabe/README.md) für das Technik-Team zusammen, mit dem ausgefüllten
+[Service-Steckbrief](docs/uebergabe/steckbrief.md) für Team 6.
 
 ## Aufbau des Dokuments
 

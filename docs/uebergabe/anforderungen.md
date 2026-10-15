@@ -56,8 +56,8 @@ lokalen Daten aktuell halten.
 | Welche Rechte braucht der Schlüssel? | Der Schlüssel der Aufrufer: LLM-Aufrufe an `/api/v1/llm/openai/chat/completions`, mit Routing an `/api/v1/llm/router/…`. `B_API_KEY` zusätzlich `/api/v1/llm/openai/models` für die Modellprüfung. Keine Routenverwaltung (`LLM_ROUTE_MANAGE`), kein Admin |
 | Welche Modelle und Routen? | Vorgabe ohne Routing: Provider `openai` mit `gpt-6-luna` (`B_API_PROVIDER=openai`, `B_API_MODEL`). Eine Route legt ein Administrator der b-api an, global, denn eine Route eines einzelnen Schlüssels sehen die Schlüssel der Aufrufer nicht; Vorschlag: `gpt-6-luna` mit `gpt-5.6-luna` als Reserve, eine Parameterfamilie. Dann `B_API_PROVIDER=router` und `B_API_ROUTE` setzen (D97) |
 | Was am Proxy-Dienst einstellen? | Eintrag `compendious-text-generator` mit `baseUrl` auf Port 8000 des Dienstes, „API-Key des Aufrufers weiterreichen“ (`forwardApiKey`) an, Timeout mindestens 330 s |
-| Was passiert bei einem erreichten Limit? | Die b-api lehnt ab (401, 402, 403, ein 429 auch nach den möglichen Versuchen; ebenso ein 404 für eine Route, die der Schlüssel nicht sieht). Der Rest dieser Anfrage läuft ohne LLM nach den Regeln (`llm-free`), die Antwort nennt den Grund, das Log sagt es einmal je Anfrage als WARNING `b-api refused the key of this request`. Andere Anfragen behalten das LLM (D106) |
-| Braucht es `B_API_KEY`? | Nur für Aufrufe ohne Schlüssel (Direktaufrufe im Cluster, Prüfungen). Ohne ihn laufen solche Anfragen nach den Regeln. Die Modellprüfung beim Start und in `/health` fragt nur mit `B_API_KEY`. Lehnt die b-api `B_API_KEY` ab, laufen die Anfragen ohne eigenen Schlüssel zehn Minuten ohne LLM; Anfragen mit eigenem Schlüssel behalten es |
+| Was passiert bei einem erreichten Limit? | Die b-api lehnt ab (401, 402, 403, ein 429 auch nach den möglichen Versuchen; ebenso eine Route, die für den Schlüssel nicht aktiv ist (400) oder die die b-api aussetzt: ein Modell ohne Preis, Modelle ohne Chat, kein Deployment mehr (503)). Der Rest dieser Anfrage läuft ohne LLM nach den Regeln (`llm-free`), die Antwort nennt den Grund, das Log sagt es einmal je Anfrage als WARNING `b-api refused the key of this request`. Andere Anfragen behalten das LLM (D106) |
+| Braucht es `B_API_KEY`? | Nur für Aufrufe ohne Schlüssel (Direktaufrufe im Cluster, Prüfungen). Ohne ihn laufen solche Anfragen nach den Regeln. Die Modellprüfung beim Start und in `/health` fragt nur mit `B_API_KEY`. Lehnt die b-api `B_API_KEY` ab oder setzt sie seine Route aus, laufen die Anfragen ohne eigenen Schlüssel ohne LLM, bei einer Ablehnung zehn Minuten; Anfragen mit eigenem Schlüssel behalten es |
 
 ### Variante B: ohne b-api (Ausnahme)
 
@@ -131,7 +131,7 @@ Grund in der Antwort (D106): So bekommt ein Nutzer immer einen Text. Ob ein LLM 
 | Hintergrundaufgaben? | Die vier Sidecars aus demselben Image, unabhängig von der API: `zim-updater` (Kiwix, alle 30 Tage), `lehrplan-updater` (MEM, alle 7 Tage), `wikidata-updater` und `gnd-updater` (Wikimedia und DNB, täglich). Keine Warteschlange nötig |
 
 **Architekturübersicht:** ein Image, fünf Container, zwei Volumes ([Aufbau](README.md#aufbau), Bild unten). Zur
-Anfragezeit spricht die API nur mit der b-api (LLM, ab `balanced`) und mit edu-sharing (Teil 3, Materialien, Knoten);
+Anfragezeit spricht die API nur mit der b-api (LLM, ab `balanced`) und mit edu-sharing (Teil 3, Materialien, Knoten; mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`, etwa dem Gastkonto der WLO, auch was nicht öffentlich ist, D112);
 Wikipedia, Lehrpläne und Normdaten liest sie lokal. Ausführlicher mit Belegen im Code: die
 [Architektur](../entwicklung/10-architektur.md) mit drei interaktiven Diagrammen (Systemübersicht, eine
 Kompendium-Anfrage, Sidecars und Daten).
