@@ -276,7 +276,7 @@ def test_the_configured_repository_in_any_spelling_is_read_with_its_account(
     assert not other.requests and not app.state.service._foreign
 
 
-def test_a_refused_account_is_a_502_that_names_the_setting(settings: Settings) -> None:
+def test_a_refused_account_is_a_502_that_says_so(settings: Settings) -> None:
     app = create_app(settings)
     refused = httpx.MockTransport(lambda request: httpx.Response(401, text=""))
     client = EduSharingClient(BASE, user="wlo-gast", password="falsch", transport=refused)
@@ -284,7 +284,21 @@ def test_a_refused_account_is_a_502_that_names_the_setting(settings: Settings) -
 
     response = TestClient(app).get(f"/api/v2/nodes/{MATERIAL}")
 
-    assert response.status_code == 502 and "EDU_SHARING_USER" in response.json()["detail"]
+    assert response.status_code == 502 and "Zugangsdaten des Dienstes" in response.json()["detail"]
+
+
+def test_a_hidden_collection_as_node_gets_part_3_with_the_account(settings: Settings) -> None:
+    """The case of the request (D112): a collection only the account sees, named as node_id, with part 3."""
+    app = create_app(settings)
+    repo = FakeRepository()
+    client = EduSharingClient(BASE, user="wlo-gast", password="geheim", transport=httpx.MockTransport(repo))
+    app.state.collections = app.state.service.collections = CollectionBuilder(client=client, cache=None)
+
+    response = TestClient(app).post("/api/v2/compendium", json={"node_id": PRIVATE, "parts": ["world", "collection"]})
+
+    assert response.status_code == 200, response.text[:300]
+    assert response.json()["collection"]["available"] is True
+    assert all("authorization" in request.headers for request in repo.requests)
 
 
 def test_a_node_that_is_not_public_is_a_404(client: TestClient) -> None:

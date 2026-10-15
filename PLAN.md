@@ -1509,33 +1509,34 @@ API.
   Entwicklung nicht fragen. Der Client zählt `gpt-6` zu den Reasoning-Modellen
   (`max_completion_tokens`, `reasoning_effort`, keine Temperatur); ohne das antwortete die b-api mit HTTP 400. Wer die
   kürzeren Zeiten braucht, setzt `B_API_MODEL=gpt-5.6-luna`. `gpt-4.1-mini` wird nicht mehr verwendet.
-- **D45 (2026-09-24)** Ein Knoten eines edu-sharing-Repositorys ist ein eigener Eingang: `node_id` und `repository`
-  bei `POST /api/v2/compendium`, `/knowledge`, `/qa` und `/entities`, dazu `GET /api/v2/nodes/{node_id}` als Vorschau.
+- **D45 (2026-09-24)** Ein Knoten eines edu-sharing-Repositorys ist ein eigener Eingang: `node_id` und `repository` bei
+  `POST /api/v2/compendium`, `/knowledge`, `/qa` und `/entities`, dazu `GET /api/v2/nodes/{node_id}` als Vorschau.
   Gelesen wird `/node/v1/nodes/-home-/{id}/metadata` (Titel, Beschreibung, Schlagwörter, Fach, Bildungsstufe), für
   Materialien wie für Sammlungen, gecacht wie Sammlungen. Der Titel wird zum Thema. Fächer und Stufen sind
   Mehrfachfelder, jeder Wert zählt gleich (Jan, 2026-09-24): Artikelwahl, LLM-Prompt und Teil 2 nehmen alle Fächer;
-  Stufen und Schlagwörter werden Kontextwörter der Auflösung; ein `topic` oder ein Fach, das der
-  Titel nennt, geht vor. Eine Ableitung (`derive_topic`) gilt für Kompendium, Wissen und Vorschau. Kontextwörter zählen
-  an einer Begriffsklärung nur, wenn die Fächer keine eigenen Wörter haben, und die LLM-Artikelwahl sieht sie nicht; mit
-  Fachwörtern lenken Stufen und Schlagwörter die Wahl also noch nicht. `repository` ist Eingabe des Aufrufers und damit ein
-  Ziel serverseitiger Anfragen: nur https, nur Hosts aus `EDU_SHARING_REPOSITORIES` (Standard WLO-Staging und
+  Stufen und Schlagwörter werden Kontextwörter der Auflösung; ein `topic` oder ein Fach, das der Titel nennt, geht vor.
+  Eine Ableitung (`derive_topic`) gilt für Kompendium, Wissen und Vorschau. Kontextwörter zählen an einer
+  Begriffsklärung nur, wenn die Fächer keine eigenen Wörter haben, und die LLM-Artikelwahl sieht sie nicht; mit
+  Fachwörtern lenken Stufen und Schlagwörter die Wahl also noch nicht. `repository` ist Eingabe des Aufrufers und damit
+  ein Ziel serverseitiger Anfragen: nur https, nur Hosts aus `EDU_SHARING_REPOSITORIES` (Standard WLO-Staging und
   -Produktion) und der konfigurierte, keine Zugangsdaten, kein Port, als Pfad nur die REST-Wurzel; eine Adresse, die
   sich nicht zerlegen lässt, ist ebenso 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem
-  konfigurierten (seit D112: das konfigurierte mit dessen Konto, wenn es eins hat): Die Endpunkte haben keine Anmeldung und geben nur Öffentliches weiter; ein nicht öffentlicher Knoten
-  (403) gilt als nicht gefunden (Review-Korrektur). `/entities` nimmt `text` oder `node_id`, nicht beides. Gemessen an
-  echten Staging-Knoten: Sammlungstitel lösen auf („Optik“), Materialtitel nennen oft ihr Format und nicht
-  („Stationsarbeit zur Optik“) oder falsch („Unterrichtsreihe zum Licht“ endete bei einem Lied); die Stationsarbeit
-  trägt Biologie und Physik. Gemessen an 40 echten WLO-Materialien (M21, Gold `eval/materialwahl`): der Titel
-  trifft 7 von 38 Hauptartikeln, die Entitäten aus Titel und Beschreibung 16, ein LLM, das den Artikel aus Titel,
-  Beschreibung und Schlagwörtern nennt, 34 (rund 470 Tokens, 2,8 s). Offen, welcher Weg eingebaut wird; M21 empfiehlt
-  das LLM, wo eines bereitsteht, sonst die Entitäten. Bis zum Kompendium gemessen (M23, 31 Materialien mit klarem
-  Thema; brauchbar heißt, mindestens die Hälfte der gedruckten Absätze passt): Titel 5, `balanced` 10, Thema vom
-  LLM 17, Begriff 18, die Entitäten des alten Linkers als Korpus 11, die lokalen als Korpus 5; als Hauptartikel
-  allein träfen die lokalen 14. F1 des Hauptartikels: Titel 0,20, Thema vom LLM 0,97, Begriff 0,94; bei gleichem
-  Hauptartikel druckt der Knoten dieselben Absätze wie der Begriff. Auch zu Materialien ohne Thema entsteht heute ein
-  Kompendium. Ohne LLM findet auch ein statisches Embedding den Artikel nicht (M24: Suche mit dem Modell des Dienstes
-  über alle 5,35 Mio. Archiveinträge, F1 höchstens 0,03); die Verlinkung mit dem Hauptartikel des LLM-Themas filtert
-  die Entitäten des alten Linkers (zusammen Recall 0,89 statt 0,67 bei gleichem F1).
+  konfigurierten: Die Endpunkte haben keine Anmeldung und geben nur Öffentliches weiter (bis D112; seither liest der
+  Dienst das konfigurierte mit dessen Konto, wenn es eins hat); ein nicht öffentlicher Knoten (403) gilt als nicht
+  gefunden (Review-Korrektur). `/entities` nimmt `text` oder `node_id`, nicht beides. Gemessen an echten Staging-Knoten:
+  Sammlungstitel lösen auf („Optik“), Materialtitel nennen oft ihr Format und nicht („Stationsarbeit zur Optik“) oder
+  falsch („Unterrichtsreihe zum Licht“ endete bei einem Lied); die Stationsarbeit trägt Biologie und Physik. Gemessen an
+  40 echten WLO-Materialien (M21, Gold `eval/materialwahl`): der Titel trifft 7 von 38 Hauptartikeln, die Entitäten aus
+  Titel und Beschreibung 16, ein LLM, das den Artikel aus Titel, Beschreibung und Schlagwörtern nennt, 34 (rund 470
+  Tokens, 2,8 s). Offen, welcher Weg eingebaut wird; M21 empfiehlt das LLM, wo eines bereitsteht, sonst die Entitäten.
+  Bis zum Kompendium gemessen (M23, 31 Materialien mit klarem Thema; brauchbar heißt, mindestens die Hälfte der
+  gedruckten Absätze passt): Titel 5, `balanced` 10, Thema vom LLM 17, Begriff 18, die Entitäten des alten Linkers als
+  Korpus 11, die lokalen als Korpus 5; als Hauptartikel allein träfen die lokalen 14. F1 des Hauptartikels: Titel 0,20,
+  Thema vom LLM 0,97, Begriff 0,94; bei gleichem Hauptartikel druckt der Knoten dieselben Absätze wie der Begriff. Auch
+  zu Materialien ohne Thema entsteht heute ein Kompendium. Ohne LLM findet auch ein statisches Embedding den Artikel
+  nicht (M24: Suche mit dem Modell des Dienstes über alle 5,35 Mio. Archiveinträge, F1 höchstens 0,03); die Verlinkung
+  mit dem Hauptartikel des LLM-Themas filtert die Entitäten des alten Linkers (zusammen Recall 0,89 statt 0,67 bei
+  gleichem F1).
 - **D46 (2026-09-24)** Entitäten: Ein Genitiv nennt seinen Artikel über die Grundform (`title_candidates` in
   `app/knowledge/recognise.py`). Nach einem Genitivartikel (*des*, *eines* …, ein Wort dazwischen) kommt die Grundform
   zuerst, sonst erst, wenn die wörtliche Form kein Titel ist; „-es“ vor „-s“ (*Reiches* → *Reich*). Ohne Artikel

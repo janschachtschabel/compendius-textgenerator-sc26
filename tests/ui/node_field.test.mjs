@@ -156,3 +156,12 @@ test('an example with its collection opens part 3 at once', () => {
   assert.equal(partThree(form).box.disabled, false);
   assert.deepEqual(form.read().parts, ['world', 'curricula', 'collection']);
 });
+
+test('a repository that refuses the service says what the server said, not only that it failed', async () => {
+  const { form, asked, byClass } = compendiumForm();
+  form.write({ node: MATERIAL });
+  asked[0].fail(new ApiError(502, 'edu-sharing lehnt die Zugangsdaten des Dienstes ab (HTTP 401)', 'r-2'));
+  await settle();
+
+  assert.equal(byClass('node-status').textContent, 'edu-sharing lehnt die Zugangsdaten des Dienstes ab (HTTP 401)');
+});

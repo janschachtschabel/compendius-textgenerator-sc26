@@ -532,22 +532,20 @@ vorzeitig schließen oder einen eigenen öffnen. Dieselbe Maskierung gilt für j
 wörtlichen Sätze von Teil 1, Quellenblock, Belegtabelle, Glossar, Akteure und die Bezeichnungen von Teil 2
 (Audit 2026-09-28, SE-16).
 
-Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist
-Staging (`repository.staging.openeduhub.net`); für die Produktion bekommt die Variable den Wert
-`https://redaktion.openeduhub.net/edu-sharing/rest`. Die b-api folgt dem Repository:
-`B_API_BASE_URL` leer lassen heißt
-`b-api.staging` zum Staging-Repository und `b-api.prod` zur Produktion. Ein eigener Wert wird befolgt,
-und wenn er nicht zum Repository passt, sagt es das Log beim Start. `GET /health` nennt beide Hosts
-(`components.edu_sharing.repository`, `components.llm.host`), damit sichtbar ist, womit der Dienst
-gerade spricht. Das Repository wird zur Inferenzzeit gelesen, Sammlungen 1 h und
-Materialtexte 7 Tage gecacht (`STATE_DIR/wlo_cache.db` oder `WLO_CACHE_PATH`,
-abgelaufene Einträge räumt jeder Schreibvorgang
-weg). Ein Eintrag gilt nur für das Repository und den Zugang, mit dem er gelesen wurde (anonym oder das
-Konto aus `EDU_SHARING_USER`): Nach einem Wechsel von `EDU_SHARING_BASE_URL` oder des Kontos liest der
-Dienst neu, statt Daten des alten zu liefern. Nach Ablauf von `REQUEST_TIMEOUT_S` fragt der Dienst das
-Repository nichts mehr, und keine Anfrage wartet länger als die Restzeit: Materialtexte, die bis dahin nicht
-geholt sind, bleiben draußen und stehen als `timed_out` im Audit; kam keine Seite der Liste mehr, nennt das
-Audit der Wissens-Sammlung das als `error`, und Teil 3 ist der Hinweis statt des Überblicks.
+Welches Repository gilt, entscheidet `EDU_SHARING_BASE_URL` (anonym oder Basic-Auth); der Standard ist Staging
+(`repository.staging.openeduhub.net`); für die Produktion bekommt die Variable den Wert
+`https://redaktion.openeduhub.net/edu-sharing/rest`. Die b-api folgt dem Repository: `B_API_BASE_URL` leer lassen heißt
+`b-api.staging` zum Staging-Repository und `b-api.prod` zur Produktion. Ein eigener Wert wird befolgt, und wenn er nicht
+zum Repository passt, sagt es das Log beim Start. `GET /health` nennt beide Hosts (`components.edu_sharing.repository`,
+`components.llm.host`; ob ein Konto liest: `components.edu_sharing.account`), damit sichtbar ist, womit der Dienst
+gerade spricht. Das Repository wird zur Inferenzzeit gelesen, Sammlungen 1 h und Materialtexte 7 Tage gecacht
+(`STATE_DIR/wlo_cache.db` oder `WLO_CACHE_PATH`, abgelaufene Einträge räumt jeder Schreibvorgang weg). Ein Eintrag gilt
+nur für das Repository und den Zugang, mit dem er gelesen wurde (anonym oder das Konto aus `EDU_SHARING_USER`): Nach
+einem Wechsel von `EDU_SHARING_BASE_URL` oder des Kontos liest der Dienst neu, statt Daten des alten zu liefern. Nach
+Ablauf von `REQUEST_TIMEOUT_S` fragt der Dienst das Repository nichts mehr, und keine Anfrage wartet länger als die
+Restzeit: Materialtexte, die bis dahin nicht geholt sind, bleiben draußen und stehen als `timed_out` im Audit; kam keine
+Seite der Liste mehr, nennt das Audit der Wissens-Sammlung das als `error`, und Teil 3 ist der Hinweis statt des
+Überblicks.
 
 ```bash
 uv run compendium collection overview 9e7ae956-e9df-430f-bace-f3db4b910013 --out optik_teil3.md
@@ -1083,7 +1081,7 @@ gleich unter welcher Lizenz (D70).
 |---|---|---|
 | `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | Welches Repository gilt. Staging ist der Standard; für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest`. Leer schaltet die Sammlungen ab |
 | `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Knoten dieser Repositorys liest der Dienst ohne Zugangsdaten; die des konfigurierten mit dessen Konto, wenn es eins gibt (D112). Leer lässt nur das konfigurierte zu |
-| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth, etwa ein Gastkonto der WLO; leer heißt anonym. Mit Zugangsdaten liest jede Anfrage, die einen Knoten (`node_id`) oder eine Sammlung nennt, was dieses Konto lesen darf, auch nicht öffentliche Sammlungen und die Texte ihrer Materialien, und der Cache gibt es an alle weiter (D112). Sie gehen nur an das konfigurierte Repository, nie an ein anderes aus `EDU_SHARING_REPOSITORIES`, und ohne Sitzungscookie. Falsche Zugangsdaten fallen nicht auf Öffentliches zurück: edu-sharing antwortet dann jedem Aufruf mit 401, Knoten und Sammlungen enden mit einem 502, das `EDU_SHARING_USER` nennt. Nur zusammen mit `API_KEYS` setzen oder hinter der b-api, wenn der Dienst allein über sie erreichbar ist; sonst warnt der Start |
+| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth, etwa ein Gastkonto der WLO; leer heißt anonym. Mit Zugangsdaten liest jede Anfrage, die einen Knoten (`node_id`) oder eine Sammlung nennt, was dieses Konto lesen darf, auch nicht öffentliche Sammlungen und die Texte ihrer Materialien, und der Cache gibt es an alle weiter (D112). Sie gehen nur an das konfigurierte Repository, nie an ein anderes aus `EDU_SHARING_REPOSITORIES`, und ohne Sitzungscookie. Falsche Zugangsdaten fallen nicht auf Öffentliches zurück: edu-sharing antwortet dann jedem Aufruf mit 401. Ein Knoten endet mit einem 502 „edu-sharing lehnt die Zugangsdaten des Dienstes ab“, Teil 3 und die Wissens-Sammlung melden es in ihrem Hinweis und im Audit, und das Log nennt `EDU_SHARING_USER`. `/health` zeigt unter `components.edu_sharing.account`, ob ein Konto gesetzt ist, nie welches. Nur zusammen mit `API_KEYS` setzen oder hinter der b-api, wenn der Dienst allein über sie erreichbar ist; sonst warnt der Start |
 | `EDU_SHARING_PASSWORD` | leer | Passwort dazu. Gehört in die `.env`, nicht in die Vorlage |
 | `EDU_SHARING_TIMEOUT_S` | `30` | Frist je Anfrage an das Repository |
 | `WLO_CACHE_PATH` | leer | Datei des Repository-Caches; leer: `wlo_cache.db` in `STATE_DIR`. Teilen sich mehrere Pods ein Volume, bekommt jeder einen eigenen Pfad, etwa in einem `emptyDir`, damit nicht zwei Pods eine SQLite-Datei über das Netz schreiben (D109) |

@@ -251,12 +251,16 @@ def test_a_node_hidden_from_the_account_is_not_found_and_says_so() -> None:
         client.node(MATERIAL)
 
 
-def test_a_refused_account_is_named_in_the_error() -> None:
+def test_a_refused_account_is_named_in_the_error_and_the_setting_in_the_log(caplog: pytest.LogCaptureFixture) -> None:
     """Wrong credentials are a 401 for every read and do not fall back to the public view (wlo-edu-sharing-api); since
-    D112 that stops node reads as well, so the error says which setting to look at."""
+    D112 that stops node reads as well. The error says the service's credentials were refused - it can reach the hint
+    of part 3 in a finished text, where no setting belongs (Jan: no apparatus notes for end customers) - and the log
+    names the setting to look at."""
     refused = httpx.MockTransport(lambda request: httpx.Response(401, text=""))
     client = EduSharingClient(BASE, user="wlo-gast", password="falsch", transport=refused)
-    with pytest.raises(EduSharingError, match="EDU_SHARING_USER"):
+    with caplog.at_level("WARNING"), pytest.raises(EduSharingError, match="Zugangsdaten des Dienstes") as refusal:
         client.node(MATERIAL)
-    with pytest.raises(EduSharingError, match="EDU_SHARING_USER"):
+    assert "EDU_SHARING_USER" not in str(refusal.value)
+    assert "EDU_SHARING_USER" in caplog.text
+    with pytest.raises(EduSharingError, match="Zugangsdaten des Dienstes"):
         client.collection(OPTIK)

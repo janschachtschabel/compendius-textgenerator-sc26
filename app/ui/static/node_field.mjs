@@ -48,7 +48,10 @@ export function nodeField(spec, ctx, wrapper) {
     ctx.lookup(id, repository, reading.signal).then(
       ({ data }) => settle(key, data, ''),
       (error) => {
-        if (error?.name !== 'AbortError') settle(key, null, error?.status === 404 ? MISSING : String(error?.message ?? error));
+        if (error?.name === 'AbortError') return;
+        // What the server said where it said something: "the repository does not answer" hid refused credentials
+        const said = typeof error?.detail === 'string' ? error.detail : String(error?.message ?? error);
+        settle(key, null, error?.status === 404 ? MISSING : said);
       },
     );
   }

@@ -320,7 +320,17 @@ def test_health_reports_every_component(sample_zims: dict[str, Path], tmp_path: 
     with TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "leer"))) as client:
         components = client.get("/health").json()["components"]
     assert components["lehrplan_cache"] == {"available": False, "harvested_at": None}
-    assert components["edu_sharing"] == {"enabled": True, "repository": "repository.staging.openeduhub.net"}
+    assert components["edu_sharing"] == {
+        "enabled": True,
+        "repository": "repository.staging.openeduhub.net",
+        "account": False,
+    }
+    settings = make_settings(
+        sample_zims.values(), tmp_path / "konto", edu_sharing_user="wlo-gast", edu_sharing_password="geheim-4711"
+    )
+    with TestClient(create_app(settings)) as client:
+        answer = client.get("/health").text
+    assert '"account":true' in answer.replace(" ", "") and "wlo-gast" not in answer and "geheim" not in answer
     write_cache(tmp_path / "voll")
     with TestClient(create_app(make_settings(sample_zims.values(), tmp_path / "voll"))) as client:
         cache = client.get("/health").json()["components"]["lehrplan_cache"]

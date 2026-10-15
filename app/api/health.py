@@ -80,6 +80,8 @@ def _components(request: Request) -> dict[str, Any]:
             # Which repository the collections come from, and which b-api belongs to it: an operator has to be
             # able to see whether this service is talking to staging or to production
             "repository": _host(settings.edu_sharing_base_url),
+            # Whether an account reads it (D112), never which: it decides which nodes and collections callers reach
+            "account": bool(settings.edu_sharing_user),
         },
         "llm": llm_status,
     }

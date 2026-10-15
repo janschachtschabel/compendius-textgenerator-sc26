@@ -53,6 +53,12 @@ class FakeRepository:
         if self.fail:
             raise httpx.ConnectError("boom")
         path, params = request.url.path, request.url.params
+        if PRIVATE in path:  # a collection the public may not see, an account may (D112): it answers as OPTIK does
+            if "authorization" not in request.headers:
+                return httpx.Response(403, json={"error": "org.edu_sharing.restservices.DAOSecurityException"})
+            if path.endswith("/metadata"):
+                return httpx.Response(200, json=_fixture("node_collection_optik.json"))
+            path = path.replace(PRIVATE, OPTIK)
         if "11111111-1111-4111-8111-111111111111" in path:
             return httpx.Response(500, text="Internal Server Error")
         if f"/collections/-home-/{UNKNOWN}" in path:
@@ -70,10 +76,6 @@ class FakeRepository:
             if entry is None:
                 return httpx.Response(404, json={"error": "missing"})
             return httpx.Response(entry["status"], json=entry["body"])
-        if PRIVATE in path:  # a collection the public may not see, an account may (D112)
-            if "authorization" in request.headers:
-                return httpx.Response(200, json=_fixture("node_collection_optik.json"))
-            return httpx.Response(403, json={"error": "org.edu_sharing.restservices.DAOSecurityException"})
         if path.endswith("/metadata") and "/node/v1/nodes/-home-/" in path:
             name = NODE_FIXTURES.get(path.split("/")[-2])
             if name is None:

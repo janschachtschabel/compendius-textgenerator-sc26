@@ -86,7 +86,8 @@ def validate_node_id(value: str) -> str:
 
 
 def render_url_for(rest_root: str, node_id: str) -> str:
-    """Public page of a node (``…/edu-sharing/components/render/{id}``) in the repository of ``rest_root``.
+    """Page of a node (``…/edu-sharing/components/render/{id}``) in the repository of ``rest_root``; it opens for
+    whoever may see the node, the public only for a public one.
 
     Only the path is cut at ``/edu-sharing``; a host whose name starts with it stays whole.
     """
@@ -151,7 +152,7 @@ class EduSharingClient:
         self._client.close()
 
     def render_url(self, node_id: str) -> str:
-        """Public page of a node in the same repository (``…/edu-sharing/components/render/{id}``)."""
+        """Page of a node in the same repository (``…/edu-sharing/components/render/{id}``)."""
         return render_url_for(self.base_url, node_id)
 
     def collection(self, collection_id: str, *, remaining: Remaining | None = None) -> CollectionInfo:
@@ -317,8 +318,10 @@ class EduSharingClient:
                 )
                 if status == 401 and self.has_account:
                     # Wrong credentials do not fall back to the public view, every read is refused; since D112 node
-                    # reads too, so the error names the setting to look at
-                    raise EduSharingError("edu-sharing lehnt die Zugangsdaten aus EDU_SHARING_USER ab (HTTP 401)")
+                    # reads too. The log names the setting; the error may reach the hint of part 3 in a finished
+                    # text, where no setting belongs
+                    log.warning("edu-sharing refuses EDU_SHARING_USER and EDU_SHARING_PASSWORD (HTTP 401)")
+                    raise EduSharingError("edu-sharing lehnt die Zugangsdaten des Dienstes ab (HTTP 401)")
                 raise EduSharingError(f"edu-sharing antwortete mit HTTP {status}")
             try:
                 data = json.loads(body)
