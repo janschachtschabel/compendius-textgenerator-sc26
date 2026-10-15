@@ -468,13 +468,18 @@ class BApiClient:
                         raise LlmError("b-api antwortete ohne gültiges JSON", status, reached=reached + 1) from exc
                 stop = self._route_stop(status, response.text) if self.route else None
                 key = request_key()
-                if key is not None and (status in KEY_REFUSALS or no_route(status, response.text)):
-                    why = (
-                        f"Route {self.route!r} ist für den Schlüssel der Anfrage nicht aktiv (HTTP {status})"
-                        if status not in KEY_REFUSALS
-                        else f"b-api lehnt den Schlüssel der Anfrage ab (HTTP {status}): Limit erreicht, LLM für den "
-                        "Schlüssel abgeschaltet oder keine Berechtigung"
-                    )
+                if key is not None and (status in KEY_REFUSALS or stop is not None or no_route(status, response.text)):
+                    # A route may belong to the key (D97): what it answers holds back this request, not every
+                    # caller's, as a refused key does (audit 2026-10-15)
+                    if status in KEY_REFUSALS:
+                        why = (
+                            f"b-api lehnt den Schlüssel der Anfrage ab (HTTP {status}): Limit erreicht, LLM für den "
+                            "Schlüssel abgeschaltet oder keine Berechtigung"
+                        )
+                    elif stop is None or no_route(status, response.text):
+                        why = f"Route {self.route!r} ist für den Schlüssel der Anfrage nicht aktiv (HTTP {status})"
+                    else:
+                        why = f"b-api-Routing für den Schlüssel der Anfrage ausgesetzt: {stop[1]} (HTTP {status})"
                     raise self._refuse(key, why, response.text, status, reached)
                 if status not in RETRY_STATUSES or stop is not None:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
@@ -649,8 +654,12 @@ class BApiClient:
             log.warning("b-api calls held back for %.0f s: %s (%s)", seconds, reason, cause)
 
     def _close(self) -> None:
-        """The b-api answered: the breaker closes and the failures in a row start again at zero."""
+        """The b-api answered: the breaker closes and the failures in a row start again at zero. An answer to the key
+        of a request says nothing of the service's own: a stop on that one keeps its ten minutes (audit 2026-10-15)."""
         with self._state:
+            if self._spares_request_key():
+                self._failures = 0
+                return
             resumed = self._open_until != 0.0
             self._open_until = 0.0
             self._probing = False

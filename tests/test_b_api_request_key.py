@@ -413,6 +413,48 @@ def test_the_services_own_key_refused_leaves_the_callers_their_llm() -> None:
     assert client.chat(MESSAGES, max_output_tokens=10).text == "OK"
 
 
+def test_a_callers_answer_does_not_lift_the_stop_on_the_services_own_key() -> None:
+    """The caller's key answering says nothing of the service's own: its ten minutes stand (audit 2026-10-15)."""
+    client, _ = make_client(FakeBApi(statuses=[403]))
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    use_request_key(RequestKey("Authorization", CALLER))
+    assert client.chat(MESSAGES, max_output_tokens=10).text == "OK"
+    use_request_key(None)
+
+    assert client.suspended and "Schlüssel des Dienstes" in client.suspension_reason
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        "Model pricing unavailable for 'gpt-6-luna'",
+        "No deployment could serve model 'kompendium' (no deployment left)",
+    ],
+)
+def test_a_route_stop_met_with_the_key_of_a_request_stays_with_that_request(answer: str) -> None:
+    """A route may belong to a key (D97): what its route answers holds back that request, not every caller's
+    (audit 2026-10-15)."""
+    client = BApiClient(
+        BASE,
+        KEY,
+        provider="router",
+        model="gpt-6-luna",
+        route="kompendium",
+        transport=httpx.MockTransport(lambda r: httpx.Response(503, json={"error": answer})),
+    )
+    key = RequestKey("Authorization", CALLER)
+    use_request_key(key)
+
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    assert key.refused is not None and "kompendium" in key.refused
+    use_request_key(None)
+    assert not client.suspended
+
+
 def test_an_outage_holds_back_the_callers_keys_as_well() -> None:
     client, _ = make_client(FakeBApi(statuses=[503, 503, 503]))
     with pytest.raises(LlmError):

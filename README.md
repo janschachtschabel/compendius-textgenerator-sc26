@@ -1114,11 +1114,12 @@ Schlüssel nicht selbst. Die Vorgabe `env` nimmt immer `B_API_KEY` und lässt di
 
 **Abgelehnte Schlüssel und Limits (D106).** Die b-api setzt die Limits je Schlüssel und schaltet das LLM ab, wenn eines
 erreicht ist. Lehnt sie den Schlüssel einer Anfrage ab (401, 402 oder 403, ein 429 auch nach den möglichen Versuchen,
-eine für den Schlüssel nicht aktive Route), läuft der Rest dieser Anfrage ohne LLM nach den Regeln (`llm-free`); alle
-anderen Anfragen behalten es. Das Log nennt es einmal je Anfrage als WARNING, `b-api refused the key of this request: …`
+eine für den Schlüssel nicht aktive Route, eine Route, deren Modelle keinen Preis haben, nicht chatten oder kein
+Deployment mehr finden), läuft der Rest dieser Anfrage ohne LLM nach den Regeln (`llm-free`); alle anderen Anfragen
+behalten es. Das Log nennt es einmal je Anfrage als WARNING, `b-api refused the key of this request: …`
 mit der Antwort der b-api, und die Ergebniszeile der Anfrage nennt den Grund. Lehnt die b-api den Schlüssel des Dienstes
 ab (`B_API_KEY`), setzt sie wie bisher alle Aufrufe mit ihm zehn Minuten aus; Anfragen mit eigenem Schlüssel behalten
-das LLM. Den Grund nennt `/health` unter `components.llm.reason`.
+das LLM, und ihre Antworten heben die zehn Minuten nicht auf. Den Grund nennt `/health` unter `components.llm.reason`.
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
