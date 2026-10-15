@@ -13,7 +13,7 @@
     ],
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "26cb2895212da58abbddc5f5cce7c08511e03716"
+      "revision": "9aa8980ea7ece3d6b1cf329f0ecd43bdb7606c65"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -472,8 +472,8 @@
         },
         {
           "path": "app/api/request_log.py",
-          "line": 74,
-          "end_line": 75,
+          "line": 75,
+          "end_line": 76,
           "label": "Trace-Header der Anfrage"
         }
       ]
@@ -570,14 +570,14 @@
         },
         {
           "path": "app/llm/client.py",
-          "line": 617,
-          "end_line": 622,
+          "line": 631,
+          "end_line": 632,
           "label": "Schlüssel und Trace-Header"
         },
         {
           "path": "app/llm/client.py",
-          "line": 565,
-          "end_line": 574,
+          "line": 574,
+          "end_line": 583,
           "label": "Ablehnung: Rest llm-free"
         }
       ]
@@ -647,10 +647,10 @@
           "label": "Überblick mit Restzeit"
         },
         {
-          "path": "app/sources/wlo/client.py",
-          "line": 300,
-          "end_line": 301,
-          "label": "Trace-Header"
+          "path": "app/compendium/repository.py",
+          "line": 110,
+          "end_line": 125,
+          "label": "Konto nur fürs eigene Repository (D112)"
         }
       ]
     }
@@ -703,7 +703,7 @@
       "y": 257,
       "label": "Teil 3 nebenher",
       "variant": "default",
-      "note": "collection_id oder Sammlung in node_id, bis REQUEST_TIMEOUT_S"
+      "note": "collection_id oder Sammlung in node_id, mit dem Konto des Dienstes (D112), bis REQUEST_TIMEOUT_S"
     },
     {
       "id": "artikelwahl",
@@ -763,9 +763,9 @@
       "from": "llm",
       "to": "teil1",
       "y": 481,
-      "label": "Schlüssel abgelehnt",
+      "label": "Schlüssel oder Route abgelehnt",
       "variant": "security",
-      "note": "401/402/403, 429 nach Wiederholungen: Rest der Anfrage llm-free"
+      "note": "401/402/403, 429 nach Wiederholungen, ausgesetzte Route: Rest der Anfrage llm-free"
     },
     {
       "id": "bausteine",
@@ -869,7 +869,7 @@
         "REQUEST_TIMEOUT_S (Vorgabe bei openai 300 s) begrenzt LLM und edu-sharing",
         "Jeder LLM-Aufruf reserviert aus dem Budget der Anfrage und rechnet danach ab; kein Tagesbudget (D104)",
         "Ohne Restzeit, Platz im Anfragebudget oder erreichbare b-api übernehmen die Regeln",
-        "Lehnt die b-api den Schlüssel ab, läuft der Rest der Anfrage llm-free, Grund in audit.llm (D106)"
+        "Lehnt die b-api den Schlüssel ab oder setzt sie seine Route aus, läuft der Rest der Anfrage llm-free, Grund in audit.llm (D106)"
       ]
     },
     {

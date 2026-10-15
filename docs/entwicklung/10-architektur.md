@@ -1,11 +1,11 @@
 # Architektur
 
-[Übersicht](README.md) · Stand 15.10.2026 · Commit `26cb289` (Release 2.22.0) · drei interaktive Diagramme, erzeugt
+[Übersicht](README.md) · Stand 15.10.2026 · Commit `9aa8980` (Release 2.23.0) · drei interaktive Diagramme, erzeugt
 mit dem Skill archify 3.0.1
 
 Drei Diagramme zeigen, woraus der Dienst besteht, wie eine Anfrage durch ihn läuft und wie die Sidecars die lokalen
 Daten aktuell halten. Jeder Baustein nennt die Stellen im Code, die ihn belegen: Datei und Zeilen im Commit
-`26cb289`, in der HTML-Fassung als Kürzel „QUELLE“ mit Link auf GitHub. Die HTML-Seiten brauchen keine weiteren
+`9aa8980`, in der HTML-Fassung als Kürzel „QUELLE“ mit Link auf GitHub. Die HTML-Seiten brauchen keine weiteren
 Dateien und laden nichts nach; die Schriften sind eingebettet.
 
 | Diagramm | Inhalt |
@@ -25,9 +25,11 @@ https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/ar
   jedem Endpunkt prüft der Dienst am Port 8000 Schlüssel, Rate-Limit und Körpergrenze, bevor er den Körper liest.
 - Der Container `api` (FastAPI unter uvicorn) liest die ZIM-Archive (Teil 1), den Lehrplan-Cache (Teil 2), die Wikidata-
   und GND-Indizes (`/entities`) und seinen Zustand (Templates, Status-Dateien, Repository-Cache). Nach außen fragt er
-  edu-sharing (Teil 3 und Knoten) und über das LLM-Gateway die b-api, mit dem Schlüssel der Anfrage oder `B_API_KEY`
+  edu-sharing (Teil 3 und Knoten; mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`, etwa dem Gastkonto der WLO, liest
+  er das konfigurierte Repository mit dem Konto, jedes andere ohne, D112) und über das LLM-Gateway die b-api, mit dem Schlüssel der Anfrage oder `B_API_KEY`
   (D105) und der Spur der Anfrage (D108).
-- Am internen Port 9000 antworten `/health`, `/ready`, `/metrics` und die Statusendpunkte (D110). Docker-Healthcheck und
+- Am internen Port 9000 antworten `/health`, `/ready`, `/metrics` und die Statusendpunkte (D110); beide Ports sind
+  einstellbar (`PUBLIC_PORT`, `INTERNAL_PORT`, D111). Docker-Healthcheck und
   Kubernetes-Proben fragen dort, Prometheus (Profil `monitoring`) holt dort die Metriken.
 - Vier Sidecars aus demselben Image halten die Daten aktuell: `zim-updater` (Kiwix), `lehrplan-updater` (MEM),
   `wikidata-updater` und `gnd-updater` (Abzüge von Wikimedia und der DNB).
@@ -41,7 +43,8 @@ https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/ar
   die Zuordnung ab `best-quality` per LLM, den Text schreibt das LLM nur in `best-quality-generated` und
   `best-coverage-generated`. Ab `best-quality` prüft das LLM die Lehrplantreffer.
 - Jeder LLM-Aufruf reserviert Tokens aus dem Budget der Anfrage; ein Tagesbudget gibt es nicht mehr (D104). Lehnt die
-  b-api den Schlüssel ab, läuft der Rest der Anfrage nach den Regeln, und die Antwort nennt den Grund (D106). Ohne
+  b-api den Schlüssel ab oder setzt sie seine Route aus, läuft der Rest der Anfrage nach den Regeln, und die Antwort
+  nennt den Grund (D106). Ohne
   Restzeit oder erreichbare b-api übernehmen ebenfalls die Regeln.
 
 ## Sidecars und lokale Daten
@@ -71,7 +74,8 @@ Die Diagramme entstehen aus den JSON-Dateien daneben (`architektur/*.json`) mit 
 
    `--repo-root` braucht einen Checkout, dessen `origin` auf
    `https://github.com/janschachtschabel/compendius-textgenerator-sc26.git` zeigt: archify prüft jeden Beleg an dem
-   Commit, den die Datei nennt. `--out-dir` hält die Prüfquittungen aus dem Repository; sie enthalten lokale Pfade.
+   Commit, den die Datei nennt. `--out-dir` hält die Prüfquittungen aus dem Repository; sie enthalten lokale Pfade. Die Dateien
+   `*.delivery.json` und `*.delivery-pending.json`, die archify trotzdem neben das HTML legt, nicht committen.
 3. Die deutsche Oberfläche steht in `meta.translations` (aus `examples/locales/de.json` von archify). Meldet archify
    mit `meta.locale: "de"` nur „Renderer failed before emitting a structured diagnostic“, zeigt ein Lauf ohne
    `meta.locale` und `meta.translations` die eigentliche Meldung (archify 3.0.1).

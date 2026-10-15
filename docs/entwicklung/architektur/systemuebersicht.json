@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "26cb2895212da58abbddc5f5cce7c08511e03716"
+      "revision": "9aa8980ea7ece3d6b1cf329f0ecd43bdb7606c65"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -455,7 +455,7 @@
           "path": "Dockerfile",
           "line": 107,
           "end_line": 108,
-          "label": "HEALTHCHECK an INTERNAL_PORT"
+          "label": "HEALTHCHECK an INTERNAL_PORT, sonst PUBLIC_PORT"
         },
         {
           "path": "docs/uebergabe/helm-values.example.yaml",
@@ -509,8 +509,8 @@
       "sources": [
         {
           "path": "README.md",
-          "line": 1103,
-          "end_line": 1112,
+          "line": 1104,
+          "end_line": 1113,
           "label": "Proxy reicht den Schlüssel weiter (D105)"
         },
         {
@@ -521,8 +521,8 @@
         },
         {
           "path": "docs/betrieb.md",
-          "line": 249,
-          "end_line": 249,
+          "line": 251,
+          "end_line": 251,
           "label": "Aufruf über /api/v1/proxy/<dienst>"
         }
       ]
@@ -583,8 +583,8 @@
         },
         {
           "path": "app/api/body_limit.py",
-          "line": 39,
-          "end_line": 70,
+          "line": 40,
+          "end_line": 71,
           "label": "Körpergrenze, 413"
         }
       ]
@@ -605,21 +605,21 @@
       "sources": [
         {
           "path": "app/api/internal_port.py",
-          "line": 17,
-          "end_line": 31,
+          "line": 21,
+          "end_line": 32,
           "label": "an anderen Ports 404 (D110)"
         },
         {
           "path": "app/serve.py",
-          "line": 83,
-          "end_line": 106,
+          "line": 85,
+          "end_line": 108,
           "label": "Worker an beiden Ports"
         },
         {
           "path": "app/settings.py",
-          "line": 357,
-          "end_line": 363,
-          "label": "INTERNAL_PORT, Vorgabe 9000"
+          "line": 354,
+          "end_line": 368,
+          "label": "PUBLIC_PORT 8000, INTERNAL_PORT 9000 (D111)"
         }
       ]
     },
@@ -651,8 +651,8 @@
         },
         {
           "path": "app/main.py",
-          "line": 322,
-          "end_line": 341,
+          "line": 324,
+          "end_line": 343,
           "label": "Router von /api/v2"
         }
       ]
@@ -702,20 +702,20 @@
         {
           "path": "app/sources/wlo/client.py",
           "line": 161,
-          "end_line": 194,
+          "end_line": 182,
           "label": "Sammlungen, Referenzen"
         },
         {
           "path": "app/sources/wlo/client.py",
           "line": 237,
-          "end_line": 259,
+          "end_line": 262,
           "label": "Knoten, Textinhalt"
         },
         {
-          "path": "app/sources/wlo/client.py",
-          "line": 300,
-          "end_line": 301,
-          "label": "Trace-Header gehen mit (D108)"
+          "path": "app/compendium/repository.py",
+          "line": 110,
+          "end_line": 125,
+          "label": "Konto nur fürs eigene Repository (D112)"
         }
       ]
     },
@@ -775,14 +775,14 @@
         },
         {
           "path": "app/llm/client.py",
-          "line": 661,
-          "end_line": 664,
+          "line": 675,
+          "end_line": 678,
           "label": "Schlüssel der Anfrage, sonst B_API_KEY"
         },
         {
           "path": "app/settings.py",
-          "line": 245,
-          "end_line": 259,
+          "line": 249,
+          "end_line": 263,
           "label": "B_API_PROVIDER, B_API_ROUTE (D97)"
         }
       ]
@@ -837,14 +837,14 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 440,
-          "end_line": 458,
+          "line": 442,
+          "end_line": 460,
           "label": "neu bauen, dann tauschen"
         },
         {
           "path": "app/sources/lehrplan/store.py",
           "line": 182,
-          "end_line": 185,
+          "end_line": 187,
           "label": "Lesen je Aufruf"
         },
         {
@@ -1047,8 +1047,8 @@
         },
         {
           "path": "app/sources/zim/downloader.py",
-          "line": 167,
-          "end_line": 211,
+          "line": 168,
+          "end_line": 212,
           "label": "Download mit SHA-256"
         }
       ]
@@ -1323,7 +1323,8 @@
         "Hinter dem b-api-Proxy bleibt API_KEYS leer; der Dienst ist dann nur über die b-api erreichbar",
         "Direkte Aufrufer brauchen mit API_KEYS einen Schlüssel in X-API-Key, sonst 401",
         "Schlüssel, Rate-Limit und Körpergrenze greifen, bevor der Körper gelesen wird",
-        "Admin-Endpunkte nur mit ADMIN_TOKEN, sonst 404"
+        "Admin-Endpunkte nur mit ADMIN_TOKEN, sonst 404",
+        "EDU_SHARING_USER und EDU_SHARING_PASSWORD (etwa das Gastkonto der WLO) gelten nur für das konfigurierte Repository, für Knoten und Sammlungen (D112)"
       ]
     },
     {
@@ -1332,7 +1333,7 @@
       "items": [
         "B_API_KEY_SOURCE=request: der Schlüssel des Aufrufers (Authorization, sonst X-API-Key) geht unverändert nur an die b-api",
         "Bringt die Anfrage keinen, gilt B_API_KEY; die Vorgabe env nimmt immer B_API_KEY",
-        "Lehnt die b-api den Schlüssel ab (401, 402, 403, 429 nach den Versuchen), läuft der Rest der Anfrage llm-free; das Log nennt es einmal",
+        "Lehnt die b-api den Schlüssel ab (401, 402, 403, 429 nach den Versuchen) oder setzt sie seine Route aus, läuft der Rest der Anfrage llm-free; das Log nennt es einmal",
         "Kein Tagesbudget im Dienst (D104): die b-api setzt die Limits je Schlüssel, der Dienst begrenzt nur je Anfrage",
         "B_API_PROVIDER openai (Vorgabe, gpt-6-luna) oder router mit B_API_ROUTE (D97)"
       ]
@@ -1360,7 +1361,7 @@
       "title": "Interner Port, Status und Alarme",
       "items": [
         "/health, /ready, /metrics und der Stand von ZIM und Lehrplan antworten nur an INTERNAL_PORT 9000, an Port 8000 mit 404 (D110)",
-        "INTERNAL_PORT=0 legt alles auf Port 8000; /metrics optional mit METRICS_TOKEN",
+        "Beide Ports einstellbar (PUBLIC_PORT, INTERNAL_PORT, D111); INTERNAL_PORT=0 legt alles auf PUBLIC_PORT, /metrics optional mit METRICS_TOKEN",
         "Jeder Sidecar schreibt Status- und Lebenszeichen-Dateien in sein Volume (zim oder state); /metrics liest sie bei jeder Abfrage",
         "Prometheus-Alarme melden stumme oder gescheiterte Sidecars"
       ]

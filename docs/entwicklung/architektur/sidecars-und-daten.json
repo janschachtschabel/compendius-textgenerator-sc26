@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "26cb2895212da58abbddc5f5cce7c08511e03716"
+      "revision": "9aa8980ea7ece3d6b1cf329f0ecd43bdb7606c65"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -481,8 +481,8 @@
         },
         {
           "path": "app/sources/zim/downloader.py",
-          "line": 167,
-          "end_line": 224,
+          "line": 168,
+          "end_line": 228,
           "label": "Download, Hash geprüft"
         }
       ]
@@ -559,9 +559,9 @@
         },
         {
           "path": "app/sources/wlo/client.py",
-          "line": 120,
-          "end_line": 151,
-          "label": "HTTP-Client"
+          "line": 126,
+          "end_line": 152,
+          "label": "HTTP-Client, Konto (D112)"
         }
       ]
     },
@@ -693,8 +693,8 @@
         },
         {
           "path": "app/jobs/zim_sync.py",
-          "line": 319,
-          "end_line": 336,
+          "line": 327,
+          "end_line": 344,
           "label": "geprüft, dann aktiv"
         },
         {
@@ -715,14 +715,14 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 382,
-          "end_line": 391,
+          "line": 384,
+          "end_line": 393,
           "label": "Schreiber baut .tmp"
         },
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 440,
-          "end_line": 458,
+          "line": 442,
+          "end_line": 460,
           "label": "fsync, os.replace"
         }
       ]
@@ -777,8 +777,8 @@
         },
         {
           "path": "app/jobs/zim_sync.py",
-          "line": 452,
-          "end_line": 468,
+          "line": 460,
+          "end_line": 476,
           "label": "sync_status.json"
         }
       ]
@@ -795,14 +795,14 @@
       "sources": [
         {
           "path": "app/settings.py",
-          "line": 210,
-          "end_line": 214,
+          "line": 214,
+          "end_line": 218,
           "label": "WLO_CACHE_PATH (D109)"
         },
         {
           "path": "app/settings.py",
-          "line": 482,
-          "end_line": 485,
+          "line": 498,
+          "end_line": 501,
           "label": "sonst STATE_DIR"
         },
         {
@@ -852,7 +852,7 @@
         {
           "path": "app/sources/lehrplan/store.py",
           "line": 182,
-          "end_line": 185,
+          "end_line": 187,
           "label": "Leseverbindung je Aufruf"
         },
         {
@@ -885,8 +885,8 @@
         },
         {
           "path": "app/api/v2/entities.py",
-          "line": 328,
-          "end_line": 338,
+          "line": 330,
+          "end_line": 340,
           "label": "Kennungen verknüpfen"
         },
         {
@@ -919,8 +919,8 @@
         },
         {
           "path": "app/api/internal_port.py",
-          "line": 17,
-          "end_line": 31,
+          "line": 21,
+          "end_line": 32,
           "label": "nur auf INTERNAL_PORT"
         }
       ]
@@ -938,7 +938,7 @@
         {
           "path": "app/wiring.py",
           "line": 257,
-          "end_line": 293,
+          "end_line": 305,
           "label": "Client und Cache"
         },
         {
@@ -1101,7 +1101,7 @@
       "id": "wlo-lesen",
       "from": "wlo",
       "to": "sammlungen",
-      "label": "Sammlungen, Texte",
+      "label": "Sammlungen, Knoten, Texte",
       "classification": "HTTPS, bei Fehltreffer",
       "variant": "emphasis",
       "route": "top-channel",
@@ -1171,6 +1171,7 @@
       "title": "Repository-Cache und Abhängigkeit",
       "items": [
         "wlo_cache.db liegt in STATE_DIR oder unter WLO_CACHE_PATH: mehrere Pods auf einem geteilten Volume bekommen je einen eigenen Pfad (D109)",
+        "Mit EDU_SHARING_USER liest der Dienst das konfigurierte Repository mit dem Konto, etwa dem Gastkonto der WLO; der Cache trennt die Einträge je Konto (D112)",
         "wikidata-updater liest active.json nur lesend: Er baut neu, wenn das Wikipedia-Archiv neuer ist als der Index"
       ]
     }
