@@ -127,7 +127,10 @@ def plain_latex(latex: str) -> str | None:
     if len(latex) > MAX_ALTTEXT_CHARS:
         return None
     formula = _Formula(latex, unknown=set())
-    text = formula.text()
+    try:
+        text = formula.text()
+    except RecursionError:  # nested deeper than the stack: one level per brace (audit 2026-10-15)
+        return None
     return text if text and not formula.unknown else None
 
 

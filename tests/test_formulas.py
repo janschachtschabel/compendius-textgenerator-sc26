@@ -168,3 +168,10 @@ def test_an_environment_inside_an_environment_keeps_its_cells() -> None:
 
     assert text is not None and "end" not in text
     assert [sign for sign in text if sign.isalpha()] == ["a", "b", "c"]
+
+
+@pytest.mark.parametrize("deep", ["x^{" * 333, "{" * 1000, "^{" * 500])
+def test_a_formula_nested_too_deep_is_none_not_an_error(deep: str) -> None:
+    """The reader recurses once per level: an alttext within the bound of 1,000 signs ran out of stack, and the error
+    failed every parse of its article (audit 2026-10-15)."""
+    assert plain_latex(deep) is None
