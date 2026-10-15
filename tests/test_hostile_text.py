@@ -19,7 +19,7 @@ import pytest
 import yaml
 from libzim.writer import Creator
 
-from app.compose.assembler import render_markdown
+from app.compose.assembler import inert_yaml, render_markdown
 from app.compose.regeneration import _citation_rows
 from app.domain.models import ArticleSection, Chunk, ChunkKind, Citation, Paragraph, ScoredChunk, Source
 from app.domain.requests import GenerateRequest
@@ -384,3 +384,14 @@ def test_a_whole_compendium_on_an_article_that_quotes_code_runs_nothing(tmp_path
 
     assert "<script>alert(1)</script>" in unescape(result.markdown)  # the quote is in part 1, as typed
     assert unsafe(result.markdown) == []
+
+
+def test_an_odd_quote_in_a_value_leaves_the_frontmatter_whole() -> None:
+    """A value with a quote but none of the escaped signs was written plain; its quote paired with the next real one,
+    and the escape ran over the gap: a list read back as a string, a tag stayed raw (audit 2026-10-15)."""
+    data = {"topic": 'Er sagte "Faust" und "Gretchen', "context": [], "alternatives": ["Faust <Tragödie> & Co"]}
+
+    text = inert_yaml(data)
+
+    assert yaml.safe_load(text) == data
+    assert "<" not in text and ">" not in text

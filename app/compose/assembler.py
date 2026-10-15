@@ -63,7 +63,8 @@ class _InertDumper(yaml.SafeDumper):
 
 
 def _string(dumper: yaml.SafeDumper, value: str) -> yaml.ScalarNode:
-    style = '"' if any(sign in value for sign in _INERT) else None
+    # a quote too: written plain or single-quoted, it paired with the next real quote for _QUOTED (audit 2026-10-15)
+    style = '"' if '"' in value or any(sign in value for sign in _INERT) else None
     return dumper.represent_scalar("tag:yaml.org,2002:str", value, style=style)
 
 
