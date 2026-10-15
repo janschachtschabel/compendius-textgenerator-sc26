@@ -380,6 +380,17 @@ class Settings(BaseSettings):
             raise ValueError(f"LOG_LEVEL kennt nur {', '.join(LOG_LEVELS)}")
         return level
 
+    @field_validator("edu_sharing_base_url")
+    @classmethod
+    def _no_credentials_in_address(cls, value: str) -> str:
+        # httpx sends a name and password written into the address, and the address reaches 404 texts, the links of
+        # part 3 and the log (audit 2026-10-15)
+        if "@" in urlparse(value.strip()).netloc:
+            raise ValueError(
+                "EDU_SHARING_BASE_URL nennt Zugangsdaten; sie gehören in EDU_SHARING_USER und EDU_SHARING_PASSWORD"
+            )
+        return value
+
     @field_validator("admin_token", "metrics_token", "api_keys")
     @classmethod
     def _long_enough(cls, value: str, info: ValidationInfo) -> str:

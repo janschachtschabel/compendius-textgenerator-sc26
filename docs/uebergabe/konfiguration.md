@@ -129,7 +129,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | wie Vorgabe | Repository; heute die Staging, für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest`; leer schaltet Sammlungen ab |
+| `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | wie Vorgabe | Repository; heute die Staging, für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest`; leer schaltet Sammlungen ab; Zugangsdaten in der Adresse lehnt der Start ab, mit Konto über `http://` warnt er |
 | `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | wie Vorgabe | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf |
 | `EDU_SHARING_USER` | leer | Gastkonto der WLO, wenn nicht öffentliche Sammlungen Kompendien bekommen sollen | Basic-Auth für alle Lesezugriffe auf das konfigurierte Repository, Knoten eingeschlossen (D112); leer liest anonym nur Öffentliches. Falsche Zugangsdaten: jeder Aufruf 401, kein Rückfall auf Öffentliches. Nur zusammen mit `API_KEYS` setzen oder, hinter der b-api, wenn der Dienst allein über sie erreichbar ist |
 | `EDU_SHARING_PASSWORD` | leer | wie Vorgabe | Passwort dazu, geheim |

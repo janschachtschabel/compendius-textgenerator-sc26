@@ -62,3 +62,29 @@ def test_a_password_without_a_user_is_named_at_start(tmp_path: Path, caplog: pyt
     assert builder is not None and builder.client.has_account
     builder.client.close()
     assert "EDU_SHARING_PASSWORD" not in caplog.text and value not in caplog.text
+
+
+def test_credentials_in_the_repository_address_are_refused(tmp_path: Path) -> None:
+    """httpx sends a name and password written into the address, and the address reaches 404 texts, the links of part
+    3 and the log: they belong in EDU_SHARING_USER and EDU_SHARING_PASSWORD (audit 2026-10-15)."""
+    address = "https://wlo-gast:geheim-4711@repository.example/edu-sharing/rest"
+    with pytest.raises(ValueError, match="EDU_SHARING_USER") as refused:
+        make_settings([], tmp_path / "s", edu_sharing_base_url=address)
+    assert "geheim-4711" not in str(refused.value)
+
+
+def test_an_account_over_plain_http_is_named_at_start(tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    """Basic auth over http travels readable for anyone on the way."""
+    settings = make_settings(
+        [],
+        tmp_path / "s",
+        edu_sharing_base_url="http://repository.example/edu-sharing/rest",
+        edu_sharing_user="wlo-gast",
+        edu_sharing_password="geheim-4711",
+    )
+    with caplog.at_level("WARNING", logger="app.wiring"):
+        builder = build_collections(settings)
+    assert builder is not None
+    builder.client.close()
+    assert any("http" in r.getMessage() and "EDU_SHARING_BASE_URL" in r.getMessage() for r in caplog.records)
+    assert "geheim-4711" not in caplog.text
