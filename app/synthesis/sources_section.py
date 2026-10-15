@@ -28,8 +28,11 @@ def build_sources_section(sources: Sequence[Source], citations: Sequence[Citatio
     stock = "folgenden Quellen" if restricted else "folgenden freien Wissensbeständen"
     lines: list[str] = [f"Die Inhalte von Teil 1 stammen aus {stock}:", ""]
     for source in sources:
-        label, form, authors, trust = PROJECT_LABELS.get(
-            source.project, (source.project, "Quelle", "unbekannt", "mittel")
+        # a project the service does not know is the Ursprungsort of an earlier text, as the caller sent it (audit
+        # 2026-10-15)
+        label, form, authors, trust = (
+            plain_label(value)
+            for value in PROJECT_LABELS.get(source.project, (source.project, "Quelle", "unbekannt", "mittel"))
         )
         if source.authors:  # materials name their authors; wiki projects credit their community
             authors = ", ".join(plain_label(author) for author in source.authors)

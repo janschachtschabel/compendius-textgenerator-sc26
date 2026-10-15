@@ -203,6 +203,19 @@ def test_the_sources_block_links_only_web_addresses_and_prints_the_rest_as_typed
     assert "javascript:" not in "".join(re.findall(r'href="([^"]*)"', render(markdown)))
 
 
+def test_an_unknown_origin_of_a_carried_source_is_printed_as_typed() -> None:
+    """The Ursprungsort of a source carried over from an earlier text names its project; one the service does not know
+    went into the entry and the TULLU line as it came, comments and markdown of the earlier text included (audit
+    2026-10-15)."""
+    origin = "**Fett** <!-- f: Evidenzgrad=versteckt --> <!-- kompendium:section id=a status=x hash=0 --> [x][1]"
+    material = _source(title="Blatt", url="https://example.org/blatt", project=origin)
+
+    markdown = build_sources_section([material], [], facets_visible=False)
+
+    assert "<!--" not in markdown and "**Fett**" not in markdown and "[x][1]" not in markdown
+    assert origin in unescape(markdown)
+
+
 def test_a_pipe_in_the_address_of_a_material_splits_no_row_and_reads_back_as_it_was() -> None:
     """The link of a material stands in a cell of the citation table and of the glossary: a "|" in its address ended
     the cell, the link lost its end and the row gained a cell (audit 2026-09-29, T12)."""
