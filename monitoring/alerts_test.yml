@@ -25,7 +25,7 @@ tests:
       - eval_time: 17m
         alertname: KompendiumDown
         exp_alerts:
-          - exp_labels: { severity: critical, job: kompendium, instance: "api:8000" }
+          - exp_labels: { severity: critical, job: kompendium, instance: "api:9000" }
             exp_annotations:
               summary: Kompendium-API nicht erreichbar
               description: Prometheus erreicht /metrics seit fünf Minuten nicht.
@@ -35,7 +35,7 @@ tests:
       - eval_time: 20m
         alertname: KompendiumNotReady
         exp_alerts:
-          - exp_labels: { severity: critical, job: kompendium, instance: "api:8000" }
+          - exp_labels: { severity: critical, job: kompendium, instance: "api:9000" }
             exp_annotations:
               summary: Pflichtarchive fehlen, /ready meldet 503
               description: kompendium_zim_required_missing nennt die Zahl; Sync-Job und active.json prüfen.
@@ -70,7 +70,7 @@ tests:
       - eval_time: 36d
         alertname: KompendiumZimSyncStale
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000" }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000" }
             exp_annotations:
               summary: Der ZIM-Sync ist seit mehr als 35 Tagen nicht gelaufen
               description: Der Updater-Sidecar läuft nicht oder hängt.
@@ -80,7 +80,7 @@ tests:
       - eval_time: 41d
         alertname: KompendiumLehrplanCacheStale
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000" }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000" }
             exp_annotations:
               summary: Der Lehrplan-Cache ist älter als 40 Tage
               description: Der Harvest-Sidecar läuft nicht oder scheitert.
@@ -110,7 +110,7 @@ tests:
       - eval_time: 6h20m
         alertname: KompendiumZimSyncHangs
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: haengt }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: haengt }
             exp_annotations:
               summary: Der ZIM-Sync meldet seit sechs Stunden keinen Fortschritt
               description: Laut sync_status.json läuft der Updater, er schreibt aber nicht mehr (abgestürzt, volles Volume oder hängender Download); Log des Sidecars prüfen.
@@ -249,7 +249,7 @@ tests:
       - eval_time: 70m
         alertname: KompendiumZimSyncErrors
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: fehler }
             exp_annotations:
               summary: Der letzte ZIM-Sync hatte Fehler
               description: sync_status.json oder GET /api/v2/zim/progress nennen die Fehler.
@@ -259,7 +259,7 @@ tests:
       - eval_time: 70m
         alertname: KompendiumLehrplanCacheMissing
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: fehler }
             exp_annotations:
               summary: Lehrplan-Cache fehlt oder ist nicht lesbar
               description: Teil 2 enthält nur den Hinweistext; Harvest anstoßen.
@@ -269,7 +269,7 @@ tests:
       - eval_time: 70m
         alertname: KompendiumLehrplanHarvestFailed
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: fehler }
             exp_annotations:
               summary: Der letzte Lehrplan-Harvest ist gescheitert
               description: lehrplan_status.json nennt den Fehler; der alte Cache bleibt in Betrieb.
@@ -294,7 +294,7 @@ tests:
       - eval_time: 130m
         alertname: KompendiumWikidataIndexMissing
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: fehler }
             exp_annotations:
               summary: Der Wikidata-Index fehlt oder ist nicht lesbar
               description: /api/v2/entities nennt keine Wikidata-Nummern; Sidecar wikidata-updater und wikidata_status.json prüfen.
@@ -304,7 +304,7 @@ tests:
       - eval_time: 130m
         alertname: KompendiumWikidataSyncFailed
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: fehler }
             exp_annotations:
               summary: Der letzte Wikidata-Sync ist gescheitert
               description: wikidata_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
@@ -327,7 +327,7 @@ tests:
       - eval_time: 130m
         alertname: KompendiumGndIndexMissing
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: fehler }
             exp_annotations:
               summary: Der GND-Index fehlt oder ist nicht lesbar
               description: Artikel ohne Normdaten-Block bekommen keine GND-Nummer; Sidecar gnd-updater und gnd_status.json prüfen.
@@ -337,7 +337,7 @@ tests:
       - eval_time: 130m
         alertname: KompendiumGndSyncFailed
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: fehler }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: fehler }
             exp_annotations:
               summary: Der letzte GND-Sync ist gescheitert
               description: gnd_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
@@ -362,7 +362,7 @@ tests:
       - eval_time: 4d
         alertname: KompendiumWikidataSyncStale
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: steht }
             exp_annotations:
               summary: Der Wikidata-Sidecar hat seit drei Tagen nicht geprüft
               description: Der Dienst wikidata-updater läuft nicht oder hängt (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, ein neueres Wikipedia-Archiv bekommt aber keinen passenden.
@@ -372,7 +372,7 @@ tests:
       - eval_time: 4d
         alertname: KompendiumGndSyncStale
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: steht }
             exp_annotations:
               summary: Der GND-Sidecar hat seit drei Tagen nicht geprüft
               description: Der Dienst gnd-updater läuft nicht oder hängt (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, eine neue Ausgabe der DNB kommt aber nicht an.
@@ -395,7 +395,7 @@ tests:
       - eval_time: 31m
         alertname: KompendiumVolumeFull
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", volume: state, fall: voll }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", volume: state, fall: voll }
             exp_annotations:
               summary: Auf einem Volume sind weniger als 2 GiB frei
               description: Das Label volume nennt es (zim oder state); liegen beide auf derselben Platte, wie bei Docker üblich, melden sich beide. Platz auf der Platte schaffen oder das Volume vergrößern (docs/betrieb.md, Störungen).
@@ -471,7 +471,7 @@ tests:
       - eval_time: 20m
         alertname: KompendiumStatusIncomplete
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", section: curricula }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", section: curricula }
             exp_annotations:
               summary: Ein Teil der Zustandswerte fehlt in /metrics
               description: Ein Abschnitt des Status-Collectors scheitert (Label section); seine Alarme schweigen, bis das behoben ist. Das Log der API nennt den Fehler („status section … left out of this scrape“).
@@ -507,7 +507,7 @@ tests:
       - eval_time: 3h35m
         alertname: KompendiumZimSyncSilent
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: steht }
             exp_annotations:
               summary: Der ZIM-Sidecar gibt kein Lebenszeichen
               description: sync_alive ist älter als drei Stunden oder fehlt; der Dienst zim-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs zim-updater). Neue Archive kommen nicht an.
@@ -517,7 +517,7 @@ tests:
       - eval_time: 3h35m
         alertname: KompendiumLehrplanHarvestSilent
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: steht }
             exp_annotations:
               summary: Der Lehrplan-Sidecar gibt kein Lebenszeichen
               description: lehrplan_alive ist älter als drei Stunden oder fehlt; der Dienst lehrplan-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs lehrplan-updater). Der Cache bleibt in Betrieb, wird aber nicht mehr geprüft.
@@ -586,7 +586,7 @@ tests:
       - eval_time: 3h35m
         alertname: KompendiumWikidataSyncSilent
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: steht }
             exp_annotations:
               summary: Der Wikidata-Sidecar gibt kein Lebenszeichen
               description: wikidata_alive ist älter als drei Stunden oder fehlt; der Dienst wikidata-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
@@ -596,7 +596,7 @@ tests:
       - eval_time: 3h35m
         alertname: KompendiumGndSyncSilent
         exp_alerts:
-          - exp_labels: { severity: warning, job: kompendium, instance: "api:8000", fall: steht }
+          - exp_labels: { severity: warning, job: kompendium, instance: "api:9000", fall: steht }
             exp_annotations:
               summary: Der GND-Sidecar gibt kein Lebenszeichen
               description: gnd_alive ist älter als drei Stunden oder fehlt; der Dienst gnd-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
