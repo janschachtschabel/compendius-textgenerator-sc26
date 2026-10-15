@@ -172,7 +172,9 @@ def mentions_from_titles(archives: Sequence[Any], text: str) -> list[Mention]:
 
 
 def merge(mentions: Iterable[Mention]) -> list[Mention]:
-    """Overlapping mentions reduced to one: the longer wins, and on equal length the one that knows its kind."""
+    """Overlapping mentions reduced to one, read from left to right: the one that starts first wins, on the same start
+    the longer, and on equal length the one that knows its kind. A longer mention that starts later loses to an earlier
+    one it overlaps (audit 2026-10-15: the docstring said "the longer wins")."""
     ordered = sorted(mentions, key=lambda m: (m.start, -(m.end - m.start), not m.kind))
     kept: list[Mention] = []
     for mention in ordered:
