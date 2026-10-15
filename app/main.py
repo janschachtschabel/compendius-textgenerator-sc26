@@ -1,4 +1,6 @@
-"""FastAPI application factory. Start with ``uvicorn app.main:create_app --factory``."""
+"""FastAPI application factory. Start with ``python -m app.serve``: it opens the API on PUBLIC_PORT and the probes,
+/metrics and the status on INTERNAL_PORT (D110). ``uvicorn app.main:create_app --factory`` opens no internal port; it
+needs INTERNAL_PORT=0, or /health, /ready, /metrics and the status answer 404."""
 
 from __future__ import annotations
 

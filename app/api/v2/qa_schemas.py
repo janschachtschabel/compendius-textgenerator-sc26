@@ -68,7 +68,7 @@ class QaRequest(RequestModel):
         description="The profile (D55, D57): it picks the method of the pairs when the request names none - llm-free "
         "and balanced rule-based, best-quality, best-quality-generated and best-coverage-generated llm. It does not "
         "change the part 1 of a topic or node: that is always made without an LLM. Default: PRESET_DEFAULT, shipped "
-        "balanced; llm-free on a server without an LLM (D68)",
+        "best-quality-generated (D82); llm-free on a server without an LLM (D68)",
     )
     article_choice: ArticleChoice | None = Field(
         None,

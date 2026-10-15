@@ -206,9 +206,8 @@ def main(argv: list[str] | None = None) -> int:
         "zu), best-quality-generated (dazu schreibt das LLM den Text zum angefragten Thema, Bausteine ohne Belege aus "
         "Modellwissen), best-coverage-generated (das LLM schreibt jeden Baustein vollständig zum angefragten Thema: "
         "aus den Belegen, wo sie es treffen, sonst aus Modellwissen); ohne Angabe "
-        "PRESET_DEFAULT, ausgeliefert "
-        "balanced, ohne LLM llm-free. Einzeln gesetzte Schalter gehen vor; was ein LLM braucht, braucht LLM_ENABLED "
-        "und B_API_KEY",
+        "PRESET_DEFAULT, ausgeliefert best-quality-generated (D82), ohne LLM llm-free. Einzeln gesetzte Schalter "
+        "gehen vor; was ein LLM braucht, braucht LLM_ENABLED und B_API_KEY",
     )
     gen.add_argument(
         "--matcher",

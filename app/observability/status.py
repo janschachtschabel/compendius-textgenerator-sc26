@@ -252,7 +252,9 @@ class StatusCollector:
     def _llm(self) -> Iterator[Metric]:
         llm = getattr(self._state, "llm", None)
         yield _gauge(
-            "kompendium_llm_enabled", "1 when the b-api is configured (LLM_ENABLED and B_API_KEY)", int(llm is not None)
+            "kompendium_llm_enabled",
+            "1 when the b-api is configured (LLM_ENABLED, and B_API_KEY or B_API_KEY_SOURCE=request)",
+            int(llm is not None),
         )
         if llm is None:
             yield _gauge("kompendium_llm_available", "1 when the LLM switches can use the LLM now", 0)
