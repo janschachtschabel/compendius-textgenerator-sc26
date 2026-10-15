@@ -13,7 +13,7 @@
     ],
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "b95a546ca8f8062c58d9b95051540c124a4d1a34"
+      "revision": "26cb2895212da58abbddc5f5cce7c08511e03716"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -444,6 +444,9 @@
       "entries": {
         "dashed": {
           "label": "LLM je Profil"
+        },
+        "security": {
+          "label": "Schlüssel abgelehnt"
         }
       }
     }
@@ -453,13 +456,25 @@
       "id": "aufrufer",
       "type": "external",
       "label": "Aufrufer",
-      "sublabel": "HTTP-Client",
+      "sublabel": "über b-api-Proxy",
       "sources": [
         {
           "path": "app/api/v2/routes.py",
-          "line": 37,
-          "end_line": 46,
+          "line": 48,
+          "end_line": 57,
           "label": "POST /api/v2/compendium"
+        },
+        {
+          "path": "app/api/b_api_key.py",
+          "line": 1,
+          "end_line": 5,
+          "label": "Schlüssel vom Proxy durchgereicht"
+        },
+        {
+          "path": "app/api/request_log.py",
+          "line": 74,
+          "end_line": 75,
+          "label": "Trace-Header der Anfrage"
         }
       ]
     },
@@ -467,25 +482,25 @@
       "id": "endpunkt",
       "type": "security",
       "label": "Endpunkt",
-      "sublabel": "Zugang, Profil",
+      "sublabel": "Schlüssel, Profil",
       "sources": [
         {
-          "path": "app/api/gates.py",
-          "line": 35,
-          "end_line": 49,
-          "label": "Prüfung vor dem Körper"
+          "path": "app/api/keys.py",
+          "line": 28,
+          "end_line": 48,
+          "label": "API_KEYS vor dem Körper"
         },
         {
-          "path": "app/api/v2/routes.py",
-          "line": 119,
-          "end_line": 122,
-          "label": "service.generate"
+          "path": "app/api/b_api_key.py",
+          "line": 15,
+          "end_line": 25,
+          "label": "take_b_api_key"
         },
         {
-          "path": "app/domain/requests.py",
-          "line": 184,
-          "end_line": 205,
-          "label": "vier Profile"
+          "path": "app/llm/credentials.py",
+          "line": 61,
+          "end_line": 80,
+          "label": "Authorization, sonst X-API-Key"
         }
       ]
     },
@@ -497,21 +512,21 @@
       "sources": [
         {
           "path": "app/service.py",
-          "line": 234,
-          "end_line": 243,
-          "label": "Frist, Profil, Budget, Vorbereitung"
+          "line": 306,
+          "end_line": 338,
+          "label": "Frist, Budget, Teile 2 und 3 nebenher"
         },
         {
-          "path": "app/service.py",
-          "line": 246,
-          "end_line": 257,
-          "label": "Teile 1, 2, 3"
+          "path": "app/compendium/llm_policy.py",
+          "line": 34,
+          "end_line": 61,
+          "label": "PRESET_DEFAULT, 503 ohne LLM"
         },
         {
           "path": "app/compendium/assembly.py",
-          "line": 83,
-          "end_line": 127,
-          "label": "Vorspann und Markdown"
+          "line": 108,
+          "end_line": 156,
+          "label": "LLM-Bericht, Vorspann, Markdown"
         }
       ]
     },
@@ -523,20 +538,20 @@
       "sources": [
         {
           "path": "app/compendium/world.py",
-          "line": 48,
-          "end_line": 78,
+          "line": 56,
+          "end_line": 92,
           "label": "Zuordnung, lokal oder LLM"
         },
         {
           "path": "app/compendium/world.py",
-          "line": 113,
-          "end_line": 152,
-          "label": "Auszug, Text, Rückfall"
+          "line": 130,
+          "end_line": 141,
+          "label": "LLM nur, wenn verfügbar"
         },
         {
           "path": "app/synthesis/writer.py",
-          "line": 124,
-          "end_line": 150,
+          "line": 140,
+          "end_line": 175,
           "label": "LLM-Entwurf oder Regeln"
         }
       ]
@@ -549,21 +564,21 @@
       "sources": [
         {
           "path": "app/llm/call.py",
-          "line": 87,
-          "end_line": 146,
-          "label": "Budget, Frist, Abrechnung"
+          "line": 90,
+          "end_line": 102,
+          "label": "Frist, Budget der Anfrage"
         },
         {
-          "path": "app/compendium/gateway.py",
-          "line": 66,
-          "end_line": 81,
-          "label": "verfügbar, Schutzschalter"
+          "path": "app/llm/client.py",
+          "line": 617,
+          "end_line": 622,
+          "label": "Schlüssel und Trace-Header"
         },
         {
-          "path": "app/compendium/llm_policy.py",
-          "line": 142,
-          "end_line": 157,
-          "label": "503 ohne LLM"
+          "path": "app/llm/client.py",
+          "line": 565,
+          "end_line": 574,
+          "label": "Ablehnung: Rest llm-free"
         }
       ]
     },
@@ -575,14 +590,14 @@
       "sources": [
         {
           "path": "app/service.py",
-          "line": 113,
-          "end_line": 167,
+          "line": 155,
+          "end_line": 170,
           "label": "Sicht, Hauptartikel, 404"
         },
         {
           "path": "app/service.py",
-          "line": 190,
-          "end_line": 227,
+          "line": 245,
+          "end_line": 252,
           "label": "Korpus aus den Archiven"
         }
       ]
@@ -595,15 +610,21 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/part.py",
-          "line": 81,
-          "end_line": 106,
+          "line": 87,
+          "end_line": 109,
           "label": "Suche, Prüfung, Text"
         },
         {
           "path": "app/knowledge/curriculum_check.py",
           "line": 58,
-          "end_line": 109,
+          "end_line": 82,
           "label": "LLM-Prüfung in Stapeln"
+        },
+        {
+          "path": "app/compendium/llm_policy.py",
+          "line": 145,
+          "end_line": 152,
+          "label": "eigenes Budget (D94)"
         }
       ]
     },
@@ -615,15 +636,21 @@
       "sources": [
         {
           "path": "app/compendium/repository.py",
-          "line": 146,
-          "end_line": 154,
-          "label": "Überblick mit Restzeit"
+          "line": 97,
+          "end_line": 108,
+          "label": "Sammlung in node_id (D77)"
         },
         {
           "path": "app/sources/wlo/part.py",
-          "line": 188,
-          "end_line": 230,
-          "label": "stoppt, wenn die Zeit um ist"
+          "line": 156,
+          "end_line": 170,
+          "label": "Überblick mit Restzeit"
+        },
+        {
+          "path": "app/sources/wlo/client.py",
+          "line": 300,
+          "end_line": 301,
+          "label": "Trace-Header"
         }
       ]
     }
@@ -636,22 +663,17 @@
     },
     {
       "from": 246,
-      "to": 304,
-      "label": "Vorbereitung"
+      "to": 336,
+      "label": "Vorbereitung, Teil 3"
     },
     {
-      "from": 310,
-      "to": 400,
-      "label": "Teil 1"
-    },
-    {
-      "from": 406,
+      "from": 342,
       "to": 528,
-      "label": "Teile 2 und 3"
+      "label": "Teile 1 und 2"
     },
     {
       "from": 534,
-      "to": 588,
+      "to": 570,
       "label": "Antwort"
     }
   ],
@@ -663,7 +685,7 @@
       "y": 193,
       "label": "POST /api/v2/compendium",
       "variant": "emphasis",
-      "note": "Schlüssel, Rate-Limit, Körpergrenze vor dem Lesen"
+      "note": "API_KEYS, Rate-Limit vor dem Körper; b-api-Schlüssel der Anfrage"
     },
     {
       "id": "generate",
@@ -672,13 +694,22 @@
       "y": 225,
       "label": "generate(Profil)",
       "variant": "emphasis",
-      "note": "Profil braucht LLM, keins da: 503"
+      "note": "ohne preset PRESET_DEFAULT; LLM-Profil ohne LLM: 503"
+    },
+    {
+      "id": "sammlung",
+      "from": "service",
+      "to": "edusharing",
+      "y": 257,
+      "label": "Teil 3 nebenher",
+      "variant": "default",
+      "note": "collection_id oder Sammlung in node_id, bis REQUEST_TIMEOUT_S"
     },
     {
       "id": "artikelwahl",
       "from": "service",
       "to": "llm",
-      "y": 257,
+      "y": 289,
       "label": "Artikelwahl",
       "variant": "dashed",
       "note": "ab balanced; llm-free nach Regeln"
@@ -687,16 +718,34 @@
       "id": "korpus",
       "from": "service",
       "to": "zim",
-      "y": 289,
+      "y": 321,
       "label": "Hauptartikel, Korpus",
       "variant": "emphasis",
       "note": "Thema nicht gefunden: 404"
     },
     {
+      "id": "lehrplaene",
+      "from": "service",
+      "to": "lehrplan",
+      "y": 353,
+      "label": "Teil 2 nebenher",
+      "variant": "default",
+      "note": "Lehrplansuche, sobald das Thema steht"
+    },
+    {
+      "id": "pruefung",
+      "from": "service",
+      "to": "llm",
+      "y": 385,
+      "label": "Lehrplanprüfung",
+      "variant": "dashed",
+      "note": "ab best-quality, eigenes Budget (D94)"
+    },
+    {
       "id": "teil1-start",
       "from": "service",
       "to": "teil1",
-      "y": 321,
+      "y": 417,
       "label": "Teil 1 bauen",
       "variant": "default"
     },
@@ -704,123 +753,91 @@
       "id": "zuordnung",
       "from": "teil1",
       "to": "llm",
-      "y": 353,
+      "y": 449,
       "label": "Zuordnung, Text",
       "variant": "dashed",
-      "note": "Zuordnung ab best-quality, Text nur mit -generated"
+      "note": "Zuordnung ab best-quality, Text in den -generated-Profilen"
+    },
+    {
+      "id": "abgelehnt",
+      "from": "llm",
+      "to": "teil1",
+      "y": 481,
+      "label": "Schlüssel abgelehnt",
+      "variant": "security",
+      "note": "401/402/403, 429 nach Wiederholungen: Rest der Anfrage llm-free"
     },
     {
       "id": "bausteine",
       "from": "teil1",
       "to": "service",
-      "y": 385,
-      "label": "Bausteine, Belege",
-      "variant": "return"
-    },
-    {
-      "id": "lehrplaene",
-      "from": "service",
-      "to": "lehrplan",
-      "y": 417,
-      "label": "Lehrplansuche",
-      "variant": "default"
-    },
-    {
-      "id": "pruefung",
-      "from": "service",
-      "to": "llm",
-      "y": 449,
-      "label": "Lehrplanprüfung",
-      "variant": "dashed",
-      "note": "ab best-quality"
-    },
-    {
-      "id": "sammlung",
-      "from": "service",
-      "to": "edusharing",
-      "y": 481,
-      "label": "Sammlung lesen",
-      "variant": "default",
-      "note": "nur mit collection_id, bis zur Frist"
-    },
-    {
-      "id": "knoten",
-      "from": "edusharing",
-      "to": "service",
       "y": 513,
-      "label": "Knoten",
-      "variant": "return"
-    },
-    {
-      "id": "kompendium",
-      "from": "service",
-      "to": "endpunkt",
-      "y": 545,
-      "label": "Markdown, Audit",
+      "label": "Bausteine, Belege",
       "variant": "return"
     },
     {
       "id": "antwort",
       "from": "endpunkt",
       "to": "aufrufer",
-      "y": 577,
+      "y": 553,
       "label": "200 JSON",
-      "variant": "return"
+      "variant": "return",
+      "note": "Markdown, Audit; Teile 2 und 3 eingefügt"
     }
   ],
   "activations": [
     {
       "participant": "endpunkt",
       "from": 188,
-      "to": 582,
+      "to": 558,
       "type": "security"
     },
     {
       "participant": "service",
       "from": 220,
-      "to": 550,
+      "to": 548,
       "type": "backend"
     },
     {
-      "participant": "llm",
+      "participant": "edusharing",
       "from": 252,
-      "to": 272,
+      "to": 520,
+      "type": "external"
+    },
+    {
+      "participant": "llm",
+      "from": 284,
+      "to": 304,
       "type": "external"
     },
     {
       "participant": "zim",
-      "from": 284,
-      "to": 304,
+      "from": 316,
+      "to": 336,
       "type": "database"
     },
     {
+      "participant": "lehrplan",
+      "from": 348,
+      "to": 368,
+      "type": "database"
+    },
+    {
+      "participant": "llm",
+      "from": 380,
+      "to": 400,
+      "type": "external"
+    },
+    {
       "participant": "teil1",
-      "from": 316,
-      "to": 390,
+      "from": 412,
+      "to": 518,
       "type": "backend"
     },
     {
       "participant": "llm",
-      "from": 348,
-      "to": 368,
-      "type": "external"
-    },
-    {
-      "participant": "lehrplan",
-      "from": 412,
-      "to": 432,
-      "type": "database"
-    },
-    {
-      "participant": "llm",
       "from": 444,
-      "to": 464,
-      "type": "external"
-    },
-    {
-      "participant": "edusharing",
-      "from": 476,
-      "to": 518,
+      "to": 486,
       "type": "external"
     }
   ],
@@ -830,17 +847,29 @@
       "title": "Profile",
       "items": [
         "llm-free: jeder Schritt nach Regeln",
-        "balanced: Artikelwahl per LLM",
-        "best-quality: auch Zuordnung und Lehrplanprüfung; -generated schreibt zudem den Text"
+        "balanced: Artikelwahl per LLM; best-quality: auch Zuordnung und Lehrplanprüfung",
+        "best-quality-generated schreibt zudem den Text, best-coverage-generated füllt jeden Baustein",
+        "Ohne preset: PRESET_DEFAULT (best-quality-generated), ohne LLM llm-free"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Schlüssel und b-api",
+      "items": [
+        "Mit B_API_KEY_SOURCE=request nimmt take_b_api_key den Schlüssel aus Authorization, sonst X-API-Key, nur für diese Anfrage",
+        "Jeder LLM-Aufruf schickt ihn unverändert an die b-api; ohne ihn gilt B_API_KEY; direkte Aufrufer: API_KEYS",
+        "Provider openai mit gpt-6-luna oder router (D97)",
+        "Trace-Header (x-client-trace-id, B3, traceparent) und X-Request-ID gehen mit an b-api und edu-sharing (D108)"
       ]
     },
     {
       "dot": "amber",
       "title": "Frist und Budget",
       "items": [
-        "REQUEST_TIMEOUT_S (Vorgabe 120 s) begrenzt LLM und Repository",
-        "Jeder LLM-Aufruf reserviert Tokens und rechnet danach ab",
-        "Ohne Restzeit, Budget oder erreichbare b-api übernehmen die Regeln"
+        "REQUEST_TIMEOUT_S (Vorgabe bei openai 300 s) begrenzt LLM und edu-sharing",
+        "Jeder LLM-Aufruf reserviert aus dem Budget der Anfrage und rechnet danach ab; kein Tagesbudget (D104)",
+        "Ohne Restzeit, Platz im Anfragebudget oder erreichbare b-api übernehmen die Regeln",
+        "Lehnt die b-api den Schlüssel ab, läuft der Rest der Anfrage llm-free, Grund in audit.llm (D106)"
       ]
     },
     {
@@ -849,7 +878,7 @@
       "items": [
         "Markdown mit Vorspann: KI-Kennzeichnung nach den tatsächlich genutzten Schritten",
         "Audit mit Zeiten je Schritt, LLM-Bericht, Tokens und Status je Teil",
-        "Teil 3 nur mit collection_id; nach der Frist fragt der Dienst nichts mehr"
+        "Teile 2 und 3 laufen neben Teil 1; nach der Frist fragt der Dienst nichts mehr"
       ]
     }
   ]

@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "b95a546ca8f8062c58d9b95051540c124a4d1a34"
+      "revision": "26cb2895212da58abbddc5f5cce7c08511e03716"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -438,24 +438,92 @@
   },
   "components": [
     {
+      "id": "proben",
+      "type": "external",
+      "label": "Proben",
+      "sublabel": "Healthcheck, Kubelet",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "Dockerfile",
+          "line": 107,
+          "end_line": 108,
+          "label": "HEALTHCHECK an INTERNAL_PORT"
+        },
+        {
+          "path": "docs/uebergabe/helm-values.example.yaml",
+          "line": 31,
+          "end_line": 34,
+          "label": "Proben an Port 9000"
+        }
+      ]
+    },
+    {
       "id": "aufrufer",
       "type": "external",
       "label": "Aufrufende Systeme",
       "sublabel": "HTTPS, /api/v2",
       "pos": [
         40,
-        305
+        300
       ],
       "size": [
-        150,
-        70
+        170,
+        64
       ],
       "sources": [
         {
           "path": "app/api/v2/routes.py",
-          "line": 37,
-          "end_line": 46,
+          "line": 48,
+          "end_line": 54,
           "label": "POST /api/v2/compendium"
+        },
+        {
+          "path": "docs/uebergabe/helm-values.example.yaml",
+          "line": 91,
+          "end_line": 103,
+          "label": "öffentliche Pfade am Ingress"
+        }
+      ]
+    },
+    {
+      "id": "bapiproxy",
+      "type": "external",
+      "label": "b-api-Proxy",
+      "sublabel": "/api/v1/proxy/<dienst>",
+      "pos": [
+        40,
+        430
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "sources": [
+        {
+          "path": "README.md",
+          "line": 1103,
+          "end_line": 1112,
+          "label": "Proxy reicht den Schlüssel weiter (D105)"
+        },
+        {
+          "path": "docs/uebergabe/helm-values.example.yaml",
+          "line": 88,
+          "end_line": 90,
+          "label": "nur der Proxy erreicht den Dienst"
+        },
+        {
+          "path": "docs/betrieb.md",
+          "line": 249,
+          "end_line": 249,
+          "label": "Aufruf über /api/v1/proxy/<dienst>"
         }
       ]
     },
@@ -466,17 +534,17 @@
       "sublabel": "Browser, UI_ENABLED",
       "pos": [
         40,
-        460
+        590
       ],
       "size": [
-        150,
+        170,
         64
       ],
       "sources": [
         {
           "path": "app/ui/routes.py",
-          "line": 22,
-          "end_line": 30,
+          "line": 50,
+          "end_line": 69,
           "label": "/ui/ aus statischen Dateien"
         },
         {
@@ -491,33 +559,67 @@
       "id": "zugang",
       "type": "security",
       "label": "Zugangsprüfung",
-      "sublabel": "Schlüssel, Limit, Größe",
+      "sublabel": "Port 8000: Schlüssel, Limit, Größe",
       "pos": [
-        320,
-        305
+        385,
+        430
       ],
       "size": [
-        160,
+        200,
         70
       ],
       "sources": [
         {
-          "path": "app/api/gates.py",
-          "line": 35,
-          "end_line": 49,
-          "label": "Prüfung vor dem Körper"
-        },
-        {
           "path": "app/api/keys.py",
           "line": 28,
-          "end_line": 41,
-          "label": "API-Schlüssel, 401"
+          "end_line": 48,
+          "label": "API_KEYS, 401, vor dem Körper"
+        },
+        {
+          "path": "app/api/b_api_key.py",
+          "line": 15,
+          "end_line": 25,
+          "label": "b-api-Schlüssel der Anfrage (D105)"
         },
         {
           "path": "app/api/body_limit.py",
-          "line": 32,
+          "line": 39,
           "end_line": 70,
           "label": "Körpergrenze, 413"
+        }
+      ]
+    },
+    {
+      "id": "intern",
+      "type": "security",
+      "label": "Interner Port",
+      "sublabel": "9000: /health, /ready, /metrics, Stand",
+      "pos": [
+        685,
+        300
+      ],
+      "size": [
+        220,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/api/internal_port.py",
+          "line": 17,
+          "end_line": 31,
+          "label": "an anderen Ports 404 (D110)"
+        },
+        {
+          "path": "app/serve.py",
+          "line": 83,
+          "end_line": 106,
+          "label": "Worker an beiden Ports"
+        },
+        {
+          "path": "app/settings.py",
+          "line": 357,
+          "end_line": 363,
+          "label": "INTERNAL_PORT, Vorgabe 9000"
         }
       ]
     },
@@ -527,30 +629,30 @@
       "label": "API-Dienst",
       "sublabel": "FastAPI + uvicorn",
       "pos": [
-        600,
-        305
+        675,
+        430
       ],
       "size": [
-        760,
+        720,
         70
       ],
       "sources": [
         {
           "path": "docker-compose.yml",
           "line": 38,
-          "end_line": 75,
-          "label": "Dienst api"
+          "end_line": 80,
+          "label": "Dienst api, Ports 8000 und 9000"
         },
         {
           "path": "app/serve.py",
-          "line": 60,
-          "end_line": 63,
+          "line": 34,
+          "end_line": 34,
           "label": "uvicorn app.main:create_app"
         },
         {
           "path": "app/main.py",
-          "line": 462,
-          "end_line": 486,
+          "line": 322,
+          "end_line": 341,
           "label": "Router von /api/v2"
         }
       ]
@@ -561,8 +663,8 @@
       "label": "Prometheus",
       "sublabel": "Profil monitoring",
       "pos": [
-        800,
-        160
+        855,
+        175
       ],
       "size": [
         150,
@@ -571,15 +673,15 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 160,
-          "end_line": 175,
+          "line": 165,
+          "end_line": 180,
           "label": "Dienst prometheus"
         },
         {
           "path": "monitoring/prometheus.yml",
-          "line": 4,
+          "line": 18,
           "end_line": 22,
-          "label": "Job kompendium, /metrics"
+          "label": "Job kompendium, api:9000"
         }
       ]
     },
@@ -589,7 +691,7 @@
       "label": "edu-sharing",
       "sublabel": "WLO-Repository (REST)",
       "pos": [
-        1080,
+        1205,
         40
       ],
       "size": [
@@ -599,15 +701,21 @@
       "sources": [
         {
           "path": "app/sources/wlo/client.py",
-          "line": 137,
-          "end_line": 176,
+          "line": 161,
+          "end_line": 194,
           "label": "Sammlungen, Referenzen"
         },
         {
           "path": "app/sources/wlo/client.py",
-          "line": 201,
-          "end_line": 220,
+          "line": 237,
+          "end_line": 259,
           "label": "Knoten, Textinhalt"
+        },
+        {
+          "path": "app/sources/wlo/client.py",
+          "line": 300,
+          "end_line": 301,
+          "label": "Trace-Header gehen mit (D108)"
         }
       ]
     },
@@ -615,10 +723,10 @@
       "id": "llmgateway",
       "type": "backend",
       "label": "LLM-Gateway",
-      "sublabel": "Budget, Schutzschalter",
+      "sublabel": "Anfragebudget, Schutzschalter",
       "pos": [
-        1480,
-        305
+        1505,
+        430
       ],
       "size": [
         170,
@@ -626,21 +734,21 @@
       ],
       "sources": [
         {
-          "path": "app/main.py",
-          "line": 190,
-          "end_line": 234,
+          "path": "app/wiring.py",
+          "line": 212,
+          "end_line": 254,
           "label": "nur mit LLM_ENABLED und Schlüssel"
         },
         {
-          "path": "app/llm/call.py",
-          "line": 87,
-          "end_line": 146,
-          "label": "reservieren, rufen, abrechnen"
+          "path": "app/compendium/gateway.py",
+          "line": 67,
+          "end_line": 80,
+          "label": "Schlüssel abgelehnt: Regeln (D106)"
         },
         {
           "path": "app/llm/client.py",
-          "line": 31,
-          "end_line": 44,
+          "line": 168,
+          "end_line": 170,
           "label": "Wiederholung, Schutzschalter"
         }
       ]
@@ -648,10 +756,10 @@
     {
       "id": "bapi",
       "type": "external",
-      "label": "b-api",
-      "sublabel": "LLM über HTTPS",
+      "label": "b-api-LLM",
+      "sublabel": "gpt-6-luna oder Route",
       "pos": [
-        1480,
+        1505,
         40
       ],
       "size": [
@@ -661,15 +769,21 @@
       "sources": [
         {
           "path": "app/llm/client.py",
-          "line": 161,
-          "end_line": 163,
+          "line": 266,
+          "end_line": 268,
           "label": "/api/v1/llm/{provider}"
         },
         {
+          "path": "app/llm/client.py",
+          "line": 661,
+          "end_line": 664,
+          "label": "Schlüssel der Anfrage, sonst B_API_KEY"
+        },
+        {
           "path": "app/settings.py",
-          "line": 23,
-          "end_line": 31,
-          "label": "Adresse aus B_API_BASE_URL"
+          "line": 245,
+          "end_line": 259,
+          "label": "B_API_PROVIDER, B_API_ROUTE (D97)"
         }
       ]
     },
@@ -679,8 +793,8 @@
       "label": "ZIM-Archive",
       "sublabel": "Volume zim, active.json",
       "pos": [
-        615,
-        480
+        680,
+        605
       ],
       "size": [
         170,
@@ -689,8 +803,8 @@
       "sources": [
         {
           "path": "app/sources/zim/registry.py",
-          "line": 78,
-          "end_line": 86,
+          "line": 70,
+          "end_line": 83,
           "label": "Start aus active.json"
         },
         {
@@ -701,8 +815,8 @@
         },
         {
           "path": "app/sources/zim/active.py",
-          "line": 59,
-          "end_line": 78,
+          "line": 58,
+          "end_line": 60,
           "label": "active.json atomar schreiben"
         }
       ]
@@ -713,8 +827,8 @@
       "label": "Lehrplan-Cache",
       "sublabel": "lehrplan.db (SQLite)",
       "pos": [
-        825,
-        480
+        880,
+        605
       ],
       "size": [
         170,
@@ -723,20 +837,20 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 355,
-          "end_line": 364,
+          "line": 440,
+          "end_line": 458,
           "label": "neu bauen, dann tauschen"
         },
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 159,
-          "end_line": 162,
+          "line": 182,
+          "end_line": 185,
           "label": "Lesen je Aufruf"
         },
         {
           "path": "app/sources/lehrplan/part.py",
-          "line": 81,
-          "end_line": 103,
+          "line": 72,
+          "end_line": 98,
           "label": "Teil 2 aus dem Cache"
         }
       ]
@@ -747,8 +861,8 @@
       "label": "Wikidata-/GND-Index",
       "sublabel": "wikidata.db, gnd.db",
       "pos": [
-        1035,
-        480
+        1080,
+        605
       ],
       "size": [
         170,
@@ -763,14 +877,14 @@
         },
         {
           "path": "app/sources/local_index.py",
-          "line": 85,
+          "line": 99,
           "end_line": 126,
           "label": "nur lesen, neu öffnen"
         },
         {
           "path": "app/api/v2/entities.py",
-          "line": 324,
-          "end_line": 334,
+          "line": 83,
+          "end_line": 115,
           "label": "/entities verknüpft"
         }
       ]
@@ -779,10 +893,10 @@
       "id": "zustand",
       "type": "database",
       "label": "Zustand",
-      "sublabel": "Templates, Budget, Status",
+      "sublabel": "Templates, Status, WLO-Cache",
       "pos": [
-        1245,
-        480
+        1280,
+        605
       ],
       "size": [
         170,
@@ -791,21 +905,21 @@
       "sources": [
         {
           "path": "app/templates/manager.py",
-          "line": 96,
-          "end_line": 107,
+          "line": 218,
+          "end_line": 238,
           "label": "Templates speichern"
-        },
-        {
-          "path": "app/llm/budget_store.py",
-          "line": 33,
-          "end_line": 108,
-          "label": "Tokenbudget je Tag"
         },
         {
           "path": "app/observability/status.py",
           "line": 94,
-          "end_line": 130,
+          "end_line": 136,
           "label": "Status für /metrics"
+        },
+        {
+          "path": "app/sources/wlo/cache.py",
+          "line": 1,
+          "end_line": 6,
+          "label": "WLO-Cache, sonst WLO_CACHE_PATH"
         }
       ]
     },
@@ -815,8 +929,8 @@
       "label": "zim-updater",
       "sublabel": "zim sync --loop",
       "pos": [
-        615,
-        640
+        680,
+        765
       ],
       "size": [
         170,
@@ -825,20 +939,20 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 77,
-          "end_line": 96,
+          "line": 82,
+          "end_line": 101,
           "label": "Dienst zim-updater"
         },
         {
           "path": "app/cli_zim.py",
-          "line": 92,
-          "end_line": 133,
+          "line": 95,
+          "end_line": 129,
           "label": "Schleife, Lebenszeichen"
         },
         {
           "path": "app/jobs/zim_sync.py",
-          "line": 199,
-          "end_line": 244,
+          "line": 192,
+          "end_line": 227,
           "label": "übernehmen, laden, aktivieren"
         }
       ]
@@ -849,8 +963,8 @@
       "label": "lehrplan-updater",
       "sublabel": "lehrplan harvest --loop",
       "pos": [
-        825,
-        640
+        880,
+        765
       ],
       "size": [
         170,
@@ -859,20 +973,20 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 98,
-          "end_line": 115,
+          "line": 103,
+          "end_line": 120,
           "label": "Dienst lehrplan-updater"
         },
         {
           "path": "app/cli_lehrplan.py",
-          "line": 84,
-          "end_line": 130,
+          "line": 91,
+          "end_line": 143,
           "label": "Prüfung, Harvest wenn fällig"
         },
         {
           "path": "app/sources/lehrplan/harvest.py",
           "line": 249,
-          "end_line": 270,
+          "end_line": 290,
           "label": "Abzug aus MEM"
         }
       ]
@@ -883,8 +997,8 @@
       "label": "wikidata-/gnd-updater",
       "sublabel": "sync --loop, täglich",
       "pos": [
-        1035,
-        640
+        1080,
+        765
       ],
       "size": [
         170,
@@ -893,20 +1007,20 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 117,
-          "end_line": 158,
+          "line": 122,
+          "end_line": 163,
           "label": "zwei Dienste"
         },
         {
           "path": "app/cli_wikidata.py",
-          "line": 58,
-          "end_line": 80,
+          "line": 62,
+          "end_line": 87,
           "label": "wikidata sync"
         },
         {
           "path": "app/cli_gnd.py",
-          "line": 61,
-          "end_line": 83,
+          "line": 65,
+          "end_line": 90,
           "label": "gnd sync"
         }
       ]
@@ -917,8 +1031,8 @@
       "label": "Kiwix",
       "sublabel": "OPDS-Katalog, ZIM",
       "pos": [
-        615,
-        800
+        680,
+        925
       ],
       "size": [
         170,
@@ -933,8 +1047,8 @@
         },
         {
           "path": "app/sources/zim/downloader.py",
-          "line": 132,
-          "end_line": 209,
+          "line": 167,
+          "end_line": 211,
           "label": "Download mit SHA-256"
         }
       ]
@@ -945,8 +1059,8 @@
       "label": "MEM",
       "sublabel": "SPARQL-Endpunkt",
       "pos": [
-        825,
-        800
+        880,
+        925
       ],
       "size": [
         170,
@@ -961,8 +1075,8 @@
         },
         {
           "path": "app/settings.py",
-          "line": 133,
-          "end_line": 135,
+          "line": 180,
+          "end_line": 182,
           "label": "LEHRPLAN_ENDPOINT"
         }
       ]
@@ -973,8 +1087,8 @@
       "label": "Wikimedia, DNB",
       "sublabel": "dewiki-Dumps, GND-Turtle",
       "pos": [
-        1035,
-        800
+        1080,
+        925
       ],
       "size": [
         170,
@@ -1000,8 +1114,10 @@
     {
       "kind": "region",
       "label": "Docker Compose",
+      "pad": 22,
       "wraps": [
         "zugang",
+        "intern",
         "api",
         "llmgateway",
         "prometheus",
@@ -1012,45 +1128,62 @@
         "zimupdater",
         "lehrplanupdater",
         "indexupdater"
-      ],
-      "pad": 22
+      ]
     },
     {
       "kind": "region",
       "label": "Container api",
+      "pad": 12,
       "wraps": [
         "zugang",
+        "intern",
         "api",
         "llmgateway"
-      ],
-      "pad": 12
+      ]
     },
     {
       "kind": "region",
       "label": "Volume zim",
+      "pad": 10,
       "wraps": [
         "zimarchive"
-      ],
-      "pad": 10
+      ]
     },
     {
       "kind": "region",
       "label": "Volume state",
+      "pad": 10,
       "wraps": [
         "lehrplancache",
         "indizes",
         "zustand"
-      ],
-      "pad": 10
+      ]
     }
   ],
   "connections": [
     {
-      "id": "anfrage",
+      "id": "ueber-bapi",
+      "from": "aufrufer",
+      "to": "bapiproxy",
+      "label": "über die b-api",
+      "variant": "emphasis",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "weiterreichen",
+      "from": "bapiproxy",
+      "to": "zugang",
+      "label": "reicht Schlüssel weiter",
+      "variant": "emphasis"
+    },
+    {
+      "id": "direkt",
       "from": "aufrufer",
       "to": "zugang",
-      "label": "HTTPS /api/v2",
-      "variant": "emphasis"
+      "label": "direkt: X-API-Key",
+      "fromSide": "right",
+      "toSide": "top"
     },
     {
       "id": "ui-anfrage",
@@ -1068,17 +1201,38 @@
       "variant": "emphasis"
     },
     {
+      "id": "proben-fragen",
+      "from": "proben",
+      "to": "intern",
+      "label": "/health, /ready",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "top"
+    },
+    {
       "id": "scrape",
       "from": "prometheus",
-      "to": "api",
+      "to": "intern",
       "label": "GET /metrics",
-      "variant": "dashed"
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "intern-api",
+      "from": "intern",
+      "to": "api",
+      "label": "interne Pfade",
+      "fromSide": "bottom",
+      "toSide": "top"
     },
     {
       "id": "teil3",
       "from": "api",
       "to": "edusharing",
-      "label": "Teil 3, Knoten (REST)"
+      "label": "Teil 3, Knoten (REST)",
+      "fromSide": "top",
+      "toSide": "bottom"
     },
     {
       "id": "llm-schritte",
@@ -1090,7 +1244,7 @@
       "id": "chat",
       "from": "llmgateway",
       "to": "bapi",
-      "label": "chat/completions"
+      "label": "chat/completions, Schlüssel"
     },
     {
       "id": "teil1",
@@ -1120,7 +1274,7 @@
       "id": "zustand-rw",
       "from": "api",
       "to": "zustand",
-      "label": "Templates, Budget, Status",
+      "label": "Templates, Status, Cache",
       "fromSide": "bottom",
       "toSide": "top"
     },
@@ -1166,13 +1320,25 @@
       "dot": "rose",
       "title": "Zugang",
       "items": [
-        "API-Schlüssel, Rate-Limit und Körpergrenze greifen, bevor der Körper gelesen wird",
-        "Admin-Endpunkte nur mit ADMIN_TOKEN, sonst 404",
-        "/metrics optional mit METRICS_TOKEN"
+        "Hinter dem b-api-Proxy bleibt API_KEYS leer; der Dienst ist dann nur über die b-api erreichbar",
+        "Direkte Aufrufer brauchen mit API_KEYS einen Schlüssel in X-API-Key, sonst 401",
+        "Schlüssel, Rate-Limit und Körpergrenze greifen, bevor der Körper gelesen wird",
+        "Admin-Endpunkte nur mit ADMIN_TOKEN, sonst 404"
       ]
     },
     {
       "dot": "violet",
+      "title": "b-api-Schlüssel und Limits",
+      "items": [
+        "B_API_KEY_SOURCE=request: der Schlüssel des Aufrufers (Authorization, sonst X-API-Key) geht unverändert nur an die b-api",
+        "Bringt die Anfrage keinen, gilt B_API_KEY; die Vorgabe env nimmt immer B_API_KEY",
+        "Lehnt die b-api den Schlüssel ab (401, 402, 403, 429 nach den Versuchen), läuft der Rest der Anfrage llm-free; das Log nennt es einmal",
+        "Kein Tagesbudget im Dienst (D104): die b-api setzt die Limits je Schlüssel, der Dienst begrenzt nur je Anfrage",
+        "B_API_PROVIDER openai (Vorgabe, gpt-6-luna) oder router mit B_API_ROUTE (D97)"
+      ]
+    },
+    {
+      "dot": "orange",
       "title": "LLM je Profil",
       "items": [
         "llm-free arbeitet nur mit Regeln; balanced wählt Artikel per LLM",
@@ -1191,11 +1357,21 @@
     },
     {
       "dot": "amber",
-      "title": "Status und Alarme",
+      "title": "Interner Port, Status und Alarme",
       "items": [
-        "Jeder Sidecar schreibt Status- und Lebenszeichen-Dateien in das Volume state",
-        "/metrics liest sie bei jeder Abfrage",
+        "/health, /ready, /metrics und der Stand von ZIM und Lehrplan antworten nur an INTERNAL_PORT 9000, an Port 8000 mit 404 (D110)",
+        "INTERNAL_PORT=0 legt alles auf Port 8000; /metrics optional mit METRICS_TOKEN",
+        "Jeder Sidecar schreibt Status- und Lebenszeichen-Dateien in sein Volume (zim oder state); /metrics liest sie bei jeder Abfrage",
         "Prometheus-Alarme melden stumme oder gescheiterte Sidecars"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Protokoll und Trace",
+      "items": [
+        "API und Updater-Schleifen loggen nach stdout (D109), mit LOG_FORMAT=json samt trace_id",
+        "x-client-trace-id, B3 und traceparent gehen mit X-Request-ID an b-api und edu-sharing (D108)",
+        "WLO_CACHE_PATH legt den Repository-Cache je Pod ab; leer: wlo_cache.db im Volume state"
       ]
     }
   ]

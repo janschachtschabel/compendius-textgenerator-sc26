@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "b95a546ca8f8062c58d9b95051540c124a4d1a34"
+      "revision": "26cb2895212da58abbddc5f5cce7c08511e03716"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -437,7 +437,7 @@
     },
     "viewBox": [
       1080,
-      620
+      690
     ],
     "legend": {
       "entries": {
@@ -481,9 +481,9 @@
         },
         {
           "path": "app/sources/zim/downloader.py",
-          "line": 132,
-          "end_line": 209,
-          "label": "Download, SHA-256"
+          "line": 167,
+          "end_line": 224,
+          "label": "Download, Hash geprüft"
         }
       ]
     },
@@ -503,8 +503,8 @@
         },
         {
           "path": "app/settings.py",
-          "line": 133,
-          "end_line": 135,
+          "line": 180,
+          "end_line": 182,
           "label": "LEHRPLAN_ENDPOINT"
         }
       ]
@@ -519,7 +519,7 @@
       "sources": [
         {
           "path": "app/sources/wikidata/sync.py",
-          "line": 37,
+          "line": 69,
           "end_line": 104,
           "label": "Dumps, dumpstatus, SHA-1"
         }
@@ -535,9 +535,33 @@
       "sources": [
         {
           "path": "app/sources/gnd/sync.py",
-          "line": 30,
+          "line": 44,
           "end_line": 71,
           "label": "Prüfsummen, SHA-256"
+        }
+      ]
+    },
+    {
+      "id": "wlo",
+      "type": "external",
+      "label": "WLO-Repository",
+      "sublabel": "edu-sharing REST",
+      "stage": 0,
+      "row": 4,
+      "yOffset": -26,
+      "height": 52,
+      "sources": [
+        {
+          "path": "app/settings.py",
+          "line": 197,
+          "end_line": 200,
+          "label": "EDU_SHARING_BASE_URL"
+        },
+        {
+          "path": "app/sources/wlo/client.py",
+          "line": 120,
+          "end_line": 151,
+          "label": "HTTP-Client"
         }
       ]
     },
@@ -551,21 +575,21 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 77,
-          "end_line": 96,
+          "line": 82,
+          "end_line": 101,
           "label": "Dienst zim-updater"
         },
         {
           "path": "app/cli_zim.py",
-          "line": 92,
-          "end_line": 133,
+          "line": 110,
+          "end_line": 126,
           "label": "Schleife, Lebenszeichen"
         },
         {
           "path": "app/jobs/zim_sync.py",
-          "line": 199,
-          "end_line": 244,
-          "label": "übernehmen, laden, aktivieren"
+          "line": 173,
+          "end_line": 227,
+          "label": "Sperre, Lauf, Status"
         }
       ]
     },
@@ -579,21 +603,21 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 98,
-          "end_line": 115,
+          "line": 103,
+          "end_line": 120,
           "label": "Dienst lehrplan-updater"
         },
         {
           "path": "app/cli_lehrplan.py",
-          "line": 84,
-          "end_line": 130,
-          "label": "Harvest, wenn fällig"
+          "line": 122,
+          "end_line": 143,
+          "label": "Schleife, Lebenszeichen"
         },
         {
           "path": "app/sources/lehrplan/harvest.py",
-          "line": 249,
-          "end_line": 270,
-          "label": "Abzug aus MEM"
+          "line": 223,
+          "end_line": 247,
+          "label": "Harvest unter Sperre"
         }
       ]
     },
@@ -607,14 +631,14 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 117,
-          "end_line": 138,
+          "line": 122,
+          "end_line": 143,
           "label": "Dienst wikidata-updater"
         },
         {
           "path": "app/cli_wikidata.py",
-          "line": 58,
-          "end_line": 80,
+          "line": 62,
+          "end_line": 87,
           "label": "fällig, dann bauen"
         },
         {
@@ -635,14 +659,14 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 140,
-          "end_line": 158,
+          "line": 145,
+          "end_line": 163,
           "label": "Dienst gnd-updater"
         },
         {
           "path": "app/cli_gnd.py",
-          "line": 61,
-          "end_line": 83,
+          "line": 65,
+          "end_line": 90,
           "label": "fällig, dann bauen"
         },
         {
@@ -657,20 +681,26 @@
       "id": "zimfiles",
       "type": "database",
       "label": "ZIM-Archive",
-      "sublabel": "*.zim, active.json",
+      "sublabel": "Wikipedia, Klexikon",
       "stage": 2,
       "row": 0,
       "sources": [
         {
+          "path": "config/zim_subscriptions.yaml",
+          "line": 6,
+          "end_line": 34,
+          "label": "Profil standard (D99)"
+        },
+        {
           "path": "app/jobs/zim_sync.py",
-          "line": 430,
-          "end_line": 433,
-          "label": "Zustand speichern"
+          "line": 319,
+          "end_line": 336,
+          "label": "geprüft, dann aktiv"
         },
         {
           "path": "app/sources/zim/active.py",
-          "line": 59,
-          "end_line": 78,
+          "line": 58,
+          "end_line": 60,
           "label": "active.json atomar"
         }
       ]
@@ -685,15 +715,15 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 355,
-          "end_line": 364,
-          "label": ".tmp, fsync, os.replace"
+          "line": 382,
+          "end_line": 391,
+          "label": "Schreiber baut .tmp"
         },
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 413,
-          "end_line": 431,
-          "label": "Schreiber"
+          "line": 440,
+          "end_line": 458,
+          "label": "fsync, os.replace"
         }
       ]
     },
@@ -720,7 +750,7 @@
         {
           "path": "app/sources/gnd/index.py",
           "line": 162,
-          "end_line": 168,
+          "end_line": 170,
           "label": "GND-Index bauen"
         }
       ]
@@ -729,27 +759,57 @@
       "id": "status",
       "type": "database",
       "label": "Status-Dateien",
-      "sublabel": "von jedem Sidecar",
+      "sublabel": "Status, Lebenszeichen",
       "stage": 2,
       "row": 3,
       "sources": [
         {
           "path": "app/jobs/runner.py",
-          "line": 42,
-          "end_line": 44,
+          "line": 43,
+          "end_line": 45,
           "label": "Lebenszeichen schreiben"
         },
         {
-          "path": "app/jobs/dump_sync.py",
-          "line": 142,
-          "end_line": 176,
-          "label": "wikidata/gnd_status.json"
+          "path": "app/sources/dump_sync.py",
+          "line": 97,
+          "end_line": 117,
+          "label": "Sperre, *_status.json"
         },
         {
           "path": "app/jobs/zim_sync.py",
-          "line": 469,
-          "end_line": 480,
+          "line": 452,
+          "end_line": 468,
           "label": "sync_status.json"
+        }
+      ]
+    },
+    {
+      "id": "wlocache",
+      "type": "database",
+      "label": "wlo_cache.db",
+      "sublabel": "je Pod, TTL",
+      "stage": 2,
+      "row": 4,
+      "yOffset": -26,
+      "height": 52,
+      "sources": [
+        {
+          "path": "app/settings.py",
+          "line": 210,
+          "end_line": 214,
+          "label": "WLO_CACHE_PATH (D109)"
+        },
+        {
+          "path": "app/settings.py",
+          "line": 482,
+          "end_line": 485,
+          "label": "sonst STATE_DIR"
+        },
+        {
+          "path": "app/sources/wlo/cache.py",
+          "line": 1,
+          "end_line": 7,
+          "label": "SQLite, nur Zeitgewinn"
         }
       ]
     },
@@ -757,15 +817,15 @@
       "id": "registry",
       "type": "backend",
       "label": "Archiv-Registry",
-      "sublabel": "Sicht je Anfrage",
+      "sublabel": "folgt active.json",
       "stage": 3,
       "row": 0,
       "sources": [
         {
-          "path": "app/main.py",
-          "line": 494,
-          "end_line": 504,
-          "label": "active.json je Anfrage"
+          "path": "app/api/active_archives.py",
+          "line": 12,
+          "end_line": 24,
+          "label": "eine stat je Anfrage"
         },
         {
           "path": "app/sources/zim/refresh.py",
@@ -775,9 +835,9 @@
         },
         {
           "path": "app/sources/zim/registry.py",
-          "line": 95,
-          "end_line": 102,
-          "label": "Sicht einer Anfrage"
+          "line": 38,
+          "end_line": 62,
+          "label": "in einem Schritt, Sicht"
         }
       ]
     },
@@ -791,20 +851,20 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 159,
-          "end_line": 162,
+          "line": 182,
+          "end_line": 185,
           "label": "Leseverbindung je Aufruf"
         },
         {
           "path": "app/sources/lehrplan/part.py",
-          "line": 81,
-          "end_line": 103,
+          "line": 87,
+          "end_line": 98,
           "label": "Teil 2"
         },
         {
           "path": "app/api/v2/lehrplan.py",
-          "line": 294,
-          "end_line": 296,
+          "line": 187,
+          "end_line": 193,
           "label": "/lehrplan/search"
         }
       ]
@@ -825,8 +885,8 @@
         },
         {
           "path": "app/api/v2/entities.py",
-          "line": 324,
-          "end_line": 334,
+          "line": 328,
+          "end_line": 338,
           "label": "Kennungen verknüpfen"
         },
         {
@@ -841,14 +901,14 @@
       "id": "metrics",
       "type": "backend",
       "label": "/metrics",
-      "sublabel": "StatusCollector",
+      "sublabel": "interner Port 9000",
       "stage": 3,
       "row": 3,
       "sources": [
         {
           "path": "app/observability/status.py",
           "line": 94,
-          "end_line": 130,
+          "end_line": 136,
           "label": "Dateien je Abfrage lesen"
         },
         {
@@ -856,6 +916,42 @@
           "line": 60,
           "end_line": 76,
           "label": "Registry und Status"
+        },
+        {
+          "path": "app/api/internal_port.py",
+          "line": 17,
+          "end_line": 31,
+          "label": "nur auf INTERNAL_PORT"
+        }
+      ]
+    },
+    {
+      "id": "sammlungen",
+      "type": "backend",
+      "label": "Sammlungen",
+      "sublabel": "Teil 3, Materialtexte",
+      "stage": 3,
+      "row": 4,
+      "yOffset": -26,
+      "height": 52,
+      "sources": [
+        {
+          "path": "app/wiring.py",
+          "line": 257,
+          "end_line": 293,
+          "label": "Client und Cache"
+        },
+        {
+          "path": "app/sources/wlo/part.py",
+          "line": 92,
+          "end_line": 100,
+          "label": "erst Cache, dann Repository"
+        },
+        {
+          "path": "app/sources/wlo/knowledge.py",
+          "line": 234,
+          "end_line": 250,
+          "label": "Texte, 7 Tage"
         }
       ]
     },
@@ -871,19 +967,19 @@
           "path": "monitoring/prometheus.yml",
           "line": 4,
           "end_line": 22,
-          "label": "Job kompendium, /metrics"
+          "label": "api:9000/metrics, 30 s"
         },
         {
           "path": "monitoring/alerts.yml",
-          "line": 93,
-          "end_line": 107,
+          "line": 94,
+          "end_line": 108,
           "label": "KompendiumZimSyncSilent"
         },
         {
-          "path": "app/api/metrics.py",
-          "line": 60,
-          "end_line": 76,
-          "label": "Status je Abfrage"
+          "path": "docker-compose.yml",
+          "line": 165,
+          "end_line": 180,
+          "label": "Dienst prometheus"
         }
       ]
     }
@@ -970,7 +1066,7 @@
       "from": "zimfiles",
       "to": "registry",
       "label": "active.json",
-      "classification": "nur lesen"
+      "classification": "ohne Neustart"
     },
     {
       "id": "lehrplan-lesen",
@@ -998,8 +1094,31 @@
       "from": "metrics",
       "to": "prometheus",
       "label": "Messwerte",
-      "classification": "GET /metrics",
+      "classification": "api:9000/metrics",
       "variant": "dashed"
+    },
+    {
+      "id": "wlo-lesen",
+      "from": "wlo",
+      "to": "sammlungen",
+      "label": "Sammlungen, Texte",
+      "classification": "HTTPS, bei Fehltreffer",
+      "variant": "emphasis",
+      "route": "top-channel",
+      "fromSide": "top",
+      "toSide": "top",
+      "channelY": 543,
+      "labelAt": [
+        315,
+        566
+      ]
+    },
+    {
+      "id": "cache-lesen",
+      "from": "wlocache",
+      "to": "sammlungen",
+      "label": "Treffer",
+      "classification": "liest und schreibt"
     }
   ],
   "cards": [
@@ -1007,33 +1126,51 @@
       "dot": "emerald",
       "title": "Neu ohne Neustart",
       "items": [
-        "ZIM: jede Anfrage prüft active.json (ohne ZIM_PATHS) und liest dann eine feste Sicht",
+        "ZIM: jede Anfrage prüft active.json (ohne ZIM_PATHS); bei Änderung tauscht die Registry die Archive in einem Schritt, eine Anfrage liest eine feste Sicht",
         "lehrplan.db: eine neue Leseverbindung je Aufruf",
         "wikidata.db, gnd.db: höchstens alle 60 s neu geprüft und geöffnet"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Archive (D99)",
+      "items": [
+        "Profil standard: Wikipedia ohne Bilder und Klexikon, mit der Ausgabe 2026-10 rund 18,7 GB",
+        "Wikibooks und Wikiversity nur im Profil extended, nicht empfohlen"
       ]
     },
     {
       "dot": "amber",
       "title": "Takt",
       "items": [
-        "zim-updater alle 30 Tage (ZIM_SYNC_INTERVAL)",
-        "lehrplan-updater prüft alle 7 Tage und holt neu, wenn ein Abzug fällig ist",
+        "zim-updater alle 30 Tage (ZIM_SYNC_INTERVAL), nach einem abgebrochenen Download nach 1 h",
+        "lehrplan-updater prüft alle 7 Tage und holt neu, wenn MEM sich geändert hat oder der Abzug 30 Tage alt ist",
         "wikidata-/gnd-updater täglich; neu gebaut wird, wenn der Index fehlt, unbrauchbar ist oder ein neuerer Stand vorliegt"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Sperren und Protokoll",
+      "items": [
+        "Jeder Lauf hält eine Sperrdatei (sync.lock, lehrplan.harvest.lock, wikidata_sync.lock, gnd_sync.lock): ein zweiter Lauf wartet",
+        "Eine Sperre ohne Lebenszeichen (1 h ZIM, 3 h Indizes, 4 h Harvest) gilt als verwaist und wird übernommen",
+        "Die Schleifen der Sidecars und die API protokollieren nach stdout (D109), ein einmaliger Befehl nach stderr"
       ]
     },
     {
       "dot": "rose",
       "title": "Lebenszeichen",
       "items": [
-        "Jeder Sidecar schreibt *_alive mindestens stündlich und *_status.json nach jedem Lauf",
-        "/metrics liest die Dateien bei jeder Abfrage",
-        "Alarme wie KompendiumZimSyncSilent melden einen stummen Sidecar"
+        "Jeder Sidecar schreibt *_alive mindestens stündlich und seinen Status nach jedem Lauf",
+        "/metrics antwortet nur auf dem internen Port 9000 (D110) und liest die Dateien bei jeder Abfrage",
+        "Prometheus fragt api:9000 alle 30 s; Alarme wie KompendiumZimSyncSilent melden einen stummen Sidecar"
       ]
     },
     {
       "dot": "slate",
-      "title": "Abhängigkeit",
+      "title": "Repository-Cache und Abhängigkeit",
       "items": [
+        "wlo_cache.db liegt in STATE_DIR oder unter WLO_CACHE_PATH: mehrere Pods auf einem geteilten Volume bekommen je einen eigenen Pfad (D109)",
         "wikidata-updater liest active.json nur lesend: Er baut neu, wenn das Wikipedia-Archiv neuer ist als der Index"
       ]
     }

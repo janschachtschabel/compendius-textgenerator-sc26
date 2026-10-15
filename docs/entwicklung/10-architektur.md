@@ -1,11 +1,11 @@
 # Architektur
 
-[Übersicht](README.md) · Stand 29.09.2026 · Commit `b95a546` (Release 2.5.0 und die zwei Fixes danach) · drei
-interaktive Diagramme, erzeugt mit dem Skill archify 3.0.1
+[Übersicht](README.md) · Stand 15.10.2026 · Commit `26cb289` (Release 2.22.0) · drei interaktive Diagramme, erzeugt
+mit dem Skill archify 3.0.1
 
 Drei Diagramme zeigen, woraus der Dienst besteht, wie eine Anfrage durch ihn läuft und wie die Sidecars die lokalen
 Daten aktuell halten. Jeder Baustein nennt die Stellen im Code, die ihn belegen: Datei und Zeilen im Commit
-`b95a546`, in der HTML-Fassung als Kürzel „QUELLE“ mit Link auf GitHub. Die HTML-Seiten brauchen keine weiteren
+`26cb289`, in der HTML-Fassung als Kürzel „QUELLE“ mit Link auf GitHub. Die HTML-Seiten brauchen keine weiteren
 Dateien und laden nichts nach; die Schriften sind eingebettet.
 
 | Diagramm | Inhalt |
@@ -20,34 +20,40 @@ https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/ar
 
 ## Systemübersicht
 
-- Aufrufende Systeme und die Prüfansicht (`/ui/`, mit `UI_ENABLED`) sprechen dieselben Endpunkte unter `/api/v2`
-  an. Vor jedem Endpunkt prüft der Dienst API-Schlüssel, Rate-Limit und Körpergrenze, bevor er den Körper liest.
-- Der Container `api` (FastAPI unter uvicorn) liest die ZIM-Archive (Teil 1), den Lehrplan-Cache (Teil 2), die
-  Wikidata- und GND-Indizes (`/entities`) und seinen Zustand (Templates, Tokenbudget, Status-Dateien). Nach außen
-  fragt er edu-sharing (Teil 3 und Knoten) und über das LLM-Gateway die b-api.
+- Aufrufende Systeme kommen über den Proxy der b-api (`/api/v1/proxy/<dienst>`), der den Schlüssel des Aufrufers
+  weiterreicht, oder direkt mit `X-API-Key`; die Prüfansicht (`/ui/`, mit `UI_ENABLED`) spricht dieselben Endpunkte. Vor
+  jedem Endpunkt prüft der Dienst am Port 8000 Schlüssel, Rate-Limit und Körpergrenze, bevor er den Körper liest.
+- Der Container `api` (FastAPI unter uvicorn) liest die ZIM-Archive (Teil 1), den Lehrplan-Cache (Teil 2), die Wikidata-
+  und GND-Indizes (`/entities`) und seinen Zustand (Templates, Status-Dateien, Repository-Cache). Nach außen fragt er
+  edu-sharing (Teil 3 und Knoten) und über das LLM-Gateway die b-api, mit dem Schlüssel der Anfrage oder `B_API_KEY`
+  (D105) und der Spur der Anfrage (D108).
+- Am internen Port 9000 antworten `/health`, `/ready`, `/metrics` und die Statusendpunkte (D110). Docker-Healthcheck und
+  Kubernetes-Proben fragen dort, Prometheus (Profil `monitoring`) holt dort die Metriken.
 - Vier Sidecars aus demselben Image halten die Daten aktuell: `zim-updater` (Kiwix), `lehrplan-updater` (MEM),
-  `wikidata-updater` und `gnd-updater` (Abzüge von Wikimedia und der DNB). Prometheus (Profil `monitoring`) fragt
-  `/metrics` ab.
+  `wikidata-updater` und `gnd-updater` (Abzüge von Wikimedia und der DNB).
 
 ## Eine Kompendium-Anfrage
 
-- Der Endpunkt prüft Zugang und Profil. Braucht das Profil ein LLM und ist keins konfiguriert, antwortet er mit 503.
-- Der Service wählt den Artikel (ab `balanced` per LLM), liest Hauptartikel und Korpus aus einer festen Sicht der
-  Archive (404, wenn es das Thema nicht gibt) und baut Teil 1: die Zuordnung ab `best-quality` per LLM, den Text
-  schreibt das LLM nur in `best-quality-generated` und `best-coverage-generated`.
-- Teil 2 sucht im Lehrplan-Cache, ab `best-quality` prüft das LLM die Treffer. Teil 3 liest die Sammlung aus
-  edu-sharing, nur mit `collection_id` und nur bis zur Frist (`REQUEST_TIMEOUT_S`).
-- Jeder LLM-Aufruf reserviert Tokens und rechnet danach ab. Ohne Restzeit, Budget oder erreichbare b-api übernehmen
-  die Regeln.
+- Der Endpunkt prüft Zugang und Profil und nimmt den Schlüssel der Anfrage für ihre LLM-Aufrufe. Ohne Profil gilt
+  `PRESET_DEFAULT`; braucht das Profil ein LLM und ist keins eingerichtet, antwortet er mit 503.
+- Der Service startet Teil 3 sofort und Teil 2, sobald das Thema vorbereitet ist; beide laufen neben Teil 1. Er wählt
+  den Artikel (ab `balanced` per LLM), liest Hauptartikel und Korpus aus einer festen Sicht der Archive und baut Teil 1:
+  die Zuordnung ab `best-quality` per LLM, den Text schreibt das LLM nur in `best-quality-generated` und
+  `best-coverage-generated`. Ab `best-quality` prüft das LLM die Lehrplantreffer.
+- Jeder LLM-Aufruf reserviert Tokens aus dem Budget der Anfrage; ein Tagesbudget gibt es nicht mehr (D104). Lehnt die
+  b-api den Schlüssel ab, läuft der Rest der Anfrage nach den Regeln, und die Antwort nennt den Grund (D106). Ohne
+  Restzeit oder erreichbare b-api übernehmen ebenfalls die Regeln.
 
 ## Sidecars und lokale Daten
 
-- Jeder Sidecar lädt aus seiner Quelle, prüft die Prüfsumme und ersetzt die Datei atomar: die ZIM-Archive mit
-  `active.json`, `lehrplan.db`, `wikidata.db` und `gnd.db`.
-- Der Dienst übernimmt neue Daten ohne Neustart: die Archive bei der nächsten Anfrage, den Lehrplan-Cache beim
-  nächsten Aufruf, die Indizes nach höchstens 60 s.
-- Jeder Sidecar schreibt Status- und Lebenszeichen-Dateien. `/metrics` liest sie bei jeder Abfrage, und Alarme wie
-  `KompendiumZimSyncSilent` melden einen stummen Sidecar.
+- Jeder Sidecar lädt aus seiner Quelle, prüft die Prüfsumme und ersetzt die Datei in einem Schritt: die ZIM-Archive
+  (Wikipedia und Klexikon, D99) mit `active.json`, `lehrplan.db`, `wikidata.db` und `gnd.db`. Eine Lock-Datei je Sidecar
+  verhindert einen zweiten Lauf.
+- Der Dienst übernimmt neue Daten ohne Neustart: die Archive bei der nächsten Anfrage, den Lehrplan-Cache beim nächsten
+  Aufruf, die Indizes nach höchstens 60 s. Sammlungen und Materialtexte liest er aus dem Repository und hält sie im
+  Repository-Cache, je Pod an `WLO_CACHE_PATH` (D109).
+- Jeder Sidecar schreibt Status- und Lebenszeichen-Dateien. `/metrics` am internen Port liest sie bei jeder Abfrage, und
+  Alarme wie `KompendiumZimSyncSilent` melden einen stummen Sidecar. Die Schleifen der Sidecars loggen nach stdout.
 
 ## Neu erzeugen
 
