@@ -159,3 +159,12 @@ def test_an_alttext_with_a_command_the_converter_does_not_know_gives_nothing() -
     assert plain_latex(latex("{/displaystyle /begin{tabular}{cc}a&b/end{tabular}}")) is None
     assert plain_latex(latex("{/displaystyle {/mathbb {K}}}")) is None  # no double-struck letter of its own
     assert plain_latex("") is None
+
+
+def test_an_environment_inside_an_environment_keeps_its_cells() -> None:
+    """The scan skipped the brace after \begin but counted the one after the name: past an inner environment the
+    depth was 0, its & cut the outer row, and the formula dropped out of the archive text (audit 2026-10-15)."""
+    text = plain_latex(latex("{/displaystyle /begin{pmatrix}/begin{matrix}a&b/end{matrix}&c/end{pmatrix}}"))
+
+    assert text is not None and "end" not in text
+    assert [sign for sign in text if sign.isalpha()] == ["a", "b", "c"]

@@ -377,10 +377,12 @@ def _split(body: str, separator: str) -> list[str]:
     """``body`` cut at ``separator`` (a row's \\\\ or a cell's &) outside braces and inner environments."""
     parts, depth, start, at = [], 0, 0, 0
     while at < len(body):
+        # past the command only: the braces of the name count like any, or an inner environment ended at depth 0
+        # and its & cut the outer row (audit 2026-10-15)
         if body.startswith(f"{BACKSLASH}begin{{", at):
-            depth, at = depth + 1, at + 7
+            depth, at = depth + 1, at + len("\\begin")
         elif body.startswith(f"{BACKSLASH}end{{", at):
-            depth, at = depth - 1, at + 5
+            depth, at = depth - 1, at + len("\\end")
         elif depth == 0 and body.startswith(separator, at):
             parts.append(body[start:at])
             at = start = at + len(separator)
