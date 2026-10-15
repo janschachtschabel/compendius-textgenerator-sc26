@@ -88,6 +88,19 @@ def test_the_port_is_on_by_default_and_never_the_public_one() -> None:
         Settings(_env_file=None, internal_port=8000)
 
 
+def test_both_ports_are_settings_so_several_services_share_a_host() -> None:
+    """Jan, 2026-10-15: several APIs with an internal port may run on one system. Outside a container each needs ports
+    of its own; the two only must not be the same."""
+    assert Settings(_env_file=None).api_port == 8000
+    assert Settings(_env_file=None, api_port=8100, internal_port=9100).internal_port == 9100
+    assert Settings(_env_file=None, api_port=8100, internal_port=8000).internal_port == 8000  # free once the API moved
+    assert Settings(_env_file=None, api_port=8100, internal_port=0).internal_port == 0
+    with pytest.raises(ValueError, match="INTERNAL_PORT"):
+        Settings(_env_file=None, api_port=8100, internal_port=8100)
+    with pytest.raises(ValueError, match="api_port"):
+        Settings(_env_file=None, api_port=0)
+
+
 def free_port() -> int:
     with socket.socket() as probe:
         probe.bind(("127.0.0.1", 0))
@@ -158,6 +171,7 @@ def test_with_the_internal_port_the_start_serves_both_ports_itself(
         monkeypatch.delenv(name)
     monkeypatch.setattr(serve, "DEFAULT_DIR", str(tmp_path / "metrics"))
     monkeypatch.setenv("INTERNAL_PORT", "9123")
+    monkeypatch.setenv("API_PORT", "8123")
     monkeypatch.setenv("WEB_CONCURRENCY", "")
     monkeypatch.setattr(os, "execvpe", lambda *args: pytest.fail("no exec with the internal port"))
     started: list[tuple[list[str], int]] = []
@@ -170,6 +184,7 @@ def test_with_the_internal_port_the_start_serves_both_ports_itself(
 
     [(command, port)] = started
     assert port == 9123 and command[1:3] == ["app.main:create_app", "--factory"]
+    assert command[command.index("--port") + 1] == "8123"
     assert os.environ["WEB_CONCURRENCY"] == "2" and os.environ["PROMETHEUS_MULTIPROC_DIR"] == str(tmp_path / "metrics")
 
 

@@ -9,6 +9,9 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+- **Neu (D111):** `API_PORT` (Vorgabe `8000`) wählt den Port der API, wie `INTERNAL_PORT` den internen; beide dürfen
+  nicht gleich sein. Mehrere Dienste auf einem Host: mit Docker über die Host-Ports `API_BIND` und `INTERNAL_BIND`, ohne
+  Container über `API_PORT` und `INTERNAL_PORT`. Healthcheck des Images und `docker-compose.yml` folgen `API_PORT`.
 - **Neu (D110):** Ein interner Port für `/health`, `/ready`, `/metrics` und die Statusendpunkte von Archiven und
   Lehrplänen, `INTERNAL_PORT` mit der Vorgabe `9000`; am Port 8000 antworten sie mit 404, am internen Port jeder Pfad.
   Die Worker lauschen an beiden Ports (`app/serve.py`). Healthcheck des Images, `docker-compose.yml` (`INTERNAL_BIND`,

@@ -23,7 +23,7 @@ tmpEmptyDir: /tmp           # die API schreibt dorthin Metrikdateien und ihre Lo
 
 api:
   replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 6)
-  port: 8000               # die API, über den Ingress
+  port: 8000               # die API, über den Ingress (API_PORT, D111)
   internalPort: 9000       # Proben, /metrics, Stand (INTERNAL_PORT, D110); kein Ingress, nur im Cluster
   resources:               # Baseline 29.09.2026 mit zwei Workern (README.md, Ressourcen)
     requests: { cpu: "2", memory: 4Gi }
@@ -35,7 +35,8 @@ api:
   terminationGracePeriodSeconds: 630   # laufende Anfragen enden, bevor der Pod geht (API_STOP_GRACE_PERIOD)
   env:
     WEB_CONCURRENCY: "2"
-    INTERNAL_PORT: "9000"      # die Vorgabe; 0 legt alles auf 8000
+    API_PORT: "8000"           # wie api.port
+    INTERNAL_PORT: "9000"      # wie api.internalPort; 0 legt alles auf API_PORT
     LLM_ENABLED: "true"
     B_API_KEY_SOURCE: request    # Schlüssel des Aufrufers, den die b-api weiterreicht (D105)
     B_API_PROVIDER: openai       # ohne Routing; router erst mit einer globalen Route der b-api

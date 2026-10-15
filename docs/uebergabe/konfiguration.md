@@ -5,7 +5,7 @@
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu fünf, die Compose selbst auswertet
 (`IMAGE`, `API_BIND`, `INTERNAL_BIND`, `API_MEMORY`, `API_STOP_GRACE_PERIOD`). Eine fehlende Variable nimmt ihre
-Vorgabe; die Vorlage [`.env.example`](../../.env.example) listet alle 82 des Dienstes mit ihrer Vorgabe. Die
+Vorgabe; die Vorlage [`.env.example`](../../.env.example) listet alle 83 des Dienstes mit ihrer Vorgabe. Die
 ausführliche Beschreibung jeder Variable steht im [README](../../README.md), Abschnitt „Konfiguration“.
 
 ## Für den Betrieb
@@ -48,7 +48,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 ## Alle Variablen
 
-87 Variablen: 82 des Dienstes und 5 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
+88 Variablen: 83 des Dienstes und 5 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
 `docker-compose.yml`; „Betrieb“ nennt die Empfehlung, wo sie davon abweicht.
 
 ### Zugang und Sicherheit
@@ -59,11 +59,12 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `ADMIN_TOKEN` | leer | **gesetzt** | schützt die Admin-Endpunkte (ZIM-Sync, Harvest, Templates schreiben), mindestens 16 Zeichen; leer schaltet sie ab |
 | `METRICS_TOKEN` | leer | **gesetzt** | verlangt `Authorization: Bearer <Token>` für `/metrics`; leer ist `/metrics` offen |
 | `METRICS_ENABLED` | `true` | wie Vorgabe | `/metrics` für Prometheus ausliefern |
-| `INTERNAL_PORT` | `9000` | wie Vorgabe | Port für `/health`, `/ready`, `/metrics` und die Statusendpunkte; am Port 8000 antworten sie mit 404. `0`: alles am Port 8000 wie bis 2.21.0 (D110) |
+| `API_PORT` | `8000` | wie Vorgabe; ohne Container je Dienst ein eigener | Port der API; mehrere Dienste auf einem Host trennen sonst `API_BIND` und `INTERNAL_BIND` (D111) |
+| `INTERNAL_PORT` | `9000` | wie Vorgabe | Port für `/health`, `/ready`, `/metrics` und die Statusendpunkte; am Port der API antworten sie mit 404. `0`: alles am Port der API wie bis 2.21.0 (D110) |
 | `API_DOCS_ENABLED` | `true` | wie Vorgabe | `/docs`, `/redoc` und `/openapi.json`; die Seiten laden Swagger UI und ReDoc von cdn.jsdelivr.net |
 | `UI_ENABLED` | `false` | **`true`, nur mit `API_KEYS`** | Prüfansicht `/ui/` für die Redaktion; sie fragt mit dem Schlüssel, den der Leser einträgt |
 | `API_BIND` | `0.0.0.0:8000` | **hinter Reverse-Proxy `127.0.0.1:8000`** | Compose: woran der Port der API gebunden wird; Docker leitet an der Firewall des Hosts vorbei |
-| `INTERNAL_BIND` | `127.0.0.1:9000` | wie Vorgabe | Compose: woran der interne Port gebunden wird; die Vorgabe lässt ihn auf dem Host, Prometheus im Compose-Netz fragt `api:9000` (D110) |
+| `INTERNAL_BIND` | `127.0.0.1:9000` | wie Vorgabe; ein zweiter Dienst auf dem Host `127.0.0.1:9001` | Compose: woran der interne Port gebunden wird; die Vorgabe lässt ihn auf dem Host, Prometheus im Compose-Netz fragt `api:9000` (D110) |
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | **hinter Reverse-Proxy auf dem Host das Gateway des Compose-Netzes** | Absender, deren `X-Forwarded-For` uvicorn glaubt; sonst teilen sich alle Clients ein Rate-Limit |
 | `RATE_LIMIT` | `0` | wie Vorgabe | Anfragen je Minute und Aufrufer, je Worker gezählt; `0` setzt keine Grenze: die b-api begrenzt je Schlüssel, und hinter ihr kommen alle Anfragen von ihrer Adresse (D104) |
 | `REQUEST_BODY_MAX_BYTES` | `1000000` | wie Vorgabe | größter Anfragekörper, sonst 413; `/compendium` nimmt bis 13.000.000 Byte (`existing_markdown`) |

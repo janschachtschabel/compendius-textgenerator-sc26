@@ -60,7 +60,7 @@ DEFAULT_REASONING_EFFORTS = (
 # no embeddings, no spaCy model. Every other setting left empty is its default (BE-13). The image sets the two models;
 # an entry emptied in a panel overrides that and switches them off, which the start says (audit 2026-09-29, S5).
 EMPTY_IS_A_CHOICE = frozenset({"edu_sharing_base_url", "edu_sharing_repositories", "model2vec_path", "spacy_model"})
-PUBLIC_PORT = 8000  # the port of the API in the container (app/serve.py, Dockerfile)
+PUBLIC_PORT = 8000  # the default of API_PORT, the port of the API (app/serve.py, Dockerfile)
 LOG_LEVELS = ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")
 
 
@@ -347,12 +347,19 @@ class Settings(BaseSettings):
         "browser. It calls the endpoints with the key its reader enters, so API_KEYS guards it as it guards them",
     )
     metrics_enabled: bool = Field(True, description="Serve GET /metrics for Prometheus")
+    api_port: int = Field(
+        PUBLIC_PORT,
+        ge=1,
+        le=65535,
+        description="Port of the API that python -m app.serve listens on. In a container the default is right: several "
+        "services on one host differ in the host ports (API_BIND); outside one each takes a port of its own",
+    )
     internal_port: int = Field(
         9000,
         ge=0,
         le=65535,
-        description="Port of /health, /ready, /metrics and the status endpoints, beside the public port 8000 (D110): "
-        "they answer there only, and the cluster reaches every path on it. 0 serves everything on 8000, as before",
+        description="Port of /health, /ready, /metrics and the status endpoints, beside API_PORT (D110): they answer "
+        "there only, and the cluster reaches every path on it. 0 serves everything on API_PORT, as before",
     )
     metrics_token: str = Field("", description="Bearer token GET /metrics requires; empty = no token")
 
@@ -379,12 +386,13 @@ class Settings(BaseSettings):
             )
         return value
 
-    @field_validator("internal_port")
-    @classmethod
-    def _not_the_public_port(cls, value: int) -> int:
-        if value == PUBLIC_PORT:
-            raise ValueError(f"INTERNAL_PORT darf nicht der öffentliche Port {PUBLIC_PORT} sein; 0 schaltet ihn ab")
-        return value
+    @model_validator(mode="after")
+    def _two_ports(self) -> Settings:
+        if self.internal_port == self.api_port:
+            raise ValueError(
+                f"INTERNAL_PORT darf nicht der Port der API sein ({self.api_port}, API_PORT); 0 schaltet ihn ab"
+            )
+        return self
 
     @model_validator(mode="before")
     @classmethod

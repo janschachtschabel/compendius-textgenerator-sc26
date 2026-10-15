@@ -31,7 +31,7 @@ from app.settings import PUBLIC_PORT, get_settings
 DEFAULT_DIR = "/tmp/prometheus"  # noqa: S108  # container-local, emptied at every start
 METRIC_FILES = ("counter_*.db", "gauge_*.db", "histogram_*.db", "summary_*.db")  # prometheus_client's file names
 # All interfaces inside the container; compose publishes the port on API_BIND, all interfaces unless set otherwise
-UVICORN = ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "--port", str(PUBLIC_PORT)]  # noqa: S104
+UVICORN = ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0"]  # noqa: S104
 # A worker busy with one compendium answers the parent process late or not at all: the work happens in C code
 # (ZIM reads, matching) that holds the interpreter lock, measured at 26 seconds without a break for one request.
 # The parent kills a worker that stays silent longer than its healthcheck timeout - uvicorn allows five seconds -
@@ -63,11 +63,13 @@ def write_log_config(level: str, format_: str) -> Path:
     return path
 
 
-def uvicorn_command(request_timeout_s: int, log_config: Path | None = None) -> list[str]:
-    """The uvicorn call; a worker keeps its healthcheck grace until well past the request budget, and a stop waits
-    for the requests in flight."""
+def uvicorn_command(request_timeout_s: int, log_config: Path | None = None, port: int = PUBLIC_PORT) -> list[str]:
+    """The uvicorn call on ``port`` (API_PORT); a worker keeps its healthcheck grace until well past the request
+    budget, and a stop waits for the requests in flight."""
     return [
         *UVICORN,
+        "--port",
+        str(port),
         "--timeout-worker-healthcheck",
         str(request_timeout_s + HEALTHCHECK_MARGIN_S),
         "--timeout-graceful-shutdown",
@@ -122,7 +124,8 @@ def main() -> None:
     directory = os.environ.get("PROMETHEUS_MULTIPROC_DIR") or DEFAULT_DIR
     clear_metric_files(Path(directory))
     settings = get_settings()
-    command = uvicorn_command(settings.request_time_limit_s, write_log_config(settings.log_level, settings.log_format))
+    log_config = write_log_config(settings.log_level, settings.log_format)
+    command = uvicorn_command(settings.request_time_limit_s, log_config, port=settings.api_port)
     defaults = {name: value for name, value in UVICORN_DEFAULTS.items() if not os.environ.get(name, "").strip()}
     environment = {**defaults, "PROMETHEUS_MULTIPROC_DIR": directory}
     if settings.internal_port:

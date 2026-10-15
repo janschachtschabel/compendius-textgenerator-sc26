@@ -34,6 +34,21 @@ def test_a_missing_directory_is_created(tmp_path: Path) -> None:
     assert (tmp_path / "prometheus").is_dir()
 
 
+def test_the_start_listens_on_api_port(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """A second service on the same host takes other ports (Jan, 2026-10-15)."""
+    monkeypatch.delenv("PROMETHEUS_MULTIPROC_DIR", raising=False)
+    monkeypatch.setattr(serve, "DEFAULT_DIR", str(tmp_path / "metrics"))
+    monkeypatch.setenv("API_PORT", "8123")
+    get_settings.cache_clear()
+    calls: list[list[str]] = []
+    monkeypatch.setattr(os, "execvpe", lambda file, args, env: calls.append(args))
+
+    serve.main()
+
+    [args] = calls
+    assert args[args.index("--port") + 1] == "8123"
+
+
 @pytest.mark.parametrize("configured", [True, False])
 def test_the_start_prepares_the_directory_and_hands_over_to_uvicorn(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, configured: bool

@@ -9,7 +9,12 @@ stand once, before the first FROM, so that the two stages cannot drift apart.
 
 from __future__ import annotations
 
+import json
 import re
+import urllib.request
+from typing import Any
+
+import pytest
 
 from tests.conftest import ROOT
 
@@ -41,3 +46,47 @@ def test_the_runtime_takes_its_model_settings_from_the_build_arguments() -> None
 
     assert "MODEL2VEC_PATH=${MODEL2VEC_ID:+/models/m2v}" in runtime  # empty without the model
     assert "SPACY_MODEL=${SPACY_MODEL}" in runtime
+
+
+def healthcheck_code() -> str:
+    """The Python the image's HEALTHCHECK runs."""
+    lines = DOCKERFILE.splitlines()
+    at = next(number for number, line in enumerate(lines) if line.startswith("HEALTHCHECK "))
+    command = json.loads(lines[at + 1].strip().removeprefix("CMD "))
+    assert command[:2] == ["python", "-c"]
+    return str(command[2])
+
+
+@pytest.mark.parametrize(
+    ("environment", "port"),
+    [
+        ({}, "9000"),
+        ({"INTERNAL_PORT": ""}, "9000"),
+        ({"INTERNAL_PORT": "9100"}, "9100"),
+        ({"INTERNAL_PORT": "0"}, "8000"),
+        ({"INTERNAL_PORT": "0", "API_PORT": "8100"}, "8100"),
+        ({"INTERNAL_PORT": "9100", "API_PORT": "8100"}, "9100"),
+    ],
+)
+def test_the_healthcheck_asks_the_port_where_health_answers(
+    monkeypatch: pytest.MonkeyPatch, environment: dict[str, str], port: str
+) -> None:
+    """/health answers on the internal port, with INTERNAL_PORT=0 on the API's (D110); both ports are settings."""
+    for name in ("INTERNAL_PORT", "API_PORT"):
+        monkeypatch.delenv(name, raising=False)
+    for name, value in environment.items():
+        monkeypatch.setenv(name, value)
+    asked: list[str] = []
+
+    class Answer:
+        status = 200
+
+    def urlopen(url: str, timeout: float) -> Any:
+        asked.append(url)
+        return Answer()
+
+    monkeypatch.setattr(urllib.request, "urlopen", urlopen)
+    with pytest.raises(SystemExit) as stop:
+        exec(healthcheck_code(), {})  # noqa: S102 - the image's own healthcheck line
+
+    assert stop.value.code == 0 and asked == [f"http://127.0.0.1:{port}/health"]

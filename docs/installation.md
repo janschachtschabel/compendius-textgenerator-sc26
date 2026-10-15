@@ -239,6 +239,9 @@ Compose nur an den Host selbst bindet (`INTERNAL_BIND`, Vorgabe `127.0.0.1:9000`
 dem Host liest `curl -sS http://127.0.0.1:9000/health` sie. Ein Uptime-Monitor von außen fragt einen öffentlichen Pfad,
 etwa `/api/v2/templates`, oder bekommt den internen Port eigens freigegeben.
 
+Ein zweiter Dienst auf demselben Host bekommt ein eigenes Verzeichnis und eigene Host-Ports, etwa
+`API_BIND=0.0.0.0:8001` und `INTERNAL_BIND=127.0.0.1:9001` ([betrieb.md](betrieb.md#erreichbarkeit), D111).
+
 Auf einer Maschine, die nur selbst zugreifen soll, gehört die alte Bindung zurück:
 `API_BIND=127.0.0.1:8000`.
 
