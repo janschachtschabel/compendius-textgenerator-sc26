@@ -130,7 +130,9 @@ def test_a_stored_template_with_a_field_the_schema_does_not_know_still_loads(
 
 
 def test_the_built_in_files_hold_no_field_the_schema_does_not_know() -> None:
-    for path in sorted(BUILTIN_DIR.glob("*.json")):
+    paths = sorted(BUILTIN_DIR.glob("*.json"))
+    assert paths  # a moved folder left the loop empty and the test green (audit 2026-10-15)
+    for path in paths:
         assert Template.model_validate(json.loads(path.read_text(encoding="utf-8"))).builtin, path.name
 
 

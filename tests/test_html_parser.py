@@ -62,7 +62,9 @@ def test_lists_become_list_paragraphs(optik_html: str) -> None:
 
 
 def test_all_fixtures_parse() -> None:
-    for path in FIXTURES.rglob("*.html"):
+    paths = sorted(FIXTURES.rglob("*.html"))
+    assert paths  # a moved fixture folder left the loop empty and the test green (audit 2026-10-15)
+    for path in paths:
         parsed = parse_article(Path(path).read_text(encoding="utf-8"), path.stem)
         assert parsed.sections, path
 

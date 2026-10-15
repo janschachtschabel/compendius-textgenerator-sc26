@@ -16,6 +16,7 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 from starlette.types import Receive, Scope, Send
+from uvicorn.config import STARTUP_FAILURE
 
 from app import serve
 from app.api.internal_port import INTERNAL_PATHS, InternalOnly
@@ -144,6 +145,49 @@ def test_the_workers_listen_on_both_ports(monkeypatch: pytest.MonkeyPatch) -> No
     serve.serve_on_two_ports(command, internal)
 
     assert handed == [[public, internal]]
+
+
+@pytest.mark.parametrize("started", [True, False])
+def test_one_worker_serves_both_ports_in_this_process(monkeypatch: pytest.MonkeyPatch, started: bool) -> None:
+    """WEB_CONCURRENCY=1, one worker per pod, ran in no test: the server takes both sockets itself, and a server that
+    did not start is a failed start (audit 2026-10-15)."""
+    public, internal = free_port(), free_port()
+    handed: list[list[int]] = []
+
+    class OneServer:
+        def __init__(self, config: Any) -> None:
+            assert config.workers == 1
+            self.started = False
+
+        def run(self, sockets: list[socket.socket]) -> None:
+            handed.append([sock.getsockname()[1] for sock in sockets])
+            for sock in sockets:
+                sock.close()
+            self.started = started
+
+    def no_supervisor(*args: Any, **kwargs: Any) -> None:
+        raise AssertionError("one worker needs no supervisor")
+
+    monkeypatch.setattr(serve, "Server", OneServer)
+    monkeypatch.setattr(serve, "Multiprocess", no_supervisor)
+    command = [*serve.uvicorn_command(300), "--workers", "1"]
+    command[command.index("--port") + 1] = str(public)
+    command[command.index("--host") + 1] = "127.0.0.1"
+
+    if started:
+        serve.serve_on_two_ports(command, internal)
+    else:
+        with pytest.raises(SystemExit) as failed:
+            serve.serve_on_two_ports(command, internal)
+        assert failed.value.code == STARTUP_FAILURE
+    assert handed == [[public, internal]]
+
+
+def test_an_internal_port_that_cannot_be_bound_is_a_failed_start() -> None:
+    """As uvicorn's own bind: a port in use or an address that is none ends the start with its code, no traceback."""
+    with pytest.raises(SystemExit) as failed:
+        serve._bind("256.0.0.1", free_port())
+    assert failed.value.code == STARTUP_FAILURE
 
 
 def test_the_start_reads_uvicorn_s_variables_as_its_command_line_does(monkeypatch: pytest.MonkeyPatch) -> None:
