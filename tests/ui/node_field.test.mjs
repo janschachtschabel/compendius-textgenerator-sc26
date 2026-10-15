@@ -71,7 +71,7 @@ test('a material offers no source, and a node the repository does not have says 
   asked[1].fail(new ApiError(404, { message: 'nicht gefunden' }, 'r-1'));
   await settle();
 
-  assert.equal(byClass('node-status').textContent, 'Keine öffentliche Sammlung und kein Material mit dieser ID im Repository.');
+  assert.equal(byClass('node-status').textContent, 'Keine für den Dienst sichtbare Sammlung und kein Material mit dieser ID im Repository.');
   assert.equal(form.read().node_kind, '');
   assert.deepEqual(byClass('node-uses').children, []);
 });

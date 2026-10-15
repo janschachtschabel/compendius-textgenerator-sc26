@@ -70,7 +70,9 @@ class FakeRepository:
             if entry is None:
                 return httpx.Response(404, json={"error": "missing"})
             return httpx.Response(entry["status"], json=entry["body"])
-        if PRIVATE in path:  # a node the reader may not see
+        if PRIVATE in path:  # a collection the public may not see, an account may (D112)
+            if "authorization" in request.headers:
+                return httpx.Response(200, json=_fixture("node_collection_optik.json"))
             return httpx.Response(403, json={"error": "org.edu_sharing.restservices.DAOSecurityException"})
         if path.endswith("/metadata") and "/node/v1/nodes/-home-/" in path:
             name = NODE_FIXTURES.get(path.split("/")[-2])
@@ -277,10 +279,10 @@ def test_the_public_url_of_a_node_is_built_from_the_repository_host() -> None:
         client.render_url("../secret")
 
 
-def test_the_anonymous_node_read_carries_no_session_of_the_account() -> None:
-    """edu-sharing may answer a login with a session cookie. Kept by the client, it rode along on the node reads that
-    go without credentials, and a node only the account may see became readable through the endpoints without a
-    login (audit 2026-09-29, A02) - also when reads with and without the account run side by side."""
+def test_no_read_carries_a_session_of_the_account() -> None:
+    """edu-sharing may answer a login with a session cookie. Kept by the client, it rode along on reads that were
+    meant to go without credentials (audit 2026-09-29, A02). Since D112 a node is read with the account like a
+    collection; each read carries the account's credentials itself and no session, also side by side."""
     seen: list[httpx.Request] = []
 
     def repository(request: httpx.Request) -> httpx.Response:
@@ -298,11 +300,11 @@ def test_the_anonymous_node_read_carries_no_session_of_the_account() -> None:
         list(pool.map(lambda i: client.collection(OPTIK) if i % 2 else client.node(MATERIAL), range(40)))
     nodes = [request for request in seen if request.url.path.endswith("/metadata")]
     assert len(nodes) == 22
-    assert not [request.headers for request in nodes if {"authorization", "cookie"} & set(request.headers.keys())]
+    assert all(request.headers["authorization"].startswith("Basic ") for request in nodes)
     assert not [request.headers for request in seen if "cookie" in request.headers], "no client keeps a session"
 
 
-def test_closing_the_client_closes_the_connections_with_and_without_the_account() -> None:
+def test_closing_the_client_closes_its_connection() -> None:
     client = _client(FakeRepository(), user="redaktion", password="geheim")
     client.close()
     with pytest.raises(RuntimeError, match="closed"):

@@ -337,16 +337,16 @@ def test_the_same_ids_in_two_repositories_are_two_records_in_one_cache(tmp_path:
 
 
 def test_another_account_does_not_get_what_the_first_one_read(tmp_path: Path) -> None:
-    """Two accounts may see different things; a node is read without one (A02), so every account shares it."""
+    """Two accounts may see different things, a node included since it is read with the account (D112)."""
     cache = TtlCache(tmp_path / "wlo_cache.db")
     for user in ("", "redaktion", "lektorat"):
         _, transport = _repository(user or "anonym")
         client = EduSharingClient(BASE, user=user, password="geheim-4711", transport=transport)
         builder = CollectionBuilder(client=client, cache=cache)
-        assert _reads(builder) == {**_expected(user or "anonym"), "node": "anonym"}
+        assert _reads(builder) == _expected(user or "anonym")
     with closing(sqlite3.connect(tmp_path / "wlo_cache.db")) as connection:
         keys = [row[0] for row in connection.execute("SELECT key FROM cache")]
-    assert len(keys) == 13, keys  # four records and a text per context, the node once
+    assert len(keys) == 15, keys  # five records and a text per context
     assert not [key for key in keys if "redaktion" in key or "lektorat" in key or "geheim" in key]
 
 

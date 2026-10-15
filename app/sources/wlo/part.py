@@ -99,9 +99,9 @@ class CollectionBuilder:
         return info
 
     def node(self, node_id: str, *, remaining: Remaining | None = None) -> NodeInfo:
-        """The metadata of a material or a collection, cached like a collection's; read without the account (A02),
-        so the key names the repository without it."""
-        key = self._key("node", node_id, public=True)
+        """The metadata of a material or a collection, cached like a collection's and, like it, under the account
+        that read it (D112)."""
+        key = self._key("node", node_id)
         cached = self.cache.get(key) if self.cache is not None else None
         if isinstance(cached, dict):
             return _hydrate(NodeInfo, cached)
@@ -262,10 +262,9 @@ class CollectionBuilder:
             level = below
         return listings
 
-    def _key(self, kind: str, node_id: str, *, public: bool = False) -> str:
+    def _key(self, kind: str, node_id: str) -> str:
         """The cache key of a record: its kind and format, whose answer it is (``EduSharingClient.scope``), its id."""
-        scope = self.client.public_scope if public else self.client.scope
-        return f"{kind}:v{CACHE_FORMAT}:{scope}:{node_id}"
+        return f"{kind}:v{CACHE_FORMAT}:{self.client.scope}:{node_id}"
 
     def _remember(self, key: str, value: Any) -> None:
         if self.cache is not None:

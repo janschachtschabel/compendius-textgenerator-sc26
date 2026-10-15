@@ -243,8 +243,9 @@ jq -r '.collection.markdown' optik.json    # nur Teil 3
 jq '.collection.summary.materials' optik.json
 ```
 
-Ohne Zugangsdaten liest der Dienst nur Öffentliches; mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD` alles, was
-dieses Konto lesen darf. Eine Sammlung liest er höchstens alle `COLLECTION_CACHE_TTL_S` (eine Stunde) neu.
+Ohne Zugangsdaten liest der Dienst nur Öffentliches; mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`, etwa einem
+Gastkonto der WLO, alles, was dieses Konto lesen darf, Knoten und Sammlungen (D112). Eine Sammlung liest er höchstens
+alle `COLLECTION_CACHE_TTL_S` (eine Stunde) neu.
 
 ### Eine Sammlung als Quelle für Teil 1
 

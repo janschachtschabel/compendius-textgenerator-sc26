@@ -39,7 +39,8 @@ EXAMPLES = {
     "aus einem Knoten des Repositorys": {
         "summary": "Titel, Beschreibung und Schlagwörter eines Materials der WLO-Staging",
         "description": (
-            "node_id nennt ein Material oder eine Sammlung. Gelesen wird ohne Zugangsdaten, also nur Öffentliches; "
+            "node_id nennt ein Material oder eine Sammlung. Gelesen wird mit dem Konto des Dienstes, wenn er eins hat, "
+            "sonst nur Öffentliches; "
             "die Antwort gibt den gelesenen Text unter text zurück, start und end zählen darin."
         ),
         "value": {

@@ -79,14 +79,25 @@ def test_an_unknown_node_is_not_found_and_a_malformed_id_never_reaches_the_url()
     assert all("etc" not in request.url.path for request in repo.requests)
 
 
-def test_a_node_is_read_without_the_credentials_of_the_client() -> None:
-    """The endpoints have no login, so a node is read as the public sees it; collections keep the credentials."""
+def test_a_node_is_read_with_the_account_of_the_client(  # D112
+) -> None:
+    """Jan, 2026-10-15: compendiums for collections the public may not see, with a WLO guest account from the
+    environment. The node is read with the account like its collection, and a node only the account may see is
+    found."""
     repo = FakeRepository()
-    client = _client(repo, user="redaktion", password="geheim")
+    client = _client(repo, user="wlo-gast", password="geheim")
+
+    assert client.node(PRIVATE).kind == "collection"
+    assert repo.requests[-1].headers["authorization"].startswith("Basic ")
+
+
+def test_without_an_account_a_node_is_read_as_the_public_sees_it() -> None:
+    repo = FakeRepository()
+    client = _client(repo)
     client.node(MATERIAL)
     assert "authorization" not in repo.requests[-1].headers
-    client.collection(OPTIK)
-    assert "authorization" in repo.requests[-1].headers, "part 3 reads collections as before"
+    with pytest.raises(NodeNotFoundError):
+        client.node(PRIVATE)
 
 
 def test_an_answer_without_a_node_is_a_repository_error() -> None:
@@ -231,3 +242,21 @@ def test_a_node_brings_all_its_subjects_before_those_of_a_collection() -> None:
     collection = CollectionTopic(topic="Optik", subjects=[PHYSIK], context=[])
     assert derive_topic("Linse", [node_topic(material), collection], is_subject=KNOWS).subjects == [BIOLOGIE, PHYSIK]
     assert derive_topic("Linse", [collection], is_subject=KNOWS).subjects == [PHYSIK]
+
+
+def test_a_node_hidden_from_the_account_is_not_found_and_says_so() -> None:
+    refused = httpx.MockTransport(lambda request: httpx.Response(403, json={"error": "DAOSecurityException"}))
+    client = EduSharingClient(BASE, user="wlo-gast", password="geheim", transport=refused)
+    with pytest.raises(NodeNotFoundError, match="Konto des Dienstes"):
+        client.node(MATERIAL)
+
+
+def test_a_refused_account_is_named_in_the_error() -> None:
+    """Wrong credentials are a 401 for every read and do not fall back to the public view (wlo-edu-sharing-api); since
+    D112 that stops node reads as well, so the error says which setting to look at."""
+    refused = httpx.MockTransport(lambda request: httpx.Response(401, text=""))
+    client = EduSharingClient(BASE, user="wlo-gast", password="falsch", transport=refused)
+    with pytest.raises(EduSharingError, match="EDU_SHARING_USER"):
+        client.node(MATERIAL)
+    with pytest.raises(EduSharingError, match="EDU_SHARING_USER"):
+        client.collection(OPTIK)

@@ -270,8 +270,9 @@ def entities(
     ``note`` says the result is unchecked. When no way can run - no model, no archives, no LLM - the answer is 503.
 
     ``node_id`` instead of ``text`` reads title, description and keywords of a node of an edu-sharing repository,
-    without credentials, and returns that text under ``text``; ``start`` and ``end`` count in it. Not both: 422.
-    Unknown or not public node: 404, refused ``repository``: 422, failing repository: 502, none at all: 503.
+    with the account of the configured repository if it has one (D112), and returns that text under ``text``;
+    ``start`` and ``end`` count in it. Not both: 422. Unknown or hidden node: 404, refused ``repository``: 422,
+    failing repository: 502, none at all: 503.
 
     **What each profile does here** (D62). ``preset`` sets ``methods`` where the request leaves it open; without it
     the server's profile applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server without an

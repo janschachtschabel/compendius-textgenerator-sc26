@@ -227,14 +227,64 @@ def test_another_allowed_repository_is_read_anonymously(sample_zims: dict[str, P
     assert "authorization" not in other.requests[0].headers, "the credentials of the configured repository stay there"
 
 
-def test_the_configured_repository_is_read_anonymously_for_a_node(settings: Settings) -> None:
+def test_the_configured_repository_reads_a_node_with_its_account(settings: Settings) -> None:
+    """With EDU_SHARING_USER a collection the public may not see has a preview and a compendium (D112)."""
     app = create_app(settings)
     repo = FakeRepository()
-    client = EduSharingClient(BASE, user="redaktion", password="geheim", transport=httpx.MockTransport(repo))
+    client = EduSharingClient(BASE, user="wlo-gast", password="geheim", transport=httpx.MockTransport(repo))
     builder = CollectionBuilder(client=client, cache=None)
     app.state.collections = app.state.service.collections = builder
-    assert TestClient(app).get(f"/api/v2/nodes/{MATERIAL}").status_code == 200
-    assert repo.requests and "authorization" not in repo.requests[0].headers
+    with TestClient(app) as http:
+        assert http.get(f"/api/v2/nodes/{PRIVATE}").json()["topic"] == "Optik"
+        compendium = http.post("/api/v2/compendium", json={"node_id": PRIVATE, "parts": ["world"]})
+    assert compendium.status_code == 200, compendium.text[:300]
+    assert repo.requests and all("authorization" in request.headers for request in repo.requests)
+
+
+@pytest.mark.parametrize(
+    "spelling",
+    [
+        "https://repo.test/edu-sharing/rest",
+        "HTTPS://Repo.TEST/edu-sharing/rest/",
+        "https://repo.test/edu-sharing",
+        "https://repo.test",
+    ],
+)
+def test_the_configured_repository_in_any_spelling_is_read_with_its_account(
+    sample_zims: dict[str, Path], tmp_path: Path, spelling: str
+) -> None:
+    """The credentials go to the configured repository however a caller writes it, and never to another reader."""
+    settings = make_settings(
+        sample_zims.values(),
+        tmp_path / "state",
+        edu_sharing_base_url=BASE,
+        edu_sharing_repositories="repo.test",
+        edu_sharing_user="wlo-gast",
+        edu_sharing_password="geheim",
+    )
+    app = create_app(settings)
+    repo = FakeRepository()
+    client = EduSharingClient(BASE, user="wlo-gast", password="geheim", transport=httpx.MockTransport(repo))
+    app.state.collections = app.state.service.collections = CollectionBuilder(client=client, cache=None)
+    other = FakeRepository()
+    app.state.service.repository_transport = httpx.MockTransport(other)
+
+    response = TestClient(app).get(f"/api/v2/nodes/{PRIVATE}", params={"repository": spelling})
+
+    assert response.status_code == 200, response.text[:300]
+    assert repo.requests and all("authorization" in request.headers for request in repo.requests)
+    assert not other.requests and not app.state.service._foreign
+
+
+def test_a_refused_account_is_a_502_that_names_the_setting(settings: Settings) -> None:
+    app = create_app(settings)
+    refused = httpx.MockTransport(lambda request: httpx.Response(401, text=""))
+    client = EduSharingClient(BASE, user="wlo-gast", password="falsch", transport=refused)
+    app.state.collections = app.state.service.collections = CollectionBuilder(client=client, cache=None)
+
+    response = TestClient(app).get(f"/api/v2/nodes/{MATERIAL}")
+
+    assert response.status_code == 502 and "EDU_SHARING_USER" in response.json()["detail"]
 
 
 def test_a_node_that_is_not_public_is_a_404(client: TestClient) -> None:

@@ -9,7 +9,10 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
-Noch nichts.
+- **Geändert (D112):** Mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`, etwa einem Gastkonto der WLO, liest der Dienst
+  auch Knoten (`node_id` in allen Endpunkten, `GET /api/v2/nodes/{id}`) und den Themenbaum einer Sammlung mit dem Konto:
+  Sammlungen, die nicht öffentlich sind, bekommen ein Kompendium. Ohne Zugangsdaten wie bisher anonym; andere
+  Repositorys aus `EDU_SHARING_REPOSITORIES` immer ohne Zugangsdaten.
 
 ## 2.22.0 – 2026-10-15
 

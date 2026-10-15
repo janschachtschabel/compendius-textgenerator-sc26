@@ -395,11 +395,11 @@ def test_a_neutral_title_lets_the_overview_lead_without_a_stand_in(
     assert chosen.tree == TreeContext() and chosen.stand_in is None and asked[0] is True
 
 
-def test_the_tree_of_a_node_is_read_without_credentials(
+def test_the_tree_of_a_node_is_read_with_the_account_of_the_configured_repository(
     service: CompendiumService, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """The node is read as the public sees it (D45, A02), and so is its tree: with an account the title of a
-    collection the public may not see would go into the topic and to the model."""
+    """The node is read with the account of the configured repository (D112), and so is its tree: every read of it
+    carries the account."""
     fake = FakeTree()
     client = EduSharingClient(BASE, user="redaktion", password="geheim", transport=httpx.MockTransport(fake))
     monkeypatch.setattr(service, "collections", CollectionBuilder(client=client, cache=None))
@@ -409,7 +409,7 @@ def test_the_tree_of_a_node_is_read_without_credentials(
     service.prepare(GenerateRequest(node_id=NODE, parts=["world"], preset="llm-free"))
 
     read = [request for request in fake.requests if PARENT in str(request.url)]
-    assert read and not any("authorization" in request.headers for request in read)
+    assert read and all("authorization" in request.headers for request in read)
 
 
 def test_a_writing_profile_words_the_topic_with_the_place_of_the_collection(

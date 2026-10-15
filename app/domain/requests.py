@@ -340,7 +340,8 @@ def not_blank(value: str | None) -> str | None:
 
 
 NODE_ID_HELP = (
-    "A material or collection of an edu-sharing repository (D45), read without credentials, so only what is public. "
+    "A material or collection of an edu-sharing repository (D45), read with the account of the configured "
+    "repository if it has one (D112), else only what is public. "
     "A collection's title becomes the topic. A material's title often names a format ('Stationsarbeit zur Optik'), "
     "so its article comes from its title and description (D47): without the LLM the rules take the title's article "
     "when the terms of title and description name it too, else the first term when the title names it, else none - "
@@ -351,7 +352,7 @@ NODE_ID_HELP = (
     "article_choice llm one question hears topic and material together and may overrule the topic. The subjects "
     "count all alike - subjects and levels are multi-valued fields, and no value weighs more for coming first - and "
     "levels and keywords become context words; a subject sent along wins, and so does one the title names "
-    "('Physik: Optik'). GET /api/v2/nodes/{node_id} shows beforehand what a node brings. Unknown or not public: 404. "
+    "('Physik: Optik'). GET /api/v2/nodes/{node_id} shows beforehand what a node brings. Unknown or hidden: 404. "
     "In a compendium a collection of the configured repository counts as collection_id as well, where that is empty: "
     "it gets part 3 (D77)."
 )

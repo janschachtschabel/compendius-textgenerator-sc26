@@ -217,7 +217,8 @@ EXAMPLES = {
     "aus einem Knoten": {
         "summary": "Thema, Fach und Stufe aus einem Knoten des Repositorys (hier eine Sammlung der WLO-Staging)",
         "description": (
-            "node_id nennt ein Material oder eine Sammlung, gelesen ohne Zugangsdaten; der Titel einer Sammlung "
+            "node_id nennt ein Material oder eine Sammlung, gelesen mit dem Konto des Dienstes, wenn er eins hat; "
+            "der Titel einer Sammlung "
             "wird zum Thema, bei einem Material der Artikel aus Titel und Beschreibung (D47). Alle Fächer gelten "
             "gleichwertig, Stufen und Schlagwörter werden zu Kontextwörtern der Auflösung. repository ist die "
             "REST-Adresse des Repositorys, ohne Angabe das konfigurierte; erlaubt sind nur die Hosts aus "
@@ -301,8 +302,8 @@ def knowledge(
     ``node_id`` takes topic, subject and context words from a node of an edu-sharing repository, as a
     compendium does: a collection's title, a material's article from its title and description (D47).
     ``repository`` names another allowed one. A topic sent along leads, and a material's own article joins as
-    ``origin`` node when it links with the main article; ``node_article`` says how it was found. Unknown or not
-    public node: 404, refused address: 422, failing repository: 502, no repository at all: 503.
+    ``origin`` node when it links with the main article; ``node_article`` says how it was found. Unknown or
+    hidden node: 404, refused address: 422, failing repository: 502, no repository at all: 503.
 
     A topic the archives do not have is a 404 carrying the resolution, so the answer names the
     alternatives instead of coming back empty; for a material without an article it asks for a topic.

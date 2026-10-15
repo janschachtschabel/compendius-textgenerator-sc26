@@ -201,9 +201,13 @@ class Settings(BaseSettings):
     edu_sharing_repositories: str = Field(
         "repository.staging.openeduhub.net,redaktion.openeduhub.net",
         description="Comma separated hosts a request may name as repository of its node_id (D45), besides the "
-        "configured one; over https, and nodes are read without credentials from every repository",
+        "configured one; over https, and nodes of these are read without credentials",
     )
-    edu_sharing_user: str = Field("", description="Optional Basic-Auth user; anonymous reads otherwise")
+    edu_sharing_user: str = Field(
+        "",
+        description="Optional Basic-Auth user, such as a WLO guest account: every read of the configured repository "
+        "carries it, nodes included (D112); anonymous reads otherwise",
+    )
     edu_sharing_password: str = Field("", description="Optional Basic-Auth password")
     edu_sharing_timeout_s: float = Field(30.0, ge=1.0, description="Timeout per repository request")
     collection_cache_ttl_s: int = Field(3600, ge=0, description="Cache of collection metadata and listings")

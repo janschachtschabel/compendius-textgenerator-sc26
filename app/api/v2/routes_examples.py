@@ -223,7 +223,8 @@ EXAMPLES: dict[str, dict[str, Any]] = {
     "aus einem Knoten des Repositorys": {
         "summary": "Thema, Fach und Stufe aus den Metadaten eines Knotens, hier die Sammlung Optik der WLO-Staging",
         "description": (
-            "node_id nennt ein Material oder eine Sammlung, gelesen ohne Zugangsdaten, also nur Öffentliches. Der "
+            "node_id nennt ein Material oder eine Sammlung, gelesen mit dem Konto des Dienstes, wenn er eins hat, "
+            "sonst nur Öffentliches. Der "
             "Titel wird zum Thema, alle Fächer zählen gleich; Bildungsstufen und Schlagwörter gehen als "
             "Kontextwörter mit, die bei einer Begriffsklärung nur zählen, wenn die Fächer keine eigenen Wörter "
             "haben. Die Antwort "

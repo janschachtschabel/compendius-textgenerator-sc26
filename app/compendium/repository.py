@@ -78,13 +78,13 @@ class RepositoryReading:
         content: bool = True,
     ) -> TreeContext | None:
         """Where the collection that gives a topic stands in its topic tree (M71): the node when it is a collection,
-        read from its repository without credentials as the node itself (D45, A02), else the collection of part 3 with
-        the account that reads part 3; ``None`` for a material. The path above it always, its sub-collections,
-        materials and neighbours only with ``content``."""
+        read from its repository by the reader that read the node (D112: the configured repository with its account,
+        any other without), else the collection of part 3; ``None`` for a material. The path above it always, its
+        sub-collections, materials and neighbours only with ``content``."""
         if node is not None:
             if node.kind != "collection":
                 return None
-            builder = self._reader_without_account(self._node_repository(repository)[0])
+            builder = self._node_repository(repository)[1]
             found = (node.node_id, node.parent_id, node.subject_labels)
         elif collection is not None and self.collections is not None:
             builder = self.collections
@@ -108,9 +108,8 @@ class RepositoryReading:
         return request.model_copy(update={"collection_id": node_id})
 
     def _node_repository(self, repository: str | None) -> tuple[str, CollectionBuilder]:
-        """The REST root and the reader of a repository: the configured one, or one without credentials for any other.
-
-        Nodes are read without credentials from either (``EduSharingClient.node``); an empty address names none.
+        """The REST root and the reader of a repository: the configured one with its account if it has one (D112), or
+        one without credentials for any other; an empty address names none.
         """
         base = self.settings.edu_sharing_base_url.rstrip("/")
         if not repository:
@@ -126,17 +125,12 @@ class RepositoryReading:
         return root, self._reader_without_account(root)
 
     def _reader_without_account(self, root: str) -> CollectionBuilder:
-        """A reader of the repository at ``root`` that holds no credentials, kept per root: for any other repository,
-        and for the configured one where its reader has an account; without one, that reader itself."""
+        """A reader of another repository at ``root`` that holds no credentials, kept per root: those of the configured
+        repository never travel to another one."""
         shared = self.collections  # the same cache and cache time as the configured repository
-        base = self.settings.edu_sharing_base_url.rstrip("/")
-        configured = shared is not None and base and urlsplit(root).hostname == urlsplit(base).hostname
-        if shared is not None and configured and shared.client.scope == shared.client.public_scope:
-            return shared
         with self._foreign_lock:
             builder = self._foreign.get(root)
             if builder is None:
-                # No credentials: those of the configured repository must never travel to another one
                 client = EduSharingClient(
                     root, timeout_s=self.settings.edu_sharing_timeout_s, transport=self.repository_transport
                 )

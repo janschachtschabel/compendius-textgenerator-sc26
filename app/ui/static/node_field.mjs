@@ -7,7 +7,7 @@ import { h } from './dom.mjs';
 import { fromAnotherRepository, wholeNodeId } from './forms.mjs';
 import { nodeLine, nodeUses } from './node_use.mjs';
 
-const MISSING = 'Keine öffentliche Sammlung und kein Material mit dieser ID im Repository.';
+const MISSING = 'Keine für den Dienst sichtbare Sammlung und kein Material mit dieser ID im Repository.';
 
 /** `wrapper` is the plain id field fields.mjs built for `spec`; this adds the reading, its line and the uses. */
 export function nodeField(spec, ctx, wrapper) {

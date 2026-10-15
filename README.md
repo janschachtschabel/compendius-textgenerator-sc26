@@ -432,11 +432,12 @@ eingestellten Repositorys in `node_id` zugleich als `collection_id`, wenn das le
 
 `repository` ist die REST-Adresse, etwa `https://repository.staging.openeduhub.net/edu-sharing/rest`; der Host allein
 oder `…/edu-sharing` geht auch. Ohne Angabe gilt `EDU_SHARING_BASE_URL`. Erlaubt sind nur https-Adressen der Hosts aus
-`EDU_SHARING_REPOSITORIES` (Standard: WLO-Staging und WLO-Produktion), sonst 422. Knoten liest der Dienst immer ohne
-Zugangsdaten, auch aus dem konfigurierten Repository: Er hat keine Anmeldung und gibt nur weiter, was öffentlich ist.
-Unbekannter oder nicht öffentlicher Knoten: 404, Repository nicht erreichbar: 502, weder `repository` noch ein
-konfiguriertes: 503. Die Beispiele in `/docs` nennen Knoten der WLO-Staging. In der CLI heißen die Felder
-`compendium generate --node-id … [--repository …]`.
+`EDU_SHARING_REPOSITORIES` (Standard: WLO-Staging und WLO-Produktion), sonst 422. Knoten des konfigurierten Repositorys
+liest der Dienst mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`, wenn sie gesetzt sind, etwa mit einem Gastkonto der
+WLO: Dann bekommen auch Sammlungen, die nicht öffentlich sind, ein Kompendium (D112). Ohne sie und aus jedem anderen
+Repository liest er ohne Zugangsdaten, also nur Öffentliches. Unbekannter oder nicht sichtbarer Knoten: 404, Repository
+nicht erreichbar: 502, weder `repository` noch ein konfiguriertes: 503. Die Beispiele in `/docs` nennen Knoten der
+WLO-Staging. In der CLI heißen die Felder `compendium generate --node-id … [--repository …]`.
 
 **Gemessen (M21 bis M25):** An 31 echten Materialien der WLO-Produktion mit klarem Thema trifft der Titel als Thema
 den Hauptartikel mit F1 0,20, die Regeln über Titel und Beschreibung mit 0,56 und das LLM mit 0,98 (rund 340 Tokens,
@@ -1081,8 +1082,8 @@ gleich unter welcher Lizenz (D70).
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `EDU_SHARING_BASE_URL` | `https://repository.staging.openeduhub.net/edu-sharing/rest` | Welches Repository gilt. Staging ist der Standard; für Produktion `https://redaktion.openeduhub.net/edu-sharing/rest`. Leer schaltet die Sammlungen ab |
-| `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem konfigurierten. Leer lässt nur das konfigurierte zu |
-| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth; leer heißt anonym. Mit Zugangsdaten liest jede Anfrage, die eine Sammlung nennt, was dieses Konto lesen darf, auch nicht öffentliche Sammlungen und die Texte ihrer Materialien, und der Cache gibt es an alle weiter. Knoten (`node_id`) liest der Dienst immer ohne Zugangsdaten, über eine eigene Verbindung ohne Sitzungscookie des Kontos. Nur zusammen mit `API_KEYS` setzen; sonst warnt der Start |
+| `EDU_SHARING_REPOSITORIES` | `repository.staging.openeduhub.net,redaktion.openeduhub.net` | Hosts, die eine Anfrage als `repository` ihrer `node_id` nennen darf (D45), neben dem konfigurierten; nur https, andere Adressen: 422. Knoten dieser Repositorys liest der Dienst ohne Zugangsdaten; die des konfigurierten mit dessen Konto, wenn es eins gibt (D112). Leer lässt nur das konfigurierte zu |
+| `EDU_SHARING_USER` | leer | Benutzername für Basic-Auth, etwa ein Gastkonto der WLO; leer heißt anonym. Mit Zugangsdaten liest jede Anfrage, die einen Knoten (`node_id`) oder eine Sammlung nennt, was dieses Konto lesen darf, auch nicht öffentliche Sammlungen und die Texte ihrer Materialien, und der Cache gibt es an alle weiter (D112). Sie gehen nur an das konfigurierte Repository, nie an ein anderes aus `EDU_SHARING_REPOSITORIES`, und ohne Sitzungscookie. Falsche Zugangsdaten fallen nicht auf Öffentliches zurück: edu-sharing antwortet dann jedem Aufruf mit 401, Knoten und Sammlungen enden mit einem 502, das `EDU_SHARING_USER` nennt. Nur zusammen mit `API_KEYS` setzen oder hinter der b-api, wenn der Dienst allein über sie erreichbar ist; sonst warnt der Start |
 | `EDU_SHARING_PASSWORD` | leer | Passwort dazu. Gehört in die `.env`, nicht in die Vorlage |
 | `EDU_SHARING_TIMEOUT_S` | `30` | Frist je Anfrage an das Repository |
 | `WLO_CACHE_PATH` | leer | Datei des Repository-Caches; leer: `wlo_cache.db` in `STATE_DIR`. Teilen sich mehrere Pods ein Volume, bekommt jeder einen eigenen Pfad, etwa in einem `emptyDir`, damit nicht zwei Pods eine SQLite-Datei über das Netz schreiben (D109) |

@@ -1521,7 +1521,7 @@ API.
   Ziel serverseitiger Anfragen: nur https, nur Hosts aus `EDU_SHARING_REPOSITORIES` (Standard WLO-Staging und
   -Produktion) und der konfigurierte, keine Zugangsdaten, kein Port, als Pfad nur die REST-Wurzel; eine Adresse, die
   sich nicht zerlegen lässt, ist ebenso 422. Knoten werden aus jedem Repository ohne Zugangsdaten gelesen, auch aus dem
-  konfigurierten: Die Endpunkte haben keine Anmeldung und geben nur Öffentliches weiter; ein nicht öffentlicher Knoten
+  konfigurierten (seit D112: das konfigurierte mit dessen Konto, wenn es eins hat): Die Endpunkte haben keine Anmeldung und geben nur Öffentliches weiter; ein nicht öffentlicher Knoten
   (403) gilt als nicht gefunden (Review-Korrektur). `/entities` nimmt `text` oder `node_id`, nicht beides. Gemessen an
   echten Staging-Knoten: Sammlungstitel lösen auf („Optik“), Materialtitel nennen oft ihr Format und nicht
   („Stationsarbeit zur Optik“) oder falsch („Unterrichtsreihe zum Licht“ endete bei einem Lied); die Stationsarbeit
@@ -2450,6 +2450,18 @@ API.
   Wert, der den internen Port abschaltet. Der Name ist `PUBLIC_PORT`, nicht `API_PORT`: Kubernetes setzt
   `API_PORT=tcp://…` in jeden Pod eines Namespace mit einem Service namens `api` (Service-Links), und der Start aller
   Container scheiterte daran (Review vom 15.10.2026).
+- **D112 (2026-10-15)** Knoten mit dem Konto des Dienstes lesen (Jan: „nicht-öffentliche sammlungen … zu denen sollte es
+  aber auch möglich sein kompendiale texte zu erzeugen. die idee wäre daher die optionale integration eines wlo guest
+  users … wenn diese gesetzt sind sollte es diesen nutzen und sonst so arbeiten wie bisher“). Ein Gastkonto der WLO ist
+  ein Konto mit HTTP-Basic-Auth, wie es `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD` schon für Teil 3 und die
+  Materialtexte tragen; neue Variablen braucht es nicht. Bisher las der Dienst Knoten bewusst anonym (D45, Audit A02);
+  jetzt tragen alle Lesezugriffe auf das konfigurierte Repository das Konto, Knoten und der Themenbaum ab einem Knoten
+  eingeschlossen, und der Cache führt Knoten wie Sammlungen unter dem Konto. Andere Repositorys aus
+  `EDU_SHARING_REPOSITORIES` liest er weiter ohne Zugangsdaten, und der Client hält keine Sitzung. Folge: Wer
+  Zugangsdaten setzt und den Dienst offen betreibt, gibt die Metadaten nicht öffentlicher Knoten heraus wie schon die
+  Sammlungen; der Start warnt ohne `API_KEYS` (SE-06). In den LLM-Profilen gehen Titel, Beschreibung und Schlagwörter
+  eines nicht öffentlichen Knotens wie die einer Sammlung an das Modell (über die b-api). Falsche Zugangsdaten geben bei
+  jedem Aufruf 401 und fallen nicht auf Öffentliches zurück (wlo-edu-sharing-api).
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

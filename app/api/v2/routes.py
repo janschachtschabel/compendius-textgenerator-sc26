@@ -143,7 +143,7 @@ def generate_compendium(
     parts separately, so a caller can take the finished text or assemble it differently.
 
     **When it refuses.** Topic not in the archives: 404 with the resolution and its alternatives. Unknown
-    collection or knowledge collection, or a node that is unknown or not public: 404. A ``subject`` outside the
+    collection or knowledge collection, or a node that is unknown or hidden: 404. A ``subject`` outside the
     two subject vocabularies of edu-sharing (config/vocabs), a block in ``regenerate_sections`` the template does
     not have, an ``existing_markdown`` with a block marker that cannot be read, a block id that stands twice, a
     status the service does not know or a block to keep that the template has no place for, or a field the request

@@ -13,7 +13,7 @@ class CollectionNotFoundError(EduSharingError):
 
 
 class NodeNotFoundError(EduSharingError):
-    """No node with this id in the repository (HTTP 404), or none the public may read (HTTP 403)."""
+    """No node with this id in the repository (HTTP 404), or none its reader may see (HTTP 403)."""
 
 
 class MalformedAnswerError(EduSharingError):

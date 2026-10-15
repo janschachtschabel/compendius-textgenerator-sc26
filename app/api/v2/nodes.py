@@ -93,8 +93,9 @@ def read_node(
     derives from them, as a request with the node alone would without the LLM. For a material the topic is the
     article the rules find in its title and description, and ``node_article`` shows how (D47). Without
     ``repository`` the configured one is asked; another
-    one must be an allowed host over https (``EDU_SHARING_REPOSITORIES``). Nodes are read without credentials, so
-    only public ones come back. Refused address: 422, unknown or not public node: 404, failing repository: 502,
+    one must be an allowed host over https (``EDU_SHARING_REPOSITORIES``). The configured repository is read with
+    its account if it has one (D112), any other one without credentials. Refused address: 422, unknown or
+    hidden node: 404, failing repository: 502,
     none configured and none named: 503.
 
     **Profiles.** No profile changes this preview, so it takes no ``preset``: it always shows what the rules derive.

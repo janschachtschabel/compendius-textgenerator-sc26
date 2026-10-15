@@ -324,7 +324,10 @@ class NodeInput(BaseModel):
     subjects: list[str] = Field(default_factory=list, description="Subjects (ccm:taxonid) as display names")
     educational_contexts: list[str] = Field(default_factory=list, description="Educational levels, display names")
     url: str | None = Field(None, description="The material's own address (ccm:wwwurl)")
-    render_url: str = Field(description="Public page of the node in its repository")
+    render_url: str = Field(
+        description="Page of the node in its repository; it opens for whoever may see the node, the public only for a "
+        "public one (D112)"
+    )
 
 
 class Compendium(BaseModel):

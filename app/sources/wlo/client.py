@@ -1,7 +1,7 @@
 """edu-sharing REST client for collections (PLAN.md 6.1): anonymous or Basic, paginated, errors mapped.
 
-Only public read endpoints are used; credentials from the environment are optional. Node ids are the
-trust boundary: a request's ``collection_id`` is validated as a UUID before it becomes part of a URL.
+Only read endpoints are used; credentials from the environment are optional and go with every read (D112). Node ids
+are the trust boundary: a request's ``collection_id`` is validated as a UUID before it becomes part of a URL.
 Measured on 2026-09-17 against the WLO repository: collection 0.2 s, one page of references 0.4 s,
 sub-collections 0.2 s, text content 0.1-2.3 s per node.
 """
@@ -111,8 +111,9 @@ def _scope(base_url: str, user: str) -> str:
 def _no_cookies() -> http.cookiejar.CookieJar:
     """A cookie jar that takes none: every request carries its own credentials, or none at all.
 
-    edu-sharing may answer a login with a session cookie. Kept, it rode along on the node reads that go without
-    credentials and showed them what the account may see (audit 2026-09-29, A02).
+    edu-sharing may answer a login with a session cookie. Kept, it rode along on reads meant to go without credentials
+    and showed them what the account may see (audit 2026-09-29, A02); a reader of another repository is a client of
+    its own, and no client keeps a session.
     """
     return http.cookiejar.CookieJar(policy=http.cookiejar.DefaultCookiePolicy(allowed_domains=[]))
 
@@ -132,27 +133,22 @@ class EduSharingClient:
         self._page_size = max(1, page_size)
         self._timeout_s = timeout_s
 
-        def connection(auth: httpx.Auth | None) -> httpx.Client:
-            return httpx.Client(
-                base_url=self.base_url,
-                transport=transport,
-                timeout=timeout_s,
-                auth=auth,
-                cookies=_no_cookies(),
-                headers={"Accept": "application/json", "Accept-Encoding": ACCEPT_ENCODING, "User-Agent": USER_AGENT},
-            )
-
-        self._client = connection(httpx.BasicAuth(user, password) if user else None)
-        # Nodes are read as the public sees them (D45): by a client that never held the credentials, since leaving
-        # them out of one request of a shared client still sent whatever state that client kept
-        self._public = connection(None)
-        # What the cache keys name: the reads with the client's account, and those of node(), which go without one
+        # Every read carries the account when there is one, nodes included (D112): a WLO guest or service account
+        # sees collections the public may not, and compendiums are wanted for them as well
+        self._client = httpx.Client(
+            base_url=self.base_url,
+            transport=transport,
+            timeout=timeout_s,
+            auth=httpx.BasicAuth(user, password) if user else None,
+            cookies=_no_cookies(),
+            headers={"Accept": "application/json", "Accept-Encoding": ACCEPT_ENCODING, "User-Agent": USER_AGENT},
+        )
+        self.has_account = bool(user)
+        # What the cache keys name: whose answers they are, the repository and the account
         self.scope = _scope(self.base_url, user)
-        self.public_scope = _scope(self.base_url, "")
 
     def close(self) -> None:
         self._client.close()
-        self._public.close()
 
     def render_url(self, node_id: str) -> str:
         """Public page of a node in the same repository (``…/edu-sharing/components/render/{id}``)."""
@@ -237,14 +233,14 @@ class EduSharingClient:
     def node(self, node_id: str, *, remaining: Remaining | None = None) -> NodeInfo:
         """Title, description, keywords, subject and level of a material or a collection (D45).
 
-        Read without credentials, whatever the client carries: the endpoints that take a node have no login, so they
-        pass on only what the repository shows the public. A node the public may not see counts as not found.
-        ``remaining`` bounds the read as in ``_get``.
+        Read with the client's account when it has one (D112), else as the public sees it. A node the reader may not
+        see counts as not found. ``remaining`` bounds the read as in ``_get``.
         """
         path = f"/node/v1/nodes/-home-/{validate_node_id(node_id)}/metadata"
-        payload = self._get(path, {"propertyFilter": "-all-"}, anonymous=True, missing=(403, 404), remaining=remaining)
+        payload = self._get(path, {"propertyFilter": "-all-"}, missing=(403, 404), remaining=remaining)
         if payload is None:
-            raise NodeNotFoundError(f"Knoten {node_id} nicht gefunden oder nicht öffentlich in {self.base_url}")
+            hidden = "für das Konto des Dienstes nicht sichtbar" if self.has_account else "nicht öffentlich"
+            raise NodeNotFoundError(f"Knoten {node_id} nicht gefunden oder {hidden} in {self.base_url}")
         if not isinstance(payload.get("node"), dict):
             raise EduSharingError("edu-sharing antwortete ohne Knoten")
         return dataclasses.replace(parse_node(payload), node_id=node_id)  # the checked id, not the answer's
@@ -263,7 +259,6 @@ class EduSharingClient:
         path: str,
         params: dict[str, Any] | None = None,
         *,
-        anonymous: bool = False,
         missing: Collection[int] = (404,),
         remaining: Remaining | None = None,
         quiet: bool = False,
@@ -272,12 +267,10 @@ class EduSharingClient:
         other errors raised, among them an answer that is JSON but no object (``null``, a list, a value). ``quiet``
         logs a refused status at DEBUG, for reads whose caller counts the failures in one line.
 
-        ``anonymous`` reads without the client's credentials, over the connection that never had them. ``remaining``
-        bounds every attempt, a retry included: none starts once the caller's budget is spent (``TimeUpError``), and
-        none waits longer than it. Before, each waited up to the full client timeout (30 s by default), also after the
-        budget was gone (audit 2026-09-29, A06).
+        ``remaining`` bounds every attempt, a retry included: none starts once the caller's budget is spent
+        (``TimeUpError``), and none waits longer than it. Before, each waited up to the full client timeout (30 s by
+        default), also after the budget was gone (audit 2026-09-29, A06).
         """
-        client = self._public if anonymous else self._client
         last_error: Exception | None = None
         for _attempt in range(ATTEMPTS):
             timeout = self._timeout_s
@@ -298,7 +291,9 @@ class EduSharingClient:
                 timeout = min(timeout, left)
             try:
                 # the trace of the request goes on with every read of the repository (D108)
-                with client.stream("GET", path, params=params, timeout=timeout, headers=outgoing_headers()) as response:
+                with self._client.stream(
+                    "GET", path, params=params, timeout=timeout, headers=outgoing_headers()
+                ) as response:
                     status = response.status_code
                     if status in missing:
                         return None
@@ -320,6 +315,10 @@ class EduSharingClient:
                     path,
                     excerpt,
                 )
+                if status == 401 and self.has_account:
+                    # Wrong credentials do not fall back to the public view, every read is refused; since D112 node
+                    # reads too, so the error names the setting to look at
+                    raise EduSharingError("edu-sharing lehnt die Zugangsdaten aus EDU_SHARING_USER ab (HTTP 401)")
                 raise EduSharingError(f"edu-sharing antwortete mit HTTP {status}")
             try:
                 data = json.loads(body)
