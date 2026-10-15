@@ -27,12 +27,13 @@ if TYPE_CHECKING:
 # A heading starts a line and a marker or a row stays on its own: unanchored, "### " over and over, or a row without
 # its closing bracket, made every try read to the end of an earlier compendium sent along (review of D60). A block
 # runs to the heading of the next block - a "### " line with a marker under it - or to the next part: it ended at any
-# "### ", and the text after an editor's own subheading was lost while the block counted as kept. The facets are read
-# up to the hash, so a marker written before quotes were encoded still reads (audit 2026-09-29, A01).
+# "### ", and the text after an editor's own subheading was lost while the block counted as kept (audit 2026-09-29,
+# A01); the same at any "## ", where only "## Teil" heads a part of the service (audit 2026-10-15). The facets are read
+# up to the hash, so a marker written before quotes were encoded still reads (A01).
 SECTION_RE = re.compile(
     r"^### (?P<title>[^\n]+)\n(?P<marker><!-- kompendium:section id=(?P<slot>\S+) status=(?P<status>[^ \n]+)"
     r"(?: facets=\"(?P<facets>[^\n]*?)\")? hash=(?P<hash>[0-9a-f]+) -->)\n\n?(?P<text>.*?)"
-    r"(?=\n### [^\n]*\n<!-- kompendium:section |\n## |\Z)",
+    r"(?=\n### [^\n]*\n<!-- kompendium:section |\n## Teil |\Z)",
     re.DOTALL | re.MULTILINE,
 )
 # Every marker line, read or not: one the pattern above does not take would keep nothing of its block

@@ -249,6 +249,19 @@ def test_a_subheading_an_editor_added_stays_in_its_reviewed_block(service: Compe
     assert original + addition in second.markdown
 
 
+def test_a_level_two_heading_an_editor_added_stays_in_its_reviewed_block() -> None:
+    """A block ended at any "## " line: the text after an editor's own heading of that level was lost, its citations
+    too, while the block counted as kept (audit 2026-10-15). It ends at the next part, which the service heads
+    "## Teil"."""
+    marker = "<!-- kompendium:section id=sc26_3 status=redaktionell-geprüft hash=0a1b -->"
+    text = LF.join(["Geprüfter Text [1].", "", "## Eigene Zwischenüberschrift", "", "Noch ein Absatz [2]."])
+    document = LF.join(["## Teil 1 · Weltwissen", "", "### Aufbau", marker, "", text, "", "## Teil 2 · Lehrplanbezüge"])
+
+    parsed = parse_document(document)
+
+    assert parsed["sc26_3"].text == text
+
+
 def test_an_earlier_marker_with_a_quote_in_a_facet_value_is_read() -> None:
     """Markers written before 2026-09-29 held a quote of a value as typed (audit 2026-09-29, A01)."""
     marker = '<!-- kompendium:section id=sc26_3 status=redaktionell-geprüft facets="Zitat=Zitat "Optik"" hash=0a1b -->'
