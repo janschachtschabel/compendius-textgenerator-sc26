@@ -1181,7 +1181,7 @@ das LLM, und ihre Antworten heben die zehn Minuten nicht auf. Den Grund nennt `/
 | `GET /api/v2/zim/catalog` (Admin) | Kiwix-Katalog mit Markierung abonniert/installiert |
 | `GET /api/v2/zim/progress` (Admin) | Stand des Sync-Jobs samt laufendem Download |
 | `POST /api/v2/zim/sync` (Admin) | Sync anstoßen (Trigger-Datei für den Updater) |
-| `DELETE /api/v2/zim/{datei}` (Admin) | nicht aktive Archivdatei samt `.part` löschen |
+| `DELETE /api/v2/zim/{datei}` (Admin) | nicht aktive Archivdatei samt `.part` löschen; 409, solange ein Sync läuft |
 
 **Was der Dienst nicht versteht, ist eine 422 (D49).** Früher lief eine Anfrage ohne das, was sie nicht verstand,
 und die Antwort sah richtig aus. Jetzt antwortet der Dienst mit 422 auf ein Feld, das er nicht kennt (`topik`), auf ein

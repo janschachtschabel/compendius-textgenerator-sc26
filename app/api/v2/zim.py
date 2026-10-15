@@ -7,6 +7,7 @@ up; ``DELETE`` only touches files that are neither active nor open in this proce
 from __future__ import annotations
 
 import logging
+import time
 from pathlib import Path
 from typing import Annotated, Any
 
@@ -17,7 +18,7 @@ from app.api.admin import require_admin
 from app.api.gates import GatedRoute
 from app.api.limits import rate_limited
 from app.api.responses import ADMIN_REFUSALS, refusals
-from app.jobs.zim_sync import TRIGGER_FILE, read_status
+from app.jobs.zim_sync import LOCK_FILE, LOCK_STALE_S, TRIGGER_FILE, read_status
 from app.settings import Settings
 from app.sources.zim.active import ActiveState, read_active
 from app.sources.zim.downloader import PART_SUFFIX, validate_file_name
@@ -150,8 +151,8 @@ def zim_delete(
     """Delete an archive file that is not in use, together with its ``.part`` leftover.
 
     Meant for a stray download or an archive the profile no longer names. An archive that is active or
-    open is refused rather than pulled out from under the running service. Admin only, and it frees the
-    disk immediately - the files are gone, not moved.
+    open is refused rather than pulled out from under the running service, any file while a sync runs. Admin only,
+    and it frees the disk immediately - the files are gone, not moved.
     """
     settings: Settings = request.app.state.settings
     try:
@@ -162,6 +163,8 @@ def zim_delete(
     in_use |= {a.file_name for a in request.app.state.registry.archives}
     if file_name in in_use:
         raise HTTPException(status_code=409, detail="Datei ist aktiv; erst per Sync ablösen, dann löschen.")
+    if _sync_running(Path(settings.zim_dir)):  # it may be writing this file's .part or about to activate it
+        raise HTTPException(status_code=409, detail="Ein ZIM-Sync läuft; nach dem Lauf löschen.")
     path = Path(settings.zim_dir) / file_name
     removed: list[str] = []
     for candidate in (path, path.with_name(path.name + PART_SUFFIX)):
@@ -172,3 +175,12 @@ def zim_delete(
         raise HTTPException(status_code=404, detail="Datei nicht vorhanden.")
     log.info("deleted %s", removed)
     return {"removed": removed}
+
+
+def _sync_running(zim_dir: Path) -> bool:
+    """A sync holds its lock and gave a sign of life within the staleness of the lock (audit 2026-10-15)."""
+    try:
+        age = time.time() - (zim_dir / LOCK_FILE).stat().st_mtime
+    except FileNotFoundError:
+        return False
+    return age <= LOCK_STALE_S

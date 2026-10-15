@@ -1,7 +1,9 @@
 """ZIM endpoints: public status with sync info, admin protection, catalog, sync trigger, delete."""
 
 import json
+import os
 import shutil
+import time
 from pathlib import Path
 from typing import Any
 
@@ -126,6 +128,22 @@ def test_delete_refuses_active_and_removes_stray_files(
         assert sorted(response.json()["removed"]) == [stray.name, part.name]
         assert not stray.exists()
         assert not part.exists()
+
+
+def test_delete_waits_for_a_running_sync(zim_dir: Path, tmp_path: Path) -> None:
+    """A sync in flight writes the .part of its download and renames it when done: a delete took the .part away
+    under it and the next run began the download anew, up to 14 GB (audit 2026-10-15)."""
+    part = zim_dir / "klexikon_de_sample_2026-09.zim.part"
+    part.write_bytes(b"partial")
+    lock = zim_dir / "sync.lock"
+    lock.write_text("pid 7", encoding="utf-8")
+    with _client(zim_dir, tmp_path, admin_token=ADMIN_TOKEN) as client:
+        refused = client.delete("/api/v2/zim/klexikon_de_sample_2026-09.zim", headers=AUTH)
+        assert refused.status_code == 409 and "Sync" in refused.json()["detail"]
+        assert part.exists()
+        stale = time.time() - 2 * 3600  # a run without a sign of life for an hour crashed
+        os.utime(lock, (stale, stale))
+        assert client.delete("/api/v2/zim/klexikon_de_sample_2026-09.zim", headers=AUTH).status_code == 200
 
 
 def test_the_public_status_leaves_the_error_texts_of_the_sync_to_the_admin(zim_dir: Path, tmp_path: Path) -> None:
