@@ -180,17 +180,16 @@ class RepositoryReading:
         """Add the materials of the knowledge collection to the corpus, with ``depth`` those of its sub-collections,
         with ``fulltext`` their texts (D70).
 
-        An unknown collection is refused as an unknown ``collection_id`` is (404); a repository that fails only goes
-        to the audit, since the compendium stands without the materials.
+        An unknown collection was refused by ``_probe_knowledge`` before any model call (404). What fails after it - a
+        repository, a list of materials hidden from the reader - only goes to the audit, since the compendium stands
+        without the materials and its LLM calls are spent (audit 2026-10-15).
         """
         try:
             remaining = deadline.remaining if deadline is not None else None
             result = self._collections_or_fail().knowledge_sources(
                 collection_id, remaining=remaining, depth=depth, fulltext=fulltext
             )
-        except CollectionNotFoundError:
-            raise
-        except EduSharingError as exc:
+        except EduSharingError as exc:  # CollectionNotFoundError included
             log.warning("knowledge collection %s not readable: %s", collection_id, exc)
             return {"collection_id": collection_id, "error": str(exc), "sources": 0}
         sources.extend(result.sources)

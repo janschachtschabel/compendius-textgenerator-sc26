@@ -58,6 +58,29 @@ def test_a_collection_hidden_from_the_reader_is_a_404_in_every_field(
         assert answer.status_code == 404 and "nicht öffentlich" in answer.text, answer.text[:300]
 
 
+class HiddenListing(FakeRepository):
+    """Shows the collection's metadata but refuses the list of its materials."""
+
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith(f"{OPTIK}/children/references"):
+            self.requests.append(request)
+            return httpx.Response(403, json={"error": "org.edu_sharing.restservices.DAOSecurityException"})
+        return super().__call__(request)
+
+
+def test_a_knowledge_collection_whose_materials_are_hidden_is_an_audit_entry(
+    sample_zims: dict[str, Path], tmp_path: Path
+) -> None:
+    """The probe found the collection; a refused listing after it only costs the materials, not the compendium the
+    article choice already paid for (audit 2026-10-15)."""
+    body = {"topic": "Optik", "knowledge_collection_id": OPTIK, "parts": ["world"]}
+    with _client(sample_zims, tmp_path, HiddenListing()) as client:
+        answer = client.post("/api/v2/compendium", json=body)
+    assert answer.status_code == 200, answer.text[:300]
+    knowledge = answer.json()["audit"]["knowledge"]
+    assert knowledge["sources"] == 0 and "nicht öffentlich" in knowledge["error"]
+
+
 def test_compendium_from_a_collection_and_repository_failure(sample_zims: dict[str, Path], tmp_path: Path) -> None:
     with _client(sample_zims, tmp_path, FakeRepository()) as client:
         payload = {"collection_id": OPTIK, "parts": ["world", "collection"]}
