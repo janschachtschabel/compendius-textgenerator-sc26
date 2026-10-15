@@ -117,7 +117,6 @@ def test_the_repository_cache_is_opened_at_its_own_path(tmp_path: Path) -> None:
         edu_sharing_base_url="https://repository.staging.openeduhub.net/edu-sharing/rest",
         wlo_cache_path=tmp_path / "pod" / "wlo_cache.db",
     )
-    (tmp_path / "pod").mkdir()
 
     build_collections(settings)
 

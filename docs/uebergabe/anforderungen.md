@@ -73,8 +73,8 @@ Gebliebenes steht am Ende.
 - **Alarmregeln:** 25 Regeln in `monitoring/alerts.yml`, mit `promtool`-Tests in `monitoring/alerts_test.yml`; für Helm
   als `PrometheusRule` übernehmen (der Inhalt von `groups` gehört unter `spec`). Die Regeln fragen `job="kompendium"`:
   Ein ServiceMonitor braucht diesen Job-Namen (`jobLabel` oder Relabeling), sonst meldet `KompendiumDown` nie.
-- **Logs:** eine Zeile je Ereignis nach stdout (D109; einmalige Befehle der Kommandozeile nach stderr), `LOG_FORMAT=json` für einen
-  Log-Sammler, `LOG_LEVEL` für die Stufe. Jede Zeile nennt die Anfrage (`request_id`), JSON-Zeilen auch die Spur
+- **Logs:** eine Zeile je Ereignis nach stdout (D109; einmalige Befehle der Kommandozeile nach stderr),
+  `LOG_FORMAT=json` für einen Log-Sammler, `LOG_LEVEL` für die Stufe. Jede Zeile nennt die Anfrage (`request_id`), JSON-Zeilen auch die Spur
   (`trace_id` aus `x-client-trace-id`, sonst der B3-Trace-ID).
 - **Tracing:** `x-client-trace-id`, die B3-Header und `traceparent` gehen unverändert mit jedem Aufruf an die b-api und
   an edu-sharing weiter, dazu `X-Request-ID` (D108).

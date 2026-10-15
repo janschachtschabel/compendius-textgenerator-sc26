@@ -1,9 +1,9 @@
 """Small TTL cache for repository answers (PLAN.md 6.1: collections 1 h, material texts 7 days).
 
-One SQLite file in STATE_DIR, shared by all API workers; values are JSON. Expiry is checked on read
-against an injectable clock so tests never wait. Every write also sweeps expired entries, otherwise
-texts of collections nobody asks for again would stay forever. The cache only saves time: when the
-file cannot be used, reads are misses and writes are skipped, both logged.
+One SQLite file in STATE_DIR or at WLO_CACHE_PATH (D109), shared by the API workers of a pod; values are JSON.
+Expiry is checked on read against an injectable clock so tests never wait. Every write also sweeps expired entries,
+otherwise texts of collections nobody asks for again would stay forever. The cache only saves time: when the file
+cannot be used, reads are misses and writes are skipped, both logged.
 """
 
 from __future__ import annotations

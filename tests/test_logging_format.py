@@ -11,7 +11,9 @@ import json
 import logging
 import os
 import sys
+import warnings
 from logging.config import dictConfig
+from typing import Any
 
 import pytest
 from uvicorn.config import LOGGING_CONFIG
@@ -24,7 +26,9 @@ from tests.test_threads_context import in_a_request
 UVICORN_LOGGERS = ("uvicorn", "uvicorn.error", "uvicorn.access")
 
 
-def configured(monkeypatch: pytest.MonkeyPatch, *format_: str, uvicorn: bool = False, level: str = "INFO") -> None:
+def configured(
+    monkeypatch: pytest.MonkeyPatch, *format_: str, uvicorn: bool = False, level: str = "INFO", stream: Any = None
+) -> None:
     """configure_logging on a root logger without the handlers pytest gave it, as in production; with ``uvicorn``
     after uvicorn's own logging, as it sets it up in every worker before the app is built. In the test, not in a
     fixture: pytest adds its capturing handler again when the test starts, and a root with a handler is left as it
@@ -40,9 +44,13 @@ def configured(monkeypatch: pytest.MonkeyPatch, *format_: str, uvicorn: bool = F
             monkeypatch.setattr(
                 logger, attribute, list(logger.handlers) if attribute == "handlers" else getattr(logger, attribute)
             )
+    # captureWarnings(True) does nothing while an earlier test's capture is still recorded, and pytest puts the
+    # original showwarning back after each test: without both, the warnings of only the first such test are logged
+    monkeypatch.setattr(warnings, "showwarning", warnings.showwarning)
+    monkeypatch.setattr(logging, "_warnings_showwarning", None)
     if uvicorn:
         dictConfig(LOGGING_CONFIG)
-    configure_logging(level, *format_)
+    configure_logging(level, *format_, stream=stream)
 
 
 def lines_with(text: str, capsys: pytest.CaptureFixture[str]) -> list[str]:
@@ -245,11 +253,22 @@ def test_a_sidecar_loop_logs_to_stdout_and_a_one_shot_command_to_stderr() -> Non
 def test_configure_logging_writes_where_it_is_told(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    root = logging.getLogger()
-    monkeypatch.setattr(root, "handlers", [])
-    configure_logging("INFO", "text", stream=sys.stdout)
+    configured(monkeypatch, stream=sys.stdout)
     logging.getLogger("app.probe").info("Probe 7")
 
     written = capsys.readouterr()
 
     assert "Probe 7" in written.out and "Probe 7" not in written.err
+
+
+def test_a_python_warning_is_a_log_line_in_the_service_s_format(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A warning wrote its own lines to stderr, outside the JSON a log collector reads (review of D109)."""
+    configured(monkeypatch, "json")
+    monkeypatch.setattr(warnings, "filters", [])
+    warnings.warn("Probe 9", UserWarning, stacklevel=1)
+
+    lines = lines_with("Probe 9", capsys)
+
+    assert len(lines) == 1 and json.loads(lines[0])["logger"] == "py.warnings"

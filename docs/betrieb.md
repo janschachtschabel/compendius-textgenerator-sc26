@@ -9,7 +9,7 @@ mit ihrer Bedeutung im Abschnitt *Konfiguration* der [README](../README.md#konfi
 
 | Prozess | Befehl | Aufgabe |
 |---|---|---|
-| `api` | `uvicorn app.main:create_app --factory` (Worker: `WEB_CONCURRENCY`, im Image 2) | beantwortet Anfragen, lädt nie Archive herunter |
+| `api` | `python -m app.serve` (startet uvicorn mit `app.main:create_app`; Worker: `WEB_CONCURRENCY`, im Image 2) | beantwortet Anfragen, lädt nie Archive herunter |
 | `zim-updater` | `compendium zim sync --loop` | Kiwix-Katalog prüfen, Dumps laden, `active.json` umschalten, alte Dateien löschen |
 | `lehrplan-updater` | `compendium lehrplan harvest --loop` | MEM-Lehrpläne in `lehrplan.db` ziehen und atomar tauschen |
 | `wikidata-updater` | `compendium wikidata sync --loop` | Wikidata-Index `wikidata.db` bauen, wenn er fehlt, und neu nach einem jüngeren Wikipedia-Archiv (D64); lädt drei Dumps von dumps.wikimedia.org (rund 750 MB) und löscht sie nach dem Bau |
@@ -18,7 +18,7 @@ mit ihrer Bedeutung im Abschnitt *Konfiguration* der [README](../README.md#konfi
 | Volume | Inhalt | Wiederherstellung |
 |---|---|---|
 | `zim` (`ZIM_DIR`) | ZIM-Archive, `active.json`, `sync_status.json` | neu laden lassen (`ZIM_BOOTSTRAP_DOWNLOAD=true`) oder Dateien hineinkopieren; der nächste Sync übernimmt sie |
-| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db`, `templates/`, `wikidata.db` mit `wikidata_status.json`, `gnd.db` mit `gnd_status.json` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wikidata.db` baut der Sidecar `wikidata-updater` selbst neu (rund 750 MB Download, dabei rund 1,5 GB frei im Volume), von Hand `docker compose run --rm --no-deps wikidata-updater compendium wikidata sync --force` (README „Entitäten und Kennungen“); `gnd.db` baut der Sidecar `gnd-updater` selbst neu (rund 65 MB), von Hand `docker compose run --rm --no-deps gnd-updater compendium gnd sync --force`; `wlo_cache.db` ist verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden (`PUT`/`DELETE /api/v2/templates/{id}` oder `compendium templates save|delete` schreiben dorthin) |
+| `state` (`STATE_DIR`) | `lehrplan.db`, `wlo_cache.db` (sofern `WLO_CACHE_PATH` leer), `templates/`, `wikidata.db` mit `wikidata_status.json`, `gnd.db` mit `gnd_status.json` | `lehrplan.db` per Harvest neu erzeugen (rund 25 Minuten); `wikidata.db` baut der Sidecar `wikidata-updater` selbst neu (rund 750 MB Download, dabei rund 1,5 GB frei im Volume), von Hand `docker compose run --rm --no-deps wikidata-updater compendium wikidata sync --force` (README „Entitäten und Kennungen“); `gnd.db` baut der Sidecar `gnd-updater` selbst neu (rund 65 MB), von Hand `docker compose run --rm --no-deps gnd-updater compendium gnd sync --force`; `wlo_cache.db` ist verzichtbar; `templates/` sichern, falls eigene Templates angelegt wurden (`PUT`/`DELETE /api/v2/templates/{id}` oder `compendium templates save|delete` schreiben dorthin) |
 
 **`ZIM_PATHS` umgeht dieses Volume.** Sind dort Pfade eingetragen, liest der Dienst genau diese Dateien:
 `active.json` wird nicht gelesen, der Sync-Job verwaltet die Archive nicht, und ein Wechsel braucht einen

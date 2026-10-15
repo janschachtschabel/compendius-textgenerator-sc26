@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import os
+import sys
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -257,7 +258,7 @@ def create_app(settings: Settings | None = None, *, document_internal: bool = Fa
     all the same and are listed in docs/betrieb.md (D107). ``document_internal`` puts them into the document as well,
     /metrics excepted, for the tests of their documentation."""
     settings = settings or get_settings()
-    configure_logging(settings.log_level, settings.log_format)
+    configure_logging(settings.log_level, settings.log_format, stream=sys.stdout)  # the server logs to stdout (D109)
     warn_about_removed_settings()
     registry = build_registry(settings)
     templates = TemplateManager(custom_dir=Path(settings.state_dir) / "templates")

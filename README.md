@@ -539,7 +539,8 @@ Staging (`repository.staging.openeduhub.net`); für die Produktion bekommt die V
 und wenn er nicht zum Repository passt, sagt es das Log beim Start. `GET /health` nennt beide Hosts
 (`components.edu_sharing.repository`, `components.llm.host`), damit sichtbar ist, womit der Dienst
 gerade spricht. Das Repository wird zur Inferenzzeit gelesen, Sammlungen 1 h und
-Materialtexte 7 Tage gecacht (`STATE_DIR/wlo_cache.db`, abgelaufene Einträge räumt jeder Schreibvorgang
+Materialtexte 7 Tage gecacht (`STATE_DIR/wlo_cache.db` oder `WLO_CACHE_PATH`,
+abgelaufene Einträge räumt jeder Schreibvorgang
 weg). Ein Eintrag gilt nur für das Repository und den Zugang, mit dem er gelesen wurde (anonym oder das
 Konto aus `EDU_SHARING_USER`): Nach einem Wechsel von `EDU_SHARING_BASE_URL` oder des Kontos liest der
 Dienst neu, statt Daten des alten zu liefern. Nach Ablauf von `REQUEST_TIMEOUT_S` fragt der Dienst das
@@ -1072,7 +1073,8 @@ nach `LEHRPLAN_HARVEST_MAX_AGE` angestoßen — er dauert rund 25 Minuten und st
 ### Sammlungen (Teil 3) und Wissens-Sammlung
 
 edu-sharing-Repository, anonym oder mit Basic-Auth; leere Basis-URL schaltet Teil 3 ab (der Endpunkt
-antwortet dann 503). Der Cache liegt in `STATE_DIR/wlo_cache.db`. Die Wissens-Sammlung nimmt jedes Material,
+antwortet dann 503). Der Cache liegt in `STATE_DIR/wlo_cache.db`,
+mit `WLO_CACHE_PATH` an einem eigenen Pfad je Pod (D109). Die Wissens-Sammlung nimmt jedes Material,
 gleich unter welcher Lizenz (D70).
 
 | Variable | Vorlage | Bedeutung |
