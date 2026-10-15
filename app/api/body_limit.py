@@ -16,6 +16,7 @@ from fastapi import HTTPException
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.api.errors import JsonResponse
+from app.api.paths import route_path
 from app.domain.requests import EXISTING_MARKDOWN_MAX_CHARS
 
 # The largest field, existing_markdown, with every character spelled as a six-byte JSON escape, and a megabyte for
@@ -48,7 +49,7 @@ class BodySizeLimit:
             await self.app(scope, receive, send)
             return
         bound = self.max_bytes
-        if takes_large_body(scope["method"], scope["path"]):
+        if takes_large_body(scope["method"], route_path(scope)):
             bound = max(bound, LARGE_BODY_BYTES)
         declared = _declared_length(scope)
         if declared is not None and declared > bound:

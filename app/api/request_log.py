@@ -27,6 +27,7 @@ from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.api.errors import JsonResponse
 from app.api.metrics import METRICS_PATH
+from app.api.paths import route_path
 from app.logging import REQUEST_ID_HEADER, set_request_id
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request
 from app.tracing import take_trace_headers
@@ -102,7 +103,7 @@ class RequestLog:
             self._record(scope, status, time.perf_counter() - started)
 
     def _record(self, scope: Scope, status: int, seconds: float) -> None:
-        path: str = scope["path"]
+        path = route_path(scope)  # behind a prefix too (audit 2026-10-15)
         route = getattr(scope.get("route"), "path", None) or route_template(self.routes, scope)
         if path != METRICS_PATH:  # a scrape is no request of the service
             observe_request(scope["method"], route, status, seconds)

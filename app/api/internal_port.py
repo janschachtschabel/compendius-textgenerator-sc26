@@ -13,6 +13,7 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 
 from app.api.errors import JsonResponse
 from app.api.metrics import METRICS_PATH
+from app.api.paths import route_path
 
 INTERNAL_PATHS = frozenset({"/health", "/ready", METRICS_PATH, "/api/v2/zim/status", "/api/v2/lehrplan/status"})
 
@@ -25,18 +26,10 @@ class InternalOnly:
         self.port = port
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        if scope["type"] == "http" and _route_path(scope) in INTERNAL_PATHS and _server_port(scope) != self.port:
+        if scope["type"] == "http" and route_path(scope) in INTERNAL_PATHS and _server_port(scope) != self.port:
             await JsonResponse({"detail": "Not Found"}, status_code=404)(scope, receive, send)
             return
         await self.app(scope, receive, send)
-
-
-def _route_path(scope: Scope) -> str:
-    """The path the router matches: uvicorn puts a root path (UVICORN_ROOT_PATH) in front of ``path``, the router
-    takes it off again, so /kompendium/health is /health (review of D110)."""
-    path: str = scope["path"]
-    root = scope.get("root_path", "")
-    return (path[len(root) :] or "/") if root and path.startswith(root) else path
 
 
 def _server_port(scope: Scope) -> int | None:
