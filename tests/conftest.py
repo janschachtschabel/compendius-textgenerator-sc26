@@ -12,7 +12,7 @@ import pytest
 from libzim.writer import Creator, Hint, Item, StringProvider
 
 from app.service import CompendiumService
-from app.settings import Settings
+from app.settings import Settings, get_settings
 from app.sources.zim.registry import ZimRegistry
 from app.templates.manager import TemplateManager
 from app.wiring import build_service
@@ -131,6 +131,16 @@ def build_sample_zim(out: Path, project: str) -> Path:
     return out
 
 
+@pytest.fixture
+def exec_start(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
+    """app.serve.main with one port, as before D110: the start hands over to uvicorn with exec, which a test catches.
+    With the internal port it would run uvicorn in the test process and wait for requests."""
+    monkeypatch.setenv("INTERNAL_PORT", "0")
+    get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
+
+
 @pytest.fixture(scope="session")
 def sample_zims(tmp_path_factory: pytest.TempPathFactory) -> dict[str, Path]:
     directory = tmp_path_factory.mktemp("zim")
@@ -141,6 +151,7 @@ def make_settings(paths: Iterable[Path], state_dir: Path, **overrides: Any) -> S
     # Offline by default: LLM_ENABLED and B_API_KEY from the shell must never reach the real b-api in tests.
     overrides.setdefault("llm_enabled", False)
     overrides.setdefault("rate_limit", 0)  # tests opt in to the limit (tests/test_rate_limit.py)
+    overrides.setdefault("internal_port", 0)  # one port, as TestClient asks; tests/test_internal_port.py opts in
     # The shipped profile balanced needs an LLM (D53); offline tests run on llm-free unless they ask for another
     overrides.setdefault("preset_default", "llm-free")
     # The sample archives; a test of the production default sets it empty (tests/test_readiness_defaults.py)

@@ -26,10 +26,11 @@ Gebliebenes steht am Ende.
 
 ## 3. Erreichbarkeit, Header, Formate, Antwortzeiten
 
-- **Pfade öffentlich und intern:** Tabelle in [betrieb.md, „Erreichbarkeit“](../betrieb.md#erreichbarkeit). Der Dienst
-  hat einen Port (8000); Ingress und Proxy der b-api geben `/openapi.json`, `/docs`, `/redoc` und `/api/v2/` ohne die
-  internen Pfade frei. Proben und Metriken laufen am Pod. Einen zweiten Port gibt es nicht; `METRICS_TOKEN` und
-  `ADMIN_TOKEN` gehören gesetzt, damit ihre Pfade auch geschützt sind, wenn ein Proxy sie durchreicht.
+- **Pfade öffentlich und intern:** Tabelle in [betrieb.md, „Erreichbarkeit“](../betrieb.md#erreichbarkeit). Zwei Ports
+  (D110): 8000 die öffentliche API, 9000 (`INTERNAL_PORT`) `/health`, `/ready`, `/metrics` und die Statusendpunkte, die
+  am Port 8000 mit 404 antworten. Ingress und Proxy der b-api geben am Port 8000 `/openapi.json`, `/docs`, `/redoc` und
+  `/api/v2/` ohne die Admin-Pfade frei; diese bleiben am Port 8000 hinter `ADMIN_TOKEN`, weil sie von Hand aufgerufen
+  werden.
 - **Header vom Aufrufer:** hinter der b-api `Authorization` oder `X-API-Key`, der Schlüssel, den die b-api vom Aufrufer
   weiterreicht (D105); mit gesetztem `API_KEYS` trägt `X-API-Key` dessen Schlüssel; optional `X-Request-ID`,
   `x-client-trace-id` und die B3-Header (D108); `X-Admin-Token` nur für die Admin-Pfade.
@@ -66,9 +67,9 @@ Gebliebenes steht am Ende.
 
 ## 5. Monitoring und Logging
 
-- **Prometheus:** `GET /metrics` (Bibliothek `prometheus_client`, Werte aller Worker zusammen), Zugriff mit
-  `METRICS_TOKEN`. Applikationsmetriken: Anfragen und Dauer je Route, Kompendien, Phasen, Teile, LLM-Aufrufe und Tokens
-  je Route, Rückfälle, Stand von Archiven, Indexen, Lehrplan-Cache und Sidecars, freier Platz auf den Volumes
+- **Prometheus:** `GET /metrics` am internen Port 9000 (Bibliothek `prometheus_client`, Werte aller Worker zusammen),
+  Zugriff mit `METRICS_TOKEN`. Applikationsmetriken: Anfragen und Dauer je Route, Kompendien, Phasen, Teile, LLM-Aufrufe
+  und Tokens je Route, Rückfälle, Stand von Archiven, Indexen, Lehrplan-Cache und Sidecars, freier Platz auf den Volumes
   ([README](../../README.md), „Metriken“).
 - **Alarmregeln:** 25 Regeln in `monitoring/alerts.yml`, mit `promtool`-Tests in `monitoring/alerts_test.yml`; für Helm
   als `PrometheusRule` übernehmen (der Inhalt von `groups` gehört unter `spec`). Die Regeln fragen `job="kompendium"`:
@@ -134,4 +135,3 @@ Gebliebenes steht am Ende.
   (D102) und die Wikipedia-Ausgabe 2026-10 dazu. `lasttest.py` liegt bei.
 - **Modelle im Image:** rund 380 MB der 1,1 GB. Sie ließen sich auf ein Volume legen, das ein Init-Container füllt, wenn
   der Betrieb das verlangt.
-- **Zweiter Port:** nicht gebaut (siehe „Erreichbarkeit“); nachrüstbar, wenn der Betrieb ihn verlangt.

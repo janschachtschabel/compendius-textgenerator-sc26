@@ -363,7 +363,7 @@ Gemessen am 29.09.2026: zehn Paare zu Photosynthese mit `best-quality` in 7 s f�
 | `existing_markdown`, `regenerate_sections` | ein früheres Kompendium mitschicken: redaktionell geprüfte Bausteine bleiben wörtlich, nur die genannten entstehen neu |
 | `/ui/` | Prüfansicht für die Redaktion (`UI_ENABLED`): die Antworten aller Endpunkte im Browser, mit Herkunft je Absatz, Qualität, Zeit und Kosten |
 | `/docs`, `/redoc` | die API mit Beispielen je Profil (`API_DOCS_ENABLED`) |
-| `/health`, `/ready`, `/metrics` | Zustand, Bereitschaft, Messwerte für Prometheus |
+| `/health`, `/ready`, `/metrics` | Zustand, Bereitschaft, Messwerte für Prometheus; nur am internen Port 9000 (D110) |
 
 ```bash
 # Entitäten in einem Text (unter Windows den Körper aus einer UTF-8-Datei senden)

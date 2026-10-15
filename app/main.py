@@ -23,6 +23,7 @@ from app.api.docs import docs_router
 from app.api.domain_errors import DOMAIN_ERRORS
 from app.api.errors import JsonResponse, http_error, validation_error
 from app.api.health import router as health_router
+from app.api.internal_port import InternalOnly
 from app.api.limits import RateLimiter
 from app.api.metrics import name_the_route
 from app.api.metrics import router as metrics_router
@@ -352,6 +353,8 @@ def create_app(settings: Settings | None = None, *, document_internal: bool = Fa
     app.add_middleware(BodySizeLimit, max_bytes=settings.request_body_max_bytes)
     if not settings.zim_path_list:
         app.add_middleware(FollowActiveArchives, refresher=RegistryRefresher(registry, settings.zim_dir))
+    if settings.internal_port:
+        app.add_middleware(InternalOnly, port=settings.internal_port)  # probes, metrics, status (D110)
     # Added last, so it runs outermost: it names the request, times all of it, and answers an error nothing else
     # handled (app/api/request_log.py)
     app.add_middleware(RequestLog, routes=app.routes)

@@ -52,7 +52,7 @@ ENTITY_CHARS = 1500  # about the length of a material's description, the texts o
 QA_PAIRS = 20  # as M30, M34 and M45
 _METRIC = re.compile(r'^kompendium_llm_(tokens|calls)_total\{endpoint="([^"]+)",(?:type|outcome)="([^"]+)"\} ([0-9.e+]+)$')
 
-client = TestClient(create_app())
+client = TestClient(create_app(), base_url="http://testserver:9000")  # /metrics and /health answer there (D110)
 client.__enter__()  # the lifespan: archives, indexes and models
 
 

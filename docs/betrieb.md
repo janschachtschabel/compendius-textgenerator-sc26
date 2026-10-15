@@ -40,10 +40,11 @@ Update daher:
    `gnd-updater`.
 2. Die Variablen des Servers mit der Tabelle unten abgleichen: Werte, die noch eine alte Vorgabe tragen, auf die
    neue setzen, neue ergänzen. Jede Variable bleibt einstellbar; ohne Eintrag gilt ihre Vorgabe.
-3. `GET /health` lesen: `version` und `revision`, `components.llm.model`, `components.matching.embeddings`
-   (muss `true` sein), `entities.wikidata.available` und `entities.gnd.available`. Nach einem ersten Start brauchen
-   die beiden Indexe auf dem Server rund eine halbe Minute (GND) und rund acht Minuten (Wikidata), gemessen am
-   28.09.2026 vom Start des Dienstes bis `available: true`.
+3. `GET /health` lesen, am internen Port (`curl -sS http://127.0.0.1:9000/health` auf dem Host): `version` und
+   `revision`, `components.llm.model`, `components.matching.embeddings` (muss `true` sein),
+   `entities.wikidata.available` und `entities.gnd.available`. Nach einem ersten Start brauchen die beiden Indexe auf
+   dem Server rund eine halbe Minute (GND) und rund acht Minuten (Wikidata), gemessen am 28.09.2026 vom Start des
+   Dienstes bis `available: true`.
 
 | Stand | Was sich für den Betrieb ändert |
 |---|---|
@@ -80,6 +81,7 @@ Update daher:
 | 2.7.0 (D76) | Sätze aus Modellwissen enden nicht mehr sichtbar mit `[Modellwissen]`, weder im Markdown noch im Text der Bausteine: So geht ein fertiger Text an Endkunden. Das Markup kennzeichnet sie weiter (`<!-- f: Evidenzgrad=Modellwissen -->`). Wer den Vermerk braucht, setzt in der Anfrage `"model_knowledge_label": true` (CLI `--model-knowledge-label`, in der Prüfansicht „Vermerk [Modellwissen] im Text zeigen“). Keine Einstellung in der `.env`, keine neue `docker-compose.yml`. |
 | 2.8.0 (D77) | Eine Sammlung in `node_id` bekommt im Kompendium Teil 3 wie mit `collection_id`, wenn das Feld leer ist und die Sammlung im eingestellten Repository liegt; bis dahin stand Teil 3 dann auf `unavailable`. `parts: ["collection"]` mit einem Material in `node_id` ist ein 503 statt eines 422. Die Prüfansicht hat ein Feld „Sammlung oder Material“ statt dreier und liest den Knoten über `GET /api/v2/nodes/{id}` (mit dem eingetragenen Schlüssel). Keine Einstellung in der `.env`, keine neue `docker-compose.yml`. |
 | 2.9.0 (Audit 2026-10-02, D78) | Keine neue Einstellung. `REQUEST_TIMEOUT_S` gilt jetzt auch für die ersten Lesezugriffe aufs Repository (Sammlung und Knoten der Anfrage, Prüfung der Wissens-Sammlung): Hängt das Repository, endet eine Anfrage in der Frist statt nach bis zu drei mal zwei Versuchen à `EDU_SHARING_TIMEOUT_S`. Ein Materialtext hält `KNOWLEDGE_MAX_CHARS` auch im ersten Absatz, eine Zeile über 2.000 Zeichen wird an Satzenden geteilt. Mit Materialien ohne freie Lizenz (frei: gemeinfrei, CC BY, CC BY-SA) nennt der Quellenblock sie und stellt nur den übrigen Text von Teil 1 unter CC BY-SA 4.0; ihr Eintrag und der Baustein tragen keine Facette `Zugang`, `audit.lint` meldet dann `facet-required` für den Quellenbaustein. Die Nebenartikel einer Stufe teilen sich, was `CORPUS_MAX_CHUNKS` lässt: große Themen haben mehr Quellen im Korpus (Deutschland 9 statt 3), gleich viele Absätze. Ein belegter Satz mit einer Zahl, die sein Beleg nicht nennt, gilt als ungestützt (weg oder als Modellwissen). Ein unlesbarer Eintrag im Repository-Cache ist ein Fehltreffer statt eines Fehlers. |
+| Unveröffentlicht (D110) | Eine neue Einstellung, `INTERNAL_PORT` (Vorgabe `9000`), und in `docker-compose.yml` die Bindung `INTERNAL_BIND` (Vorgabe `127.0.0.1:9000`). `/health`, `/ready`, `/metrics` und die Statusendpunkte antworten nur noch am internen Port; am Port 8000 antworten sie mit 404. Der Healthcheck im Image fragt den internen Port, Docker zeigt den Zustand wie bisher. **Wer `/health` von außen liest** - eine Prüfung nach dem Update, ein Uptime-Monitor -, liest ihn nach dem Update auf dem Host mit `curl -sS http://127.0.0.1:9000/health`, bindet den Port mit `INTERNAL_BIND` anders oder behält mit `INTERNAL_PORT=0` einen Port für alles. Eine Compose-Datei ohne die neue Zeile veröffentlicht den internen Port nicht; der Healthcheck läuft trotzdem, er fragt im Container. Prometheus aus dem Compose-Profil fragt `api:9000` (`monitoring/prometheus.yml`); wer `INTERNAL_PORT` ändert, trägt dieselbe Zahl in `docker-compose.yml` und dort ein, mit `0` den Port 8000. Vor dem Update prüfen, dass auf dem Host nichts anderes den Port 9000 belegt (`ss -ltn`), sonst startet `api` nicht; `INTERNAL_BIND` wählt dann einen anderen Host-Port. |
 | Unveröffentlicht (D109) | Eine neue Einstellung, `WLO_CACHE_PATH` (leer: wie bisher `wlo_cache.db` in `STATE_DIR`). Die API und die Updater-Schleifen loggen nach stdout statt stderr; `docker compose logs` zeigt beides wie bisher, nur wer die Ströme getrennt sammelt, merkt es. |
 | 2.21.0 (D108) | Keine neue Einstellung. `x-client-trace-id`, die B3-Header und `traceparent`/`tracestate` einer Anfrage gehen mit `X-Request-ID` unverändert an die b-api und an edu-sharing weiter; JSON-Zeilen nennen die Spur als `trace_id`. |
 | 2.21.0 (D107) | Keine neue Einstellung. `/openapi.json` heißt „Kompendiale Texte“, trägt einen kurzen Text für Endnutzende (`info.summary`), deutsche Kurztitel und eine Beschreibung je Gruppe. Die internen Endpunkte - `/health`, `/ready`, `/metrics`, die Statusendpunkte und die Admin-Pfade - stehen nicht mehr darin und antworten wie bisher; welche Pfade nach außen gehören, steht unter „Erreichbarkeit“. |
@@ -115,10 +117,11 @@ Budget: kein LLM-Aufruf. Ab 2.7.0 nennt jede Zeile ihr Release; sie stehen ab 2.
 
 ## Erreichbarkeit
 
-Der Dienst hat einen Port (8000) für alle Pfade. Öffentlich sind die Endpunkte für die Nutzung; sie stehen in
-`/openapi.json`, das die b-api und ein Produktkatalog lesen. Intern sind die Endpunkte für Proben, Metriken, Stand und
-Admin: Sie stehen nicht in `/openapi.json`, sondern nur hier, und gehören nicht nach außen (D107).
-`tests/test_openapi_catalog.py` prüft, dass jeder interne Endpunkt in dieser Liste steht.
+Der Dienst hat zwei Ports (D110): 8000 für die API und 9000 (`INTERNAL_PORT`) für Proben, Metriken und Stand. Öffentlich
+sind die Endpunkte für die Nutzung; sie stehen in `/openapi.json`, das die b-api und ein Produktkatalog lesen. Intern
+sind die Endpunkte für Proben, Metriken, Stand und Admin: Sie stehen nicht in `/openapi.json`, sondern nur hier, und
+gehören nicht nach außen (D107). `tests/test_openapi_catalog.py` prüft, dass jeder interne Endpunkt in dieser Liste
+steht.
 
 **Öffentlich** (in `/openapi.json`):
 
@@ -128,7 +131,7 @@ Admin: Sie stehen nicht in `/openapi.json`, sondern nur hier, und gehören nicht
 | `GET /api/v2/templates`, `/api/v2/templates/{id}`, `/api/v2/matching/strategies` | Aufrufer, Entwicklung | keiner, sie lesen nur |
 | `GET /openapi.json`, `/docs`, `/redoc` | b-api, Produktkatalog, Entwicklung | keiner; `API_DOCS_ENABLED=false` schaltet alle drei ab |
 
-**Intern** (nicht in `/openapi.json`, nicht nach außen):
+**Intern am Port 9000** (nicht in `/openapi.json`; am Port 8000 antworten sie mit 404, `app/api/internal_port.py`):
 
 | Endpunkt | Für wen | Schutz |
 |---|---|---|
@@ -137,6 +140,11 @@ Admin: Sie stehen nicht in `/openapi.json`, sondern nur hier, und gehören nicht
 | `GET /metrics` | Prometheus | `METRICS_TOKEN` als `Authorization: Bearer`; ohne Token offen, `METRICS_ENABLED=false` schaltet ab |
 | `GET /api/v2/zim/status` | Betrieb, Reporting: geladene und fehlende Archive, letzter Sync | keiner |
 | `GET /api/v2/lehrplan/status` | Betrieb, Reporting: Lehrplan-Cache und letzter Harvest | keiner |
+
+**Intern am Port 8000** (nicht in `/openapi.json`, nicht nach außen; ein Aufruf von Hand, darum am Port der API):
+
+| Endpunkt | Für wen | Schutz |
+|---|---|---|
 | `GET /api/v2/zim/catalog` | Betrieb: Archive, die Kiwix anbietet | `X-Admin-Token` (`ADMIN_TOKEN`); 404, solange der Server kein `ADMIN_TOKEN` hat, ohne oder mit falschem Header 403 |
 | `GET /api/v2/zim/progress` | Betrieb: Stand des Syncs mit Fehlertexten | `X-Admin-Token` |
 | `POST /api/v2/zim/sync` | Betrieb: Sync anstoßen | `X-Admin-Token` |
@@ -148,15 +156,15 @@ Admin: Sie stehen nicht in `/openapi.json`, sondern nur hier, und gehören nicht
 
 Freigeben also `/openapi.json`, `/docs`, `/redoc` und `/api/v2/` ohne die internen Pfade;
 `/api/v2/templates/{template_id}` ist lesend öffentlich, schreibend intern, die Regel braucht dort die Methode. Die
-Proben fragt Kubernetes am Pod, nicht über den Ingress. Über den Proxy der b-api erreicht den Dienst jeder Pfad, den die
-b-api weitergibt; ob sie Pfade filtern kann, ist offen. Darum gehören `METRICS_TOKEN` und `ADMIN_TOKEN` gesetzt (ohne
-Token ist `/metrics` offen), und `UI_ENABLED` bleibt im Betrieb aus. Ein zweiter Port für die internen Endpunkte ließe
-sich nachrüsten, wenn der Betrieb ihn verlangt.
+Proben und Prometheus fragen am Port 9000 des Pods, den kein Ingress freigibt. Über den Proxy der b-api erreicht den
+Dienst jeder Pfad, den die b-api weitergibt; ob sie Pfade filtern kann, ist offen. Darum gehört `ADMIN_TOKEN` gesetzt,
+und `UI_ENABLED` bleibt im Betrieb aus; `METRICS_TOKEN` schützt `/metrics` auch im Cluster. Mit `INTERNAL_PORT=0`
+antwortet alles am Port 8000, wie bis 2.21.0.
 
 ## Zustand prüfen
 
 - `GET /health`: Prozess lebt; `components` zeigt `zim`, `lehrplan_cache`, `edu_sharing` und `llm`
-  (Modellprüfung, Tagesverbrauch). Je Modell steht dort, ob es wirklich geladen ist: `matching.embeddings`
+  (Modellprüfung). Je Modell steht dort, ob es wirklich geladen ist: `matching.embeddings`
   für das Model2Vec-Modell, `entities.ner` für das spaCy-Modell, `entities.wikidata` für den Wikidata-Index
   (D43) — ein fehlendes Modell macht die Antworten schwächer, ohne dass eine Anfrage scheitert. Die Komponente
   `qa_models` entfiel mit den beiden QA-Modellen (D57).

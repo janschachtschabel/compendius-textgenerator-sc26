@@ -2432,6 +2432,16 @@ API.
   `emptyDir`, so schreiben mehrere Pods nicht eine Datei über das Netz; die Indexe schreiben nur die Sidecars, die API
   liest sie. Redis oder PostgreSQL brächten nichts, was diese Aufteilung nicht schon leistet: Der Cache spart nur Zeit,
   und jeder Pod füllt seinen eigenen.
+- **D110 (2026-10-15)** Ein interner Port für Proben, Metriken und Stand (Technik-Team: „Port 1 ist die öffentliche API
+  und wird über den Ingress freigegeben; Port 2 ist intern und liefert /health, /ready und /metrics“; Jan: „prometheus
+  und entsprechende status endpunkte sollte über den internen port laufen“). `INTERNAL_PORT` (Vorgabe 9000) nimmt
+  `/health`, `/ready`, `/metrics`, `/api/v2/zim/status` und `/api/v2/lehrplan/status`; am Port 8000 antworten sie mit
+  404, als gäbe es sie nicht. Die Admin-Pfade bleiben am Port 8000 hinter `ADMIN_TOKEN`: Sie werden von Hand aufgerufen,
+  und wer sie aufruft, erreicht den Cluster sonst nicht. uvicorn bindet auf der Kommandozeile nur einen Port; der Start
+  liest deshalb denselben Befehl mit uvicorns eigenem Parser, bindet beide Sockets und gibt sie den Workern, wie uvicorn
+  es mit seinem einen tut. Der Port richtet sich nach dem Socket, an dem die Verbindung ankam, nicht nach dem
+  Host-Header. `INTERNAL_PORT=0` lässt alles am Port 8000 wie bis 2.21.0; Folge für Hostinger: `/health` von außen
+  antwortet mit 404, der Docker-Healthcheck fragt im Container weiter.
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

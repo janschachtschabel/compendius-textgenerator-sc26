@@ -16,6 +16,8 @@ from app import serve
 from app.settings import PROVIDER_REQUEST_TIMEOUT_S, Settings, get_settings
 from tests.conftest import ROOT
 
+pytestmark = pytest.mark.usefixtures("exec_start")  # the tests catch the exec of the one-port start
+
 
 def test_only_the_metric_files_of_an_earlier_run_are_removed(tmp_path: Path) -> None:
     metric_files = ["counter_7.db", "gauge_all_7.db", "gauge_livesum_8.db", "histogram_7.db", "summary_9.db"]

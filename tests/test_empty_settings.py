@@ -82,6 +82,7 @@ def test_an_emptied_secret_does_not_come_back_from_the_env_file(
     assert [getattr(settings, name.lower()) for name in SIDECAR_SECRETS] == [""] * len(SIDECAR_SECRETS)
 
 
+@pytest.mark.usefixtures("exec_start")
 @pytest.mark.parametrize(
     ("name", "default"), [("WEB_CONCURRENCY", "2"), ("FORWARDED_ALLOW_IPS", "127.0.0.1,::1"), ("UVICORN_HTTP", "h11")]
 )

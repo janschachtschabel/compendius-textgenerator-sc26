@@ -232,6 +232,20 @@ def check_embeddings(base_url: str) -> str:
     return f"{matching['matcher']} with {', '.join(matching['components'])}"
 
 
+def check_internal_port(base_url: str, internal_url: str) -> str:
+    """Probes and metrics answer on the internal port only (D110), the API on the public one."""
+    hidden = [
+        path
+        for path in ("/health", "/ready", "/metrics", "/api/v2/zim/status", "/api/v2/lehrplan/status")
+        if httpx.get(f"{base_url}{path}", timeout=10).status_code != 404
+    ]
+    if hidden:
+        raise SystemExit(f"the public port still answers {hidden}")
+    if httpx.get(f"{internal_url}/metrics", timeout=10).status_code != 200:
+        raise SystemExit("/metrics does not answer on the internal port")
+    return "probes and metrics on the internal port only"
+
+
 def check_sidecars(image: str, archive_volume: str, state_volume: str, *, hardened: bool) -> str:
     """The status command of each sidecar in the image, with the volumes and the hardening docker-compose.yml gives it;
     a failing one fails the probe with its own message."""
@@ -306,6 +320,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--image", default="compendious-text-fastapi:local")
     parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--internal-port", type=int, default=9000, help="where probes and metrics answer (D110)")
     parser.add_argument("--name", default="compendium-smoke")
     parser.add_argument("--revision", default="", help="the commit the image was built from; /health must name it")
     parser.add_argument(
@@ -337,6 +352,7 @@ def main() -> int:
         return 0
 
     base_url = f"http://{args.host}:{args.port}"
+    internal_url = f"http://{args.host}:{args.internal_port}"
     helper, archive_volume, state_volume = f"{args.name}-copy", f"{args.name}-zim", f"{args.name}-state"
     remove((args.name, helper), (archive_volume, state_volume))
     try:
@@ -350,6 +366,7 @@ def main() -> int:
         container = run(
             "run", "-d", "--name", args.name,
             "-p", f"{publish_address(args.host)}:{args.port}:8000",
+            "-p", f"{publish_address(args.host)}:{args.internal_port}:9000",
             "-v", f"{archive_volume}:/data/zim:ro",
             "-e", "ZIM_REQUIRED=wikipedia_de_sample,klexikon_de_sample",
             "-e", "PRESET_DEFAULT=llm-free",
@@ -357,10 +374,11 @@ def main() -> int:
             *(HARDENING if args.hardened else ()),
             args.image,
         )  # fmt: skip
-        wait_until_ready(base_url, container)
-        print(f"the image is: {check_revision(base_url, args.revision)}")
+        wait_until_ready(internal_url, container)
+        print(f"the image is: {check_revision(internal_url, args.revision)}")
+        print(f"the image keeps inside: {check_internal_port(base_url, internal_url)}")
         if args.embeddings:
-            print(f"the image matches: {check_embeddings(base_url)}")
+            print(f"the image matches: {check_embeddings(internal_url)}")
         compendium = ask_for_a_compendium(base_url, container)
         print(f"the image answers: {check(compendium, logs(args.name))}")
         print(f"the image refuses: {check_llm_profile_refused(base_url, container)}")

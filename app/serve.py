@@ -13,17 +13,25 @@ in quadratic time. h11 answers 400 to a request line with headers over 16 KB.
 from __future__ import annotations
 
 import json
+import logging
 import os
+import socket
+import sys
 import tempfile
 from pathlib import Path
 
+from uvicorn import Config, Server
+from uvicorn.config import STARTUP_FAILURE
+from uvicorn.main import main as uvicorn_cli
+from uvicorn.supervisors import Multiprocess
+
 from app.logging import uvicorn_log_config
-from app.settings import get_settings
+from app.settings import PUBLIC_PORT, get_settings
 
 DEFAULT_DIR = "/tmp/prometheus"  # noqa: S108  # container-local, emptied at every start
 METRIC_FILES = ("counter_*.db", "gauge_*.db", "histogram_*.db", "summary_*.db")  # prometheus_client's file names
 # All interfaces inside the container; compose publishes the port on API_BIND, all interfaces unless set otherwise
-UVICORN = ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]  # noqa: S104
+UVICORN = ["uvicorn", "app.main:create_app", "--factory", "--host", "0.0.0.0", "--port", str(PUBLIC_PORT)]  # noqa: S104
 # A worker busy with one compendium answers the parent process late or not at all: the work happens in C code
 # (ZIM reads, matching) that holds the interpreter lock, measured at 26 seconds without a break for one request.
 # The parent kills a worker that stays silent longer than its healthcheck timeout - uvicorn allows five seconds -
@@ -70,14 +78,59 @@ def uvicorn_command(request_timeout_s: int, log_config: Path | None = None) -> l
     ]
 
 
+def serve_on_two_ports(command: list[str], internal_port: int) -> None:
+    """uvicorn as its command line would run ``command``, its workers listening on the internal port as well (D110).
+
+    The command line binds one socket, so the start reads the command through uvicorn's own parser - the UVICORN_*
+    variables included, as ``uvicorn`` reads them - binds the public socket the way uvicorn does and the internal one
+    beside it, and hands both to the workers, as uvicorn does with its one. This process stays the container's main
+    process and passes the signals on through uvicorn's supervisor.
+    """
+    params = dict(uvicorn_cli.make_context("uvicorn", command[1:]).params)
+    app = params.pop("app")
+    sys.path.insert(0, params.pop("app_dir"))
+    params["headers"] = [header.split(":", 1) for header in params["headers"]]
+    config = Config(app, **params)
+    sockets = [config.bind_socket(), _bind(config.host, internal_port)]
+    if config.workers > 1:
+        Multiprocess(config, sockets=sockets).run()
+        return
+    server = Server(config)
+    try:
+        server.run(sockets=sockets)
+    except KeyboardInterrupt:  # as uvicorn.main.run: Ctrl+C with one worker ends without a traceback
+        pass
+    if not server.started:
+        raise SystemExit(STARTUP_FAILURE)
+
+
+def _bind(host: str, port: int) -> socket.socket:
+    """A listening socket on ``port`` as uvicorn binds its own (Config.bind_socket), inherited by the workers."""
+    sock = socket.socket(family=socket.AF_INET6 if ":" in host else socket.AF_INET)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    try:
+        sock.bind((host, port))
+    except OSError as error:  # as Config.bind_socket: a port in use is a failed start, not a traceback
+        logging.getLogger("uvicorn.error").error("Internal port %d: %s", port, error)
+        raise SystemExit(STARTUP_FAILURE) from error
+    sock.set_inheritable(True)
+    logging.getLogger("uvicorn.error").info("Internal port %d: /health, /ready, /metrics and the status (D110)", port)
+    return sock
+
+
 def main() -> None:
     directory = os.environ.get("PROMETHEUS_MULTIPROC_DIR") or DEFAULT_DIR
     clear_metric_files(Path(directory))
     settings = get_settings()
     command = uvicorn_command(settings.request_time_limit_s, write_log_config(settings.log_level, settings.log_format))
     defaults = {name: value for name, value in UVICORN_DEFAULTS.items() if not os.environ.get(name, "").strip()}
+    environment = {**defaults, "PROMETHEUS_MULTIPROC_DIR": directory}
+    if settings.internal_port:
+        os.environ.update(environment)  # the workers inherit it, uvicorn's parser reads it
+        serve_on_two_ports(command, settings.internal_port)
+        return
     # exec: uvicorn takes over the process and receives the container's signals (clean shutdown)
-    os.execvpe(command[0], command, {**os.environ, **defaults, "PROMETHEUS_MULTIPROC_DIR": directory})  # noqa: S606
+    os.execvpe(command[0], command, {**os.environ, **environment})  # noqa: S606
 
 
 if __name__ == "__main__":

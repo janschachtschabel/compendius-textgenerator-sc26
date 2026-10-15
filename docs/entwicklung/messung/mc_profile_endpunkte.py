@@ -9,6 +9,9 @@ counted the same way; the requests run one after the other. The texts for /qa an
 run's llm-free compendiums and stay in memory. Quality is not measured here: page 09 takes it from the gold and
 rater measurements of each method.
 
+Since D110 /metrics and /health answer on the internal port only: start the container with INTERNAL_PORT=0 or
+pass the address of its internal port.
+
 Usage (project venv; the development container with the LLM switched on, see messung/README):
 python docs/entwicklung/messung/mc_profile_endpunkte.py <out.json> [<base url>] [--nur-llm-free]
 

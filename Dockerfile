@@ -97,17 +97,19 @@ COPY --from=builder /models /models
 COPY config ./config
 USER app
 VOLUME ["/data/zim", "/data/state"]
-EXPOSE 8000
+# 8000 die öffentliche API, 9000 der interne Port für Proben, Metriken und Stand (INTERNAL_PORT, D110)
+EXPOSE 8000 9000
 # Anlaufzeit gemessen am 2026-09-28 (Docker Desktop, zwei Worker, gehaertet wie in docker-compose.yml, die
 # Beispielarchive): 22 bis 31 s bis /ready; vor D57 (torch und die QA-Modelle) waren es 144 s. Die 600 s stammen aus
 # jener Zeit und lassen einem langsamen Host mit grossen Archiven viel Luft. Kosten hat der Wert nicht:
 # Gelingt eine Probe frueher, gilt der Container sofort als healthy; die Frist verschiebt nur das Urteil
 # unhealthy fuer einen Container, der nie hochkommt. Mit 30 s stand er nach jedem Start minutenlang auf unhealthy.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=600s --retries=3 \
-    CMD ["python", "-c", "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).status == 200 else 1)"]
+    CMD ["python", "-c", "import os, sys, urllib.request; p = os.environ.get('INTERNAL_PORT', '').strip() or '9000'; p = '8000' if p == '0' else p; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:' + p + '/health', timeout=3).status == 200 else 1)"]
 # API-Prozess (app/serve.py): legt PROMETHEUS_MULTIPROC_DIR an (Standard /tmp/prometheus), loescht darin nur die
-# Metrik-Dateien eines frueheren Laufs und uebergibt per exec an uvicorn, das so die Signale bekommt (sauberes
-# Herunterfahren). Die Worker-Zahl kommt aus WEB_CONCURRENCY (uvicorn liest die Variable selbst, app/serve.py gibt
+# Metrik-Dateien eines frueheren Laufs. Mit INTERNAL_PORT (Vorgabe 9000, D110) bindet er beide Ports, bleibt der
+# Hauptprozess und fuehrt die Worker ueber uvicorns eigenen Supervisor, der SIGTERM wie die Kommandozeile an die
+# Worker weitergibt (sauberes Herunterfahren); mit INTERNAL_PORT=0 uebergibt er per exec an uvicorn. Die Worker-Zahl kommt aus WEB_CONCURRENCY (uvicorn liest die Variable selbst, app/serve.py gibt
 # ihr die Vorgabe 2, auch bei leerem Eintrag); /metrics summiert die Werte aller Worker. Die Sidecars laden die
 # Metriken nicht.
 # Der Updater nutzt dasselbe Image mit: compendium zim sync --loop

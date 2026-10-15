@@ -9,6 +9,11 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+- **Neu (D110):** Ein interner Port für `/health`, `/ready`, `/metrics` und die Statusendpunkte von Archiven und
+  Lehrplänen, `INTERNAL_PORT` mit der Vorgabe `9000`; am Port 8000 antworten sie mit 404, am internen Port jeder Pfad.
+  Die Worker lauschen an beiden Ports (`app/serve.py`). Healthcheck des Images, `docker-compose.yml` (`INTERNAL_BIND`,
+  Vorgabe `127.0.0.1:9000`), `monitoring/prometheus.yml` und der Funktionstest des Images folgen. `INTERNAL_PORT=0` legt
+  alles auf den Port 8000 wie bisher.
 - **Geändert (D109):** Die API und die Updater-Schleifen loggen nach stdout, wie Kubernetes es erwartet; ein einmaliger
   Befehl der Kommandozeile weiter nach stderr, weil er seinen Bericht auf stdout druckt. Neu `WLO_CACHE_PATH`: der
   Repository-Cache an einem eigenen Pfad, für mehrere Pods auf einem geteilten Volume ein `emptyDir` je Pod; leer wie

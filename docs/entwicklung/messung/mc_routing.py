@@ -29,7 +29,7 @@ from app.main import create_app
 print("APP", client_module.__file__, hasattr(client_module, "ROUTER"), file=sys.stderr, flush=True)
 out_path, label, presets, topics = Path(sys.argv[1]), sys.argv[2], sys.argv[3].split(","), sys.argv[4:]
 result: dict = {"label": label, "runs": []}
-with TestClient(create_app()) as client:
+with TestClient(create_app(), base_url="http://testserver:9000") as client:  # every path answers there (D110)
     health = client.get("/health").json()["components"]["llm"]
     result["health"] = {key: health.get(key) for key in ("enabled", "provider", "model", "route", "available")}
     result["health"]["check"] = (health.get("check") or {}).get("message")
