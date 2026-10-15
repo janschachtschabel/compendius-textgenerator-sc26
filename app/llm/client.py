@@ -620,14 +620,15 @@ class BApiClient:
             self._semaphore.release()
 
     def _send(self, method: str, url: str, json_body: Mapping[str, Any] | None, limit: float) -> httpx.Response:
-        """One HTTP attempt of at most ``limit`` seconds, made holding a call slot (``_slot``). The answer is read up
-        to ``MAX_ANSWER_BYTES`` (``AnswerTooLargeError`` past it, ``UnreadableAnswerError`` in a coding it does not
-        unpack) and comes back read, with the headers a caller looks at."""
+        """One HTTP attempt, made holding a call slot (``_slot``): ``limit`` seconds for each phase up to the answer's
+        start, and as much for reading its body (``read_bounded``). The answer is read up to ``MAX_ANSWER_BYTES``
+        (``AnswerTooLargeError`` past it, ``UnreadableAnswerError`` in a coding it does not unpack) and comes back
+        read, with the headers a caller looks at."""
         headers = {**outgoing_headers(), **self._key_header()}  # the trace of the request goes on (D108)
         request = self._client.build_request(method, url, json=json_body, timeout=limit, headers=headers)
         streamed = self._client.send(request, stream=True)
         try:
-            body = read_bounded(streamed, MAX_ANSWER_BYTES)
+            body = read_bounded(streamed, MAX_ANSWER_BYTES, within=limit)  # the body too (audit 2026-10-15)
         finally:
             streamed.close()
         # decoded already: without the headers of the transfer, which would have it decoded a second time

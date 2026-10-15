@@ -5,13 +5,14 @@ from __future__ import annotations
 import json
 import logging
 import re
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
 from typing import Any
 
 import httpx
 import pytest
 
 from app.llm.client import BApiClient, LlmError, LlmHeldBackError
+from tests.test_http_body import Pieces
 
 BASE = "https://b-api.test"
 KEY = "secret-key-0123456789"
@@ -508,3 +509,22 @@ def test_an_error_page_of_the_b_api_stays_on_one_line_of_the_log(caplog: pytest.
 
     [line] = client_lines(caplog)
     assert "\n" not in line and "<html> <head><title>413 Request Entity Too Large</title></head> </html>" in line
+
+
+def test_an_answer_that_trickles_past_the_call_s_time_is_not_waited_for(monkeypatch: pytest.MonkeyPatch) -> None:
+    """httpx's timeout bounds each read: a gateway that sent its answer in pieces each just inside it kept the call
+    past REQUEST_TIMEOUT_S (audit 2026-10-15; audit 2026-10-03, F15)."""
+    now = [0.0]
+    body = json.dumps(completion("OK")).encode()
+
+    def pieces() -> Iterator[bytes]:
+        for at in range(0, len(body), 8):
+            now[0] += 20.0
+            yield body[at : at + 8]
+
+    monkeypatch.setattr("app.http_body.monotonic", lambda: now[0])
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, stream=Pieces(pieces())))
+    client = BApiClient(BASE, KEY, provider="openai", model="gpt-5.6-luna", timeout_s=30.0, transport=transport)
+
+    with pytest.raises(LlmError, match="ReadTimeout"):
+        client.chat(MESSAGES, max_output_tokens=10)

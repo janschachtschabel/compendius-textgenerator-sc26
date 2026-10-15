@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import zlib
 from collections.abc import Callable
+from time import monotonic
 
 import httpx
 
@@ -35,20 +36,27 @@ class AnswerTooLargeError(UnreadableAnswerError):
         self.limit = limit
 
 
-def read_bounded(response: httpx.Response, limit: int) -> bytes:
+def read_bounded(response: httpx.Response, limit: int, *, within: float | None = None) -> bytes:
     """The decoded body of a streamed ``response``; ``AnswerTooLargeError`` once it runs past ``limit`` bytes,
-    ``UnreadableAnswerError`` for a coding the service does not unpack and for compressed data that is broken."""
+    ``UnreadableAnswerError`` for a coding the service does not unpack and for compressed data that is broken.
+
+    ``within`` seconds bound the reading of the whole body: httpx's timeout bounds each read, and a body in pieces each
+    just inside it held a worker past the request's time. Past them ``httpx.ReadTimeout``, as for a read that timed
+    out; the check comes with each piece, so a last read may still take its own timeout (audit 2026-10-15)."""
     if response.is_stream_consumed:  # read already, as a test transport hands it over: decoded, counted as it is
         if len(response.content) > limit:
             raise AnswerTooLargeError(limit)
         return response.content
     unpack = _unpacker(response.headers.get("content-encoding", ""))
+    ends = monotonic() + within if within is not None else None
     body = bytearray()
     try:
         for raw in response.iter_raw():
             body.extend(unpack(raw, limit + 1 - len(body)))
             if len(body) > limit:
                 raise AnswerTooLargeError(limit)
+            if ends is not None and monotonic() > ends:
+                raise httpx.ReadTimeout("the answer took longer than its time")
     except zlib.error as exc:
         raise UnreadableAnswerError(f"beschädigten komprimierten Daten ({exc})") from exc
     return bytes(body)

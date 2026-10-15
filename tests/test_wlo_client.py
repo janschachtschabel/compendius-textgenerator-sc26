@@ -21,6 +21,7 @@ from app.sources.wlo.client import (
     validate_node_id,
 )
 from app.sources.wlo.errors import TimeUpError
+from tests.test_http_body import Pieces
 
 FIX = Path(__file__).parent / "fixtures" / "wlo"
 BASE = "https://repo.test/edu-sharing/rest"
@@ -549,4 +550,23 @@ def test_an_answer_nested_too_deep_to_read_is_an_error_of_the_repository() -> No
     client = EduSharingClient(BASE, transport=httpx.MockTransport(lambda request: httpx.Response(200, content=deep)))
 
     with pytest.raises(EduSharingError, match="nicht mit JSON"):
+        client.collection(OPTIK)
+
+
+def test_an_answer_that_trickles_past_the_timeout_is_not_waited_for(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The timeout bounded each read, not the answer: a repository that sent its answer in pieces each just inside it
+    held the worker past the request's time (audit 2026-10-15)."""
+    now = [0.0]
+    body = json.dumps(_fixture("collection_optik.json")).encode()
+
+    def pieces() -> Iterator[bytes]:
+        for at in range(0, len(body), max(1, len(body) // 10)):
+            now[0] += 5.0
+            yield body[at : at + max(1, len(body) // 10)]
+
+    monkeypatch.setattr("app.http_body.monotonic", lambda: now[0])
+    transport = httpx.MockTransport(lambda request: httpx.Response(200, stream=Pieces(pieces())))
+    client = EduSharingClient(BASE, transport=transport, timeout_s=12.0)
+
+    with pytest.raises(EduSharingError):
         client.collection(OPTIK)

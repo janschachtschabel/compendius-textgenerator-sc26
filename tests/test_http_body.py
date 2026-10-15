@@ -85,3 +85,26 @@ def test_reading_stops_at_the_bound() -> None:
         read_bounded(answer(endless), 10_000)
 
     assert endless.taken == 11
+
+
+def test_an_answer_that_trickles_past_its_end_is_a_read_timeout(monkeypatch: pytest.MonkeyPatch) -> None:
+    """httpx's timeout bounds each read, not the answer: a body in pieces each just inside it held a worker past the
+    request's time, up to the bound in bytes (audit 2026-10-15; audit 2026-10-03, F15)."""
+    now = [100.0]
+
+    def pieces() -> Iterator[bytes]:
+        for _ in range(10):
+            now[0] += 5.0  # each piece just inside a read timeout of a few seconds
+            yield b"x" * 10
+
+    monkeypatch.setattr("app.http_body.monotonic", lambda: now[0])
+    stream = Pieces(pieces())
+
+    with pytest.raises(httpx.ReadTimeout):
+        read_bounded(answer(stream), 1_000, within=12.0)
+    assert stream.taken == 3  # stopped at the first piece past the end
+
+
+def test_an_answer_within_its_end_is_read_whole(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("app.http_body.monotonic", lambda: 100.0)
+    assert read_bounded(answer(Pieces([b"ab", b"cd"])), 1_000, within=1.0) == b"abcd"
