@@ -1,7 +1,9 @@
+import pytest
+
 from app.domain.models import Chunk, Section, SectionStatus, Source, SourceRole
 from app.markup.facets import bildungsstufe_facet, format_marker, format_visible, parse_marker
 from app.synthesis.facets import FacetCatalog, annotate
-from app.synthesis.lint import lint_sections
+from app.synthesis.lint import _same_stem, lint_sections
 from app.templates.manager import TemplateManager
 from tests.conftest import ROOT
 from tests.markdown_safety import unsafe
@@ -160,3 +162,19 @@ def test_a_facet_the_block_does_not_declare_is_reported() -> None:
         (f.rule, f.message) for f in lint_sections(template, [section], _catalog()) if f.rule == "facet-not-allowed"
     ]
     assert found == [("facet-not-allowed", f"Facette „Zeitbezug“ ist in {slot.title} nicht deklariert")]
+
+
+@pytest.mark.parametrize(
+    ("a", "b", "same"),
+    [
+        ("Brechung", "Brechen", True),  # a shared start of five signs, neither inside the other
+        ("Edelgase", "Edelgas", True),
+        ("Wasserkreislauf", "Wasserkraft", False),  # eight signs shared, but the shorter word has eleven
+        ("Licht", "Linse", False),
+        ("Ab", "Ab", True),
+    ],
+)
+def test_two_words_share_a_stem_by_their_common_start(a: str, b: str, same: bool) -> None:
+    """The start of two words compared sign by sign: ruff 0.17 took os.path.commonprefix for a path and offered
+    commonpath, which compares path parts and would have changed every answer (Dependabot PR #12)."""
+    assert _same_stem(a, b) is same

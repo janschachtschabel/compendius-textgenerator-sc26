@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 import re
 from collections.abc import Sequence
 
@@ -145,5 +144,6 @@ def _same_stem(a: str, b: str) -> bool:
     """One word, inflected ("Edelgase", "Edelgas") or part of a compound ("Kreislauf", "Wasserkreislauf")."""
     if a == b or (min(len(a), len(b)) >= 4 and (a in b or b in a)):
         return True
-    shared = len(os.path.commonprefix([a, b]))
+    # sign by sign, as words: os.path.commonprefix did the same, but reads as a path to linters (ruff 0.17)
+    shared = next((at for at, (x, y) in enumerate(zip(a, b, strict=False)) if x != y), min(len(a), len(b)))
     return shared >= 4 and shared >= min(len(a), len(b)) - 2
