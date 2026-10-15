@@ -265,6 +265,12 @@ def build_collections(settings: Settings) -> CollectionBuilder | None:
         password=settings.edu_sharing_password,
         timeout_s=settings.edu_sharing_timeout_s,
     )
+    if settings.edu_sharing_password and not settings.edu_sharing_user:
+        # The client takes credentials only with a user name: the password alone would leave every read anonymous
+        log.warning(
+            "EDU_SHARING_PASSWORD is set but EDU_SHARING_USER is not: the repository is read anonymously, only what "
+            "is public (D112)"
+        )
     if settings.edu_sharing_user and not settings.api_key_list:
         # Every node and collection a caller names is read with these credentials; the cache hands the result to all
         log.warning(
