@@ -567,8 +567,11 @@ def test_every_metric_the_alert_rules_use_is_exported(sample_zims: dict[str, Pat
     with _app(sample_zims, tmp_path) as client:
         gateway = make_gateway(FakeBApi(answer_from_evidence))
         gateway.check_model()
-        client.app.state.llm = gateway  # type: ignore[attr-defined]
-        assert client.post("/api/v2/compendium", json={"topic": "Optik", "parts": ["world"]}).status_code == 200
+        # The service's own gateway and an LLM switch: without them the request runs llm-free (D68), and the labelled
+        # kompendium_llm_calls_total appears in the scrape only after a call, so the test passed only after others
+        client.app.state.service.llm = gateway  # type: ignore[attr-defined]
+        payload = {"topic": "Optik", "article_choice": "llm", "parts": ["world"]}
+        assert client.post("/api/v2/compendium", json=payload).status_code == 200
         exported = {name for name, _labels in scrape(client)}
     assert len(used) >= 10
     assert used <= exported, sorted(used - exported)
