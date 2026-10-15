@@ -9,6 +9,19 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
+Noch nichts.
+
+## 2.22.0 – 2026-10-15
+
+Betrieb in Kubernetes und auf einem Host mit mehreren Diensten: Logs nach stdout und der Repository-Cache je Pod (D109),
+Proben, Metriken und Stand an einem internen Port (D110), beide Ports einstellbar (D111); dazu die Antworten für das
+IT-Team (docs/uebergabe/anforderungen.md) und die Architekturdiagramme auf dem Stand des Codes.
+
+- **[Betrieb](docs/betrieb.md#updates):** Drei neue Einstellungen mit Vorgabe (`WLO_CACHE_PATH`, `INTERNAL_PORT` 9000,
+  `PUBLIC_PORT` 8000) und in `docker-compose.yml` die Bindung `INTERNAL_BIND`. `/health`, `/ready`, `/metrics` und die
+  Statusendpunkte antworten nur noch am Port 9000: Wer sie von außen liest, liest sie auf dem Host mit `curl -sS
+  http://127.0.0.1:9000/health` oder setzt `INTERNAL_PORT=0`. Vor dem Update prüfen, dass der Port 9000 auf dem Host
+  frei ist.
 - **Neu (D111):** `PUBLIC_PORT` (Vorgabe `8000`) wählt den Port der API, wie `INTERNAL_PORT` den internen; beide dürfen
   nicht gleich sein. Mehrere Dienste auf einem Host: mit Docker über die Host-Ports `API_BIND` und `INTERNAL_BIND`, ohne
   Container über `PUBLIC_PORT` und `INTERNAL_PORT`. Healthcheck des Images und `docker-compose.yml` folgen `PUBLIC_PORT`.
