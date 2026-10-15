@@ -1119,7 +1119,8 @@ Deployment mehr finden), läuft der Rest dieser Anfrage ohne LLM nach den Regeln
 behalten es. Das Log nennt es einmal je Anfrage als WARNING, `b-api refused the key of this request: …`
 mit der Antwort der b-api, und die Ergebniszeile der Anfrage nennt den Grund. Lehnt die b-api den Schlüssel des Dienstes
 ab (`B_API_KEY`), setzt sie wie bisher alle Aufrufe mit ihm zehn Minuten aus; Anfragen mit eigenem Schlüssel behalten
-das LLM, und ihre Antworten heben die zehn Minuten nicht auf. Den Grund nennt `/health` unter `components.llm.reason`.
+das LLM, und ihre Antworten heben die zehn Minuten nicht auf. Ebenso bei einer Routensperre, die der Schlüssel des
+Dienstes trifft: Sie hält nur die Aufrufe mit ihm zurück. Den Grund nennt `/health` unter `components.llm.reason`.
 
 | Variable | Vorlage | Bedeutung |
 |---|---|---|

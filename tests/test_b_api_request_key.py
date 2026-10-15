@@ -455,6 +455,28 @@ def test_a_route_stop_met_with_the_key_of_a_request_stays_with_that_request(answ
     assert not client.suspended
 
 
+def test_a_route_stop_met_with_the_service_s_own_key_leaves_the_callers_their_llm() -> None:
+    """The mirror of a caller's route stop: a route may belong to a key (D97), and the service's own route answering
+    "no price" says nothing of the callers' routes; they keep the LLM, key-less calls wait (review of the audit
+    2026-10-15)."""
+    answer = httpx.Response(503, json={"error": "Model pricing unavailable for 'gpt-6-luna'"})
+    client = BApiClient(
+        BASE,
+        KEY,
+        provider="router",
+        model="gpt-6-luna",
+        route="kompendium",
+        transport=httpx.MockTransport(lambda r: answer),
+    )
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+    assert client.suspended
+
+    use_request_key(RequestKey("Authorization", CALLER))
+
+    assert not client.suspended
+
+
 def test_an_outage_holds_back_the_callers_keys_as_well() -> None:
     client, _ = make_client(FakeBApi(statuses=[503, 503, 503]))
     with pytest.raises(LlmError):

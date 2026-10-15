@@ -494,7 +494,11 @@ class BApiClient:
                     if stop is not None:
                         seconds, why = stop
                         span = f"{round(seconds / 60)} Minuten" if seconds >= 120 else f"{seconds:.0f} s"
-                        self._trip(seconds, f"b-api-Routing {span} ausgesetzt: {why}", cause=f"HTTP {status}")
+                        # met with the service's own key (a request key was refused above): a route may belong to a
+                        # key (D97), the callers' own keys keep the LLM (review of the audit 2026-10-15)
+                        self._trip(
+                            seconds, f"b-api-Routing {span} ausgesetzt: {why}", cause=f"HTTP {status}", own_key=True
+                        )
                         raise LlmError(f"b-api antwortete HTTP {status}: {why}", status, reached=reached)
                     if status in REFUSED_STATUSES:
                         self._refused(status)
