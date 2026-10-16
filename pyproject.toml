@@ -9,7 +9,7 @@ license-files = ["LICENSE"]
 requires-python = ">=3.13,<3.14"
 keywords = ["compendium", "kiwix", "zim", "wikipedia", "fastapi", "wirlernenonline"]
 dependencies = [
-    "fastapi>=0.116",
+    "fastapi>=0.138",  # iter_route_contexts (app/api/request_log.py), audit 2026-10-16
     # The service imports both itself (app/main.py, app/api/); fastapi brings them now, which it need not keep doing
     "starlette>=0.46",
     "anyio>=4.0",
