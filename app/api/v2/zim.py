@@ -14,7 +14,7 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi import Path as PathParameter  # pathlib.Path is taken
 
-from app.api.admin import require_admin
+from app.api.admin import admin_write, require_admin
 from app.api.gates import GatedRoute
 from app.api.limits import rate_limited
 from app.api.responses import ADMIN_REFUSALS, refusals
@@ -119,7 +119,7 @@ def zim_progress(request: Request) -> dict[str, Any]:
     return read_status(request.app.state.settings.zim_dir) or {"state": "unknown", "last_run": None, "download": None}
 
 
-@admin.post("/sync", status_code=202, summary="Archive: Sync anstoßen")
+@admin.post("/sync", status_code=202, summary="Archive: Sync anstoßen", responses=refusals(503))
 def zim_sync_now(request: Request) -> dict[str, Any]:
     """Ask the updater sidecar for a sync run.
 
@@ -128,8 +128,9 @@ def zim_sync_now(request: Request) -> dict[str, Any]:
     it. Admin only.
     """
     zim_dir = Path(request.app.state.settings.zim_dir)
-    zim_dir.mkdir(parents=True, exist_ok=True)
-    (zim_dir / TRIGGER_FILE).write_text("requested via API\n", encoding="utf-8")
+    with admin_write("Sync anstoßen"):
+        zim_dir.mkdir(parents=True, exist_ok=True)
+        (zim_dir / TRIGGER_FILE).write_text("requested via API\n", encoding="utf-8")
     log.info("ZIM sync requested via API; the updater runs it at its next poll")
     return {
         "requested": True,
@@ -137,7 +138,7 @@ def zim_sync_now(request: Request) -> dict[str, Any]:
     }
 
 
-@admin.delete("/{file_name}", summary="Archiv löschen", responses=refusals(400, 409))
+@admin.delete("/{file_name}", summary="Archiv löschen", responses=refusals(400, 409, 503))
 def zim_delete(
     file_name: Annotated[
         str,
@@ -163,24 +164,28 @@ def zim_delete(
     in_use |= {a.file_name for a in request.app.state.registry.archives}
     if file_name in in_use:
         raise HTTPException(status_code=409, detail="Datei ist aktiv; erst per Sync ablösen, dann löschen.")
-    if _sync_running(Path(settings.zim_dir)):  # it may be writing this file's .part or about to activate it
-        raise HTTPException(status_code=409, detail="Ein ZIM-Sync läuft; nach dem Lauf löschen.")
-    path = Path(settings.zim_dir) / file_name
-    removed: list[str] = []
-    for candidate in (path, path.with_name(path.name + PART_SUFFIX)):
-        if candidate.exists():
-            candidate.unlink()
-            removed.append(candidate.name)
+    with admin_write("Archiv löschen"):
+        sync_age = _sync_running(Path(settings.zim_dir))
+        if sync_age is not None:  # it may be writing this file's .part or about to activate it
+            detail = f"Ein ZIM-Sync läuft (letztes Lebenszeichen vor {sync_age:.0f} s); nach dem Lauf löschen."
+            raise HTTPException(status_code=409, detail=detail)
+        path = Path(settings.zim_dir) / file_name
+        removed: list[str] = []
+        for candidate in (path, path.with_name(path.name + PART_SUFFIX)):
+            if candidate.exists():
+                candidate.unlink()
+                removed.append(candidate.name)
     if not removed:
         raise HTTPException(status_code=404, detail="Datei nicht vorhanden.")
     log.info("deleted %s", removed)
     return {"removed": removed}
 
 
-def _sync_running(zim_dir: Path) -> bool:
-    """A sync holds its lock and gave a sign of life within the staleness of the lock (audit 2026-10-15)."""
+def _sync_running(zim_dir: Path) -> float | None:
+    """How long ago a sync that holds its lock gave a sign of life, within the staleness of the lock (audit
+    2026-10-15); ``None`` when none runs. The seconds tell a running sync from one that hangs (audit 2026-10-16)."""
     try:
         age = time.time() - (zim_dir / LOCK_FILE).stat().st_mtime
     except FileNotFoundError:
-        return False
-    return age <= LOCK_STALE_S
+        return None
+    return max(age, 0.0) if age <= LOCK_STALE_S else None

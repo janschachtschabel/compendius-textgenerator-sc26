@@ -14,7 +14,7 @@ from typing import Annotated, Any, Literal
 from fastapi import APIRouter, Depends, Query, Request
 from pydantic import AfterValidator, BeforeValidator
 
-from app.api.admin import require_admin
+from app.api.admin import admin_write, require_admin
 from app.api.deps import get_service, no_unknown_query
 from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
@@ -352,7 +352,7 @@ def lehrplan_search(
     }
 
 
-@admin.post("/harvest", status_code=202, summary="Lehrpläne neu ernten")
+@admin.post("/harvest", status_code=202, summary="Lehrpläne neu ernten", responses=refusals(503))
 def lehrplan_harvest_now(request: Request) -> dict[str, Any]:
     """Ask the harvest sidecar to check MEM now.
 
@@ -361,8 +361,9 @@ def lehrplan_harvest_now(request: Request) -> dict[str, Any]:
     Admin only.
     """
     state_dir = Path(request.app.state.settings.state_dir)
-    state_dir.mkdir(parents=True, exist_ok=True)
-    (state_dir / TRIGGER_FILE).write_text("requested via API\n", encoding="utf-8")
+    with admin_write("Harvest anstoßen"):
+        state_dir.mkdir(parents=True, exist_ok=True)
+        (state_dir / TRIGGER_FILE).write_text("requested via API\n", encoding="utf-8")
     log.info("curriculum harvest requested via API; the updater checks MEM at its next poll")
     return {
         "requested": True,

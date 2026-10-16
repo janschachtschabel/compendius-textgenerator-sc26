@@ -12,7 +12,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Body, Depends, Header, HTTPException, Path, Request, Response
 
-from app.api.admin import require_admin
+from app.api.admin import admin_write, require_admin
 from app.api.deps import get_service, no_unknown_query
 from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
@@ -189,7 +189,9 @@ def _refused_write(template_id: str, what: str, status: int, exc: Exception) -> 
     return HTTPException(status_code=status, detail=str(exc))
 
 
-@admin.delete("/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409, 412))
+@admin.delete(
+    "/templates/{template_id}", status_code=204, summary="Template löschen", responses=refusals(409, 412, 503)
+)
 def delete_template(
     template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)],
     request: Request,
@@ -202,7 +204,8 @@ def delete_template(
     only the version it names goes (412 otherwise), as RFC 9110 asks of every method (review of 2026-10-08).
     """
     try:
-        removed = request.app.state.templates.delete(template_id, _expected(if_match))
+        with admin_write("Template löschen"):
+            removed = request.app.state.templates.delete(template_id, _expected(if_match))
     except VersionConflictError as exc:
         raise _refused_write(template_id, "deleted", 412, exc) from exc
     except ValueError as exc:
@@ -261,7 +264,7 @@ def get_template(
 @admin.put(
     "/templates/{template_id}",
     summary="Template anlegen oder ersetzen",
-    responses={**refusals(409, 412, 413, 422), 200: {"headers": {"ETag": ETAG_HEADER}}},
+    responses={**refusals(409, 412, 413, 422, 503), 200: {"headers": {"ETag": ETAG_HEADER}}},
 )
 def put_template(
     template_id: Annotated[str, Path(pattern=TEMPLATE_ID_PATTERN, description=TEMPLATE_ID_HELP)],
@@ -286,7 +289,8 @@ def put_template(
             status_code=422, detail=f"id im Pfad ({template_id}) und im Body ({payload.id}) stimmen nicht überein"
         )
     try:
-        stored = request.app.state.templates.save(payload, _expected(if_match))
+        with admin_write("Template speichern"):
+            stored = request.app.state.templates.save(payload, _expected(if_match))
     except VersionConflictError as exc:
         raise _refused_write(template_id, "saved", 412, exc) from exc
     except ValueError as exc:  # a built-in id; the message names it and says what to do instead

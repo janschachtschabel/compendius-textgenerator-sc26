@@ -3,10 +3,16 @@
 from __future__ import annotations
 
 import hmac
+import logging
+from collections.abc import Iterator
+from contextlib import contextmanager
 
 from fastapi import Header, HTTPException, Request
 
 from app.api.gates import EARLY, first_time
+from app.locks import LockHeldError
+
+log = logging.getLogger(__name__)
 
 
 def require_admin(
@@ -33,3 +39,21 @@ async def _admin_before_body(request: Request) -> None:
 
 
 EARLY[require_admin] = _admin_before_body
+
+
+@contextmanager
+def admin_write(what: str) -> Iterator[None]:
+    """A write of an admin route to a volume the service cannot write - mounted read-only (D113), full, or held by
+    another writer - is a 503 that says why, no 500 (audit 2026-10-16). The answer names no server path; the log
+    line does."""
+    try:
+        yield
+    except LockHeldError as exc:
+        log.warning("%s refused: %s", what, exc)
+        detail = f"{what} nicht möglich: ein anderer Schreibvorgang hält die Sperre (letztes Lebenszeichen vor "
+        raise HTTPException(status_code=503, detail=f"{detail}{exc.age_s:.0f} s); später erneut versuchen.") from exc
+    except OSError as exc:
+        log.warning("%s failed: %s", what, exc)
+        reason = exc.strerror or type(exc).__name__
+        detail = f"{what} nicht möglich: das Verzeichnis ist auf diesem Server nicht beschreibbar ({reason})."
+        raise HTTPException(status_code=503, detail=detail) from exc
