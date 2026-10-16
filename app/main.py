@@ -9,6 +9,7 @@ import os
 import sys
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
@@ -144,6 +145,20 @@ def warn_about_removed_settings() -> None:
         )
 
 
+def warn_about_templates_left_behind(settings: Settings) -> None:
+    """With TEMPLATES_DIR the templates in STATE_DIR/templates are read no more: one left behind when they moved to a
+    ConfigMap was gone without a word (audit 2026-10-16)."""
+    if settings.templates_dir is None:
+        return
+    left = sorted(path.name for path in (Path(settings.state_dir) / "templates").glob("*.json"))
+    if left:
+        log.warning(
+            "TEMPLATES_DIR=%s is set: the templates in STATE_DIR/templates are not read (%s); move them there",
+            settings.templates_dir,
+            ", ".join(left[:10]) + (f" and {len(left) - 10} more" if len(left) > 10 else ""),
+        )
+
+
 def describe_matching(settings: Settings) -> dict[str, Any]:
     """What the matcher really consists of, decided once at start; /health reports it.
 
@@ -264,6 +279,7 @@ def create_app(settings: Settings | None = None, *, document_internal: bool = Fa
     warn_about_removed_settings()
     registry = build_registry(settings)
     templates = TemplateManager(custom_dir=settings.custom_templates_dir)
+    warn_about_templates_left_behind(settings)
     service = build_service(settings, registry, templates)
     if not registry.ready:
         log.warning(

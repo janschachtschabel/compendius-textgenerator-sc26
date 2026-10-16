@@ -5,6 +5,7 @@ reading only."""
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 
 import pytest
@@ -85,3 +86,18 @@ def test_the_probes_never_copy_a_new_version(
     probes = {path: seen for path, seen in copying_in.items() if path != "start"}
     assert set(probes) == {"/health", "/ready", "/api/v2/lehrplan/status"}
     assert not any(any(seen) for seen in probes.values())
+
+
+def test_templates_left_in_the_state_volume_are_named_at_start(
+    sample_zims: dict[str, Path], tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Who moves the templates to a ConfigMap and forgets one finds it gone without a word (audit 2026-10-16)."""
+    state, configmap = tmp_path / "state", tmp_path / "configmap"
+    (state / "templates").mkdir(parents=True)
+    (state / "templates" / "alt.json").write_text("{}", encoding="utf-8")
+    configmap.mkdir()
+
+    with caplog.at_level(logging.WARNING, logger="app.main"):
+        create_app(make_settings(sample_zims.values(), state, templates_dir=configmap))
+
+    assert "TEMPLATES_DIR" in caplog.text and "alt.json" in caplog.text
