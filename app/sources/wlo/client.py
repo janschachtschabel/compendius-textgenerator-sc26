@@ -14,6 +14,7 @@ import http.cookiejar
 import json
 import logging
 from collections.abc import Callable, Collection
+from time import monotonic
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -302,6 +303,7 @@ class EduSharingClient:
                         raise TimeUpError() from last_error
                     raise TimeUpError()
                 timeout = min(timeout, left)
+            started = monotonic()
             try:
                 # the trace of the request goes on with every read of the repository (D108)
                 with self._client.stream(
@@ -310,7 +312,9 @@ class EduSharingClient:
                     status = response.status_code
                     if status in missing:
                         return None
-                    body = read_bounded(response, MAX_ANSWER_BYTES, within=timeout)  # the body too (audit 2026-10-15)
+                    # the body has what the attempt left: it took its whole time again (audits 2026-10-15/16)
+                    left = max(0.0, timeout - (monotonic() - started))
+                    body = read_bounded(response, MAX_ANSWER_BYTES, within=left)
             except httpx.TransportError as exc:
                 last_error = exc
                 continue

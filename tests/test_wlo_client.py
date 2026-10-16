@@ -570,3 +570,27 @@ def test_an_answer_that_trickles_past_the_timeout_is_not_waited_for(monkeypatch:
 
     with pytest.raises(EduSharingError):
         client.collection(OPTIK)
+
+
+def test_the_body_has_what_the_attempt_left_not_its_whole_time_again(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The time began anew with the body: a repository slow to its first byte and then slow with the body held the
+    worker for up to twice the request's time (audit 2026-10-16)."""
+    now = [0.0]
+    body = json.dumps(_fixture("collection_optik.json")).encode()
+    step = max(1, len(body) // 10)
+
+    def pieces() -> Iterator[bytes]:
+        for at in range(0, len(body), step):
+            now[0] += 1.0
+            yield body[at : at + step]
+
+    def slow_to_answer(request: httpx.Request) -> httpx.Response:
+        now[0] += 8.0  # the headers come after 8 of the 12 seconds; the body takes 10 more
+        return httpx.Response(200, stream=Pieces(pieces()))
+
+    monkeypatch.setattr("app.http_body.monotonic", lambda: now[0])
+    monkeypatch.setattr("app.sources.wlo.client.monotonic", lambda: now[0], raising=False)
+    client = EduSharingClient(BASE, transport=httpx.MockTransport(slow_to_answer), timeout_s=12.0)
+
+    with pytest.raises(EduSharingError):
+        client.collection(OPTIK)

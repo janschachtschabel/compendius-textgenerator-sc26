@@ -528,3 +528,34 @@ def test_an_answer_that_trickles_past_the_call_s_time_is_not_waited_for(monkeypa
 
     with pytest.raises(LlmError, match="ReadTimeout"):
         client.chat(MESSAGES, max_output_tokens=10)
+
+
+def test_the_body_has_what_the_attempt_left_not_its_whole_time_again(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The time began anew with the body: a gateway slow to its first byte and then slow with the body held the call
+    for up to twice its time (audit 2026-10-16)."""
+    now = [0.0]
+    body = json.dumps(completion("OK")).encode()
+    step = max(1, len(body) // 10)
+
+    def pieces() -> Iterator[bytes]:
+        for at in range(0, len(body), step):
+            now[0] += 2.0
+            yield body[at : at + step]
+
+    def slow_to_answer(request: httpx.Request) -> httpx.Response:
+        now[0] += 20.0  # the headers come after 20 of the 30 seconds; the body takes about 20 more
+        return httpx.Response(200, stream=Pieces(pieces()))
+
+    monkeypatch.setattr("app.http_body.monotonic", lambda: now[0])
+    client = BApiClient(
+        BASE,
+        KEY,
+        provider="openai",
+        model="gpt-5.6-luna",
+        timeout_s=30.0,
+        transport=httpx.MockTransport(slow_to_answer),
+        clock=lambda: now[0],
+    )
+
+    with pytest.raises(LlmError, match="ReadTimeout"):
+        client.chat(MESSAGES, max_output_tokens=10)
