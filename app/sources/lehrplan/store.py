@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Any
 
 from app.sources.lehrplan.tree import HarvestedNode
+from app.sources.local_copy import LocalCopy
 from app.sources.local_index import to_disk
 
 log = logging.getLogger(__name__)
@@ -131,8 +132,8 @@ class LehrplanCacheError(RuntimeError):
 class LehrplanStore:
     """Read side of the cache; every method copes with a missing file."""
 
-    def __init__(self, path: Path) -> None:
-        self.path = Path(path)
+    def __init__(self, path: Path, *, copy_dir: Path | None = None) -> None:
+        self._copy = LocalCopy(Path(path), copy_dir)  # with copy_dir a local copy of the volume's file (D113)
         self._warned: tuple[int, int] | None = None  # size and change time of the file a warning named last
 
     def _warn_once(self, message: str, *args: object) -> None:
@@ -147,6 +148,11 @@ class LehrplanStore:
             return
         self._warned = identity
         log.warning(message, *args)
+
+    @property
+    def path(self) -> Path:
+        """The file read: the volume's, or the local copy of its current version, looked at once a minute."""
+        return self._copy.path()
 
     @property
     def exists(self) -> bool:

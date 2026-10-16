@@ -253,3 +253,15 @@ def test_a_cache_of_another_schema_version_says_which(tmp_path: Path, caplog: py
 
     [warning] = store_warnings(caplog)
     assert "schema version 0" in warning and "reads 1" in warning
+
+
+def test_with_a_copy_directory_the_cache_is_read_from_local_disk(tmp_path: Path) -> None:
+    """D113: the store reads a copy of the volume's file on the pod's own disk."""
+    volume, local = tmp_path / "volume", tmp_path / "local"
+    volume.mkdir()
+    _write(volume / "lehrplan.db")
+
+    store = LehrplanStore(volume / "lehrplan.db", copy_dir=local)
+
+    assert store.available and {hit.iri for hit in store.search(["Optik"])} == {"n:1", "n:2", "n:5"}
+    assert store.path.parent == local

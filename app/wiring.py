@@ -314,7 +314,7 @@ def build_curricula(settings: Settings) -> CurriculaBuilder:
         log.warning("subject mapping not found at %s; part 2 searches all subjects", subjects_path)
         subjects = SubjectCatalog.empty()
     return CurriculaBuilder(
-        store=LehrplanStore(settings.lehrplan_db_path),
+        store=LehrplanStore(settings.lehrplan_db_path, copy_dir=settings.index_copy_dir),
         subjects=subjects,
         options=RenderOptions(max_groups_per_land=settings.lehrplan_max_groups_per_land or None),
         generic_hits=settings.lehrplan_generic_word_hits,

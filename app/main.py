@@ -9,7 +9,6 @@ import os
 import sys
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
@@ -264,7 +263,7 @@ def create_app(settings: Settings | None = None, *, document_internal: bool = Fa
     configure_logging(settings.log_level, settings.log_format, stream=sys.stdout)  # the server logs to stdout (D109)
     warn_about_removed_settings()
     registry = build_registry(settings)
-    templates = TemplateManager(custom_dir=Path(settings.state_dir) / "templates")
+    templates = TemplateManager(custom_dir=settings.custom_templates_dir)
     service = build_service(settings, registry, templates)
     if not registry.ready:
         log.warning(
@@ -316,8 +315,8 @@ def create_app(settings: Settings | None = None, *, document_internal: bool = Fa
     app.state.required_ids = resolve_required_ids(settings, manifest)
     app.state.catalog = KiwixCatalog(settings.zim_catalog_url or OPDS_DEFAULT_URL)
     app.state.matching = describe_matching(settings)
-    app.state.wikidata = WikidataIndex(settings.wikidata_db_path)
-    app.state.gnd = GndIndex(settings.gnd_db_path)
+    app.state.wikidata = WikidataIndex(settings.wikidata_db_path, copy_dir=settings.index_copy_dir)
+    app.state.gnd = GndIndex(settings.gnd_db_path, copy_dir=settings.index_copy_dir)
     app.state.entities = describe_entities(settings)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()

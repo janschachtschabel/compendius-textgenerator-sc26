@@ -17,6 +17,8 @@ from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import Any
 
+from app.sources.local_copy import LocalCopy
+
 log = logging.getLogger(__name__)
 
 PART_SUFFIX = ".part"
@@ -68,9 +70,17 @@ class LocalIndex:
     schema = ""
 
     def __init__(
-        self, path: Path, *, recheck_s: float = RECHECK_S, clock: Callable[[], float] = time.monotonic
+        self,
+        path: Path,
+        *,
+        copy_dir: Path | None = None,
+        recheck_s: float = RECHECK_S,
+        clock: Callable[[], float] = time.monotonic,
     ) -> None:
-        self.path = Path(path)
+        # With copy_dir the pod reads a local copy of the volume's file (D113); the look once a minute below decides
+        # when the copy is checked, so the copy itself checks at every call of path()
+        self._copy = LocalCopy(Path(path), copy_dir, recheck_s=0, clock=clock)
+        self.path = self._copy.source
         self._lock = threading.Lock()  # one connection serves all request threads of a worker
         self._connection: sqlite3.Connection | None = None
         self._meta: dict[str, Any] = {}
@@ -83,6 +93,7 @@ class LocalIndex:
         return dict(rows)
 
     def _file_identity(self) -> tuple[int, int, int] | None:
+        self.path = self._copy.path()  # the file read from now on: the volume's, or the copy of its current version
         try:
             stat = self.path.stat()
         except OSError:

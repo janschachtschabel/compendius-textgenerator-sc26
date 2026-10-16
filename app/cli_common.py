@@ -29,5 +29,5 @@ def cli_service(zim_args: list[str] | None) -> CompendiumService:
     if not registry.ready:
         print("Keine ZIM-Archive gefunden. --zim <pfad> angeben oder ZIM_DIR/ZIM_PATHS setzen.", file=sys.stderr)
         raise SystemExit(2)
-    templates = TemplateManager(custom_dir=Path(settings.state_dir) / "templates")
+    templates = TemplateManager(custom_dir=settings.custom_templates_dir)
     return build_service(settings, registry, templates)

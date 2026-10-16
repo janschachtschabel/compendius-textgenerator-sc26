@@ -36,7 +36,7 @@ def cmd_export(args: argparse.Namespace) -> int:
 
 def cmd_import(args: argparse.Namespace) -> int:
     settings = get_settings()
-    template = TemplateManager(custom_dir=Path(settings.state_dir) / "templates").get(args.template or "sc26")
+    template = TemplateManager(custom_dir=settings.custom_templates_dir).get(args.template or "sc26")
     slot_keys = [slot.slot for slot in template.content_slots()]
     gold = import_csv(
         Path(args.csv),

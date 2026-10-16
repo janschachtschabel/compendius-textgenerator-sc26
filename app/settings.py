@@ -211,6 +211,16 @@ class Settings(BaseSettings):
     edu_sharing_password: str = Field("", description="Optional Basic-Auth password")
     edu_sharing_timeout_s: float = Field(30.0, ge=1.0, description="Timeout per repository request")
     collection_cache_ttl_s: int = Field(3600, ge=0, description="Cache of collection metadata and listings")
+    index_copy_dir: Path | None = Field(
+        None,
+        description="Directory on the pod's local disk the API copies lehrplan.db, wikidata.db and gnd.db into and "
+        "reads them from, once per version: pods on several nodes then read no SQLite over the network and need the "
+        "volumes for reading only (D113). Empty: the files are read in place, as with Compose on one host",
+    )
+    templates_dir: Path | None = Field(
+        None,
+        description="Directory of the custom templates, such as a ConfigMap; empty: templates in STATE_DIR (D113)",
+    )
     wlo_cache_path: Path | None = Field(
         None,
         description="File of the repository cache; empty: wlo_cache.db in STATE_DIR. Several pods on one shared volume "
@@ -494,6 +504,11 @@ class Settings(BaseSettings):
     @property
     def subjects_path(self) -> Path:
         return Path(self.config_dir) / "subjects.yaml"
+
+    @property
+    def custom_templates_dir(self) -> Path:
+        """TEMPLATES_DIR, else templates in STATE_DIR."""
+        return self.templates_dir or Path(self.state_dir) / "templates"
 
     @property
     def collection_cache_path(self) -> Path:

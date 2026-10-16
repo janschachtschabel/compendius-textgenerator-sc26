@@ -1003,6 +1003,8 @@ Diese fünf liest `docker-compose.yml` selbst, nicht der Dienst — sie stehen d
 | Variable | Vorlage | Bedeutung |
 |---|---|---|
 | `STATE_DIR` | `/data/state` | Zustandsvolume: Lehrplan-Cache, Sammlungs-Cache, eigene Templates, optional der Wikidata-Index `wikidata.db` |
+| `INDEX_COPY_DIR` | leer | Verzeichnis auf der lokalen Platte des Pods (etwa ein `emptyDir`), in das die API `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung kopiert und aus dem sie liest (D113). Pods auf mehreren Nodes lesen dann kein SQLite über das Netz, und ein Tausch durch einen Sidecar trifft keine Anfrage; die API braucht die Volumes nur lesend. Eine neue Fassung liest sie nach höchstens einer Minute; schlägt die Kopie fehl, liest sie wie bisher vom Volume. Platz: rund 0,5 GB, beim Tausch kurz das Doppelte. Leer liest wie bisher direkt vom Volume, richtig für Compose auf einem Host |
+| `TEMPLATES_DIR` | leer | Verzeichnis der eigenen Templates, etwa eine ConfigMap; leer: `templates` in `STATE_DIR` (D113). Liegt es nur lesend vor, scheitert das Speichern über die Admin-Pfade; Templates kommen dann über die ConfigMap |
 | `CONFIG_DIR` | `config` | Verzeichnis mit `facets.yaml`, `heading_lexicon.yaml`, `subjects.yaml`, `zim_subscriptions.yaml` und den Fachvokabularen (`vocabs/`). Die Templates liegen nicht hier: die eingebauten in `app/templates/builtin`, eigene in `STATE_DIR/templates` |
 | `EVAL_GOLD_DIR` | `eval/gold` | Goldstandard für `compendium eval`; im Image nicht enthalten |
 

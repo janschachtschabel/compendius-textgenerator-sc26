@@ -49,7 +49,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | Authentifizierungskonzept – mit oder ohne B-API | Beides, umschaltbar (`B_API_KEY_SOURCE`); empfohlen über die b-api ([Abschnitt 2](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/anforderungen.md#2-b-api-integration-und-authentifizierung)) | erfüllt |
 | Mit B-API: Modell fürs Routing, virtueller Key, Berechtigungen | `openai` mit `gpt-6-luna` (Routing optional, globale Route durch b-api-Admin); virtueller Key ab `balanced`, durchgereicht; Rechte: `chat/completions`, für `B_API_KEY` dazu `models` | erfüllt |
 | Ohne B-API: LLM-Keys und Authentifizierung | `B_API_KEY` als Secret; Aufrufer mit `X-API-Key` aus `API_KEYS`; Admin mit `ADMIN_TOKEN` | erfüllt |
-| Env-Variablen inklusive Defaults | 83 Variablen mit Vorgabe ([konfiguration.md](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/konfiguration.md), [.env.example](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/.env.example)) | erfüllt |
+| Env-Variablen inklusive Defaults | 85 Variablen mit Vorgabe ([konfiguration.md](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/konfiguration.md), [.env.example](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/.env.example)) | erfüllt |
 | Benötigte Secrets (ohne Werte) | `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN`, `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD` | erfüllt |
 
 ## Monitoring und Betrieb

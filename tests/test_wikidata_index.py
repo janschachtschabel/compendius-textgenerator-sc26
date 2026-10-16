@@ -358,3 +358,30 @@ def test_rows_of_other_languages_are_passed_over_without_losing_the_end_of_a_sta
     with closing(WikidataIndex(tmp_path / "wikidata.db")) as index:
         assert index.english("Römisches Reich") == "Roman Empire" and index.meta()["english"] == 3
         assert index.meta()["dump"] == "2026-09-08", "the langlinks dump is read last and gives the date"
+
+
+def test_with_a_copy_directory_the_index_is_read_from_local_disk(tmp_path: Path) -> None:
+    """D113: a pod reads its own copy, not the file on the shared volume."""
+    volume, local = tmp_path / "volume", tmp_path / "local"
+    build_index(*write_dumps(tmp_path / "dumps"), volume / "wikidata.db")
+
+    with closing(WikidataIndex(volume / "wikidata.db", copy_dir=local)) as index:
+        assert index.qid("Ernst Abbe") == "Q999001"
+        assert index.path.parent == local and index.path.is_file()
+
+
+def test_with_a_copy_directory_a_rebuilt_index_is_taken_while_the_old_one_is_read(tmp_path: Path) -> None:
+    """The reader holds its copy, not the volume's file: the sidecar replaces it even on Windows, where a file SQLite
+    holds open cannot be replaced, and the next look reads the new version (D113)."""
+    volume, local = tmp_path / "volume", tmp_path / "local"
+    build_index(*write_dumps(tmp_path / "first"), volume / "wikidata.db")
+    now = [0.0]
+    with closing(WikidataIndex(volume / "wikidata.db", copy_dir=local, clock=lambda: now[0])) as index:
+        assert index.qid("Ernst Abbe") == "Q999001"
+        later = [(1, "wikibase_item", "Q999101"), *PROPS[1:]]
+        build_index(
+            *write_dumps(tmp_path / "second", props=later, completed="2026-10-04 10:00:00"), volume / "wikidata.db"
+        )
+        assert index.qid("Ernst Abbe") == "Q999001"  # not looked again yet
+        now[0] = RECHECK_S + 1
+        assert index.qid("Ernst Abbe") == "Q999101"

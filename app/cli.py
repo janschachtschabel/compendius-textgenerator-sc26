@@ -118,7 +118,7 @@ def cmd_generate(args: argparse.Namespace) -> int:
 
 
 def template_manager() -> TemplateManager:
-    return TemplateManager(custom_dir=Path(get_settings().state_dir) / "templates")
+    return TemplateManager(custom_dir=get_settings().custom_templates_dir)
 
 
 def cmd_templates(args: argparse.Namespace) -> int:
