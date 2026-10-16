@@ -404,6 +404,8 @@ class Settings(BaseSettings):
     @field_validator("admin_token", "metrics_token", "api_keys")
     @classmethod
     def _long_enough(cls, value: str, info: ValidationInfo) -> str:
+        if info.field_name != "api_keys":  # a secret file's line break matched no header (audit 2026-10-16)
+            value = value.strip()
         secrets = _split_csv(value) if info.field_name == "api_keys" else [value] if value else []
         if any(len(secret) < MIN_SECRET_CHARS for secret in secrets):
             name = (info.field_name or "").upper()

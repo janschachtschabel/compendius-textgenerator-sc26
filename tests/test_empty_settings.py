@@ -99,3 +99,13 @@ def test_uvicorn_gets_the_default_of_a_process_variable_left_empty(
     serve.main()
 
     assert handed[0][name] == default
+
+
+@pytest.mark.parametrize("name", ["ADMIN_TOKEN", "METRICS_TOKEN"])
+def test_a_token_entered_with_a_line_break_or_spaces_is_the_token(monkeypatch: pytest.MonkeyPatch, name: str) -> None:
+    """A secret file or a panel field brings a trailing line break; compared as it came, no header ever matched the
+    token, and the admin routes answered 403 to the right one (audit 2026-10-16)."""
+    token = "s3cret" * 6
+    monkeypatch.setenv(name, f"  {token}\n")
+
+    assert getattr(Settings(_env_file=None), name.lower()) == token
