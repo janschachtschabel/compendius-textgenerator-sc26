@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "9aa8980ea7ece3d6b1cf329f0ecd43bdb7606c65"
+      "revision": "fe4e06cfae090cd991417895ef9377bcd523cb91"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -280,9 +280,6 @@
       "viewer.passport.relationship.direction.loop": "SCHLEIFE",
       "viewer.passport.sourceCount.one": "{count} verifizierte Quellenreferenz",
       "viewer.passport.sourceCount.other": "{count} verifizierte Quellenreferenzen",
-      "viewer.passport.sourceMarker": "QUELLE",
-      "viewer.passport.beacon.one": "{count} verifizierte Quelle; diesen Knoten fokussieren, um sie zu prüfen",
-      "viewer.passport.beacon.other": "{count} verifizierte Quellen; diesen Knoten fokussieren, um sie zu prüfen",
       "viewer.passport.repository.open": "Verifizierte Repository-Revision {revision} öffnen",
       "viewer.passport.source.open": "Verifizierte Quelle {path} bei Revision {revision} öffnen",
       "viewer.passport.source.openLink": "Öffnen ↗",
@@ -433,7 +430,48 @@
       "viewer.common.copyFailed": "Kopieren fehlgeschlagen",
       "viewer.common.copyLink": "Link kopieren",
       "viewer.common.clear": "Löschen",
-      "viewer.common.close": "Schließen"
+      "viewer.common.close": "Schließen",
+      "diagram.description.tree": "Ein von Archify erstelltes Hierarchiediagramm.",
+      "node.context.tree.root": "Wurzel",
+      "node.context.tree.branch": "Zweig",
+      "node.context.tree.leaf": "Blatt",
+      "tree.toggle.collapse": "{label} einklappen ({count} untergeordnete Knoten)",
+      "tree.toggle.expand": "{label} ausklappen ({count} verborgen)",
+      "tree.expandAll": "Alle ausklappen",
+      "diagram.description.class": "Ein von Archify erstelltes Klassen- und Schnittstellendiagramm.",
+      "node.context.class.class": "Klasse",
+      "node.context.class.abstract": "Abstrakte Klasse",
+      "node.context.class.interface": "Schnittstelle",
+      "node.context.class.enum": "Aufzählung",
+      "node.context.class.record": "Datensatz",
+      "legend.class.dependency": "Abhängig von",
+      "legend.class.association": "Assoziation",
+      "legend.class.inheritance": "Erbt von",
+      "legend.class.realization": "Implementiert",
+      "legend.class.composition": "Komposition",
+      "legend.class.aggregation": "Aggregation",
+      "diagram.description.timeline": "Eine von Archify erstellte Ereigniszeitleiste.",
+      "timeline.axis": "Zeit",
+      "timeline.break": "Achsenunterbrechung: {duration} ohne Ereignisse ausgelassen",
+      "timeline.compressed": "{count} ruhige Zeiträume komprimiert (≈)",
+      "timeline.evidence.observed": "Beobachtete Ereignisse",
+      "timeline.evidence.illustrative": "Beispieldaten",
+      "legend.timeline.default": "Ereignis",
+      "legend.timeline.change": "Änderung",
+      "legend.timeline.alert": "Warnung",
+      "legend.timeline.action": "Reaktion",
+      "legend.timeline.recovery": "Wiederherstellung",
+      "diagram.description.waterfall": "Ein von Archify erstelltes Wasserfalldiagramm der Ausführung.",
+      "waterfall.evidence.measured": "Gemessene Zeiten",
+      "waterfall.evidence.illustrative": "Beispielzeiten",
+      "waterfall.wall": "Gesamtdauer {duration}",
+      "waterfall.share": "{percent} der Gesamtdauer {total}",
+      "waterfall.incomplete": "unvollständig, ≥ {duration}",
+      "waterfall.operation": "Vorgang",
+      "legend.waterfall.ok": "Abgeschlossen",
+      "legend.waterfall.error": "Fehler",
+      "legend.waterfall.cancelled": "Abgebrochen",
+      "legend.waterfall.incomplete": "Unvollständig (kein Ende aufgezeichnet)"
     },
     "viewBox": [
       1080,
@@ -559,8 +597,8 @@
         },
         {
           "path": "app/sources/wlo/client.py",
-          "line": 126,
-          "end_line": 152,
+          "line": 127,
+          "end_line": 153,
           "label": "HTTP-Client, Konto (D112)"
         }
       ]
@@ -715,14 +753,14 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 384,
-          "end_line": 393,
+          "line": 390,
+          "end_line": 399,
           "label": "Schreiber baut .tmp"
         },
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 442,
-          "end_line": 460,
+          "line": 448,
+          "end_line": 466,
           "label": "fsync, os.replace"
         }
       ]
@@ -737,8 +775,8 @@
       "sources": [
         {
           "path": "app/sources/local_index.py",
-          "line": 30,
-          "end_line": 49,
+          "line": 32,
+          "end_line": 51,
           "label": ".part, dann os.replace"
         },
         {
@@ -795,14 +833,14 @@
       "sources": [
         {
           "path": "app/settings.py",
-          "line": 214,
-          "end_line": 218,
+          "line": 224,
+          "end_line": 228,
           "label": "WLO_CACHE_PATH (D109)"
         },
         {
           "path": "app/settings.py",
-          "line": 498,
-          "end_line": 501,
+          "line": 515,
+          "end_line": 518,
           "label": "sonst STATE_DIR"
         },
         {
@@ -851,8 +889,8 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 182,
-          "end_line": 187,
+          "line": 188,
+          "end_line": 193,
           "label": "Leseverbindung je Aufruf"
         },
         {
@@ -863,8 +901,8 @@
         },
         {
           "path": "app/api/v2/lehrplan.py",
-          "line": 187,
-          "end_line": 193,
+          "line": 189,
+          "end_line": 195,
           "label": "/lehrplan/search"
         }
       ]
@@ -879,8 +917,8 @@
       "sources": [
         {
           "path": "app/sources/local_index.py",
-          "line": 99,
-          "end_line": 110,
+          "line": 113,
+          "end_line": 124,
           "label": "höchstens alle 60 s prüfen"
         },
         {
@@ -1127,8 +1165,16 @@
       "title": "Neu ohne Neustart",
       "items": [
         "ZIM: jede Anfrage prüft active.json (ohne ZIM_PATHS); bei Änderung tauscht die Registry die Archive in einem Schritt, eine Anfrage liest eine feste Sicht",
-        "lehrplan.db: eine neue Leseverbindung je Aufruf",
-        "wikidata.db, gnd.db: höchstens alle 60 s neu geprüft und geöffnet"
+        "lehrplan.db, wikidata.db, gnd.db: höchstens alle 60 s neu geprüft und geöffnet; lehrplan.db mit einer Leseverbindung je Aufruf"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Lokale Kopien (D113)",
+      "items": [
+        "Mit INDEX_COPY_DIR kopiert jeder Pod lehrplan.db, wikidata.db und gnd.db je Stand in ein lokales Verzeichnis (emptyDir) und liest die Kopie",
+        "Die vorige Kopie bleibt bis zum nächsten Stand; Proben kopieren nie; misslingt eine Kopie, liest der Dienst vom Volume und versucht es nach 15 min erneut",
+        "Mit TEMPLATES_DIR kommen eigene Templates etwa aus einer ConfigMap: die API hängt die geteilten Volumes nur lesend ein"
       ]
     },
     {
