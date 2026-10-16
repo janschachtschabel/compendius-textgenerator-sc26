@@ -48,6 +48,7 @@ from app.knowledge.recognise import load_spacy
 from app.llm.call import listen_to_calls
 from app.logging import configure_logging
 from app.matching.registry import LOCAL_MATCHER, active_components
+from app.memory import give_back_freed_memory
 from app.observability.metrics import record_llm_call
 from app.service import CompendiumService
 from app.settings import Settings, get_settings
@@ -334,6 +335,7 @@ def create_app(settings: Settings | None = None, *, document_internal: bool = Fa
     app.state.wikidata = WikidataIndex(settings.wikidata_db_path, copy_dir=settings.index_copy_dir)
     app.state.gnd = GndIndex(settings.gnd_db_path, copy_dir=settings.index_copy_dir)
     app.state.entities = describe_entities(settings)
+    give_back_freed_memory()  # what loading the models freed: 1,790 -> 1,413 MB per worker (C11)
     app.state.rate_limiter = RateLimiter(settings.rate_limit) if settings.rate_limit > 0 else None
     app.state.system_limiter = system_limiter()
     app.include_router(health_router, include_in_schema=document_internal)
