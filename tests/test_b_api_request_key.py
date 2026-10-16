@@ -561,3 +561,43 @@ def test_parallel_requests_carry_each_its_own_key(
         topics = [topic for topic in keys if topic in body]
         assert topics in ([], [next(t for t, k in keys.items() if k == key)]), (key, topics)
     assert {key for key, _ in calls} == set(keys.values())
+
+
+def test_an_outage_during_the_stop_on_the_services_own_key_holds_back_the_callers_keys_too() -> None:
+    """Two stops, two deadlines: the minute of an outage met with a caller's key fell inside the ten minutes of the
+    service's own key, so the flag of the longer one let the callers' calls run into the outage (audit 2026-10-16)."""
+    now = [0.0]
+    client, _ = make_client(FakeBApi(statuses=[403, 503, 503, 503]), clock=lambda: now[0])
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)  # the service's own key: ten minutes
+    use_request_key(RequestKey("Authorization", CALLER))
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)  # an outage: one minute for every key
+
+    assert client.suspended, "the outage holds back the callers' keys as well"
+    now[0] = 61.0
+    assert not client.suspended and client.chat(MESSAGES, max_output_tokens=10).text == "OK"
+    use_request_key(None)
+    assert client.suspended and "Schlüssel des Dienstes" in client.suspension_reason
+
+
+def test_a_route_stop_with_the_key_of_a_request_is_not_logged_as_a_refused_key(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """ "refused the key" sent the operator to the key while the route was down (audit 2026-10-16)."""
+    answer = httpx.Response(503, json={"error": "No deployment could serve model 'kompendium' (no deployment left)"})
+    client = BApiClient(
+        BASE,
+        KEY,
+        provider="router",
+        model="gpt-6-luna",
+        route="kompendium",
+        transport=httpx.MockTransport(lambda r: answer),
+    )
+    use_request_key(RequestKey("Authorization", CALLER))
+
+    with caplog.at_level(logging.WARNING, logger="app.llm.client"), pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    [line] = [r.getMessage() for r in caplog.records if r.levelno == logging.WARNING]
+    assert "refused the key" not in line and "kompendium" in line and "llm-free" in line

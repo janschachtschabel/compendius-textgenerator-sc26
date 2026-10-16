@@ -200,10 +200,13 @@ class BApiClient:
         self._state = threading.Lock()
         self._open_until = 0.0  # the breaker opens until then; after a break it stays in the past until a probe
         self._suspension = SUSPENDED_MESSAGE  # why calls fail fast
-        # The breaker opened because the b-api refused the service's own key: it holds back only the calls that carry
-        # that key, not those with a key of their request, whose limits are their own (review of D105/D106)
-        self._own_key_refused = False
-        self._probing = False
+        # A stop on the service's own key - refused, or its route down - holds back only the calls that carry that key,
+        # not those with a key of their request, whose limits are their own (review of D105/D106). Its own deadline:
+        # an outage within its ten minutes concerns every key (audit 2026-10-16)
+        self._own_key_until = 0.0
+        self._own_key_suspension = SUSPENDED_MESSAGE
+        self._probing = False  # a probe after an outage: every call waits for it
+        self._own_key_probing = False  # a probe after a stop on the own key: the calls with that key wait for it
         self._failures = 0  # failed attempts in a row over all calls
         self.base_url = base_url.rstrip("/")
         self.provider = provider
@@ -241,13 +244,13 @@ class BApiClient:
         """True while the circuit breaker holds back the calls of the request being handled: after a timeout,
         repeated failures, a refused model, or the service's own key refused - that one not for a request with a key
         of its own."""
-        return self._clock() < self._open_until and not self._spares_request_key()
-
-    def _spares_request_key(self) -> bool:
-        return self._own_key_refused and request_key() is not None
+        now = self._clock()
+        return now < self._open_until or (request_key() is None and now < self._own_key_until)
 
     @property
     def suspension_reason(self) -> str:
+        if request_key() is None and self._clock() >= self._open_until and self._own_key_until:
+            return self._own_key_suspension
         return self._suspension
 
     @property
@@ -406,8 +409,8 @@ class BApiClient:
             return self._attempts(method, url, json_body, tries, (ends, hard_end), before_retry, request)
         finally:
             if probe:
-                with self._state:
-                    self._probing = False  # a probe that neither closed nor tripped the breaker lets the next one try
+                with self._state:  # a probe that neither closed nor tripped the breaker lets the next one try
+                    self._probing = self._own_key_probing = False
 
     def _attempts(
         self,
@@ -480,7 +483,7 @@ class BApiClient:
                         why = f"Route {self.route!r} ist für den Schlüssel der Anfrage nicht aktiv (HTTP {status})"
                     else:
                         why = f"b-api-Routing für den Schlüssel der Anfrage ausgesetzt: {stop[1]} (HTTP {status})"
-                    raise self._refuse(key, why, response.text, status, reached)
+                    raise self._refuse(key, why, response.text, status, reached, route=status not in KEY_REFUSALS)
                 if status not in RETRY_STATUSES or stop is not None:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
                     # key is blanked before the cut, which otherwise left the start of an echoed key (SE-10).
@@ -538,15 +541,20 @@ class BApiClient:
         return float(self.backoff_s * 2**attempt * (0.5 + self._jitter()))
 
     def _admit(self) -> bool:
-        """Raise while the breaker is open; ``True`` when this call is the one probe after a break."""
+        """Raise while the breaker is open for this call; ``True`` when it is the one probe after a break."""
+        own_key = request_key() is None
         with self._state:
-            if self._spares_request_key():
-                return False
-            if self._clock() < self._open_until or self._probing:
+            now = self._clock()
+            if now < self._open_until or self._probing:
                 raise LlmHeldBackError(self._suspension)
-            if not self._open_until:
+            if own_key and (now < self._own_key_until or self._own_key_probing):
+                raise LlmHeldBackError(self._own_key_suspension)
+            if self._open_until:
+                self._probing = True
+            elif own_key and self._own_key_until:
+                self._own_key_probing = True
+            else:
                 return False
-            self._probing = True
         log.info("b-api probe after the break: this call decides whether the calls resume")
         return True
 
@@ -571,12 +579,16 @@ class BApiClient:
         if new:
             log.info("b-api routing: route %r answers with %s", self.route, name)
 
-    def _refuse(self, key: RequestKey, why: str, said: str, status: int, reached: int) -> LlmError:
-        """The b-api refused the key of the request being handled (D106): the rest of that request runs without the
-        LLM, every other request keeps it. One line per request says so, with what the b-api answered."""
+    def _refuse(
+        self, key: RequestKey, why: str, said: str, status: int, reached: int, *, route: bool = False
+    ) -> LlmError:
+        """The b-api refused the key of the request being handled (D106), or its route for that key (D97): the rest
+        of that request runs without the LLM, every other request keeps it. One line per request says so, with what
+        the b-api answered - a route down named as such, not as a refused key (audit 2026-10-16)."""
         if key.refuse(why):
             log.warning(
-                "b-api refused the key of this request: %s (b-api: %s); the request goes on without the LLM (llm-free)",
+                "b-api %s: %s (b-api: %s); the request goes on without the LLM (llm-free)",
+                f"route {self.route!r} holds back this request" if route else "refused the key of this request",
                 why,
                 " ".join(self._redact(said)[:200].split()) or "-",
             )
@@ -648,27 +660,25 @@ class BApiClient:
         route that cannot chat, its reason too (D98)."""
         with self._state:
             now = self._clock()
-            opening = now >= self._open_until  # closed, or waiting for its probe
-            changed = opening or now + seconds > self._open_until
-            if changed:
-                self._open_until = now + seconds
-                self._suspension = reason
-                self._own_key_refused = own_key
-            self._probing = False
+            until = self._own_key_until if own_key else self._open_until
+            changed = now + seconds > until  # closed, waiting for its probe, or a shorter stop
+            if changed and own_key:
+                self._own_key_until, self._own_key_suspension = now + seconds, reason
+            elif changed:
+                self._open_until, self._suspension = now + seconds, reason
+            self._probing = self._own_key_probing = False
         if changed:
             log.warning("b-api calls held back for %.0f s: %s (%s)", seconds, reason, cause)
 
     def _close(self) -> None:
         """The b-api answered: the breaker closes and the failures in a row start again at zero. An answer to the key
         of a request says nothing of the service's own: a stop on that one keeps its ten minutes (audit 2026-10-15)."""
+        own_key = request_key() is None
         with self._state:
-            if self._spares_request_key():
-                self._failures = 0
-                return
-            resumed = self._open_until != 0.0
-            self._open_until = 0.0
-            self._probing = False
-            self._failures = 0
+            resumed = self._open_until != 0.0 or (own_key and self._own_key_until != 0.0)
+            self._open_until, self._probing, self._failures = 0.0, False, 0
+            if own_key:
+                self._own_key_until, self._own_key_probing = 0.0, False
         if resumed:
             log.info("b-api answers again; the calls resume")
 
