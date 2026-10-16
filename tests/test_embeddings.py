@@ -98,3 +98,36 @@ def test_a_model_that_failed_is_not_tried_again(
     assert not first.available and not second.available
     assert tried == ["kaputt"]
     assert caplog.text.count("no model at kaputt") == 1
+
+
+class FakeLibc:
+    def __init__(self) -> None:
+        self.trims: list[int] = []
+
+    def malloc_trim(self, pad: int) -> int:
+        self.trims.append(pad)
+        return 1
+
+
+def test_the_memory_loading_freed_goes_back_to_the_system(monkeypatch: pytest.MonkeyPatch) -> None:
+    """glibc kept what loading freed - the tokenizer's copy, the parsed vocabulary - in the worker's heap: 1,480 MB
+    after loading, 1,003 MB after malloc_trim(0), 1,016 MB after 20 encodes, the vectors the same (measured in the
+    container, audit 2026-10-16, C11)."""
+    libc = FakeLibc()
+    monkeypatch.setattr(embeddings, "_load_model", lambda path: BagOfWords())
+    monkeypatch.setattr(embeddings, "_libc", lambda: libc)
+
+    assert Model2VecMatcher("geladen").available
+    assert libc.trims == [0]
+
+
+def test_without_glibc_the_model_loads_all_the_same(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Windows, macOS and musl have no malloc_trim."""
+
+    def no_glibc() -> Any:
+        raise OSError("libc.so.6: cannot open shared object file")
+
+    monkeypatch.setattr(embeddings, "_load_model", lambda path: BagOfWords())
+    monkeypatch.setattr(embeddings, "_libc", no_glibc)
+
+    assert Model2VecMatcher("ohne-glibc").available

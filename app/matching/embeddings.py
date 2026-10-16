@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ctypes
 import logging
 from collections.abc import Sequence
 from functools import lru_cache
@@ -28,16 +29,33 @@ def _load_model(model_path: str) -> Any:
     return StaticModel.from_pretrained(model_path)
 
 
+def _libc() -> Any:
+    return ctypes.CDLL("libc.so.6")
+
+
+def _give_back_freed_memory() -> None:
+    """Hand the heap that loading freed back to the system. model2vec 0.10 copies the tokenizer and parses the
+    vocabulary while loading; glibc kept the freed memory in the worker: 1,480 MB after loading, 1,003 MB after
+    ``malloc_trim(0)``, 1,016 MB after 20 encodes, the vectors the same (measured in the container, audit 2026-10-16,
+    C11). Without glibc - Windows, macOS, musl - nothing to do."""
+    try:
+        _libc().malloc_trim(0)
+    except (OSError, AttributeError):
+        return
+
+
 @lru_cache(maxsize=2)
 def _model_or_none(model_path: str) -> Any | None:
     """The static model, loaded once per process as matchers are created per request - or ``None`` when it cannot
     be, remembered as well: lru_cache keeps no exceptions, so a wrong MODEL2VEC_PATH was tried and warned about on
     every request, over the network for a path that looks like a Hub repository (audit 2026-09-27, PE-03)."""
     try:
-        return _load_model(model_path)
+        model = _load_model(model_path)
     except Exception as exc:  # optional dependency, degrade gracefully
         log.warning("Model2Vec model %s not available, not tried again until a restart: %s", model_path, exc)
         return None
+    _give_back_freed_memory()
+    return model
 
 
 class Model2VecMatcher:
