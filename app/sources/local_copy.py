@@ -105,6 +105,7 @@ class LocalCopy:
                 if self._clock() - self._failed[1] < RETRY_FAILED_S:
                     return None
             part = target.with_name(f".{target.name}.{os.getpid()}.{threading.get_ident()}.part")
+            started = self._clock()
             try:
                 directory.mkdir(parents=True, exist_ok=True)
                 with part.open("wb") as out:
@@ -121,7 +122,9 @@ class LocalCopy:
                 with contextlib.suppress(OSError):  # a leftover part; the directory may not even exist
                     part.unlink(missing_ok=True)
                 return None
-        log.info("copied %s (%d bytes) to %s", self.source.name, stat.st_size, target)
+        # the seconds tell on the cluster's storage whether RETRY_FAILED_S fits (audit 2026-10-16, C13)
+        took = self._clock() - started
+        log.info("copied %s (%d bytes) to %s in %.1f s", self.source.name, stat.st_size, target, took)
         self._prune(directory, target)
         return target
 

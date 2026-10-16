@@ -275,3 +275,21 @@ def test_a_probe_reads_the_present_copy_and_leaves_a_new_version_to_a_request(so
         assert copy.path() == first
     assert len(list(local.glob("lehrplan-*.db"))) == 1, "the probe made no copy"
     assert copy.path().read_bytes() == b"second version"
+
+
+def test_the_log_says_how_long_a_copy_took(source: Path, tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    """How long a copy takes on the cluster's storage decides whether 15 minutes between two tries fit; the line names
+    it, so the operators can read it off (audit 2026-10-16, C13)."""
+    clock = Clock()
+
+    def slow_copy(*args: object, **kwargs: object) -> None:
+        clock.now += 42.0
+        real_copy(*args, **kwargs)  # type: ignore[arg-type]
+
+    real_copy = shutil.copyfileobj
+    with pytest.MonkeyPatch.context() as patch, caplog.at_level(logging.INFO, logger="app.sources.local_copy"):
+        patch.setattr("app.sources.local_copy.shutil.copyfileobj", slow_copy)
+        LocalCopy(source, tmp_path / "local", clock=clock).path()
+
+    [line] = [r.getMessage() for r in caplog.records if r.getMessage().startswith("copied")]
+    assert "in 42.0 s" in line
