@@ -72,9 +72,10 @@ services:
     # Anbieters, academiccloud mit 600 s (D94; OpenAI 300 s): Das Panel uebernimmt diese Datei bei jedem Update (Audit
     # 2026-09-28, BE-17). Wer REQUEST_TIMEOUT_S darueber hebt, setzt API_STOP_GRACE_PERIOD ueber diese Frist plus 15 s.
     stop_grace_period: ${API_STOP_GRACE_PERIOD:-630s}
-    # Gemessen am 29.09.2026 2,5 GiB nach dem Start und 3,4 GiB nach dem Aufwaermen, rund 1,7 GiB je Worker
-    # (docs/uebergabe/README.md). Die alte Grenze 4 GiB trug die zwei Worker des Images knapp, den Rest fuellte der
-    # Seiten-Cache; 6 GiB lassen Luft fuer Spitzen. Mit mehr Workern API_MEMORY heben, je Worker rund 1,7 GiB.
+    # Gemessen am 16.10.2026 3,3 GiB nach dem Start und 4,0 GiB nach dem Aufwaermen, rund 2 GiB je Worker; seit
+    # model2vec 0.10 rund 450 MB je Worker mehr als am 29.09.2026 (3,4 GiB, docs/uebergabe/README.md). Die alte Grenze
+    # 4 GiB trug die zwei Worker damals knapp und waere heute zu knapp, den Rest fuellt der Seiten-Cache; 6 GiB lassen
+    # Luft fuer Spitzen. Mit mehr Workern API_MEMORY heben, je Worker rund 2 GiB.
     mem_limit: ${API_MEMORY:-6g}
     logging: *logging
     restart: unless-stopped

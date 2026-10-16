@@ -2470,7 +2470,10 @@ API.
   scheitert die Kopie, liest der Dienst wie bisher vom Volume. `TEMPLATES_DIR` für eigene Templates aus einer ConfigMap.
   Verworfen: ein eigener Spiegel-Container je Pod (mehr Container, dieselben Änderungen an den Lesern) und PostgreSQL
   (andere Rangfolge der Volltextsuche, ein Dienst mehr, 1 bis 2 Wochen). Bleibt: ZIM-Archive vom geteilten Volume
-  (Leistung, nicht Korrektheit); Stufe 2 mit Objektspeicher und CronJobs nur bei breiter Skalierung.
+  (Leistung, nicht Korrektheit); Stufe 2 mit Objektspeicher und CronJobs nur bei breiter Skalierung. Review und Audit
+  vom 16.10.2026: Die vorige Kopie bleibt bis zur nächsten Fassung, und ein Leser mit ihr wartet nicht auf eine laufende
+  Kopie; eine gescheiterte Kopie versucht der Dienst nach 15 Minuten wieder (derweil liest er vom Volume), und die
+  Proben (`/health`, `/ready`, `/api/v2/lehrplan/status`) kopieren nie, sie lesen die Kopie, die da ist.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

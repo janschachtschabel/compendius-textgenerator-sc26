@@ -12,8 +12,44 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 - **Neu (D113):** `INDEX_COPY_DIR` lässt jeden API-Pod `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung auf seine
   lokale Platte kopieren und dort lesen: Pods auf mehreren Nodes lesen kein SQLite mehr über das Netz, und der Tausch
   durch einen Sidecar trifft keine Anfrage. `TEMPLATES_DIR` nimmt die eigenen Templates aus einem eigenen Verzeichnis,
-  etwa einer ConfigMap. Mit beiden und leerem `ADMIN_TOKEN` (die Admin-Pfade schreiben auf die Volumes) mountet die API
-  die Volumes nur lesend. Beide leer: wie bisher.
+  etwa einer ConfigMap. Mit beiden, `WLO_CACHE_PATH` im `emptyDir` (leer liegt der Repository-Cache in `STATE_DIR`) und
+  leerem `ADMIN_TOKEN` (die Admin-Pfade schreiben auf die Volumes) mountet die API die Volumes nur lesend. Beide leer:
+  wie bisher.
+- **Behoben (D113, Audit vom 16.10.2026):** Eine gescheiterte Kopie versucht der Dienst nach 15 Minuten wieder, derweil
+  liest er die Datei vom Volume. `/health`, `/ready` und `/api/v2/lehrplan/status` kopieren nie: Sie lesen die Kopie,
+  die da ist, eine neue Fassung kopiert die nächste Anfrage. Das Log nennt jede Kopie als INFO (`copied <Datei>
+  (<Bytes> bytes) to <Kopie> in <Sekunden> s`; die Sekunden zeigen auf dem Speicher des Clusters, ob 15 Minuten bis
+  zum nächsten Versuch passen) und jeden Fehlschlag als WARNING (`cannot copy <Datei> to <Verzeichnis> (<Grund>);
+  reading it in place`). Das Aufräumen löscht nur die eigenen Kopien, etwa keine `lehrplan-backup.db`.
+- **Geändert:** Die schreibenden Admin-Pfade (`PUT` und `DELETE /api/v2/templates/{id}`, `POST /api/v2/zim/sync`,
+  `DELETE /api/v2/zim/{datei}`, `POST /api/v2/lehrplan/harvest`) antworten auf einem nur lesenden oder vollen Volume
+  oder bei gehaltener Sperre mit 503 und dem Grund, ohne Pfad des Servers; bisher mit 500 ohne Grund. Mit
+  `TEMPLATES_DIR` nennt der Start die Templates, die noch in `STATE_DIR/templates` liegen und nicht mehr gelesen werden.
+  `ADMIN_TOKEN` und `METRICS_TOKEN` verlieren Leerzeichen und Zeilenumbruch am Rand, wie sie eine Secret-Datei
+  mitbringt; bisher bekam das richtige Token dann 403.
+- **Behoben (Audit vom 16.10.2026):** Der Schutzschalter des LLM hält die Sperre des Dienstschlüssels und einen Ausfall
+  der b-api auseinander: Ein Ausfall während der Sperre des eigenen Schlüssels hält auch die Schlüssel der Aufrufer
+  zurück. Eine Routensperre mit dem Schlüssel eines Aufrufers steht im Log als Sperre der Route, nicht mehr als
+  abgelehnter Schlüssel. Ein 404 der b-api auf den Schlüssel eines Aufrufers hält nur diese Anfrage zurück, wie ein
+  abgelehnter Schlüssel; bisher setzte er die b-api für alle Aufrufer zehn Minuten aus (der Schlüssel des Dienstes
+  weiter für alle seine Aufrufe). Der Körper einer Antwort von b-api und edu-sharing bekommt nur die Zeit, die dem Versuch
+  bleibt, nicht mehr bis zur doppelten. Werte der Frontmatter mit NEL, U+2028 oder U+2029 stehen in doppelten
+  Anführungszeichen. `route_path` nimmt den Root-Pfad (`UVICORN_ROOT_PATH`) nur vor einem Schrägstrich ab, wie der
+  Router von Starlette.
+- **Abhängigkeiten und CI:** Update der Pakete (`dccb32e`): fastapi 0.143, uvicorn 0.54, pydantic 2.14,
+  huggingface-hub 2.2, model2vec 0.10 und weitere (uvloop, httptools, libzim, numpy, ruff). model2vec 0.10 kostet je
+  Worker im Leerlauf rund 450 MB mehr. Dafür gibt der Start jetzt den Speicher zurück, den das Laden der Modelle
+  freigegeben hat (`malloc_trim`): je Worker im Leerlauf 1.413 MB statt 1.790 MB, gemessen im Entwicklungscontainer.
+  Die Richtwerte bleiben mit Reserve bei rund 2 GiB je Worker, aus der Lastmessung ohne diese Rückgabe; die Vorgabe
+  `API_MEMORY=6g` trägt die zwei Worker des Images. fastapi mindestens 0.138 (`iter_route_contexts`); fastapi bringt
+  jetzt `opentelemetry-api` mit, der Dienst nutzt es nicht. model2vec 0.10 verwirft den Punkt als Token, weil die
+  `tokenizer.json` des Modells ein veraltetes `unk_id` nennt; der Goldstandard des Matchings ist mit 0.9 und 0.10
+  gleich. Die CI nutzt setup-uv 10.3.0.
+- **Übergabe:** Der Steckbrief nach der Vorlage von Team 6 ([steckbrief.md](docs/uebergabe/steckbrief.md)), die
+  Lastmessung vom 16.10.2026 (Image `:latest` auf `cdc96d6`, nach dem Update der Abhängigkeiten: 4,02 GiB nach dem
+  Aufwärmen) mit Request 5 Gi und Limit 6 Gi für die API. Die Beispiel-Values nennen Ressourcen der Sidecars, ein
+  `emptyDir` von 2 Gi für API und Sidecars (auch für die Kopien der Indexe), eine NetworkPolicy und eine Frist für
+  die Startprobe. Die Links auf die Architekturdiagramme öffnen sie auf GitHub Pages.
 
 ## 2.23.0 – 2026-10-15
 

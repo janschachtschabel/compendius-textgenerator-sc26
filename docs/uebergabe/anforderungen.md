@@ -126,8 +126,8 @@ Grund in der Antwort (D106): So bekommt ein Nutzer immer einen Text. Ob ein LLM 
 |---|---|
 | Hält der Dienst einen Zustand? | Keine Sitzungen, keine Historien, keine Job-Status. Jeder Worker hält Caches im Speicher (gelesene Artikel), die nur Zeit sparen, dazu seinen Schutzschalter für die b-api und, wenn gesetzt, sein Rate-Limit. Der Repository-Cache liegt in einer SQLite-Datei (`WLO_CACHE_PATH`, je Pod) |
 | Liefern mehrere Pods dieselbe Antwort? | Mit denselben Daten ja, bis auf das LLM: Ab `balanced` können zwei Aufrufe verschiedene Artikel oder Formulierungen wählen, auch im selben Pod. Ein Pod, der ein Thema schon kennt, antwortet schneller |
-| Teilen sich Pods ein Volume? | Ja, `zim` (Archive) und `state` (Lehrpläne, Indexe, eigene Templates), beide ReadWriteMany. Geschrieben werden sie von den Sidecars, je einer, und über die Admin-Pfade der API. Sonst liest die API sie nur: Mit `INDEX_COPY_DIR` kopiert jeder Pod `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung in sein `emptyDir` und liest dort, mit `TEMPLATES_DIR` kommen die eigenen Templates aus einer ConfigMap (D113); dann reicht der API ein lesender Mount. Die Admin-Pfade schreiben auf die Volumes (Aufträge für Sync und Harvest, ein Archiv löschen, Templates speichern): mit lesendem Mount `ADMIN_TOKEN` leer lassen und Sync oder Harvest per Kommandozeile in den Updatern anstoßen. Den Repository-Cache schreibt jeder Pod in sein `emptyDir` |
-| Grenzen der Skalierung? | API-Pods lassen sich über mehrere Nodes verteilen, mit `INDEX_COPY_DIR` ohne SQLite über das Netz; die ZIM-Archive lesen sie weiter vom geteilten Volume, eine Frage der Leistung. Die Updater laufen als eigene Deployments mit genau einem Replikat, nicht im API-Pod (Lock-Dateien auf dem Volume verhindern einen zweiten Lauf). Je Worker rund 1,7 GiB Speicher; Lesen der Archive und Zuordnung halten die Interpreter-Sperre, darum skaliert der Dienst über Worker und Pods, nicht über CPU je Worker. Die b-api begrenzt je Schlüssel; `LLM_MAX_CONCURRENCY` begrenzt die LLM-Aufrufe je Worker (Vorgabe 20 mit OpenAI) |
+| Teilen sich Pods ein Volume? | Ja, `zim` (Archive) und `state` (Lehrpläne, Indexe, eigene Templates), beide ReadWriteMany. Geschrieben werden sie von den Sidecars, je einer, und über die Admin-Pfade der API. Sonst liest die API sie nur: Mit `INDEX_COPY_DIR` kopiert jeder Pod `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung in sein `emptyDir` und liest dort, mit `TEMPLATES_DIR` kommen die eigenen Templates aus einer ConfigMap (D113); dann reicht der API ein lesender Mount. Die Admin-Pfade schreiben auf die Volumes (Aufträge für Sync und Harvest, ein Archiv löschen, Templates speichern): mit lesendem Mount `ADMIN_TOKEN` leer lassen und Sync oder Harvest per Kommandozeile in den Updatern anstoßen. Den Repository-Cache schreibt jeder Pod in sein `emptyDir`: `WLO_CACHE_PATH` zeigt dorthin, denn leer liegt er in `STATE_DIR`, und der lesende Mount braucht das |
+| Grenzen der Skalierung? | API-Pods lassen sich über mehrere Nodes verteilen, mit `INDEX_COPY_DIR` ohne SQLite über das Netz; die ZIM-Archive lesen sie weiter vom geteilten Volume, eine Frage der Leistung. Die Updater laufen als eigene Deployments mit genau einem Replikat, nicht im API-Pod (Lock-Dateien auf dem Volume verhindern einen zweiten Lauf). Je Worker rund 2 GiB Speicher (seit model2vec 0.10, vorher 1,7 GiB); Lesen der Archive und Zuordnung halten die Interpreter-Sperre, darum skaliert der Dienst über Worker und Pods, nicht über CPU je Worker. Die b-api begrenzt je Schlüssel; `LLM_MAX_CONCURRENCY` begrenzt die LLM-Aufrufe je Worker (Vorgabe 20 mit OpenAI) |
 | Hintergrundaufgaben? | Die vier Sidecars aus demselben Image, unabhängig von der API: `zim-updater` (Kiwix, alle 30 Tage), `lehrplan-updater` (MEM, alle 7 Tage), `wikidata-updater` und `gnd-updater` (Wikimedia und DNB, täglich). Keine Warteschlange nötig |
 
 **Architekturübersicht:** ein Image, fünf Container, zwei Volumes ([Aufbau](README.md#aufbau), Bild unten). Zur
@@ -148,7 +148,7 @@ Kompendium-Anfrage, Sidecars und Daten).
 
 ### 5.3 Ressourcen
 
-Gemessen am 16.10.2026 mit Release 2.23.0 und zwei Workern; die Werte sind mit Reserve gesetzt ([Ressourcen](README.md#ressourcen), [Lastmessung](README.md#lastmessung-vom-16102026)):
+Gemessen am 16.10.2026 mit dem Image `:latest` auf Commit `cdc96d6` (nach dem Update der Abhängigkeiten, nicht Release 2.23.0) und zwei Workern; die Werte sind mit Reserve gesetzt ([Ressourcen](README.md#ressourcen), [Lastmessung](README.md#lastmessung-vom-16102026)):
 
 | Ressource | Requests | Limits | Anmerkung |
 |---|---|---|---|
@@ -157,7 +157,7 @@ Gemessen am 16.10.2026 mit Release 2.23.0 und zwei Workern; die Werte sind mit R
 | CPU, API | 2 | 4 | im Mittel rund ein Kern, Spitze 3,4 Kerne; mit 2, 4 und 16 vCPU dauerten fünf Kompendien gleich lang (29.09.) |
 | Storage `zim` | 60 Gi | | Archive rund 18,7 GB mit der Wikipedia 2026-10; beim Wechsel liegen alte und neue Ausgabe 24 Stunden nebeneinander, bis rund 38 GB. Es wächst mit der Wikipedia: die Ausgabe 2026-01 hatte 14,6 GB, 2026-10 18,6 GB |
 | Storage `state` | 5 Gi | | 0,45 GB, dazu rund 1,5 GB frei für den Neubau des Wikidata-Index |
-| `emptyDir` je Pod | 1 Gi | | Repository-Cache (`WLO_CACHE_PATH`) und Metrikdateien der Worker |
+| `emptyDir` je Pod | 2 Gi | | Repository-Cache (`WLO_CACHE_PATH`), Metrikdateien der Worker und mit `INDEX_COPY_DIR` die Kopien der Indexe, bis rund 1 GB, weil die vorige Fassung bis zur nächsten bleibt (D113); auf Platte, nicht im RAM |
 | GPU | keine | | |
 
 ### 5.4 Große Datenmengen
@@ -191,7 +191,7 @@ zwei Modelle (offene Punkte).
 | Prometheus-Endpunkt, Applikationsmetriken, Alarmregeln | erfüllt (Abschnitt 3) |
 | Log-Format und `x-client-trace-id` | erfüllt (Abschnitt 3) |
 | Zustand, Skalierbarkeit, Architekturübersicht | erfüllt (5.1) |
-| Ressourcen-Baseline | erfüllt, Messung vom 16.10.2026 mit 2.23.0 (5.3); Sidecars beim Indexbau geschätzt |
+| Ressourcen-Baseline | erfüllt, Messung vom 16.10.2026 mit `:latest` auf `cdc96d6` (5.3); Sidecars beim Indexbau geschätzt |
 | Datenbankwahl, abschaltbare Komponenten | erfüllt: keine Datenbank, SQLite nur lesend und als Cache je Pod (5.2, 5.5) |
 | Datenbereitstellung großer Daten | erfüllt: Sidecars auf Volumes (5.4) |
 | Env mit Defaults, Values-YAML, Secrets, Dockerfile, Compose | erfüllt (5.5) |

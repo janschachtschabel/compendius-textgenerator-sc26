@@ -33,7 +33,7 @@ api:
   probes:                  # am internen Port des Pods; am Port 8000 antworten die Pfade mit 404
     liveness: { port: 9000, path: /health, periodSeconds: 30, timeoutSeconds: 5 }
     readiness: { port: 9000, path: /ready, periodSeconds: 30, timeoutSeconds: 5 }
-    startup: { port: 9000, path: /health, failureThreshold: 20, periodSeconds: 30 }   # Start gemessen 22 bis 31 s
+    startup: { port: 9000, path: /health, failureThreshold: 20, periodSeconds: 30, timeoutSeconds: 5 }   # Start 22 bis 31 s
   terminationGracePeriodSeconds: 630   # laufende Anfragen enden, bevor der Pod geht (API_STOP_GRACE_PERIOD)
   env:
     WEB_CONCURRENCY: "2"
@@ -66,6 +66,12 @@ api:
 sidecarResources:
   requests: { cpu: 100m, memory: 128Mi }
   limits: { cpu: "1", memory: 512Mi }
+# readOnlyRootFilesystem gilt auch für die Sidecars (securityContext oben); in Compose sind sie bewusst beschreibbar.
+# SQLite legt beim Bau der Indexe seine Sortier-Dateien ins erste beschreibbare von /var/tmp und /tmp, beim
+# Wikidata-Index Hunderte MB; ohne beschreibbares Verzeichnis scheitert der Bau. Darum je Sidecar ein emptyDir auf /tmp.
+sidecarTmpEmptyDir:
+  mountPath: /tmp
+  sizeLimit: 2Gi            # auf Platte, nicht im RAM (kein medium: Memory)
 sidecars:
   zimUpdater:
     enabled: true

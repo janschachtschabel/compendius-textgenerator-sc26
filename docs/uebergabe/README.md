@@ -2,7 +2,7 @@
 
 Stand 15.10.2026 · Release 2.23.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
-Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese drei Seiten
+Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese fünf Seiten
 fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main` und damit
 Release 2.23.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
 `llm-free`, solange kein LLM eingerichtet ist (D68); seit 2.7.0 endet ein Satz aus Modellwissen nur noch mit
@@ -45,8 +45,9 @@ Störungen, Überwachung), das [README](../../README.md) (alle Endpunkte und Par
   `wikidata-updater` und `gnd-updater` (Indexe für die Kennungen der Entitäten). Jeder Sidecar lädt, prüft die
   Prüfsumme und ersetzt die Datei in einem Schritt; die API übernimmt neue Daten ohne Neustart.
 - **Zwei Volumes.** `zim` hält die Archive, `state` den Lehrplan-Cache, die beiden Indexe, den Sammlungs-Cache und
-  eigene Templates. Sichern muss man nur `state/templates/`, falls eigene Templates angelegt werden; alles andere bauen
-  die Sidecars neu ([betrieb.md](../betrieb.md), Volumes).
+  eigene Templates. Sichern muss man nur die eigenen Templates, falls welche angelegt werden: `state/templates/` oder,
+  mit `TEMPLATES_DIR`, dieses Verzeichnis, etwa eine ConfigMap (D113); alles andere bauen die Sidecars neu
+  ([betrieb.md](../betrieb.md), Volumes).
 - **Zur Anfragezeit** spricht die API nur mit der b-api (LLM, ab Profil `balanced`) und mit edu-sharing (Teil 3,
   Materialien, Knoten). Wikipedia, Lehrpläne und Normdaten liest sie lokal.
 - Prometheus ist optional (`docker compose --profile monitoring up -d`); Konfiguration und Alarmregeln liegen in
@@ -61,19 +62,21 @@ Archivprofil `standard` (vollständige deutsche Wikipedia ohne Bilder und Klexik
 | | Minimum | Empfohlen | Grundlage (Messung unten) |
 |---|---|---|---|
 | CPU | 2 vCPU | 4 vCPU | Die API rechnet mit 2 Workern im Mittel auf rund einem Kern, in Spitzen auf bis zu vier: fünf gleichzeitige Kompendien dauerten mit 2, 4 und 16 vCPU gleich lang. Die übrigen Kerne sind für die Sidecars (der Neubau des Wikidata-Index dauert auf dem Server rund acht Minuten) und einen dritten Worker |
-| RAM | 8 GB | 12 GB | API nach dem Aufwärmen 4,02 GiB (16.10.2026, Release 2.23.0), höher stieg sie in 31 Anfragen nicht; mit Seiten-Cache bis 4,7 GiB; Sidecars zusammen rund 0,4 GiB im Leerlauf, beim Bau ihrer Indexe mehr (nicht gemessen); dazu das System |
-| Grenze `API_MEMORY` | `6g`, die Vorgabe | `6g` | Mit 2.23.0 brauchen die Prozesse allein 4,02 GiB, eine Grenze von 4g wäre zu knapp; mit 2.5.0 trugen 4 GiB alle 47 Anfragen; 6g lässt Luft für Spitzen, etwa ein großes `existing_markdown` (bis 13 MB je Anfrage). Seit dem 29.09.2026 die Vorgabe in `docker-compose.yml`, vorher 4g |
+| RAM | 8 GB | 12 GB | API nach dem Aufwärmen 4,02 GiB (16.10.2026, `:latest` auf `cdc96d6`), höher stieg sie in 31 Anfragen nicht; mit Seiten-Cache bis 4,7 GiB; Sidecars zusammen rund 0,4 GiB im Leerlauf, beim Bau ihrer Indexe mehr (nicht gemessen); dazu das System |
+| Grenze `API_MEMORY` | `6g`, die Vorgabe | `6g` | Seit dem Update der Abhängigkeiten (model2vec 0.10) brauchen die Prozesse allein 4,02 GiB, eine Grenze von 4g wäre zu knapp; mit 2.5.0 trugen 4 GiB alle 47 Anfragen; 6g lässt Luft für Spitzen, etwa ein großes `existing_markdown` (bis 13 MB je Anfrage). Seit dem 29.09.2026 die Vorgabe in `docker-compose.yml`, vorher 4g |
 | Platte | 50 GB | 60 GB, SSD | Daten 16,5 GB im Betrieb, mit der Wikipedia-Ausgabe 2026-10 (18,6 GB) rund 20,5 GB; beim Update der Wikipedia liegen altes und neues Archiv 24 Stunden nebeneinander: rund 33 GB beim Wechsel auf 2026-10, bis rund 38 GB bei zwei Ausgaben dieser Größe; dazu System und Docker (D99) |
 | Netz | – | – | eingehend der Port der API (8000, besser hinter einem Reverse-Proxy mit TLS), der interne Port 9000 nur intern; ausgehend siehe [Netz](#netz) |
 
-Mehr gleichzeitige Anfragen: je weiterer Worker (`WEB_CONCURRENCY`) rund 2 GiB mehr, also `WEB_CONCURRENCY=3` mit
+Die Werte stammen aus der Lastmessung ohne die Rückgabe des Speichers nach dem Start; seit 2.24.0 im Leerlauf 1,41 statt 1,79 GiB je Worker (`malloc_trim` nach dem Start, im Container gemessen, unter Last nicht nachgemessen). Sie bleiben
+die sichere Planung. Mehr gleichzeitige Anfragen: je weiterer Worker (`WEB_CONCURRENCY`) rund 2 GiB mehr, also `WEB_CONCURRENCY=3` mit
 `API_MEMORY=8g`, 16 GB RAM und 4 vCPU. Das Archivprofil `compact` (1,4 GB statt 14,7 GB, mit der Wikipedia 2026-10 statt
 18,7 GB) senkt Platte und Grundbedarf, enthält aber nur die meistgelesenen Artikel der Wikipedia; gemessen ist es hier
 nicht.
 
 ### Lastmessung vom 16.10.2026
 
-Wiederholung mit Release 2.23.0 (Image `:latest`, Commit `cdc96d6`): seit 2.5.0 kamen unter anderem das zehnfache
+Wiederholung mit dem Image `:latest` auf Commit `cdc96d6`, also 2.23.0 mit dem Update der Abhängigkeiten (fastapi
+0.143, model2vec 0.10 und weitere), nicht Release 2.23.0 selbst: seit 2.5.0 kamen unter anderem das zehnfache
 Bausteinbudget (D102), zwei Ports (D110) und neue Pakete dazu. Speicher und CPU lokal im selben Aufbau wie am 29.09.
 (Docker Desktop, 16 vCPU, Wikipedia 2026-01, nur der Container `api`), jetzt mit der Vorgabe `API_MEMORY=6g`; die Dauer
 zusätzlich auf dem Testserver (Hostinger, dasselbe Image, Wikipedia 2026-10), dessen Speicher sich von außen nicht
@@ -256,6 +259,7 @@ Für das neue GitLab zu klären:
 - **Sicherheit:** Direkt erreichbar `API_KEYS` setzen, sonst beantwortet der Dienst jeden, und jeder verbraucht
   LLM-Tokens bis zu den Limits, die die b-api für `B_API_KEY` setzt. Hinter dem Proxy der b-api bleibt `API_KEYS` leer,
   und nur die b-api darf den Dienst erreichen ([Antworten für das IT-Team](anforderungen.md), D105). In beiden Fällen
-  `METRICS_TOKEN` und `ADMIN_TOKEN` setzen, mit `openssl rand -hex 32` erzeugt.
+  `METRICS_TOKEN` und `ADMIN_TOKEN` setzen, mit `openssl rand -hex 32` erzeugt. Ausnahme: Mountet die API die Volumes
+  nur lesend (D113), bleibt `ADMIN_TOKEN` leer; die Admin-Pfade schreiben auf die Volumes und antworteten dort mit 503.
 - **Überwachung:** `GET /metrics` am internen Port für Prometheus; `monitoring/alerts.yml` meldet unter anderem
   ausgefallene Sidecars, volles Volume, fehlende Indexe und LLM-Aufrufe ohne Antwort ([betrieb.md](../betrieb.md)).

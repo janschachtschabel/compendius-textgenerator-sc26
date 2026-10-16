@@ -30,7 +30,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 |---|---|---|
 | Übersicht | Ein Image, fünf Container, zwei Volumes; drei interaktive Diagramme: [Systemübersicht](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/systemuebersicht.html), [Anfrage](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/kompendium-anfrage.html), [Sidecars und Daten](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/sidecars-und-daten.html) ([Erläuterung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/10-architektur.md)) | erfüllt |
 | zustandslos oder zustandsbehaftet | Zustandslos; nur Caches, Repository-Cache je Pod | erfüllt |
-| Horizontale Skalierbarkeit | API-Pods über beliebige Nodes: jeder liest die SQLite-Indexe aus einer lokalen Kopie (`INDEX_COPY_DIR`), die Volumes nur lesend (D113); je Worker ~2 GiB; Updater genau einmal | erfüllt |
+| Horizontale Skalierbarkeit | API-Pods über beliebige Nodes: jeder liest die SQLite-Indexe aus einer lokalen Kopie (`INDEX_COPY_DIR`), die Volumes nur lesend, mit `WLO_CACHE_PATH` im `emptyDir` und leerem `ADMIN_TOKEN` (D113); je Worker ~2 GiB; Updater genau einmal | erfüllt |
 
 ## Deployment und Infrastruktur
 
@@ -64,7 +64,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 
 | | | Status |
 |---|---|---|
-| CPU, RAM und Storage | API: Request 2 CPU / 5 Gi, Limit 4 CPU / 6 Gi (gemessen 16.10. mit 2.23.0: 4,02 GiB warm, Spitze 3,4 Kerne); je weiterer Worker +2 Gi. Sidecars: 128 Mi / 512 Mi, `wikidata-updater` 1,5 Gi (geschätzt). Volumes `zim` 60 Gi, `state` 5 Gi, `emptyDir` 1 Gi. Ein Host: 4 vCPU, 8–12 GB RAM, 60 GB SSD ([Lastmessung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/README.md#lastmessung-vom-16102026)) | erfüllt |
+| CPU, RAM und Storage | API: Request 2 CPU / 5 Gi, Limit 4 CPU / 6 Gi (gemessen 16.10. mit `:latest` auf `cdc96d6`, nach dem Update der Abhängigkeiten: 4,02 GiB warm, Spitze 3,4 Kerne; seit 2.24.0 im Leerlauf 1,41 statt 1,79 GiB je Worker (`malloc_trim` nach dem Start, im Container gemessen, unter Last nicht nachgemessen)); je weiterer Worker +2 Gi. Sidecars: 128 Mi / 512 Mi, `wikidata-updater` 1,5 Gi (geschätzt). Volumes `zim` 60 Gi, `state` 5 Gi, `emptyDir` 2 Gi (mit den Kopien der Indexe, D113). Ein Host: 4 vCPU, 8–12 GB RAM, 60 GB SSD ([Lastmessung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/README.md#lastmessung-vom-16102026)) | erfüllt |
 | Erwartete LLM-Kosten | Je Kompendium 0 (`llm-free`) bis ~112.000 Tokens; Vorgabe ~89.000, geschätzt < 1 Cent; Abrechnung je Schlüssel in der b-api | erfüllt |
 | Kosten externer APIs | Keine (Kiwix, Wikimedia, DNB, MEM, edu-sharing) | erfüllt |
 
@@ -86,5 +86,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 
 **Hinweis zur Skalierung:** Die API-Pods sind für die Antworten zustandslos, brauchen keine Session-Affinity und
 lassen sich über mehrere Nodes verteilen: Mit `INDEX_COPY_DIR` liest jeder Pod die SQLite-Indexe aus einer Kopie auf
-seiner lokalen Platte und das geteilte Volume nur lesend (D113); die vier Updater laufen als eigene Deployments mit
-genau einem Replikat, nicht im API-Pod, und die ZIM-Archive kommen weiter vom geteilten Volume (ReadWriteMany).
+seiner lokalen Platte und das geteilte Volume nur lesend (D113). Dafür zeigt `WLO_CACHE_PATH` ins `emptyDir`, denn
+leer liegt der Repository-Cache in `STATE_DIR`, und `ADMIN_TOKEN` bleibt leer. Die vier Updater laufen als eigene
+Deployments mit genau einem Replikat, nicht im API-Pod, und die ZIM-Archive kommen weiter vom geteilten Volume
+(ReadWriteMany).

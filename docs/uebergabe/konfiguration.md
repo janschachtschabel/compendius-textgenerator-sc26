@@ -5,7 +5,7 @@
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu fünf, die Compose selbst auswertet
 (`IMAGE`, `API_BIND`, `INTERNAL_BIND`, `API_MEMORY`, `API_STOP_GRACE_PERIOD`). Eine fehlende Variable nimmt ihre
-Vorgabe; die Vorlage [`.env.example`](../../.env.example) listet alle 83 des Dienstes mit ihrer Vorgabe. Die
+Vorgabe; die Vorlage [`.env.example`](../../.env.example) listet alle 85 des Dienstes mit ihrer Vorgabe. Die
 ausführliche Beschreibung jeder Variable steht im [README](../../README.md), Abschnitt „Konfiguration“.
 
 ## Für den Betrieb
@@ -56,7 +56,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
 | `API_KEYS` | leer | **je aufrufendem System ein Schlüssel** | Schlüssel der Aufrufer, kommagetrennt, je mindestens 16 Zeichen, im Header `X-API-Key`; leer beantwortet der Dienst jeden |
-| `ADMIN_TOKEN` | leer | **gesetzt** | schützt die Admin-Endpunkte (ZIM-Sync, Harvest, Templates schreiben), mindestens 16 Zeichen; leer schaltet sie ab |
+| `ADMIN_TOKEN` | leer | **gesetzt**; leer, wenn die API die Volumes nur lesend mountet (D113) | schützt die Admin-Endpunkte (ZIM-Sync, Harvest, Templates schreiben), mindestens 16 Zeichen; leer schaltet sie ab. Sie schreiben auf die Volumes und antworten auf einem nur lesenden mit 503; Sync und Harvest dann per Kommandozeile in den Updatern |
 | `METRICS_TOKEN` | leer | **gesetzt** | verlangt `Authorization: Bearer <Token>` für `/metrics`; leer ist `/metrics` offen |
 | `METRICS_ENABLED` | `true` | wie Vorgabe | `/metrics` für Prometheus ausliefern |
 | `PUBLIC_PORT` | `8000` | wie Vorgabe; ohne Container je Dienst ein eigener | Port der API; mehrere Dienste auf einem Host trennen sonst `API_BIND` und `INTERNAL_BIND` (D111) |
@@ -75,7 +75,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 |---|---|---|---|
 | `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.23.0`** | Compose: Image aller fünf Container |
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen am 16.10.2026 4,02 GiB Prozesse mit 2 Workern, dazu Seiten-Cache; mit 3 Workern `8g` |
-| `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 1,7 GiB, mit 3 Workern `API_MEMORY=8g` |
+| `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 2 GiB zur Planung (seit model2vec 0.10; im Leerlauf seit 2.24.0 1,41 GiB), mit 3 Workern `API_MEMORY=8g` |
 | `API_STOP_GRACE_PERIOD` | `630s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; deckt academiccloud (600 s) und OpenAI (300 s), über `REQUEST_TIMEOUT_S` plus 15 s halten |
 | `REQUEST_TIMEOUT_S` | leer: `openai` 300, `academiccloud` 600, `router` 300 | wie Vorgabe | Frist je Anfrage für LLM und Repository; danach entsteht der Rest ohne LLM. Ein gesetzter Wert gilt für jeden Anbieter |
 | `UVICORN_HTTP` | `h11` | wie Vorgabe | HTTP-Parser von uvicorn |
@@ -134,7 +134,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `EDU_SHARING_USER` | leer | Gastkonto der WLO, wenn nicht öffentliche Sammlungen Kompendien bekommen sollen | Basic-Auth für alle Lesezugriffe auf das konfigurierte Repository, Knoten eingeschlossen (D112); leer liest anonym nur Öffentliches. Falsche Zugangsdaten: jeder Aufruf 401, kein Rückfall auf Öffentliches. Nur zusammen mit `API_KEYS` setzen oder, hinter der b-api, wenn der Dienst allein über sie erreichbar ist |
 | `EDU_SHARING_PASSWORD` | leer | wie Vorgabe | Passwort dazu, geheim |
 | `EDU_SHARING_TIMEOUT_S` | `30` | wie Vorgabe | Frist je Anfrage an das Repository |
-| `WLO_CACHE_PATH` | leer | mehrere Pods: ein Pfad je Pod (`emptyDir`) | Datei des Repository-Caches; leer: `wlo_cache.db` in `STATE_DIR` (D109) |
+| `WLO_CACHE_PATH` | leer | mehrere Pods oder `state` nur lesend: ein Pfad je Pod (`emptyDir`) | Datei des Repository-Caches; leer: `wlo_cache.db` in `STATE_DIR` (D109), auf einem nur lesenden Volume bleibt er dann ungeschrieben |
 | `COLLECTION_CACHE_TTL_S` | `3600` | wie Vorgabe | wie lange eine gelesene Sammlung gilt, in Sekunden |
 | `COLLECTION_MAX_ITEMS` | `0` | wie Vorgabe | Kappung der Inhalte je Sammlung; `0` listet alle |
 | `MATERIAL_TEXT_CACHE_TTL_S` | `604800` | wie Vorgabe | wie lange ein geholter Materialtext gilt (sieben Tage) |
@@ -182,6 +182,6 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 |---|---|---|---|
 | `STATE_DIR` | `/data/state` | wie Vorgabe | Zustandsvolume; Compose setzt `/data/state` |
 | `INDEX_COPY_DIR` | leer | Kubernetes mit mehreren Nodes: ein `emptyDir`, etwa `/tmp/indexes` | Die API kopiert `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung dorthin und liest lokal (D113); leer liest vom Volume wie bisher |
-| `TEMPLATES_DIR` | leer | Kubernetes: eine ConfigMap mit den eigenen Templates, etwa `/config/templates` | leer: `templates` in `STATE_DIR` (D113); wer umstellt, nimmt die vorhandenen Templates von dort mit |
+| `TEMPLATES_DIR` | leer | Kubernetes: eine ConfigMap mit den eigenen Templates, etwa `/config/templates` | leer: `templates` in `STATE_DIR` (D113); wer umstellt, nimmt die vorhandenen Templates von dort mit, der Start nennt die, die dort liegen bleiben |
 | `CONFIG_DIR` | `config` | wie Vorgabe | Facetten, Überschriften-Lexikon, Fächer und Archiv-Abos, im Image |
 | `EVAL_GOLD_DIR` | `eval/gold` | wie Vorgabe | Goldstandard für `compendium eval`; im Image nicht enthalten |

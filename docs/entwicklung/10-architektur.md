@@ -54,6 +54,9 @@ Quelltext. Die Quellen liegen daneben in `architektur/*.html` und `*.json`.
 - Der Dienst übernimmt neue Daten ohne Neustart: die Archive bei der nächsten Anfrage, den Lehrplan-Cache beim nächsten
   Aufruf, die Indizes nach höchstens 60 s. Sammlungen und Materialtexte liest er aus dem Repository und hält sie im
   Repository-Cache, je Pod an `WLO_CACHE_PATH` (D109).
+- Mit `INDEX_COPY_DIR` kopiert jeder API-Pod `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung auf seine lokale
+  Platte (etwa ein `emptyDir`) und liest dort; mit `TEMPLATES_DIR` kommen die eigenen Templates aus einem eigenen
+  Verzeichnis, etwa einer ConfigMap. Dann mountet die API die geteilten Volumes nur lesend (D113).
 - Jeder Sidecar schreibt Status- und Lebenszeichen-Dateien. `/metrics` am internen Port liest sie bei jeder Abfrage, und
   Alarme wie `KompendiumZimSyncSilent` melden einen stummen Sidecar. Die Schleifen der Sidecars loggen nach stdout.
 

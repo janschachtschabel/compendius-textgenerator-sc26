@@ -30,24 +30,23 @@ LLM mit `llm-free`; ein anderes Profil wählt `preset` im Aufruf. Die Aufrufe au
 ein Profil, wenn sie ein anderes zeigen. Das Profil bestimmt, wo das LLM mitarbeitet; alles andere rechnet der Dienst
 lokal. Ebenso das Template von Teil 1: `template_id`, sonst `TEMPLATE_DEFAULT`, ausgeliefert `sc26`.
 
-![Güte, Zeit und Kosten des alten Dienstes und der vier Profile vor D69 (M45; das fünfte steht in der Tabelle)](../entwicklung/bilder/qualitaet_zeit_kosten.svg)
+![Güte, Zeit und Kosten des alten Dienstes und der vier Profile vor D69 (M45; die Tabelle nennt alle fünf nach M91)](../entwicklung/bilder/qualitaet_zeit_kosten.svg)
 
-| Profil | Was das LLM tut | Kompendium allein | Tokens | wofür |
+| Profil | Was das LLM tut | Teil 1 und 2 allein | Tokens | wofür |
 |---|---|---|---|---|
-| `llm-free` | nichts | 2,3 s | 0 | Massenabrufe, Server ohne LLM |
-| `balanced` | wählt unsichere Hauptartikel, nennt Übersicht und Teile des Themas | 6,9 s | rund 580 | **Standard** |
-| `best-quality` | dazu: ordnet die Absätze den Bausteinen zu, prüft die Lehrplanbezüge | 26 s | rund 49.000, je nach Thema bis 87.000 | Vorbereitung durch die Redaktion |
-| `best-quality-generated` | dazu: schreibt den Text neu zum angefragten Thema, Bausteine ohne Belege aus Modellwissen (seit D72), Modellwissen markiert (sichtbar mit `model_knowledge_label`, D76) | 36 s | rund 60.000 | lesbarer Fließtext |
-| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (markiert) | rund 38 s, nur Teil 1 | rund 103.000, davon rund 60.000 aus dem Prompt-Cache | Sammelthemen und Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt |
+| `llm-free` | nichts | 2,9 s | 0 | Massenabrufe; **Standard ohne LLM** |
+| `balanced` | wählt unsichere Hauptartikel, nennt Übersicht und Teile des Themas | 3,8 s | rund 320 | schnelle Abrufe mit wenig LLM |
+| `best-quality` | dazu: ordnet die Absätze den Bausteinen zu, prüft die Lehrplanbezüge | 15 s | rund 52.000 | Vorbereitung durch die Redaktion |
+| `best-quality-generated` | dazu: schreibt den Text neu zum angefragten Thema, Bausteine ohne Belege aus Modellwissen (seit D72), Modellwissen markiert (sichtbar mit `model_knowledge_label`, D76) | 28 s | rund 89.000 | lesbarer Fließtext; **Standard mit LLM** (`PRESET_DEFAULT`, D82) |
+| `best-coverage-generated` | wie `best-quality-generated`, aber jeder Baustein vollständig zum angefragten Thema: aus den Belegen, wo sie das Thema treffen, sonst aus Modellwissen (markiert) | 33 s | rund 112.000 | Sammelthemen und Themen mit Aspekt („OER-Förderungen“), alle Bausteine gefüllt |
 
-Zeit und Tokens: Median auf dem Server, ein Kompendium allein (Messung M45,
-[01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)); `best-coverage-generated` Teil 1 allein auf dem
-Entwicklungsrechner (M52); der alte Dienst brauchte im besten Fall 35 s und 7.900 Tokens. Seit 2.19.0 (D102, M86)
-brauchen die schreibenden Profile rund ein Drittel mehr Tokens als hier gemessen; `best-quality` braucht gleich viele
-und druckt deutlich längere Texte. In jedem Profil hört jeder Prompt das angefragte Thema (D72); in den beiden
-schreibenden Profilen formuliert das LLM es zuerst, wenn `topic` ein Text ist (mehr als sechs Wörter oder 60 Zeichen,
-ein Satz, eine Frage) oder ein Knoten (`node_id`) oder eine Sammlung (`collection_id`) ohne Thema kommt. Gleichzeitig
-mit anderen dauert es länger ([Lastmessung](README.md#lastmessung-vom-29092026)). Bei `/api/v2/qa` schreiben `llm-free`
+Zeit und Tokens: Median, Teil 1 und 2 eines Kompendiums allein an neun Themen, mit dem zehnfachen Bausteinbudget
+(D102), Release 2.20.0 im Einmal-Container mit `gpt-6-luna` über OpenAI (Messung M91,
+[Entscheidungsvorlage](../entwicklung/07-entscheidungsvorlage.md)). Der alte Dienst brauchte im besten Fall 35 s und
+7.900 Tokens (M45, [01-alt-und-neu.md](../entwicklung/01-alt-und-neu.md)). In jedem Profil hört jeder Prompt das
+angefragte Thema (D72); in den beiden schreibenden Profilen formuliert das LLM es zuerst, wenn `topic` ein Text ist
+(mehr als sechs Wörter oder 60 Zeichen, ein Satz, eine Frage) oder ein Knoten (`node_id`) oder eine Sammlung
+(`collection_id`) ohne Thema kommt. Gleichzeitig mit anderen dauert es länger ([Lastmessung](README.md#lastmessung-vom-29092026)). Bei `/api/v2/qa` schreiben `llm-free`
 und `balanced` die Paare mit Regeln aus dem Satzbau, die drei Profile ab `best-quality` mit dem LLM.
 
 ## Vorbereitung
@@ -112,8 +111,9 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/qa" \
   | jq '.pairs'
 ```
 
-Ohne Profil schreiben mit `balanced` Regeln die Paare aus dem Satzbau, ohne Tokens; mit `"preset": "best-quality"`
-schreibt sie das LLM. Paare zu einem vorhandenen Text, alt und neu, stehen unter [QA-Paare](#qa-paare).
+Ohne Profil gilt `PRESET_DEFAULT`, ausgeliefert `best-quality-generated`: Das LLM schreibt die Paare (ohne LLM
+`llm-free`). Mit `"preset": "balanced"` oder `"llm-free"` schreiben Regeln sie aus dem Satzbau, ohne Tokens. Paare zu
+einem vorhandenen Text, alt und neu, stehen unter [QA-Paare](#qa-paare).
 
 ## Die Antwort
 
@@ -349,7 +349,7 @@ als Text: `jq -r '.pairs[] | "F: \(.question)\nA: \(.answer)\n"'`; als Liste ohn
 | Antwort `.qa[]` mit `question`, `answer`, `level_value` | Antwort `.pairs[]` mit `question`, `answer`, `level`, dazu `method`, `note`, `llm_tokens` |
 
 Gemessen am 29.09.2026: zehn Paare zu Photosynthese mit `best-quality` in 7 s für rund 2.000 Tokens, zu Teil 1 mit
-`balanced` (Regeln) in unter 1 s; am 30.09. zum Thema ohne Profil (Regeln) in 3 s ohne Tokens.
+`balanced` (Regeln) in unter 1 s; am 30.09. zum Thema ohne Profil (damals `balanced`, Regeln) in 3 s ohne Tokens.
 
 ## Weitere Funktionen
 
