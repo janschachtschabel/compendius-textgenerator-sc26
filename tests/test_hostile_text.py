@@ -408,3 +408,15 @@ def test_an_odd_quote_in_a_value_leaves_the_frontmatter_whole() -> None:
 
     assert yaml.safe_load(text) == data
     assert "<" not in text and ">" not in text
+
+
+@pytest.mark.parametrize("sign", ["\x85", " ", " "])
+def test_a_line_break_of_unicode_in_a_value_stays_in_the_value(sign: str) -> None:
+    """NEL and the Unicode line and paragraph separators were written raw in single quotes: YAML read NEL back as a
+    space, and a reader splitting the block into lines found the value cut in two (audit 2026-10-16)."""
+    data = {"topic": f"Optik{sign}Linsen"}
+
+    text = inert_yaml(data)
+
+    assert yaml.safe_load(text) == data
+    assert len(text.splitlines()) == 1

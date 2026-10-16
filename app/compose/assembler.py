@@ -62,9 +62,15 @@ class _InertDumper(yaml.SafeDumper):
         return True  # no anchors: "&" then only stands inside quoted strings
 
 
+# Line breaks YAML and str.splitlines() know besides CR and LF: written raw, NEL came back a space and a reader by lines
+# found the value cut in two; double-quoted YAML writes them as escapes (audit 2026-10-16)
+_UNICODE_BREAKS = (chr(0x85), chr(0x2028), chr(0x2029))
+
+
 def _string(dumper: yaml.SafeDumper, value: str) -> yaml.ScalarNode:
     # a quote too: written plain or single-quoted, it paired with the next real quote for _QUOTED (audit 2026-10-15)
-    style = '"' if '"' in value or any(sign in value for sign in _INERT) else None
+    quoted = '"' in value or any(sign in value for sign in (*_INERT, *_UNICODE_BREAKS))
+    style = '"' if quoted else None
     return dumper.represent_scalar("tag:yaml.org,2002:str", value, style=style)
 
 
