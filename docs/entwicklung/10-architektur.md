@@ -10,13 +10,12 @@ Dateien und laden nichts nach; die Schriften sind eingebettet.
 
 | Diagramm | Inhalt |
 |---|---|
-| [Systemübersicht](architektur/systemuebersicht.html) | Aufrufer, Zugangsprüfung, API-Dienst, Volumes, Sidecars, externe Quellen und Monitoring |
-| [Eine Kompendium-Anfrage](architektur/kompendium-anfrage.html) | der Weg von `POST /api/v2/compendium` durch die drei Teile, mit den LLM-Aufrufen je Profil |
-| [Sidecars und lokale Daten](architektur/sidecars-und-daten.html) | Quellen, Sidecars, Volumes, die Leser im Dienst und die Überwachung |
+| [Systemübersicht](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/systemuebersicht.html) | Aufrufer, Zugangsprüfung, API-Dienst, Volumes, Sidecars, externe Quellen und Monitoring |
+| [Eine Kompendium-Anfrage](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/kompendium-anfrage.html) | der Weg von `POST /api/v2/compendium` durch die drei Teile, mit den LLM-Aufrufen je Profil |
+| [Sidecars und lokale Daten](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/sidecars-und-daten.html) | Quellen, Sidecars, Volumes, die Leser im Dienst und die Überwachung |
 
-Im Browser liegen sie unter
-https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/systemuebersicht.html,
-`…/kompendium-anfrage.html` und `…/sidecars-und-daten.html` (GitHub Pages aus dem Ordner `docs/`).
+Die Links führen auf GitHub Pages (aus dem Ordner `docs/`): Im Repository zeigt GitHub eine HTML-Datei nur als
+Quelltext. Die Quellen liegen daneben in `architektur/*.html` und `*.json`.
 
 ## Systemübersicht
 

@@ -28,7 +28,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 
 | | | Status |
 |---|---|---|
-| Übersicht | Ein Image, fünf Container, zwei Volumes; drei interaktive Diagramme ([Architektur](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/10-architektur.md)) | erfüllt |
+| Übersicht | Ein Image, fünf Container, zwei Volumes; drei interaktive Diagramme: [Systemübersicht](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/systemuebersicht.html), [Anfrage](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/kompendium-anfrage.html), [Sidecars und Daten](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/sidecars-und-daten.html) ([Erläuterung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/10-architektur.md)) | erfüllt |
 | zustandslos oder zustandsbehaftet | Zustandslos; nur Caches, Repository-Cache je Pod | erfüllt |
 | Horizontale Skalierbarkeit | API über Pods und Worker (je ~1,7 GiB); Sidecars genau einmal; Volumes ReadWriteMany | erfüllt |
 
