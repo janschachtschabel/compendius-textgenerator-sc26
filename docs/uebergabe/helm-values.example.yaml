@@ -21,7 +21,7 @@ securityContext:            # wie docker-compose.yml: kein root, nur lesendes Wu
   allowPrivilegeEscalation: false
 tmpEmptyDir:                # die API schreibt dorthin Metrikdateien, ihre Log-Konfiguration (app/serve.py), mit
   mountPath: /tmp           # WLO_CACHE_PATH den Repository-Cache und mit INDEX_COPY_DIR die Kopien der Indexe
-  sizeLimit: 2Gi            # Indexe bis rund 1 GB (die vorige Fassung bleibt bis zur nächsten); auf Platte, nicht im RAM
+  sizeLimit: 2Gi            # Indexe bis ~1 GB (die vorige Fassung bleibt bis zur nächsten); auf Platte, nicht im RAM
 
 api:
   replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 5.1)
@@ -60,8 +60,9 @@ api:
     EDU_SHARING_PASSWORD: ""
 
 # Die Sidecars nutzen dasselbe Image mit eigenem Befehl, ohne Secrets; jeder läuft genau einmal: als eigenes Deployment
-# mit replicas: 1 und strategy: Recreate, nicht als Container im API-Pod (sonst liefen sie mit jedem API-Pod mit). Ressourcen: im
-# Leerlauf je rund 108 MiB gemessen, beim Bau der Indexe nicht; die Grenzen sind geschätzt (anforderungen.md, 5.3).
+# mit replicas: 1 und strategy: Recreate, nicht als Container im API-Pod (sonst liefen sie mit jedem API-Pod mit).
+# Ressourcen: im Leerlauf je rund 108 MiB gemessen, beim Bau der Indexe nicht; die Grenzen sind geschätzt
+# (anforderungen.md, 5.3).
 sidecarResources:
   requests: { cpu: 100m, memory: 128Mi }
   limits: { cpu: "1", memory: 512Mi }
@@ -86,15 +87,17 @@ sidecars:
     command: [compendium, gnd, sync, --loop]
     volumes: [state]
 
-volumes:                   # die API mountet beide nur lesend (readOnly: true); nur die Updater schreiben (D113)
+volumes:                   # nur die Updater schreiben; die API mountet zim und state nur lesend (D113)
   zim:
     size: 60Gi             # Archive rund 18,7 GB, beim Wechsel der Wikipedia bis rund 38 GB
     accessMode: ReadWriteMany
     mountPath: /data/zim
+    apiReadOnly: true
   state:
     size: 5Gi              # 0,45 GB, dazu rund 1,5 GB frei für den Neubau des Wikidata-Index
     accessMode: ReadWriteMany
     mountPath: /data/state
+    apiReadOnly: true
   templates:               # ConfigMap mit den eigenen Templates (eine JSON-Datei je Template), nur für die API
     configMap: kompendium-templates
     optional: true         # ohne ConfigMap startet der Pod mit den eingebauten Templates
