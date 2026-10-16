@@ -83,3 +83,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 2. Status der b-api bei erreichtem Limit bestätigen (der Dienst nimmt 401, 402, 403, 429) – Team der b-api.
 3. Globale Route anlegen, nur wenn Routing gewünscht ist – Administrator der b-api.
 4. Modelle im Image: bewusst so, offen nur, falls der Betrieb es anders verlangt.
+
+**Hinweis zur Skalierung:** Die API-Pods sind zustandslos und frei skalierbar; die vier Updater laufen als eigene
+Deployments mit genau einem Replikat (nicht im API-Pod), und die geteilten Volumes brauchen ReadWriteMany auf NFSv4.1
+oder CephFS mit synchronen Uhren, weil die Pods dort SQLite-Indexe lesen und Lock-Dateien teilen.
