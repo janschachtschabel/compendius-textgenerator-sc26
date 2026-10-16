@@ -471,19 +471,25 @@ class BApiClient:
                         raise LlmError("b-api antwortete ohne gültiges JSON", status, reached=reached + 1) from exc
                 stop = self._route_stop(status, response.text) if self.route else None
                 key = request_key()
-                if key is not None and (status in KEY_REFUSALS or stop is not None or no_route(status, response.text)):
+                refused = status in KEY_REFUSALS or status == 404
+                if key is not None and (refused or stop is not None or no_route(status, response.text)):
                     # A route may belong to the key (D97): what it answers holds back this request, not every
-                    # caller's, as a refused key does (audit 2026-10-15)
+                    # caller's, as a refused key does (audit 2026-10-15). A 404 too: whether the b-api means the key
+                    # or the server by it was never measured, and one caller's key held back all (audit 2026-10-16)
                     if status in KEY_REFUSALS:
                         why = (
                             f"b-api lehnt den Schlüssel der Anfrage ab (HTTP {status}): Limit erreicht, LLM für den "
                             "Schlüssel abgeschaltet oder keine Berechtigung"
                         )
+                    elif status == 404:
+                        target = f"die Route {self.route!r}" if self.route else f"das Modell {self.model!r}"
+                        why = f"b-api findet {target} für den Schlüssel der Anfrage nicht (HTTP 404)"
                     elif stop is None or no_route(status, response.text):
                         why = f"Route {self.route!r} ist für den Schlüssel der Anfrage nicht aktiv (HTTP {status})"
                     else:
                         why = f"b-api-Routing für den Schlüssel der Anfrage ausgesetzt: {stop[1]} (HTTP {status})"
-                    raise self._refuse(key, why, response.text, status, reached, route=status not in KEY_REFUSALS)
+                    by_route = bool(self.route) and status not in KEY_REFUSALS
+                    raise self._refuse(key, why, response.text, status, reached, route=by_route)
                 if status not in RETRY_STATUSES or stop is not None:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
                     # key is blanked before the cut, which otherwise left the start of an echoed key (SE-10).

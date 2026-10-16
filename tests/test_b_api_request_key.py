@@ -601,3 +601,31 @@ def test_a_route_stop_with_the_key_of_a_request_is_not_logged_as_a_refused_key(
 
     [line] = [r.getMessage() for r in caplog.records if r.levelno == logging.WARNING]
     assert "refused the key" not in line and "kompendium" in line and "llm-free" in line
+
+
+@pytest.mark.parametrize("route", [None, "kompendium"])
+def test_a_404_met_with_the_key_of_a_request_stays_with_that_request(route: str | None) -> None:
+    """A 404 to a caller's key held back every caller for ten minutes; whether the b-api means the key or the server
+    by it was never measured, so it holds back that request only. The service's own key still stops all its calls
+    (audit 2026-10-16, C10)."""
+    client = BApiClient(
+        BASE,
+        KEY,
+        provider="router" if route else "openai",
+        model="gpt-6-luna",
+        route=route,
+        transport=httpx.MockTransport(lambda r: httpx.Response(404, json={"error": "not found"})),
+    )
+    key = RequestKey("Authorization", CALLER)
+    use_request_key(key)
+
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    assert key.refused is not None and "404" in key.refused
+    assert not client.suspended
+    use_request_key(None)
+    assert not client.suspended, "another request keeps the LLM"
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)
+    assert client.suspended, "the service's own key met the 404 itself"
