@@ -603,8 +603,8 @@ def test_a_route_stop_with_the_key_of_a_request_is_not_logged_as_a_refused_key(
     assert "refused the key" not in line and "kompendium" in line and "llm-free" in line
 
 
-@pytest.mark.parametrize("route", [None, "kompendium"])
-def test_a_404_met_with_the_key_of_a_request_stays_with_that_request(route: str | None) -> None:
+@pytest.mark.parametrize("route", ["", "kompendium"])
+def test_a_404_met_with_the_key_of_a_request_stays_with_that_request(route: str) -> None:
     """A 404 to a caller's key held back every caller for ten minutes; whether the b-api means the key or the server
     by it was never measured, so it holds back that request only. The service's own key still stops all its calls
     (audit 2026-10-16, C10)."""
