@@ -7,10 +7,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import create_app
+from app.sources import local_copy
 from app.sources.lehrplan.store import LehrplanWriter
+from app.sources.local_copy import LocalCopy
 from app.sources.wikidata.index import build_index
 from app.wiring import build_curricula
 from tests.conftest import ROOT, make_settings
@@ -56,3 +59,29 @@ def test_the_templates_come_from_their_own_directory(sample_zims: dict[str, Path
         ids = [template["id"] for template in client.get("/api/v2/templates").json()]
 
     assert "eigenes" in ids
+
+
+def test_the_probes_never_copy_a_new_version(
+    sample_zims: dict[str, Path], tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """/health and /ready have a few seconds; the probe that met a new lehrplan.db copied 277 MB over the network first
+    (audit 2026-10-16). They read the copy there is and leave the new version to the next request."""
+    state, local = tmp_path / "state", tmp_path / "local"
+    build_index(*write_dumps(tmp_path / "dumps"), state / "wikidata.db")
+    LehrplanWriter(state / "lehrplan.db").commit()
+    copying_in: dict[str, list[bool]] = {}
+    where = ["start"]
+    real_path = LocalCopy.path
+
+    def spy(self: LocalCopy) -> Path:
+        copying_in.setdefault(where[0], []).append(local_copy._copying.get())
+        return real_path(self)
+
+    monkeypatch.setattr(LocalCopy, "path", spy)
+    with TestClient(create_app(make_settings(sample_zims.values(), state, index_copy_dir=local))) as client:
+        for where[0] in ("/health", "/ready", "/api/v2/lehrplan/status"):
+            assert client.get(where[0]).status_code in (200, 503)
+
+    probes = {path: seen for path, seen in copying_in.items() if path != "start"}
+    assert set(probes) == {"/health", "/ready", "/api/v2/lehrplan/status"}
+    assert not any(any(seen) for seen in probes.values())

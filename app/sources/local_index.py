@@ -87,23 +87,26 @@ class LocalIndex:
         self._recheck_s, self._clock = recheck_s, clock
         self._checked_at = clock()
         self._identity: tuple[int, int, int] | None = None
-        self._reopen(self._file_identity())
+        self._reopen(*self._file_identity())
 
     def read_meta(self, rows: dict[str, str]) -> dict[str, Any]:
         return dict(rows)
 
-    def _file_identity(self) -> tuple[int, int, int] | None:
-        self.path = self._copy.path()  # the file read from now on: the volume's, or the copy of its current version
+    def _file_identity(self) -> tuple[Path, tuple[int, int, int] | None]:
+        """The file to read - the volume's, or the copy of its current version - and its identity."""
+        path = self._copy.path()
         try:
-            stat = self.path.stat()
+            stat = path.stat()
         except OSError:
-            return None
-        return stat.st_ino, stat.st_size, stat.st_mtime_ns
+            return path, None
+        return path, (stat.st_ino, stat.st_size, stat.st_mtime_ns)
 
-    def _reopen(self, identity: tuple[int, int, int] | None) -> None:
+    def _reopen(self, path: Path, identity: tuple[int, int, int] | None) -> None:
+        # path changes with the connection only: set outside the lock, a request read it while another thread opened
+        # the previous file (audit 2026-10-16)
         if self._connection is not None:
             self._connection.close()
-        self._connection, self._meta, self._identity = None, {}, identity
+        self.path, self._connection, self._meta, self._identity = path, None, {}, identity
         if identity is not None:
             self._open()
 
@@ -112,13 +115,13 @@ class LocalIndex:
         if now - self._checked_at < self._recheck_s:
             return
         self._checked_at = now
-        identity = self._file_identity()
+        path, identity = self._file_identity()
         if identity == self._identity:
             return
         with self._lock:
             if identity != self._identity:  # another request thread may have opened it meanwhile
-                log.info("%s %s changed; opening it again", self.label, self.path)
-                self._reopen(identity)
+                log.info("%s %s changed; opening it again", self.label, path)
+                self._reopen(path, identity)
 
     def _open(self) -> None:
         # absolute(), not resolve(): on a mapped drive resolve() yields a UNC path, and SQLite refuses its URI

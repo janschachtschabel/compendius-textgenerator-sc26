@@ -43,6 +43,7 @@ from app.sources.lehrplan.matcher import CurriculumMatch, build_keywords
 from app.sources.lehrplan.part import CurriculaBuilder, match_entry
 from app.sources.lehrplan.render import coverage
 from app.sources.lehrplan.store import LehrplanCacheError
+from app.sources.local_copy import deferred_copies
 
 log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v2/lehrplan", tags=["lehrplan"], route_class=GatedRoute)
@@ -173,15 +174,16 @@ def lehrplan_status(request: Request) -> dict[str, Any]:
     """
     settings: Settings = request.app.state.settings
     store = _builder(request).store
-    meta = store.meta()
-    return {
-        "available": store.available,
-        "file_present": store.exists,
-        "meta": meta,
-        "counts": store.counts(),
-        "coverage": coverage(meta),
-        "harvest": _public_harvest(read_status(Path(settings.state_dir))),
-    }
+    with deferred_copies():  # a status look, often a probe's: a new version is the next compendium's to copy (D113)
+        meta = store.meta()
+        return {
+            "available": store.available,
+            "file_present": store.exists,
+            "meta": meta,
+            "counts": store.counts(),
+            "coverage": coverage(meta),
+            "harvest": _public_harvest(read_status(Path(settings.state_dir))),
+        }
 
 
 @router.get(

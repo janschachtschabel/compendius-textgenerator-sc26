@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 from app import __version__, revision
 from app.api.system_threads import run_system
 from app.sources.gnd.index import GndIndex
+from app.sources.local_copy import deferred_copies
 from app.sources.wikidata.index import WikidataIndex
 
 router = APIRouter(tags=["system"])
@@ -43,6 +44,11 @@ def _gnd(index: GndIndex | None) -> dict[str, Any]:
 
 
 def _components(request: Request) -> dict[str, Any]:
+    with deferred_copies():  # a probe has seconds: a new version of an index is the next request's to copy (D113)
+        return _read_components(request)
+
+
+def _read_components(request: Request) -> dict[str, Any]:
     registry = request.app.state.registry
     settings = request.app.state.settings
     missing = registry.has_ids(request.app.state.required_ids)

@@ -13,10 +13,12 @@ from __future__ import annotations
 import contextlib
 import logging
 import os
+import re
 import shutil
 import threading
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Iterator
+from contextvars import ContextVar
 from pathlib import Path
 
 log = logging.getLogger(__name__)
@@ -24,9 +26,25 @@ log = logging.getLogger(__name__)
 RECHECK_S = 60.0  # how often a look checks the volume for a new version; one stat a minute costs nothing
 # A part this old belongs to a copy that died with its worker or container; a running copy writes on and stays younger
 STALE_PART_S = 600.0
+# A failed copy - a hiccup of the network, a full disk - is tried again after this; meanwhile the file is read in place
+RETRY_FAILED_S = 900.0
 _CHUNK = 1 << 20
 
 Version = tuple[int, int, int]
+
+# Off in the probes: /health and /ready have a few seconds, and a new version of lehrplan.db is 277 MB to copy over the
+# network. They read the copy there is; the next request copies (audit 2026-10-16).
+_copying: ContextVar[bool] = ContextVar("local_copy_copying", default=True)
+
+
+@contextlib.contextmanager
+def deferred_copies() -> Iterator[None]:
+    """Within it no ``path()`` copies a new version: it names the copy there is, or the file on the volume."""
+    token = _copying.set(False)
+    try:
+        yield
+    finally:
+        _copying.reset(token)
 
 
 class LocalCopy:
@@ -45,7 +63,7 @@ class LocalCopy:
         self._recheck_s, self._clock = recheck_s, clock
         self._lock = threading.Lock()
         self._current: Path | None = None
-        self._failed: Version | None = None  # the version whose copy failed: read in place until the next one
+        self._failed: tuple[Version, float] | None = None  # a version whose copy failed, and when
         self._checked_at: float | None = None
 
     def path(self) -> Path:
@@ -54,8 +72,8 @@ class LocalCopy:
         current, checked = self._current, self._checked_at
         recent = checked is not None and self._clock() - checked < self._recheck_s
         usable = current is not None and current.exists()
-        if recent and (current is None or usable):
-            return current or self.source
+        if (recent and (current is None or usable)) or not _copying.get():
+            return current if current is not None and usable else self.source
         # Another thread copying the next version takes seconds over the network: a whole previous copy serves
         # meanwhile, and only a reader without one waits (review of D113)
         if not self._lock.acquire(blocking=not usable):
@@ -83,8 +101,9 @@ class LocalCopy:
             with contextlib.suppress(OSError):  # another worker may remove an older copy meanwhile
                 if target.stat().st_size == stat.st_size:
                     return target
-            if version == self._failed:
-                return None
+            if self._failed is not None and self._failed[0] == version:
+                if self._clock() - self._failed[1] < RETRY_FAILED_S:
+                    return None
             part = target.with_name(f".{target.name}.{os.getpid()}.{threading.get_ident()}.part")
             try:
                 directory.mkdir(parents=True, exist_ok=True)
@@ -92,9 +111,13 @@ class LocalCopy:
                     shutil.copyfileobj(handle, out, _CHUNK)
                 os.replace(part, target)
             except OSError as exc:
+                with contextlib.suppress(OSError):  # another worker renamed its copy of this version into place first
+                    if target.stat().st_size == stat.st_size:
+                        part.unlink(missing_ok=True)
+                        return target
                 # once per version: a full or read-only directory warned at every look, each a full read (review)
                 log.warning("cannot copy %s to %s (%s); reading it in place", self.source.name, directory, exc)
-                self._failed = version
+                self._failed = (version, self._clock())
                 with contextlib.suppress(OSError):  # a leftover part; the directory may not even exist
                     part.unlink(missing_ok=True)
                 return None
@@ -105,17 +128,19 @@ class LocalCopy:
     def _prune(self, directory: Path, keep: Path) -> None:
         """Older copies but the newest of them, and parts a killed copy left behind. The previous copy stays until the
         next version: another worker may be about to open it, or may just have copied a version older than this one."""
-        copies = []
-        for path in directory.glob(f"{self.source.stem}-*{self.source.suffix}"):
-            with contextlib.suppress(OSError):
-                if path != keep:
-                    copies.append((path.stat().st_mtime_ns, path))
-        stale = [path for _, path in sorted(copies, reverse=True)[1:]]
+        # exactly the names made here: the directory may hold other files, a lehrplan-backup.db say (audit 2026-10-16)
+        stem, suffix = re.escape(self.source.stem), re.escape(self.source.suffix)
+        own_copy = re.compile(rf"{stem}-\d+-\d+-\d+{suffix}")
+        own_part = re.compile(rf"\.{stem}-\d+-\d+-\d+{suffix}\.\d+\.\d+\.part")
+        copies, stale = [], []
         now = time.time()
-        for part in directory.glob(f".{self.source.stem}-*{self.source.suffix}.*.part"):
+        for path in directory.iterdir():
             with contextlib.suppress(OSError):
-                if now - part.stat().st_mtime > STALE_PART_S:
-                    stale.append(part)
+                if own_copy.fullmatch(path.name) and path != keep:
+                    copies.append((path.stat().st_mtime_ns, path))
+                elif own_part.fullmatch(path.name) and now - path.stat().st_mtime > STALE_PART_S:
+                    stale.append(path)
+        stale += [path for _, path in sorted(copies, reverse=True)[1:]]
         for path in stale:
             try:
                 path.unlink()

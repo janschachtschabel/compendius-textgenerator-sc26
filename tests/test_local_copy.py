@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from app.sources.local_copy import LocalCopy
+from app.sources.local_copy import RETRY_FAILED_S, LocalCopy, deferred_copies
 
 
 def write(path: Path, data: bytes) -> None:
@@ -213,3 +213,65 @@ def test_one_worker_s_new_copy_leaves_the_copy_another_worker_reads(source: Path
     a.path()
 
     assert read_by_b.exists() and b.path() == read_by_b
+
+
+def test_a_copy_another_worker_renamed_into_place_first_is_used(
+    source: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    """Two workers copy the same version at the start; on Windows the slower one's rename fails while the other's copy
+    is open, and the version counted as failed for good (audit 2026-10-16)."""
+    real_replace = os.replace
+
+    def lost(src: str | os.PathLike[str], dst: str | os.PathLike[str]) -> None:
+        real_replace(src, dst)  # the other worker's copy is in place now
+        raise PermissionError(5, "Access is denied")
+
+    monkeypatch.setattr("app.sources.local_copy.os.replace", lost)
+    with caplog.at_level(logging.WARNING, logger="app.sources.local_copy"):
+        path = LocalCopy(source, tmp_path / "local").path()
+
+    assert path.parent == tmp_path / "local" and path.read_bytes() == b"first"
+    assert "cannot copy" not in caplog.text
+
+
+def test_a_failed_copy_is_tried_again_after_a_while(source: Path, tmp_path: Path) -> None:
+    """A network hiccup or a full disk read the volume until the next version, days later (audit 2026-10-16)."""
+    local = tmp_path / "local"
+    local.write_text("in the way", encoding="utf-8")
+    clock = Clock()
+    copy = LocalCopy(source, local, recheck_s=0, clock=clock)
+    assert copy.path() == source
+    local.unlink()
+
+    clock.now = RETRY_FAILED_S - 1
+    assert copy.path() == source, "not yet"
+    clock.now = RETRY_FAILED_S + 1
+    assert copy.path().parent == local
+
+
+def test_tidying_up_leaves_files_the_service_did_not_make(source: Path, tmp_path: Path) -> None:
+    """INDEX_COPY_DIR on a directory shared with other files: lehrplan-backup.db matched the pattern of the copies."""
+    local = tmp_path / "local"
+    local.mkdir()
+    foreign = local / "lehrplan-backup.db"
+    foreign.write_bytes(b"someone's backup")
+    copy = LocalCopy(source, local, recheck_s=0, clock=Clock())
+    for version in (b"one", b"two, longer", b"three, longer still"):
+        write(source, version)
+        copy.path()
+
+    assert foreign.exists()
+
+
+def test_a_probe_reads_the_present_copy_and_leaves_a_new_version_to_a_request(source: Path, tmp_path: Path) -> None:
+    """/health and /ready have five seconds; the probe that met a new version first copied 277 MB over the network
+    (audit 2026-10-16)."""
+    local = tmp_path / "local"
+    copy = LocalCopy(source, local, recheck_s=0, clock=Clock())
+    first = copy.path()
+    write(source, b"second version")
+
+    with deferred_copies():
+        assert copy.path() == first
+    assert len(list(local.glob("lehrplan-*.db"))) == 1, "the probe made no copy"
+    assert copy.path().read_bytes() == b"second version"
