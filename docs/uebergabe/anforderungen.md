@@ -173,7 +173,7 @@ zwei Modelle (offene Punkte).
 | Frage | Antwort |
 |---|---|
 | Jede Einstellung als Env? | Ja, 83 Variablen des Dienstes mit Vorgabe und Empfehlung ([Konfiguration](konfiguration.md)), `.env.example` als Vorlage; ohne Eintrag gilt die Vorgabe |
-| Beispiel-Values? | [helm-values.example.yaml](helm-values.example.yaml): Image, Env, Secrets, Ressourcen, Proben am Port 9000, Volumes, Sidecars, Ingress-Pfade, PrometheusRule und ServiceMonitor |
+| Beispiel-Values? | [helm-values.example.yaml](helm-values.example.yaml): Image, Env, Secrets, Ressourcen von API und Sidecars, Proben am Port 9000, Volumes samt `emptyDir`, Sidecars, Ingress-Pfade, NetworkPolicy (Platzhalter-Selektoren), PrometheusRule und ServiceMonitor. Es ist eine Vorlage für Values; die Templates des Charts baut T6 nach seinem Muster |
 | Compose als Referenz | `docker-compose.yml` (fünf Container, zwei Volumes, Grenzen, Härtung) und das `Dockerfile`; Ressourcen und Skalierung stehen in den Values und unter 5.3 |
 | Secrets | `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN`, `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD`. Die Sidecars bekommen keines davon |
 | Abschaltbare Teile | Die vier Sidecars (`sidecars.<name>.enabled`; wer Archive, Lehrpläne oder Indexe anders liefert, braucht ihren Sidecar nicht) und Prometheus. Datenbank, Redis und Worker-Pods gibt es nicht |

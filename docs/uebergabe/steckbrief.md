@@ -37,7 +37,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | | | Status |
 |---|---|---|
 | Docker-Files | Mehrstufig, `python:3.13-slim`, nicht root, nur lesend ([Dockerfile](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/Dockerfile), [Compose](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docker-compose.yml)). Abweichung: zwei Modelle (380 MB) im Image, bewusst | erfüllt |
-| HELM-Chart und Beispiel-Values | [helm-values.example.yaml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/helm-values.example.yaml); das Chart baut T6 | erfüllt |
+| HELM-Chart und Beispiel-Values | [helm-values.example.yaml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/helm-values.example.yaml): Image, Env, Secrets, Ressourcen (API und Sidecars), Proben, Volumes, Ingress, NetworkPolicy, Monitoring; die Templates des Charts baut T6 | erfüllt |
 | Abschaltbare Komponenten | Vier Sidecars, Prometheus, Prüfansicht, API-Doku, Metriken, LLM | erfüllt |
 | Datenbank | Keine; SQLite nur lesend (Sidecar-Daten) und als Cache je Pod | erfüllt |
 | Quelle und Volume-Größe für große Daten | Sidecars laden auf Volumes: `zim` 60 Gi (Kiwix), `state` 5 Gi (MEM, Wikimedia, DNB) | erfüllt |

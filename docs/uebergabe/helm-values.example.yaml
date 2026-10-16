@@ -19,7 +19,9 @@ securityContext:            # wie docker-compose.yml: kein root, nur lesendes Wu
   readOnlyRootFilesystem: true
   capabilities: { drop: [ALL] }
   allowPrivilegeEscalation: false
-tmpEmptyDir: /tmp           # die API schreibt dorthin Metrikdateien und ihre Log-Konfiguration (app/serve.py)
+tmpEmptyDir:                # die API schreibt dorthin Metrikdateien, ihre Log-Konfiguration (app/serve.py) und mit
+  mountPath: /tmp           # WLO_CACHE_PATH den Repository-Cache des Pods
+  sizeLimit: 1Gi
 
 api:
   replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 5.1)
@@ -54,7 +56,11 @@ api:
     EDU_SHARING_USER: ""         # nur, wenn der Dienst allein über die b-api erreichbar ist (konfiguration.md)
     EDU_SHARING_PASSWORD: ""
 
-# Die Sidecars nutzen dasselbe Image mit eigenem Befehl, ohne Secrets; jeder läuft genau einmal.
+# Die Sidecars nutzen dasselbe Image mit eigenem Befehl, ohne Secrets; jeder läuft genau einmal. Ressourcen: im
+# Leerlauf je rund 108 MiB gemessen, beim Bau der Indexe nicht; die Grenzen sind geschätzt (anforderungen.md, 5.3).
+sidecarResources:
+  requests: { cpu: 100m, memory: 128Mi }
+  limits: { cpu: "1", memory: 512Mi }
 sidecars:
   zimUpdater:
     enabled: true
@@ -69,6 +75,8 @@ sidecars:
     enabled: true
     command: [compendium, wikidata, sync, --loop]
     volumes: [zim, state]        # zim nur lesend
+    resources:                   # baut den Index aus rund 750 MB Dumps
+      limits: { cpu: "1", memory: 1536Mi }
   gndUpdater:
     enabled: true
     command: [compendium, gnd, sync, --loop]
@@ -102,6 +110,14 @@ ingress:
     - { path: /docs, methods: [GET] }
     - { path: /redoc, methods: [GET] }
   timeoutSeconds: 330      # REQUEST_TIMEOUT_S 300 plus Puffer
+
+networkPolicy:
+  # Variante A: Port 8000 nur für den Proxy der b-api, Port 9000 nur für Kubelet (Proben) und Prometheus. Die Selektoren
+  # hängen vom Cluster ab und sind hier Platzhalter.
+  enabled: true
+  publicFrom: [{ namespaceSelector: { matchLabels: { name: b-api } } }]
+  internalFrom: [{ namespaceSelector: { matchLabels: { name: monitoring } } }]
+  egress: open             # ausgehend: b-api, edu-sharing, Kiwix, Wikimedia, DNB, MEM (README.md, Netz)
 
 monitoring:
   prometheusRule:
