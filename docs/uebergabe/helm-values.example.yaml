@@ -25,8 +25,8 @@ api:
   replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 5.1)
   port: 8000               # die API, über den Ingress (PUBLIC_PORT, D111)
   internalPort: 9000       # Proben, /metrics, Stand (INTERNAL_PORT, D110); kein Ingress, nur im Cluster
-  resources:               # Baseline 29.09.2026 mit zwei Workern (README.md, Ressourcen)
-    requests: { cpu: "2", memory: 4Gi }
+  resources:               # gemessen 16.10.2026 mit zwei Workern, mit Reserve (README.md, Ressourcen)
+    requests: { cpu: "2", memory: 5Gi }
     limits: { cpu: "4", memory: 6Gi }
   probes:                  # am internen Port des Pods; am Port 8000 antworten die Pfade mit 404
     liveness: { port: 9000, path: /health, periodSeconds: 30, timeoutSeconds: 5 }

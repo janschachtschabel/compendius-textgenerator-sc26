@@ -1,0 +1,450 @@
+{
+ "datum": "2026-10-16",
+ "dienst": {
+  "version": "2.23.0",
+  "revision": "cdc96d6",
+  "image": "ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest"
+ },
+ "host_lokal": "Docker Desktop (WSL2), 16 vCPU, 7,4 GiB für alle Container, NVMe-SSD; cgroup v1; API_MEMORY 6g, 2 Worker",
+ "archive_lokal": {
+  "wikipedia_de_all_nopic_2026-01.zim": 14578859275,
+  "klexikon_de_all_maxi_2026-08.zim": 135008418
+ },
+ "testserver": "http://186.240.152.207:8000 (Hostinger, gleiches Image, Speicher von außen nicht lesbar: nur Dauer)",
+ "llm": "b-api Staging, gpt-6-luna",
+ "hinweise": [
+  "Lokal gemessen ist nur der Container api; die Sidecars liefen nicht.",
+  "rss: Speicher der Prozesse (cgroup total_rss); cache: Seiten-Cache der Archive, vom Kernel bei Bedarf freigegeben."
+ ],
+ "lokal": [
+  {
+   "scenario": "1-llmfree",
+   "endpoint": "compendium",
+   "preset": "llm-free",
+   "concurrent": 1,
+   "wall_s": 6.4,
+   "idle_rss_gib": 3.29,
+   "peak_rss_gib": 3.38,
+   "peak_usage_gib": 3.52,
+   "peak_cache_gib": 0.12,
+   "cpu_seconds": 4.6,
+   "peak_cores": 1.35,
+   "mean_cores": 0.5,
+   "requests": [
+    {
+     "topic": "Photosynthese",
+     "status": 200,
+     "seconds": 6.4,
+     "size": 133926,
+     "tokens": null,
+     "detail": ""
+    }
+   ]
+  },
+  {
+   "scenario": "3-llmfree",
+   "endpoint": "compendium",
+   "preset": "llm-free",
+   "concurrent": 3,
+   "wall_s": 11.0,
+   "idle_rss_gib": 3.38,
+   "peak_rss_gib": 3.54,
+   "peak_usage_gib": 3.75,
+   "peak_cache_gib": 0.21,
+   "cpu_seconds": 12.6,
+   "peak_cores": 2.63,
+   "mean_cores": 0.91,
+   "requests": [
+    {
+     "topic": "Demokratie",
+     "status": 200,
+     "seconds": 7.1,
+     "size": 437569,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Vulkan",
+     "status": 200,
+     "seconds": 11.0,
+     "size": 92626,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Zellteilung",
+     "status": 200,
+     "seconds": 8.5,
+     "size": 40499,
+     "tokens": null,
+     "detail": ""
+    }
+   ]
+  },
+  {
+   "scenario": "5-llmfree",
+   "endpoint": "compendium",
+   "preset": "llm-free",
+   "concurrent": 5,
+   "wall_s": 23.9,
+   "idle_rss_gib": 3.53,
+   "peak_rss_gib": 3.71,
+   "peak_usage_gib": 4.07,
+   "peak_cache_gib": 0.33,
+   "cpu_seconds": 20.7,
+   "peak_cores": 2.0,
+   "mean_cores": 0.76,
+   "requests": [
+    {
+     "topic": "Evolution",
+     "status": 200,
+     "seconds": 21.4,
+     "size": 286195,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Magnetismus",
+     "status": 200,
+     "seconds": 18.3,
+     "size": 109900,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Optik",
+     "status": 200,
+     "seconds": 20.7,
+     "size": 95522,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Römisches_Reich",
+     "status": 200,
+     "seconds": 23.9,
+     "size": 157705,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Wasserkreislauf",
+     "status": 200,
+     "seconds": 4.8,
+     "size": 38461,
+     "tokens": null,
+     "detail": ""
+    }
+   ]
+  },
+  {
+   "scenario": "5-bqg",
+   "endpoint": "compendium",
+   "preset": "best-quality-generated",
+   "concurrent": 5,
+   "wall_s": 74.6,
+   "idle_rss_gib": 3.71,
+   "peak_rss_gib": 3.85,
+   "peak_usage_gib": 4.29,
+   "peak_cache_gib": 0.42,
+   "cpu_seconds": 23.8,
+   "peak_cores": 3.35,
+   "mean_cores": 0.3,
+   "requests": [
+    {
+     "topic": "Bruchrechnung",
+     "status": 200,
+     "seconds": 70.5,
+     "size": 47451,
+     "tokens": 35206,
+     "detail": ""
+    },
+    {
+     "topic": "Elektrizität",
+     "status": 200,
+     "seconds": 70.7,
+     "size": 135019,
+     "tokens": 105181,
+     "detail": ""
+    },
+    {
+     "topic": "Klimawandel",
+     "status": 200,
+     "seconds": 74.6,
+     "size": 132886,
+     "tokens": 126107,
+     "detail": ""
+    },
+    {
+     "topic": "Reformation",
+     "status": 200,
+     "seconds": 74.4,
+     "size": 152611,
+     "tokens": 122550,
+     "detail": ""
+    },
+    {
+     "topic": "Ökosystem",
+     "status": 200,
+     "seconds": 66.2,
+     "size": 191409,
+     "tokens": 94811,
+     "detail": ""
+    }
+   ]
+  },
+  {
+   "scenario": "5-llmfree-b",
+   "endpoint": "compendium",
+   "preset": "llm-free",
+   "concurrent": 5,
+   "wall_s": 19.9,
+   "idle_rss_gib": 3.85,
+   "peak_rss_gib": 3.99,
+   "peak_usage_gib": 4.53,
+   "peak_cache_gib": 0.51,
+   "cpu_seconds": 23.9,
+   "peak_cores": 3.21,
+   "mean_cores": 1.06,
+   "requests": [
+    {
+     "topic": "Atmung",
+     "status": 200,
+     "seconds": 7.9,
+     "size": 221226,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Gravitation",
+     "status": 200,
+     "seconds": 14.2,
+     "size": 125105,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Mittelalter",
+     "status": 200,
+     "seconds": 19.9,
+     "size": 290625,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Säuren",
+     "status": 200,
+     "seconds": 17.0,
+     "size": 268326,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Vulkanismus",
+     "status": 200,
+     "seconds": 9.6,
+     "size": 95070,
+     "tokens": null,
+     "detail": ""
+    }
+   ]
+  },
+  {
+   "scenario": "5-llmfree-c",
+   "endpoint": "compendium",
+   "preset": "llm-free",
+   "concurrent": 5,
+   "wall_s": 19.2,
+   "idle_rss_gib": 3.99,
+   "peak_rss_gib": 4.02,
+   "peak_usage_gib": 4.65,
+   "peak_cache_gib": 0.6,
+   "cpu_seconds": 19.7,
+   "peak_cores": 1.93,
+   "mean_cores": 0.88,
+   "requests": [
+    {
+     "topic": "Erosion",
+     "status": 200,
+     "seconds": 10.8,
+     "size": 87998,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Grundgesetz",
+     "status": 200,
+     "seconds": 10.1,
+     "size": 63265,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Industrialisierung",
+     "status": 200,
+     "seconds": 19.1,
+     "size": 156439,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Insekten",
+     "status": 200,
+     "seconds": 19.0,
+     "size": 144753,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Wahrscheinlichkeit",
+     "status": 200,
+     "seconds": 19.2,
+     "size": 216235,
+     "tokens": null,
+     "detail": ""
+    }
+   ]
+  },
+  {
+   "scenario": "5-llmfree-d",
+   "endpoint": "compendium",
+   "preset": "llm-free",
+   "concurrent": 5,
+   "wall_s": 17.6,
+   "idle_rss_gib": 4.02,
+   "peak_rss_gib": 4.02,
+   "peak_usage_gib": 4.73,
+   "peak_cache_gib": 0.68,
+   "cpu_seconds": 18.8,
+   "peak_cores": 1.94,
+   "mean_cores": 0.93,
+   "requests": [
+    {
+     "topic": "Kreislauf",
+     "status": 200,
+     "seconds": 13.5,
+     "size": 123495,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Lyrik",
+     "status": 200,
+     "seconds": 14.3,
+     "size": 338686,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Pflanzen",
+     "status": 200,
+     "seconds": 10.4,
+     "size": 484434,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Wetter",
+     "status": 200,
+     "seconds": 9.9,
+     "size": 226289,
+     "tokens": null,
+     "detail": ""
+    },
+    {
+     "topic": "Zahlen",
+     "status": 200,
+     "seconds": 17.6,
+     "size": 1282585,
+     "tokens": null,
+     "detail": ""
+    }
+   ]
+  }
+ ],
+ "testserver_dauer": {
+  "r1-llmfree": [
+   {
+    "topic": "Meeresströmungen",
+    "status": 200,
+    "seconds": 6.9,
+    "tokens": null,
+    "generation": "rule-based"
+   }
+  ],
+  "r5-llmfree": [
+   {
+    "topic": "Wüste",
+    "status": 200,
+    "seconds": 17.5,
+    "tokens": null,
+    "generation": "rule-based"
+   },
+   {
+    "topic": "Bruchzahlen",
+    "status": 200,
+    "seconds": 17.9,
+    "tokens": null,
+    "generation": "rule-based"
+   },
+   {
+    "topic": "Nervensystem",
+    "status": 200,
+    "seconds": 18.2,
+    "tokens": null,
+    "generation": "rule-based"
+   },
+   {
+    "topic": "Kunststoffe",
+    "status": 200,
+    "seconds": 24.3,
+    "tokens": null,
+    "generation": "rule-based"
+   },
+   {
+    "topic": "Barock",
+    "status": 200,
+    "seconds": 26.5,
+    "tokens": null,
+    "generation": "rule-based"
+   }
+  ],
+  "r5-bqg": [
+   {
+    "topic": "Gezeiten",
+    "status": 200,
+    "seconds": 36.3,
+    "tokens": null,
+    "generation": "llm"
+   },
+   {
+    "topic": "Kreuzzüge",
+    "status": 200,
+    "seconds": 56.5,
+    "tokens": null,
+    "generation": "llm"
+   },
+   {
+    "topic": "Elektromagnetismus",
+    "status": 200,
+    "seconds": 67.5,
+    "tokens": null,
+    "generation": "llm"
+   },
+   {
+    "topic": "Wirbeltiere",
+    "status": 200,
+    "seconds": 75.5,
+    "tokens": null,
+    "generation": "llm"
+   },
+   {
+    "topic": "Fotosynthese_Algen",
+    "status": 200,
+    "seconds": 86.1,
+    "tokens": null,
+    "generation": "llm"
+   }
+  ]
+ }
+}

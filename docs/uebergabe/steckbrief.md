@@ -8,7 +8,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | **Service** | Kompendiale Texte (`compendious-text-fastapi`) |
 | **Technischer Owner** | Jan Schachtschabel |
 | **Readiness Status** | Übergabeprüfung |
-| **Offene Punkte** | 5 |
+| **Offene Punkte** | 4 |
 | **Kritische Offene Punkte** | 1 |
 | **Jira** | [GEN-357](https://edu-sharing.atlassian.net/browse/GEN-357) |
 
@@ -22,7 +22,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | Pipeline und Git-Tags | GitHub Actions prüft, baut und veröffentlicht auf GHCR; Tag `vX.Y.Z` → `:X.Y.Z`; aktuell `v2.23.0` ([ci.yml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/.github/workflows/ci.yml)) | erfüllt |
 | Endpunkte (öffentliche und Infrastruktur) | Port 8000: `/api/v2/…`, `/openapi.json`, `/docs`. Port 9000: `/health`, `/ready`, `/metrics`, Status ([betrieb.md](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/betrieb.md#erreichbarkeit)) | erfüllt |
 | Spezielle Header und Content-Types | Ein: `Authorization` (Schlüssel aus der b-api), optional `x-client-trace-id`, B3. Aus: `X-Request-ID`. Nur `application/json` | erfüllt |
-| Asynchrone Job-Endpunkte | Keine; synchron, 3 bis 33 s im Median, Frist 300 s, Proxy-Timeout ≥ 330 s | nicht anwendbar |
+| Asynchrone Job-Endpunkte | Keine; synchron, 3 bis 33 s im Median, fünf gleichzeitig bis 86 s; Frist 300 s, Proxy-Timeout ≥ 330 s | nicht anwendbar |
 
 ## Architektur
 
@@ -64,7 +64,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 
 | | | Status |
 |---|---|---|
-| CPU, RAM und Storage | API 2–4 CPU, 4–6 Gi RAM; Sidecars je ~108 MiB; `zim` 60 Gi, `state` 5 Gi ([Abschnitt 5.3](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/anforderungen.md#53-ressourcen)). Messung von 2.5.0, Wiederholung offen | in Arbeit |
+| CPU, RAM und Storage | API: Request 2 CPU / 5 Gi, Limit 4 CPU / 6 Gi (gemessen 16.10. mit 2.23.0: 4,02 GiB warm, Spitze 3,4 Kerne); je weiterer Worker +2 Gi. Sidecars: 128 Mi / 512 Mi, `wikidata-updater` 1,5 Gi (geschätzt). Volumes `zim` 60 Gi, `state` 5 Gi, `emptyDir` 1 Gi. Ein Host: 4 vCPU, 8–12 GB RAM, 60 GB SSD ([Lastmessung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/README.md#lastmessung-vom-16102026)) | erfüllt |
 | Erwartete LLM-Kosten | Je Kompendium 0 (`llm-free`) bis ~112.000 Tokens; Vorgabe ~89.000, geschätzt < 1 Cent; Abrechnung je Schlüssel in der b-api | erfüllt |
 | Kosten externer APIs | Keine (Kiwix, Wikimedia, DNB, MEM, edu-sharing) | erfüllt |
 
@@ -73,7 +73,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | | | Status |
 |---|---|---|
 | Ansprechperson in T4 | Jan Schachtschabel | erfüllt |
-| Bekannte Einschränkungen und offene Punkte | Siehe unten | in Arbeit |
+| Bekannte Einschränkungen und offene Punkte | Siehe unten; vier offen, drei davon bei der b-api | erfüllt |
 | Links zu Betriebsdokumentation und Nachweisen | [Übergabe](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/README.md), [Betrieb](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/betrieb.md), [Audit 15.10.](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/audits/2026-10-15-audit.md), [Änderungen](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/CHANGELOG.md) | erfüllt |
 
 ## Offene Punkte
@@ -82,5 +82,4 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
    `forwardApiKey`, Timeout ≥ 330 s) – Team der b-api.
 2. Status der b-api bei erreichtem Limit bestätigen (der Dienst nimmt 401, 402, 403, 429) – Team der b-api.
 3. Globale Route anlegen, nur wenn Routing gewünscht ist – Administrator der b-api.
-4. Lastmessung auf 2.23.0 wiederholen (`lasttest.py`).
-5. Modelle im Image: bewusst so, offen nur, falls der Betrieb es anders verlangt.
+4. Modelle im Image: bewusst so, offen nur, falls der Betrieb es anders verlangt.

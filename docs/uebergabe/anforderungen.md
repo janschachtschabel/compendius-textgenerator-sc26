@@ -40,7 +40,7 @@ lokalen Daten aktuell halten.
 | Welche Header braucht der Dienst vom Client? | Hinter der b-api `Authorization` (sonst `X-API-Key`): der Schlüssel, den die b-api vom Aufrufer weiterreicht und den der Dienst für seine LLM-Aufrufe braucht (D105). Optional `X-Request-ID`, `x-client-trace-id`, die B3-Header und `traceparent`/`tracestate`, damit Logs dienstübergreifend filterbar sind (D108). `X-Admin-Token` nur für die Admin-Pfade. Direkt erreichbar (Variante B): `X-API-Key` mit einem Schlüssel aus `API_KEYS` |
 | Welche Header gibt er zurück? | `X-Request-ID` an jeder Antwort (für Rückfragen und das Log). Dazu nur, was HTTP verlangt: `WWW-Authenticate` bei 401, `Retry-After` bei 429 (nur mit `RATE_LIMIT` über 0), `ETag` beim Lesen und Schreiben eines Templates. Die HTML-Seiten `/docs`, `/redoc` und `/ui/` tragen Sicherheits-Header (`Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy`) |
 | Content-Types? | Anfragen und Antworten `application/json`. Anderes liefern nur `/metrics` (Textformat für Prometheus, interner Port), `/docs` und `/redoc` (HTML) und die Prüfansicht `/ui/` (HTML, JavaScript, CSS; im Betrieb aus). Kein Streaming, keine SSE, keine Dateien |
-| Erwartete Antwortzeiten? | Ein Kompendium (Teil 1 und 2) im Median: `llm-free` 3 s, `balanced` 4 s, `best-quality` 15 s, `best-quality-generated` 28 s, `best-coverage-generated` 33 s (M91, neun Themen). Mit Teil 3 und Materialtexten kommt das Lesen des Repositorys dazu. Fünf gleichzeitige Anfragen dauerten je 9 bis 42 s ([Lastmessung](README.md#lastmessung-vom-29092026)). Die harte Frist ist `REQUEST_TIMEOUT_S`: mit OpenAI 300 s, mit academiccloud 600 s |
+| Erwartete Antwortzeiten? | Ein Kompendium (Teil 1 und 2) im Median: `llm-free` 3 s, `balanced` 4 s, `best-quality` 15 s, `best-quality-generated` 28 s, `best-coverage-generated` 33 s (M91, neun Themen). Mit Teil 3 und Materialtexten kommt das Lesen des Repositorys dazu. Fünf gleichzeitige Anfragen dauerten auf dem Testserver je 17 bis 27 s (`llm-free`) und 36 bis 86 s (`best-quality-generated`) ([Lastmessung](README.md#lastmessung-vom-16102026)). Die harte Frist ist `REQUEST_TIMEOUT_S`: mit OpenAI 300 s, mit academiccloud 600 s |
 | Welche Timeouts in Proxy und Ingress? | Mindestens 330 s (mit academiccloud 630 s); in den Beispiel-Values `ingress.timeoutSeconds: 330` |
 | Asynchrone Jobs? | Nein, die Anfragen bleiben synchron. Ein Job, der nach der Anfrage weiterläuft, müsste den Schlüssel des Aufrufers über die Anfrage hinaus halten, was die b-api ausschließt, und bräuchte eine Warteschlange. Die schreibenden Profile über 30 s sind darum ein Grund für die langen Timeouts |
 
@@ -148,15 +148,16 @@ Kompendium-Anfrage, Sidecars und Daten).
 
 ### 5.3 Ressourcen
 
-Gemessen am 29.09.2026 mit zwei Workern ([Ressourcen](README.md#ressourcen), [Lastmessung](README.md#lastmessung-vom-29092026)):
+Gemessen am 16.10.2026 mit Release 2.23.0 und zwei Workern; die Werte sind mit Reserve gesetzt ([Ressourcen](README.md#ressourcen), [Lastmessung](README.md#lastmessung-vom-16102026)):
 
 | Ressource | Requests | Limits | Anmerkung |
 |---|---|---|---|
-| RAM, API | 4 Gi | 6 Gi | 2,5 GiB nach dem Start, 3,4 GiB nach dem Aufwärmen, Spitze in 47 Anfragen 3,41 GiB; je weiterer Worker rund 1,7 GiB |
-| RAM, Sidecars | – | – | je rund 108 MiB im Leerlauf; beim Bau der Indexe mehr, nicht gemessen |
-| CPU, API | 2 | 4 | im Mittel rund ein Kern, Spitzen bis vier; mit 2, 4 und 16 vCPU dauerten fünf Kompendien gleich lang |
+| RAM, API | 5 Gi | 6 Gi | 3,3 GiB nach dem Start, 4,02 GiB nach dem Aufwärmen, dort stabil über 31 Anfragen; mit Seiten-Cache bis 4,7 GiB. Reserve für die größere Wikipedia 2026-10 und Spitzen. Je weiterer Worker rund 2 GiB (3 Worker: Limit 8 Gi) |
+| RAM, Sidecars | 128 Mi | 512 Mi, `wikidata-updater` 1,5 Gi | je rund 108 MiB im Leerlauf; beim Bau der Indexe nicht gemessen, die Grenzen sind geschätzt |
+| CPU, API | 2 | 4 | im Mittel rund ein Kern, Spitze 3,4 Kerne; mit 2, 4 und 16 vCPU dauerten fünf Kompendien gleich lang (29.09.) |
 | Storage `zim` | 60 Gi | | Archive rund 18,7 GB mit der Wikipedia 2026-10; beim Wechsel liegen alte und neue Ausgabe 24 Stunden nebeneinander, bis rund 38 GB. Es wächst mit der Wikipedia: die Ausgabe 2026-01 hatte 14,6 GB, 2026-10 18,6 GB |
 | Storage `state` | 5 Gi | | 0,45 GB, dazu rund 1,5 GB frei für den Neubau des Wikidata-Index |
+| `emptyDir` je Pod | 1 Gi | | Repository-Cache (`WLO_CACHE_PATH`) und Metrikdateien der Worker |
 | GPU | keine | | |
 
 ### 5.4 Große Datenmengen
@@ -190,7 +191,7 @@ zwei Modelle (offene Punkte).
 | Prometheus-Endpunkt, Applikationsmetriken, Alarmregeln | erfüllt (Abschnitt 3) |
 | Log-Format und `x-client-trace-id` | erfüllt (Abschnitt 3) |
 | Zustand, Skalierbarkeit, Architekturübersicht | erfüllt (5.1) |
-| Ressourcen-Baseline | erfüllt, Messung vom 29.09.2026 (5.3; Wiederholung offen) |
+| Ressourcen-Baseline | erfüllt, Messung vom 16.10.2026 mit 2.23.0 (5.3); Sidecars beim Indexbau geschätzt |
 | Datenbankwahl, abschaltbare Komponenten | erfüllt: keine Datenbank, SQLite nur lesend und als Cache je Pod (5.2, 5.5) |
 | Datenbereitstellung großer Daten | erfüllt: Sidecars auf Volumes (5.4) |
 | Env mit Defaults, Values-YAML, Secrets, Dockerfile, Compose | erfüllt (5.5) |
@@ -215,8 +216,6 @@ zwei Modelle (offene Punkte).
   Schlüssel einer Anfrage auch ein 429 nach den möglichen Versuchen; das sollte das Team der b-api bestätigen.
 - **Proxy-Eintrag `compendious-text-generator`:** zeigt womöglich noch auf eine alte Version des Dienstes; vor dem Test
   des durchgereichten Schlüssels `baseUrl` (Port 8000) und `forwardApiKey` prüfen lassen.
-- **Lastmessung wiederholen:** Die Baseline stammt aus 2.5.0 (29.09.2026); seitdem kamen das zehnfache Bausteinbudget
-  (D102) und die Wikipedia-Ausgabe 2026-10 dazu. `lasttest.py` liegt bei.
 - **Modelle im Image:** rund 380 MB der 1,1 GB. Sie ließen sich auf ein Volume legen, das ein Init-Container füllt;
   dann scheitert ein Start, wenn die Quelle der Modelle nicht erreichbar ist, und ihre Version muss außerhalb des Images
   festgehalten werden. Darum bleiben sie im Image, solange der Betrieb es nicht anders verlangt.

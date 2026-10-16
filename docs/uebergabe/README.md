@@ -61,15 +61,40 @@ Archivprofil `standard` (vollständige deutsche Wikipedia ohne Bilder und Klexik
 | | Minimum | Empfohlen | Grundlage (Messung unten) |
 |---|---|---|---|
 | CPU | 2 vCPU | 4 vCPU | Die API rechnet mit 2 Workern im Mittel auf rund einem Kern, in Spitzen auf bis zu vier: fünf gleichzeitige Kompendien dauerten mit 2, 4 und 16 vCPU gleich lang. Die übrigen Kerne sind für die Sidecars (der Neubau des Wikidata-Index dauert auf dem Server rund acht Minuten) und einen dritten Worker |
-| RAM | 6 GB | 8 GB | API nach dem Aufwärmen 3,4 GiB, höher stieg sie in 47 Anfragen nicht; Sidecars zusammen rund 0,4 GiB im Leerlauf, beim Bau ihrer Indexe mehr (nicht gemessen); dazu das System |
-| Grenze `API_MEMORY` | `4g` | `6g`, die Vorgabe | 4 GiB trugen alle 47 Anfragen, waren aber mit Seiten-Cache voll; 6g lässt Luft für Spitzen, etwa ein großes `existing_markdown` (bis 13 MB je Anfrage). Seit dem 29.09.2026 die Vorgabe in `docker-compose.yml`, vorher 4g |
+| RAM | 8 GB | 12 GB | API nach dem Aufwärmen 4,02 GiB (16.10.2026, Release 2.23.0), höher stieg sie in 31 Anfragen nicht; mit Seiten-Cache bis 4,7 GiB; Sidecars zusammen rund 0,4 GiB im Leerlauf, beim Bau ihrer Indexe mehr (nicht gemessen); dazu das System |
+| Grenze `API_MEMORY` | `6g`, die Vorgabe | `6g` | Mit 2.23.0 brauchen die Prozesse allein 4,02 GiB, eine Grenze von 4g wäre zu knapp; mit 2.5.0 trugen 4 GiB alle 47 Anfragen; 6g lässt Luft für Spitzen, etwa ein großes `existing_markdown` (bis 13 MB je Anfrage). Seit dem 29.09.2026 die Vorgabe in `docker-compose.yml`, vorher 4g |
 | Platte | 50 GB | 60 GB, SSD | Daten 16,5 GB im Betrieb, mit der Wikipedia-Ausgabe 2026-10 (18,6 GB) rund 20,5 GB; beim Update der Wikipedia liegen altes und neues Archiv 24 Stunden nebeneinander: rund 33 GB beim Wechsel auf 2026-10, bis rund 38 GB bei zwei Ausgaben dieser Größe; dazu System und Docker (D99) |
 | Netz | – | – | eingehend der Port der API (8000, besser hinter einem Reverse-Proxy mit TLS), der interne Port 9000 nur intern; ausgehend siehe [Netz](#netz) |
 
-Mehr gleichzeitige Anfragen: je weiterer Worker (`WEB_CONCURRENCY`) rund 1,7 GiB mehr, also `WEB_CONCURRENCY=3` mit
-`API_MEMORY=8g`, 12 GB RAM und 4 vCPU. Das Archivprofil `compact` (1,4 GB statt 14,7 GB, mit der Wikipedia 2026-10 statt
+Mehr gleichzeitige Anfragen: je weiterer Worker (`WEB_CONCURRENCY`) rund 2 GiB mehr, also `WEB_CONCURRENCY=3` mit
+`API_MEMORY=8g`, 16 GB RAM und 4 vCPU. Das Archivprofil `compact` (1,4 GB statt 14,7 GB, mit der Wikipedia 2026-10 statt
 18,7 GB) senkt Platte und Grundbedarf, enthält aber nur die meistgelesenen Artikel der Wikipedia; gemessen ist es hier
 nicht.
+
+### Lastmessung vom 16.10.2026
+
+Wiederholung mit Release 2.23.0 (Image `:latest`, Commit `cdc96d6`): seit 2.5.0 kamen unter anderem das zehnfache
+Bausteinbudget (D102), zwei Ports (D110) und neue Pakete dazu. Speicher und CPU lokal im selben Aufbau wie am 29.09.
+(Docker Desktop, 16 vCPU, Wikipedia 2026-01, nur der Container `api`), jetzt mit der Vorgabe `API_MEMORY=6g`; die Dauer
+zusätzlich auf dem Testserver (Hostinger, dasselbe Image, Wikipedia 2026-10), dessen Speicher sich von außen nicht
+lesen lässt. Rohdaten: [lasttest-2026-10-16.json](lasttest-2026-10-16.json).
+
+| Runde | gleichzeitig | Dauer lokal | Dauer Testserver | Tokens je Anfrage | Prozesse (RSS) vorher → Spitze | Kerne Spitze |
+|---|---:|---|---|---|---|---:|
+| Kompendium `llm-free` | 1 | 6,4 s | 6,9 s | – | 3,29 → 3,38 GiB | 1,4 |
+| Kompendium `llm-free` | 3 | 7,1 bis 11,0 s | – | – | 3,38 → 3,54 GiB | 2,6 |
+| Kompendium `llm-free` | 5 | 4,8 bis 23,9 s | 17,5 bis 26,5 s | – | 3,53 → 3,71 GiB | 2,0 |
+| Kompendium `best-quality-generated` | 5 | 66 bis 75 s | 36 bis 86 s | 35.000 bis 126.000 | 3,71 → 3,85 GiB | 3,4 |
+| drei weitere Runden `llm-free`, 15 neue Themen | je 5 | 7,9 bis 19,9 s | – | – | 3,85 → 4,02 GiB | bis 3,2 |
+
+- **Alle 42 Anfragen kamen mit HTTP 200 zurück**, lokal 31, auf dem Testserver 11; die längste nach 86 s.
+- **Der Speicher liegt rund 0,6 GiB höher als mit 2.5.0:** 3,29 GiB nach dem Start, 4,02 GiB nach dem Aufwärmen und
+  dort stabil über die letzten zehn Anfragen, rund 2 GiB je Worker. Mit Seiten-Cache bis 4,73 GiB, innerhalb von 6g.
+- **Sichere Werte:** Request 5 Gi und Limit 6 Gi für die API mit zwei Workern, Request 2 und Limit 4 CPU; das lässt
+  Reserve für die größere Wikipedia 2026-10, deren Einfluss auf den Speicher der Prozesse hier nicht gemessen ist. Die
+  Sidecars beim Bau ihrer Indexe sind weiter nicht gemessen; geschätzt reichen 512 Mi, dem `wikidata-updater` 1,5 Gi.
+- **`best-quality-generated` braucht mit fünf gleichzeitigen Anfragen gut eine Minute** und im Mittel rund 97.000
+  Tokens; allein im Median 28 s (M91). Die Zeit geht an die b-api, nicht an die CPU des Dienstes.
 
 ### Lastmessung vom 29.09.2026
 
