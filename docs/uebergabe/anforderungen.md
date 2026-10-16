@@ -126,8 +126,8 @@ Grund in der Antwort (D106): So bekommt ein Nutzer immer einen Text. Ob ein LLM 
 |---|---|
 | Hält der Dienst einen Zustand? | Keine Sitzungen, keine Historien, keine Job-Status. Jeder Worker hält Caches im Speicher (gelesene Artikel), die nur Zeit sparen, dazu seinen Schutzschalter für die b-api und, wenn gesetzt, sein Rate-Limit. Der Repository-Cache liegt in einer SQLite-Datei (`WLO_CACHE_PATH`, je Pod) |
 | Liefern mehrere Pods dieselbe Antwort? | Mit denselben Daten ja, bis auf das LLM: Ab `balanced` können zwei Aufrufe verschiedene Artikel oder Formulierungen wählen, auch im selben Pod. Ein Pod, der ein Thema schon kennt, antwortet schneller |
-| Teilen sich Pods ein Volume? | Ja, `zim` (Archive) und `state` (Lehrpläne, Indexe, eigene Templates), beide ReadWriteMany. Geschrieben werden sie von den Sidecars, je einer, und über die Admin-Pfade der API (Templates, Aufträge für Sync und Harvest, ein Archiv löschen): Wer die Admin-Pfade nutzt, mountet sie auch für die API schreibbar, sonst reicht lesend. Den Repository-Cache schreibt jeder Pod in sein eigenes `emptyDir` |
-| Grenzen der Skalierung? | Jeder Sidecar läuft genau einmal (Lock-Dateien auf dem Volume verhindern einen zweiten Lauf). Je Worker rund 1,7 GiB Speicher; Lesen der Archive und Zuordnung halten die Interpreter-Sperre, darum skaliert der Dienst über Worker und Pods, nicht über CPU je Worker. Die b-api begrenzt je Schlüssel; `LLM_MAX_CONCURRENCY` begrenzt die LLM-Aufrufe je Worker (Vorgabe 20 mit OpenAI) |
+| Teilen sich Pods ein Volume? | Ja, `zim` (Archive) und `state` (Lehrpläne, Indexe, eigene Templates), beide ReadWriteMany. Geschrieben werden sie von den Sidecars, je einer, und über die Admin-Pfade der API. Sonst liest die API sie nur: Mit `INDEX_COPY_DIR` kopiert jeder Pod `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung in sein `emptyDir` und liest dort, mit `TEMPLATES_DIR` kommen die eigenen Templates aus einer ConfigMap (D113); dann reicht der API ein lesender Mount. Die Admin-Pfade schreiben auf die Volumes (Aufträge für Sync und Harvest, ein Archiv löschen, Templates speichern): mit lesendem Mount `ADMIN_TOKEN` leer lassen und Sync oder Harvest per Kommandozeile in den Updatern anstoßen. Den Repository-Cache schreibt jeder Pod in sein `emptyDir` |
+| Grenzen der Skalierung? | API-Pods lassen sich über mehrere Nodes verteilen, mit `INDEX_COPY_DIR` ohne SQLite über das Netz; die ZIM-Archive lesen sie weiter vom geteilten Volume, eine Frage der Leistung. Die Updater laufen als eigene Deployments mit genau einem Replikat, nicht im API-Pod (Lock-Dateien auf dem Volume verhindern einen zweiten Lauf). Je Worker rund 1,7 GiB Speicher; Lesen der Archive und Zuordnung halten die Interpreter-Sperre, darum skaliert der Dienst über Worker und Pods, nicht über CPU je Worker. Die b-api begrenzt je Schlüssel; `LLM_MAX_CONCURRENCY` begrenzt die LLM-Aufrufe je Worker (Vorgabe 20 mit OpenAI) |
 | Hintergrundaufgaben? | Die vier Sidecars aus demselben Image, unabhängig von der API: `zim-updater` (Kiwix, alle 30 Tage), `lehrplan-updater` (MEM, alle 7 Tage), `wikidata-updater` und `gnd-updater` (Wikimedia und DNB, täglich). Keine Warteschlange nötig |
 
 **Architekturübersicht:** ein Image, fünf Container, zwei Volumes ([Aufbau](README.md#aufbau), Bild unten). Zur
@@ -142,9 +142,9 @@ Kompendium-Anfrage, Sidecars und Daten).
 
 | Frage | Antwort |
 |---|---|
-| Welche Datenbank? | Keine PostgreSQL, MongoDB oder Redis. SQLite nur für Daten, die ein Sidecar liefert und die API nur liest (`lehrplan.db`, `wikidata.db`, `gnd.db`), das ist nach der Tabelle von T6 zulässig, und für den Repository-Cache, den jeder Pod für sich hält (D109) |
+| Welche Datenbank? | Keine PostgreSQL, MongoDB oder Redis. SQLite nur für Daten, die ein Sidecar liefert und die API nur liest (`lehrplan.db`, `wikidata.db`, `gnd.db`, mit `INDEX_COPY_DIR` aus einer lokalen Kopie je Pod), das ist nach der Tabelle von T6 zulässig, und für den Repository-Cache, den jeder Pod für sich hält (D109) |
 | Warum keine Umstellung? | Der Dienst hat keine Produktivdaten, die er selbst schreibt. Ein geteilter Cache in Redis brächte nur, dass ein Pod Sammlungen nicht neu liest, die ein anderer schon las; dafür käme ein Dienst mehr in den Betrieb |
-| Datenbankzugang per Env? | Entfällt; Pfade sind per Env einstellbar (`ZIM_DIR`, `STATE_DIR`, `WLO_CACHE_PATH`) |
+| Datenbankzugang per Env? | Entfällt; Pfade sind per Env einstellbar (`ZIM_DIR`, `STATE_DIR`, `WLO_CACHE_PATH`, `INDEX_COPY_DIR`, `TEMPLATES_DIR`) |
 
 ### 5.3 Ressourcen
 

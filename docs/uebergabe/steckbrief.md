@@ -8,7 +8,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | **Service** | Kompendiale Texte (`compendious-text-fastapi`) |
 | **Technischer Owner** | Jan Schachtschabel |
 | **Readiness Status** | Übergabeprüfung |
-| **Offene Punkte** | 5 |
+| **Offene Punkte** | 4 |
 | **Kritische Offene Punkte** | 1 |
 | **Jira** | [GEN-357](https://edu-sharing.atlassian.net/browse/GEN-357) |
 
@@ -30,7 +30,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 |---|---|---|
 | Übersicht | Ein Image, fünf Container, zwei Volumes; drei interaktive Diagramme: [Systemübersicht](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/systemuebersicht.html), [Anfrage](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/kompendium-anfrage.html), [Sidecars und Daten](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/sidecars-und-daten.html) ([Erläuterung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/10-architektur.md)) | erfüllt |
 | zustandslos oder zustandsbehaftet | Zustandslos; nur Caches, Repository-Cache je Pod | erfüllt |
-| Horizontale Skalierbarkeit | Mehrere API-Pods auf einem Node ohne Einschränkung (je ~2 GiB je Worker); über mehrere Nodes Grenzen beim geteilten Volume (Hinweis unten); Updater genau einmal | offen |
+| Horizontale Skalierbarkeit | API-Pods über beliebige Nodes: jeder liest die SQLite-Indexe aus einer lokalen Kopie (`INDEX_COPY_DIR`), die Volumes nur lesend (D113); je Worker ~2 GiB; Updater genau einmal | erfüllt |
 
 ## Deployment und Infrastruktur
 
@@ -39,7 +39,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | Docker-Files | Mehrstufig, `python:3.13-slim`, nicht root, nur lesend ([Dockerfile](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/Dockerfile), [Compose](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docker-compose.yml)). Abweichung: zwei Modelle (380 MB) im Image, bewusst | erfüllt |
 | HELM-Chart und Beispiel-Values | [helm-values.example.yaml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/helm-values.example.yaml): Image, Env, Secrets, Ressourcen (API und Sidecars), Proben, Volumes, Ingress, NetworkPolicy, Monitoring; die Templates des Charts baut T6 | erfüllt |
 | Abschaltbare Komponenten | Vier Sidecars, Prometheus, Prüfansicht, API-Doku, Metriken, LLM | erfüllt |
-| Datenbank | Keine; SQLite nur lesend (Sidecar-Daten) und als Cache je Pod | erfüllt |
+| Datenbank | Keine; SQLite nur lesend (Sidecar-Daten, mit `INDEX_COPY_DIR` als lokale Kopie je Pod) und als Cache je Pod | erfüllt |
 | Quelle und Volume-Größe für große Daten | Sidecars laden auf Volumes: `zim` 60 Gi (Kiwix), `state` 5 Gi (MEM, Wikimedia, DNB) | erfüllt |
 
 ## Security und Konfiguration
@@ -83,11 +83,8 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 2. Status der b-api bei erreichtem Limit bestätigen (der Dienst nimmt 401, 402, 403, 429) – Team der b-api.
 3. Globale Route anlegen, nur wenn Routing gewünscht ist – Administrator der b-api.
 4. Modelle im Image: bewusst so, offen nur, falls der Betrieb es anders verlangt.
-5. Skalierung über mehrere Nodes: SQLite-Indexe je Pod lokal kopieren und Templates in der Produktion nur lesend
-   (rund 2 bis 3 Personentage), falls T6 die API über mehrere Nodes verteilt.
 
-**Hinweis zur Skalierung:** Die API-Pods sind für die Antworten zustandslos und brauchen keine Session-Affinity, die
-vier Updater laufen als eigene Deployments mit genau einem Replikat; über mehrere Nodes teilen die Pods aber ein
-ReadWriteMany-Volume (NFSv4.1 oder CephFS, synchrone Uhren), von dem sie SQLite-Indexe lesen, und beim Austausch
-eines Index kann eine einzelne Anfrage scheitern – bis Punkt 5 umgesetzt ist, liegen mehrere Pods am besten auf
-einem Node.
+**Hinweis zur Skalierung:** Die API-Pods sind für die Antworten zustandslos, brauchen keine Session-Affinity und
+lassen sich über mehrere Nodes verteilen: Mit `INDEX_COPY_DIR` liest jeder Pod die SQLite-Indexe aus einer Kopie auf
+seiner lokalen Platte und das geteilte Volume nur lesend (D113); die vier Updater laufen als eigene Deployments mit
+genau einem Replikat, nicht im API-Pod, und die ZIM-Archive kommen weiter vom geteilten Volume (ReadWriteMany).

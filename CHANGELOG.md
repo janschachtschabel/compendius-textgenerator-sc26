@@ -9,7 +9,11 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
 
 ## Unveröffentlicht
 
-Noch nichts.
+- **Neu (D113):** `INDEX_COPY_DIR` lässt jeden API-Pod `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung auf seine
+  lokale Platte kopieren und dort lesen: Pods auf mehreren Nodes lesen kein SQLite mehr über das Netz, und der Tausch
+  durch einen Sidecar trifft keine Anfrage. `TEMPLATES_DIR` nimmt die eigenen Templates aus einem eigenen Verzeichnis,
+  etwa einer ConfigMap. Mit beiden und leerem `ADMIN_TOKEN` (die Admin-Pfade schreiben auf die Volumes) mountet die API
+  die Volumes nur lesend. Beide leer: wie bisher.
 
 ## 2.23.0 – 2026-10-15
 

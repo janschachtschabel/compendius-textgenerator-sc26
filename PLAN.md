@@ -2463,6 +2463,15 @@ API.
   Sammlungen; der Start warnt ohne `API_KEYS` (SE-06). In den LLM-Profilen gehen Titel, Beschreibung und Schlagwörter
   eines nicht öffentlichen Knotens wie die einer Sammlung an das Modell (über die b-api). Falsche Zugangsdaten geben bei
   jedem Aufruf 401 und fallen nicht auf Öffentliches zurück (wlo-edu-sharing-api).
+- **D113 (2026-10-16)** Stufe 1 der Skalierung (Jan: „dann plane und setze stufe 1 um“). Über mehrere Nodes lasen die
+  API-Pods die SQLite-Dateien der Sidecars über das Netzwerk-Dateisystem, und eine Anfrage konnte im Moment eines Tauschs
+  scheitern. Gebaut: `INDEX_COPY_DIR` (leer = wie bisher): `LocalCopy` kopiert `lehrplan.db`, `wikidata.db` und `gnd.db`
+  je Fassung in ein lokales Verzeichnis, benannt nach Inode, Größe und Änderungszeit der Quelle, und tauscht lokal;
+  scheitert die Kopie, liest der Dienst wie bisher vom Volume. `TEMPLATES_DIR` für eigene Templates aus einer ConfigMap.
+  Verworfen: ein eigener Spiegel-Container je Pod (mehr Container, dieselben Änderungen an den Lesern) und PostgreSQL
+  (andere Rangfolge der Volltextsuche, ein Dienst mehr, 1 bis 2 Wochen). Bleibt: ZIM-Archive vom geteilten Volume
+  (Leistung, nicht Korrektheit); Stufe 2 mit Objektspeicher und CronJobs nur bei breiter Skalierung.
+
 ## Anhang A — Beispiel-Skelett der Ausgabe
 
 ```markdown

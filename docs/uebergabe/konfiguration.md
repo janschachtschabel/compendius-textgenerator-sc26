@@ -182,6 +182,6 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 |---|---|---|---|
 | `STATE_DIR` | `/data/state` | wie Vorgabe | Zustandsvolume; Compose setzt `/data/state` |
 | `INDEX_COPY_DIR` | leer | Kubernetes mit mehreren Nodes: ein `emptyDir`, etwa `/tmp/indexes` | Die API kopiert `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung dorthin und liest lokal (D113); leer liest vom Volume wie bisher |
-| `TEMPLATES_DIR` | leer | Kubernetes: eine ConfigMap mit den eigenen Templates, etwa `/config/templates` | leer: `templates` in `STATE_DIR` (D113) |
+| `TEMPLATES_DIR` | leer | Kubernetes: eine ConfigMap mit den eigenen Templates, etwa `/config/templates` | leer: `templates` in `STATE_DIR` (D113); wer umstellt, nimmt die vorhandenen Templates von dort mit |
 | `CONFIG_DIR` | `config` | wie Vorgabe | Facetten, Überschriften-Lexikon, Fächer und Archiv-Abos, im Image |
 | `EVAL_GOLD_DIR` | `eval/gold` | wie Vorgabe | Goldstandard für `compendium eval`; im Image nicht enthalten |

@@ -19,9 +19,9 @@ securityContext:            # wie docker-compose.yml: kein root, nur lesendes Wu
   readOnlyRootFilesystem: true
   capabilities: { drop: [ALL] }
   allowPrivilegeEscalation: false
-tmpEmptyDir:                # die API schreibt dorthin Metrikdateien, ihre Log-Konfiguration (app/serve.py) und mit
-  mountPath: /tmp           # WLO_CACHE_PATH den Repository-Cache des Pods
-  sizeLimit: 1Gi
+tmpEmptyDir:                # die API schreibt dorthin Metrikdateien, ihre Log-Konfiguration (app/serve.py), mit
+  mountPath: /tmp           # WLO_CACHE_PATH den Repository-Cache und mit INDEX_COPY_DIR die Kopien der Indexe
+  sizeLimit: 2Gi            # Indexe bis rund 1 GB (die vorige Fassung bleibt bis zur nächsten); auf Platte, nicht im RAM
 
 api:
   replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 5.1)
@@ -46,17 +46,21 @@ api:
     RATE_LIMIT: "0"              # die b-api begrenzt je Schlüssel (D104)
     UI_ENABLED: "false"
     WLO_CACHE_PATH: /tmp/wlo_cache.db   # je Pod im emptyDir /tmp: kein SQLite-Schreiben über ein geteiltes Volume
+    INDEX_COPY_DIR: /tmp/indexes        # je Pod eine lokale Kopie von lehrplan.db, wikidata.db, gnd.db (D113)
+    TEMPLATES_DIR: /config/templates    # eigene Templates aus der ConfigMap unten; leer: im Volume state
     API_DOCS_ENABLED: "true"     # /openapi.json für die b-api und den Produktkatalog
     EDU_SHARING_BASE_URL: https://redaktion.openeduhub.net/edu-sharing/rest
   secretEnv:                     # aus einem Secret, nie in den Values
     B_API_KEY: ""                # optional bei B_API_KEY_SOURCE=request: nur für Anfragen ohne eigenen Schlüssel
     API_KEYS: ""                 # hinter dem Proxy der b-api leer lassen
-    ADMIN_TOKEN: ""              # mindestens 16 Zeichen; leer schaltet die Admin-Pfade ab
+    ADMIN_TOKEN: ""              # leer lassen: die Admin-Pfade schreiben auf die Volumes, die die API hier nur liest;
+                                 # Sync und Harvest per kubectl exec in den Updatern (compendium zim sync, ...)
     METRICS_TOKEN: ""            # für /metrics
     EDU_SHARING_USER: ""         # nur, wenn der Dienst allein über die b-api erreichbar ist (konfiguration.md)
     EDU_SHARING_PASSWORD: ""
 
-# Die Sidecars nutzen dasselbe Image mit eigenem Befehl, ohne Secrets; jeder läuft genau einmal. Ressourcen: im
+# Die Sidecars nutzen dasselbe Image mit eigenem Befehl, ohne Secrets; jeder läuft genau einmal: als eigenes Deployment
+# mit replicas: 1 und strategy: Recreate, nicht als Container im API-Pod (sonst liefen sie mit jedem API-Pod mit). Ressourcen: im
 # Leerlauf je rund 108 MiB gemessen, beim Bau der Indexe nicht; die Grenzen sind geschätzt (anforderungen.md, 5.3).
 sidecarResources:
   requests: { cpu: 100m, memory: 128Mi }
@@ -82,7 +86,7 @@ sidecars:
     command: [compendium, gnd, sync, --loop]
     volumes: [state]
 
-volumes:
+volumes:                   # die API mountet beide nur lesend (readOnly: true); nur die Updater schreiben (D113)
   zim:
     size: 60Gi             # Archive rund 18,7 GB, beim Wechsel der Wikipedia bis rund 38 GB
     accessMode: ReadWriteMany
@@ -91,6 +95,10 @@ volumes:
     size: 5Gi              # 0,45 GB, dazu rund 1,5 GB frei für den Neubau des Wikidata-Index
     accessMode: ReadWriteMany
     mountPath: /data/state
+  templates:               # ConfigMap mit den eigenen Templates (eine JSON-Datei je Template), nur für die API
+    configMap: kompendium-templates
+    optional: true         # ohne ConfigMap startet der Pod mit den eingebauten Templates
+    mountPath: /config/templates
 
 ingress:
   # Variante A: nur der Proxy der b-api darf den Dienst erreichen (internes Ingress oder NetworkPolicy), denn
