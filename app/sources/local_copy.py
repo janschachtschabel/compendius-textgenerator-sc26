@@ -22,7 +22,11 @@ from pathlib import Path
 log = logging.getLogger(__name__)
 
 RECHECK_S = 60.0  # how often a look checks the volume for a new version; one stat a minute costs nothing
+# A part this old belongs to a copy that died with its worker or container; a running copy writes on and stays younger
+STALE_PART_S = 600.0
 _CHUNK = 1 << 20
+
+Version = tuple[int, int, int]
 
 
 class LocalCopy:
@@ -41,14 +45,16 @@ class LocalCopy:
         self._recheck_s, self._clock = recheck_s, clock
         self._lock = threading.Lock()
         self._current: Path | None = None
-        self._checked_at = 0.0
+        self._failed: Version | None = None  # the version whose copy failed: read in place until the next one
+        self._checked_at: float | None = None
 
     def path(self) -> Path:
         if self.directory is None:
             return self.source
-        current = self._current
-        if current is not None and self._clock() - self._checked_at < self._recheck_s and current.exists():
-            return current
+        current, checked = self._current, self._checked_at
+        recent = checked is not None and self._clock() - checked < self._recheck_s
+        if recent and (current is None or current.exists()):
+            return current or self.source
         with self._lock:
             self._checked_at = self._clock()
             self._current = self._refresh(self.directory)
@@ -58,14 +64,20 @@ class LocalCopy:
         """The copy of the version on the volume now, made when there is none; ``None`` reads the file in place."""
         try:
             handle = self.source.open("rb")
-        except OSError:  # missing: its reader says so, as without a copy
+        except FileNotFoundError:  # missing: its reader says so, as without a copy
             return None
+        except OSError as exc:  # a stale handle or a timeout of the network file system passes: keep the copy
+            log.debug("cannot look at %s (%s); keeping %s", self.source, exc, self._current)
+            return self._current
         with handle:
             stat = os.fstat(handle.fileno())  # the version this handle reads, also when a swap comes meanwhile
-            version = f"{stat.st_ino}-{stat.st_size}-{stat.st_mtime_ns}"
-            target = directory / f"{self.source.stem}-{version}{self.source.suffix}"
-            if target.is_file() and target.stat().st_size == stat.st_size:
-                return target
+            version = (stat.st_ino, stat.st_size, stat.st_mtime_ns)
+            target = directory / f"{self.source.stem}-{'-'.join(map(str, version))}{self.source.suffix}"
+            with contextlib.suppress(OSError):  # another worker may remove an older copy meanwhile
+                if target.stat().st_size == stat.st_size:
+                    return target
+            if version == self._failed:
+                return None
             part = target.with_name(f".{target.name}.{os.getpid()}.{threading.get_ident()}.part")
             try:
                 directory.mkdir(parents=True, exist_ok=True)
@@ -73,19 +85,32 @@ class LocalCopy:
                     shutil.copyfileobj(handle, out, _CHUNK)
                 os.replace(part, target)
             except OSError as exc:
+                # once per version: a full or read-only directory warned at every look, each a full read (review)
                 log.warning("cannot copy %s to %s (%s); reading it in place", self.source.name, directory, exc)
+                self._failed = version
                 with contextlib.suppress(OSError):  # a leftover part; the directory may not even exist
                     part.unlink(missing_ok=True)
                 return None
         log.info("copied %s (%d bytes) to %s", self.source.name, stat.st_size, target)
-        self._remove_others(directory, target)
+        self._prune(directory, target)
         return target
 
-    def _remove_others(self, directory: Path, keep: Path) -> None:
-        """Older copies of this file: a worker that still reads one keeps its open file on Linux."""
-        for older in directory.glob(f"{self.source.stem}-*{self.source.suffix}"):
-            if older != keep:
-                try:
-                    older.unlink()
-                except OSError as exc:  # Windows refuses while a connection holds it; the next version tries again
-                    log.debug("cannot remove %s: %s", older, exc)
+    def _prune(self, directory: Path, keep: Path) -> None:
+        """Older copies but the newest of them, and parts a killed copy left behind. The previous copy stays until the
+        next version: another worker may be about to open it, or may just have copied a version older than this one."""
+        copies = []
+        for path in directory.glob(f"{self.source.stem}-*{self.source.suffix}"):
+            with contextlib.suppress(OSError):
+                if path != keep:
+                    copies.append((path.stat().st_mtime_ns, path))
+        stale = [path for _, path in sorted(copies, reverse=True)[1:]]
+        now = time.time()
+        for part in directory.glob(f".{self.source.stem}-*{self.source.suffix}.*.part"):
+            with contextlib.suppress(OSError):
+                if now - part.stat().st_mtime > STALE_PART_S:
+                    stale.append(part)
+        for path in stale:
+            try:
+                path.unlink()
+            except OSError as exc:  # Windows refuses while a connection holds it; the next version tries again
+                log.debug("cannot remove %s: %s", path, exc)
