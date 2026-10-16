@@ -1,6 +1,6 @@
 # Antworten für das IT-Team
 
-[Übergabe](README.md) · Stand 15.10.2026 · Release 2.23.0 (Stand bis D112)
+[Übergabe](README.md) · Stand 16.10.2026 · Release 2.24.0 (Stand bis D113)
 
 Team 6 hat in „Übergaben an den Maschinenraum“ festgelegt, was ein Dienst erfüllen und bei der Übergabe mitbringen muss,
 und in „B-API: Authentifizierung über den durchgereichten Authorization-Header“, wie ein Dienst hinter dem Proxy der
@@ -113,7 +113,7 @@ Grund in der Antwort (D106): So bekommt ein Nutzer immer einen Text. Ob ein LLM 
 |---|---|
 | Repo mit Zugriff für T6 | GitHub `janschachtschabel/compendius-textgenerator-sc26`, Branch `main`; für das interne GitLab liegt `.gitlab-ci.yml` nach dem Muster der Plattform bereit ([README](README.md#ci-im-internen-gitlab)) |
 | CI baut Images automatisch? | Ja: GitHub Actions (`ci.yml`) und die GitLab-Pipeline prüfen (ruff, mypy, pytest, Alarmregeln, Abhängigkeits-Audit), bauen das Image, testen es gehärtet (`scripts/smoke_image.py`, auch beide Ports) und veröffentlichen es erst dann |
-| Produktion nur mit Tags? | Ein Git-Tag `v2.23.0` baut `:2.23.0` und `:2.23`; `:latest` und `:main` zeigen auf den letzten geprüften Commit von `main` und sind für Staging gedacht |
+| Produktion nur mit Tags? | Ein Git-Tag `v2.24.0` baut `:2.24.0` und `:2.24`; `:latest` und `:main` zeigen auf den letzten geprüften Commit von `main` und sind für Staging gedacht |
 | Schlanke Basis, Multi-Stage, `.dockerignore`, nur Laufzeit-Abhängigkeiten? | Ja: mehrstufiger Bau auf `python:3.13-slim`, Compiler und Paketwerkzeuge bleiben in der Bau-Stufe, `.dockerignore` lässt Tests, Daten und Doku draußen. Installiert werden die Laufzeit-Abhängigkeiten und das Build-Backend (`hatchling`, Gruppe `build`, mit fester Version und Prüfsumme), das die Installation des Dienstes selbst braucht |
 | Nicht als root? | Benutzer `app` (UID 10001), nur lesendes Wurzeldateisystem, keine Capabilities, `no-new-privileges` (Compose; in den Beispiel-Values `securityContext`) |
 | Wie groß ist das Image? | 1,1 GB. Darin stecken die Modelle für die Zuordnung der Absätze (Model2Vec, 322 MB) und für Entitäten (spaCy, rund 60 MB). Daten liegen nicht darin (siehe 5.4 und offene Punkte) |

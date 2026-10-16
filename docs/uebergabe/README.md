@@ -1,10 +1,10 @@
 # Übergabe an das Technik-Team
 
-Stand 15.10.2026 · Release 2.23.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
+Stand 16.10.2026 · Release 2.24.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
 Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese fünf Seiten
 fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main` und damit
-Release 2.23.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
+Release 2.24.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
 `llm-free`, solange kein LLM eingerichtet ist (D68); seit 2.7.0 endet ein Satz aus Modellwissen nur noch mit
 `"model_knowledge_label": true` sichtbar mit `[Modellwissen]` (D76), und seit 2.8.0 bekommt eine Sammlung in `node_id`
 Teil 3 wie mit `collection_id` (D77); seit 2.9.0 stellt der Quellenblock Teil 1 nur dann ganz unter CC BY-SA 4.0, wenn
@@ -19,7 +19,9 @@ kein Tagesbudget mehr (D104), beschreibt in `/openapi.json` nur die öffentliche
 einer Anfrage weiter (D108). Seit 2.22.0 loggen API und Sidecars nach stdout, und jeder Pod hält seinen Repository-Cache
 für sich (D109); `/health`, `/ready`, `/metrics` und die Statusendpunkte antworten nur am internen Port 9000 (D110), und
 beide Ports sind einstellbar (D111). Seit 2.23.0 liest der Dienst mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`,
-etwa dem Gastkonto der WLO, auch Knoten und Sammlungen, die nicht öffentlich sind (D112). Die Fragen des IT-Teams
+etwa dem Gastkonto der WLO, auch Knoten und Sammlungen, die nicht öffentlich sind (D112). Seit 2.24.0 lesen API-Pods auf mehreren Nodes mit
+`INDEX_COPY_DIR` die SQLite-Indexe aus einer lokalen Kopie, und mit `TEMPLATES_DIR` kommen eigene Templates aus einem
+eigenen Verzeichnis; die geteilten Volumes hängt die API dann nur lesend ein (D113). Die Fragen des IT-Teams
 beantwortet [anforderungen.md](anforderungen.md), den Steckbrief der Vorlage von T6 füllt [steckbrief.md](steckbrief.md). Was sich
 je Stand für den Betrieb ändert, steht in [docs/betrieb.md](../betrieb.md) unter „Updates“. Die Speichergrenze 6g steht
 in `docker-compose.yml` und gilt mit jedem Image.

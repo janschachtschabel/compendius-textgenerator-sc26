@@ -7,8 +7,16 @@ Versionen nach Semantic Versioning: eine neue Einstellung oder neues Verhalten i
 Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änderten auch Verhalten. Die Tags 0.1.0 bis
 0.2.0 gehören zum Vorgängerdienst, dem alten Dienst im GitLab, und stehen nur kurz am Ende.
 
-## Unveröffentlicht
+## 2.24.0 – 2026-10-16
 
+Stufe 1 der Skalierung (D113): API-Pods auf mehreren Nodes lesen die SQLite-Indexe aus einer lokalen Kopie und die
+geteilten Volumes nur lesend; dazu das Update der Abhängigkeiten, weniger Speicher je Worker und die Korrekturen aus
+dem Audit vom 16.10.2026 ([Bericht](docs/audits/2026-10-16-audit.md): kein kritischer und kein schwerer Befund, alle
+behoben).
+
+- **[Betrieb](docs/betrieb.md#updates):** Zwei neue Einstellungen, `INDEX_COPY_DIR` und `TEMPLATES_DIR`, beide leer:
+  dann ändert sich nichts, auch nicht mit Compose. Die schreibenden Admin-Pfade antworten auf einem nur lesenden oder
+  vollen Volume mit 503 statt 500.
 - **Neu (D113):** `INDEX_COPY_DIR` lässt jeden API-Pod `lehrplan.db`, `wikidata.db` und `gnd.db` je Fassung auf seine
   lokale Platte kopieren und dort lesen: Pods auf mehreren Nodes lesen kein SQLite mehr über das Netz, und der Tausch
   durch einen Sidecar trifft keine Anfrage. `TEMPLATES_DIR` nimmt die eigenen Templates aus einem eigenen Verzeichnis,

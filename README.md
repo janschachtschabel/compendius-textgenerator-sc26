@@ -168,6 +168,18 @@ Abschnittsmarker von Teil 1.
   das Budget jedes Bausteins. Der Nutzen der Texte steigt in allen Profilen, Zeit kostet es keine, Tokens nur
   in den schreibenden Profilen (rund ein Drittel mehr); die wörtlichen Texte werden deutlich länger. Die
   `best-quality`-Profile dürfen 200.000 Tokens je Anfrage brauchen (`LLM_MAX_TOKENS_PER_REQUEST_BEST_QUALITY`).
+- Prüfansicht (D103, Release 2.20.0): die Satzauswahl der KI als Kästchen beim Profil.
+- Hinter dem Proxy der b-api (D104 bis D108, Release 2.21.0): der Schlüssel des Aufrufers für die LLM-Aufrufe,
+  ein klarer Rückfall auf die Regeln, wenn die b-api einen Schlüssel ablehnt, kein Tagesbudget mehr,
+  `/openapi.json` nur mit den öffentlichen Endpunkten, Tracing nach B3.
+- Kubernetes (D109 bis D111, Release 2.22.0): Logs nach stdout, der Repository-Cache je Pod, Proben, Metriken und
+  Stand am internen Port 9000, beide Ports einstellbar.
+- Gastkonto der WLO (D112, Release 2.23.0): Mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD` liest der Dienst
+  auch Knoten und Sammlungen, die nicht öffentlich sind; dazu die Korrekturen aus dem Audit vom 15.10.2026.
+- Skalierung, Stufe 1 (D113, Release 2.24.0): Mit `INDEX_COPY_DIR` liest jeder API-Pod die SQLite-Indexe aus einer
+  lokalen Kopie, mit `TEMPLATES_DIR` kommen eigene Templates aus einem eigenen Verzeichnis, die geteilten Volumes
+  hängt die API dann nur lesend ein; ein Worker braucht im Leerlauf rund 1,4 statt 1,8 GiB; dazu die Korrekturen
+  aus dem Audit vom 16.10.2026.
 
 ## Installation
 
