@@ -8,7 +8,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | **Service** | Kompendiale Texte (`compendious-text-fastapi`) |
 | **Technischer Owner** | Jan Schachtschabel |
 | **Readiness Status** | Übergabeprüfung |
-| **Offene Punkte** | 4 |
+| **Offene Punkte** | 5 |
 | **Kritische Offene Punkte** | 1 |
 | **Jira** | [GEN-357](https://edu-sharing.atlassian.net/browse/GEN-357) |
 
@@ -30,7 +30,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 |---|---|---|
 | Übersicht | Ein Image, fünf Container, zwei Volumes; drei interaktive Diagramme: [Systemübersicht](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/systemuebersicht.html), [Anfrage](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/kompendium-anfrage.html), [Sidecars und Daten](https://janschachtschabel.github.io/compendius-textgenerator-sc26/entwicklung/architektur/sidecars-und-daten.html) ([Erläuterung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/10-architektur.md)) | erfüllt |
 | zustandslos oder zustandsbehaftet | Zustandslos; nur Caches, Repository-Cache je Pod | erfüllt |
-| Horizontale Skalierbarkeit | API über Pods und Worker (je ~1,7 GiB); Sidecars genau einmal; Volumes ReadWriteMany | erfüllt |
+| Horizontale Skalierbarkeit | Mehrere API-Pods auf einem Node ohne Einschränkung (je ~2 GiB je Worker); über mehrere Nodes Grenzen beim geteilten Volume (Hinweis unten); Updater genau einmal | offen |
 
 ## Deployment und Infrastruktur
 
@@ -83,7 +83,11 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 2. Status der b-api bei erreichtem Limit bestätigen (der Dienst nimmt 401, 402, 403, 429) – Team der b-api.
 3. Globale Route anlegen, nur wenn Routing gewünscht ist – Administrator der b-api.
 4. Modelle im Image: bewusst so, offen nur, falls der Betrieb es anders verlangt.
+5. Skalierung über mehrere Nodes: SQLite-Indexe je Pod lokal kopieren und Templates in der Produktion nur lesend
+   (rund 2 bis 3 Personentage), falls T6 die API über mehrere Nodes verteilt.
 
-**Hinweis zur Skalierung:** Die API-Pods sind zustandslos und frei skalierbar; die vier Updater laufen als eigene
-Deployments mit genau einem Replikat (nicht im API-Pod), und die geteilten Volumes brauchen ReadWriteMany auf NFSv4.1
-oder CephFS mit synchronen Uhren, weil die Pods dort SQLite-Indexe lesen und Lock-Dateien teilen.
+**Hinweis zur Skalierung:** Die API-Pods sind für die Antworten zustandslos und brauchen keine Session-Affinity, die
+vier Updater laufen als eigene Deployments mit genau einem Replikat; über mehrere Nodes teilen die Pods aber ein
+ReadWriteMany-Volume (NFSv4.1 oder CephFS, synchrone Uhren), von dem sie SQLite-Indexe lesen, und beim Austausch
+eines Index kann eine einzelne Anfrage scheitern – bis Punkt 5 umgesetzt ist, liegen mehrere Pods am besten auf
+einem Node.
