@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import logging
 import os
+import shutil
+import threading
 from pathlib import Path
 
 import pytest
@@ -163,3 +165,51 @@ def test_a_passing_error_of_the_volume_keeps_the_copy(
     monkeypatch.setattr(Path, "open", flaky)
 
     assert copy.path() == first
+
+
+def test_a_reader_meanwhile_gets_the_previous_copy_instead_of_waiting_for_a_running_copy(
+    source: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Copying a new lehrplan.db over the network takes seconds; the other threads of the worker waited for it, the
+    probes too, although a whole previous copy lay ready (review of D113)."""
+    copy = LocalCopy(source, tmp_path / "local", recheck_s=0, clock=Clock())
+    first = copy.path()
+    write(source, b"second version")
+    started, release = threading.Event(), threading.Event()
+    real_copy = shutil.copyfileobj
+
+    def slow(*args: object, **kwargs: object) -> None:
+        started.set()
+        release.wait(5)
+        real_copy(*args, **kwargs)  # type: ignore[arg-type]
+
+    monkeypatch.setattr("app.sources.local_copy.shutil.copyfileobj", slow)
+    copier = threading.Thread(target=copy.path)
+    copier.start()
+    assert started.wait(5)
+    seen: list[Path] = []
+    reader = threading.Thread(target=lambda: seen.append(copy.path()))
+    reader.start()
+    reader.join(2)
+    waited = reader.is_alive()
+    release.set()
+    copier.join(5)
+    reader.join(5)
+
+    assert not waited and seen == [first]
+    assert copy.path().read_bytes() == b"second version"
+
+
+def test_one_worker_s_new_copy_leaves_the_copy_another_worker_reads(source: Path, tmp_path: Path) -> None:
+    """The workers of a pod share the directory: a worker that copies the next version must not remove the version
+    another worker still reads."""
+    local = tmp_path / "local"
+    a = LocalCopy(source, local, recheck_s=0, clock=Clock())
+    b = LocalCopy(source, local, recheck_s=60, clock=Clock())
+    a.path()
+    read_by_b = b.path()
+    write(source, b"second version")
+
+    a.path()
+
+    assert read_by_b.exists() and b.path() == read_by_b

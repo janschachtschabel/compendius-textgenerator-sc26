@@ -53,11 +53,18 @@ class LocalCopy:
             return self.source
         current, checked = self._current, self._checked_at
         recent = checked is not None and self._clock() - checked < self._recheck_s
-        if recent and (current is None or current.exists()):
+        usable = current is not None and current.exists()
+        if recent and (current is None or usable):
             return current or self.source
-        with self._lock:
+        # Another thread copying the next version takes seconds over the network: a whole previous copy serves
+        # meanwhile, and only a reader without one waits (review of D113)
+        if not self._lock.acquire(blocking=not usable):
+            return current or self.source
+        try:
             self._checked_at = self._clock()
             self._current = self._refresh(self.directory)
+        finally:
+            self._lock.release()
         return self._current or self.source
 
     def _refresh(self, directory: Path) -> Path | None:
