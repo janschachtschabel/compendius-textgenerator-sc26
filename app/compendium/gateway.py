@@ -16,7 +16,7 @@ from typing import Any
 
 from app.llm.budget import RequestBudget, TokenBudget
 from app.llm.client import BApiClient, ModelCheck
-from app.llm.credentials import request_key
+from app.llm.credentials import own_key_only, request_key
 from app.synthesis.llm import LlmSynthesizer
 from app.synthesis.qa import LlmQaWriter
 from app.synthesis.selection import LlmSelector
@@ -115,7 +115,13 @@ class LlmGateway:
         return self.budget.open_request(limit, label)
 
     def status(self) -> dict[str, Any]:
-        """Component status for ``/health``: the last known check, never a call to the b-api."""
+        """Component status for ``/health``: the last known check, never a call to the b-api. It speaks for the service
+        and its own key, also when the request reading it brought a key of its own: that said "Modellprüfung steht aus"
+        beside a failed check (review of 2026-10-17)."""
+        with own_key_only():
+            return self._status()
+
+    def _status(self) -> dict[str, Any]:
         if self.client.has_own_key:
             available = self.check is not None and self.check.ok and not self.client.suspended
         else:  # no model check without a key of its own (D105); a caller's key speaks only for its request

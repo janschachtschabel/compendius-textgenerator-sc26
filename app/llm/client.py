@@ -26,7 +26,7 @@ from collections.abc import Callable, Iterator, Mapping, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass, replace
 from http.cookiejar import Cookie, CookieJar, DefaultCookiePolicy
-from typing import Any, Literal
+from typing import Any, Literal, NoReturn
 
 import httpx
 
@@ -418,7 +418,7 @@ class BApiClient:
         try:
             # After a break a single attempt decides whether the b-api is back
             tries = 1 if probe else attempts or self.attempts
-            return self._attempts(method, url, json_body, tries, (ends, hard_end), before_retry, request)
+            return self._attempts(method, url, json_body, tries, (ends, hard_end), before_retry, request, probe=probe)
         finally:
             # a probe that neither closed nor tripped the breaker lets the next one try - of its own kind only: an
             # outage's probe ended by the service's key let a second call go out beside it (review of 2026-10-17)
@@ -438,9 +438,11 @@ class BApiClient:
         window: tuple[float, float | None],
         before_retry: Callable[[], str | None] | None,
         request: Deadline | None = None,
+        *,
+        probe: Literal["", "outage", "own key"] = "",
     ) -> tuple[Any, int]:
         """The attempts of one call until ``ends``; the wait for a call slot moves ``ends`` up to ``hard_end``, the end
-        of the call's request, where the caller named it (D93)."""
+        of the call's request, where the caller named it (D93). ``probe`` names the stop this call probes after."""
         ends, hard_end = window
         last_error = ""
         status: int | None = None
@@ -558,18 +560,25 @@ class BApiClient:
             # A 429 or 5xx retried into an answer left no trace, the seconds slept among it (logging review)
             log.info("b-api %s on attempt %d of %d, retrying in %.1f s", last_error, attempt + 1, attempts, wait)
             self._sleep(wait)
-        key = request_key()
-        if status == 429 and key is None:
-            reason = (
-                f"b-api begrenzt den Schlüssel des Dienstes (HTTP 429 nach {attempt + 1} Versuchen): Limit erreicht"
-            )
-            self._trip(BREAKER_S, reason, cause=last_error, own_key=True)
-        elif status == 429 and key is not None and not self._probing:  # a probe's one 429 may pass (review 17.10.)
-            why = f"b-api begrenzt den Schlüssel der Anfrage (HTTP 429 nach {attempt + 1} Versuchen): Limit erreicht"
-            raise self._refuse(key, why, last_error, status, reached)
+        if status == 429:
+            self._limited(attempt + 1, last_error, reached, probe)
         if self._failures >= self.attempts:
             self._trip(cause=f"{self._failures} failed attempts in a row, the last {last_error}")
         raise LlmError(f"b-api nach {attempt + 1} Versuchen nicht erreichbar ({last_error})", status, reached=reached)
+
+    def _limited(self, made: int, said: str, reached: int, probe: Literal["", "outage", "own key"]) -> NoReturn:
+        """The b-api answered 429 to the last of ``made`` attempts: it speaks of the key that met it, a caller's or the
+        service's own, and of no outage - an answer, which closes no stop and opens none for the other keys; the
+        failures in a row left from before made a probe trip the outage again (review of 2026-10-17)."""
+        key = request_key()
+        if key is not None and probe != "outage":  # the probe's one attempt may meet a passing 429
+            why = f"b-api begrenzt den Schlüssel der Anfrage (HTTP 429 nach {made} Versuchen): Limit erreicht"
+            raise self._refuse(key, why, said, 429, reached)
+        if key is None and (made >= self.attempts or probe == "own key"):
+            # after all its attempts, or its probe still limited; one 429 of the model check is no stop
+            reason = f"b-api begrenzt den Schlüssel des Dienstes (HTTP 429 nach {made} Versuchen): Limit erreicht"
+            self._trip(BREAKER_S, reason, cause=said, own_key=True)
+        raise LlmError(f"b-api nach {made} Versuchen nicht erreichbar ({said})", 429, reached=reached)
 
     def _backoff(self, attempt: int) -> float:
         """Exponential, spread around its value: calls that failed together should not all come back together."""

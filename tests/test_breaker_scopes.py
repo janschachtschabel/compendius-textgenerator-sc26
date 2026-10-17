@@ -208,3 +208,120 @@ def test_a_route_text_without_a_route_does_not_refuse_the_caller_s_key() -> None
         client.chat(MESSAGES, max_output_tokens=10)
 
     assert key.refused is None
+
+
+def test_a_429_met_by_the_probe_after_an_outage_does_not_reopen_it_for_every_key() -> None:
+    """The failures in a row stayed counted through the stop: a probe that met a 429 tripped the outage again for every
+    caller, a minute at a time (review of the fixes, 2026-10-17)."""
+    now = [0.0]
+    answers = iter([503, 503, 503, 429])
+    client = client_of(by_key(own=ok, caller=lambda request: status(next(answers, 200))(request)), now)
+    as_caller()
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)  # an outage
+    now[0] = 61.0
+
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)  # the probe meets a 429: the b-api answers
+
+    assert not held_back(client)
+    use_request_key(None)
+    assert not held_back(client)
+
+
+def test_the_service_s_own_key_still_limited_at_its_probe_stops_that_key_only() -> None:
+    now = [0.0]
+    client = client_of(by_key(own=status(429), caller=ok), now)
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)  # three 429: a minute for the service's key
+    now[0] = 61.0
+
+    with pytest.raises(LlmError):
+        client.chat(MESSAGES, max_output_tokens=10)  # its probe: still 429
+
+    assert held_back(client) and "429" in client.suspension_reason
+    as_caller()
+    assert not held_back(client)
+
+
+@pytest.mark.parametrize("retry_after", [None, "120"])
+def test_a_single_429_does_not_stop_the_service_s_own_key(retry_after: str | None) -> None:
+    """The model check asks once, and a Retry-After past the call's time ends the attempts early: one 429 then stopped
+    the service's key for a minute (review of the fixes, 2026-10-17)."""
+    now = [0.0]
+    headers = {"Retry-After": retry_after} if retry_after else {}
+    client = client_of(by_key(own=status(429, **headers), caller=ok), now)
+
+    if retry_after:
+        with pytest.raises(LlmError):
+            client.chat(MESSAGES, max_output_tokens=10, timeout_s=30)
+    else:
+        client.check_model()
+
+    assert not held_back(client)
+
+
+def test_a_caller_at_its_limit_is_told_so_while_another_call_probes() -> None:
+    """Whether some call probed decided it, not whether this call was the probe: a caller whose three attempts met 429
+    kept its key while another call probed after an outage (review of the fixes, 2026-10-17)."""
+    now = [0.0]
+    limited, failing, probing = (f"Bearer {name}-key-0123456789abcdef" for name in ("limited", "failing", "probing"))
+    asleep, wake, in_probe, release = (threading.Event() for _ in range(4))
+
+    def caller(request: httpx.Request) -> httpx.Response:
+        key = request.headers["authorization"]
+        if key == limited:
+            return status(429)(request)
+        if key == failing:
+            return status(503)(request)
+        in_probe.set()
+        release.wait(5)
+        return ok(request)
+
+    def sleep(seconds: float) -> None:
+        if threading.current_thread().name == "limited" and not asleep.is_set():
+            asleep.set()
+            wake.wait(5)
+
+    client = BApiClient(
+        BASE, KEY, provider="openai", model="gpt-5.6-luna", attempts=3, backoff_s=0.0, sleep=sleep,
+        clock=lambda: now[0], transport=by_key(own=ok, caller=caller),
+    )  # fmt: skip
+    seen: list[BaseException] = []
+    limited_key = RequestKey("Authorization", limited)
+
+    def run(key: RequestKey) -> None:
+        use_request_key(key)
+        try:
+            client.chat(MESSAGES, max_output_tokens=10)
+        except LlmError as exc:
+            seen.append(exc)
+
+    first = threading.Thread(target=run, args=(limited_key,), name="limited")
+    first.start()
+    assert asleep.wait(5)  # its first 429 met, before any stop
+    run(RequestKey("Authorization", failing))  # three 503: an outage
+    now[0] = 61.0
+    probe = threading.Thread(target=run, args=(RequestKey("Authorization", probing),))
+    probe.start()
+    assert in_probe.wait(5)
+    wake.set()
+    first.join(5)
+    release.set()
+    probe.join(5)
+
+    assert limited_key.refused is not None and "429" in limited_key.refused
+
+
+def test_health_read_with_a_caller_s_key_names_the_failed_check() -> None:
+    """/health read by a request with a key of its own said "Modellprüfung steht aus" beside a failed check."""
+    now = [0.0]
+
+    def own(request: httpx.Request) -> httpx.Response:
+        return status(403)(request) if request.url.path.endswith("/models") else ok(request)
+
+    gateway = LlmGateway(client_of(by_key(own=own, caller=ok), now), TokenBudget(per_request=20_000), LlmOptions())
+    gateway.check_model()
+    as_caller()
+
+    assert "403" in str(gateway.status()["reason"])
