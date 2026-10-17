@@ -26,7 +26,7 @@ from collections.abc import Callable, Iterator, Mapping, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass, replace
 from http.cookiejar import Cookie, CookieJar, DefaultCookiePolicy
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 
@@ -77,7 +77,8 @@ MAX_USAGE = 10_000_000
 # its call, 4,000 tokens or some 16 KB of text for the longest block (MAX_FULL_OUTPUT_TOKENS); the model list was
 # not measured. Parsed, JSON of many small objects takes 19 times its size (review of 2026-10-08)
 MAX_ANSWER_BYTES = 16 * 1024 * 1024
-_KEPT_HEADERS = frozenset({"content-type", "retry-after"})  # what the attempts read of an answer's headers
+# What the attempts read of an answer's headers; X-Error-Source: upstream marks what the provider sent on (2026-10-09)
+_KEPT_HEADERS = frozenset({"content-type", "retry-after", "x-error-source"})
 # The names of models answering behind a route a worker notes in its log: the field comes from upstream (D98)
 MAX_NOTED_MODELS = 32
 # A b-api without the routing answers the router's paths with 404 (D98)
@@ -408,9 +409,14 @@ class BApiClient:
             tries = 1 if probe else attempts or self.attempts
             return self._attempts(method, url, json_body, tries, (ends, hard_end), before_retry, request)
         finally:
-            if probe:
-                with self._state:  # a probe that neither closed nor tripped the breaker lets the next one try
-                    self._probing = self._own_key_probing = False
+            # a probe that neither closed nor tripped the breaker lets the next one try - of its own kind only: an
+            # outage's probe ended by the service's key let a second call go out beside it (review of 2026-10-17)
+            if probe == "outage":
+                with self._state:
+                    self._probing = False
+            elif probe == "own key":
+                with self._state:
+                    self._own_key_probing = False
 
     def _attempts(
         self,
@@ -472,7 +478,8 @@ class BApiClient:
                 stop = self._route_stop(status, response.text) if self.route else None
                 key = request_key()
                 refused = status in KEY_REFUSALS or status == 404
-                if key is not None and (refused or stop is not None or no_route(status, response.text)):
+                missing_route = bool(self.route) and no_route(status, response.text)
+                if key is not None and (refused or stop is not None or missing_route):
                     # A route may belong to the key (D97): what it answers holds back this request, not every
                     # caller's, as a refused key does (audit 2026-10-15). A 404 too: whether the b-api means the key
                     # or the server by it was never measured, and one caller's key held back all (audit 2026-10-16)
@@ -484,12 +491,17 @@ class BApiClient:
                     elif status == 404:
                         target = f"die Route {self.route!r}" if self.route else f"das Modell {self.model!r}"
                         why = f"b-api findet {target} für den Schlüssel der Anfrage nicht (HTTP 404)"
-                    elif stop is None or no_route(status, response.text):
+                    elif stop is None or missing_route:
                         why = f"Route {self.route!r} ist für den Schlüssel der Anfrage nicht aktiv (HTTP {status})"
                     else:
                         why = f"b-api-Routing für den Schlüssel der Anfrage ausgesetzt: {stop[1]} (HTTP {status})"
-                    by_route = bool(self.route) and status not in KEY_REFUSALS
-                    raise self._refuse(key, why, response.text, status, reached, route=by_route)
+                    if status in KEY_REFUSALS:
+                        label = "refused the key of this request"
+                    elif self.route:
+                        label = f"route {self.route!r} holds back this request"
+                    else:
+                        label = "found nothing for the key of this request"
+                    raise self._refuse(key, why, response.text, status, reached, label=label)
                 if status not in RETRY_STATUSES or stop is not None:
                     # The upstream body stays in the log: messages reach /health, the audit and the frontmatter. The
                     # key is blanked before the cut, which otherwise left the start of an echoed key (SE-10).
@@ -510,15 +522,16 @@ class BApiClient:
                         )
                         raise LlmError(f"b-api antwortete HTTP {status}: {why}", status, reached=reached)
                     if status in REFUSED_STATUSES:
-                        self._refused(status)
+                        self._refused(status, upstream=response.headers.get("x-error-source") == "upstream")
                     elif status < 500:
                         self._close()  # the b-api answers; the request was wrong
                     raise LlmError(f"b-api antwortete HTTP {status}", status, reached=reached)
                 last_error = f"HTTP {status}"
                 reached += status in REACHED_STATUSES
                 wait = _retry_after(response) or self._backoff(attempt)
-            if status != 429 or request_key() is None:
-                # A 429 to the key of a request speaks of that key: the breaker stays with the b-api's state (D106)
+            if status != 429:
+                # A 429 speaks of the key that met it, a caller's or the service's own: the count of failures in a row
+                # stays with the b-api's state (D106, review of 2026-10-17)
                 with self._state:
                     self._failures += 1
             if attempt + 1 >= attempts:
@@ -535,7 +548,12 @@ class BApiClient:
             log.info("b-api %s on attempt %d of %d, retrying in %.1f s", last_error, attempt + 1, attempts, wait)
             self._sleep(wait)
         key = request_key()
-        if key is not None and status == 429:
+        if status == 429 and key is None:
+            reason = (
+                f"b-api begrenzt den Schlüssel des Dienstes (HTTP 429 nach {attempt + 1} Versuchen): Limit erreicht"
+            )
+            self._trip(BREAKER_S, reason, cause=last_error, own_key=True)
+        elif status == 429 and key is not None and not self._probing:  # a probe's one 429 may pass (review 17.10.)
             why = f"b-api begrenzt den Schlüssel der Anfrage (HTTP 429 nach {attempt + 1} Versuchen): Limit erreicht"
             raise self._refuse(key, why, last_error, status, reached)
         if self._failures >= self.attempts:
@@ -546,9 +564,10 @@ class BApiClient:
         """Exponential, spread around its value: calls that failed together should not all come back together."""
         return float(self.backoff_s * 2**attempt * (0.5 + self._jitter()))
 
-    def _admit(self) -> bool:
-        """Raise while the breaker is open for this call; ``True`` when it is the one probe after a break."""
+    def _admit(self) -> Literal["", "outage", "own key"]:
+        """Raise while the breaker is open for this call; the kind of stop when it is the one probe after it."""
         own_key = request_key() is None
+        kind: Literal["outage", "own key"]
         with self._state:
             now = self._clock()
             if now < self._open_until or self._probing:
@@ -556,13 +575,13 @@ class BApiClient:
             if own_key and (now < self._own_key_until or self._own_key_probing):
                 raise LlmHeldBackError(self._own_key_suspension)
             if self._open_until:
-                self._probing = True
+                self._probing, kind = True, "outage"
             elif own_key and self._own_key_until:
-                self._own_key_probing = True
+                self._own_key_probing, kind = True, "own key"
             else:
-                return False
+                return ""
         log.info("b-api probe after the break: this call decides whether the calls resume")
-        return True
+        return kind
 
     def _route_stop(self, status: int, text: str) -> tuple[float, str] | None:
         """How long the calls wait and why, when the router answered what no retry mends (``routing.route_stop``):
@@ -586,7 +605,14 @@ class BApiClient:
             log.info("b-api routing: route %r answers with %s", self.route, name)
 
     def _refuse(
-        self, key: RequestKey, why: str, said: str, status: int, reached: int, *, route: bool = False
+        self,
+        key: RequestKey,
+        why: str,
+        said: str,
+        status: int,
+        reached: int,
+        *,
+        label: str = "refused the key of this request",
     ) -> LlmError:
         """The b-api refused the key of the request being handled (D106), or its route for that key (D97): the rest
         of that request runs without the LLM, every other request keeps it. One line per request says so, with what
@@ -594,26 +620,32 @@ class BApiClient:
         if key.refuse(why):
             log.warning(
                 "b-api %s: %s (b-api: %s); the request goes on without the LLM (llm-free)",
-                f"route {self.route!r} holds back this request" if route else "refused the key of this request",
+                label,
                 why,
                 " ".join(self._redact(said)[:200].split()) or "-",
             )
         return LlmKeyRefusedError(why, status, reached=reached)
 
-    def _refused(self, status: int) -> None:
+    def _refused(self, status: int, *, upstream: bool = False) -> None:
+        """The service's own key met a refusal: its calls wait ten minutes, the callers' own keys keep the LLM (D106).
+        Only a 404 of the b-api itself behind a route says it has no router, the same for every key; one the provider
+        sent on (``X-Error-Source: upstream``), say for a model the route lost, does not (review of 2026-10-17)."""
         minutes = round(AUTH_SUSPEND_S / 60)
-        if self.route and status == 404:
+        if self.route and status == 404 and not upstream:
             reason = f"b-api-Routing {minutes} Minuten ausgesetzt: HTTP 404, {_NO_ROUTER}"
-        elif status in KEY_REFUSALS:
+            self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}")
+            return
+        if status in KEY_REFUSALS:
             reason = (
                 f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, die b-api lehnt den Schlüssel des Dienstes ab "
                 "(Limit erreicht, LLM abgeschaltet oder keine Berechtigung); bis dahin llm-free"
             )
-            self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}", own_key=True)
-            return
         else:
-            reason = f"b-api {minutes} Minuten ausgesetzt: HTTP {status}, Schlüssel, Berechtigung oder Modell prüfen"
-        self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}")
+            source = " vom Anbieter" if upstream else ""
+            reason = (
+                f"b-api {minutes} Minuten ausgesetzt: HTTP {status}{source}, Schlüssel, Berechtigung oder Modell prüfen"
+            )
+        self._trip(AUTH_SUSPEND_S, reason, cause=f"HTTP {status}", own_key=True)
 
     @contextmanager
     def _slot(
@@ -675,7 +707,10 @@ class BApiClient:
                 self._own_key_until, self._own_key_suspension = now + seconds, reason
             elif changed:
                 self._open_until, self._suspension = now + seconds, reason
-            self._probing = self._own_key_probing = False
+            if own_key:  # each stop ends its own probe; an outage's runs on (review of 2026-10-17)
+                self._own_key_probing = False
+            else:
+                self._probing = False
         if changed:
             log.warning("b-api calls held back for %.0f s: %s (%s)", seconds, reason, cause)
 

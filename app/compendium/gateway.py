@@ -84,11 +84,12 @@ class LlmGateway:
         return self.client.key_problem() or self._standing_reason()
 
     def _standing_reason(self) -> str:
-        """Why the LLM is not there for any request: the model check, the breaker, or a check still to come."""
-        if self.check is not None and not self.check.ok:
-            return self.check.message  # names the cause (model missing, status, connection error)
+        """Why the LLM is not there for this request: the stop that holds it back, else the model check - made with the
+        service's key, it speaks for the requests without a key of their own only (review of 2026-10-17)."""
         if self.client.suspended:
             return self.client.suspension_reason
+        if self.check is not None and not self.check.ok and request_key() is None:
+            return self.check.message  # names the cause (model missing, status, connection error)
         return "Modellprüfung steht aus"
 
     def last_check(self) -> tuple[bool | None, str | None]:
