@@ -166,6 +166,16 @@ def needs_thinking_off(model: str) -> bool:
     return "qwen3" in model.lower()
 
 
+def parameter_family(model: str) -> tuple[bool, bool]:
+    """What decides the parameters the service sends a model (``BApiClient._body``)."""
+    return is_reasoning_model(model), needs_thinking_off(model)
+
+
+# The model of an answer behind a route that names none: B_API_MODEL stood there, as though it had answered (review
+# of 2026-10-17)
+UNKNOWN_MODEL = "unbekannt"
+
+
 class BApiClient:
     """Synchronous client with a concurrency semaphore, exponential backoff on 429/502/503/504 within one deadline
     for all attempts, and a circuit breaker."""
@@ -301,7 +311,8 @@ class BApiClient:
             "POST", self.chat_url, json_body=body, timeout_s=timeout_s, before_retry=before_retry, request=request
         )
         try:
-            result = _parse_completion(data, self.model, "".join(str(m.get("content", "")) for m in messages))
+            answered = UNKNOWN_MODEL if self.route else self.model  # behind a route the reserve may have answered
+            result = _parse_completion(data, answered, "".join(str(m.get("content", "")) for m in messages))
         except LlmError as exc:
             # The model answered, so the attempt was paid: by what its usage reports, else like an attempt behind a
             # 504, and the attempts before it too; both used to count nothing (audit 2026-09-29, A05)
@@ -595,13 +606,26 @@ class BApiClient:
     def _note_model(self, model: str) -> None:
         """Name once per worker which model answers behind the route: the answer names the model, not the
         deployment, and a new one shows the route turned to another, its reserve (D97). The name comes from upstream:
-        on one line and of a sane length, and no more than ``MAX_NOTED_MODELS`` of them (D98)."""
-        name = " ".join(model[:100].split())
+        on one line and of a sane length, without control signs, and no more than ``MAX_NOTED_MODELS`` of them (D98).
+        A model of another parameter family than ``B_API_MODEL`` is a WARNING: it got that model's parameters, and one
+        that took them answered without a word, a Qwen3 without its switch thinking at length (review of 2026-10-17)."""
+        printable = "".join(sign for sign in model[:100] if sign.isprintable() or sign.isspace())
+        name = " ".join(printable.split())
         with self._state:
             new = name not in self._answering and len(self._answering) < MAX_NOTED_MODELS
             if new:
                 self._answering.add(name)
-        if new:
+        if not new:
+            return
+        if name != UNKNOWN_MODEL and parameter_family(name) != parameter_family(self.model):
+            log.warning(
+                "b-api routing: route %r answers with %s, of another parameter family than B_API_MODEL=%s: the "
+                "parameters it gets are those of B_API_MODEL; the route's models should be of one family (D97)",
+                self.route,
+                name,
+                self.model,
+            )
+        else:
             log.info("b-api routing: route %r answers with %s", self.route, name)
 
     def _refuse(

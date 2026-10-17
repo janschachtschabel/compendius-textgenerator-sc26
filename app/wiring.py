@@ -14,7 +14,7 @@ from pathlib import Path
 from app.compendium.gateway import LlmGateway, LlmOptions
 from app.knowledge.lexicon import HeadingLexicon
 from app.llm.budget import TokenBudget
-from app.llm.client import BApiClient, is_reasoning_model, needs_thinking_off
+from app.llm.client import BApiClient, is_reasoning_model, parameter_family
 from app.llm.deadline import MIN_CALL_S
 from app.llm.prompts import PROMPTS
 from app.llm.routing import ROUTER
@@ -118,11 +118,6 @@ def resolve_b_api(settings: Settings) -> str:
     return settings.b_api_url
 
 
-def _parameters_of(model: str) -> tuple[bool, bool]:
-    """What decides the parameters the service sends a model (``BApiClient._body``)."""
-    return is_reasoning_model(model), needs_thinking_off(model)
-
-
 def warn_about_request_keys(settings: Settings) -> None:
     """What does not fit the keys of the requests (D105): settings the service keeps, named at start."""
     if settings.api_key_list:
@@ -163,7 +158,7 @@ def warn_about_llm_settings(settings: Settings) -> None:
             settings.b_api_route,
         )
     route = settings.b_api_route_name
-    if "/" in route and _parameters_of(route) != _parameters_of(settings.b_api_model):
+    if "/" in route and parameter_family(route) != parameter_family(settings.b_api_model):
         log.warning(
             "B_API_ROUTE=%r names a model of another parameter family than B_API_MODEL=%s: the service sends it the "
             "parameters of B_API_MODEL, which it refuses with a 400 on every call; B_API_MODEL names the family (D97)",

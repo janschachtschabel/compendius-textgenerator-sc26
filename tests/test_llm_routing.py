@@ -525,3 +525,40 @@ def test_a_refused_value_gets_no_hint_on_the_family(caplog: pytest.LogCaptureFix
 
     [warning] = client_lines(caplog)
     assert "B_API_MODEL" not in warning
+
+
+def test_a_reserve_of_another_parameter_family_is_a_warning(caplog: pytest.LogCaptureFixture) -> None:
+    """The family check fired on a 400 only: a reserve that took the parameters of B_API_MODEL and answered got an
+    INFO line, a Qwen3 without its switch then thought at length (review of 2026-10-17)."""
+    client, _ = routed(Router((200, answered_by("qwen3-32b"), {})))
+
+    with caplog.at_level(logging.INFO, logger="app.llm.client"):
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    [record] = [r for r in caplog.records if "answers with" in r.getMessage()]
+    assert record.levelno == logging.WARNING and "qwen3-32b" in record.getMessage()
+    assert "B_API_MODEL" in record.getMessage()
+
+
+def test_the_name_of_an_answering_model_carries_no_control_signs(caplog: pytest.LogCaptureFixture) -> None:
+    """An escape sequence from upstream reached the text log and the terminal reading it."""
+    client, _ = routed(Router((200, answered_by("gpt-6-luna" + chr(27) + "[31m"), {})))
+
+    with caplog.at_level(logging.INFO, logger="app.llm.client"):
+        client.chat(MESSAGES, max_output_tokens=10)
+
+    [line] = [line for line in client_lines(caplog) if "answers with" in line]
+    assert chr(27) not in line and "gpt-6-luna[31m" in line
+
+
+def test_an_answer_behind_a_route_without_its_model_names_none(caplog: pytest.LogCaptureFixture) -> None:
+    """Without the field the log and llm.model named B_API_MODEL, as though it had answered - the reserve may have."""
+    data = completion("OK")
+    data.pop("model", None)
+    client, _ = routed(Router((200, data, {})))
+
+    with caplog.at_level(logging.INFO, logger="app.llm.client"):
+        result = client.chat(MESSAGES, max_output_tokens=10)
+
+    assert result.model == "unbekannt"
+    assert any("answers with unbekannt" in line for line in client_lines(caplog))
