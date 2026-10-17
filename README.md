@@ -180,6 +180,10 @@ Abschnittsmarker von Teil 1.
   lokalen Kopie, mit `TEMPLATES_DIR` kommen eigene Templates aus einem eigenen Verzeichnis, die geteilten Volumes
   hängt die API dann nur lesend ein; ein Worker braucht im Leerlauf rund 1,4 statt 1,8 GiB; dazu die Korrekturen
   aus dem Audit vom 16.10.2026.
+- Review vom 17.10.2026 (Release 2.25.0): Jede Sperre der b-api trifft nur die Aufrufe, die sie betrifft - ein 429
+  oder 404 auf den Schlüssel des Dienstes nicht die Anfragen mit eigenem Schlüssel; aus `Authorization` nur ein
+  `Bearer`-Token; interne Pfade auch mit Schrägstrich am Ende 404 am Port der API; ein Helm-Beispiel, das zu
+  prometheus-operator und dem Pod Security Standard „restricted“ passt.
 
 ## Installation
 

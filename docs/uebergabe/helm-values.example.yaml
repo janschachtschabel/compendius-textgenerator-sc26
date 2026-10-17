@@ -4,7 +4,7 @@
 
 image:
   repository: ghcr.io/janschachtschabel/compendius-textgenerator-sc26
-  tag: "2.24.0"            # beide Ports ab 2.22.0 (D110, D111); in Produktion nie latest
+  tag: "2.25.0"            # beide Ports ab 2.22.0 (D110, D111); in Produktion nie latest
 
 # Für alle Container, wie in Compose die gemeinsame .env
 env:

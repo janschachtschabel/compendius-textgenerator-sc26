@@ -1,6 +1,6 @@
 # Technischer Service-Steckbrief
 
-[Übergabe](README.md) · Stand 16.10.2026 · Release 2.24.0 · Vorlage „Technischer Service-Steckbrief“ von Team 6.
+[Übergabe](README.md) · Stand 17.10.2026 · Release 2.25.0 · Vorlage „Technischer Service-Steckbrief“ von Team 6.
 Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 
 | | |
@@ -19,7 +19,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | Anzeigename und Beschreibung | „Kompendiale Texte“; Kurztext für den Katalog in `info.summary` der Spec ([Abschnitt 1](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/anforderungen.md#1-api-und-endpunkte)) | erfüllt |
 | Repository-Link | https://github.com/janschachtschabel/compendius-textgenerator-sc26 (`main`) | erfüllt |
 | OpenAPI Spec | `GET /openapi.json` (OpenAPI 3.1, aus dem Code), lesbar unter `/docs`; nur öffentliche Endpunkte | erfüllt |
-| Pipeline und Git-Tags | GitHub Actions prüft, baut und veröffentlicht auf GHCR; Tag `vX.Y.Z` → `:X.Y.Z`; aktuell `v2.24.0` ([ci.yml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/.github/workflows/ci.yml)) | erfüllt |
+| Pipeline und Git-Tags | GitHub Actions prüft, baut und veröffentlicht auf GHCR; Tag `vX.Y.Z` → `:X.Y.Z`; aktuell `v2.25.0` ([ci.yml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/.github/workflows/ci.yml)) | erfüllt |
 | Endpunkte (öffentliche und Infrastruktur) | Port 8000: `/api/v2/…`, `/openapi.json`, `/docs`. Port 9000: `/health`, `/ready`, `/metrics`, Status ([betrieb.md](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/betrieb.md#erreichbarkeit)) | erfüllt |
 | Spezielle Header und Content-Types | Ein: `Authorization` (Schlüssel aus der b-api), optional `x-client-trace-id`, B3. Aus: `X-Request-ID`. Nur `application/json` | erfüllt |
 | Asynchrone Job-Endpunkte | Keine; synchron, 3 bis 33 s im Median, fünf gleichzeitig bis 86 s; Frist 300 s, Proxy-Timeout ≥ 330 s | nicht anwendbar |

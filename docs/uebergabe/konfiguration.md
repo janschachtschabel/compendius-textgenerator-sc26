@@ -1,6 +1,6 @@
 # Konfiguration
 
-[Übergabe](README.md) · Stand 16.10.2026 · Release 2.24.0
+[Übergabe](README.md) · Stand 17.10.2026 · Release 2.25.0
 
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu fünf, die Compose selbst auswertet
@@ -19,7 +19,7 @@ openssl rand -hex 32   # je Schlüssel und Token einmal
 ```
 
 ```dotenv
-# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.24.0 baut :2.24.0 und :2.24, wie auf GitHub).
+# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.25.0 baut :2.25.0 und :2.25, wie auf GitHub).
 IMAGE=<registry>/<pfad>/compendious-text-fastapi:<version>
 
 # LLM
@@ -73,7 +73,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.24.0`** | Compose: Image aller fünf Container |
+| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.25.0`** | Compose: Image aller fünf Container |
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen am 16.10.2026 4,02 GiB Prozesse mit 2 Workern, dazu Seiten-Cache; mit 3 Workern `8g` |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 2 GiB zur Planung (seit model2vec 0.10; im Leerlauf seit 2.24.0 1,41 GiB), mit 3 Workern `API_MEMORY=8g` |
 | `API_STOP_GRACE_PERIOD` | `630s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; deckt academiccloud (600 s) und OpenAI (300 s), über `REQUEST_TIMEOUT_S` plus 15 s halten |

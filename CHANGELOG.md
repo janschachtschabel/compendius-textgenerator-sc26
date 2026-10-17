@@ -7,9 +7,13 @@ Versionen nach Semantic Versioning: eine neue Einstellung oder neues Verhalten i
 Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änderten auch Verhalten. Die Tags 0.1.0 bis
 0.2.0 gehören zum Vorgängerdienst, dem alten Dienst im GitLab, und stehen nur kurz am Ende.
 
-## Unveröffentlicht
+## 2.25.0 – 2026-10-17
 
-Die Korrekturen aus dem Review vom 17.10.2026 (LLM-Routing, Schlüssel der b-api, interner Port, Helm-Beispiel).
+Die Korrekturen aus dem Review vom 17.10.2026 (LLM-Routing, Schlüssel der b-api, interner Port, Helm-Beispiel) und
+aus seiner Nachprüfung.
+
+- **[Betrieb](docs/betrieb.md#updates):** Keine neue Einstellung. Mit `B_API_KEY_SOURCE=request` gilt aus
+  `Authorization` nur ein `Bearer`-Token als Schlüssel der b-api. Das Helm-Beispiel benennt Schlüssel um.
 
 - **Behoben (Schutzschalter):** Ein 429 oder 404 auf den Schlüssel des Dienstes hält nur die Aufrufe mit ihm zurück, die
   Anfragen mit eigenem Schlüssel behalten das LLM (D106); vorher zählte ein 429 als Ausfall für alle, ein 404 sperrte
