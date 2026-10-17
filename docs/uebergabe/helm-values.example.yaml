@@ -12,10 +12,20 @@ env:
   LOG_LEVEL: INFO
   ZIM_PROFILE: standard
 
-securityContext:            # wie docker-compose.yml: kein root, nur lesendes Wurzeldateisystem, keine Capabilities
+podSpec:                    # für jedes Deployment, API und Updater
+  # Ein Service namens internal oder public im Namespace setzte sonst INTERNAL_PORT=tcp://... in jeden Pod; die
+  # Updater nennen die Ports nicht selbst und starteten nicht (Audit 2026-10-15, C8)
+  enableServiceLinks: false
+podSecurityContext:         # wie docker-compose.yml: kein root; Pod Security Standard "restricted"
   runAsUser: 10001
   runAsGroup: 10001
-  fsGroup: 10001            # PVCs übernehmen das chown des Images nicht: ohne fsGroup schreiben die Sidecars nicht
+  runAsNonRoot: true
+  fsGroup: 10001            # PVCs übernehmen das chown des Images nicht: ohne fsGroup schreiben die Updater nicht.
+  fsGroupChangePolicy: OnRootMismatch
+  # Viele NFS- und CephFS-Treiber übergehen fsGroup (CSIDriver fsGroupPolicy: None): dann legt der Provisioner die
+  # Volumes mit uid/gid 10001 an, oder ein Init-Container (root, nur dafür) macht einmal chown -R 10001:10001.
+  seccompProfile: { type: RuntimeDefault }
+containerSecurityContext:   # nur lesendes Wurzeldateisystem, keine Capabilities
   readOnlyRootFilesystem: true
   capabilities: { drop: [ALL] }
   allowPrivilegeEscalation: false
@@ -24,16 +34,22 @@ tmpEmptyDir:                # die API schreibt dorthin Metrikdateien, ihre Log-K
   sizeLimit: 2Gi            # Indexe bis ~1 GB (die vorige Fassung bleibt bis zur nächsten); auf Platte, nicht im RAM
 
 api:
-  replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Sidecars je genau einmal (anforderungen.md, 5.1)
+  replicas: 1              # mehr Pods: zim und state als ReadWriteMany, Updater je genau einmal (anforderungen.md, 5.1)
   port: 8000               # die API, über den Ingress (PUBLIC_PORT, D111)
   internalPort: 9000       # Proben, /metrics, Stand (INTERNAL_PORT, D110); kein Ingress, nur im Cluster
   resources:               # gemessen 16.10.2026 mit zwei Workern, mit Reserve (README.md, Ressourcen)
-    requests: { cpu: "2", memory: 5Gi }
-    limits: { cpu: "4", memory: 6Gi }
+    requests: { cpu: "2", memory: 5Gi, ephemeral-storage: 2Gi }   # ephemeral-storage: das emptyDir /tmp
+    limits: { cpu: "4", memory: 6Gi, ephemeral-storage: 3Gi }
   probes:                  # am internen Port des Pods; am Port 8000 antworten die Pfade mit 404
-    liveness: { port: 9000, path: /health, periodSeconds: 30, timeoutSeconds: 5 }
-    readiness: { port: 9000, path: /ready, periodSeconds: 30, timeoutSeconds: 5 }
-    startup: { port: 9000, path: /health, failureThreshold: 20, periodSeconds: 30, timeoutSeconds: 5 }   # Start 22 bis 31 s
+    # Der Start dauert 22 bis 31 s; die Startprobe fragt alle 5 s, bis zu 600 s. /health liest in den Threads der
+    # Überwachung (app/api/system_threads.py): unter Last großzügig, damit kein beschäftigter Pod neu startet.
+    startup: { port: 9000, path: /health, periodSeconds: 5, failureThreshold: 120, timeoutSeconds: 5 }
+    readiness: { port: 9000, path: /ready, periodSeconds: 10, timeoutSeconds: 5 }
+    liveness: { port: 9000, path: /health, periodSeconds: 30, timeoutSeconds: 10, failureThreshold: 5 }
+  # Beim ersten Start bleibt /ready 503, bis der zim-updater die Pflichtarchive geladen hat (rund 19 GB): helm --wait
+  # läuft dann ab; den ersten Start ohne --wait oder mit langer --timeout.
+  lifecycle:               # die Endpunkte des Service folgen dem SIGTERM verzögert: erst warten, dann schließen
+    preStop: { exec: { command: [sleep, "10"] } }
   terminationGracePeriodSeconds: 630   # laufende Anfragen enden, bevor der Pod geht (API_STOP_GRACE_PERIOD)
   env:
     WEB_CONCURRENCY: "2"
@@ -50,25 +66,36 @@ api:
     TEMPLATES_DIR: /config/templates    # eigene Templates aus der ConfigMap unten; leer: im Volume state
     API_DOCS_ENABLED: "true"     # /openapi.json für die b-api und den Produktkatalog
     EDU_SHARING_BASE_URL: https://redaktion.openeduhub.net/edu-sharing/rest
-  secretEnv:                     # aus einem Secret, nie in den Values
-    B_API_KEY: ""                # optional bei B_API_KEY_SOURCE=request: nur für Anfragen ohne eigenen Schlüssel
-    API_KEYS: ""                 # hinter dem Proxy der b-api leer lassen
-    ADMIN_TOKEN: ""              # leer lassen: die Admin-Pfade schreiben auf die Volumes, die die API hier nur liest;
+    # Leer folgt die b-api dem Repository (redaktion -> b-api.prod, staging -> b-api.staging). Sie muss die Instanz
+    # sein, deren Proxy die Schlüssel weiterreicht: ein Schlüssel der Staging-b-api gegen die Produktion gibt 401, und
+    # jede Anfrage fiele still auf llm-free zurück (D106).
+    B_API_BASE_URL: https://b-api.prod.openeduhub.net
+  secrets:                       # aus einem Secret, nie in den Values; jeder Schlüssel optional
+    existingSecret: kompendium-secrets
+    keys:                        # secretKeyRef mit optional: true; ein gesetztes Token braucht mindestens 16
+      - B_API_KEY                # Zeichen (openssl rand -hex 32), sonst startet der Container nicht.
+                                 # B_API_KEY bei B_API_KEY_SOURCE=request nur für Anfragen ohne eigenen Schlüssel
+      - API_KEYS                 # hinter dem Proxy der b-api leer lassen
+      - ADMIN_TOKEN              # leer lassen: die Admin-Pfade schreiben auf die Volumes, die die API hier nur liest;
                                  # Sync und Harvest per kubectl exec in den Updatern (compendium zim sync, ...)
-    METRICS_TOKEN: ""            # für /metrics
-    EDU_SHARING_USER: ""         # nur, wenn der Dienst allein über die b-api erreichbar ist (konfiguration.md)
-    EDU_SHARING_PASSWORD: ""
+      - METRICS_TOKEN            # empfohlen auch im Cluster (betrieb.md); dann auch im ServiceMonitor unten
+      - EDU_SHARING_USER         # nur, wenn der Dienst allein über die b-api erreichbar ist (konfiguration.md)
+      - EDU_SHARING_PASSWORD
 
-# Die Sidecars nutzen dasselbe Image mit eigenem Befehl, ohne Secrets; jeder läuft genau einmal: als eigenes Deployment
-# mit replicas: 1 und strategy: Recreate, nicht als Container im API-Pod (sonst liefen sie mit jedem API-Pod mit).
-# Ressourcen: im Leerlauf je rund 108 MiB gemessen, beim Bau der Indexe nicht; die Grenzen sind geschätzt
-# (anforderungen.md, 5.3).
+# Die Updater nutzen dasselbe Image mit eigenem Befehl, ohne Secrets; jeder läuft genau einmal: als eigenes Deployment,
+# nicht als Container im API-Pod (sonst liefen sie mit jedem API-Pod mit).
+sidecarDeployment:
+  replicas: 1
+  strategy: Recreate        # nie zwei Läufe zugleich, auch nicht beim Update
+# Ressourcen: im Leerlauf je rund 108 MiB gemessen, beim Bau der Indexe nicht. Ein OOMKill mitten im Bau lässt die
+# Sperrdatei liegen, der nächste Lauf übernimmt sie erst nach 3 h (Indexe) oder 4 h (Harvest): die Grenzen sind darum
+# großzügig geschätzt; nach den ersten Läufen messen und senken (anforderungen.md, 5.3).
 sidecarResources:
-  requests: { cpu: 100m, memory: 128Mi }
-  limits: { cpu: "1", memory: 512Mi }
-# readOnlyRootFilesystem gilt auch für die Sidecars (securityContext oben); in Compose sind sie bewusst beschreibbar.
-# SQLite legt beim Bau der Indexe seine Sortier-Dateien ins erste beschreibbare von /var/tmp und /tmp, beim
-# Wikidata-Index Hunderte MB; ohne beschreibbares Verzeichnis scheitert der Bau. Darum je Sidecar ein emptyDir auf /tmp.
+  requests: { cpu: 100m, memory: 128Mi, ephemeral-storage: 2Gi }
+  limits: { cpu: "1", memory: 1Gi, ephemeral-storage: 3Gi }
+# readOnlyRootFilesystem gilt auch für die Updater; in Compose sind sie bewusst beschreibbar. SQLite legt beim Bau der
+# Indexe seine Sortier-Dateien ins erste beschreibbare von /var/tmp und /tmp, beim Wikidata-Index Hunderte MB; ohne
+# beschreibbares Verzeichnis scheitert der Bau. Darum je Updater ein emptyDir auf /tmp.
 sidecarTmpEmptyDir:
   mountPath: /tmp
   sizeLimit: 2Gi            # auf Platte, nicht im RAM (kein medium: Memory)
@@ -85,9 +112,10 @@ sidecars:
   wikidataUpdater:
     enabled: true
     command: [compendium, wikidata, sync, --loop]
-    volumes: [zim, state]        # zim nur lesend
+    volumes: [zim, state]
+    readOnlyVolumes: [zim]       # liest active.json und das Archiv, schreibt nur in state
     resources:                   # baut den Index aus rund 750 MB Dumps
-      limits: { cpu: "1", memory: 1536Mi }
+      limits: { cpu: "1", memory: 2Gi, ephemeral-storage: 3Gi }
   gndUpdater:
     enabled: true
     command: [compendium, gnd, sync, --loop]
@@ -109,10 +137,23 @@ volumes:                   # nur die Updater schreiben; die API mountet zim und 
     optional: true         # ohne ConfigMap startet der Pod mit den eingebauten Templates
     mountPath: /config/templates
 
+service:
+  labels: { app.kubernetes.io/name: kompendium }   # der Job von Prometheus, siehe serviceMonitor.jobLabel
+  ports:
+    - { name: http, port: 8000 }
+    - { name: internal, port: 9000 }
+
 ingress:
   # Variante A: nur der Proxy der b-api darf den Dienst erreichen (internes Ingress oder NetworkPolicy), denn
   # API_KEYS ist leer und der Dienst prüft den Schlüssel nicht selbst. Freigegeben nur die öffentlichen Pfade
   # (betrieb.md, Erreichbarkeit); intern bleiben Proben, /metrics, die Statusendpunkte und alle Admin-Pfade.
+  servicePort: http        # 8000; nie der Port 9000
+  annotations:             # ingress-nginx: Vorgabe 1m und 60 s
+    nginx.ingress.kubernetes.io/proxy-body-size: 13m        # existing_markdown bis 13 MB je Anfrage (README.md)
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "330"   # REQUEST_TIMEOUT_S 300 plus Puffer
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "330"
+  # Ein Ingress (networking.k8s.io/v1) kennt nur Pfade; die Methoden je Pfad sind Absicht, keine Regel. Wer sie
+  # erzwingen will, braucht ein Gateway (HTTPRoute mit method) oder Regeln des Controllers.
   paths:
     - { path: /api/v2/compendium, methods: [POST] }
     - { path: /api/v2/knowledge, methods: [POST] }
@@ -126,22 +167,30 @@ ingress:
     - { path: /openapi.json, methods: [GET] }
     - { path: /docs, methods: [GET] }
     - { path: /redoc, methods: [GET] }
-  timeoutSeconds: 330      # REQUEST_TIMEOUT_S 300 plus Puffer
 
 networkPolicy:
   # Variante A: Port 8000 nur für den Proxy der b-api, Port 9000 nur für Kubelet (Proben) und Prometheus. Die Selektoren
-  # hängen vom Cluster ab und sind hier Platzhalter.
+  # hängen vom Cluster ab und sind hier Platzhalter. Ruft die b-api den Service direkt (baseUrl auf Port 8000,
+  # anforderungen.md), genügt ihr Namespace und das Ingress entfällt; geht sie über das Ingress, kommt der Verkehr aus
+  # dem Namespace des Ingress-Controllers - einen der beiden Wege wählen.
   enabled: true
   publicFrom: [{ namespaceSelector: { matchLabels: { name: b-api } } }]
   internalFrom: [{ namespaceSelector: { matchLabels: { name: monitoring } } }]
-  egress: open             # ausgehend: b-api, edu-sharing, Kiwix, Wikimedia, DNB, MEM (README.md, Netz)
+  egress:                  # ausgehend je Deployment (README.md, Netz); ohne FQDN-Regeln (Cilium, Proxy) Port 443 offen
+    api: [dns, b-api, edu-sharing]                                  # DNS: UDP und TCP 53 zum kube-dns
+    zimUpdater: [dns, download.kiwix.org und seine Spiegel]         # die Spiegel wechseln: Port 443 offen
+    lehrplanUpdater: [dns, MEM-SPARQL-Endpunkt (LEHRPLAN_ENDPOINT)]
+    wikidataUpdater: [dns, dumps.wikimedia.org]
+    gndUpdater: [dns, data.dnb.de]
 
 monitoring:
   prometheusRule:
     enabled: true          # monitoring/alerts.yml: groups unter spec
   serviceMonitor:
     enabled: true
-    port: 9000             # der interne Port; am Port 8000 antwortet /metrics mit 404
+    port: internal         # der Name des Service-Ports 9000, nicht die Zahl; am Port 8000 antwortet /metrics mit 404
     path: /metrics
-    jobLabel: kompendium   # die Regeln fragen job="kompendium" (KompendiumDown: up{job="kompendium"} == 0)
-    bearerTokenSecret: METRICS_TOKEN
+    # jobLabel nennt ein Label des Service, dessen Wert der Job wird: so heißt er kompendium, wie die Regeln fragen
+    # (KompendiumDown: up{job="kompendium"} == 0); sonst hieße er wie der Service, und der Alarm schwiege.
+    jobLabel: app.kubernetes.io/name
+    bearerTokenSecret: { name: kompendium-secrets, key: METRICS_TOKEN, optional: true }   # nur mit METRICS_TOKEN

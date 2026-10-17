@@ -115,7 +115,7 @@ Grund in der Antwort (D106): So bekommt ein Nutzer immer einen Text. Ob ein LLM 
 | CI baut Images automatisch? | Ja: GitHub Actions (`ci.yml`) und die GitLab-Pipeline prüfen (ruff, mypy, pytest, Alarmregeln, Abhängigkeits-Audit), bauen das Image, testen es gehärtet (`scripts/smoke_image.py`, auch beide Ports) und veröffentlichen es erst dann |
 | Produktion nur mit Tags? | Ein Git-Tag `v2.24.0` baut `:2.24.0` und `:2.24`; `:latest` und `:main` zeigen auf den letzten geprüften Commit von `main` und sind für Staging gedacht |
 | Schlanke Basis, Multi-Stage, `.dockerignore`, nur Laufzeit-Abhängigkeiten? | Ja: mehrstufiger Bau auf `python:3.13-slim`, Compiler und Paketwerkzeuge bleiben in der Bau-Stufe, `.dockerignore` lässt Tests, Daten und Doku draußen. Installiert werden die Laufzeit-Abhängigkeiten und das Build-Backend (`hatchling`, Gruppe `build`, mit fester Version und Prüfsumme), das die Installation des Dienstes selbst braucht |
-| Nicht als root? | Benutzer `app` (UID 10001), nur lesendes Wurzeldateisystem, keine Capabilities, `no-new-privileges` (Compose; in den Beispiel-Values `securityContext`) |
+| Nicht als root? | Benutzer `app` (UID 10001), nur lesendes Wurzeldateisystem, keine Capabilities, `no-new-privileges` (Compose; in den Beispiel-Values `podSecurityContext` mit `runAsNonRoot` und `seccompProfile: RuntimeDefault` und `containerSecurityContext`, passend zum Pod Security Standard „restricted“) |
 | Wie groß ist das Image? | 1,1 GB. Darin stecken die Modelle für die Zuordnung der Absätze (Model2Vec, 322 MB) und für Entitäten (spaCy, rund 60 MB). Daten liegen nicht darin (siehe 5.4 und offene Punkte) |
 
 ## 5. Deployment und Betrieb
@@ -153,7 +153,7 @@ Gemessen am 16.10.2026 mit dem Image `:latest` auf Commit `cdc96d6` (nach dem Up
 | Ressource | Requests | Limits | Anmerkung |
 |---|---|---|---|
 | RAM, API | 5 Gi | 6 Gi | 3,3 GiB nach dem Start, 4,02 GiB nach dem Aufwärmen, dort stabil über 31 Anfragen; mit Seiten-Cache bis 4,7 GiB. Reserve für die größere Wikipedia 2026-10 und Spitzen. Je weiterer Worker rund 2 GiB (3 Worker: Limit 8 Gi) |
-| RAM, Sidecars | 128 Mi | 512 Mi, `wikidata-updater` 1,5 Gi | je rund 108 MiB im Leerlauf; beim Bau der Indexe nicht gemessen, die Grenzen sind geschätzt |
+| RAM, Sidecars | 128 Mi | 1 Gi, `wikidata-updater` 2 Gi | je rund 108 MiB im Leerlauf; beim Bau der Indexe nicht gemessen, die Grenzen sind großzügig geschätzt: ein Abbruch wegen Speicher lässt die Sperrdatei 3 bis 4 Stunden liegen |
 | CPU, API | 2 | 4 | im Mittel rund ein Kern, Spitze 3,4 Kerne; mit 2, 4 und 16 vCPU dauerten fünf Kompendien gleich lang (29.09.) |
 | Storage `zim` | 60 Gi | | Archive rund 18,7 GB mit der Wikipedia 2026-10; beim Wechsel liegen alte und neue Ausgabe 24 Stunden nebeneinander, bis rund 38 GB. Es wächst mit der Wikipedia: die Ausgabe 2026-01 hatte 14,6 GB, 2026-10 18,6 GB |
 | Storage `state` | 5 Gi | | 0,45 GB, dazu rund 1,5 GB frei für den Neubau des Wikidata-Index |

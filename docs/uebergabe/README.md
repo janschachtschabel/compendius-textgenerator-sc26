@@ -97,7 +97,8 @@ lesen lässt. Rohdaten: [lasttest-2026-10-16.json](lasttest-2026-10-16.json).
   dort stabil über die letzten zehn Anfragen, rund 2 GiB je Worker. Mit Seiten-Cache bis 4,73 GiB, innerhalb von 6g.
 - **Sichere Werte:** Request 5 Gi und Limit 6 Gi für die API mit zwei Workern, Request 2 und Limit 4 CPU; das lässt
   Reserve für die größere Wikipedia 2026-10, deren Einfluss auf den Speicher der Prozesse hier nicht gemessen ist. Die
-  Sidecars beim Bau ihrer Indexe sind weiter nicht gemessen; geschätzt reichen 512 Mi, dem `wikidata-updater` 1,5 Gi.
+  Sidecars beim Bau ihrer Indexe sind weiter nicht gemessen; die Beispiel-Values setzen großzügig 1 Gi, dem `wikidata-updater` 2 Gi: Ein Abbruch wegen Speicher lässt die
+  Sperrdatei liegen, und der nächste Lauf kommt erst nach 3 bis 4 Stunden; nach den ersten Läufen messen und senken.
 - **`best-quality-generated` braucht mit fünf gleichzeitigen Anfragen gut eine Minute** und im Mittel rund 97.000
   Tokens; allein im Median 28 s (M91). Die Zeit geht an die b-api, nicht an die CPU des Dienstes.
 

@@ -64,7 +64,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 
 | | | Status |
 |---|---|---|
-| CPU, RAM und Storage | API: Request 2 CPU / 5 Gi, Limit 4 CPU / 6 Gi (gemessen 16.10. mit `:latest` auf `cdc96d6`, nach dem Update der Abhängigkeiten: 4,02 GiB warm, Spitze 3,4 Kerne; seit 2.24.0 im Leerlauf 1,41 statt 1,79 GiB je Worker, im Container gemessen, unter Last nicht nachgemessen); je weiterer Worker +2 Gi. Sidecars: 128 Mi / 512 Mi, `wikidata-updater` 1,5 Gi (geschätzt). Volumes `zim` 60 Gi, `state` 5 Gi, `emptyDir` 2 Gi (mit den Kopien der Indexe, D113). Ein Host: 4 vCPU, 8–12 GB RAM, 60 GB SSD ([Lastmessung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/README.md#lastmessung-vom-16102026)) | erfüllt |
+| CPU, RAM und Storage | API: Request 2 CPU / 5 Gi, Limit 4 CPU / 6 Gi (gemessen 16.10. mit `:latest` auf `cdc96d6`, nach dem Update der Abhängigkeiten: 4,02 GiB warm, Spitze 3,4 Kerne; seit 2.24.0 im Leerlauf 1,41 statt 1,79 GiB je Worker, im Container gemessen, unter Last nicht nachgemessen); je weiterer Worker +2 Gi. Sidecars: 128 Mi / 1 Gi, `wikidata-updater` 2 Gi (großzügig geschätzt, nach den ersten Läufen messen). Volumes `zim` 60 Gi, `state` 5 Gi, `emptyDir` 2 Gi (mit den Kopien der Indexe, D113). Ein Host: 4 vCPU, 8–12 GB RAM, 60 GB SSD ([Lastmessung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/README.md#lastmessung-vom-16102026)) | erfüllt |
 | Erwartete LLM-Kosten | Je Kompendium 0 (`llm-free`) bis ~112.000 Tokens; Vorgabe ~89.000, geschätzt < 1 Cent; Abrechnung je Schlüssel in der b-api | erfüllt |
 | Kosten externer APIs | Keine (Kiwix, Wikimedia, DNB, MEM, edu-sharing) | erfüllt |
 
