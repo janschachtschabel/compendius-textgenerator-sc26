@@ -86,6 +86,22 @@ def test_a_header_no_request_to_the_b_api_could_carry_is_refused_without_echo(va
     assert "Authorization" in str(refused.value) and value.strip() not in str(refused.value)
 
 
+@pytest.mark.parametrize("scheme", ["Basic", "Digest", "Negotiate", ""])
+def test_authorization_brings_a_key_only_as_a_bearer_token(scheme: str) -> None:
+    """A proxy with Basic auth in front of the service sent its credentials to the b-api as the LLM key; only a
+    bearer token is a key, any other value of Authorization is left alone (review of 2026-10-17)."""
+    value = f"{scheme} dXNlcjpwYXNzd29yZC0wMTIzNDU2Nzg5".strip()
+
+    assert offered_key(headers(authorization=value)) is None
+    key = offered_key(headers(authorization=value, x_api_key="b-api-key-0123456789"))
+    assert key is not None and key.header == "X-API-KEY"
+
+
+def test_the_bearer_scheme_is_read_in_any_case_and_sent_as_it_came() -> None:
+    key = offered_key(headers(authorization="bearer caller-key-0123456789abcdef"))
+    assert key is not None and key.value == "bearer caller-key-0123456789abcdef"
+
+
 def test_the_key_never_shows_in_its_representation() -> None:
     assert CALLER not in repr(RequestKey("Authorization", CALLER))
 

@@ -59,7 +59,7 @@ _current: ContextVar[RequestKey | None] = ContextVar("b_api_request_key", defaul
 
 
 def offered_key(headers: Mapping[str, str], *, own_x_api_key: bool = False) -> RequestKey | None:
-    """The b-api key a request brings: ``Authorization``, else ``X-API-Key``; ``None`` without one.
+    """The b-api key a request brings: ``Authorization`` with a bearer token, else ``X-API-Key``; ``None`` without one.
 
     ``own_x_api_key``: X-API-Key carries the service's own key (API_KEYS is set), so only Authorization can bring a
     b-api key. Raises ``UnusableKeyError`` for a value no header to the b-api could carry.
@@ -68,6 +68,10 @@ def offered_key(headers: Mapping[str, str], *, own_x_api_key: bool = False) -> R
     for name in names:
         value = headers.get(name.lower(), "")
         if not value:
+            continue
+        if name == AUTHORIZATION and value.split(maxsplit=1)[0].lower() != "bearer":
+            # Basic credentials of a proxy in front of the service went to the b-api as the LLM key: only a bearer
+            # token is one (D105 named the risk; review of 2026-10-17)
             continue
         if len(value) > MAX_KEY_CHARS or not _SENDABLE.match(value) or len(value.split()[-1]) < MIN_TOKEN_CHARS:
             raise UnusableKeyError(f"Der Header {name} trägt keinen Schlüssel, den die b-api annehmen kann.")
