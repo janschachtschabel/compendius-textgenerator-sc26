@@ -143,7 +143,8 @@ def zim_delete(
     file_name: Annotated[
         str,
         PathParameter(
-            description="The file name of the archive as GET /api/v2/zim/status lists it, e.g. "
+            description="The file name of the archive as GET /api/v2/zim/status on the internal port (D110) or "
+            "compendium zim status in a container of the service lists it, e.g. "
             "wikipedia_de_all_nopic_2026-08.zim; anything but a plain .zim file name - a path, a hidden file - is a 400"
         ),
     ],

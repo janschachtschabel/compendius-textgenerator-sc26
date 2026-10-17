@@ -357,8 +357,8 @@ def lehrplan_harvest_now(request: Request) -> dict[str, Any]:
     """Ask the harvest sidecar to check MEM now.
 
     This process fetches nothing: it writes a request file that the sidecar polls, so the answer says the
-    request was placed, not that a harvest ran. ``GET /api/v2/lehrplan/status`` shows what came of it.
-    Admin only.
+    request was placed, not that a harvest ran. What came of it shows ``GET /api/v2/lehrplan/status`` on the
+    internal port (D110) or ``compendium lehrplan status`` in a container of the service. Admin only.
     """
     state_dir = Path(request.app.state.settings.state_dir)
     with admin_write("Harvest anstoßen"):
