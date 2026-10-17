@@ -26,6 +26,7 @@ from starlette.routing import BaseRoute, Match
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.api.errors import JsonResponse
+from app.api.internal_port import REFUSED_INTERNAL
 from app.api.metrics import METRICS_PATH
 from app.api.paths import route_path
 from app.logging import REQUEST_ID_HEADER, set_request_id
@@ -105,6 +106,8 @@ class RequestLog:
     def _record(self, scope: Scope, status: int, seconds: float) -> None:
         path = route_path(scope)  # behind a prefix too (audit 2026-10-15)
         route = getattr(scope.get("route"), "path", None) or route_template(self.routes, scope)
+        if scope.get(REFUSED_INTERNAL):  # asked on the public port: no traffic of the path (review of 2026-10-17)
+            route = UNMATCHED_ROUTE
         if path != METRICS_PATH:  # a scrape is no request of the service
             observe_request(scope["method"], route, status, seconds)
         if path in PROBES and status < 400:

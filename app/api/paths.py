@@ -7,8 +7,9 @@ from starlette.types import Scope
 
 def route_path(scope: Scope) -> str:
     """uvicorn puts a root path (UVICORN_ROOT_PATH) in front of ``path``, the router takes it off again, so
-    /kompendium/health is /health (review of D110, audit 2026-10-15). As Starlette's router does, only before a slash:
-    /kompendiumhealth stays whole (audit 2026-10-16)."""
+    /kompendium/health is /health (review of D110, audit 2026-10-15). Only before a slash, as Starlette's router does:
+    /kompendiumhealth stays whole (audit 2026-10-16). The root path itself is "/" here where Starlette's router has "";
+    neither is an internal path."""
     path: str = scope["path"]
     root = scope.get("root_path", "")
     if not root or not path.startswith(root):

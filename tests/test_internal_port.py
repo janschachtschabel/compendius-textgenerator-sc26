@@ -9,12 +9,15 @@ from __future__ import annotations
 import asyncio
 import os
 import socket
+import threading
+import time
 from collections.abc import MutableMapping
 from pathlib import Path
 from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
+from prometheus_client import REGISTRY
 from starlette.types import Receive, Scope, Send
 from uvicorn.config import STARTUP_FAILURE
 
@@ -251,3 +254,77 @@ def test_the_operations_page_lists_the_internal_port_s_paths_as_the_code_has_the
     table = text[text.index("**Intern am Port 9000**") : text.index("**Intern am Port 8000**")]
     listed = {line.split("`")[1].split(" ", 1)[1] for line in table.splitlines() if line.startswith("| `GET ")}
     assert listed == INTERNAL_PATHS
+
+
+def test_a_trailing_slash_does_not_reveal_an_internal_path(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """/health/ slipped past the exact check, and the router's redirect to /health said the path exists - with the
+    client's own Host in Location (review of 2026-10-17)."""
+    with TestClient(app_with_port(sample_zims, tmp_path), base_url="http://testserver:8000") as public:
+        for path in sorted(INTERNAL_PATHS):
+            answer = public.get(path + "/", follow_redirects=False)
+            assert answer.status_code == 404 and "location" not in answer.headers, path
+
+
+def test_a_refused_internal_path_counts_as_unmatched(sample_zims: dict[str, Path], tmp_path: Path) -> None:
+    """Scanners asking /health on the public port showed up as /health traffic in the dashboards."""
+    labels = {"method": "GET", "route": "/health", "status": "404"}
+    before = REGISTRY.get_sample_value("kompendium_http_requests_total", labels) or 0.0
+
+    with TestClient(app_with_port(sample_zims, tmp_path), base_url="http://testserver:8000") as public:
+        assert public.get("/health").status_code == 404
+
+    assert (REGISTRY.get_sample_value("kompendium_http_requests_total", labels) or 0.0) == before
+
+
+def _raw(port: int, request_line: bytes, headers: bytes) -> bytes:
+    """The status line uvicorn answers on ``port`` to a request written by hand, headers a client chose included."""
+    with socket.create_connection(("127.0.0.1", port), timeout=5) as connection:
+        connection.sendall(request_line + b"\r\n" + headers + b"Connection: close\r\n\r\n")
+        answer = b""
+        while chunk := connection.recv(65536):
+            answer += chunk
+    return answer.split(b"\r\n", 1)[0]
+
+
+def test_no_header_or_form_of_the_path_opens_an_internal_path_on_a_real_socket() -> None:
+    """TestClient takes the port from the base URL, so only real sockets show that the check reads the socket's port:
+    a Host or a forwarded port naming the internal one, a trailing slash, the absolute form (review of 2026-10-17)."""
+    from fastapi import FastAPI
+    from uvicorn import Config, Server
+
+    sockets = []
+    for _ in range(2):
+        bound = socket.socket()
+        bound.bind(("127.0.0.1", 0))
+        sockets.append(bound)
+    public, internal = (bound.getsockname()[1] for bound in sockets)
+    app = FastAPI()
+    app.get("/health")(lambda: {"status": "healthy"})
+    app.add_middleware(InternalOnly, port=internal)
+    config = Config(app, http="h11", proxy_headers=True, forwarded_allow_ips="*", log_level="warning", lifespan="off")
+    server = Server(config)
+    thread = threading.Thread(target=server.run, kwargs={"sockets": sockets}, daemon=True)
+    thread.start()
+    try:
+        for _ in range(100):
+            if server.started:
+                break
+            time.sleep(0.05)
+        spoof = b"X-Forwarded-Port: %d\r\nForwarded: host=127.0.0.1:%d\r\nX-Forwarded-For: 127.0.0.1\r\n" % (
+            internal,
+            internal,
+        )
+        host = b"Host: 127.0.0.1:%d\r\n" % internal
+        for line, extra in [
+            (b"GET /health HTTP/1.1", host + spoof),
+            (b"GET /health/ HTTP/1.1", host),
+            (b"GET /%68ealth HTTP/1.1", host),
+            (b"GET http://127.0.0.1:%d/health HTTP/1.1" % internal, host),
+        ]:
+            assert _raw(public, line, extra).startswith(b"HTTP/1.1 404"), line
+        assert _raw(internal, b"GET /health HTTP/1.1", host).startswith(b"HTTP/1.1 200")
+    finally:
+        server.should_exit = True
+        thread.join(5)
+        for bound in sockets:
+            bound.close()

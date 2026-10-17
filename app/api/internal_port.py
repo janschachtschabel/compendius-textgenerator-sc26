@@ -16,6 +16,8 @@ from app.api.metrics import METRICS_PATH
 from app.api.paths import route_path
 
 INTERNAL_PATHS = frozenset({"/health", "/ready", METRICS_PATH, "/api/v2/zim/status", "/api/v2/lehrplan/status"})
+# Set in the scope of a request refused here: the request log counts it unmatched, not as traffic of the path
+REFUSED_INTERNAL = "kompendium.refused_internal"
 
 
 class InternalOnly:
@@ -26,10 +28,17 @@ class InternalOnly:
         self.port = port
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        if scope["type"] == "http" and route_path(scope) in INTERNAL_PATHS and _server_port(scope) != self.port:
+        if scope["type"] == "http" and is_internal(route_path(scope)) and _server_port(scope) != self.port:
+            scope[REFUSED_INTERNAL] = True
             await JsonResponse({"detail": "Not Found"}, status_code=404)(scope, receive, send)
             return
         await self.app(scope, receive, send)
+
+
+def is_internal(path: str) -> bool:
+    """With a trailing slash too: /health/ slipped past, and the router's redirect to /health said the path exists, the
+    client's own Host in Location (review of 2026-10-17)."""
+    return path.rstrip("/") in INTERNAL_PATHS
 
 
 def _server_port(scope: Scope) -> int | None:
