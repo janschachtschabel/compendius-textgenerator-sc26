@@ -881,11 +881,14 @@ Betrieb: Die Modellprüfung ist ein einzelner Versuch mit 10 s Timeout (Start, d
 solange das Modell fehlt); `/health` ruft die b-api nie selbst. Alle Versuche eines Aufrufs teilen sich seine Frist;
 eine Wiederholung wartet 1,5 s, dann 3 s, je mit einer Streuung zwischen der Hälfte und dem Anderthalbfachen, oder so
 lange, wie `Retry-After` verlangt, wenn das noch in die Frist passt. Nach einem Timeout oder drei Fehlversuchen in Folge
-(Verbindungsfehler, 429, 500, 502, 503 oder 504, über alle Aufrufe; jeder davon wird wiederholt, ein 501 nicht) setzt
+(Verbindungsfehler, 500, 502, 503 oder 504, über alle Aufrufe; jeder davon wird wiederholt, ein 501 nicht) setzt
 ein Schutzschalter die b-api 60 s aus, Anfragen laufen dann sofort im Regelmodus; danach probiert ein einzelner Aufruf,
-ob sie wieder antwortet. Ein 401, 402, 403 oder 404 auf den Schlüssel des Dienstes setzt sie zehn Minuten aus, `/health`
-nennt den Grund unter `components.llm.reason` (Schlüssel, Limit, Berechtigung oder Modell); den Schlüssel einer Anfrage
-betrifft eine Ablehnung nur für diese Anfrage (D106). Ein Versuch, der das Modell erreicht haben kann (Timeout nach dem
+ob sie wieder antwortet. Ein 429 ist eine Antwort, kein Ausfall: Er betrifft nur den Schlüssel, der ihn bekam - den des
+Dienstes setzt er nach allen Versuchen 60 s aus, einer Anfrage nimmt er das LLM. Ein 401, 402, 403 oder 404 auf den
+Schlüssel des Dienstes setzt die Aufrufe mit ihm zehn Minuten aus, Anfragen mit eigenem Schlüssel behalten das LLM;
+hinter einer Route sperrt nur ein 404 der b-api selbst alle Aufrufe („die b-api kennt kein Routing“). `/health` nennt den
+Grund unter `components.llm.reason` (Schlüssel, Limit, Berechtigung oder Modell); den Schlüssel einer Anfrage betrifft
+eine Ablehnung nur für diese Anfrage (D106). Ein Versuch, der das Modell erreicht haben kann (Timeout nach dem
 Senden, 502 oder 504), belastet das Budget mit den Tokens seiner Eingabe, auch wenn ein späterer Versuch antwortet; eine
 Antwort, die sich nicht lesen lässt, ebenso, oder mit dem Verbrauch, den sie meldet. Jeder Aufruf reserviert sein
 Token-Budget vorab (je Anfrage das des Profils, `LLM_MAX_TOKENS_PER_REQUEST` oder in den `best-quality`-Profilen
@@ -1119,7 +1122,8 @@ angefragten Schalter (`extraction_requested`, `generation_requested`).
 **Der Schlüssel der Anfrage (D105).** Hinter dem Proxy der b-api (`/api/v1/proxy/<dienst>`) reicht die b-api den
 Schlüssel ihres Aufrufers an den Dienst weiter: WLO setzt einen Schlüssel für angemeldete Nutzer und einen für Gäste,
 die b-api bucht jeden LLM-Aufruf auf den Schlüssel, mit dem er kommt, und setzt dessen Limits. Mit
-`B_API_KEY_SOURCE=request` nimmt der Dienst diesen Schlüssel aus `Authorization`, sonst aus `X-API-Key`, und schickt ihn
+`B_API_KEY_SOURCE=request` nimmt der Dienst diesen Schlüssel aus `Authorization` (nur ein `Bearer`-Token; ein anderes
+Schema, etwa `Basic` eines vorgeschalteten Proxys, bleibt beim Dienst), sonst aus `X-API-Key`, und schickt ihn
 mit jedem LLM-Aufruf der Anfrage unverändert zurück, genau einen Header, nur an die b-api. Er hält ihn nur für die
 Anfrage (die Threads ihrer LLM-Schritte erben ihn), speichert und protokolliert ihn nicht; Fehlermeldungen schwärzen
 ihn. Bringt eine Anfrage keinen Schlüssel, gilt `B_API_KEY`; ohne ihn laufen ihre LLM-Schritte nach den Regeln, und die
@@ -1146,7 +1150,7 @@ Dienstes trifft: Sie hält nur die Aufrufe mit ihm zurück. Den Grund nennt `/he
 | `LLM_FAST_SECTIONS` | `sc26_1,sc26_11` | Welche Bausteine `llm-fast` schreibt |
 | `LLM_UNSUPPORTED_SENTENCES` | `drop` | Sätze ohne gültigen, deckenden Beleg: `drop` (verwerfen) oder `mark` (als Schlussfolgerung kennzeichnen) |
 | `B_API_KEY` | leer | Der eigene Schlüssel des Dienstes bei der b-api. Gehört in die `.env`, nicht in die Vorlage; mit `B_API_KEY_SOURCE=request` nur für Anfragen ohne eigenen Schlüssel |
-| `B_API_KEY_SOURCE` | `env` | Wessen Schlüssel die LLM-Aufrufe tragen (D105): `env` immer `B_API_KEY`; `request` den Schlüssel, den die b-api vom Aufrufer weiterreicht (`Authorization`, sonst `X-API-Key`; mit `API_KEYS` nur `Authorization`), unverändert zurück an die b-api, und `B_API_KEY` für eine Anfrage ohne. Für den Betrieb hinter dem Proxy der b-api, mit leerem `API_KEYS` und `RATE_LIMIT=0` (siehe „Der Schlüssel der Anfrage“) |
+| `B_API_KEY_SOURCE` | `env` | Wessen Schlüssel die LLM-Aufrufe tragen (D105): `env` immer `B_API_KEY`; `request` den Schlüssel, den die b-api vom Aufrufer weiterreicht (`Authorization` mit einem `Bearer`-Token, sonst `X-API-Key`; mit `API_KEYS` nur `Authorization`), unverändert zurück an die b-api, und `B_API_KEY` für eine Anfrage ohne. Für den Betrieb hinter dem Proxy der b-api, mit leerem `API_KEYS` und `RATE_LIMIT=0` (siehe „Der Schlüssel der Anfrage“) |
 | `B_API_BASE_URL` | leer | Leer lassen: dann gilt die b-api, die zum Repository oben gehört (Staging → `https://b-api.staging.openeduhub.net`, Redaktion → `https://b-api.prod.openeduhub.net`). Ein eigener Wert wird befolgt; passt er nicht zum Repository, sagt es das Log beim Start |
 | `B_API_PROVIDER` | `openai` | Anbieterprofil der b-api: `openai`, `academiccloud` oder `router`, das Routing der b-api über eine vorab angelegte Route (`B_API_ROUTE`, D97, Abschnitt „b-api-Routing“) |
 | `B_API_MODEL` | `gpt-6-luna` | Modell, das die b-api ansprechen soll (D44; die Messungen bis M18 liefen mit `gpt-5.6-luna`). Ohne Eintrag, auch bei leerem Wert, gilt `gpt-6-luna`. Gemessen an der Staging-b-api; ob eine andere b-api es führt, zeigt `/health` unter `components.llm`. Mit `B_API_PROVIDER=router` die Modellfamilie der Route: Ihre Parameter schickt der Dienst |

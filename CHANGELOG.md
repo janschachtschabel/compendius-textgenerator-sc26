@@ -15,8 +15,11 @@ Die Korrekturen aus dem Review vom 17.10.2026 (LLM-Routing, Schlüssel der b-api
   Anfragen mit eigenem Schlüssel behalten das LLM (D106); vorher zählte ein 429 als Ausfall für alle, ein 404 sperrte
   alle zehn Minuten. Hinter einer Route sagt nur ein 404 der b-api selbst „die b-api kennt kein Routing“, nicht einer,
   den der Anbieter weiterreicht (`X-Error-Source: upstream`). Die Probe nach einer Sperre gibt nur ihre eigene Art frei.
-  Ein einzelner 429 auf die Probe einer Anfrage nimmt ihr nicht das LLM. Eine Anfrage erfährt die Sperre, die sie
-  zurückhält, nicht die Modellprüfung mit dem Schlüssel des Dienstes.
+  Ein 429 ist eine Antwort, kein Ausfall: Er öffnet keine Sperre für andere Schlüssel, auch nicht auf die Probe nach
+  einem Ausfall; der Schlüssel des Dienstes wartet erst nach allen Versuchen eine Minute, nicht nach dem einen Versuch der
+  Modellprüfung. Ein einzelner 429 auf die Probe einer Anfrage nimmt ihr nicht das LLM. Eine Anfrage erfährt die Sperre,
+  die sie zurückhält, nicht die Modellprüfung mit dem Schlüssel des Dienstes; `/health` spricht immer für den Schlüssel
+  des Dienstes.
 - **Geändert (D105):** Aus `Authorization` nimmt der Dienst nur ein `Bearer`-Token als Schlüssel der b-api; ein anderes
   Schema, etwa `Basic` eines vorgeschalteten Proxys, geht nicht mehr an die b-api.
 - **Routing (D97, D98):** Antwortet hinter der Route ein Modell einer anderen Parameterfamilie als `B_API_MODEL`, sagt es

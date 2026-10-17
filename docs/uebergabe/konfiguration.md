@@ -89,7 +89,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 |---|---|---|---|
 | `LLM_ENABLED` | `false` | **`true`** | Hauptschalter; ohne LLM laufen Anfragen ohne Profil mit `llm-free`, und eine, die selbst ein anderes Profil nennt, ist ein 503 (D68) |
 | `B_API_KEY` | leer | **Schlüssel der b-api**; hinter dem Proxy der b-api optional | geheim, nur in der `.env`; mit `B_API_KEY_SOURCE=request` nur für Anfragen ohne eigenen Schlüssel |
-| `B_API_KEY_SOURCE` | `env` | hinter dem Proxy der b-api **`request`** | `request`: die LLM-Aufrufe tragen den Schlüssel, den die b-api vom Aufrufer weiterreicht (D105); dazu `API_KEYS` leer, `RATE_LIMIT=0`, der Dienst nur über die b-api erreichbar |
+| `B_API_KEY_SOURCE` | `env` | hinter dem Proxy der b-api **`request`** | `request`: die LLM-Aufrufe tragen den Schlüssel, den die b-api vom Aufrufer weiterreicht (D105), aus `Authorization` nur ein `Bearer`-Token; dazu `API_KEYS` leer, `RATE_LIMIT=0`, der Dienst nur über die b-api erreichbar |
 | `B_API_BASE_URL` | leer | wie Vorgabe | leer: die b-api zum Repository (Staging oder Produktion); ein eigener Wert wird befolgt |
 | `B_API_PROVIDER` | `openai` | wie Vorgabe | Anbieterprofil der b-api; die Vorgabe fragt `gpt-6-luna` ohne Routing. `router` nutzt das Routing der b-api über eine Route, die ein Administrator der b-api vorab anlegt (D97); hinter dem Proxy eine globale |
 | `B_API_MODEL` | `gpt-6-luna` | wie Vorgabe | Modell; `/health` meldet, ob die b-api es führt. Mit `router` die Modellfamilie der Route |
