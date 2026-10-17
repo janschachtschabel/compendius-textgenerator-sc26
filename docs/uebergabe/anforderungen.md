@@ -56,7 +56,8 @@ lokalen Daten aktuell halten.
 | Welche Rechte braucht der Schlüssel? | Der Schlüssel der Aufrufer: LLM-Aufrufe an `/api/v1/llm/openai/chat/completions`, mit Routing an `/api/v1/llm/router/…`. `B_API_KEY` zusätzlich `/api/v1/llm/openai/models` für die Modellprüfung. Keine Routenverwaltung (`LLM_ROUTE_MANAGE`), kein Admin |
 | Welche Modelle und Routen? | Vorgabe ohne Routing: Provider `openai` mit `gpt-6-luna` (`B_API_PROVIDER=openai`, `B_API_MODEL`). Eine Route legt ein Administrator der b-api an, global, denn eine Route eines einzelnen Schlüssels sehen die Schlüssel der Aufrufer nicht; Vorschlag: `gpt-6-luna` mit `gpt-5.6-luna` als Reserve, eine Parameterfamilie. Dann `B_API_PROVIDER=router` und `B_API_ROUTE` setzen (D97) |
 | Was am Proxy-Dienst einstellen? | Eintrag `compendious-text-generator` mit `baseUrl` auf Port 8000 des Dienstes, „API-Key des Aufrufers weiterreichen“ (`forwardApiKey`) an, Timeout mindestens 330 s |
-| Was passiert bei einem erreichten Limit? | Die b-api lehnt ab (401, 402, 403, ein 429 auch nach den möglichen Versuchen; ebenso eine Route, die für den Schlüssel nicht aktiv ist (400) oder die die b-api aussetzt: ein Modell ohne Preis, Modelle ohne Chat, kein Deployment mehr (503)). Der Rest dieser Anfrage läuft ohne LLM nach den Regeln (`llm-free`), die Antwort nennt den Grund, das Log sagt es einmal je Anfrage als WARNING `b-api refused the key of this request`. Andere Anfragen behalten das LLM (D106) |
+| Was passiert bei einem erreichten Limit? | Die b-api lehnt ab (401, 402, 403, ein 429 auch nach den möglichen Versuchen; ebenso eine Route, die für den Schlüssel nicht aktiv ist (400) oder die die b-api aussetzt: ein Modell ohne Preis, Modelle ohne Chat, kein Deployment mehr (503)). Der Rest dieser Anfrage läuft ohne LLM nach den Regeln (`llm-free`), die Antwort nennt den Grund (bei einer Route
+`b-api route '…' holds back this request` statt `refused the key`), das Log sagt es einmal je Anfrage als WARNING `b-api refused the key of this request`. Andere Anfragen behalten das LLM (D106) |
 | Braucht es `B_API_KEY`? | Nur für Aufrufe ohne Schlüssel (Direktaufrufe im Cluster, Prüfungen). Ohne ihn laufen solche Anfragen nach den Regeln. Die Modellprüfung beim Start und in `/health` fragt nur mit `B_API_KEY`. Lehnt die b-api `B_API_KEY` ab oder setzt sie seine Route aus, laufen die Anfragen ohne eigenen Schlüssel ohne LLM, bei einer Ablehnung zehn Minuten; Anfragen mit eigenem Schlüssel behalten es |
 
 ### Variante B: ohne b-api (Ausnahme)
@@ -79,7 +80,7 @@ Ja, ohne Code-Änderung: `B_API_KEY_SOURCE=request` nimmt den Schlüssel der Anf
 
 | Regel der b-api | Wie der Dienst sie erfüllt |
 |---|---|
-| Header lesen: `Authorization` bevorzugt, sonst `X-API-KEY` | So, mit `API_KEYS` nur `Authorization`. Ein Wert unter 16 Zeichen ist kein Schlüssel (401) |
+| Header lesen: `Authorization` bevorzugt, sonst `X-API-KEY` | So, mit `API_KEYS` nur `Authorization`; aus `Authorization` nur ein `Bearer`-Token, ein anderes Schema (etwa `Basic` eines vorgeschalteten Proxys) bleibt beim Dienst. Ein Wert unter 16 Zeichen ist kein Schlüssel (401) |
 | Unverändert zurückgeben, genau ein Header | Der Wert geht wörtlich mit jedem LLM-Aufruf der Anfrage zurück, in dem Header, in dem er kam, und nur in diesem |
 | Nur pro Anfrage, nicht speichern | Der Schlüssel liegt in einer Kontextvariablen der Anfrage, die die Threads ihrer LLM-Schritte erben; kein Cache, keine Datenbank, kein gemeinsames Objekt. Der HTTP-Client hält keine Cookies |
 | Nie loggen | Kein Log und keine Fehlermeldung enthält ihn, Fehlermeldungen schwärzen ihn; das Access-Log von uvicorn ist aus, die eigene Zeile je Anfrage nennt keine Header |

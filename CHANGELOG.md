@@ -7,6 +7,27 @@ Versionen nach Semantic Versioning: eine neue Einstellung oder neues Verhalten i
 Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änderten auch Verhalten. Die Tags 0.1.0 bis
 0.2.0 gehören zum Vorgängerdienst, dem alten Dienst im GitLab, und stehen nur kurz am Ende.
 
+## Unveröffentlicht
+
+Die Korrekturen aus dem Review vom 17.10.2026 (LLM-Routing, Schlüssel der b-api, interner Port, Helm-Beispiel).
+
+- **Behoben (Schutzschalter):** Ein 429 oder 404 auf den Schlüssel des Dienstes hält nur die Aufrufe mit ihm zurück, die
+  Anfragen mit eigenem Schlüssel behalten das LLM (D106); vorher zählte ein 429 als Ausfall für alle, ein 404 sperrte
+  alle zehn Minuten. Hinter einer Route sagt nur ein 404 der b-api selbst „die b-api kennt kein Routing“, nicht einer,
+  den der Anbieter weiterreicht (`X-Error-Source: upstream`). Die Probe nach einer Sperre gibt nur ihre eigene Art frei.
+  Ein einzelner 429 auf die Probe einer Anfrage nimmt ihr nicht das LLM. Eine Anfrage erfährt die Sperre, die sie
+  zurückhält, nicht die Modellprüfung mit dem Schlüssel des Dienstes.
+- **Geändert (D105):** Aus `Authorization` nimmt der Dienst nur ein `Bearer`-Token als Schlüssel der b-api; ein anderes
+  Schema, etwa `Basic` eines vorgeschalteten Proxys, geht nicht mehr an die b-api.
+- **Routing (D97, D98):** Antwortet hinter der Route ein Modell einer anderen Parameterfamilie als `B_API_MODEL`, sagt es
+  eine WARNING. Ohne Feld `model` heißt das antwortende Modell `unbekannt`, nicht mehr `B_API_MODEL`; Steuerzeichen aus
+  dem Namen erreichen das Log nicht.
+- **Behoben (D110):** `/health/` und die anderen internen Pfade mit Schrägstrich am Ende antworten am Port der API mit
+  404; vorher verriet eine Weiterleitung, dass es sie gibt. Solche Anfragen zählen in den Metriken als `unmatched`.
+- **Helm-Beispiel:** `jobLabel` passend zu prometheus-operator (sonst schwieg KompendiumDown), `enableServiceLinks: false`,
+  Proben für einen schnelleren Rollout, `preStop`, Pod Security Standard „restricted“, Secrets aus `existingSecret`,
+  Ingress mit 13 MB Körper und 330 s, NetworkPolicy je Deployment, großzügige Grenzen der Updater bis zur Messung.
+
 ## 2.24.0 – 2026-10-16
 
 Stufe 1 der Skalierung (D113): API-Pods auf mehreren Nodes lesen die SQLite-Indexe aus einer lokalen Kopie und die

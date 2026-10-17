@@ -863,8 +863,8 @@ Routing noch nicht kennt, antwortet mit 404, und Modellprüfung und Stopp sagen 
 `components.llm` die Route, das Frontmatter `llm.route` und in `llm.model` das Modell, das geantwortet hat. Das Log sagt
 einmal je Modell und Worker, wer hinter der Route antwortet (`b-api routing: route 'kompendium-test' answers with
 gpt-6-luna`); bei einer Route nach Prioritäten zeigt ein neues Modell das Ausweichen auf die Reserve, bei Gewichten
-wechseln die Modelle ohnehin. Antworten des Routers, die keine Wiederholung heilt, halten alle Aufrufe mit dem Grund
-zurück, statt jede Frage einzeln mit 400 scheitern zu lassen oder sie bei 503 bis zu dreimal zu versuchen: eine Route,
+wechseln die Modelle ohnehin. Antworten des Routers, die keine Wiederholung heilt, halten die Aufrufe mit dem Schlüssel
+des Dienstes mit dem Grund zurück (Anfragen mit eigenem Schlüssel verlieren nur selbst das LLM), statt jede Frage einzeln mit 400 scheitern zu lassen oder sie bei 503 bis zu dreimal zu versuchen: eine Route,
 die es nicht oder nur abgeschaltet gibt (400), ein Modell der Route ohne Preis und eine Route, deren Modelle keinen Chat
 können (503), für zehn Minuten, eine Route ohne aktives oder erreichbares Modell (`no deployment left`, 503) für eine
 Minute. Listet eine 503 Versuche auf, die nur vorübergehend scheiterten (429 oder 5xx des Providers), wiederholt der
@@ -1132,8 +1132,9 @@ Schlüssel nicht selbst. Die Vorgabe `env` nimmt immer `B_API_KEY` und lässt di
 erreicht ist. Lehnt sie den Schlüssel einer Anfrage ab (401, 402 oder 403, ein 429 auch nach den möglichen Versuchen,
 eine für den Schlüssel nicht aktive Route, eine Route, deren Modelle keinen Preis haben, nicht chatten oder kein
 Deployment mehr finden), läuft der Rest dieser Anfrage ohne LLM nach den Regeln (`llm-free`); alle anderen Anfragen
-behalten es. Das Log nennt es einmal je Anfrage als WARNING, `b-api refused the key of this request: …`
-mit der Antwort der b-api, und die Ergebniszeile der Anfrage nennt den Grund. Lehnt die b-api den Schlüssel des Dienstes
+behalten es. Das Log nennt es einmal je Anfrage als WARNING, `b-api refused the key of this request: …`, bei einer
+Route `b-api route '<Route>' holds back this request: …`, bei einem 404 ohne Route `b-api found nothing for the key of
+this request: …`, mit der Antwort der b-api, und die Ergebniszeile der Anfrage nennt den Grund. Lehnt die b-api den Schlüssel des Dienstes
 ab (`B_API_KEY`), setzt sie wie bisher alle Aufrufe mit ihm zehn Minuten aus; Anfragen mit eigenem Schlüssel behalten
 das LLM, und ihre Antworten heben die zehn Minuten nicht auf. Ebenso bei einer Routensperre, die der Schlüssel des
 Dienstes trifft: Sie hält nur die Aufrufe mit ihm zurück. Den Grund nennt `/health` unter `components.llm.reason`.

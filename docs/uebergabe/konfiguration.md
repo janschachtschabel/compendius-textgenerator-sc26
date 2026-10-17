@@ -62,7 +62,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `PUBLIC_PORT` | `8000` | wie Vorgabe; ohne Container je Dienst ein eigener | Port der API; mehrere Dienste auf einem Host trennen sonst `API_BIND` und `INTERNAL_BIND` (D111) |
 | `INTERNAL_PORT` | `9000` | wie Vorgabe | Port für `/health`, `/ready`, `/metrics` und die Statusendpunkte; am Port der API antworten sie mit 404. `0`: alles am Port der API wie bis 2.21.0 (D110) |
 | `API_DOCS_ENABLED` | `true` | wie Vorgabe | `/docs`, `/redoc` und `/openapi.json`; die Seiten laden Swagger UI und ReDoc von cdn.jsdelivr.net |
-| `UI_ENABLED` | `false` | **`true`, nur mit `API_KEYS`** | Prüfansicht `/ui/` für die Redaktion; sie fragt mit dem Schlüssel, den der Leser einträgt |
+| `UI_ENABLED` | `false` | **`true`, nur mit `API_KEYS`** | Prüfansicht `/ui/` für die Redaktion; sie fragt mit dem Schlüssel, den der Leser einträgt. `/ui/options.json` nennt am Port der API, ob das LLM verfügbar ist und warum nicht, wie `/health`: darum im Cluster aus |
 | `API_BIND` | `0.0.0.0:8000` | **hinter Reverse-Proxy `127.0.0.1:8000`** | Compose: woran der Port der API gebunden wird; Docker leitet an der Firewall des Hosts vorbei |
 | `INTERNAL_BIND` | `127.0.0.1:9000` | wie Vorgabe; ein zweiter Dienst auf dem Host `127.0.0.1:9001` | Compose: woran der interne Port gebunden wird; die Vorgabe lässt ihn auf dem Host, Prometheus im Compose-Netz fragt `api:9000` (D110) |
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1,::1` | **hinter Reverse-Proxy auf dem Host das Gateway des Compose-Netzes** | Absender, deren `X-Forwarded-For` uvicorn glaubt; sonst teilen sich alle Clients ein Rate-Limit |
@@ -150,7 +150,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `ZIM_PROFILE` | `standard` | wie Vorgabe | Archivbündel: `compact` (1,4 GB), `standard` (18,7 GB mit der Wikipedia 2026-10, vorher 14,7 GB), `extended` (22,8 GB; nicht empfohlen, D99) |
 | `ZIM_REQUIRED` | leer | wie Vorgabe | Pflichtarchive für `/ready`; leer leitet sie aus dem Profil ab |
 | `ZIM_PATHS` | leer | wie Vorgabe | feste Archivpfade statt `ZIM_DIR`, nur für die Entwicklung |
-| `ZIM_BOOTSTRAP_DOWNLOAD` | `true` | wie Vorgabe | lädt beim Erststart die fehlenden Pflichtarchive; `false`, wenn sie von Hand kommen |
+| `ZIM_BOOTSTRAP_DOWNLOAD` | `true` | wie Vorgabe | lädt beim Erststart die fehlenden Pflichtarchive; `false`, wenn sie von Hand kommen. `true` setzen `.env.example`, Compose und die Helm-Values; ein Container ohne die Variable nimmt `false` |
 | `ZIM_SYNC_INTERVAL` | `30d` | wie Vorgabe | wie oft der zim-updater den Katalog prüft |
 | `ZIM_RETENTION_HOURS` | `24` | wie Vorgabe | wie lange ein ersetztes Archiv liegen bleibt |
 | `ZIM_CATALOG_URL` | leer | wie Vorgabe | eigener OPDS-Katalog; leer nimmt den von Kiwix |
