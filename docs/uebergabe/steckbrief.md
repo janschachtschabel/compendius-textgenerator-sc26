@@ -1,27 +1,27 @@
 # Technischer Service-Steckbrief
 
-[Übergabe](README.md) · Stand 17.10.2026 · Release 2.25.0 · Vorlage „Technischer Service-Steckbrief“ von Team 6.
+[Übergabe](README.md) · Stand 19.10.2026 · Release 2.25.0 · Vorlage „Technischer Service-Steckbrief“ von Team 6.
 Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 
 | | |
 |---|---|
-| **Service** | Kompendiale Texte (`compendious-text-fastapi`) |
+| **Service** | Kompendiale Texte (`compendious-text-generator`, zuvor `compendious-text-fastapi`) |
 | **Technischer Owner** | Jan Schachtschabel |
 | **Readiness Status** | Übergabeprüfung |
 | **Offene Punkte** | 4 |
 | **Kritische Offene Punkte** | 1 |
-| **Jira** | [GEN-357](https://edu-sharing.atlassian.net/browse/GEN-357) |
+| **Jira** | [GEN-323](https://edu-sharing.atlassian.net/browse/GEN-323) & [GEN-346](https://edu-sharing.atlassian.net/browse/GEN-346) |
 
 ## Stammdaten & API
 
 | | | Status |
 |---|---|---|
 | Anzeigename und Beschreibung | „Kompendiale Texte“; Kurztext für den Katalog in `info.summary` der Spec ([Abschnitt 1](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/anforderungen.md#1-api-und-endpunkte)) | erfüllt |
-| Repository-Link | https://github.com/janschachtschabel/compendius-textgenerator-sc26 (`main`) | erfüllt |
+| Repository-Link | GitLab (Produktiv): https://scm.edu-sharing.com/edu-sharing/projects/wlo/compendious-text-generator (`main`). GitHub (Entwicklung): https://github.com/janschachtschabel/compendius-textgenerator-sc26 (`main`) - kompendiale Texte zu einem Thema aus lokalen Kiwix-ZIM-Archiven (Wikipedia, Klexikon), Lehrplanbezüge aus einem MEM-Cache und ein Überblick über die edu-sharing-Sammlung; Betriebsmodi auch ohne großes LLM | erfüllt |
 | OpenAPI Spec | `GET /openapi.json` (OpenAPI 3.1, aus dem Code), lesbar unter `/docs`; nur öffentliche Endpunkte | erfüllt |
 | Pipeline und Git-Tags | GitHub Actions prüft, baut und veröffentlicht auf GHCR; Tag `vX.Y.Z` → `:X.Y.Z`; aktuell `v2.25.0` ([ci.yml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/.github/workflows/ci.yml)) | erfüllt |
 | Endpunkte (öffentliche und Infrastruktur) | Port 8000: `/api/v2/…`, `/openapi.json`, `/docs`. Port 9000: `/health`, `/ready`, `/metrics`, Status ([betrieb.md](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/betrieb.md#erreichbarkeit)) | erfüllt |
-| Spezielle Header und Content-Types | Ein: `Authorization` (Schlüssel aus der b-api), optional `x-client-trace-id`, B3. Aus: `X-Request-ID`. Nur `application/json` | erfüllt |
+| Spezielle Header und Content-Types | Ein: `Authorization: Bearer <Schlüssel aus der b-api>` (seit 2.25.0 nur `Bearer`), optional `x-client-trace-id`, B3. Aus: `X-Request-ID`. Nur `application/json` | erfüllt |
 | Asynchrone Job-Endpunkte | Keine; synchron, 3 bis 33 s im Median, fünf gleichzeitig bis 86 s; Frist 300 s, Proxy-Timeout ≥ 330 s | nicht anwendbar |
 
 ## Architektur
@@ -48,6 +48,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 |---|---|---|
 | Authentifizierungskonzept – mit oder ohne B-API | Beides, umschaltbar (`B_API_KEY_SOURCE`); empfohlen über die b-api ([Abschnitt 2](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/anforderungen.md#2-b-api-integration-und-authentifizierung)) | erfüllt |
 | Mit B-API: Modell fürs Routing, virtueller Key, Berechtigungen | `openai` mit `gpt-6-luna` (Routing optional, globale Route durch b-api-Admin); virtueller Key ab `balanced`, durchgereicht; Rechte: `chat/completions`, für `B_API_KEY` dazu `models` | erfüllt |
+| Empfohlenes Routing | Aktuell nur `openai`, da academiccloud ungenügende Limits hat: `openai` mit `gpt-6-luna` und `gpt-5.6-luna` als Reserve (eine Parameterfamilie). Ändert sich die Lage, die günstigere Route gemäß Empfehlung ([Abschnitt 2](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/anforderungen.md#2-b-api-integration-und-authentifizierung)) | erfüllt |
 | Ohne B-API: LLM-Keys und Authentifizierung | `B_API_KEY` als Secret; Aufrufer mit `X-API-Key` aus `API_KEYS`; Admin mit `ADMIN_TOKEN` | erfüllt |
 | Env-Variablen inklusive Defaults | 85 Variablen mit Vorgabe ([konfiguration.md](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/konfiguration.md), [.env.example](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/.env.example)) | erfüllt |
 | Benötigte Secrets (ohne Werte) | `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN`, `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD` | erfüllt |
@@ -65,7 +66,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md).
 | | | Status |
 |---|---|---|
 | CPU, RAM und Storage | API: Request 2 CPU / 5 Gi, Limit 4 CPU / 6 Gi (gemessen 16.10. mit `:latest` auf `cdc96d6`, nach dem Update der Abhängigkeiten: 4,02 GiB warm, Spitze 3,4 Kerne; seit 2.24.0 im Leerlauf 1,41 statt 1,79 GiB je Worker, im Container gemessen, unter Last nicht nachgemessen); je weiterer Worker +2 Gi. Sidecars: 128 Mi / 1 Gi, `wikidata-updater` 2 Gi (großzügig geschätzt, nach den ersten Läufen messen). Volumes `zim` 60 Gi, `state` 5 Gi, `emptyDir` 2 Gi (mit den Kopien der Indexe, D113). Ein Host: 4 vCPU, 8–12 GB RAM, 60 GB SSD ([Lastmessung](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/README.md#lastmessung-vom-16102026)) | erfüllt |
-| Erwartete LLM-Kosten | Je Kompendium 0 (`llm-free`) bis ~112.000 Tokens; Vorgabe ~89.000, geschätzt < 1 Cent; Abrechnung je Schlüssel in der b-api | erfüllt |
+| Erwartete LLM-Kosten | Je Kompendium 0 (`llm-free`) bis ~112.000 Tokens; Vorgabe ~89.000, geschätzt < 1 Cent (mit `gpt-6-luna`); Abrechnung je Schlüssel in der b-api | erfüllt |
 | Kosten externer APIs | Keine (Kiwix, Wikimedia, DNB, MEM, edu-sharing) | erfüllt |
 
 ## Übergabe
@@ -115,7 +116,8 @@ Es bleiben: die ZIM-Archive über das Netz (die API liest sie nur, eine Frage de
 Updater, unkritisch, weil jeder Updater nur einmal läuft. Noch nicht auf echtem Cluster-Speicher gemessen ist, wie lange
 eine Kopie dauert; das Log nennt es.
 
-**Ausbaustufe 2: ganz cloud-nativ (nicht gebaut; nur bei vielen Pods über viele Nodes oder ohne ReadWriteMany-Volume)**
+**Ausbaustufe 2 (zukünftige Empfehlung): ganz cloud-nativ (nicht gebaut; nur bei vielen Pods über viele Nodes oder ohne
+ReadWriteMany-Volume)**
 
 - Updater als CronJobs (`concurrencyPolicy: Forbid`, damit sind keine Sperrdateien nötig). Sie laden Archive,
   Lehrpläne und Abzüge, bauen die Indexe und legen sie versioniert mit Prüfsumme in einen Objektspeicher
@@ -126,3 +128,9 @@ eine Kopie dauert; das Log nennt es.
 - Templates in PostgreSQL (falls sie im Betrieb änderbar sein sollen), Status über Job-Metriken statt Dateien,
   Alarmregeln entsprechend umgebaut.
 - Die Compose-Variante muss parallel weiter funktionieren: zwei Betriebsarten im Code.
+
+## Anlage
+
+- Example-Env: [.env.example](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/.env.example)
+- Docker Compose: [docker-compose.yml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docker-compose.yml)
+- Helm (Beispiel-Values): [docs/uebergabe/helm-values.example.yaml](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/helm-values.example.yaml)
