@@ -7,6 +7,15 @@ Versionen nach Semantic Versioning: eine neue Einstellung oder neues Verhalten i
 Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änderten auch Verhalten. Die Tags 0.1.0 bis
 0.2.0 gehören zum Vorgängerdienst, dem alten Dienst im GitLab, und stehen nur kurz am Ende.
 
+## Unveröffentlicht
+
+- **Sicherheit:** certifi 2026.10.23, filelock 4.2.6 und setuptools 84.2.1 schließen 17 bekannte Lücken; die Prüfung der
+  Abhängigkeiten in der CI scheiterte seit dem 26.10.2026 daran, ein Push auf `main` veröffentlichte kein Image mehr.
+- **Abhängigkeiten (Dependabot #14 bis #16, gebündelt):** fastapi 0.162, starlette 1.10, pydantic-settings 2.16.2,
+  huggingface-hub 2.3, spaCy 3.8.18, httpx2 2.16 (Tests), pytest 9.2, ruff 0.17.3, mypy 2.4.1, hatchling 1.33;
+  Prometheus v3.15.1 in Compose, im GitLab-Job `alert-rules` und in den promtool-Hinweisen; setup-uv 10.3.3 und
+  docker/login-action 4.7.0. `/openapi.json` ist byteweise gleich geblieben; ein Körper `null` antwortet weiter mit 422.
+
 ## 2.25.0 – 2026-10-17
 
 Die Korrekturen aus dem Review vom 17.10.2026 (LLM-Routing, Schlüssel der b-api, interner Port, Helm-Beispiel) und
