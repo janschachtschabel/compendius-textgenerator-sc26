@@ -20,6 +20,9 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
   2026-01 und Klexikon 2026-08 vor dem Wechsel: 273 Anfragen liefern mit 3.13.1 und 4.0.0 dieselben Treffer in derselben
   Reihenfolge bis Rang 50, und für alle 94 Anfragen des Goldstandards wählt der Dienst denselben Hauptartikel mit
   demselben Korpus. Dazu pydantic 2.14.2 und huggingface-hub 2.4.
+- **Basis-Image:** `python:3.13-slim-bookworm` vom 28.10.2026: Python 3.13.18 statt 3.13.16, OpenSSL
+  `3.0.22-1~deb12u2` (vorher `deb12u1`), neue `ca-certificates` und `tzdata`. Die GitLab-Pipeline prüft die
+  Prüfansicht mit `node:22-slim` vom 28.10.2026 (Node 22.23.4).
 
 ## 2.25.0 – 2026-10-17
 

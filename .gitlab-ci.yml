@@ -159,7 +159,7 @@ ui-scripts:
   extends: .checks
   # Die Skripte der Prüfansicht (D66) testet Nodes eigener Runner. Das uv-Image hat kein Node, dort überspringt pytest
   # tests/test_ui_scripts.py (Review 2026-09-29, #16); per Digest gepinnt wie jedes Image der Pipeline
-  image: node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c
+  image: node:22-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da
   cache: []
   before_script: []
   script:
