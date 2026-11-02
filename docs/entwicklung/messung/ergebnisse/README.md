@@ -1,6 +1,6 @@
-# Ergebnisse der Messungen M1 bis M91
+# Ergebnisse der Messungen M1 bis M92
 
-Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23.09. bis 09.10.2026. Aufbau und Deutung
+Rohdaten (`.json`) und lesbare Zusammenfassungen (`.txt`) der Messungen vom 23.09. bis 02.11.2026. Aufbau und Deutung
 stehen im [Messprotokoll](../../05-messprotokoll.md), die Skripte eine Ebene höher ([messung](../README.md)). Die
 Zusammenfassungen von M9 bis M15 rechnet `mc_zusammenfassung.py` aus den Rohdaten nach, die Grafiken der
 [Entscheidungsvorlage](../../07-entscheidungsvorlage.md), von [Alt und neu](../../01-alt-und-neu.md) und von
@@ -105,6 +105,7 @@ python docs/entwicklung/messung/mc_grafiken.py docs/entwicklung/messung/ergebnis
 | M89 | Was bringt die Satzauswahl der KI (`extraction=llm`) beim zehnfachen Bausteinbudget in `balanced` und `best-quality`? | kürzere Texte (ein Drittel), etwas lesbarer (2,4 auf 2,6 und 2,5 auf 3,0) und mit weniger Fehlern, aber weniger Nutzen (3,8 auf 3,1 und 4,2 auf 3,4), für rund 33.000 und 31.000 Tokens und 8 bis 9 s mehr; am Gold steigt die Precision nur nach den Regeln (0,64 auf 0,70), der Recall halbiert sich (0,56 auf 0,26, nach dem LLM 0,67 auf 0,34) | – | `m89_extraktion_auswertung.json`, `m89_extraktion_gold.json` |
 | M90 | Bringen Wikibooks und Wikiversity beim zehnfachen Bausteinbudget mehr als bei ×1? | selten: bei 6 von 100 Anfragen ein Zwilling (drei Seiten); dort druckt ×10 70 statt 3 Absätze daraus, drei Viertel zum Thema, und verdrängt den letzten Korpusartikel: bei „Lineare Funktion“ 36 unpassende Absätze aus *Lineare Algebra*, bei Optik ebenso passende aus *Röntgenoptik* | – | `m90_zusatzquellen.json`, `m90_zusatz_auswertung.json` |
 | M91 | Wie stehen die fünf Profile beim zehnfachen Bausteinbudget zueinander, Güte gegen Zeit? | `best-coverage-generated` in jeder Note vorn (Passung 4,9, Nutzen 4,7, Vollständigkeit 4,9, Lesbarkeit 4,4) für 32,5 s, `best-quality-generated` 4,4, 4,0, 3,8, 4,3 für 27,5 s; Modellwissen 68 und 42 %; `balanced` 3,8 s mit Nutzen 3,2 und Vollständigkeit 1,8 | – | `m91_profile_x10.json` |
+| M92 | Helfen zwei Anregungen aus dem Themenbaum-Generator: Hauptartikel-Verweise gewichten, Model2Vec nur mit Substantiven? | Substantive verlieren (macro-F1 0,4627 statt 0,4672); Hauptartikel mit Schutz und höchstens drei Zielen: Korpus besser (hinein 1,84, heraus 0,96 nach Blindnote; 14 Themen besser, 1 schlechter), Gold +0,0016, im Text gemischt (Französische Revolution verliert Ballhausschwur und Bastille); nicht gebaut, vorgemerkt | – | `m92_hauptartikel_substantive.json`, `m92_hauptartikel_schutz.json`, `m92_blindnoten.json` |
 | – | Nebenwerte, Suchzeiten des Archivs | Testsuite, Entitätenerkennung, Länge von Teil 2; Titelvorschlag 2,9 ms, Volltextsuche 0,4 ms | `nebenwerte.txt` | `zim_suche.json` |
 
 ## Lesehinweise

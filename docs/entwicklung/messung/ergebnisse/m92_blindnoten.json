@@ -1,0 +1,1160 @@
+{
+ "skala": "2 gehört zum Thema, 1 verwandt, 0 passt nicht; blind, je Artikel Thema, Titel und Artikelanfang",
+ "noten": {
+  "Demokratie": {
+   "Attische Demokratie": 2,
+   "Demokratische Bewegung (Deutschland)": 1,
+   "Demokratisierung": 2,
+   "Konkordanzdemokratie": 2,
+   "Rechtsstaat": 1,
+   "Souverän": 1,
+   "Staatsmodell": 1
+  },
+  "Französische Revolution": {
+   "Bürger": 1,
+   "Die Französische Revolution": 1,
+   "Erster Koalitionskrieg": 1,
+   "Flucht nach Varennes": 2,
+   "Französische Verfassung (1791)": 2,
+   "Geschichtsschreibung zur Französischen Revolution": 2,
+   "Konstituante": 2,
+   "Republik": 1,
+   "Revolutionsexport": 1,
+   "Revolutionstribunal": 2,
+   "Terrorherrschaft": 2,
+   "Verfassung": 1
+  },
+  "Klimawandel": {
+   "Anthropogen": 1,
+   "Klima": 1,
+   "Milanković-Zyklen": 1
+  },
+  "Photosynthese": {
+   "Calvin-Zyklus": 2,
+   "Chlorophylle": 2,
+   "Kohlenstoffdioxid": 1,
+   "Kohlenstoffdioxid-Assimilation": 2,
+   "Lichtsammelkomplex": 2,
+   "Wasser": 1
+  },
+  "Programmiersprache": {
+   "Allzweck-Programmiersprache": 2,
+   "Compiler": 1,
+   "Esoterische Programmiersprache": 2,
+   "Logische Programmierung": 2,
+   "Objektorientierte Programmierung": 2,
+   "Programmierparadigma": 2,
+   "Strukturierte Programmierung": 2,
+   "Typisierung (Informatik)": 2,
+   "Visuelle Programmiersprache": 2,
+   "Zeittafel der Programmiersprachen": 2
+  },
+  "Säure-Base-Konzepte": {
+   "HSAB-Konzept": 2,
+   "Lewis-Säure-Base-Konzept": 2
+  },
+  "Sinfonie": {
+   "Orchester": 1,
+   "Symphonia": 1
+  },
+  "Plattentektonik": {
+   "Grabenbruch": 2,
+   "Paläomagnetismus": 2,
+   "Vulkan": 1,
+   "Vulkanismus": 1
+  },
+  "Industrielle Revolution": {
+   "Eisen": 1,
+   "Kohle": 1,
+   "Landwirtschaftliche Revolution": 1,
+   "Produktion": 0,
+   "Ursachen der Industriellen Revolution": 2
+  },
+  "Elektrischer Strom": {
+   "Ion": 1,
+   "Stromunfall": 1
+  },
+  "Römisches Reich": {
+   "Demografie des Römischen Reiches": 2,
+   "Kaiser": 1,
+   "Privatrecht": 0,
+   "Republik": 1,
+   "Ruralisierung": 1,
+   "Römische Kultur": 2,
+   "Römische Kunst": 2,
+   "Römisches Verfassungsrecht": 2
+  },
+  "Zelle (Biologie)": {
+   "Lysosom": 2,
+   "Membran": 1,
+   "Prokaryoten": 2,
+   "Protein": 1,
+   "Ribosom": 2,
+   "Tier": 0,
+   "Zellteilung": 2,
+   "Zelltheorie": 2
+  },
+  "deutsche Bundeskanzler": {
+   "Friedrich Merz": 2,
+   "Kanzler": 1,
+   "Reichskanzler (Weimarer Republik)": 1,
+   "Vizekanzler (Deutschland)": 1
+  },
+  "griechische Götter": {
+   "Griechische Vasenmalerei": 1,
+   "Olympische Götter": 2,
+   "Gott": 1
+  },
+  "Weltreligionen": {
+   "Universalismus (Religionswissenschaft)": 2
+  },
+  "erneuerbare Energien": {
+   "Endenergie": 0,
+   "Energiequelle": 1,
+   "Energiespeicher": 1,
+   "Energieversorgung": 1,
+   "Energiewende in Deutschland": 2,
+   "Erneuerbare Energien in China": 2,
+   "Erneuerbare Energien in Deutschland": 2,
+   "Erneuerbare Energien in Österreich": 2,
+   "Windenergie": 2
+  },
+  "Fake News erkennen": {
+   "Falschmeldung": 2,
+   "Haustierverzehr-Lüge über haitianische Immigranten in Springfield (Ohio)": 1
+  },
+  "Datenschutz für Schüler": {
+   "Datenschutzgesetz (Österreich)": 1,
+   "Gesundheitsdatenschutz": 0,
+   "Kirchlicher Datenschutz": 0
+  },
+  "Photosynthese für die Grundschule": {
+   "Calvin-Zyklus": 2,
+   "Chlorophylle": 2,
+   "Kohlenstoffdioxid": 1,
+   "Kohlenstoffdioxid-Assimilation": 2,
+   "Lichtsammelkomplex": 2,
+   "Wasser": 1
+  },
+  "Demokratie in der Sekundarstufe I": {
+   "Attische Demokratie": 2,
+   "Demokratische Bewegung (Deutschland)": 1,
+   "Demokratisierung": 2,
+   "Konkordanzdemokratie": 2,
+   "Rechtsstaat": 1,
+   "Souverän": 1,
+   "Staatsmodell": 1
+  },
+  "Thema: Klimawandel": {
+   "Anthropogen": 1,
+   "Klima": 1,
+   "Milanković-Zyklen": 1
+  },
+  "Geschichte: Französische Revolution": {
+   "Bürger": 1,
+   "Die Französische Revolution": 1,
+   "Erster Koalitionskrieg": 1,
+   "Flucht nach Varennes": 2,
+   "Französische Verfassung (1791)": 2,
+   "Geschichtsschreibung zur Französischen Revolution": 2,
+   "Konstituante": 2,
+   "Republik": 1,
+   "Revolutionsexport": 1,
+   "Revolutionstribunal": 2,
+   "Terrorherrschaft": 2,
+   "Verfassung": 1
+  },
+  "Plattentektonik (Oberstufe)": {
+   "Grabenbruch": 2,
+   "Paläomagnetismus": 2,
+   "Vulkan": 1,
+   "Vulkanismus": 1
+  },
+  "Fotosynthese": {
+   "Calvin-Zyklus": 2,
+   "Chlorophylle": 2,
+   "Kohlenstoffdioxid": 1,
+   "Kohlenstoffdioxid-Assimilation": 2,
+   "Lichtsammelkomplex": 2,
+   "Wasser": 1
+  },
+  "photosynthese": {
+   "Calvin-Zyklus": 2,
+   "Chlorophylle": 2,
+   "Kohlenstoffdioxid": 1,
+   "Kohlenstoffdioxid-Assimilation": 2,
+   "Lichtsammelkomplex": 2,
+   "Wasser": 1
+  },
+  "Klimaerwärmung": {
+   "Anthropogen": 1,
+   "Erneuerbare Energien": 1,
+   "Klimapolitik": 2,
+   "Klimawandel": 2,
+   "Kohlenstoffzyklus": 1,
+   "Landwirtschaft": 0,
+   "Wasserdampf": 1,
+   "Zwei-Grad-Ziel": 2
+  },
+  "DNA": {
+   "DNA-Reparatur": 2,
+   "Doppelhelix": 1,
+   "Genom": 1
+  },
+  "EU": {
+   "Europäische Gemeinschaft": 2,
+   "Gerichtshof der Europäischen Union": 2,
+   "Liste der Mitgliedstaaten der Europäischen Union": 2
+  },
+  "Weimarer Republik": {
+   "Geschichte der Parteien in Deutschland": 1,
+   "Reichswehr": 2,
+   "Weimar": 0,
+   "Weltwirtschaftskrise": 2
+  },
+  "Satz des Pythagoras": {
+   "Babylon": 0,
+   "Euklidischer Abstand": 1,
+   "Inverser Satz des Pythagoras": 1,
+   "Pythagoreisches Tripel": 2,
+   "Sinus und Kosinus": 1,
+   "Skalarprodukt": 0
+  },
+  "Physik: Energie": {
+   "Elektrische Energie": 2,
+   "Endenergieverbrauch": 0,
+   "Energiebilanz (Energiewirtschaft)": 0,
+   "Energieträger": 1,
+   "Energiewandler": 2,
+   "Kinetische Energie": 2,
+   "Kraft-Wärme-Kopplung": 1,
+   "Primärenergie": 0
+  },
+  "Klimawandels": {
+   "Anthropogen": 1,
+   "Klima": 1,
+   "Milanković-Zyklen": 1
+  }
+ },
+ "wechsel_je_thema": {
+  "Demokratie": {
+   "heraus": [
+    "Demokratisierung",
+    "Konkordanzdemokratie",
+    "Rechtsstaat",
+    "Souverän",
+    "Staatsmodell"
+   ],
+   "hinein": [
+    "Attische Demokratie",
+    "Demokratische Bewegung (Deutschland)"
+   ],
+   "heraus14": [
+    "Demokratisierung",
+    "Konkordanzdemokratie",
+    "Rechtsstaat",
+    "Souverän",
+    "Staatsmodell"
+   ],
+   "hinein14": [
+    "Attische Demokratie",
+    "Demokratische Bewegung (Deutschland)"
+   ],
+   "heraus24": [
+    "Demokratisierung",
+    "Konkordanzdemokratie",
+    "Rechtsstaat",
+    "Souverän",
+    "Staatsmodell"
+   ],
+   "hinein24": [
+    "Attische Demokratie",
+    "Demokratische Bewegung (Deutschland)"
+   ]
+  },
+  "Französische Revolution": {
+   "heraus": [
+    "Bürger",
+    "Die Französische Revolution",
+    "Republik",
+    "Revolutionsexport",
+    "Revolutionstribunal",
+    "Verfassung"
+   ],
+   "hinein": [
+    "Erster Koalitionskrieg",
+    "Flucht nach Varennes",
+    "Französische Verfassung (1791)",
+    "Geschichtsschreibung zur Französischen Revolution",
+    "Konstituante",
+    "Terrorherrschaft"
+   ],
+   "heraus14": [
+    "Republik",
+    "Verfassung"
+   ],
+   "hinein14": [
+    "Geschichtsschreibung zur Französischen Revolution",
+    "Konstituante"
+   ],
+   "heraus24": [
+    "Bürger",
+    "Die Französische Revolution",
+    "Republik",
+    "Revolutionsexport",
+    "Revolutionstribunal",
+    "Verfassung"
+   ],
+   "hinein24": [
+    "Erster Koalitionskrieg",
+    "Flucht nach Varennes",
+    "Französische Verfassung (1791)",
+    "Geschichtsschreibung zur Französischen Revolution",
+    "Konstituante",
+    "Terrorherrschaft"
+   ]
+  },
+  "Klimawandel": {
+   "heraus": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein": [
+    "Milanković-Zyklen"
+   ],
+   "heraus14": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein14": [
+    "Milanković-Zyklen"
+   ],
+   "heraus24": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein24": [
+    "Milanković-Zyklen"
+   ]
+  },
+  "Photosynthese": {
+   "heraus": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ],
+   "heraus14": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein14": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ],
+   "heraus24": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein24": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ]
+  },
+  "Programmiersprache": {
+   "heraus": [
+    "Allzweck-Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Logische Programmierung",
+    "Visuelle Programmiersprache",
+    "Zeittafel der Programmiersprachen"
+   ],
+   "hinein": [
+    "Compiler",
+    "Objektorientierte Programmierung",
+    "Programmierparadigma",
+    "Strukturierte Programmierung",
+    "Typisierung (Informatik)"
+   ],
+   "heraus14": [
+    "Allzweck-Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Logische Programmierung",
+    "Visuelle Programmiersprache",
+    "Zeittafel der Programmiersprachen"
+   ],
+   "hinein14": [
+    "Compiler",
+    "Objektorientierte Programmierung",
+    "Programmierparadigma",
+    "Strukturierte Programmierung",
+    "Typisierung (Informatik)"
+   ],
+   "heraus24": [
+    "Allzweck-Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Logische Programmierung",
+    "Visuelle Programmiersprache",
+    "Zeittafel der Programmiersprachen"
+   ],
+   "hinein24": [
+    "Compiler",
+    "Objektorientierte Programmierung",
+    "Programmierparadigma",
+    "Strukturierte Programmierung",
+    "Typisierung (Informatik)"
+   ]
+  },
+  "Säure-Base-Konzepte": {
+   "heraus": [],
+   "hinein": [
+    "HSAB-Konzept",
+    "Lewis-Säure-Base-Konzept"
+   ],
+   "heraus14": [],
+   "hinein14": [
+    "HSAB-Konzept",
+    "Lewis-Säure-Base-Konzept"
+   ],
+   "heraus24": [],
+   "hinein24": [
+    "HSAB-Konzept",
+    "Lewis-Säure-Base-Konzept"
+   ]
+  },
+  "Sinfonie": {
+   "heraus": [
+    "Orchester"
+   ],
+   "hinein": [
+    "Symphonia"
+   ],
+   "heraus14": [
+    "Orchester"
+   ],
+   "hinein14": [
+    "Symphonia"
+   ],
+   "heraus24": [
+    "Orchester"
+   ],
+   "hinein24": [
+    "Symphonia"
+   ]
+  },
+  "Plattentektonik": {
+   "heraus": [
+    "Vulkan",
+    "Vulkanismus"
+   ],
+   "hinein": [
+    "Grabenbruch",
+    "Paläomagnetismus"
+   ],
+   "heraus14": [],
+   "hinein14": [
+    "Paläomagnetismus"
+   ],
+   "heraus24": [
+    "Vulkan",
+    "Vulkanismus"
+   ],
+   "hinein24": [
+    "Grabenbruch",
+    "Paläomagnetismus"
+   ]
+  },
+  "Industrielle Revolution": {
+   "heraus": [
+    "Eisen",
+    "Kohle",
+    "Produktion"
+   ],
+   "hinein": [
+    "Landwirtschaftliche Revolution",
+    "Ursachen der Industriellen Revolution"
+   ],
+   "heraus14": [
+    "Eisen",
+    "Produktion"
+   ],
+   "hinein14": [
+    "Landwirtschaftliche Revolution",
+    "Ursachen der Industriellen Revolution"
+   ],
+   "heraus24": [
+    "Eisen",
+    "Kohle",
+    "Produktion"
+   ],
+   "hinein24": [
+    "Landwirtschaftliche Revolution",
+    "Ursachen der Industriellen Revolution"
+   ]
+  },
+  "Elektrischer Strom": {
+   "heraus": [
+    "Ion"
+   ],
+   "hinein": [
+    "Stromunfall"
+   ],
+   "heraus14": [
+    "Ion"
+   ],
+   "hinein14": [
+    "Stromunfall"
+   ],
+   "heraus24": [
+    "Ion"
+   ],
+   "hinein24": [
+    "Stromunfall"
+   ]
+  },
+  "Römisches Reich": {
+   "heraus": [
+    "Kaiser",
+    "Republik",
+    "Römisches Verfassungsrecht"
+   ],
+   "hinein": [
+    "Demografie des Römischen Reiches",
+    "Privatrecht",
+    "Ruralisierung",
+    "Römische Kultur",
+    "Römische Kunst"
+   ],
+   "heraus14": [
+    "Kaiser",
+    "Republik",
+    "Römisches Verfassungsrecht"
+   ],
+   "hinein14": [
+    "Demografie des Römischen Reiches",
+    "Privatrecht",
+    "Ruralisierung",
+    "Römische Kultur",
+    "Römische Kunst"
+   ],
+   "heraus24": [
+    "Kaiser",
+    "Republik",
+    "Römisches Verfassungsrecht"
+   ],
+   "hinein24": [
+    "Demografie des Römischen Reiches",
+    "Privatrecht",
+    "Ruralisierung",
+    "Römische Kultur",
+    "Römische Kunst"
+   ]
+  },
+  "Zelle (Biologie)": {
+   "heraus": [
+    "Membran",
+    "Protein",
+    "Tier",
+    "Zellteilung"
+   ],
+   "hinein": [
+    "Lysosom",
+    "Prokaryoten",
+    "Ribosom",
+    "Zelltheorie"
+   ],
+   "heraus14": [
+    "Membran",
+    "Protein",
+    "Tier",
+    "Zellteilung"
+   ],
+   "hinein14": [
+    "Lysosom",
+    "Prokaryoten",
+    "Ribosom",
+    "Zelltheorie"
+   ],
+   "heraus24": [
+    "Membran",
+    "Protein",
+    "Tier",
+    "Zellteilung"
+   ],
+   "hinein24": [
+    "Lysosom",
+    "Prokaryoten",
+    "Ribosom",
+    "Zelltheorie"
+   ]
+  },
+  "deutsche Bundeskanzler": {
+   "heraus": [
+    "Friedrich Merz",
+    "Kanzler"
+   ],
+   "hinein": [
+    "Reichskanzler (Weimarer Republik)",
+    "Vizekanzler (Deutschland)"
+   ],
+   "heraus14": [
+    "Friedrich Merz",
+    "Kanzler"
+   ],
+   "hinein14": [
+    "Reichskanzler (Weimarer Republik)",
+    "Vizekanzler (Deutschland)"
+   ],
+   "heraus24": [
+    "Friedrich Merz",
+    "Kanzler"
+   ],
+   "hinein24": [
+    "Reichskanzler (Weimarer Republik)",
+    "Vizekanzler (Deutschland)"
+   ]
+  },
+  "griechische Götter": {
+   "heraus": [
+    "Griechische Vasenmalerei"
+   ],
+   "hinein": [
+    "Olympische Götter"
+   ],
+   "heraus14": [
+    "Griechische Vasenmalerei"
+   ],
+   "hinein14": [
+    "Olympische Götter"
+   ],
+   "heraus24": [
+    "Griechische Vasenmalerei"
+   ],
+   "hinein24": [
+    "Olympische Götter"
+   ]
+  },
+  "Weltreligionen": {
+   "heraus": [],
+   "hinein": [
+    "Universalismus (Religionswissenschaft)"
+   ],
+   "heraus14": [],
+   "hinein14": [
+    "Universalismus (Religionswissenschaft)"
+   ],
+   "heraus24": [],
+   "hinein24": [
+    "Universalismus (Religionswissenschaft)"
+   ]
+  },
+  "erneuerbare Energien": {
+   "heraus": [
+    "Endenergie",
+    "Energiequelle",
+    "Energieversorgung",
+    "Windenergie"
+   ],
+   "hinein": [
+    "Energiespeicher",
+    "Energiewende in Deutschland",
+    "Erneuerbare Energien in China",
+    "Erneuerbare Energien in Deutschland",
+    "Erneuerbare Energien in Österreich"
+   ],
+   "heraus14": [
+    "Endenergie",
+    "Energiequelle",
+    "Energieversorgung",
+    "Windenergie"
+   ],
+   "hinein14": [
+    "Energiespeicher",
+    "Energiewende in Deutschland",
+    "Erneuerbare Energien in China",
+    "Erneuerbare Energien in Deutschland",
+    "Erneuerbare Energien in Österreich"
+   ],
+   "heraus24": [
+    "Endenergie",
+    "Energiequelle",
+    "Energieversorgung",
+    "Windenergie"
+   ],
+   "hinein24": [
+    "Energiespeicher",
+    "Energiewende in Deutschland",
+    "Erneuerbare Energien in China",
+    "Erneuerbare Energien in Deutschland",
+    "Erneuerbare Energien in Österreich"
+   ]
+  },
+  "Fake News erkennen": {
+   "heraus": [
+    "Falschmeldung"
+   ],
+   "hinein": [
+    "Haustierverzehr-Lüge über haitianische Immigranten in Springfield (Ohio)"
+   ],
+   "heraus14": [
+    "Falschmeldung"
+   ],
+   "hinein14": [
+    "Haustierverzehr-Lüge über haitianische Immigranten in Springfield (Ohio)"
+   ],
+   "heraus24": [
+    "Falschmeldung"
+   ],
+   "hinein24": [
+    "Haustierverzehr-Lüge über haitianische Immigranten in Springfield (Ohio)"
+   ]
+  },
+  "Datenschutz für Schüler": {
+   "heraus": [
+    "Datenschutzgesetz (Österreich)"
+   ],
+   "hinein": [
+    "Gesundheitsdatenschutz",
+    "Kirchlicher Datenschutz"
+   ],
+   "heraus14": [
+    "Datenschutzgesetz (Österreich)"
+   ],
+   "hinein14": [
+    "Gesundheitsdatenschutz",
+    "Kirchlicher Datenschutz"
+   ],
+   "heraus24": [
+    "Datenschutzgesetz (Österreich)"
+   ],
+   "hinein24": [
+    "Gesundheitsdatenschutz",
+    "Kirchlicher Datenschutz"
+   ]
+  },
+  "Photosynthese für die Grundschule": {
+   "heraus": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ],
+   "heraus14": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein14": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ],
+   "heraus24": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein24": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ]
+  },
+  "Demokratie in der Sekundarstufe I": {
+   "heraus": [
+    "Demokratisierung",
+    "Konkordanzdemokratie",
+    "Rechtsstaat",
+    "Souverän",
+    "Staatsmodell"
+   ],
+   "hinein": [
+    "Attische Demokratie",
+    "Demokratische Bewegung (Deutschland)"
+   ],
+   "heraus14": [
+    "Demokratisierung",
+    "Konkordanzdemokratie",
+    "Rechtsstaat",
+    "Souverän",
+    "Staatsmodell"
+   ],
+   "hinein14": [
+    "Attische Demokratie",
+    "Demokratische Bewegung (Deutschland)"
+   ],
+   "heraus24": [
+    "Demokratisierung",
+    "Konkordanzdemokratie",
+    "Rechtsstaat",
+    "Souverän",
+    "Staatsmodell"
+   ],
+   "hinein24": [
+    "Attische Demokratie",
+    "Demokratische Bewegung (Deutschland)"
+   ]
+  },
+  "Thema: Klimawandel": {
+   "heraus": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein": [
+    "Milanković-Zyklen"
+   ],
+   "heraus14": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein14": [
+    "Milanković-Zyklen"
+   ],
+   "heraus24": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein24": [
+    "Milanković-Zyklen"
+   ]
+  },
+  "Geschichte: Französische Revolution": {
+   "heraus": [
+    "Bürger",
+    "Die Französische Revolution",
+    "Republik",
+    "Revolutionsexport",
+    "Revolutionstribunal",
+    "Verfassung"
+   ],
+   "hinein": [
+    "Erster Koalitionskrieg",
+    "Flucht nach Varennes",
+    "Französische Verfassung (1791)",
+    "Geschichtsschreibung zur Französischen Revolution",
+    "Konstituante",
+    "Terrorherrschaft"
+   ],
+   "heraus14": [
+    "Republik",
+    "Verfassung"
+   ],
+   "hinein14": [
+    "Geschichtsschreibung zur Französischen Revolution",
+    "Konstituante"
+   ],
+   "heraus24": [
+    "Bürger",
+    "Die Französische Revolution",
+    "Republik",
+    "Revolutionsexport",
+    "Revolutionstribunal",
+    "Verfassung"
+   ],
+   "hinein24": [
+    "Erster Koalitionskrieg",
+    "Flucht nach Varennes",
+    "Französische Verfassung (1791)",
+    "Geschichtsschreibung zur Französischen Revolution",
+    "Konstituante",
+    "Terrorherrschaft"
+   ]
+  },
+  "Plattentektonik (Oberstufe)": {
+   "heraus": [
+    "Vulkan",
+    "Vulkanismus"
+   ],
+   "hinein": [
+    "Grabenbruch",
+    "Paläomagnetismus"
+   ],
+   "heraus14": [],
+   "hinein14": [
+    "Paläomagnetismus"
+   ],
+   "heraus24": [
+    "Vulkan",
+    "Vulkanismus"
+   ],
+   "hinein24": [
+    "Grabenbruch",
+    "Paläomagnetismus"
+   ]
+  },
+  "Fotosynthese": {
+   "heraus": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ],
+   "heraus14": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein14": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ],
+   "heraus24": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein24": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ]
+  },
+  "photosynthese": {
+   "heraus": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ],
+   "heraus14": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein14": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ],
+   "heraus24": [
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser"
+   ],
+   "hinein24": [
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Lichtsammelkomplex"
+   ]
+  },
+  "Klimaerwärmung": {
+   "heraus": [
+    "Anthropogen",
+    "Klimawandel",
+    "Kohlenstoffzyklus",
+    "Landwirtschaft",
+    "Wasserdampf"
+   ],
+   "hinein": [
+    "Erneuerbare Energien",
+    "Klimapolitik",
+    "Zwei-Grad-Ziel"
+   ],
+   "heraus14": [
+    "Anthropogen",
+    "Klimawandel",
+    "Kohlenstoffzyklus",
+    "Landwirtschaft",
+    "Wasserdampf"
+   ],
+   "hinein14": [
+    "Erneuerbare Energien",
+    "Klimapolitik",
+    "Zwei-Grad-Ziel"
+   ],
+   "heraus24": [
+    "Anthropogen",
+    "Klimawandel",
+    "Kohlenstoffzyklus",
+    "Landwirtschaft",
+    "Wasserdampf"
+   ],
+   "hinein24": [
+    "Erneuerbare Energien",
+    "Klimapolitik",
+    "Zwei-Grad-Ziel"
+   ]
+  },
+  "DNA": {
+   "heraus": [
+    "Doppelhelix",
+    "Genom"
+   ],
+   "hinein": [
+    "DNA-Reparatur"
+   ],
+   "heraus14": [
+    "Genom"
+   ],
+   "hinein14": [
+    "DNA-Reparatur"
+   ],
+   "heraus24": [
+    "Doppelhelix",
+    "Genom"
+   ],
+   "hinein24": [
+    "DNA-Reparatur"
+   ]
+  },
+  "EU": {
+   "heraus": [
+    "Europäische Gemeinschaft"
+   ],
+   "hinein": [
+    "Gerichtshof der Europäischen Union",
+    "Liste der Mitgliedstaaten der Europäischen Union"
+   ],
+   "heraus14": [
+    "Europäische Gemeinschaft"
+   ],
+   "hinein14": [
+    "Gerichtshof der Europäischen Union",
+    "Liste der Mitgliedstaaten der Europäischen Union"
+   ],
+   "heraus24": [
+    "Europäische Gemeinschaft"
+   ],
+   "hinein24": [
+    "Gerichtshof der Europäischen Union",
+    "Liste der Mitgliedstaaten der Europäischen Union"
+   ]
+  },
+  "Weimarer Republik": {
+   "heraus": [
+    "Weimar",
+    "Weltwirtschaftskrise"
+   ],
+   "hinein": [
+    "Geschichte der Parteien in Deutschland",
+    "Reichswehr"
+   ],
+   "heraus14": [
+    "Weimar",
+    "Weltwirtschaftskrise"
+   ],
+   "hinein14": [
+    "Geschichte der Parteien in Deutschland",
+    "Reichswehr"
+   ],
+   "heraus24": [
+    "Weimar",
+    "Weltwirtschaftskrise"
+   ],
+   "hinein24": [
+    "Geschichte der Parteien in Deutschland",
+    "Reichswehr"
+   ]
+  },
+  "Satz des Pythagoras": {
+   "heraus": [
+    "Babylon",
+    "Sinus und Kosinus",
+    "Skalarprodukt"
+   ],
+   "hinein": [
+    "Euklidischer Abstand",
+    "Inverser Satz des Pythagoras",
+    "Pythagoreisches Tripel"
+   ],
+   "heraus14": [
+    "Babylon",
+    "Sinus und Kosinus"
+   ],
+   "hinein14": [
+    "Euklidischer Abstand",
+    "Inverser Satz des Pythagoras"
+   ],
+   "heraus24": [
+    "Babylon",
+    "Sinus und Kosinus",
+    "Skalarprodukt"
+   ],
+   "hinein24": [
+    "Euklidischer Abstand",
+    "Inverser Satz des Pythagoras",
+    "Pythagoreisches Tripel"
+   ]
+  },
+  "Physik: Energie": {
+   "heraus": [
+    "Elektrische Energie",
+    "Energieträger",
+    "Kinetische Energie",
+    "Primärenergie"
+   ],
+   "hinein": [
+    "Endenergieverbrauch",
+    "Energiebilanz (Energiewirtschaft)",
+    "Energiewandler",
+    "Kraft-Wärme-Kopplung"
+   ],
+   "heraus14": [
+    "Elektrische Energie",
+    "Energieträger",
+    "Primärenergie"
+   ],
+   "hinein14": [
+    "Endenergieverbrauch",
+    "Energiebilanz (Energiewirtschaft)",
+    "Energiewandler"
+   ],
+   "heraus24": [
+    "Elektrische Energie",
+    "Energieträger",
+    "Kinetische Energie",
+    "Primärenergie"
+   ],
+   "hinein24": [
+    "Endenergieverbrauch",
+    "Energiebilanz (Energiewirtschaft)",
+    "Energiewandler",
+    "Kraft-Wärme-Kopplung"
+   ]
+  },
+  "Klimawandels": {
+   "heraus": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein": [
+    "Milanković-Zyklen"
+   ],
+   "heraus14": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein14": [
+    "Milanković-Zyklen"
+   ],
+   "heraus24": [
+    "Anthropogen",
+    "Klima"
+   ],
+   "hinein24": [
+    "Milanković-Zyklen"
+   ]
+  }
+ }
+}

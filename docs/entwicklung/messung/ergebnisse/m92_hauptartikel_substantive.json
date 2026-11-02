@@ -1,0 +1,790 @@
+{
+ "code": "C:\\Users\\jan\\staging\\Windsurf\\compendious-text-fastapi\\app\\__init__.py",
+ "ausgeliefert": {
+  "wechsel": 0,
+  "wechsel_gedruckt": 0,
+  "themen_mit_wechsel": 0,
+  "zeichen_gedruckt": 3327073,
+  "gold": {
+   "macro_f1": 0.4672,
+   "micro_f1": 0.6736,
+   "gedruckt_macro_f1": 0.4164,
+   "je_thema": {
+    "Barockliteratur": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.419
+    },
+    "Bruchrechnung": {
+     "macro_f1": 0.634,
+     "gedruckt_macro_f1": 0.6
+    },
+    "Demokratie": {
+     "macro_f1": 0.549,
+     "gedruckt_macro_f1": 0.344
+    },
+    "Französische Revolution": {
+     "macro_f1": 0.683,
+     "gedruckt_macro_f1": 0.573
+    },
+    "Klimawandel": {
+     "macro_f1": 0.495,
+     "gedruckt_macro_f1": 0.435
+    },
+    "Optik": {
+     "macro_f1": 0.555,
+     "gedruckt_macro_f1": 0.558
+    },
+    "Photosynthese": {
+     "macro_f1": 0.49,
+     "gedruckt_macro_f1": 0.444
+    },
+    "Programmiersprache": {
+     "macro_f1": 0.41,
+     "gedruckt_macro_f1": 0.357
+    },
+    "Säure-Base-Konzepte": {
+     "macro_f1": 0.452,
+     "gedruckt_macro_f1": 0.452
+    },
+    "Sinfonie": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.424
+    }
+   }
+  },
+  "hauptartikel": {
+   "ziele": 320,
+   "im_korpus": 72
+  }
+ },
+ "kontrolle_gleich": true,
+ "hauptartikel": {
+  "7.0": {
+   "wechsel": 816,
+   "wechsel_gedruckt": 597,
+   "themen_mit_wechsel": 25,
+   "zeichen_gedruckt": 3333650,
+   "gold": {
+    "macro_f1": 0.4647,
+    "micro_f1": 0.6724,
+    "gedruckt_macro_f1": 0.4094,
+    "je_thema": {
+     "Barockliteratur": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.419
+     },
+     "Bruchrechnung": {
+      "macro_f1": 0.634,
+      "gedruckt_macro_f1": 0.6
+     },
+     "Demokratie": {
+      "macro_f1": 0.545,
+      "gedruckt_macro_f1": 0.318
+     },
+     "Französische Revolution": {
+      "macro_f1": 0.671,
+      "gedruckt_macro_f1": 0.537
+     },
+     "Klimawandel": {
+      "macro_f1": 0.493,
+      "gedruckt_macro_f1": 0.43
+     },
+     "Optik": {
+      "macro_f1": 0.555,
+      "gedruckt_macro_f1": 0.558
+     },
+     "Photosynthese": {
+      "macro_f1": 0.507,
+      "gedruckt_macro_f1": 0.455
+     },
+     "Programmiersprache": {
+      "macro_f1": 0.41,
+      "gedruckt_macro_f1": 0.361
+     },
+     "Säure-Base-Konzepte": {
+      "macro_f1": 0.452,
+      "gedruckt_macro_f1": 0.452
+     },
+     "Sinfonie": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.424
+     }
+    }
+   },
+   "korpora_anders": 32,
+   "nebenartikel_heraus": 37,
+   "hauptartikel": {
+    "ziele": 320,
+    "im_korpus": 105
+   },
+   "beispiele": {
+    "Demokratie": {
+     "vorher": [
+      "Demokratie",
+      "Demokratisierung",
+      "Repräsentative Demokratie",
+      "Demokratietheorie",
+      "Direkte Demokratie",
+      "Konkordanzdemokratie",
+      "Defekte Demokratie",
+      "Postdemokratie",
+      "Souverän",
+      "Staatsmodell",
+      "Rechtsstaat"
+     ],
+     "nachher": [
+      "Demokratie",
+      "Repräsentative Demokratie",
+      "Demokratietheorie",
+      "Demokratisierung",
+      "Direkte Demokratie",
+      "Defekte Demokratie",
+      "Postdemokratie",
+      "Demokratische Bewegung (Deutschland)",
+      "Souverän",
+      "Staatsmodell",
+      "Rechtsstaat"
+     ]
+    },
+    "Französische Revolution": {
+     "vorher": [
+      "Französische Revolution",
+      "Revolution",
+      "Die Französische Revolution",
+      "Revolutionstribunal",
+      "Revolutionsexport",
+      "Bürger",
+      "Republik",
+      "Verfassung",
+      "Liberalismus",
+      "Revolutionskult"
+     ],
+     "nachher": [
+      "Französische Revolution",
+      "Revolution",
+      "Die Französische Revolution",
+      "Revolutionstribunal",
+      "Revolutionsexport",
+      "Geschichtsschreibung zur Französischen Revolution",
+      "Bürger",
+      "Republik",
+      "Liberalismus",
+      "Revolutionskult"
+     ]
+    },
+    "Klimawandel": {
+     "vorher": [
+      "Klimawandel",
+      "Klima",
+      "Anthropogen",
+      "Treibhausgas",
+      "Forschungsgeschichte des Klimawandels"
+     ],
+     "nachher": [
+      "Klimawandel",
+      "Treibhausgas",
+      "Forschungsgeschichte des Klimawandels",
+      "Klima"
+     ]
+    },
+    "Photosynthese": {
+     "vorher": [
+      "Photosynthese",
+      "Pflanze",
+      "Bakterien",
+      "Licht",
+      "Chlorophylle",
+      "Kohlenstoffdioxid",
+      "Wasser",
+      "Sauerstoff"
+     ],
+     "nachher": [
+      "Photosynthese",
+      "Lichtsammelkomplex",
+      "Calvin-Zyklus",
+      "Pflanze",
+      "Bakterien",
+      "Licht",
+      "Chlorophylle",
+      "Kohlenstoffdioxid",
+      "Sauerstoff"
+     ]
+    },
+    "Programmiersprache": {
+     "vorher": [
+      "Geschichte der Programmiersprachen",
+      "Deklarative Programmierung",
+      "Höhere Programmiersprache",
+      "Esoterische Programmiersprache",
+      "Visuelle Programmiersprache",
+      "Allzweck-Programmiersprache",
+      "Logische Programmierung",
+      "Zeittafel der Programmiersprachen",
+      "Unterprogramm",
+      "Syntax"
+     ],
+     "nachher": [
+      "Geschichte der Programmiersprachen",
+      "Deklarative Programmierung",
+      "Compiler",
+      "Höhere Programmiersprache",
+      "Esoterische Programmiersprache",
+      "Visuelle Programmiersprache",
+      "Allzweck-Programmiersprache",
+      "Logische Programmierung",
+      "Unterprogramm",
+      "Syntax"
+     ]
+    },
+    "Säure-Base-Konzepte": {
+     "vorher": [
+      "Säuren",
+      "Basen (Chemie)"
+     ],
+     "nachher": [
+      "Säuren",
+      "HSAB-Konzept",
+      "Lewis-Säure-Base-Konzept",
+      "Basen (Chemie)"
+     ]
+    }
+   }
+  },
+  "14.0": {
+   "wechsel": 1336,
+   "wechsel_gedruckt": 859,
+   "themen_mit_wechsel": 29,
+   "zeichen_gedruckt": 3333714,
+   "gold": {
+    "macro_f1": 0.4798,
+    "micro_f1": 0.6925,
+    "gedruckt_macro_f1": 0.4333,
+    "je_thema": {
+     "Barockliteratur": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.419
+     },
+     "Bruchrechnung": {
+      "macro_f1": 0.634,
+      "gedruckt_macro_f1": 0.6
+     },
+     "Demokratie": {
+      "macro_f1": 0.692,
+      "gedruckt_macro_f1": 0.475
+     },
+     "Französische Revolution": {
+      "macro_f1": 0.682,
+      "gedruckt_macro_f1": 0.547
+     },
+     "Klimawandel": {
+      "macro_f1": 0.492,
+      "gedruckt_macro_f1": 0.438
+     },
+     "Optik": {
+      "macro_f1": 0.555,
+      "gedruckt_macro_f1": 0.558
+     },
+     "Photosynthese": {
+      "macro_f1": 0.549,
+      "gedruckt_macro_f1": 0.5
+     },
+     "Programmiersprache": {
+      "macro_f1": 0.404,
+      "gedruckt_macro_f1": 0.404
+     },
+     "Säure-Base-Konzepte": {
+      "macro_f1": 0.452,
+      "gedruckt_macro_f1": 0.452
+     },
+     "Sinfonie": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.424
+     }
+    }
+   },
+   "korpora_anders": 35,
+   "nebenartikel_heraus": 71,
+   "hauptartikel": {
+    "ziele": 320,
+    "im_korpus": 137
+   },
+   "beispiele": {
+    "Demokratie": {
+     "vorher": [
+      "Demokratie",
+      "Demokratisierung",
+      "Repräsentative Demokratie",
+      "Demokratietheorie",
+      "Direkte Demokratie",
+      "Konkordanzdemokratie",
+      "Defekte Demokratie",
+      "Postdemokratie",
+      "Souverän",
+      "Staatsmodell",
+      "Rechtsstaat"
+     ],
+     "nachher": [
+      "Demokratie",
+      "Repräsentative Demokratie",
+      "Demokratietheorie",
+      "Direkte Demokratie",
+      "Defekte Demokratie",
+      "Postdemokratie",
+      "Demokratische Bewegung (Deutschland)",
+      "Attische Demokratie"
+     ]
+    },
+    "Französische Revolution": {
+     "vorher": [
+      "Französische Revolution",
+      "Revolution",
+      "Die Französische Revolution",
+      "Revolutionstribunal",
+      "Revolutionsexport",
+      "Bürger",
+      "Republik",
+      "Verfassung",
+      "Liberalismus",
+      "Revolutionskult"
+     ],
+     "nachher": [
+      "Französische Revolution",
+      "Revolution",
+      "Geschichtsschreibung zur Französischen Revolution",
+      "Konstituante",
+      "Die Französische Revolution",
+      "Revolutionstribunal",
+      "Revolutionsexport",
+      "Bürger",
+      "Liberalismus",
+      "Revolutionskult"
+     ]
+    },
+    "Klimawandel": {
+     "vorher": [
+      "Klimawandel",
+      "Klima",
+      "Anthropogen",
+      "Treibhausgas",
+      "Forschungsgeschichte des Klimawandels"
+     ],
+     "nachher": [
+      "Klimawandel",
+      "Treibhausgas",
+      "Forschungsgeschichte des Klimawandels",
+      "Milanković-Zyklen"
+     ]
+    },
+    "Photosynthese": {
+     "vorher": [
+      "Photosynthese",
+      "Pflanze",
+      "Bakterien",
+      "Licht",
+      "Chlorophylle",
+      "Kohlenstoffdioxid",
+      "Wasser",
+      "Sauerstoff"
+     ],
+     "nachher": [
+      "Photosynthese",
+      "Lichtsammelkomplex",
+      "Calvin-Zyklus",
+      "Kohlenstoffdioxid-Assimilation",
+      "Pflanze",
+      "Bakterien",
+      "Licht",
+      "Sauerstoff"
+     ]
+    },
+    "Programmiersprache": {
+     "vorher": [
+      "Geschichte der Programmiersprachen",
+      "Deklarative Programmierung",
+      "Höhere Programmiersprache",
+      "Esoterische Programmiersprache",
+      "Visuelle Programmiersprache",
+      "Allzweck-Programmiersprache",
+      "Logische Programmierung",
+      "Zeittafel der Programmiersprachen",
+      "Unterprogramm",
+      "Syntax"
+     ],
+     "nachher": [
+      "Geschichte der Programmiersprachen",
+      "Compiler",
+      "Deklarative Programmierung",
+      "Objektorientierte Programmierung",
+      "Strukturierte Programmierung",
+      "Höhere Programmiersprache",
+      "Programmierparadigma",
+      "Typisierung (Informatik)",
+      "Unterprogramm",
+      "Syntax"
+     ]
+    },
+    "Säure-Base-Konzepte": {
+     "vorher": [
+      "Säuren",
+      "Basen (Chemie)"
+     ],
+     "nachher": [
+      "Säuren",
+      "HSAB-Konzept",
+      "Lewis-Säure-Base-Konzept",
+      "Basen (Chemie)"
+     ]
+    }
+   }
+  },
+  "24.0": {
+   "wechsel": 1453,
+   "wechsel_gedruckt": 929,
+   "themen_mit_wechsel": 31,
+   "zeichen_gedruckt": 3350666,
+   "gold": {
+    "macro_f1": 0.4825,
+    "micro_f1": 0.6961,
+    "gedruckt_macro_f1": 0.4355,
+    "je_thema": {
+     "Barockliteratur": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.419
+     },
+     "Bruchrechnung": {
+      "macro_f1": 0.634,
+      "gedruckt_macro_f1": 0.6
+     },
+     "Demokratie": {
+      "macro_f1": 0.692,
+      "gedruckt_macro_f1": 0.475
+     },
+     "Französische Revolution": {
+      "macro_f1": 0.764,
+      "gedruckt_macro_f1": 0.626
+     },
+     "Klimawandel": {
+      "macro_f1": 0.492,
+      "gedruckt_macro_f1": 0.438
+     },
+     "Optik": {
+      "macro_f1": 0.555,
+      "gedruckt_macro_f1": 0.558
+     },
+     "Photosynthese": {
+      "macro_f1": 0.549,
+      "gedruckt_macro_f1": 0.5
+     },
+     "Programmiersprache": {
+      "macro_f1": 0.404,
+      "gedruckt_macro_f1": 0.404
+     },
+     "Säure-Base-Konzepte": {
+      "macro_f1": 0.452,
+      "gedruckt_macro_f1": 0.452
+     },
+     "Sinfonie": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.424
+     }
+    }
+   },
+   "korpora_anders": 35,
+   "nebenartikel_heraus": 87,
+   "hauptartikel": {
+    "ziele": 320,
+    "im_korpus": 147
+   },
+   "beispiele": {
+    "Demokratie": {
+     "vorher": [
+      "Demokratie",
+      "Demokratisierung",
+      "Repräsentative Demokratie",
+      "Demokratietheorie",
+      "Direkte Demokratie",
+      "Konkordanzdemokratie",
+      "Defekte Demokratie",
+      "Postdemokratie",
+      "Souverän",
+      "Staatsmodell",
+      "Rechtsstaat"
+     ],
+     "nachher": [
+      "Demokratie",
+      "Repräsentative Demokratie",
+      "Demokratietheorie",
+      "Direkte Demokratie",
+      "Defekte Demokratie",
+      "Postdemokratie",
+      "Demokratische Bewegung (Deutschland)",
+      "Attische Demokratie"
+     ]
+    },
+    "Französische Revolution": {
+     "vorher": [
+      "Französische Revolution",
+      "Revolution",
+      "Die Französische Revolution",
+      "Revolutionstribunal",
+      "Revolutionsexport",
+      "Bürger",
+      "Republik",
+      "Verfassung",
+      "Liberalismus",
+      "Revolutionskult"
+     ],
+     "nachher": [
+      "Französische Revolution",
+      "Geschichtsschreibung zur Französischen Revolution",
+      "Konstituante",
+      "Revolution",
+      "Terrorherrschaft",
+      "Französische Verfassung (1791)",
+      "Flucht nach Varennes",
+      "Erster Koalitionskrieg",
+      "Liberalismus",
+      "Revolutionskult"
+     ]
+    },
+    "Klimawandel": {
+     "vorher": [
+      "Klimawandel",
+      "Klima",
+      "Anthropogen",
+      "Treibhausgas",
+      "Forschungsgeschichte des Klimawandels"
+     ],
+     "nachher": [
+      "Klimawandel",
+      "Treibhausgas",
+      "Forschungsgeschichte des Klimawandels",
+      "Milanković-Zyklen"
+     ]
+    },
+    "Photosynthese": {
+     "vorher": [
+      "Photosynthese",
+      "Pflanze",
+      "Bakterien",
+      "Licht",
+      "Chlorophylle",
+      "Kohlenstoffdioxid",
+      "Wasser",
+      "Sauerstoff"
+     ],
+     "nachher": [
+      "Photosynthese",
+      "Lichtsammelkomplex",
+      "Calvin-Zyklus",
+      "Kohlenstoffdioxid-Assimilation",
+      "Pflanze",
+      "Bakterien",
+      "Licht",
+      "Sauerstoff"
+     ]
+    },
+    "Programmiersprache": {
+     "vorher": [
+      "Geschichte der Programmiersprachen",
+      "Deklarative Programmierung",
+      "Höhere Programmiersprache",
+      "Esoterische Programmiersprache",
+      "Visuelle Programmiersprache",
+      "Allzweck-Programmiersprache",
+      "Logische Programmierung",
+      "Zeittafel der Programmiersprachen",
+      "Unterprogramm",
+      "Syntax"
+     ],
+     "nachher": [
+      "Geschichte der Programmiersprachen",
+      "Compiler",
+      "Objektorientierte Programmierung",
+      "Strukturierte Programmierung",
+      "Programmierparadigma",
+      "Typisierung (Informatik)",
+      "Deklarative Programmierung",
+      "Höhere Programmiersprache",
+      "Unterprogramm",
+      "Syntax"
+     ]
+    },
+    "Säure-Base-Konzepte": {
+     "vorher": [
+      "Säuren",
+      "Basen (Chemie)"
+     ],
+     "nachher": [
+      "HSAB-Konzept",
+      "Lewis-Säure-Base-Konzept",
+      "Säuren",
+      "Basen (Chemie)"
+     ]
+    }
+   }
+  }
+ },
+ "model2vec": {
+  "substantive": {
+   "wechsel": 157,
+   "wechsel_gedruckt": 201,
+   "themen_mit_wechsel": 61,
+   "zeichen_gedruckt": 3346230,
+   "gold": {
+    "macro_f1": 0.4627,
+    "micro_f1": 0.6736,
+    "gedruckt_macro_f1": 0.4116,
+    "je_thema": {
+     "Barockliteratur": {
+      "macro_f1": 0.331,
+      "gedruckt_macro_f1": 0.331
+     },
+     "Bruchrechnung": {
+      "macro_f1": 0.634,
+      "gedruckt_macro_f1": 0.605
+     },
+     "Demokratie": {
+      "macro_f1": 0.549,
+      "gedruckt_macro_f1": 0.344
+     },
+     "Französische Revolution": {
+      "macro_f1": 0.683,
+      "gedruckt_macro_f1": 0.573
+     },
+     "Klimawandel": {
+      "macro_f1": 0.495,
+      "gedruckt_macro_f1": 0.435
+     },
+     "Optik": {
+      "macro_f1": 0.552,
+      "gedruckt_macro_f1": 0.553
+     },
+     "Photosynthese": {
+      "macro_f1": 0.507,
+      "gedruckt_macro_f1": 0.46
+     },
+     "Programmiersprache": {
+      "macro_f1": 0.41,
+      "gedruckt_macro_f1": 0.357
+     },
+     "Säure-Base-Konzepte": {
+      "macro_f1": 0.457,
+      "gedruckt_macro_f1": 0.457
+     },
+     "Sinfonie": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.424
+     }
+    }
+   }
+  },
+  "ohne_stoppwoerter": {
+   "wechsel": 85,
+   "wechsel_gedruckt": 103,
+   "themen_mit_wechsel": 49,
+   "zeichen_gedruckt": 3323961,
+   "gold": {
+    "macro_f1": 0.4565,
+    "micro_f1": 0.6711,
+    "gedruckt_macro_f1": 0.4056,
+    "je_thema": {
+     "Barockliteratur": {
+      "macro_f1": 0.376,
+      "gedruckt_macro_f1": 0.376
+     },
+     "Bruchrechnung": {
+      "macro_f1": 0.634,
+      "gedruckt_macro_f1": 0.605
+     },
+     "Demokratie": {
+      "macro_f1": 0.551,
+      "gedruckt_macro_f1": 0.344
+     },
+     "Französische Revolution": {
+      "macro_f1": 0.683,
+      "gedruckt_macro_f1": 0.573
+     },
+     "Klimawandel": {
+      "macro_f1": 0.495,
+      "gedruckt_macro_f1": 0.435
+     },
+     "Optik": {
+      "macro_f1": 0.558,
+      "gedruckt_macro_f1": 0.56
+     },
+     "Photosynthese": {
+      "macro_f1": 0.49,
+      "gedruckt_macro_f1": 0.444
+     },
+     "Programmiersprache": {
+      "macro_f1": 0.41,
+      "gedruckt_macro_f1": 0.357
+     },
+     "Säure-Base-Konzepte": {
+      "macro_f1": 0.452,
+      "gedruckt_macro_f1": 0.452
+     },
+     "Sinfonie": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.424
+     }
+    }
+   }
+  },
+  "kontrolle": {
+   "wechsel": 0,
+   "wechsel_gedruckt": 0,
+   "themen_mit_wechsel": 0,
+   "zeichen_gedruckt": 3327073,
+   "gold": {
+    "macro_f1": 0.4672,
+    "micro_f1": 0.6736,
+    "gedruckt_macro_f1": 0.4164,
+    "je_thema": {
+     "Barockliteratur": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.419
+     },
+     "Bruchrechnung": {
+      "macro_f1": 0.634,
+      "gedruckt_macro_f1": 0.6
+     },
+     "Demokratie": {
+      "macro_f1": 0.549,
+      "gedruckt_macro_f1": 0.344
+     },
+     "Französische Revolution": {
+      "macro_f1": 0.683,
+      "gedruckt_macro_f1": 0.573
+     },
+     "Klimawandel": {
+      "macro_f1": 0.495,
+      "gedruckt_macro_f1": 0.435
+     },
+     "Optik": {
+      "macro_f1": 0.555,
+      "gedruckt_macro_f1": 0.558
+     },
+     "Photosynthese": {
+      "macro_f1": 0.49,
+      "gedruckt_macro_f1": 0.444
+     },
+     "Programmiersprache": {
+      "macro_f1": 0.41,
+      "gedruckt_macro_f1": 0.357
+     },
+     "Säure-Base-Konzepte": {
+      "macro_f1": 0.452,
+      "gedruckt_macro_f1": 0.452
+     },
+     "Sinfonie": {
+      "macro_f1": 0.419,
+      "gedruckt_macro_f1": 0.424
+     }
+    }
+   }
+  }
+ },
+ "sekunden": 418
+}

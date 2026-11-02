@@ -1,0 +1,3897 @@
+{
+ "code": "C:\\Users\\jan\\staging\\Windsurf\\compendious-text-fastapi\\app\\__init__.py",
+ "ausgeliefert": {
+  "wechsel": 0,
+  "wechsel_gedruckt": 0,
+  "themen_mit_wechsel": 0,
+  "zeichen_gedruckt": 3327073,
+  "gold": {
+   "macro_f1": 0.4672,
+   "micro_f1": 0.6736,
+   "gedruckt_macro_f1": 0.4164,
+   "je_thema": {
+    "Barockliteratur": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.419
+    },
+    "Bruchrechnung": {
+     "macro_f1": 0.634,
+     "gedruckt_macro_f1": 0.6
+    },
+    "Demokratie": {
+     "macro_f1": 0.549,
+     "gedruckt_macro_f1": 0.344
+    },
+    "Französische Revolution": {
+     "macro_f1": 0.683,
+     "gedruckt_macro_f1": 0.573
+    },
+    "Klimawandel": {
+     "macro_f1": 0.495,
+     "gedruckt_macro_f1": 0.435
+    },
+    "Optik": {
+     "macro_f1": 0.555,
+     "gedruckt_macro_f1": 0.558
+    },
+    "Photosynthese": {
+     "macro_f1": 0.49,
+     "gedruckt_macro_f1": 0.444
+    },
+    "Programmiersprache": {
+     "macro_f1": 0.41,
+     "gedruckt_macro_f1": 0.357
+    },
+    "Säure-Base-Konzepte": {
+     "macro_f1": 0.452,
+     "gedruckt_macro_f1": 0.452
+    },
+    "Sinfonie": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.424
+    }
+   }
+  },
+  "hauptartikel": {
+   "ziele": 320,
+   "im_korpus": 72
+  }
+ },
+ "korpora": {
+  "ausgeliefert": {
+   "Barockliteratur": [
+    "Barock"
+   ],
+   "Bruchrechnung": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Bürger",
+    "Republik",
+    "Verfassung",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Klimawandel": [
+    "Klimawandel",
+    "Klima",
+    "Anthropogen",
+    "Treibhausgas",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Optik": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese": [
+    "Photosynthese",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser",
+    "Sauerstoff"
+   ],
+   "Programmiersprache": [
+    "Geschichte der Programmiersprachen",
+    "Deklarative Programmierung",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Logische Programmierung",
+    "Zeittafel der Programmiersprachen",
+    "Unterprogramm",
+    "Syntax"
+   ],
+   "Säure-Base-Konzepte": [
+    "Säuren",
+    "Basen (Chemie)"
+   ],
+   "Sinfonie": [
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Programmmusik",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante",
+    "Orchester",
+    "Sonatensatzform",
+    "Franz Schubert",
+    "7. Sinfonie (Bruckner)"
+   ],
+   "Plattentektonik": [
+    "Plattentektonik",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Vulkan",
+    "Kontinentaldrift",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Ökosystem": [
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökologie",
+    "System",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall",
+    "Ökosystemischer Ansatz nach Bronfenbrenner",
+    "Ökologisches Gleichgewicht",
+    "Naturvolk",
+    "Organizismus"
+   ],
+   "Atommodell": [
+    "Atom",
+    "Teilchenmodell",
+    "Zeittafel physikalischer Entdeckungen"
+   ],
+   "Industrielle Revolution": [
+    "Industrielle Revolution",
+    "Revolution",
+    "Kapitalismus",
+    "Dampfmaschine",
+    "Kohle",
+    "Eisen",
+    "Produktion",
+    "Soziokulturelle Evolution",
+    "Proletariat",
+    "Hochindustrialisierung in Deutschland"
+   ],
+   "Elektrischer Strom": [
+    "Gleichstrom",
+    "Wechselstrom",
+    "Mischstrom",
+    "Gleichstrommaschine",
+    "Dreiphasenwechselstrom",
+    "Stromquelle",
+    "Stromnetz",
+    "Ion",
+    "Stromfluss",
+    "Elektrische Spannung"
+   ],
+   "Wasserkreislauf": [
+    "Wasserkreislauf",
+    "Wasser",
+    "Eis",
+    "Niederschlag",
+    "Grundwasser",
+    "Infiltration (Hydrogeologie)",
+    "Tracer (Geowissenschaften)"
+   ],
+   "Römisches Reich": [
+    "Römisches Reich",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht",
+    "Republik",
+    "Kaiser"
+   ],
+   "Lineare Funktion": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Zelle (Biologie)": [
+    "Zellkern",
+    "Zellmembran",
+    "Zellteilung",
+    "Protein",
+    "Tier",
+    "Plastid",
+    "Vakuole",
+    "Membran",
+    "Organell"
+   ],
+   "Gedicht": [
+    "Gedicht",
+    "Kinderlyrik",
+    "Liebeslyrik",
+    "Naturlyrik",
+    "Politische Lyrik",
+    "Kanon der neun Lyriker",
+    "Antonio Machado (Lyriker)",
+    "Wechsel (Lyrik)",
+    "Minnesang",
+    "Der siebente Ring"
+   ],
+   "deutsche Dichter": [
+    "Liste deutschsprachiger Lyrikanthologien",
+    "Otto Braun (Lyriker)",
+    "Wilhelm Klemm (Lyriker)",
+    "Theodor Kramer (Lyriker)",
+    "Lyrik"
+   ],
+   "Dichter der Romantik": [
+    "Epos",
+    "Englisches Parlament",
+    "Historischer Roman",
+    "Walter Scott"
+   ],
+   "Komponisten der Klassik": [
+    "Filmmusik",
+    "Recomposed by Max Richter: Vivaldi – The Four Seasons",
+    "FatCat Records",
+    "Europäischer Filmpreis/Beste Filmmusik",
+    "Waltz with Bashir",
+    "Ad Astra – Zu den Sternen"
+   ],
+   "Philosophen der Aufklärung": [
+    "Aufklärung",
+    "Philipp Blom",
+    "Voltaire",
+    "Sensualismus"
+   ],
+   "Maler des Impressionismus": [
+    "Impressionismus",
+    "Skagen-Maler",
+    "Max Liebermann"
+   ],
+   "römische Kaiser": [
+    "Spätantike",
+    "Kaiser",
+    "Liste der römischen Kaiserinnen",
+    "Liste der römischen Kaiser (800–924)",
+    "Liste der byzantinischen Kaiser",
+    "Trier"
+   ],
+   "deutsche Bundeskanzler": [
+    "Bundeskanzlerin",
+    "Verteidigungsfall (Deutschland)",
+    "Richtlinienkompetenz",
+    "Ernennung",
+    "Friedrich Merz",
+    "Kanzler",
+    "Misstrauensvotum",
+    "Vertrauensfrage",
+    "Politisches System der Bundesrepublik Deutschland"
+   ],
+   "griechische Götter": [
+    "Griechische Literatur",
+    "Olymp",
+    "Klassische Mythologie",
+    "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+    "Lexicon Iconographicum Mythologiae Classicae",
+    "Ausführliches Lexikon der griechischen und römischen Mythologie",
+    "Gott",
+    "Griechische Vasenmalerei",
+    "Hermaphroditismus",
+    "Kairos",
+    "Mythos"
+   ],
+   "Planeten des Sonnensystems": [
+    "Sonnensystem",
+    "Liste der Asteroiden",
+    "Liste der Monde von Planeten und Zwergplaneten",
+    "Liste der Zwergplaneten des Sonnensystems",
+    "Rechtläufig und rückläufig",
+    "Zeittafel Astronomie"
+   ],
+   "Edelgase": [
+    "Edelgasverbindungen",
+    "Xenon",
+    "Edelgaskonfiguration",
+    "Edelgasregel",
+    "Helium",
+    "Neon",
+    "Q-Phase (Meteoriten)",
+    "Gashydrat",
+    "Inertgas"
+   ],
+   "Weltreligionen": [
+    "Religion",
+    "Erstes Parlament der Weltreligionen",
+    "Christentum",
+    "Islam",
+    "Buddhismus",
+    "Buchreligion"
+   ],
+   "erneuerbare Energien": [
+    "Energiequelle",
+    "Energieversorgung",
+    "Bioenergie",
+    "Sonnenenergie",
+    "Windenergie",
+    "Energiewende",
+    "Endenergie",
+    "Klimapolitik",
+    "Photovoltaik",
+    "Kostendeckende Vergütung"
+   ],
+   "Erfindungen der Industrialisierung": [
+    "Industrielle Revolution",
+    "Industrielle Revolution",
+    "Deindustrialisierung",
+    "Hochindustrialisierung in Deutschland",
+    "Industrialisierung Frankreichs",
+    "Industrialisierung der Schweiz",
+    "Industrialisierung der Sowjetunion",
+    "Sozialpolitik"
+   ],
+   "Nobelpreisträger für Physik": [
+    "Liste der Nobelpreisträger",
+    "Liste der Nobelpreisträgerinnen",
+    "Teilchenphysik",
+    "Liste der Listen der Nobelpreisträger",
+    "Liste der Nobelpreisträger für Chemie",
+    "Liste der Nobelpreisträger für Literatur",
+    "Liste der Friedensnobelpreisträger",
+    "Liste der Nobelpreisträger für Physiologie oder Medizin"
+   ],
+   "Frauen in der Wissenschaft": [
+    "Wissenschaftsbetrieb",
+    "Frauenbildung",
+    "Ingenieurwissenschaften",
+    "Frauenstudium im deutschen Sprachraum",
+    "Frauengeschichte",
+    "Frauenbewegung",
+    "Frau",
+    "Genie",
+    "Mikrofeminismus"
+   ],
+   "Märchen der Brüder Grimm": [
+    "Brüder Grimm",
+    "Jacob Grimm",
+    "Wilhelm Grimm",
+    "Kassel",
+    "Grimms Märchen",
+    "Herman Grimm",
+    "Ferdinand Philipp Grimm",
+    "Jacob-und-Wilhelm-Grimm-Zentrum",
+    "Märchen",
+    "Sage",
+    "Rotkäppchen"
+   ],
+   "deutsche Flüsse": [
+    "Liste der Flüsse in Baden-Württemberg",
+    "Liste der Flüsse in Bayern",
+    "Liste der Flüsse in Hessen",
+    "Liste der Flüsse in Niedersachsen",
+    "Liste der Flüsse in Nordrhein-Westfalen",
+    "Liste der Flüsse in Rheinland-Pfalz",
+    "Liste der Flüsse im Saarland",
+    "Liste der Flüsse im Regierungsbezirk Oberbayern"
+   ],
+   "Säugetiere des Waldes": [
+    "Rothmoos (Nonnenbruchwald)"
+   ],
+   "Vulkane Europas": [
+    "Luigi Ferdinando Marsigli",
+    "Submariner Vulkan"
+   ],
+   "Entdecker der Neuzeit": [
+    "Entdecker",
+    "Zeitalter der Entdeckungen",
+    "Entdeckung Amerikas",
+    "Entdeckung der Kernspaltung",
+    "Entdeckung der Radioaktivität",
+    "Besiedlung Tasmaniens durch Weiße",
+    "Entdeckungsreise",
+    "Erfindung"
+   ],
+   "Klimawandel und Landwirtschaft": [
+    "Klimawandelleugnung",
+    "The Heartland Institute"
+   ],
+   "Mathematik in der Musik": [
+    "Hochschule Niederrhein"
+   ],
+   "Chemie im Alltag": [
+    "Gesellschaft Deutscher Chemiker",
+    "Literaturpreis des Fonds der Chemischen Industrie",
+    "Joachim Rudolph (Chemiker)",
+    "Web of Science",
+    "Wiley-VCH Verlag"
+   ],
+   "Frauen im Mittelalter": [
+    "Manuskripte"
+   ],
+   "Musik der Romantik": [
+    "Romantik",
+    "Musik",
+    "Spätromantik",
+    "Instrumentalmusik",
+    "Kammermusik",
+    "Polyphonie"
+   ],
+   "Dichter aus dem Mittelalter": [
+    "Spruchdichtung",
+    "Minnesang",
+    "Reinmar von Zweter"
+   ],
+   "OER-Förderungen": [
+    "Open Education",
+    "Open Knowledge Foundation Deutschland",
+    "OpenCourseWare",
+    "Open Access",
+    "Open Textbook",
+    "Open Source",
+    "Open Science",
+    "Serlo",
+    "Open Music Academy"
+   ],
+   "Inklusion im Sportunterricht": [
+    "Sport",
+    "Geschichte der Sportdidaktik",
+    "Fachdidaktik",
+    "Jürgen Kretschmer (Sportdidaktiker)",
+    "Sportpädagogik",
+    "Sportunterricht",
+    "Sportwissenschaft"
+   ],
+   "Künstliche Intelligenz im Unterricht": [
+    "Halluzination",
+    "ChatGPT"
+   ],
+   "Nachhaltigkeit im Chemieunterricht": [
+    "Bildung für nachhaltige Entwicklung",
+    "Universität des Saarlandes",
+    "Gesellschaft Deutscher Chemiker"
+   ],
+   "Klimaanpassung in Städten": [
+    "Hagen"
+   ],
+   "Fake News erkennen": [
+    "Fake",
+    "Facebook",
+    "Falschmeldung",
+    "Falschinformationen zur COVID-19-Pandemie"
+   ],
+   "Energiewende in Deutschland": [
+    "Energiewende",
+    "Stromerzeugung in Deutschland",
+    "Ausstieg aus der Kohleverstromung in Deutschland",
+    "Kohle",
+    "Klimapolitik"
+   ],
+   "Mikroplastik im Meer": [
+    "Kunststoff",
+    "Rhein",
+    "Plastikmüll in den Ozeanen",
+    "Luft",
+    "Sport Utility Vehicle",
+    "Nanopartikel",
+    "Geschenkpapier"
+   ],
+   "Datenschutz für Schüler": [
+    "Datenschutz",
+    "Datenschutzrecht",
+    "Bundesdatenschutzgesetz",
+    "Datenschutz-Grundverordnung",
+    "Berufsverband der Datenschutzbeauftragten Deutschlands",
+    "Datenschutz im Internet",
+    "Datenschutzgesetz (Österreich)",
+    "Verbraucherinformatik",
+    "Binding Corporate Rules",
+    "Datenschutzbeauftragter (Datenschutz-Grundverordnung)"
+   ],
+   "Algorithmen im Alltag": [
+    "Mergesort",
+    "Asynchronous module definition"
+   ],
+   "Wasserstoff als Energieträger": [
+    "Energie",
+    "Wasserstoff",
+    "Uran",
+    "Primärenergie",
+    "Biomasse",
+    "Ökosteuer (Deutschland)",
+    "XtL-Kraftstoff"
+   ],
+   "Optik in Klasse 7": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Physik: Optik (Sek I)": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese für die Grundschule": [
+    "Photosynthese",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser",
+    "Sauerstoff"
+   ],
+   "Bruchrechnung Klasse 6": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie in der Sekundarstufe I": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Thema: Klimawandel": [
+    "Klimawandel",
+    "Klima",
+    "Anthropogen",
+    "Treibhausgas",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Geschichte: Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Bürger",
+    "Republik",
+    "Verfassung",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Plattentektonik (Oberstufe)": [
+    "Plattentektonik",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Vulkan",
+    "Kontinentaldrift",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Fotosynthese": [
+    "Photosynthese",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser",
+    "Sauerstoff"
+   ],
+   "photosynthese": [
+    "Photosynthese",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Wasser",
+    "Sauerstoff"
+   ],
+   "Lichtlehre": [
+    "Ernst Arthur Voretzsch",
+    "Erlangen",
+    "27. Juni",
+    "Evangelische Theologie",
+    "Corps Saxonia Göttingen",
+    "Ikone"
+   ],
+   "Klimaerwärmung": [
+    "Folgen der globalen Erwärmung",
+    "Klimawandel",
+    "Anthropogen",
+    "Treibhausgas",
+    "Landwirtschaft",
+    "Klimaschutz",
+    "Wasserdampf",
+    "Geoengineering",
+    "Kohlenstoffzyklus"
+   ],
+   "DNA": [
+    "Doppelhelix",
+    "Chromosom",
+    "Gen",
+    "Genom",
+    "RNA-Welt-Hypothese",
+    "Epigenetik",
+    "Polymerase-Kettenreaktion"
+   ],
+   "EU": [
+    "Europäische Union",
+    "Rat der Europäischen Union",
+    "Europäische Kommission",
+    "Unionsbürgerschaft",
+    "Europäische Zentralbank",
+    "Europäische Identität",
+    "Europäische Gemeinschaft"
+   ],
+   "Bruchrechnen": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Lineare Funktionen": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Vulkane": [
+    "Vulkan",
+    "Vulkanismus",
+    "Vulkanausbruch",
+    "Magma",
+    "Lava",
+    "Schichtvulkan",
+    "Schildvulkan",
+    "Spaltenvulkan",
+    "Vulkaneifel"
+   ],
+   "Treibhauseffekt": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Anthropogen",
+    "Gleichgewichtstemperatur",
+    "Galoppierender Treibhauseffekt",
+    "Globale Erwärmung",
+    "Kältemittel",
+    "Idealisiertes Treibhausmodell",
+    "Atmosphärische Gegenstrahlung"
+   ],
+   "Weimarer Republik": [
+    "Weimarer Republik",
+    "Weimarer Verfassung",
+    "Republik",
+    "Weimarer Koalition",
+    "Reichskanzler (Weimarer Republik)",
+    "Reichspräsident",
+    "Weimar",
+    "Weltwirtschaftskrise",
+    "Konservative Revolution",
+    "Fotografie in der Weimarer Republik",
+    "Goldene Zwanziger"
+   ],
+   "Satz des Pythagoras": [
+    "Pythagoras",
+    "Kosinussatz",
+    "Flächeninhalt",
+    "Euklid",
+    "Skalarprodukt",
+    "Babylon",
+    "Sinus und Kosinus",
+    "Prinzip von Cavalieri",
+    "Binomische Formeln"
+   ],
+   "Physik: Energie": [
+    "Energie",
+    "Chemische Energie",
+    "Potentielle Energie",
+    "Kinetische Energie",
+    "Elektrische Energie",
+    "Energieträger",
+    "Primärenergie",
+    "Energieversorgung",
+    "Bohrscher Radius",
+    "Planck-Konstante"
+   ],
+   "Säure": [
+    "Essigsäure",
+    "Salzsäure",
+    "Schwefelsäure",
+    "Säure-Base-Konzepte",
+    "Salpetersäure",
+    "Säurekonstante",
+    "Mineralsäuren",
+    "Phosphorsäure"
+   ],
+   "Klimawandels": [
+    "Klimawandel",
+    "Klima",
+    "Anthropogen",
+    "Treibhausgas",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Evolutionstheorie": [
+    "Geschichte der Evolutionstheorie",
+    "Evolution",
+    "Theorie",
+    "Synthetische Evolutionstheorie",
+    "Erweiterte Synthese (Evolutionstheorie)",
+    "Frankfurter Evolutionstheorie",
+    "Evolutionsgeschichte",
+    "Evolution (Begriff)"
+   ]
+  },
+  "schutz_24": {
+   "Barockliteratur": [
+    "Barock"
+   ],
+   "Bruchrechnung": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Konstituante",
+    "Terrorherrschaft",
+    "Französische Verfassung (1791)",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Klimawandel": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Milanković-Zyklen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Optik": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Sauerstoff"
+   ],
+   "Programmiersprache": [
+    "Geschichte der Programmiersprachen",
+    "Deklarative Programmierung",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Logische Programmierung",
+    "Zeittafel der Programmiersprachen",
+    "Unterprogramm",
+    "Syntax"
+   ],
+   "Säure-Base-Konzepte": [
+    "Säuren",
+    "Basen (Chemie)"
+   ],
+   "Sinfonie": [
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Programmmusik",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante",
+    "Symphonia",
+    "Sonatensatzform",
+    "Franz Schubert",
+    "7. Sinfonie (Bruckner)"
+   ],
+   "Plattentektonik": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Paläomagnetismus",
+    "Grabenbruch",
+    "Tektonik",
+    "Lithosphäre",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Ökosystem": [
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökologie",
+    "System",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall",
+    "Ökosystemischer Ansatz nach Bronfenbrenner",
+    "Ökologisches Gleichgewicht",
+    "Naturvolk",
+    "Organizismus"
+   ],
+   "Atommodell": [
+    "Atom",
+    "Teilchenmodell",
+    "Zeittafel physikalischer Entdeckungen"
+   ],
+   "Industrielle Revolution": [
+    "Industrielle Revolution",
+    "Revolution",
+    "Dampfmaschine",
+    "Kapitalismus",
+    "Kohle",
+    "Eisen",
+    "Soziokulturelle Evolution",
+    "Proletariat",
+    "Hochindustrialisierung in Deutschland"
+   ],
+   "Elektrischer Strom": [
+    "Gleichstrom",
+    "Wechselstrom",
+    "Mischstrom",
+    "Gleichstrommaschine",
+    "Dreiphasenwechselstrom",
+    "Stromquelle",
+    "Stromnetz",
+    "Ion",
+    "Stromfluss",
+    "Elektrische Spannung"
+   ],
+   "Wasserkreislauf": [
+    "Wasserkreislauf",
+    "Wasser",
+    "Eis",
+    "Niederschlag",
+    "Grundwasser",
+    "Infiltration (Hydrogeologie)",
+    "Tracer (Geowissenschaften)"
+   ],
+   "Römisches Reich": [
+    "Römisches Reich",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht",
+    "Republik",
+    "Kaiser"
+   ],
+   "Lineare Funktion": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Zelle (Biologie)": [
+    "Zellkern",
+    "Zellmembran",
+    "Zellteilung",
+    "Plastid",
+    "Vakuole",
+    "Organell",
+    "Ribosom",
+    "Lysosom",
+    "Zelltheorie"
+   ],
+   "Gedicht": [
+    "Gedicht",
+    "Kinderlyrik",
+    "Liebeslyrik",
+    "Naturlyrik",
+    "Politische Lyrik",
+    "Kanon der neun Lyriker",
+    "Antonio Machado (Lyriker)",
+    "Wechsel (Lyrik)",
+    "Minnesang",
+    "Der siebente Ring"
+   ],
+   "deutsche Dichter": [
+    "Liste deutschsprachiger Lyrikanthologien",
+    "Otto Braun (Lyriker)",
+    "Wilhelm Klemm (Lyriker)",
+    "Theodor Kramer (Lyriker)",
+    "Lyrik"
+   ],
+   "Dichter der Romantik": [
+    "Epos",
+    "Englisches Parlament",
+    "Historischer Roman",
+    "Walter Scott"
+   ],
+   "Komponisten der Klassik": [
+    "Filmmusik",
+    "Recomposed by Max Richter: Vivaldi – The Four Seasons",
+    "FatCat Records",
+    "Europäischer Filmpreis/Beste Filmmusik",
+    "Waltz with Bashir",
+    "Ad Astra – Zu den Sternen"
+   ],
+   "Philosophen der Aufklärung": [
+    "Aufklärung",
+    "Philipp Blom",
+    "Voltaire",
+    "Sensualismus"
+   ],
+   "Maler des Impressionismus": [
+    "Impressionismus",
+    "Skagen-Maler",
+    "Max Liebermann"
+   ],
+   "römische Kaiser": [
+    "Spätantike",
+    "Kaiser",
+    "Liste der römischen Kaiserinnen",
+    "Liste der römischen Kaiser (800–924)",
+    "Liste der byzantinischen Kaiser",
+    "Trier"
+   ],
+   "deutsche Bundeskanzler": [
+    "Bundeskanzlerin",
+    "Verteidigungsfall (Deutschland)",
+    "Misstrauensvotum",
+    "Vertrauensfrage",
+    "Reichskanzler (Weimarer Republik)",
+    "Richtlinienkompetenz",
+    "Ernennung",
+    "Friedrich Merz",
+    "Politisches System der Bundesrepublik Deutschland"
+   ],
+   "griechische Götter": [
+    "Griechische Literatur",
+    "Olympische Götter",
+    "Klassische Mythologie",
+    "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+    "Lexicon Iconographicum Mythologiae Classicae",
+    "Ausführliches Lexikon der griechischen und römischen Mythologie",
+    "Olymp",
+    "Griechische Vasenmalerei",
+    "Hermaphroditismus",
+    "Kairos",
+    "Mythos"
+   ],
+   "Planeten des Sonnensystems": [
+    "Sonnensystem",
+    "Liste der Asteroiden",
+    "Liste der Monde von Planeten und Zwergplaneten",
+    "Liste der Zwergplaneten des Sonnensystems",
+    "Rechtläufig und rückläufig",
+    "Zeittafel Astronomie"
+   ],
+   "Edelgase": [
+    "Edelgasverbindungen",
+    "Xenon",
+    "Edelgaskonfiguration",
+    "Edelgasregel",
+    "Helium",
+    "Neon",
+    "Q-Phase (Meteoriten)",
+    "Gashydrat",
+    "Inertgas"
+   ],
+   "Weltreligionen": [
+    "Universalismus (Religionswissenschaft)",
+    "Erstes Parlament der Weltreligionen",
+    "Religion",
+    "Christentum",
+    "Islam",
+    "Buddhismus",
+    "Buchreligion"
+   ],
+   "erneuerbare Energien": [
+    "Energiequelle",
+    "Energieversorgung",
+    "Bioenergie",
+    "Sonnenenergie",
+    "Windenergie",
+    "Energiewende",
+    "Endenergie",
+    "Klimapolitik",
+    "Photovoltaik",
+    "Kostendeckende Vergütung"
+   ],
+   "Erfindungen der Industrialisierung": [
+    "Industrielle Revolution",
+    "Industrielle Revolution",
+    "Deindustrialisierung",
+    "Hochindustrialisierung in Deutschland",
+    "Industrialisierung Frankreichs",
+    "Industrialisierung der Schweiz",
+    "Industrialisierung der Sowjetunion",
+    "Sozialpolitik"
+   ],
+   "Nobelpreisträger für Physik": [
+    "Liste der Nobelpreisträger",
+    "Liste der Nobelpreisträgerinnen",
+    "Teilchenphysik",
+    "Liste der Listen der Nobelpreisträger",
+    "Liste der Nobelpreisträger für Chemie",
+    "Liste der Nobelpreisträger für Literatur",
+    "Liste der Friedensnobelpreisträger",
+    "Liste der Nobelpreisträger für Physiologie oder Medizin"
+   ],
+   "Frauen in der Wissenschaft": [
+    "Wissenschaftsbetrieb",
+    "Frauenbildung",
+    "Ingenieurwissenschaften",
+    "Frauenstudium im deutschen Sprachraum",
+    "Frauengeschichte",
+    "Frauenbewegung",
+    "Frau",
+    "Genie",
+    "Mikrofeminismus"
+   ],
+   "Märchen der Brüder Grimm": [
+    "Brüder Grimm",
+    "Jacob Grimm",
+    "Wilhelm Grimm",
+    "Kassel",
+    "Grimms Märchen",
+    "Herman Grimm",
+    "Ferdinand Philipp Grimm",
+    "Jacob-und-Wilhelm-Grimm-Zentrum",
+    "Märchen",
+    "Sage",
+    "Rotkäppchen"
+   ],
+   "deutsche Flüsse": [
+    "Liste der Flüsse in Baden-Württemberg",
+    "Liste der Flüsse in Bayern",
+    "Liste der Flüsse in Hessen",
+    "Liste der Flüsse in Niedersachsen",
+    "Liste der Flüsse in Nordrhein-Westfalen",
+    "Liste der Flüsse in Rheinland-Pfalz",
+    "Liste der Flüsse im Saarland",
+    "Liste der Flüsse im Regierungsbezirk Oberbayern"
+   ],
+   "Säugetiere des Waldes": [
+    "Rothmoos (Nonnenbruchwald)"
+   ],
+   "Vulkane Europas": [
+    "Luigi Ferdinando Marsigli",
+    "Submariner Vulkan"
+   ],
+   "Entdecker der Neuzeit": [
+    "Entdecker",
+    "Zeitalter der Entdeckungen",
+    "Entdeckung Amerikas",
+    "Entdeckung der Kernspaltung",
+    "Entdeckung der Radioaktivität",
+    "Besiedlung Tasmaniens durch Weiße",
+    "Entdeckungsreise",
+    "Erfindung"
+   ],
+   "Klimawandel und Landwirtschaft": [
+    "Klimawandelleugnung",
+    "The Heartland Institute"
+   ],
+   "Mathematik in der Musik": [
+    "Hochschule Niederrhein"
+   ],
+   "Chemie im Alltag": [
+    "Gesellschaft Deutscher Chemiker",
+    "Literaturpreis des Fonds der Chemischen Industrie",
+    "Joachim Rudolph (Chemiker)",
+    "Web of Science",
+    "Wiley-VCH Verlag"
+   ],
+   "Frauen im Mittelalter": [
+    "Manuskripte"
+   ],
+   "Musik der Romantik": [
+    "Romantik",
+    "Musik",
+    "Spätromantik",
+    "Instrumentalmusik",
+    "Kammermusik",
+    "Polyphonie"
+   ],
+   "Dichter aus dem Mittelalter": [
+    "Spruchdichtung",
+    "Minnesang",
+    "Reinmar von Zweter"
+   ],
+   "OER-Förderungen": [
+    "Open Education",
+    "Open Knowledge Foundation Deutschland",
+    "OpenCourseWare",
+    "Open Access",
+    "Open Textbook",
+    "Open Source",
+    "Open Science",
+    "Serlo",
+    "Open Music Academy"
+   ],
+   "Inklusion im Sportunterricht": [
+    "Sport",
+    "Geschichte der Sportdidaktik",
+    "Fachdidaktik",
+    "Jürgen Kretschmer (Sportdidaktiker)",
+    "Sportpädagogik",
+    "Sportunterricht",
+    "Sportwissenschaft"
+   ],
+   "Künstliche Intelligenz im Unterricht": [
+    "Halluzination",
+    "ChatGPT"
+   ],
+   "Nachhaltigkeit im Chemieunterricht": [
+    "Bildung für nachhaltige Entwicklung",
+    "Universität des Saarlandes",
+    "Gesellschaft Deutscher Chemiker"
+   ],
+   "Klimaanpassung in Städten": [
+    "Hagen"
+   ],
+   "Fake News erkennen": [
+    "Fake",
+    "Haustierverzehr-Lüge über haitianische Immigranten in Springfield (Ohio)",
+    "Facebook",
+    "Falschinformationen zur COVID-19-Pandemie"
+   ],
+   "Energiewende in Deutschland": [
+    "Energiewende",
+    "Stromerzeugung in Deutschland",
+    "Ausstieg aus der Kohleverstromung in Deutschland",
+    "Kohle",
+    "Klimapolitik"
+   ],
+   "Mikroplastik im Meer": [
+    "Kunststoff",
+    "Plastikmüll in den Ozeanen",
+    "Rhein",
+    "Luft",
+    "Sport Utility Vehicle",
+    "Nanopartikel",
+    "Geschenkpapier"
+   ],
+   "Datenschutz für Schüler": [
+    "Datenschutz",
+    "Datenschutzrecht",
+    "Bundesdatenschutzgesetz",
+    "Datenschutz-Grundverordnung",
+    "Berufsverband der Datenschutzbeauftragten Deutschlands",
+    "Datenschutz im Internet",
+    "Datenschutzgesetz (Österreich)",
+    "Verbraucherinformatik",
+    "Binding Corporate Rules",
+    "Datenschutzbeauftragter (Datenschutz-Grundverordnung)"
+   ],
+   "Algorithmen im Alltag": [
+    "Mergesort",
+    "Asynchronous module definition"
+   ],
+   "Wasserstoff als Energieträger": [
+    "Energie",
+    "Wasserstoff",
+    "Uran",
+    "Primärenergie",
+    "Biomasse",
+    "Ökosteuer (Deutschland)",
+    "XtL-Kraftstoff"
+   ],
+   "Optik in Klasse 7": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Physik: Optik (Sek I)": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese für die Grundschule": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Sauerstoff"
+   ],
+   "Bruchrechnung Klasse 6": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie in der Sekundarstufe I": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Thema: Klimawandel": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Milanković-Zyklen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Geschichte: Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Konstituante",
+    "Terrorherrschaft",
+    "Französische Verfassung (1791)",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Plattentektonik (Oberstufe)": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Paläomagnetismus",
+    "Grabenbruch",
+    "Tektonik",
+    "Lithosphäre",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Fotosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Sauerstoff"
+   ],
+   "photosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Sauerstoff"
+   ],
+   "Lichtlehre": [
+    "Ernst Arthur Voretzsch",
+    "Erlangen",
+    "27. Juni",
+    "Evangelische Theologie",
+    "Corps Saxonia Göttingen",
+    "Ikone"
+   ],
+   "Klimaerwärmung": [
+    "Folgen der globalen Erwärmung",
+    "Treibhausgas",
+    "Klimaschutz",
+    "Zwei-Grad-Ziel",
+    "Erneuerbare Energien",
+    "Klimapolitik",
+    "Geoengineering"
+   ],
+   "DNA": [
+    "Chromosom",
+    "Gen",
+    "DNA-Reparatur",
+    "RNA-Welt-Hypothese",
+    "Epigenetik",
+    "Polymerase-Kettenreaktion"
+   ],
+   "EU": [
+    "Europäische Union",
+    "Rat der Europäischen Union",
+    "Europäische Kommission",
+    "Unionsbürgerschaft",
+    "Europäische Zentralbank",
+    "Europäische Identität",
+    "Europäische Gemeinschaft"
+   ],
+   "Bruchrechnen": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Lineare Funktionen": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Vulkane": [
+    "Vulkan",
+    "Vulkanismus",
+    "Vulkanausbruch",
+    "Magma",
+    "Lava",
+    "Schichtvulkan",
+    "Schildvulkan",
+    "Spaltenvulkan",
+    "Vulkaneifel"
+   ],
+   "Treibhauseffekt": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Anthropogen",
+    "Gleichgewichtstemperatur",
+    "Galoppierender Treibhauseffekt",
+    "Globale Erwärmung",
+    "Kältemittel",
+    "Idealisiertes Treibhausmodell",
+    "Atmosphärische Gegenstrahlung"
+   ],
+   "Weimarer Republik": [
+    "Weimarer Republik",
+    "Weimarer Verfassung",
+    "Republik",
+    "Weimarer Koalition",
+    "Reichskanzler (Weimarer Republik)",
+    "Reichswehr",
+    "Geschichte der Parteien in Deutschland",
+    "Reichspräsident",
+    "Konservative Revolution",
+    "Fotografie in der Weimarer Republik",
+    "Goldene Zwanziger"
+   ],
+   "Satz des Pythagoras": [
+    "Pythagoras",
+    "Kosinussatz",
+    "Euklidischer Abstand",
+    "Pythagoreisches Tripel",
+    "Flächeninhalt",
+    "Euklid",
+    "Skalarprodukt",
+    "Prinzip von Cavalieri",
+    "Binomische Formeln"
+   ],
+   "Physik: Energie": [
+    "Energie",
+    "Chemische Energie",
+    "Potentielle Energie",
+    "Kinetische Energie",
+    "Elektrische Energie",
+    "Energieträger",
+    "Primärenergie",
+    "Energieversorgung",
+    "Bohrscher Radius",
+    "Planck-Konstante"
+   ],
+   "Säure": [
+    "Essigsäure",
+    "Salzsäure",
+    "Schwefelsäure",
+    "Säure-Base-Konzepte",
+    "Salpetersäure",
+    "Säurekonstante",
+    "Mineralsäuren",
+    "Phosphorsäure"
+   ],
+   "Klimawandels": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Milanković-Zyklen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Evolutionstheorie": [
+    "Geschichte der Evolutionstheorie",
+    "Evolution",
+    "Theorie",
+    "Synthetische Evolutionstheorie",
+    "Erweiterte Synthese (Evolutionstheorie)",
+    "Frankfurter Evolutionstheorie",
+    "Evolutionsgeschichte",
+    "Evolution (Begriff)"
+   ]
+  },
+  "schutz_24_max3": {
+   "Barockliteratur": [
+    "Barock"
+   ],
+   "Bruchrechnung": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Konstituante",
+    "Terrorherrschaft",
+    "Französische Verfassung (1791)",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Klimawandel": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Klima",
+    "Anthropogen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Optik": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Sauerstoff"
+   ],
+   "Programmiersprache": [
+    "Geschichte der Programmiersprachen",
+    "Deklarative Programmierung",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Logische Programmierung",
+    "Zeittafel der Programmiersprachen",
+    "Unterprogramm",
+    "Syntax"
+   ],
+   "Säure-Base-Konzepte": [
+    "Säuren",
+    "Basen (Chemie)"
+   ],
+   "Sinfonie": [
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Programmmusik",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante",
+    "Symphonia",
+    "Sonatensatzform",
+    "Franz Schubert",
+    "7. Sinfonie (Bruckner)"
+   ],
+   "Plattentektonik": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Paläomagnetismus",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Ökosystem": [
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökologie",
+    "System",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall",
+    "Ökosystemischer Ansatz nach Bronfenbrenner",
+    "Ökologisches Gleichgewicht",
+    "Naturvolk",
+    "Organizismus"
+   ],
+   "Atommodell": [
+    "Atom",
+    "Teilchenmodell",
+    "Zeittafel physikalischer Entdeckungen"
+   ],
+   "Industrielle Revolution": [
+    "Industrielle Revolution",
+    "Revolution",
+    "Dampfmaschine",
+    "Kapitalismus",
+    "Kohle",
+    "Eisen",
+    "Soziokulturelle Evolution",
+    "Proletariat",
+    "Hochindustrialisierung in Deutschland"
+   ],
+   "Elektrischer Strom": [
+    "Gleichstrom",
+    "Wechselstrom",
+    "Mischstrom",
+    "Gleichstrommaschine",
+    "Dreiphasenwechselstrom",
+    "Stromquelle",
+    "Stromnetz",
+    "Ion",
+    "Stromfluss",
+    "Elektrische Spannung"
+   ],
+   "Wasserkreislauf": [
+    "Wasserkreislauf",
+    "Wasser",
+    "Eis",
+    "Niederschlag",
+    "Grundwasser",
+    "Infiltration (Hydrogeologie)",
+    "Tracer (Geowissenschaften)"
+   ],
+   "Römisches Reich": [
+    "Römisches Reich",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht",
+    "Republik",
+    "Kaiser"
+   ],
+   "Lineare Funktion": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Zelle (Biologie)": [
+    "Zellkern",
+    "Zellmembran",
+    "Zellteilung",
+    "Plastid",
+    "Vakuole",
+    "Organell",
+    "Protein",
+    "Tier",
+    "Zelltheorie"
+   ],
+   "Gedicht": [
+    "Gedicht",
+    "Kinderlyrik",
+    "Liebeslyrik",
+    "Naturlyrik",
+    "Politische Lyrik",
+    "Kanon der neun Lyriker",
+    "Antonio Machado (Lyriker)",
+    "Wechsel (Lyrik)",
+    "Minnesang",
+    "Der siebente Ring"
+   ],
+   "deutsche Dichter": [
+    "Liste deutschsprachiger Lyrikanthologien",
+    "Otto Braun (Lyriker)",
+    "Wilhelm Klemm (Lyriker)",
+    "Theodor Kramer (Lyriker)",
+    "Lyrik"
+   ],
+   "Dichter der Romantik": [
+    "Epos",
+    "Englisches Parlament",
+    "Historischer Roman",
+    "Walter Scott"
+   ],
+   "Komponisten der Klassik": [
+    "Filmmusik",
+    "Recomposed by Max Richter: Vivaldi – The Four Seasons",
+    "FatCat Records",
+    "Europäischer Filmpreis/Beste Filmmusik",
+    "Waltz with Bashir",
+    "Ad Astra – Zu den Sternen"
+   ],
+   "Philosophen der Aufklärung": [
+    "Aufklärung",
+    "Philipp Blom",
+    "Voltaire",
+    "Sensualismus"
+   ],
+   "Maler des Impressionismus": [
+    "Impressionismus",
+    "Skagen-Maler",
+    "Max Liebermann"
+   ],
+   "römische Kaiser": [
+    "Spätantike",
+    "Kaiser",
+    "Liste der römischen Kaiserinnen",
+    "Liste der römischen Kaiser (800–924)",
+    "Liste der byzantinischen Kaiser",
+    "Trier"
+   ],
+   "deutsche Bundeskanzler": [
+    "Bundeskanzlerin",
+    "Verteidigungsfall (Deutschland)",
+    "Misstrauensvotum",
+    "Vertrauensfrage",
+    "Reichskanzler (Weimarer Republik)",
+    "Richtlinienkompetenz",
+    "Ernennung",
+    "Friedrich Merz",
+    "Politisches System der Bundesrepublik Deutschland"
+   ],
+   "griechische Götter": [
+    "Griechische Literatur",
+    "Olympische Götter",
+    "Klassische Mythologie",
+    "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+    "Lexicon Iconographicum Mythologiae Classicae",
+    "Ausführliches Lexikon der griechischen und römischen Mythologie",
+    "Olymp",
+    "Griechische Vasenmalerei",
+    "Hermaphroditismus",
+    "Kairos",
+    "Mythos"
+   ],
+   "Planeten des Sonnensystems": [
+    "Sonnensystem",
+    "Liste der Asteroiden",
+    "Liste der Monde von Planeten und Zwergplaneten",
+    "Liste der Zwergplaneten des Sonnensystems",
+    "Rechtläufig und rückläufig",
+    "Zeittafel Astronomie"
+   ],
+   "Edelgase": [
+    "Edelgasverbindungen",
+    "Xenon",
+    "Edelgaskonfiguration",
+    "Edelgasregel",
+    "Helium",
+    "Neon",
+    "Q-Phase (Meteoriten)",
+    "Gashydrat",
+    "Inertgas"
+   ],
+   "Weltreligionen": [
+    "Universalismus (Religionswissenschaft)",
+    "Erstes Parlament der Weltreligionen",
+    "Religion",
+    "Christentum",
+    "Islam",
+    "Buddhismus",
+    "Buchreligion"
+   ],
+   "erneuerbare Energien": [
+    "Energiequelle",
+    "Energieversorgung",
+    "Bioenergie",
+    "Sonnenenergie",
+    "Windenergie",
+    "Energiewende",
+    "Endenergie",
+    "Klimapolitik",
+    "Photovoltaik",
+    "Kostendeckende Vergütung"
+   ],
+   "Erfindungen der Industrialisierung": [
+    "Industrielle Revolution",
+    "Industrielle Revolution",
+    "Deindustrialisierung",
+    "Hochindustrialisierung in Deutschland",
+    "Industrialisierung Frankreichs",
+    "Industrialisierung der Schweiz",
+    "Industrialisierung der Sowjetunion",
+    "Sozialpolitik"
+   ],
+   "Nobelpreisträger für Physik": [
+    "Liste der Nobelpreisträger",
+    "Liste der Nobelpreisträgerinnen",
+    "Teilchenphysik",
+    "Liste der Listen der Nobelpreisträger",
+    "Liste der Nobelpreisträger für Chemie",
+    "Liste der Nobelpreisträger für Literatur",
+    "Liste der Friedensnobelpreisträger",
+    "Liste der Nobelpreisträger für Physiologie oder Medizin"
+   ],
+   "Frauen in der Wissenschaft": [
+    "Wissenschaftsbetrieb",
+    "Frauenbildung",
+    "Ingenieurwissenschaften",
+    "Frauenstudium im deutschen Sprachraum",
+    "Frauengeschichte",
+    "Frauenbewegung",
+    "Frau",
+    "Genie",
+    "Mikrofeminismus"
+   ],
+   "Märchen der Brüder Grimm": [
+    "Brüder Grimm",
+    "Jacob Grimm",
+    "Wilhelm Grimm",
+    "Kassel",
+    "Grimms Märchen",
+    "Herman Grimm",
+    "Ferdinand Philipp Grimm",
+    "Jacob-und-Wilhelm-Grimm-Zentrum",
+    "Märchen",
+    "Sage",
+    "Rotkäppchen"
+   ],
+   "deutsche Flüsse": [
+    "Liste der Flüsse in Baden-Württemberg",
+    "Liste der Flüsse in Bayern",
+    "Liste der Flüsse in Hessen",
+    "Liste der Flüsse in Niedersachsen",
+    "Liste der Flüsse in Nordrhein-Westfalen",
+    "Liste der Flüsse in Rheinland-Pfalz",
+    "Liste der Flüsse im Saarland",
+    "Liste der Flüsse im Regierungsbezirk Oberbayern"
+   ],
+   "Säugetiere des Waldes": [
+    "Rothmoos (Nonnenbruchwald)"
+   ],
+   "Vulkane Europas": [
+    "Luigi Ferdinando Marsigli",
+    "Submariner Vulkan"
+   ],
+   "Entdecker der Neuzeit": [
+    "Entdecker",
+    "Zeitalter der Entdeckungen",
+    "Entdeckung Amerikas",
+    "Entdeckung der Kernspaltung",
+    "Entdeckung der Radioaktivität",
+    "Besiedlung Tasmaniens durch Weiße",
+    "Entdeckungsreise",
+    "Erfindung"
+   ],
+   "Klimawandel und Landwirtschaft": [
+    "Klimawandelleugnung",
+    "The Heartland Institute"
+   ],
+   "Mathematik in der Musik": [
+    "Hochschule Niederrhein"
+   ],
+   "Chemie im Alltag": [
+    "Gesellschaft Deutscher Chemiker",
+    "Literaturpreis des Fonds der Chemischen Industrie",
+    "Joachim Rudolph (Chemiker)",
+    "Web of Science",
+    "Wiley-VCH Verlag"
+   ],
+   "Frauen im Mittelalter": [
+    "Manuskripte"
+   ],
+   "Musik der Romantik": [
+    "Romantik",
+    "Musik",
+    "Spätromantik",
+    "Instrumentalmusik",
+    "Kammermusik",
+    "Polyphonie"
+   ],
+   "Dichter aus dem Mittelalter": [
+    "Spruchdichtung",
+    "Minnesang",
+    "Reinmar von Zweter"
+   ],
+   "OER-Förderungen": [
+    "Open Education",
+    "Open Knowledge Foundation Deutschland",
+    "OpenCourseWare",
+    "Open Access",
+    "Open Textbook",
+    "Open Source",
+    "Open Science",
+    "Serlo",
+    "Open Music Academy"
+   ],
+   "Inklusion im Sportunterricht": [
+    "Sport",
+    "Geschichte der Sportdidaktik",
+    "Fachdidaktik",
+    "Jürgen Kretschmer (Sportdidaktiker)",
+    "Sportpädagogik",
+    "Sportunterricht",
+    "Sportwissenschaft"
+   ],
+   "Künstliche Intelligenz im Unterricht": [
+    "Halluzination",
+    "ChatGPT"
+   ],
+   "Nachhaltigkeit im Chemieunterricht": [
+    "Bildung für nachhaltige Entwicklung",
+    "Universität des Saarlandes",
+    "Gesellschaft Deutscher Chemiker"
+   ],
+   "Klimaanpassung in Städten": [
+    "Hagen"
+   ],
+   "Fake News erkennen": [
+    "Fake",
+    "Haustierverzehr-Lüge über haitianische Immigranten in Springfield (Ohio)",
+    "Facebook",
+    "Falschinformationen zur COVID-19-Pandemie"
+   ],
+   "Energiewende in Deutschland": [
+    "Energiewende",
+    "Stromerzeugung in Deutschland",
+    "Ausstieg aus der Kohleverstromung in Deutschland",
+    "Kohle",
+    "Klimapolitik"
+   ],
+   "Mikroplastik im Meer": [
+    "Kunststoff",
+    "Plastikmüll in den Ozeanen",
+    "Rhein",
+    "Luft",
+    "Sport Utility Vehicle",
+    "Nanopartikel",
+    "Geschenkpapier"
+   ],
+   "Datenschutz für Schüler": [
+    "Datenschutz",
+    "Datenschutzrecht",
+    "Bundesdatenschutzgesetz",
+    "Datenschutz-Grundverordnung",
+    "Berufsverband der Datenschutzbeauftragten Deutschlands",
+    "Datenschutz im Internet",
+    "Datenschutzgesetz (Österreich)",
+    "Verbraucherinformatik",
+    "Binding Corporate Rules",
+    "Datenschutzbeauftragter (Datenschutz-Grundverordnung)"
+   ],
+   "Algorithmen im Alltag": [
+    "Mergesort",
+    "Asynchronous module definition"
+   ],
+   "Wasserstoff als Energieträger": [
+    "Energie",
+    "Wasserstoff",
+    "Uran",
+    "Primärenergie",
+    "Biomasse",
+    "Ökosteuer (Deutschland)",
+    "XtL-Kraftstoff"
+   ],
+   "Optik in Klasse 7": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Physik: Optik (Sek I)": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese für die Grundschule": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Sauerstoff"
+   ],
+   "Bruchrechnung Klasse 6": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie in der Sekundarstufe I": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Thema: Klimawandel": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Klima",
+    "Anthropogen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Geschichte: Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Konstituante",
+    "Terrorherrschaft",
+    "Französische Verfassung (1791)",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Plattentektonik (Oberstufe)": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Paläomagnetismus",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Fotosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Sauerstoff"
+   ],
+   "photosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Sauerstoff"
+   ],
+   "Lichtlehre": [
+    "Ernst Arthur Voretzsch",
+    "Erlangen",
+    "27. Juni",
+    "Evangelische Theologie",
+    "Corps Saxonia Göttingen",
+    "Ikone"
+   ],
+   "Klimaerwärmung": [
+    "Folgen der globalen Erwärmung",
+    "Treibhausgas",
+    "Klimaschutz",
+    "Zwei-Grad-Ziel",
+    "Klimawandel",
+    "Anthropogen",
+    "Landwirtschaft",
+    "Geoengineering",
+    "Kohlenstoffzyklus"
+   ],
+   "DNA": [
+    "Chromosom",
+    "Gen",
+    "Doppelhelix",
+    "Genom",
+    "RNA-Welt-Hypothese",
+    "Epigenetik",
+    "Polymerase-Kettenreaktion"
+   ],
+   "EU": [
+    "Europäische Union",
+    "Rat der Europäischen Union",
+    "Europäische Kommission",
+    "Unionsbürgerschaft",
+    "Europäische Zentralbank",
+    "Europäische Identität",
+    "Europäische Gemeinschaft"
+   ],
+   "Bruchrechnen": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Lineare Funktionen": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Vulkane": [
+    "Vulkan",
+    "Vulkanismus",
+    "Vulkanausbruch",
+    "Magma",
+    "Lava",
+    "Schichtvulkan",
+    "Schildvulkan",
+    "Spaltenvulkan",
+    "Vulkaneifel"
+   ],
+   "Treibhauseffekt": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Anthropogen",
+    "Gleichgewichtstemperatur",
+    "Galoppierender Treibhauseffekt",
+    "Globale Erwärmung",
+    "Kältemittel",
+    "Idealisiertes Treibhausmodell",
+    "Atmosphärische Gegenstrahlung"
+   ],
+   "Weimarer Republik": [
+    "Weimarer Republik",
+    "Weimarer Verfassung",
+    "Republik",
+    "Weimarer Koalition",
+    "Reichskanzler (Weimarer Republik)",
+    "Reichswehr",
+    "Geschichte der Parteien in Deutschland",
+    "Reichspräsident",
+    "Konservative Revolution",
+    "Fotografie in der Weimarer Republik",
+    "Goldene Zwanziger"
+   ],
+   "Satz des Pythagoras": [
+    "Pythagoras",
+    "Kosinussatz",
+    "Euklidischer Abstand",
+    "Pythagoreisches Tripel",
+    "Flächeninhalt",
+    "Euklid",
+    "Skalarprodukt",
+    "Prinzip von Cavalieri",
+    "Binomische Formeln"
+   ],
+   "Physik: Energie": [
+    "Energie",
+    "Chemische Energie",
+    "Potentielle Energie",
+    "Kinetische Energie",
+    "Elektrische Energie",
+    "Energieträger",
+    "Primärenergie",
+    "Energieversorgung",
+    "Bohrscher Radius",
+    "Planck-Konstante"
+   ],
+   "Säure": [
+    "Essigsäure",
+    "Salzsäure",
+    "Schwefelsäure",
+    "Säure-Base-Konzepte",
+    "Salpetersäure",
+    "Säurekonstante",
+    "Mineralsäuren",
+    "Phosphorsäure"
+   ],
+   "Klimawandels": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Klima",
+    "Anthropogen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Evolutionstheorie": [
+    "Geschichte der Evolutionstheorie",
+    "Evolution",
+    "Theorie",
+    "Synthetische Evolutionstheorie",
+    "Erweiterte Synthese (Evolutionstheorie)",
+    "Frankfurter Evolutionstheorie",
+    "Evolutionsgeschichte",
+    "Evolution (Begriff)"
+   ]
+  },
+  "schutz_24_max2": {
+   "Barockliteratur": [
+    "Barock"
+   ],
+   "Bruchrechnung": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Konstituante",
+    "Terrorherrschaft",
+    "Bürger",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Klimawandel": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Klima",
+    "Anthropogen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Optik": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Sauerstoff"
+   ],
+   "Programmiersprache": [
+    "Geschichte der Programmiersprachen",
+    "Deklarative Programmierung",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Logische Programmierung",
+    "Zeittafel der Programmiersprachen",
+    "Unterprogramm",
+    "Syntax"
+   ],
+   "Säure-Base-Konzepte": [
+    "Säuren",
+    "Basen (Chemie)"
+   ],
+   "Sinfonie": [
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Programmmusik",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante",
+    "Symphonia",
+    "Sonatensatzform",
+    "Franz Schubert",
+    "7. Sinfonie (Bruckner)"
+   ],
+   "Plattentektonik": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Paläomagnetismus",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Vulkan",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Ökosystem": [
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökologie",
+    "System",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall",
+    "Ökosystemischer Ansatz nach Bronfenbrenner",
+    "Ökologisches Gleichgewicht",
+    "Naturvolk",
+    "Organizismus"
+   ],
+   "Atommodell": [
+    "Atom",
+    "Teilchenmodell",
+    "Zeittafel physikalischer Entdeckungen"
+   ],
+   "Industrielle Revolution": [
+    "Industrielle Revolution",
+    "Revolution",
+    "Dampfmaschine",
+    "Kapitalismus",
+    "Kohle",
+    "Eisen",
+    "Soziokulturelle Evolution",
+    "Proletariat",
+    "Hochindustrialisierung in Deutschland"
+   ],
+   "Elektrischer Strom": [
+    "Gleichstrom",
+    "Wechselstrom",
+    "Mischstrom",
+    "Gleichstrommaschine",
+    "Dreiphasenwechselstrom",
+    "Stromquelle",
+    "Stromnetz",
+    "Ion",
+    "Stromfluss",
+    "Elektrische Spannung"
+   ],
+   "Wasserkreislauf": [
+    "Wasserkreislauf",
+    "Wasser",
+    "Eis",
+    "Niederschlag",
+    "Grundwasser",
+    "Infiltration (Hydrogeologie)",
+    "Tracer (Geowissenschaften)"
+   ],
+   "Römisches Reich": [
+    "Römisches Reich",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht",
+    "Republik",
+    "Kaiser"
+   ],
+   "Lineare Funktion": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Zelle (Biologie)": [
+    "Zellkern",
+    "Zellmembran",
+    "Zellteilung",
+    "Plastid",
+    "Vakuole",
+    "Protein",
+    "Tier",
+    "Membran",
+    "Organell"
+   ],
+   "Gedicht": [
+    "Gedicht",
+    "Kinderlyrik",
+    "Liebeslyrik",
+    "Naturlyrik",
+    "Politische Lyrik",
+    "Kanon der neun Lyriker",
+    "Antonio Machado (Lyriker)",
+    "Wechsel (Lyrik)",
+    "Minnesang",
+    "Der siebente Ring"
+   ],
+   "deutsche Dichter": [
+    "Liste deutschsprachiger Lyrikanthologien",
+    "Otto Braun (Lyriker)",
+    "Wilhelm Klemm (Lyriker)",
+    "Theodor Kramer (Lyriker)",
+    "Lyrik"
+   ],
+   "Dichter der Romantik": [
+    "Epos",
+    "Englisches Parlament",
+    "Historischer Roman",
+    "Walter Scott"
+   ],
+   "Komponisten der Klassik": [
+    "Filmmusik",
+    "Recomposed by Max Richter: Vivaldi – The Four Seasons",
+    "FatCat Records",
+    "Europäischer Filmpreis/Beste Filmmusik",
+    "Waltz with Bashir",
+    "Ad Astra – Zu den Sternen"
+   ],
+   "Philosophen der Aufklärung": [
+    "Aufklärung",
+    "Philipp Blom",
+    "Voltaire",
+    "Sensualismus"
+   ],
+   "Maler des Impressionismus": [
+    "Impressionismus",
+    "Skagen-Maler",
+    "Max Liebermann"
+   ],
+   "römische Kaiser": [
+    "Spätantike",
+    "Kaiser",
+    "Liste der römischen Kaiserinnen",
+    "Liste der römischen Kaiser (800–924)",
+    "Liste der byzantinischen Kaiser",
+    "Trier"
+   ],
+   "deutsche Bundeskanzler": [
+    "Bundeskanzlerin",
+    "Verteidigungsfall (Deutschland)",
+    "Misstrauensvotum",
+    "Vertrauensfrage",
+    "Richtlinienkompetenz",
+    "Ernennung",
+    "Friedrich Merz",
+    "Kanzler",
+    "Politisches System der Bundesrepublik Deutschland"
+   ],
+   "griechische Götter": [
+    "Griechische Literatur",
+    "Olympische Götter",
+    "Klassische Mythologie",
+    "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+    "Lexicon Iconographicum Mythologiae Classicae",
+    "Ausführliches Lexikon der griechischen und römischen Mythologie",
+    "Olymp",
+    "Griechische Vasenmalerei",
+    "Hermaphroditismus",
+    "Kairos",
+    "Mythos"
+   ],
+   "Planeten des Sonnensystems": [
+    "Sonnensystem",
+    "Liste der Asteroiden",
+    "Liste der Monde von Planeten und Zwergplaneten",
+    "Liste der Zwergplaneten des Sonnensystems",
+    "Rechtläufig und rückläufig",
+    "Zeittafel Astronomie"
+   ],
+   "Edelgase": [
+    "Edelgasverbindungen",
+    "Xenon",
+    "Edelgaskonfiguration",
+    "Edelgasregel",
+    "Helium",
+    "Neon",
+    "Q-Phase (Meteoriten)",
+    "Gashydrat",
+    "Inertgas"
+   ],
+   "Weltreligionen": [
+    "Universalismus (Religionswissenschaft)",
+    "Erstes Parlament der Weltreligionen",
+    "Religion",
+    "Christentum",
+    "Islam",
+    "Buddhismus",
+    "Buchreligion"
+   ],
+   "erneuerbare Energien": [
+    "Energiequelle",
+    "Energieversorgung",
+    "Bioenergie",
+    "Sonnenenergie",
+    "Windenergie",
+    "Energiewende",
+    "Endenergie",
+    "Klimapolitik",
+    "Photovoltaik",
+    "Kostendeckende Vergütung"
+   ],
+   "Erfindungen der Industrialisierung": [
+    "Industrielle Revolution",
+    "Industrielle Revolution",
+    "Deindustrialisierung",
+    "Hochindustrialisierung in Deutschland",
+    "Industrialisierung Frankreichs",
+    "Industrialisierung der Schweiz",
+    "Industrialisierung der Sowjetunion",
+    "Sozialpolitik"
+   ],
+   "Nobelpreisträger für Physik": [
+    "Liste der Nobelpreisträger",
+    "Liste der Nobelpreisträgerinnen",
+    "Teilchenphysik",
+    "Liste der Listen der Nobelpreisträger",
+    "Liste der Nobelpreisträger für Chemie",
+    "Liste der Nobelpreisträger für Literatur",
+    "Liste der Friedensnobelpreisträger",
+    "Liste der Nobelpreisträger für Physiologie oder Medizin"
+   ],
+   "Frauen in der Wissenschaft": [
+    "Wissenschaftsbetrieb",
+    "Frauenbildung",
+    "Ingenieurwissenschaften",
+    "Frauenstudium im deutschen Sprachraum",
+    "Frauengeschichte",
+    "Frauenbewegung",
+    "Frau",
+    "Genie",
+    "Mikrofeminismus"
+   ],
+   "Märchen der Brüder Grimm": [
+    "Brüder Grimm",
+    "Jacob Grimm",
+    "Wilhelm Grimm",
+    "Kassel",
+    "Grimms Märchen",
+    "Herman Grimm",
+    "Ferdinand Philipp Grimm",
+    "Jacob-und-Wilhelm-Grimm-Zentrum",
+    "Märchen",
+    "Sage",
+    "Rotkäppchen"
+   ],
+   "deutsche Flüsse": [
+    "Liste der Flüsse in Baden-Württemberg",
+    "Liste der Flüsse in Bayern",
+    "Liste der Flüsse in Hessen",
+    "Liste der Flüsse in Niedersachsen",
+    "Liste der Flüsse in Nordrhein-Westfalen",
+    "Liste der Flüsse in Rheinland-Pfalz",
+    "Liste der Flüsse im Saarland",
+    "Liste der Flüsse im Regierungsbezirk Oberbayern"
+   ],
+   "Säugetiere des Waldes": [
+    "Rothmoos (Nonnenbruchwald)"
+   ],
+   "Vulkane Europas": [
+    "Luigi Ferdinando Marsigli",
+    "Submariner Vulkan"
+   ],
+   "Entdecker der Neuzeit": [
+    "Entdecker",
+    "Zeitalter der Entdeckungen",
+    "Entdeckung Amerikas",
+    "Entdeckung der Kernspaltung",
+    "Entdeckung der Radioaktivität",
+    "Besiedlung Tasmaniens durch Weiße",
+    "Entdeckungsreise",
+    "Erfindung"
+   ],
+   "Klimawandel und Landwirtschaft": [
+    "Klimawandelleugnung",
+    "The Heartland Institute"
+   ],
+   "Mathematik in der Musik": [
+    "Hochschule Niederrhein"
+   ],
+   "Chemie im Alltag": [
+    "Gesellschaft Deutscher Chemiker",
+    "Literaturpreis des Fonds der Chemischen Industrie",
+    "Joachim Rudolph (Chemiker)",
+    "Web of Science",
+    "Wiley-VCH Verlag"
+   ],
+   "Frauen im Mittelalter": [
+    "Manuskripte"
+   ],
+   "Musik der Romantik": [
+    "Romantik",
+    "Musik",
+    "Spätromantik",
+    "Instrumentalmusik",
+    "Kammermusik",
+    "Polyphonie"
+   ],
+   "Dichter aus dem Mittelalter": [
+    "Spruchdichtung",
+    "Minnesang",
+    "Reinmar von Zweter"
+   ],
+   "OER-Förderungen": [
+    "Open Education",
+    "Open Knowledge Foundation Deutschland",
+    "OpenCourseWare",
+    "Open Access",
+    "Open Textbook",
+    "Open Source",
+    "Open Science",
+    "Serlo",
+    "Open Music Academy"
+   ],
+   "Inklusion im Sportunterricht": [
+    "Sport",
+    "Geschichte der Sportdidaktik",
+    "Fachdidaktik",
+    "Jürgen Kretschmer (Sportdidaktiker)",
+    "Sportpädagogik",
+    "Sportunterricht",
+    "Sportwissenschaft"
+   ],
+   "Künstliche Intelligenz im Unterricht": [
+    "Halluzination",
+    "ChatGPT"
+   ],
+   "Nachhaltigkeit im Chemieunterricht": [
+    "Bildung für nachhaltige Entwicklung",
+    "Universität des Saarlandes",
+    "Gesellschaft Deutscher Chemiker"
+   ],
+   "Klimaanpassung in Städten": [
+    "Hagen"
+   ],
+   "Fake News erkennen": [
+    "Fake",
+    "Haustierverzehr-Lüge über haitianische Immigranten in Springfield (Ohio)",
+    "Facebook",
+    "Falschinformationen zur COVID-19-Pandemie"
+   ],
+   "Energiewende in Deutschland": [
+    "Energiewende",
+    "Stromerzeugung in Deutschland",
+    "Ausstieg aus der Kohleverstromung in Deutschland",
+    "Kohle",
+    "Klimapolitik"
+   ],
+   "Mikroplastik im Meer": [
+    "Kunststoff",
+    "Plastikmüll in den Ozeanen",
+    "Rhein",
+    "Luft",
+    "Sport Utility Vehicle",
+    "Nanopartikel",
+    "Geschenkpapier"
+   ],
+   "Datenschutz für Schüler": [
+    "Datenschutz",
+    "Datenschutzrecht",
+    "Bundesdatenschutzgesetz",
+    "Datenschutz-Grundverordnung",
+    "Berufsverband der Datenschutzbeauftragten Deutschlands",
+    "Datenschutz im Internet",
+    "Datenschutzgesetz (Österreich)",
+    "Verbraucherinformatik",
+    "Binding Corporate Rules",
+    "Datenschutzbeauftragter (Datenschutz-Grundverordnung)"
+   ],
+   "Algorithmen im Alltag": [
+    "Mergesort",
+    "Asynchronous module definition"
+   ],
+   "Wasserstoff als Energieträger": [
+    "Energie",
+    "Wasserstoff",
+    "Uran",
+    "Primärenergie",
+    "Biomasse",
+    "Ökosteuer (Deutschland)",
+    "XtL-Kraftstoff"
+   ],
+   "Optik in Klasse 7": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Physik: Optik (Sek I)": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese für die Grundschule": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Sauerstoff"
+   ],
+   "Bruchrechnung Klasse 6": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie in der Sekundarstufe I": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Thema: Klimawandel": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Klima",
+    "Anthropogen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Geschichte: Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Konstituante",
+    "Terrorherrschaft",
+    "Bürger",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Plattentektonik (Oberstufe)": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Paläomagnetismus",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Vulkan",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Fotosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Sauerstoff"
+   ],
+   "photosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Chlorophylle",
+    "Kohlenstoffdioxid",
+    "Sauerstoff"
+   ],
+   "Lichtlehre": [
+    "Ernst Arthur Voretzsch",
+    "Erlangen",
+    "27. Juni",
+    "Evangelische Theologie",
+    "Corps Saxonia Göttingen",
+    "Ikone"
+   ],
+   "Klimaerwärmung": [
+    "Folgen der globalen Erwärmung",
+    "Treibhausgas",
+    "Klimaschutz",
+    "Klimawandel",
+    "Anthropogen",
+    "Landwirtschaft",
+    "Wasserdampf",
+    "Geoengineering",
+    "Kohlenstoffzyklus"
+   ],
+   "DNA": [
+    "Chromosom",
+    "Doppelhelix",
+    "Gen",
+    "Genom",
+    "RNA-Welt-Hypothese",
+    "Epigenetik",
+    "Polymerase-Kettenreaktion"
+   ],
+   "EU": [
+    "Europäische Union",
+    "Rat der Europäischen Union",
+    "Europäische Kommission",
+    "Unionsbürgerschaft",
+    "Europäische Zentralbank",
+    "Europäische Identität",
+    "Europäische Gemeinschaft"
+   ],
+   "Bruchrechnen": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Lineare Funktionen": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Vulkane": [
+    "Vulkan",
+    "Vulkanismus",
+    "Vulkanausbruch",
+    "Magma",
+    "Lava",
+    "Schichtvulkan",
+    "Schildvulkan",
+    "Spaltenvulkan",
+    "Vulkaneifel"
+   ],
+   "Treibhauseffekt": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Anthropogen",
+    "Gleichgewichtstemperatur",
+    "Galoppierender Treibhauseffekt",
+    "Globale Erwärmung",
+    "Kältemittel",
+    "Idealisiertes Treibhausmodell",
+    "Atmosphärische Gegenstrahlung"
+   ],
+   "Weimarer Republik": [
+    "Weimarer Republik",
+    "Weimarer Verfassung",
+    "Republik",
+    "Weimarer Koalition",
+    "Reichskanzler (Weimarer Republik)",
+    "Reichswehr",
+    "Geschichte der Parteien in Deutschland",
+    "Reichspräsident",
+    "Konservative Revolution",
+    "Fotografie in der Weimarer Republik",
+    "Goldene Zwanziger"
+   ],
+   "Satz des Pythagoras": [
+    "Pythagoras",
+    "Kosinussatz",
+    "Euklidischer Abstand",
+    "Pythagoreisches Tripel",
+    "Flächeninhalt",
+    "Euklid",
+    "Skalarprodukt",
+    "Prinzip von Cavalieri",
+    "Binomische Formeln"
+   ],
+   "Physik: Energie": [
+    "Energie",
+    "Chemische Energie",
+    "Potentielle Energie",
+    "Kinetische Energie",
+    "Elektrische Energie",
+    "Energieträger",
+    "Primärenergie",
+    "Energieversorgung",
+    "Bohrscher Radius",
+    "Planck-Konstante"
+   ],
+   "Säure": [
+    "Essigsäure",
+    "Salzsäure",
+    "Schwefelsäure",
+    "Säure-Base-Konzepte",
+    "Salpetersäure",
+    "Säurekonstante",
+    "Mineralsäuren",
+    "Phosphorsäure"
+   ],
+   "Klimawandels": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Klima",
+    "Anthropogen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Evolutionstheorie": [
+    "Geschichte der Evolutionstheorie",
+    "Evolution",
+    "Theorie",
+    "Synthetische Evolutionstheorie",
+    "Erweiterte Synthese (Evolutionstheorie)",
+    "Frankfurter Evolutionstheorie",
+    "Evolutionsgeschichte",
+    "Evolution (Begriff)"
+   ]
+  },
+  "schutz_14": {
+   "Barockliteratur": [
+    "Barock"
+   ],
+   "Bruchrechnung": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Konstituante",
+    "Bürger",
+    "Republik",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Klimawandel": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Milanković-Zyklen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Optik": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Sauerstoff"
+   ],
+   "Programmiersprache": [
+    "Geschichte der Programmiersprachen",
+    "Deklarative Programmierung",
+    "Höhere Programmiersprache",
+    "Esoterische Programmiersprache",
+    "Visuelle Programmiersprache",
+    "Allzweck-Programmiersprache",
+    "Logische Programmierung",
+    "Zeittafel der Programmiersprachen",
+    "Unterprogramm",
+    "Syntax"
+   ],
+   "Säure-Base-Konzepte": [
+    "Säuren",
+    "Basen (Chemie)"
+   ],
+   "Sinfonie": [
+    "Sinfonia",
+    "Sinfonik",
+    "Manfred-Sinfonie",
+    "Programmmusik",
+    "Sinfonische Dichtung",
+    "Sinfoniekantate",
+    "Sinfonia concertante",
+    "Symphonia",
+    "Sonatensatzform",
+    "Franz Schubert",
+    "7. Sinfonie (Bruckner)"
+   ],
+   "Plattentektonik": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Paläomagnetismus",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Vulkan",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Ökosystem": [
+    "Ökosystem",
+    "Ökosystemleistung",
+    "Ökologie",
+    "System",
+    "Ökosystemforschung",
+    "Ökosystemfunktion",
+    "Ökosystemverfall",
+    "Ökosystemischer Ansatz nach Bronfenbrenner",
+    "Ökologisches Gleichgewicht",
+    "Naturvolk",
+    "Organizismus"
+   ],
+   "Atommodell": [
+    "Atom",
+    "Teilchenmodell",
+    "Zeittafel physikalischer Entdeckungen"
+   ],
+   "Industrielle Revolution": [
+    "Industrielle Revolution",
+    "Revolution",
+    "Dampfmaschine",
+    "Kapitalismus",
+    "Kohle",
+    "Eisen",
+    "Produktion",
+    "Soziokulturelle Evolution",
+    "Proletariat",
+    "Hochindustrialisierung in Deutschland"
+   ],
+   "Elektrischer Strom": [
+    "Gleichstrom",
+    "Wechselstrom",
+    "Mischstrom",
+    "Gleichstrommaschine",
+    "Dreiphasenwechselstrom",
+    "Stromquelle",
+    "Stromnetz",
+    "Ion",
+    "Stromfluss",
+    "Elektrische Spannung"
+   ],
+   "Wasserkreislauf": [
+    "Wasserkreislauf",
+    "Wasser",
+    "Eis",
+    "Niederschlag",
+    "Grundwasser",
+    "Infiltration (Hydrogeologie)",
+    "Tracer (Geowissenschaften)"
+   ],
+   "Römisches Reich": [
+    "Römisches Reich",
+    "Römische Republik",
+    "Römische Königszeit",
+    "Wirtschaft im Römischen Reich",
+    "Römisches Recht",
+    "Römisches Verfassungsrecht",
+    "Republik",
+    "Kaiser"
+   ],
+   "Lineare Funktion": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Zelle (Biologie)": [
+    "Zellkern",
+    "Zellmembran",
+    "Zellteilung",
+    "Plastid",
+    "Vakuole",
+    "Organell",
+    "Ribosom",
+    "Lysosom",
+    "Zelltheorie"
+   ],
+   "Gedicht": [
+    "Gedicht",
+    "Kinderlyrik",
+    "Liebeslyrik",
+    "Naturlyrik",
+    "Politische Lyrik",
+    "Kanon der neun Lyriker",
+    "Antonio Machado (Lyriker)",
+    "Wechsel (Lyrik)",
+    "Minnesang",
+    "Der siebente Ring"
+   ],
+   "deutsche Dichter": [
+    "Liste deutschsprachiger Lyrikanthologien",
+    "Otto Braun (Lyriker)",
+    "Wilhelm Klemm (Lyriker)",
+    "Theodor Kramer (Lyriker)",
+    "Lyrik"
+   ],
+   "Dichter der Romantik": [
+    "Epos",
+    "Englisches Parlament",
+    "Historischer Roman",
+    "Walter Scott"
+   ],
+   "Komponisten der Klassik": [
+    "Filmmusik",
+    "Recomposed by Max Richter: Vivaldi – The Four Seasons",
+    "FatCat Records",
+    "Europäischer Filmpreis/Beste Filmmusik",
+    "Waltz with Bashir",
+    "Ad Astra – Zu den Sternen"
+   ],
+   "Philosophen der Aufklärung": [
+    "Aufklärung",
+    "Philipp Blom",
+    "Voltaire",
+    "Sensualismus"
+   ],
+   "Maler des Impressionismus": [
+    "Impressionismus",
+    "Skagen-Maler",
+    "Max Liebermann"
+   ],
+   "römische Kaiser": [
+    "Spätantike",
+    "Kaiser",
+    "Liste der römischen Kaiserinnen",
+    "Liste der römischen Kaiser (800–924)",
+    "Liste der byzantinischen Kaiser",
+    "Trier"
+   ],
+   "deutsche Bundeskanzler": [
+    "Bundeskanzlerin",
+    "Verteidigungsfall (Deutschland)",
+    "Misstrauensvotum",
+    "Vertrauensfrage",
+    "Reichskanzler (Weimarer Republik)",
+    "Richtlinienkompetenz",
+    "Ernennung",
+    "Friedrich Merz",
+    "Politisches System der Bundesrepublik Deutschland"
+   ],
+   "griechische Götter": [
+    "Griechische Literatur",
+    "Olympische Götter",
+    "Klassische Mythologie",
+    "Gesamtgenealogie der griechisch-mediterranen Mythologie",
+    "Lexicon Iconographicum Mythologiae Classicae",
+    "Ausführliches Lexikon der griechischen und römischen Mythologie",
+    "Olymp",
+    "Griechische Vasenmalerei",
+    "Hermaphroditismus",
+    "Kairos",
+    "Mythos"
+   ],
+   "Planeten des Sonnensystems": [
+    "Sonnensystem",
+    "Liste der Asteroiden",
+    "Liste der Monde von Planeten und Zwergplaneten",
+    "Liste der Zwergplaneten des Sonnensystems",
+    "Rechtläufig und rückläufig",
+    "Zeittafel Astronomie"
+   ],
+   "Edelgase": [
+    "Edelgasverbindungen",
+    "Xenon",
+    "Edelgaskonfiguration",
+    "Edelgasregel",
+    "Helium",
+    "Neon",
+    "Q-Phase (Meteoriten)",
+    "Gashydrat",
+    "Inertgas"
+   ],
+   "Weltreligionen": [
+    "Religion",
+    "Erstes Parlament der Weltreligionen",
+    "Universalismus (Religionswissenschaft)",
+    "Christentum",
+    "Islam",
+    "Buddhismus",
+    "Buchreligion"
+   ],
+   "erneuerbare Energien": [
+    "Energiequelle",
+    "Energieversorgung",
+    "Bioenergie",
+    "Sonnenenergie",
+    "Windenergie",
+    "Energiewende",
+    "Endenergie",
+    "Klimapolitik",
+    "Photovoltaik",
+    "Kostendeckende Vergütung"
+   ],
+   "Erfindungen der Industrialisierung": [
+    "Industrielle Revolution",
+    "Industrielle Revolution",
+    "Deindustrialisierung",
+    "Hochindustrialisierung in Deutschland",
+    "Industrialisierung Frankreichs",
+    "Industrialisierung der Schweiz",
+    "Industrialisierung der Sowjetunion",
+    "Sozialpolitik"
+   ],
+   "Nobelpreisträger für Physik": [
+    "Liste der Nobelpreisträger",
+    "Liste der Nobelpreisträgerinnen",
+    "Teilchenphysik",
+    "Liste der Listen der Nobelpreisträger",
+    "Liste der Nobelpreisträger für Chemie",
+    "Liste der Nobelpreisträger für Literatur",
+    "Liste der Friedensnobelpreisträger",
+    "Liste der Nobelpreisträger für Physiologie oder Medizin"
+   ],
+   "Frauen in der Wissenschaft": [
+    "Wissenschaftsbetrieb",
+    "Frauenbildung",
+    "Ingenieurwissenschaften",
+    "Frauenstudium im deutschen Sprachraum",
+    "Frauengeschichte",
+    "Frauenbewegung",
+    "Frau",
+    "Genie",
+    "Mikrofeminismus"
+   ],
+   "Märchen der Brüder Grimm": [
+    "Brüder Grimm",
+    "Jacob Grimm",
+    "Wilhelm Grimm",
+    "Kassel",
+    "Grimms Märchen",
+    "Herman Grimm",
+    "Ferdinand Philipp Grimm",
+    "Jacob-und-Wilhelm-Grimm-Zentrum",
+    "Märchen",
+    "Sage",
+    "Rotkäppchen"
+   ],
+   "deutsche Flüsse": [
+    "Liste der Flüsse in Baden-Württemberg",
+    "Liste der Flüsse in Bayern",
+    "Liste der Flüsse in Hessen",
+    "Liste der Flüsse in Niedersachsen",
+    "Liste der Flüsse in Nordrhein-Westfalen",
+    "Liste der Flüsse in Rheinland-Pfalz",
+    "Liste der Flüsse im Saarland",
+    "Liste der Flüsse im Regierungsbezirk Oberbayern"
+   ],
+   "Säugetiere des Waldes": [
+    "Rothmoos (Nonnenbruchwald)"
+   ],
+   "Vulkane Europas": [
+    "Luigi Ferdinando Marsigli",
+    "Submariner Vulkan"
+   ],
+   "Entdecker der Neuzeit": [
+    "Entdecker",
+    "Zeitalter der Entdeckungen",
+    "Entdeckung Amerikas",
+    "Entdeckung der Kernspaltung",
+    "Entdeckung der Radioaktivität",
+    "Besiedlung Tasmaniens durch Weiße",
+    "Entdeckungsreise",
+    "Erfindung"
+   ],
+   "Klimawandel und Landwirtschaft": [
+    "Klimawandelleugnung",
+    "The Heartland Institute"
+   ],
+   "Mathematik in der Musik": [
+    "Hochschule Niederrhein"
+   ],
+   "Chemie im Alltag": [
+    "Gesellschaft Deutscher Chemiker",
+    "Literaturpreis des Fonds der Chemischen Industrie",
+    "Joachim Rudolph (Chemiker)",
+    "Web of Science",
+    "Wiley-VCH Verlag"
+   ],
+   "Frauen im Mittelalter": [
+    "Manuskripte"
+   ],
+   "Musik der Romantik": [
+    "Romantik",
+    "Musik",
+    "Spätromantik",
+    "Instrumentalmusik",
+    "Kammermusik",
+    "Polyphonie"
+   ],
+   "Dichter aus dem Mittelalter": [
+    "Spruchdichtung",
+    "Minnesang",
+    "Reinmar von Zweter"
+   ],
+   "OER-Förderungen": [
+    "Open Education",
+    "Open Knowledge Foundation Deutschland",
+    "OpenCourseWare",
+    "Open Access",
+    "Open Textbook",
+    "Open Source",
+    "Open Science",
+    "Serlo",
+    "Open Music Academy"
+   ],
+   "Inklusion im Sportunterricht": [
+    "Sport",
+    "Geschichte der Sportdidaktik",
+    "Fachdidaktik",
+    "Jürgen Kretschmer (Sportdidaktiker)",
+    "Sportpädagogik",
+    "Sportunterricht",
+    "Sportwissenschaft"
+   ],
+   "Künstliche Intelligenz im Unterricht": [
+    "Halluzination",
+    "ChatGPT"
+   ],
+   "Nachhaltigkeit im Chemieunterricht": [
+    "Bildung für nachhaltige Entwicklung",
+    "Universität des Saarlandes",
+    "Gesellschaft Deutscher Chemiker"
+   ],
+   "Klimaanpassung in Städten": [
+    "Hagen"
+   ],
+   "Fake News erkennen": [
+    "Fake",
+    "Facebook",
+    "Haustierverzehr-Lüge über haitianische Immigranten in Springfield (Ohio)",
+    "Falschinformationen zur COVID-19-Pandemie"
+   ],
+   "Energiewende in Deutschland": [
+    "Energiewende",
+    "Stromerzeugung in Deutschland",
+    "Ausstieg aus der Kohleverstromung in Deutschland",
+    "Kohle",
+    "Klimapolitik"
+   ],
+   "Mikroplastik im Meer": [
+    "Kunststoff",
+    "Plastikmüll in den Ozeanen",
+    "Rhein",
+    "Luft",
+    "Sport Utility Vehicle",
+    "Nanopartikel",
+    "Geschenkpapier"
+   ],
+   "Datenschutz für Schüler": [
+    "Datenschutz",
+    "Datenschutzrecht",
+    "Bundesdatenschutzgesetz",
+    "Datenschutz-Grundverordnung",
+    "Berufsverband der Datenschutzbeauftragten Deutschlands",
+    "Datenschutz im Internet",
+    "Datenschutzgesetz (Österreich)",
+    "Verbraucherinformatik",
+    "Binding Corporate Rules",
+    "Datenschutzbeauftragter (Datenschutz-Grundverordnung)"
+   ],
+   "Algorithmen im Alltag": [
+    "Mergesort",
+    "Asynchronous module definition"
+   ],
+   "Wasserstoff als Energieträger": [
+    "Energie",
+    "Wasserstoff",
+    "Uran",
+    "Primärenergie",
+    "Biomasse",
+    "Ökosteuer (Deutschland)",
+    "XtL-Kraftstoff"
+   ],
+   "Optik in Klasse 7": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Physik: Optik (Sek I)": [
+    "Optik",
+    "Wellenoptik",
+    "Technische Optik",
+    "Geometrische Optik",
+    "Auge",
+    "Mikrooptik",
+    "Augenoptiker",
+    "Röntgenoptik",
+    "Superposition (Physik)",
+    "Geschichte der Physik"
+   ],
+   "Photosynthese für die Grundschule": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Sauerstoff"
+   ],
+   "Bruchrechnung Klasse 6": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Demokratie in der Sekundarstufe I": [
+    "Demokratie",
+    "Demokratisierung",
+    "Repräsentative Demokratie",
+    "Demokratietheorie",
+    "Direkte Demokratie",
+    "Konkordanzdemokratie",
+    "Defekte Demokratie",
+    "Postdemokratie",
+    "Souverän",
+    "Staatsmodell",
+    "Rechtsstaat"
+   ],
+   "Thema: Klimawandel": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Milanković-Zyklen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Geschichte: Französische Revolution": [
+    "Französische Revolution",
+    "Revolution",
+    "Die Französische Revolution",
+    "Revolutionstribunal",
+    "Revolutionsexport",
+    "Konstituante",
+    "Bürger",
+    "Republik",
+    "Liberalismus",
+    "Revolutionskult"
+   ],
+   "Plattentektonik (Oberstufe)": [
+    "Plattentektonik",
+    "Kontinentaldrift",
+    "Paläomagnetismus",
+    "Tektonik",
+    "Lithosphäre",
+    "Vulkanismus",
+    "Vulkan",
+    "Tiefseerinne",
+    "Pangaea"
+   ],
+   "Fotosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Sauerstoff"
+   ],
+   "photosynthese": [
+    "Photosynthese",
+    "Lichtsammelkomplex",
+    "Calvin-Zyklus",
+    "Kohlenstoffdioxid-Assimilation",
+    "Pflanze",
+    "Bakterien",
+    "Licht",
+    "Sauerstoff"
+   ],
+   "Lichtlehre": [
+    "Ernst Arthur Voretzsch",
+    "Erlangen",
+    "27. Juni",
+    "Evangelische Theologie",
+    "Corps Saxonia Göttingen",
+    "Ikone"
+   ],
+   "Klimaerwärmung": [
+    "Folgen der globalen Erwärmung",
+    "Treibhausgas",
+    "Klimaschutz",
+    "Zwei-Grad-Ziel",
+    "Erneuerbare Energien",
+    "Klimapolitik",
+    "Geoengineering"
+   ],
+   "DNA": [
+    "Chromosom",
+    "Gen",
+    "Doppelhelix",
+    "DNA-Reparatur",
+    "RNA-Welt-Hypothese",
+    "Epigenetik",
+    "Polymerase-Kettenreaktion"
+   ],
+   "EU": [
+    "Europäische Union",
+    "Rat der Europäischen Union",
+    "Europäische Kommission",
+    "Unionsbürgerschaft",
+    "Europäische Zentralbank",
+    "Europäische Identität",
+    "Europäische Gemeinschaft"
+   ],
+   "Bruchrechnen": [
+    "Bruchrechnung",
+    "Rechnen",
+    "Kürzen",
+    "Rationale Zahl"
+   ],
+   "Lineare Funktionen": [
+    "Funktionsgraph",
+    "Gerade",
+    "Ganzrationale Funktion",
+    "Lineare Abbildung",
+    "Konstante Funktion",
+    "Funktion (Mathematik)",
+    "Lineare Algebra"
+   ],
+   "Vulkane": [
+    "Vulkan",
+    "Vulkanismus",
+    "Vulkanausbruch",
+    "Magma",
+    "Lava",
+    "Schichtvulkan",
+    "Schildvulkan",
+    "Spaltenvulkan",
+    "Vulkaneifel"
+   ],
+   "Treibhauseffekt": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Anthropogen",
+    "Gleichgewichtstemperatur",
+    "Galoppierender Treibhauseffekt",
+    "Globale Erwärmung",
+    "Kältemittel",
+    "Idealisiertes Treibhausmodell",
+    "Atmosphärische Gegenstrahlung"
+   ],
+   "Weimarer Republik": [
+    "Weimarer Republik",
+    "Weimarer Verfassung",
+    "Republik",
+    "Weimarer Koalition",
+    "Reichskanzler (Weimarer Republik)",
+    "Reichswehr",
+    "Geschichte der Parteien in Deutschland",
+    "Reichspräsident",
+    "Konservative Revolution",
+    "Fotografie in der Weimarer Republik",
+    "Goldene Zwanziger"
+   ],
+   "Satz des Pythagoras": [
+    "Pythagoras",
+    "Kosinussatz",
+    "Euklidischer Abstand",
+    "Flächeninhalt",
+    "Euklid",
+    "Skalarprodukt",
+    "Babylon",
+    "Prinzip von Cavalieri",
+    "Binomische Formeln"
+   ],
+   "Physik: Energie": [
+    "Energie",
+    "Chemische Energie",
+    "Potentielle Energie",
+    "Kinetische Energie",
+    "Elektrische Energie",
+    "Energieträger",
+    "Primärenergie",
+    "Energieversorgung",
+    "Bohrscher Radius",
+    "Planck-Konstante"
+   ],
+   "Säure": [
+    "Essigsäure",
+    "Salzsäure",
+    "Schwefelsäure",
+    "Säure-Base-Konzepte",
+    "Salpetersäure",
+    "Säurekonstante",
+    "Mineralsäuren",
+    "Phosphorsäure"
+   ],
+   "Klimawandels": [
+    "Klimawandel",
+    "Treibhausgas",
+    "Milanković-Zyklen",
+    "Forschungsgeschichte des Klimawandels"
+   ],
+   "Evolutionstheorie": [
+    "Geschichte der Evolutionstheorie",
+    "Evolution",
+    "Theorie",
+    "Synthetische Evolutionstheorie",
+    "Erweiterte Synthese (Evolutionstheorie)",
+    "Frankfurter Evolutionstheorie",
+    "Evolutionsgeschichte",
+    "Evolution (Begriff)"
+   ]
+  }
+ },
+ "kontrolle_gleich": true,
+ "schutz_24": {
+  "wechsel": 237,
+  "wechsel_gedruckt": 236,
+  "themen_mit_wechsel": 20,
+  "zeichen_gedruckt": 3319852,
+  "gold": {
+   "macro_f1": 0.4703,
+   "micro_f1": 0.6802,
+   "gedruckt_macro_f1": 0.4185,
+   "je_thema": {
+    "Barockliteratur": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.419
+    },
+    "Bruchrechnung": {
+     "macro_f1": 0.634,
+     "gedruckt_macro_f1": 0.6
+    },
+    "Demokratie": {
+     "macro_f1": 0.549,
+     "gedruckt_macro_f1": 0.344
+    },
+    "Französische Revolution": {
+     "macro_f1": 0.65,
+     "gedruckt_macro_f1": 0.528
+    },
+    "Klimawandel": {
+     "macro_f1": 0.492,
+     "gedruckt_macro_f1": 0.438
+    },
+    "Optik": {
+     "macro_f1": 0.555,
+     "gedruckt_macro_f1": 0.558
+    },
+    "Photosynthese": {
+     "macro_f1": 0.549,
+     "gedruckt_macro_f1": 0.5
+    },
+    "Programmiersprache": {
+     "macro_f1": 0.41,
+     "gedruckt_macro_f1": 0.357
+    },
+    "Säure-Base-Konzepte": {
+     "macro_f1": 0.452,
+     "gedruckt_macro_f1": 0.452
+    },
+    "Sinfonie": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.424
+    }
+   }
+  },
+  "korpora_anders": 23,
+  "nebenartikel_heraus": 47,
+  "hauptartikel": {
+   "ziele": 320,
+   "im_korpus": 110
+  }
+ },
+ "schutz_24_max3": {
+  "wechsel": 164,
+  "wechsel_gedruckt": 161,
+  "themen_mit_wechsel": 15,
+  "zeichen_gedruckt": 3323105,
+  "gold": {
+   "macro_f1": 0.4688,
+   "micro_f1": 0.6769,
+   "gedruckt_macro_f1": 0.4168,
+   "je_thema": {
+    "Barockliteratur": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.419
+    },
+    "Bruchrechnung": {
+     "macro_f1": 0.634,
+     "gedruckt_macro_f1": 0.6
+    },
+    "Demokratie": {
+     "macro_f1": 0.549,
+     "gedruckt_macro_f1": 0.344
+    },
+    "Französische Revolution": {
+     "macro_f1": 0.65,
+     "gedruckt_macro_f1": 0.528
+    },
+    "Klimawandel": {
+     "macro_f1": 0.495,
+     "gedruckt_macro_f1": 0.435
+    },
+    "Optik": {
+     "macro_f1": 0.555,
+     "gedruckt_macro_f1": 0.558
+    },
+    "Photosynthese": {
+     "macro_f1": 0.513,
+     "gedruckt_macro_f1": 0.465
+    },
+    "Programmiersprache": {
+     "macro_f1": 0.41,
+     "gedruckt_macro_f1": 0.357
+    },
+    "Säure-Base-Konzepte": {
+     "macro_f1": 0.452,
+     "gedruckt_macro_f1": 0.452
+    },
+    "Sinfonie": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.424
+    }
+   }
+  },
+  "korpora_anders": 23,
+  "nebenartikel_heraus": 27,
+  "hauptartikel": {
+   "ziele": 320,
+   "im_korpus": 100
+  }
+ },
+ "schutz_24_max2": {
+  "wechsel": 99,
+  "wechsel_gedruckt": 84,
+  "themen_mit_wechsel": 12,
+  "zeichen_gedruckt": 3318583,
+  "gold": {
+   "macro_f1": 0.4688,
+   "micro_f1": 0.6756,
+   "gedruckt_macro_f1": 0.4172,
+   "je_thema": {
+    "Barockliteratur": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.419
+    },
+    "Bruchrechnung": {
+     "macro_f1": 0.634,
+     "gedruckt_macro_f1": 0.6
+    },
+    "Demokratie": {
+     "macro_f1": 0.549,
+     "gedruckt_macro_f1": 0.344
+    },
+    "Französische Revolution": {
+     "macro_f1": 0.682,
+     "gedruckt_macro_f1": 0.571
+    },
+    "Klimawandel": {
+     "macro_f1": 0.495,
+     "gedruckt_macro_f1": 0.435
+    },
+    "Optik": {
+     "macro_f1": 0.555,
+     "gedruckt_macro_f1": 0.558
+    },
+    "Photosynthese": {
+     "macro_f1": 0.507,
+     "gedruckt_macro_f1": 0.455
+    },
+    "Programmiersprache": {
+     "macro_f1": 0.41,
+     "gedruckt_macro_f1": 0.357
+    },
+    "Säure-Base-Konzepte": {
+     "macro_f1": 0.452,
+     "gedruckt_macro_f1": 0.452
+    },
+    "Sinfonie": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.424
+    }
+   }
+  },
+  "korpora_anders": 23,
+  "nebenartikel_heraus": 16,
+  "hauptartikel": {
+   "ziele": 320,
+   "im_korpus": 94
+  }
+ },
+ "schutz_14": {
+  "wechsel": 191,
+  "wechsel_gedruckt": 176,
+  "themen_mit_wechsel": 17,
+  "zeichen_gedruckt": 3322268,
+  "gold": {
+   "macro_f1": 0.47,
+   "micro_f1": 0.6795,
+   "gedruckt_macro_f1": 0.419,
+   "je_thema": {
+    "Barockliteratur": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.419
+    },
+    "Bruchrechnung": {
+     "macro_f1": 0.634,
+     "gedruckt_macro_f1": 0.6
+    },
+    "Demokratie": {
+     "macro_f1": 0.549,
+     "gedruckt_macro_f1": 0.344
+    },
+    "Französische Revolution": {
+     "macro_f1": 0.671,
+     "gedruckt_macro_f1": 0.561
+    },
+    "Klimawandel": {
+     "macro_f1": 0.492,
+     "gedruckt_macro_f1": 0.438
+    },
+    "Optik": {
+     "macro_f1": 0.555,
+     "gedruckt_macro_f1": 0.558
+    },
+    "Photosynthese": {
+     "macro_f1": 0.549,
+     "gedruckt_macro_f1": 0.5
+    },
+    "Programmiersprache": {
+     "macro_f1": 0.41,
+     "gedruckt_macro_f1": 0.357
+    },
+    "Säure-Base-Konzepte": {
+     "macro_f1": 0.452,
+     "gedruckt_macro_f1": 0.452
+    },
+    "Sinfonie": {
+     "macro_f1": 0.419,
+     "gedruckt_macro_f1": 0.424
+    }
+   }
+  },
+  "korpora_anders": 23,
+  "nebenartikel_heraus": 36,
+  "hauptartikel": {
+   "ziele": 320,
+   "im_korpus": 105
+  }
+ },
+ "sekunden": 388
+}

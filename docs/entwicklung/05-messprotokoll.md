@@ -1,4 +1,4 @@
-# Messprotokoll (23.09. bis 09.10.2026)
+# Messprotokoll (23.09. bis 02.11.2026)
 
 [Übersicht](README.md) · Skripte und Ergebnisdateien: [messung/](messung/README.md)
 
@@ -5098,3 +5098,63 @@ Rohdaten: `m91_profile_x10.json` (je Profil und Art von Thema Zeit, Tokens, Text
 Urteile ohne Zitate, der Schlüssel). Skripte: `mc_kompendium_profil.py`, `mc_profilvergleich_boegen_je_thema.py`,
 `mc_profilvergleich_auswertung.py`; Grafik `profiluebersicht_x10.svg` (`mc_grafiken.py`). Die Texte und die Bögen
 bleiben außerhalb des Repositorys.
+
+## M92 Zwei Anregungen aus dem Themenbaum-Generator: vorgemerkt, nicht gebaut (02.11.2026)
+
+Jan fragte, ob der Themenbaum-Generator (`topictreegenerator`, Wikipedia und Wikidata ohne LLM) Anregungen für den
+Dienst enthält. Zwei ließen sich im Ablauf des Dienstes messen; beide ersetzen eine Funktion nur im Messprozess, am
+Dienst ist nichts geändert. Stand 2.25.1 (`b5573e9`).
+
+1. **Hauptartikel-Verweise gewichten.** Die Wikipedia nennt unter manchen Abschnitten „→ Hauptartikel: X“ (im Archiv
+   `<div class="hauptartikel">`). Der Dienst zählt diesen Link heute wie jeden anderen verlinkten Artikel
+   (`app/knowledge/related.py`). Variante: ein Zusatzgewicht von 7, 14 oder 24 Punkten für solche Ziele.
+2. **Model2Vec nur mit Substantiven.** Absätze und Bausteine gehen nur mit ihren Substantiven an Model2Vec (wie der
+   Generator seine Begriffe vergleicht), eine zweite Variante nur ohne Stoppwörter; BM25 und Zeichen-n-Gramme bleiben.
+
+**Aufbau.** Wie M80: Korpus von `llm-free`, Zuordnung `hybrid_light` mit `m2v-gte-256-edu`, `target_length` 12.000,
+die 81 Themen von M80, darunter die zehn Goldthemen; macro- und micro-F1 vor dem Budget, macro-F1 im gedruckten Text.
+Jeder Artikel, der in einer Variante in den Korpus kommt oder ihn verlässt (169), bekam blind eine Note nach M8 (2
+gehört zum Thema, 1 verwandt, 0 passt nicht); ein Claude-Gutachter sah nur Thema, Titel und Artikelanfang. Ein
+Kontrolllauf mit Gewicht 0 ergab die ausgelieferten Korpora.
+
+| Variante | macro-F1 | micro-F1 | gedruckt | Korpora anders | heraus (Mittel) | hinein (Mittel) | Themen besser / schlechter |
+|---|---|---|---|---|---|---|---|
+| ausgeliefert | 0,4672 | 0,6736 | 0,4164 | – | – | – | – |
+| Model2Vec nur Substantive | 0,4627 | 0,6736 | 0,4116 | – | – | – | – |
+| Model2Vec ohne Stoppwörter | 0,4565 | 0,6711 | 0,4056 | – | – | – | – |
+| Hauptartikel 7 | 0,4647 | 0,6724 | 0,4094 | 32 | – | – | – |
+| Hauptartikel 14 | 0,4798 | 0,6925 | 0,4333 | 35 | – | – | – |
+| Hauptartikel 24 | 0,4825 | 0,6961 | 0,4355 | 35 | 87 (1,20) | 82 (1,62) | 18 / 10 |
+| 24 mit Schutz | 0,4703 | 0,6802 | 0,4185 | 23 | 47 (1,04) | 41 (1,78) | 13 / 4 |
+| 24 mit Schutz, höchstens 3 | 0,4688 | 0,6769 | 0,4168 | 23 | 27 (0,96) | 31 (1,84) | 14 / 1 |
+| 24 mit Schutz, höchstens 2 | 0,4688 | 0,6756 | 0,4172 | 23 | 16 (0,94) | 22 (1,82) | 12 / 1 |
+
+- **Model2Vec mit Substantiven** verliert in jedem Maß; erledigt.
+- **Hauptartikel ohne Grenze:** Der Gewinn am Gold kommt fast ganz aus Demokratie, Photosynthese und Französischer
+  Revolution. Die schlechteren Themen verlieren Artikel mit dem Wortstamm des Themas aus den ersten Rängen
+  (*Demokratisierung*, *Konkordanzdemokratie*, *Kinetische Energie*) oder bekommen Ziele aus Randabschnitten
+  (*Kirchlicher Datenschutz*, *Energiebilanz (Energiewirtschaft)*).
+- **Zwei Grenzen** (`mc_hauptartikel_schutz.py`): Artikel mit dem Wortstamm im Titel behalten ihren Platz („Schutz“),
+  und je Hauptartikel bekommen höchstens drei Ziele das Gewicht. Damit wird der Korpus verlässlich besser: 26 der 31
+  neuen Artikel gehören zum Thema, 25 der 27 herausgefallenen sind nur verwandt oder unpassend. Einziges schlechteres
+  Thema: „Fake News erkennen“ (*Falschmeldung* raus, *Haustierverzehr-Lüge über haitianische Immigranten in
+  Springfield (Ohio)* hinein). Am Gold bleibt davon fast nichts: macro-F1 +0,0016.
+- **Der gedruckte Text** (`mc_hauptartikel_text.py`, Stichprobe): „Zelle“ und „Photosynthese“ werden klar besser
+  (*Zelltheorie* statt einer Begriffsliste aus *Membran*; *Lichtsammelkomplex* statt Ozean und Wasser),
+  „Plattentektonik“ druckt trotz anderem Korpus denselben Text, „Fake News erkennen“ bekommt zwei Absätze über den
+  Wahlkampf in Springfield. Bei „Französische Revolution“, im Korpus der beste Fall (*Konstituante*,
+  *Terrorherrschaft*, *Französische Verfassung (1791)* statt *Bürger*, *Republik*, *Verfassung*), verliert Baustein 3
+  sieben Absätze des Hauptartikels, darunter Ballhausschwur und Sturm auf die Bastille, an 13 Absätze über die
+  Verfassung von 1791. Ein langer, eng verwandter Artikel kann den Hauptartikel verdrängen; das sehen Noten je
+  Artikel nicht. Dazu bekommt „Photosynthese für die Grundschule“ *Calvin-Zyklus* und *Lichtsammelkomplex*.
+
+**Schluss.** Nicht gebaut (Jan, 02.11.2026): Der Korpus wird besser, der Text nur teilweise, am Gold kein Gewinn.
+Vorgemerkt für eine spätere Messung; Ansatz dann: der gedruckte Text aller geänderten Themen vorher und nachher, die
+geänderten Absätze blind benotet, und falls der Fall FR nicht allein steht, eine Grenze für die Absätze, die ein über
+den Hinweis aufgenommener Artikel je Baustein liefert. Ab `balanced` nennt das LLM den Korpus (D63); dort ist nichts
+gemessen.
+
+Rohdaten: `m92_hauptartikel_substantive.json` (Gold je Thema, Wechsel der Absätze, Anteil der Hauptartikel-Ziele),
+`m92_hauptartikel_schutz.json` (dasselbe für die Varianten mit Grenzen, dazu die Nebenartikel je Thema und Variante)
+und `m92_blindnoten.json` (Noten und Wechsel je Thema, ohne Artikeltexte). Skripte: `mc_hauptartikel_substantive.py`,
+`mc_hauptartikel_schutz.py`, `mc_hauptartikel_text.py`.
