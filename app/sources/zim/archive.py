@@ -240,8 +240,9 @@ class ZimArchive:
             return []
 
     def _entry_titles(self, results: Any) -> list[str]:
-        """The titles of the entries a suggestion or search found. libzim 4 yields result objects where 3.x yielded
-        their paths, and get_results() for getResults(); the title is read from the entry as before (2026-11-02)."""
+        """The titles of the entries a suggestion or search found. With libzim 4 a search yields result objects, a
+        suggestion still the paths (checked on the Klexikon archive, 2026-11-02); the title is read from the entry as
+        before, which the measurement before the switch found identical to the result's own."""
         paths = [item if isinstance(item, str) else item.path for item in results]
         return [str(self._archive.get_entry_by_path(path).title) for path in paths]
 
