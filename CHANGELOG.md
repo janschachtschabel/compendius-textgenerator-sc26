@@ -15,6 +15,11 @@ Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änder
   huggingface-hub 2.3, spaCy 3.8.18, httpx2 2.16 (Tests), pytest 9.2, ruff 0.17.3, mypy 2.4.1, hatchling 1.33;
   Prometheus v3.15.1 in Compose, im GitLab-Job `alert-rules` und in den promtool-Hinweisen; setup-uv 10.3.3 und
   docker/login-action 4.7.0. `/openapi.json` ist byteweise gleich geblieben; ein Körper `null` antwortet weiter mit 422.
+- **libzim 4.0 (Dependabot #17):** Die Suche und die Vorschläge in den Archiven nutzen `get_results()` und die
+  Ergebnisobjekte von libzim 4; die Version ist nun Mindestvoraussetzung (`libzim>=4.0`). Gemessen auf Wikipedia
+  2026-01 und Klexikon 2026-08 vor dem Wechsel: 273 Anfragen liefern mit 3.13.1 und 4.0.0 dieselben Treffer in derselben
+  Reihenfolge bis Rang 50, und für alle 94 Anfragen des Goldstandards wählt der Dienst denselben Hauptartikel mit
+  demselben Korpus. Dazu pydantic 2.14.2 und huggingface-hub 2.4.
 
 ## 2.25.0 – 2026-10-17
 

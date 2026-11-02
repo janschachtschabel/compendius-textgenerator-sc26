@@ -223,7 +223,7 @@ class ZimArchive:
         try:
             searcher = SuggestionSearcher(self._archive)
             results = searcher.suggest(prefix)
-            return [str(self._archive.get_entry_by_path(p).title) for p in results.getResults(0, limit)]
+            return self._entry_titles(results.get_results(0, limit))
         except Exception as exc:
             self._refused("suggestion", prefix, exc)
             return []
@@ -234,10 +234,16 @@ class ZimArchive:
         try:
             searcher = Searcher(self._archive)
             results = searcher.search(Query().set_query(query))
-            return [str(self._archive.get_entry_by_path(p).title) for p in results.getResults(0, limit)]
+            return self._entry_titles(results.get_results(0, limit))
         except Exception as exc:
             self._refused("search", query, exc)
             return []
+
+    def _entry_titles(self, results: Any) -> list[str]:
+        """The titles of the entries a suggestion or search found. libzim 4 yields result objects where 3.x yielded
+        their paths, and get_results() for getResults(); the title is read from the entry as before (2026-11-02)."""
+        paths = [item if isinstance(item, str) else item.path for item in results]
+        return [str(self._archive.get_entry_by_path(path).title) for path in paths]
 
     def _refused(self, what: str, query: str, exc: Exception) -> None:
         """A lookup, suggestion or search libzim refused. Odd input - a lone surrogate, the only one among odd inputs

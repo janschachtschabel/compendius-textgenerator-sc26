@@ -94,7 +94,7 @@ def stream(model: StaticModel, targets: np.ndarray, limit: int | None) -> tuple[
     total = archive.entry_count if limit is None else min(limit, archive.entry_count)
     started = time.perf_counter()
     for index in range(total):
-        entry = archive._get_entry_by_id(index)
+        entry = archive.get_entry_by_id(index)  # libzim 4: no longer private
         target, hops = entry, 0
         while target.is_redirect and hops < 3:
             target, hops = target.get_redirect_entry(), hops + 1
