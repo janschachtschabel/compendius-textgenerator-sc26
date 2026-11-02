@@ -201,7 +201,7 @@ wheels = [
 
 [[package]]
 name = "compendious-text-fastapi"
-version = "2.25.0"
+version = "2.25.1"
 source = { editable = "." }
 default-groups = ["build", "dev"]
 dependencies = [

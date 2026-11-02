@@ -7,8 +7,12 @@ Versionen nach Semantic Versioning: eine neue Einstellung oder neues Verhalten i
 Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änderten auch Verhalten. Die Tags 0.1.0 bis
 0.2.0 gehören zum Vorgängerdienst, dem alten Dienst im GitLab, und stehen nur kurz am Ende.
 
-## Unveröffentlicht
+## 2.25.1 – 2026-11-02
 
+Sicherheitsupdates und gebündelte Abhängigkeiten; keine neue Einstellung, kein geändertes Verhalten.
+
+- **[Betrieb](docs/betrieb.md#updates):** Nichts anzupassen. Das Image baut auf dem Basis-Image vom 28.10.2026
+  (Python 3.13.18, OpenSSL `deb12u2`).
 - **Sicherheit:** certifi 2026.10.23, filelock 4.2.6 und setuptools 84.2.1 schließen 17 bekannte Lücken; die Prüfung der
   Abhängigkeiten in der CI scheiterte seit dem 26.10.2026 daran, ein Push auf `main` veröffentlichte kein Image mehr.
 - **Abhängigkeiten (Dependabot #14 bis #16, gebündelt):** fastapi 0.162, starlette 1.10, pydantic-settings 2.16.2,

@@ -184,6 +184,8 @@ Abschnittsmarker von Teil 1.
   oder 404 auf den Schlüssel des Dienstes nicht die Anfragen mit eigenem Schlüssel; aus `Authorization` nur ein
   `Bearer`-Token; interne Pfade auch mit Schrägstrich am Ende 404 am Port der API; ein Helm-Beispiel, das zu
   prometheus-operator und dem Pod Security Standard „restricted“ passt.
+- Sicherheitsupdates (Release 2.25.1): certifi, filelock, setuptools und ein Basis-Image mit Python 3.13.18 und
+  OpenSSL `deb12u2`; fastapi 0.162, starlette 1.10 und libzim 4.0, ohne geändertes Verhalten.
 
 ## Installation
 
