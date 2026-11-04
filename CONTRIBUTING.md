@@ -96,8 +96,9 @@ danebengestellt.
 
 Ein Release X.Y.Z:
 
-1. Version in `pyproject.toml` und `app/__init__.py`, dann `uvx --from 'uv==0.13.0' uv lock`
-   (`tests/test_version.py` verlangt dieselbe Version an allen drei Stellen).
+1. Version in `pyproject.toml`, `app/__init__.py` und `deploy/helm/compendious-text-generator/Chart.yaml` (`version`
+   und `appVersion`), dann `uvx --from 'uv==0.13.0' uv lock` (`tests/test_version.py` und `tests/test_helm_chart.py`
+   verlangen dieselbe Version an allen Stellen; die CI veröffentlicht zum Tag auch das Chart).
 2. `CHANGELOG.md`: der Abschnitt „Unveröffentlicht“ wird „X.Y.Z – Datum“; dazu der Absatz im README („Stand“), die
    Zeile in `docs/betrieb.md` („Updates“) und die Versionsangaben in `docs/installation.md` und `docs/uebergabe/`.
 3. Alle Prüfungen oben, Commit `chore(release): X.Y.Z`, Push auf `main`, CI abwarten.

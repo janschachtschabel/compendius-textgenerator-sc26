@@ -1,5 +1,5 @@
 """The Helm chart in deploy/helm: its version follows the release, its alert rules follow monitoring/alerts.yml, and
-what it renders keeps the promises of the handover (docs/uebergabe/helm-values.example.yaml).
+what it renders keeps the promises of the handover (docs/uebergabe/anforderungen.md, section 5).
 
 The platform team deploys every image version with the chart of the same tag. A release that bumps pyproject.toml
 and forgets Chart.yaml would push a chart whose default image is the previous release; a change to the alert rules

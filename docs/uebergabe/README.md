@@ -1,10 +1,10 @@
 # Übergabe an das Technik-Team
 
-Stand 02.11.2026 · Release 2.25.1 · für den Umzug in das interne GitLab und auf einen eigenen Server
+Stand 04.11.2026 · Release 2.26.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
 Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese fünf Seiten
 fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main` und damit
-Release 2.25.1. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
+Release 2.26.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
 `llm-free`, solange kein LLM eingerichtet ist (D68); seit 2.7.0 endet ein Satz aus Modellwissen nur noch mit
 `"model_knowledge_label": true` sichtbar mit `[Modellwissen]` (D76), und seit 2.8.0 bekommt eine Sammlung in `node_id`
 Teil 3 wie mit `collection_id` (D77); seit 2.9.0 stellt der Quellenblock Teil 1 nur dann ganz unter CC BY-SA 4.0, wenn
@@ -30,7 +30,7 @@ in `docker-compose.yml` und gilt mit jedem Image.
 | Seite | für wen | Inhalt |
 |---|---|---|
 | diese Seite | Betrieb | Aufbau, Ressourcen mit Lastmessung, Netz, CI im GitLab nach dem Muster der Plattform, Betrieb in Kürze |
-| [Antworten für das IT-Team](anforderungen.md) | Team 6 | jede Frage aus „Übergaben an den Maschinenraum“ und dem Dokument zum durchgereichten Schlüssel, in deren Reihenfolge: OpenAPI, Ports, Header, Antwortzeiten, b-api, Monitoring, Logs, Images, Zustand, Datenbanken, Ressourcen, Helm, Kosten, Wartung, offene Punkte; dazu [Beispiel-Values](helm-values.example.yaml) |
+| [Antworten für das IT-Team](anforderungen.md) | Team 6 | jede Frage aus „Übergaben an den Maschinenraum“ und dem Dokument zum durchgereichten Schlüssel, in deren Reihenfolge: OpenAPI, Ports, Header, Antwortzeiten, b-api, Monitoring, Logs, Images, Zustand, Datenbanken, Ressourcen, Helm, Kosten, Wartung, offene Punkte; dazu das [Helm-Chart](../../deploy/helm/compendious-text-generator/) |
 | [Steckbrief](steckbrief.md) | Team 6 | die Vorlage „Technischer Service-Steckbrief“ ausgefüllt: Status je Punkt, offene Punkte, Links |
 | [Aufrufe](aufrufe.md) | Entwicklung der aufrufenden Systeme | alter und neuer Aufruf, Profile, die drei Teile, curl-Beispiele, Ausgabe mit jq, weitere Funktionen |
 | [Konfiguration](konfiguration.md) | Betrieb | alle Umgebungsvariablen mit Vorgabe und Empfehlung für den Betrieb |

@@ -186,6 +186,9 @@ Abschnittsmarker von Teil 1.
   prometheus-operator und dem Pod Security Standard „restricted“ passt.
 - Sicherheitsupdates (Release 2.25.1): certifi, filelock, setuptools und ein Basis-Image mit Python 3.13.18 und
   OpenSSL `deb12u2`; fastapi 0.162, starlette 1.10 und libzim 4.0, ohne geändertes Verhalten.
+- Text-Input, Tracing und Helm-Chart (Release 2.26.0): Material, Sammlung mit ihrem Ort im Themenbaum und eigene
+  Quellen als Text statt aus dem Repository (D114); Tracing im B3-Format mit OpenTelemetry (D115); ein Helm-Chart je
+  Tag mit den Updatern als nächtliche CronJobs (D116).
 
 ## Installation
 

@@ -7,6 +7,31 @@ Versionen nach Semantic Versioning: eine neue Einstellung oder neues Verhalten i
 Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änderten auch Verhalten. Die Tags 0.1.0 bis
 0.2.0 gehören zum Vorgängerdienst, dem alten Dienst im GitLab, und stehen nur kurz am Ende.
 
+## 2.26.0 – 2026-11-04
+
+Text-Input für alle Funktionen, Tracing im B3-Format und ein Helm-Chart je Release, nach den Anmerkungen der Technik
+zur Übergabe vom 03.11.2026.
+
+- **[Betrieb](docs/betrieb.md#updates):** Zwei neue Einstellungen mit Vorgabe, `OTEL_SERVICE_NAME` und
+  `OTEL_EXPORTER_OTLP_ENDPOINT`; sonst nichts anzupassen. Die JSON-Logzeilen tragen neu `service`, `span_id` und
+  `client_trace_id`, und `trace_id` ist jetzt die B3-Spur, nicht mehr `x-client-trace-id`.
+- **Neu (D114): Text-Input.** `material` und `collection_context` statt `node_id` für Kompendium, `/knowledge` und
+  `/qa`, `sources` statt oder neben `knowledge_collection_id` für Teil 1. Ein Knoten als Text gibt dasselbe Kompendium
+  wie der gelesene (ohne LLM derselbe Text, mit LLM dieselbe Frage N); `GET /api/v2/nodes/{id}` liefert ihn als
+  `text_input`. `audit.text_sources` zählt die Texte. `/docs` hat Beispiele, die Prüfansicht ein Feld und übernimmt
+  einen gelesenen Knoten auf Knopfdruck als Text.
+- **Neu (D115): Tracing mit OpenTelemetry im B3-Format.** Je Anfrage ein Span als Kind des Aufrufers oder eine neue Spur;
+  B3 (beide Formen) und W3C werden gelesen, B3 geht vor; an b-api und edu-sharing gehen `X-B3-TraceId`, `X-B3-SpanId`,
+  `X-B3-Sampled` und `traceparent` mit dem eigenen Span; die Antwort nennt die Spur in `X-B3-TraceId`. Die Proben
+  tracen nichts. Spans an einen Sammler (Jaeger, OTLP/HTTP) mit `OTEL_EXPORTER_OTLP_ENDPOINT`; das Image enthält den
+  Exporter (Extra `otlp`).
+- **Neu (D116): Helm-Chart** `deploy/helm/compendious-text-generator`, bei jedem Tag als
+  `oci://ghcr.io/janschachtschabel/charts/compendious-text-generator` in derselben Version; Updater als CronJobs
+  gestaffelt nachts oder wie bisher als Deployments; NetworkPolicy je Workload. Es ersetzt
+  `docs/uebergabe/helm-values.example.yaml`. Docker Compose bleibt unverändert.
+- **Abhängigkeiten:** opentelemetry-sdk und opentelemetry-propagator-b3 1.45.2, im Image dazu
+  opentelemetry-exporter-otlp-proto-http (mit protobuf).
+
 ## 2.25.1 – 2026-11-02
 
 Sicherheitsupdates und gebündelte Abhängigkeiten; keine neue Einstellung, kein geändertes Verhalten.

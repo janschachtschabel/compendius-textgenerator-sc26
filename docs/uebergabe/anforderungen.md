@@ -1,6 +1,6 @@
 # Antworten für das IT-Team
 
-[Übergabe](README.md) · Stand 02.11.2026 · Release 2.25.1 (Stand bis D113)
+[Übergabe](README.md) · Stand 04.11.2026 · Release 2.26.0 (Stand bis D116)
 
 Team 6 hat in „Übergaben an den Maschinenraum“ festgelegt, was ein Dienst erfüllen und bei der Übergabe mitbringen muss,
 und in „B-API: Authentifizierung über den durchgereichten Authorization-Header“, wie ein Dienst hinter dem Proxy der
@@ -29,7 +29,7 @@ lokalen Daten aktuell halten.
 |---|---|
 | Stehen Health, Ready und Metriken in der Spec? | Nein. `/openapi.json` beschreibt nur die öffentlichen Endpunkte; die internen stehen in [betrieb.md, „Erreichbarkeit“](../betrieb.md#erreichbarkeit), ein Test hält die Liste vollständig (D107) |
 | Zwei Ports? | Ja (D110). Port 8000 (`PUBLIC_PORT`) ist die API und wird über den Ingress freigegeben. Port 9000 (`INTERNAL_PORT`) liefert `/health`, `/ready`, `/metrics`, `/api/v2/zim/status` und `/api/v2/lehrplan/status`; am Port 8000 antworten diese Pfade mit 404. Entschieden wird nach dem Socket, an dem die Verbindung ankam, nicht nach Host-Header oder Proxy-Headern; ein Präfix (`root_path`) öffnet sie nicht |
-| Was nutzt Kubernetes? | Liveness `GET /health`, Readiness `GET /ready`, beide am Port 9000; ServiceMonitor `GET /metrics` am Port 9000 ([Beispiel-Values](helm-values.example.yaml)) |
+| Was nutzt Kubernetes? | Liveness `GET /health`, Readiness `GET /ready`, beide am Port 9000; ServiceMonitor `GET /metrics` am Port 9000 ([Helm-Chart](../../deploy/helm/compendious-text-generator/)) |
 | Welche Pfade gibt der Ingress frei? | Am Port 8000 `/api/v2/` ohne die Admin-Pfade, dazu `/openapi.json`, `/docs`, `/redoc` (Liste in den Beispiel-Values unter `ingress.paths`). Die Admin-Pfade (ZIM-Sync, Harvest, Templates schreiben, Archiv löschen) liegen am Port 8000 hinter `ADMIN_TOKEN`, weil sie von Hand aufgerufen werden; sie gehören nicht in den Ingress |
 | Sind beide Ports einstellbar? | Ja (D111): `PUBLIC_PORT` und `INTERNAL_PORT`, nur nicht gleich. `INTERNAL_PORT=0` legt alles auf einen Port. Mehrere Dienste auf einem Host: mit Docker über die Host-Ports `API_BIND` und `INTERNAL_BIND`, ohne Container über `PUBLIC_PORT` und `INTERNAL_PORT` ([betrieb.md](../betrieb.md#erreichbarkeit)) |
 
@@ -103,10 +103,10 @@ Grund in der Antwort (D106): So bekommt ein Nutzer immer einen Text. Ob ein LLM 
 |---|---|
 | Basis-Metriken über das Framework, nur am internen Port? | `GET /metrics` am Port 9000, Bibliothek `prometheus_client`, Werte aller Worker zusammen; am Port 8000 404. `METRICS_TOKEN` verlangt zusätzlich ein Bearer-Token |
 | Applikationsmetriken? | Anfragen und Dauer je Route, Kompendien und ihre Phasen und Teile, LLM-Aufrufe, Tokens und Rückfälle je Route, Stand von Archiven, Indexen, Lehrplan-Cache und Sidecars, freier Platz auf den Volumes ([README](../../README.md), „Metriken“) |
-| Alarmregeln im Helm-Chart? | 25 Regeln in `monitoring/alerts.yml`, mit `promtool`-Tests in `monitoring/alerts_test.yml`; als `PrometheusRule` übernehmen (der Inhalt von `groups` gehört unter `spec`). Sie fragen `job="kompendium"`: Der ServiceMonitor braucht diesen Job-Namen (`jobLabel` oder Relabeling), sonst meldet `KompendiumDown` nie. Beispiele über den Ready-Check hinaus: Sidecar hängt, Volume läuft voll, Index fehlt, LLM-Aufrufe ohne Antwort |
-| Tracing B3-konform, `x-client-trace-id` durchgereicht? | Ja (D108). `x-client-trace-id`, die B3-Header (`x-b3-*`, `b3`) und `traceparent`/`tracestate` gehen unverändert mit jedem Aufruf an die b-api und an edu-sharing weiter, dazu `X-Request-ID` |
+| Alarmregeln im Helm-Chart? | 25 Regeln in `monitoring/alerts.yml`, mit `promtool`-Tests in `monitoring/alerts_test.yml`; das Chart bringt sie als `PrometheusRule` mit (`prometheusRule.enabled`; mit den Updatern als CronJobs ersetzt `KompendiumUpdaterRunFailed` die vier Alarme zum Lebenszeichen der Schleifen). Sie fragen `job="kompendium"`: Der ServiceMonitor braucht diesen Job-Namen (`jobLabel` oder Relabeling), sonst meldet `KompendiumDown` nie. Beispiele über den Ready-Check hinaus: Sidecar hängt, Volume läuft voll, Index fehlt, LLM-Aufrufe ohne Antwort |
+| Tracing B3-konform, `x-client-trace-id` durchgereicht? | Ja, mit OpenTelemetry (D108, D115). Der Dienst liest B3 (`X-B3-*` und `b3`) und W3C (`traceparent`, `tracestate`), öffnet je Anfrage einen Span als Kind des Aufrufers, ohne Spur eine neue, und schickt an b-api und edu-sharing `X-B3-TraceId`, `X-B3-SpanId`, `X-B3-Sampled` (je Wert ein Header) und `traceparent` mit seinem Span, dazu `x-client-trace-id` unverändert und `X-Request-ID`. Die Antwort nennt die Spur in `X-B3-TraceId`. Spans an Jaeger oder einen anderen Sammler mit `OTEL_EXPORTER_OTLP_ENDPOINT`; die Proben tracen nichts |
 | Logs nach stdout? | Ja (D109): API und Updater-Schleifen schreiben nach stdout, keine Dateien im Container. Einmalige Befehle der Kommandozeile schreiben ihr Log nach stderr, weil sie ihren Bericht auf stdout drucken |
-| Strukturiert, umschaltbar, Level per Env? | `LOG_FORMAT=json` (eine JSON-Zeile je Ereignis mit `time`, `level`, `pid`, `logger`, `request_id`, `message`, dazu `trace_id`, wenn die Anfrage eine Spur mitbrachte, `exc` mit einem Traceback und die Felder des Ereignisses), `text` für die Entwicklung; `LOG_LEVEL`. `trace_id` ist `x-client-trace-id`, sonst die B3-Trace-ID. Auch Python-Warnungen kommen im selben Format |
+| Strukturiert, umschaltbar, Level per Env? | `LOG_FORMAT=json` (eine JSON-Zeile je Ereignis mit `time`, `level`, `pid`, `logger`, `request_id`, `message`, `service` (`OTEL_SERVICE_NAME`), in einer Anfrage `trace_id` und `span_id` im B3-Format und `client_trace_id`, `exc` mit einem Traceback und die Felder des Ereignisses), `text` für die Entwicklung; `LOG_LEVEL`. `trace_id` ist die B3-Spur, wie der Aufrufer sie schickte (16 oder 32 Zeichen), sonst die neue des Dienstes. Auch Python-Warnungen kommen im selben Format |
 
 ## 4. Repository, Build und Versionierung
 
@@ -114,7 +114,7 @@ Grund in der Antwort (D106): So bekommt ein Nutzer immer einen Text. Ob ein LLM 
 |---|---|
 | Repo mit Zugriff für T6 | GitHub `janschachtschabel/compendius-textgenerator-sc26`, Branch `main`; für das interne GitLab liegt `.gitlab-ci.yml` nach dem Muster der Plattform bereit ([README](README.md#ci-im-internen-gitlab)) |
 | CI baut Images automatisch? | Ja: GitHub Actions (`ci.yml`) und die GitLab-Pipeline prüfen (ruff, mypy, pytest, Alarmregeln, Abhängigkeits-Audit), bauen das Image, testen es gehärtet (`scripts/smoke_image.py`, auch beide Ports) und veröffentlichen es erst dann |
-| Produktion nur mit Tags? | Ein Git-Tag `v2.25.1` baut `:2.25.1` und `:2.25`; `:latest` und `:main` zeigen auf den letzten geprüften Commit von `main` und sind für Staging gedacht |
+| Produktion nur mit Tags? | Ein Git-Tag `v2.26.0` baut `:2.26.0` und `:2.26`; `:latest` und `:main` zeigen auf den letzten geprüften Commit von `main` und sind für Staging gedacht |
 | Schlanke Basis, Multi-Stage, `.dockerignore`, nur Laufzeit-Abhängigkeiten? | Ja: mehrstufiger Bau auf `python:3.13-slim`, Compiler und Paketwerkzeuge bleiben in der Bau-Stufe, `.dockerignore` lässt Tests, Daten und Doku draußen. Installiert werden die Laufzeit-Abhängigkeiten und das Build-Backend (`hatchling`, Gruppe `build`, mit fester Version und Prüfsumme), das die Installation des Dienstes selbst braucht |
 | Nicht als root? | Benutzer `app` (UID 10001), nur lesendes Wurzeldateisystem, keine Capabilities, `no-new-privileges` (Compose; in den Beispiel-Values `podSecurityContext` mit `runAsNonRoot` und `seccompProfile: RuntimeDefault` und `containerSecurityContext`, passend zum Pod Security Standard „restricted“) |
 | Wie groß ist das Image? | 1,1 GB. Darin stecken die Modelle für die Zuordnung der Absätze (Model2Vec, 322 MB) und für Entitäten (spaCy, rund 60 MB). Daten liegen nicht darin (siehe 5.4 und offene Punkte) |
@@ -173,11 +173,11 @@ zwei Modelle (offene Punkte).
 
 | Frage | Antwort |
 |---|---|
-| Jede Einstellung als Env? | Ja, 85 Variablen des Dienstes mit Vorgabe und Empfehlung ([Konfiguration](konfiguration.md)), `.env.example` als Vorlage; ohne Eintrag gilt die Vorgabe |
-| Beispiel-Values? | [helm-values.example.yaml](helm-values.example.yaml): Image, Env, Secrets, Ressourcen von API und Sidecars, Proben am Port 9000, Volumes samt `emptyDir`, Sidecars, Ingress-Pfade, NetworkPolicy (Platzhalter-Selektoren), PrometheusRule und ServiceMonitor. Es ist eine Vorlage für Values; die Templates des Charts baut T6 nach seinem Muster |
-| Compose als Referenz | `docker-compose.yml` (fünf Container, zwei Volumes, Grenzen, Härtung) und das `Dockerfile`; Ressourcen und Skalierung stehen in den Values und unter 5.3 |
+| Jede Einstellung als Env? | Ja, 87 Variablen des Dienstes mit Vorgabe und Empfehlung ([Konfiguration](konfiguration.md)), `.env.example` als Vorlage; ohne Eintrag gilt die Vorgabe |
+| Helm-Chart und Values? | Das [Helm-Chart](../../deploy/helm/compendious-text-generator/) liegt im Repository und geht bei jedem Tag als `oci://ghcr.io/janschachtschabel/charts/compendious-text-generator` in derselben Version heraus (D116). Seine `values.yaml` kommentiert jeden Wert: Image, Env, Secrets, Ressourcen von API und Updatern, Proben am Port 9000, Volumes samt `emptyDir`, Ingress, NetworkPolicy, ServiceMonitor, PrometheusRule. Die Updater laufen als CronJobs gestaffelt nachts (GND 01:15, Wikidata 02:15 täglich, Lehrpläne 03:15, Kiwix 04:15 sonntags) oder wie bisher als Deployments mit Schleife (`updaters.mode`) |
+| Compose als Referenz | `docker-compose.yml` (fünf Container, zwei Volumes, Grenzen, Härtung) und das `Dockerfile`; Ressourcen und Skalierung stehen in den Values und unter 5.3; Compose bleibt unterstützt und nutzt dasselbe Image |
 | Secrets | `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN`, `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD`. Die Sidecars bekommen keines davon |
-| Abschaltbare Teile | Die vier Sidecars (`sidecars.<name>.enabled`; wer Archive, Lehrpläne oder Indexe anders liefert, braucht ihren Sidecar nicht) und Prometheus. Datenbank, Redis und Worker-Pods gibt es nicht |
+| Abschaltbare Teile | Die vier Updater (`updaters.<name>Updater.enabled`, etwa `updaters.zimUpdater.enabled`; wer Archive, Lehrpläne oder Indexe anders liefert, braucht ihren Sidecar nicht) und Prometheus. Datenbank, Redis und Worker-Pods gibt es nicht |
 
 ## 6. Checkliste Übergabepaket
 

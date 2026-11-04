@@ -1,11 +1,11 @@
 # Konfiguration
 
-[Übergabe](README.md) · Stand 02.11.2026 · Release 2.25.1
+[Übergabe](README.md) · Stand 04.11.2026 · Release 2.26.0
 
 Der Dienst liest seine Einstellungen aus Umgebungsvariablen. Docker Compose nimmt sie aus der Datei `.env` neben der
 `docker-compose.yml`: die Variablen des Dienstes für alle fünf Container, dazu fünf, die Compose selbst auswertet
 (`IMAGE`, `API_BIND`, `INTERNAL_BIND`, `API_MEMORY`, `API_STOP_GRACE_PERIOD`). Eine fehlende Variable nimmt ihre
-Vorgabe; die Vorlage [`.env.example`](../../.env.example) listet alle 85 des Dienstes mit ihrer Vorgabe. Die
+Vorgabe; die Vorlage [`.env.example`](../../.env.example) listet alle 87 des Dienstes mit ihrer Vorgabe. Die
 ausführliche Beschreibung jeder Variable steht im [README](../../README.md), Abschnitt „Konfiguration“.
 
 ## Für den Betrieb
@@ -19,7 +19,7 @@ openssl rand -hex 32   # je Schlüssel und Token einmal
 ```
 
 ```dotenv
-# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.25.1 baut :2.25.1 und :2.25, wie auf GitHub).
+# Image mit fester Version aus der Registry des GitLab (ein Git-Tag v2.26.0 baut :2.26.0 und :2.26, wie auf GitHub).
 IMAGE=<registry>/<pfad>/compendious-text-fastapi:<version>
 
 # LLM
@@ -48,7 +48,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 ## Alle Variablen
 
-90 Variablen: 85 des Dienstes und 5 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
+92 Variablen: 87 des Dienstes und 5 von Compose. „Vorgabe“ ist der Wert der Vorlage `.env.example` beziehungsweise von
 `docker-compose.yml`; „Betrieb“ nennt die Empfehlung, wo sie davon abweicht.
 
 ### Zugang und Sicherheit
@@ -73,7 +73,7 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 
 | Variable | Vorgabe | Betrieb | Wofür |
 |---|---|---|---|
-| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.25.1`** | Compose: Image aller fünf Container |
+| `IMAGE` | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:latest` | **feste Version ab 2.6.0, etwa `…/compendious-text-fastapi:2.26.0`** | Compose: Image aller fünf Container |
 | `API_MEMORY` | `6g` | wie Vorgabe | Compose: Speichergrenze des api-Containers, bis 29.09.2026 `4g`; gemessen am 16.10.2026 4,02 GiB Prozesse mit 2 Workern, dazu Seiten-Cache; mit 3 Workern `8g` |
 | `WEB_CONCURRENCY` | `2` | wie Vorgabe | Worker der API; je Worker rund 2 GiB zur Planung (seit model2vec 0.10; im Leerlauf seit 2.24.0 1,41 GiB), mit 3 Workern `API_MEMORY=8g` |
 | `API_STOP_GRACE_PERIOD` | `630s` | wie Vorgabe | Compose: Zeit für laufende Anfragen bei einem Update; deckt academiccloud (600 s) und OpenAI (300 s), über `REQUEST_TIMEOUT_S` plus 15 s halten |
@@ -81,6 +81,8 @@ Vorgaben ändert, steht in [betrieb.md](../betrieb.md) unter „Updates“.
 | `UVICORN_HTTP` | `h11` | wie Vorgabe | HTTP-Parser von uvicorn |
 | `LOG_LEVEL` | `INFO` | wie Vorgabe | Protokollstufe der Zeilen des Dienstes und der Updater: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` (`WARN` gilt als `WARNING`); ein unbekannter Wert hält den Start an |
 | `LOG_FORMAT` | `text` | `json`, wenn ein Log-Sammler die Zeilen liest | eine Zeile Text oder ein JSON-Objekt je Ereignis nach stdout (einmalige Befehle: stderr), mit Prozess- und Anfrage-ID, auch für die Zeilen von uvicorn und die Updater-Schleifen (docs/betrieb.md, Abschnitt „Logs“) |
+| `OTEL_SERVICE_NAME` | `compendious-text-generator` | so lassen, außer der Betrieb verlangt einen anderen Namen | der Name im Feld `service` jeder JSON-Logzeile und in den Spans; damit filtert der Betrieb die Zeilen dieses Dienstes (D115) |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | leer | die Adresse des Sammlers, wenn es einen gibt, etwa `http://jaeger-collector:4318` | Spans über OTLP/HTTP an Jaeger, Tempo oder einen OpenTelemetry Collector; leer: kein Span verlässt den Dienst, die Logzeilen nennen `trace_id` und `span_id` trotzdem (D115) |
 | `PROMETHEUS_MULTIPROC_DIR` | leer | wie Vorgabe | wo die Worker ihre Messwerte ablegen; leer lassen, das Image setzt `/tmp/prometheus` |
 
 ### LLM über die b-api

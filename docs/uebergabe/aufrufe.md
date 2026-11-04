@@ -1,6 +1,6 @@
 # Aufrufe: alter und neuer Dienst
 
-[Übergabe](README.md) · Stand 02.11.2026 · Release 2.25.1
+[Übergabe](README.md) · Stand 04.11.2026 · Release 2.26.0
 
 Diese Seite zeigt, wie die aufrufenden Systeme vom alten Dienst (`/api/v1`) auf den neuen (`/api/v2`) umsteigen: die
 Aufrufe vorher und nachher, die Profile, die Wahl der drei Teile und wie man aus der Antwort nur den fertigen Text
@@ -296,6 +296,27 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -d '{"node_id": "ac66224b-42b0-4676-a53d-71b058dc780b", "parts": ["world"]}' \
   | jq '{thema: .topic, material: .node.title}'
 ```
+
+### Ohne Repository: der Knoten als Text
+
+Dasselbe geht ohne Zugang zum Repository (D114): `material` nennt Titel, Beschreibung, Schlagwörter, Fächer und
+Stufen eines Materials, `collection_context` eine Sammlung mit ihrem Ort im Themenbaum. `path` sind die Sammlungen
+darüber, von oben nach unten, die nächste zuletzt; `children` die Untersammlungen, `materials` die Titel der ersten
+Materialien und `neighbours` die anderen Untersammlungen der Elternsammlung, die das LLM als nicht gemeint hört.
+Der Dienst liest die Felder wie die eines gelesenen Knotens und kommt zum selben Kompendium; `GET
+/api/v2/nodes/{node_id}` liefert sie fertig unter `text_input`. `/knowledge` und `/qa` nehmen dieselben Felder.
+
+```bash
+curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
+  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"collection_context": {"title": "Grundlagen", "path": ["Physik", "Kernphysik"],
+       "children": ["Atomaufbau", "Radioaktivität"], "neighbours": ["Kernspaltung", "Kernfusion"]},
+       "parts": ["world"]}' \
+  | jq '{thema: .topic, artikel: .resolution.title}'
+```
+
+Eigene Texte kommen mit `sources` (Titel, Text, URL, Lizenz, Autoren) als weitere Quellen in Teil 1, wie die
+Materialien einer Wissens-Sammlung; je Zeile ein Absatz ab 40 Zeichen, `audit.text_sources` zählt, was ankam.
 
 ## QA-Paare
 

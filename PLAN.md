@@ -2474,6 +2474,35 @@ API.
   vom 16.10.2026: Die vorige Kopie bleibt bis zur nächsten Fassung, und ein Leser mit ihr wartet nicht auf eine laufende
   Kopie; eine gescheiterte Kopie versucht der Dienst nach 15 Minuten wieder (derweil liest er vom Volume), und die
   Proben (`/health`, `/ready`, `/api/v2/lehrplan/status`) kopieren nie, sie lesen die Kopie, die da ist.
+- **D114 (2026-11-04)** Alles auch über Text-Input (Jan: „optimal wäre es wenn alle funktionen wie kompendiale texte, qa
+  paare usw. auch nur über textinput laufen können“; Anmerkungen von T4/T6 vom 03.11.: WLO ist nicht edu-sharing,
+  Abhängigkeiten zwischen Diensten mitdenken). Gebaut: `material` (Titel, Beschreibung, Schlagwörter, Fächer, Stufen)
+  und `collection_context` (Titel, `path` = die Sammlungen darüber, die nächste zuletzt, `children`, `materials`,
+  `neighbours`, Fächer, Stufen) statt `node_id` für Kompendium, `/knowledge` und `/qa`; `sources` (Titel, Text, URL,
+  Lizenz, Autoren) statt oder neben `knowledge_collection_id` für Teil 1. Der Dienst liest sie als die Datensätze, die
+  er sonst aus dem Repository liest (`NodeInfo`, `TreeContext`, Quelle der Rolle Material), darum keine neue Messung,
+  sondern Gleichheit: ohne LLM derselbe Text, mit LLM dieselbe Frage N (tests/test_text_input.py). `GET
+  /api/v2/nodes/{id}` liefert den Knoten als `text_input`, fertig zum Senden (die Extraktion vor dem Dienst); die
+  Prüfansicht hat ein Feld dafür und übernimmt einen gelesenen Knoten auf Knopfdruck. Verworfen: ein freier
+  Kontext-Text (die Regeln brauchen `path` als Liste, M71) und ein eigener Import-Endpunkt (dasselbe wie
+  `/nodes`). Bleibt: Teil 3 braucht weiter `collection_id`, er ist ein Überblick über das Repository.
+- **D115 (2026-11-04)** Tracing nach B3 mit OpenTelemetry (Anmerkungen der Technik vom 03.11.: die Trace-ID kommt mit
+  und wird mitgeloggt, ein Framework schreibt die Header, einzeln; wo keine kommt, erzeugt sie der erste Dienst). Bis
+  2.25.1 las der Dienst die Header (D108), schrieb `x-client-trace-id` vor der B3-ID ins Log und reichte die Header
+  unverändert weiter, ohne eigene ID. Gebaut: je Anfrage ein Span (OpenTelemetry SDK) als Kind des Aufrufers, B3 in
+  beiden Formen und W3C gelesen, B3 geht vor; ohne Spur eine neue; ausgehend `X-B3-TraceId`, `X-B3-SpanId`,
+  `X-B3-Sampled` und `traceparent` mit dem eigenen Span; die Antwort nennt die Spur in `X-B3-TraceId`. Logzeilen:
+  `service` (`OTEL_SERVICE_NAME`), `trace_id` wie der Aufrufer sie schickte (16 oder 32 Zeichen), `span_id`,
+  `client_trace_id`. Spans gehen nur mit `OTEL_EXPORTER_OTLP_ENDPOINT` an einen Sammler (Jaeger, OTLP/HTTP, Extra
+  `otlp`, im Image). Die Proben tracen nichts. Verworfen: Instrumentierungspakete für FastAPI und httpx (mehr
+  Abhängigkeiten, die Middleware und die zwei Clients hatte der Dienst schon).
+- **D116 (2026-11-04)** Ein Helm-Chart je Tag im Repository (Anmerkungen von T4 vom 03.11.: Helm ist die Basis, je Tag
+  ein passendes Chart, Muster-Values mit Kommentaren, Network Policy liefert der Dienst, Updates gestaffelt nachts).
+  Gebaut: `deploy/helm/compendious-text-generator`, Version gleich der App, bei jedem Tag als OCI-Paket nach
+  `ghcr.io/janschachtschabel/charts`; API mit zwei Ports, NetworkPolicy je Workload, PVCs, ServiceMonitor und
+  PrometheusRule wahlweise; die Updater als CronJobs (GND täglich 01:15, Wikidata 02:15, Lehrplan sonntags 03:15, ZIM
+  sonntags 04:15, Europe/Berlin) oder wie bisher als Deployments mit `--loop`. Compose bleibt unverändert und wird
+  weiter gepflegt; beide Wege nutzen dasselbe Image.
 
 ## Anhang A — Beispiel-Skelett der Ausgabe
 

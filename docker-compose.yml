@@ -4,7 +4,7 @@
 # preset laeuft mit PRESET_DEFAULT (best-quality-generated), solange ein LLM eingerichtet ist, sonst mit llm-free (D68). Was
 # ein Update am Betrieb aendert, steht in docs/betrieb.md unter "Updates".
 # Das Volume "zim" braucht mindestens 50 GB (D99; geplant waren 40 GB, D18). Docker begrenzt Volumes nicht;
-# in Kubernetes entspricht das einem PersistentVolumeClaim mit 60Gi (docs/uebergabe/helm-values.example.yaml).
+# in Kubernetes entspricht das einem PersistentVolumeClaim mit 60Gi (deploy/helm/compendious-text-generator, values.yaml).
 
 # Jeder Dienst begrenzt sein Protokoll: ohne max-size waechst die Datei, bis die Platte voll ist (Audit
 # 2026-09-27, BE-06).

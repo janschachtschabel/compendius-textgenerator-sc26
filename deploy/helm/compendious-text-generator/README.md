@@ -17,7 +17,7 @@ kubectl -n kompendium create secret generic kompendium-secrets \
 
 # Der Release-Name ist der Präfix aller Ressourcen (hier: compendious-text-generator-zim-updater usw.)
 helm upgrade --install compendious-text-generator oci://ghcr.io/janschachtschabel/charts/compendious-text-generator \
-  --version 2.25.1 --namespace kompendium --create-namespace --values meine-values.yaml
+  --version 2.26.0 --namespace kompendium --create-namespace --values meine-values.yaml
 ```
 
 Ein Update ist derselbe Befehl mit der neuen Version. Was ein Release am Betrieb ändert, steht in `docs/betrieb.md`
