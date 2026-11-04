@@ -81,7 +81,7 @@ def with_material(service: CompendiumService, monkeypatch: pytest.MonkeyPatch) -
     monkeypatch.setattr(service, "collections", CollectionBuilder(client=client, cache=None))
 
 
-def _texts(service: CompendiumService, request: GenerateRequest) -> tuple[str, str, list[str]]:
+def _texts(service: CompendiumService, request: GenerateRequest) -> tuple[str, str | None, list[str]]:
     result = service.generate(request)
     return result.topic, result.resolution.title, [section.text for section in result.sections]
 
@@ -112,7 +112,7 @@ def test_the_question_n_hears_the_same_place_from_the_text(
         prompts = [
             b["messages"][1]["content"] for b in fake.bodies if "Übersichtsartikel" in b["messages"][1]["content"]
         ]
-        return prompts[0]
+        return str(prompts[0])
 
     by_node = asked(GenerateRequest(node_id=NODE, parts=["world"], preset="balanced"))
     by_text = asked(GenerateRequest(collection_context=GRUNDLAGEN, parts=["world"], preset="balanced"))
