@@ -2,13 +2,13 @@
   "schema_version": 1,
   "diagram_type": "dataflow",
   "meta": {
-    "title": "Sidecars und lokale Daten",
+    "title": "Updater und lokale Daten",
     "output": "docs/entwicklung/architektur/sidecars-und-daten.html",
     "locale": "de",
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "fe4e06cfae090cd991417895ef9377bcd523cb91"
+      "revision": "1e0671ce5b83dfcbc80d29cb6113dd0813a00c91"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -471,7 +471,32 @@
       "legend.waterfall.ok": "Abgeschlossen",
       "legend.waterfall.error": "Fehler",
       "legend.waterfall.cancelled": "Abgebrochen",
-      "legend.waterfall.incomplete": "Unvollständig (kein Ende aufgezeichnet)"
+      "legend.waterfall.incomplete": "Unvollständig (kein Ende aufgezeichnet)",
+      "viewer.export.svg.auto": "SVG · Automatisch",
+      "viewer.export.svg.auto.hint": "Folgt dem Design der Umgebung",
+      "viewer.export.svg.light": "SVG · Hell",
+      "viewer.export.svg.light.hint": "Immer hell",
+      "viewer.export.svg.dark": "SVG · Dunkel",
+      "viewer.export.svg.dark.hint": "Immer dunkel",
+      "viewer.guide.title": "Dieses System erkunden",
+      "viewer.focus.selectedNodes": "{count} ausgewählte Knoten",
+      "viewer.guide.credit": "Archify nützlich? Ein Stern auf GitHub hilft",
+      "viewer.guide.star": "Stern",
+      "viewer.passport.move": "Semantischen Pass verschieben. Ziehen, Pfeiltasten nutzen oder Pos1 zum Zurücksetzen drücken.",
+      "viewer.outline.title": "Knotenverzeichnis",
+      "viewer.rail.show": "Hinweise und Verzeichnis",
+      "viewer.rail.controls": "Seitenleiste",
+      "viewer.rail.collapse": "Seitenleiste einklappen",
+      "viewer.rail.bottom": "Leiste unter das Diagramm verschieben",
+      "viewer.rail.right": "Leiste neben das Diagramm verschieben",
+      "diagram.description.erd": "Ein von Archify erstelltes Entity-Relationship-Diagramm.",
+      "node.context.erd": "Entität",
+      "legend.erd.pk": "Primärschlüssel",
+      "legend.erd.fk": "Fremdschlüssel",
+      "legend.erd.uk": "Eindeutiger Schlüssel",
+      "legend.erd.one": "Eins",
+      "legend.erd.many": "Viele",
+      "legend.erd.optional": "Optional"
     },
     "viewBox": [
       1080,
@@ -490,7 +515,7 @@
       "label": "Quellen"
     },
     {
-      "label": "Sidecars"
+      "label": "Updater"
     },
     {
       "label": "Volumes"
@@ -541,8 +566,8 @@
         },
         {
           "path": "app/settings.py",
-          "line": 180,
-          "end_line": 182,
+          "line": 195,
+          "end_line": 197,
           "label": "LEHRPLAN_ENDPOINT"
         }
       ]
@@ -583,7 +608,7 @@
       "id": "wlo",
       "type": "external",
       "label": "WLO-Repository",
-      "sublabel": "edu-sharing REST",
+      "sublabel": "edu-sharing, optional",
       "stage": 0,
       "row": 4,
       "yOffset": -26,
@@ -591,15 +616,15 @@
       "sources": [
         {
           "path": "app/settings.py",
-          "line": 197,
-          "end_line": 200,
+          "line": 212,
+          "end_line": 215,
           "label": "EDU_SHARING_BASE_URL"
         },
         {
-          "path": "app/sources/wlo/client.py",
-          "line": 127,
-          "end_line": 153,
-          "label": "HTTP-Client, Konto (D112)"
+          "path": "app/service.py",
+          "line": 145,
+          "end_line": 150,
+          "label": "Knoten gelesen oder als Text (D114)"
         }
       ]
     },
@@ -607,27 +632,27 @@
       "id": "zimupdater",
       "type": "backend",
       "label": "zim-updater",
-      "sublabel": "alle 30 Tage",
+      "sublabel": "So 04:15 · 30 Tage",
       "stage": 1,
       "row": 0,
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 82,
-          "end_line": 101,
-          "label": "Dienst zim-updater"
+          "line": 83,
+          "end_line": 102,
+          "label": "Compose: Schleife mit --loop"
+        },
+        {
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 244,
+          "end_line": 245,
+          "label": "Helm: CronJob sonntags 04:15"
         },
         {
           "path": "app/cli_zim.py",
           "line": 110,
           "end_line": 126,
           "label": "Schleife, Lebenszeichen"
-        },
-        {
-          "path": "app/jobs/zim_sync.py",
-          "line": 173,
-          "end_line": 227,
-          "label": "Sperre, Lauf, Status"
         }
       ]
     },
@@ -635,27 +660,27 @@
       "id": "lehrplanupdater",
       "type": "backend",
       "label": "lehrplan-updater",
-      "sublabel": "prüft alle 7 Tage",
+      "sublabel": "So 03:15 · 7 Tage",
       "stage": 1,
       "row": 1,
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 103,
-          "end_line": 120,
-          "label": "Dienst lehrplan-updater"
+          "line": 104,
+          "end_line": 121,
+          "label": "Compose: Schleife mit --loop"
+        },
+        {
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 262,
+          "end_line": 263,
+          "label": "Helm: CronJob sonntags 03:15"
         },
         {
           "path": "app/cli_lehrplan.py",
           "line": 122,
           "end_line": 143,
           "label": "Schleife, Lebenszeichen"
-        },
-        {
-          "path": "app/sources/lehrplan/harvest.py",
-          "line": 223,
-          "end_line": 247,
-          "label": "Harvest unter Sperre"
         }
       ]
     },
@@ -663,21 +688,21 @@
       "id": "wikidataupdater",
       "type": "backend",
       "label": "wikidata-updater",
-      "sublabel": "täglich",
+      "sublabel": "täglich 02:15 · 1 Tag",
       "stage": 1,
       "row": 2,
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 122,
-          "end_line": 143,
-          "label": "Dienst wikidata-updater"
+          "line": 123,
+          "end_line": 144,
+          "label": "Compose: Schleife mit --loop"
         },
         {
-          "path": "app/cli_wikidata.py",
-          "line": 62,
-          "end_line": 87,
-          "label": "fällig, dann bauen"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 279,
+          "end_line": 280,
+          "label": "Helm: CronJob täglich 02:15"
         },
         {
           "path": "app/sources/wikidata/sync.py",
@@ -691,21 +716,21 @@
       "id": "gndupdater",
       "type": "backend",
       "label": "gnd-updater",
-      "sublabel": "täglich",
+      "sublabel": "täglich 01:15 · 1 Tag",
       "stage": 1,
       "row": 3,
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 145,
-          "end_line": 163,
-          "label": "Dienst gnd-updater"
+          "line": 146,
+          "end_line": 164,
+          "label": "Compose: Schleife mit --loop"
         },
         {
-          "path": "app/cli_gnd.py",
-          "line": 65,
-          "end_line": 90,
-          "label": "fällig, dann bauen"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 304,
+          "end_line": 305,
+          "label": "Helm: CronJob täglich 01:15"
         },
         {
           "path": "app/sources/gnd/sync.py",
@@ -833,14 +858,14 @@
       "sources": [
         {
           "path": "app/settings.py",
-          "line": 224,
-          "end_line": 228,
+          "line": 239,
+          "end_line": 243,
           "label": "WLO_CACHE_PATH (D109)"
         },
         {
           "path": "app/settings.py",
-          "line": 515,
-          "end_line": 518,
+          "line": 530,
+          "end_line": 533,
           "label": "sonst STATE_DIR"
         },
         {
@@ -957,8 +982,8 @@
         },
         {
           "path": "app/api/internal_port.py",
-          "line": 21,
-          "end_line": 32,
+          "line": 23,
+          "end_line": 35,
           "label": "nur auf INTERNAL_PORT"
         }
       ]
@@ -975,8 +1000,8 @@
       "sources": [
         {
           "path": "app/wiring.py",
-          "line": 257,
-          "end_line": 305,
+          "line": 252,
+          "end_line": 300,
           "label": "Client und Cache"
         },
         {
@@ -1014,10 +1039,10 @@
           "label": "KompendiumZimSyncSilent"
         },
         {
-          "path": "docker-compose.yml",
-          "line": 165,
-          "end_line": 180,
-          "label": "Dienst prometheus"
+          "path": "deploy/helm/compendious-text-generator/templates/prometheusrule.yaml",
+          "line": 20,
+          "end_line": 32,
+          "label": "Helm-CronJobs: KompendiumUpdaterRunFailed"
         }
       ]
     }
@@ -1187,11 +1212,12 @@
     },
     {
       "dot": "amber",
-      "title": "Takt",
+      "title": "Takt: CronJob oder Schleife (D116)",
       "items": [
-        "zim-updater alle 30 Tage (ZIM_SYNC_INTERVAL), nach einem abgebrochenen Download nach 1 h",
-        "lehrplan-updater prüft alle 7 Tage und holt neu, wenn MEM sich geändert hat oder der Abzug 30 Tage alt ist",
-        "wikidata-/gnd-updater täglich; neu gebaut wird, wenn der Index fehlt, unbrauchbar ist oder ein neuerer Stand vorliegt"
+        "Die Updater zeigen zuerst den Termin im Helm-Chart, dann das Intervall der Schleife in Compose",
+        "Helm (Vorgabe updaters.mode=cronjob): ein Lauf je Termin ohne --loop, nie zwei zugleich, nachts versetzt (Europe/Berlin): GND 01:15 und Wikidata 02:15 täglich, Lehrpläne 03:15 und ZIM 04:15 sonntags; bei helm install gleich ein erster Lauf",
+        "Docker Compose und updaters.mode=deployment: Schleifen mit --loop; zim-updater alle 30 Tage (ZIM_SYNC_INTERVAL), nach einem abgebrochenen Download nach 1 h; lehrplan-updater prüft alle 7 Tage; wikidata-/gnd-updater täglich",
+        "Geladen oder gebaut wird nur bei Bedarf: ein neuerer ZIM-Dump, eine Änderung in MEM oder ein 30 Tage alter Abzug, ein fehlender, unbrauchbarer oder veralteter Index"
       ]
     },
     {
@@ -1200,16 +1226,17 @@
       "items": [
         "Jeder Lauf hält eine Sperrdatei (sync.lock, lehrplan.harvest.lock, wikidata_sync.lock, gnd_sync.lock): ein zweiter Lauf wartet",
         "Eine Sperre ohne Lebenszeichen (1 h ZIM, 3 h Indizes, 4 h Harvest) gilt als verwaist und wird übernommen",
-        "Die Schleifen der Sidecars und die API protokollieren nach stdout (D109), ein einmaliger Befehl nach stderr"
+        "Die API und die Schleifen der Updater protokollieren nach stdout (D109), ein einmaliger Lauf, auch der eines CronJobs, nach stderr"
       ]
     },
     {
       "dot": "rose",
       "title": "Lebenszeichen",
       "items": [
-        "Jeder Sidecar schreibt *_alive mindestens stündlich und seinen Status nach jedem Lauf",
+        "Jeder Updater schreibt seinen Status nach jedem Lauf, eine Schleife zudem *_alive mindestens stündlich",
         "/metrics antwortet nur auf dem internen Port 9000 (D110) und liest die Dateien bei jeder Abfrage",
-        "Prometheus fragt api:9000 alle 30 s; Alarme wie KompendiumZimSyncSilent melden einen stummen Sidecar"
+        "Prometheus fragt api:9000 alle 30 s; KompendiumZimSyncSilent und die anderen *Silent-Alarme melden eine stumme Schleife",
+        "Im Helm-Chart mit CronJobs fallen die *Silent-Alarme weg; KompendiumUpdaterRunFailed meldet einen gescheiterten Lauf (kube-state-metrics)"
       ]
     },
     {
@@ -1218,6 +1245,7 @@
       "items": [
         "wlo_cache.db liegt in STATE_DIR oder unter WLO_CACHE_PATH: mehrere Pods auf einem geteilten Volume bekommen je einen eigenen Pfad (D109)",
         "Mit EDU_SHARING_USER liest der Dienst das konfigurierte Repository mit dem Konto, etwa dem Gastkonto der WLO; der Cache trennt die Einträge je Konto (D112)",
+        "Mit material, collection_context und sources als Text (D114) liest der Dienst kein Repository; edu-sharing braucht er nur für node_id, collection_id, knowledge_collection_id und Teil 3",
         "wikidata-updater liest active.json nur lesend: Er baut neu, wenn das Wikipedia-Archiv neuer ist als der Index"
       ]
     }

@@ -13,7 +13,7 @@
     ],
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "9aa8980ea7ece3d6b1cf329f0ecd43bdb7606c65"
+      "revision": "1e0671ce5b83dfcbc80d29cb6113dd0813a00c91"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -285,9 +285,6 @@
       "viewer.passport.relationship.direction.loop": "SCHLEIFE",
       "viewer.passport.sourceCount.one": "{count} verifizierte Quellenreferenz",
       "viewer.passport.sourceCount.other": "{count} verifizierte Quellenreferenzen",
-      "viewer.passport.sourceMarker": "QUELLE",
-      "viewer.passport.beacon.one": "{count} verifizierte Quelle; diesen Knoten fokussieren, um sie zu prüfen",
-      "viewer.passport.beacon.other": "{count} verifizierte Quellen; diesen Knoten fokussieren, um sie zu prüfen",
       "viewer.passport.repository.open": "Verifizierte Repository-Revision {revision} öffnen",
       "viewer.passport.source.open": "Verifizierte Quelle {path} bei Revision {revision} öffnen",
       "viewer.passport.source.openLink": "Öffnen ↗",
@@ -438,7 +435,73 @@
       "viewer.common.copyFailed": "Kopieren fehlgeschlagen",
       "viewer.common.copyLink": "Link kopieren",
       "viewer.common.clear": "Löschen",
-      "viewer.common.close": "Schließen"
+      "viewer.common.close": "Schließen",
+      "diagram.description.tree": "Ein von Archify erstelltes Hierarchiediagramm.",
+      "node.context.tree.root": "Wurzel",
+      "node.context.tree.branch": "Zweig",
+      "node.context.tree.leaf": "Blatt",
+      "tree.toggle.collapse": "{label} einklappen ({count} untergeordnete Knoten)",
+      "tree.toggle.expand": "{label} ausklappen ({count} verborgen)",
+      "tree.expandAll": "Alle ausklappen",
+      "diagram.description.class": "Ein von Archify erstelltes Klassen- und Schnittstellendiagramm.",
+      "node.context.class.class": "Klasse",
+      "node.context.class.abstract": "Abstrakte Klasse",
+      "node.context.class.interface": "Schnittstelle",
+      "node.context.class.enum": "Aufzählung",
+      "node.context.class.record": "Datensatz",
+      "legend.class.dependency": "Abhängig von",
+      "legend.class.association": "Assoziation",
+      "legend.class.inheritance": "Erbt von",
+      "legend.class.realization": "Implementiert",
+      "legend.class.composition": "Komposition",
+      "legend.class.aggregation": "Aggregation",
+      "diagram.description.timeline": "Eine von Archify erstellte Ereigniszeitleiste.",
+      "timeline.axis": "Zeit",
+      "timeline.break": "Achsenunterbrechung: {duration} ohne Ereignisse ausgelassen",
+      "timeline.compressed": "{count} ruhige Zeiträume komprimiert (≈)",
+      "timeline.evidence.observed": "Beobachtete Ereignisse",
+      "timeline.evidence.illustrative": "Beispieldaten",
+      "legend.timeline.default": "Ereignis",
+      "legend.timeline.change": "Änderung",
+      "legend.timeline.alert": "Warnung",
+      "legend.timeline.action": "Reaktion",
+      "legend.timeline.recovery": "Wiederherstellung",
+      "diagram.description.waterfall": "Ein von Archify erstelltes Wasserfalldiagramm der Ausführung.",
+      "waterfall.evidence.measured": "Gemessene Zeiten",
+      "waterfall.evidence.illustrative": "Beispielzeiten",
+      "waterfall.wall": "Gesamtdauer {duration}",
+      "waterfall.share": "{percent} der Gesamtdauer {total}",
+      "waterfall.incomplete": "unvollständig, ≥ {duration}",
+      "waterfall.operation": "Vorgang",
+      "legend.waterfall.ok": "Abgeschlossen",
+      "legend.waterfall.error": "Fehler",
+      "legend.waterfall.cancelled": "Abgebrochen",
+      "legend.waterfall.incomplete": "Unvollständig (kein Ende aufgezeichnet)",
+      "viewer.export.svg.auto": "SVG · Automatisch",
+      "viewer.export.svg.auto.hint": "Folgt dem Design der Umgebung",
+      "viewer.export.svg.light": "SVG · Hell",
+      "viewer.export.svg.light.hint": "Immer hell",
+      "viewer.export.svg.dark": "SVG · Dunkel",
+      "viewer.export.svg.dark.hint": "Immer dunkel",
+      "viewer.guide.title": "Dieses System erkunden",
+      "viewer.focus.selectedNodes": "{count} ausgewählte Knoten",
+      "viewer.guide.credit": "Archify nützlich? Ein Stern auf GitHub hilft",
+      "viewer.guide.star": "Stern",
+      "viewer.passport.move": "Semantischen Pass verschieben. Ziehen, Pfeiltasten nutzen oder Pos1 zum Zurücksetzen drücken.",
+      "viewer.outline.title": "Knotenverzeichnis",
+      "viewer.rail.show": "Hinweise und Verzeichnis",
+      "viewer.rail.controls": "Seitenleiste",
+      "viewer.rail.collapse": "Seitenleiste einklappen",
+      "viewer.rail.bottom": "Leiste unter das Diagramm verschieben",
+      "viewer.rail.right": "Leiste neben das Diagramm verschieben",
+      "diagram.description.erd": "Ein von Archify erstelltes Entity-Relationship-Diagramm.",
+      "node.context.erd": "Entität",
+      "legend.erd.pk": "Primärschlüssel",
+      "legend.erd.fk": "Fremdschlüssel",
+      "legend.erd.uk": "Eindeutiger Schlüssel",
+      "legend.erd.one": "Eins",
+      "legend.erd.many": "Viele",
+      "legend.erd.optional": "Optional"
     },
     "legend": {
       "entries": {
@@ -456,7 +519,7 @@
       "id": "aufrufer",
       "type": "external",
       "label": "Aufrufer",
-      "sublabel": "über b-api-Proxy",
+      "sublabel": "Thema oder Knoten",
       "sources": [
         {
           "path": "app/api/v2/routes.py",
@@ -465,16 +528,16 @@
           "label": "POST /api/v2/compendium"
         },
         {
-          "path": "app/api/b_api_key.py",
-          "line": 1,
-          "end_line": 5,
-          "label": "Schlüssel vom Proxy durchgereicht"
+          "path": "app/domain/requests.py",
+          "line": 590,
+          "end_line": 596,
+          "label": "topic, node_id, material oder collection_context"
         },
         {
-          "path": "app/api/request_log.py",
-          "line": 75,
-          "end_line": 76,
-          "label": "Trace-Header der Anfrage"
+          "path": "app/tracing.py",
+          "line": 113,
+          "end_line": 129,
+          "label": "Span als Kind des Aufrufer-Trace (D115)"
         }
       ]
     },
@@ -497,10 +560,10 @@
           "label": "take_b_api_key"
         },
         {
-          "path": "app/llm/credentials.py",
-          "line": 61,
-          "end_line": 80,
-          "label": "Authorization, sonst X-API-Key"
+          "path": "app/api/request_log.py",
+          "line": 76,
+          "end_line": 97,
+          "label": "Span je Anfrage, Antwort mit X-B3-TraceId"
         }
       ]
     },
@@ -512,8 +575,14 @@
       "sources": [
         {
           "path": "app/service.py",
-          "line": 306,
-          "end_line": 338,
+          "line": 145,
+          "end_line": 150,
+          "label": "node_id lesen oder Text übernehmen (D114)"
+        },
+        {
+          "path": "app/service.py",
+          "line": 320,
+          "end_line": 352,
           "label": "Frist, Budget, Teile 2 und 3 nebenher"
         },
         {
@@ -521,12 +590,6 @@
           "line": 34,
           "end_line": 61,
           "label": "PRESET_DEFAULT, 503 ohne LLM"
-        },
-        {
-          "path": "app/compendium/assembly.py",
-          "line": 108,
-          "end_line": 156,
-          "label": "LLM-Bericht, Vorspann, Markdown"
         }
       ]
     },
@@ -570,14 +633,14 @@
         },
         {
           "path": "app/llm/client.py",
-          "line": 631,
-          "end_line": 632,
-          "label": "Schlüssel und Trace-Header"
+          "line": 715,
+          "end_line": 716,
+          "label": "Schlüssel und B3-Header"
         },
         {
           "path": "app/llm/client.py",
-          "line": 574,
-          "end_line": 583,
+          "line": 640,
+          "end_line": 660,
           "label": "Ablehnung: Rest llm-free"
         }
       ]
@@ -590,15 +653,15 @@
       "sources": [
         {
           "path": "app/service.py",
-          "line": 155,
-          "end_line": 170,
+          "line": 164,
+          "end_line": 179,
           "label": "Sicht, Hauptartikel, 404"
         },
         {
           "path": "app/service.py",
-          "line": 245,
-          "end_line": 252,
-          "label": "Korpus aus den Archiven"
+          "line": 288,
+          "end_line": 291,
+          "label": "sources als Text zum Korpus (D114)"
         }
       ]
     },
@@ -632,7 +695,7 @@
       "id": "edusharing",
       "type": "external",
       "label": "edu-sharing",
-      "sublabel": "Teil 3",
+      "sublabel": "Knoten, Teil 3",
       "sources": [
         {
           "path": "app/compendium/repository.py",
@@ -647,10 +710,10 @@
           "label": "Überblick mit Restzeit"
         },
         {
-          "path": "app/compendium/repository.py",
-          "line": 110,
-          "end_line": 125,
-          "label": "Konto nur fürs eigene Repository (D112)"
+          "path": "app/sources/wlo/client.py",
+          "line": 308,
+          "end_line": 311,
+          "label": "B3-Header bei jedem Lesen"
         }
       ]
     }
@@ -659,7 +722,7 @@
     {
       "from": 160,
       "to": 240,
-      "label": "Zugang und Profil"
+      "label": "Zugang, Profil"
     },
     {
       "from": 246,
@@ -685,7 +748,7 @@
       "y": 193,
       "label": "POST /api/v2/compendium",
       "variant": "emphasis",
-      "note": "API_KEYS, Rate-Limit vor dem Körper; b-api-Schlüssel der Anfrage"
+      "note": "Thema, node_id, Text"
     },
     {
       "id": "generate",
@@ -694,25 +757,24 @@
       "y": 225,
       "label": "generate(Profil)",
       "variant": "emphasis",
-      "note": "ohne preset PRESET_DEFAULT; LLM-Profil ohne LLM: 503"
+      "note": "LLM fehlt: 503"
     },
     {
       "id": "sammlung",
       "from": "service",
       "to": "edusharing",
       "y": 257,
-      "label": "Teil 3 nebenher",
-      "variant": "default",
-      "note": "collection_id oder Sammlung in node_id, mit dem Konto des Dienstes (D112), bis REQUEST_TIMEOUT_S"
+      "label": "Teil 3 nebenher; Knoten bei node_id (B3)",
+      "variant": "default"
     },
     {
       "id": "artikelwahl",
       "from": "service",
       "to": "llm",
       "y": 289,
-      "label": "Artikelwahl",
+      "label": "Artikelwahl, B3-Header",
       "variant": "dashed",
-      "note": "ab balanced; llm-free nach Regeln"
+      "note": "ab balanced"
     },
     {
       "id": "korpus",
@@ -721,25 +783,23 @@
       "y": 321,
       "label": "Hauptartikel, Korpus",
       "variant": "emphasis",
-      "note": "Thema nicht gefunden: 404"
+      "note": "Thema fehlt: 404"
     },
     {
       "id": "lehrplaene",
       "from": "service",
       "to": "lehrplan",
       "y": 353,
-      "label": "Teil 2 nebenher",
-      "variant": "default",
-      "note": "Lehrplansuche, sobald das Thema steht"
+      "label": "Teil 2 nebenher, nach dem Thema",
+      "variant": "default"
     },
     {
       "id": "pruefung",
       "from": "service",
       "to": "llm",
       "y": 385,
-      "label": "Lehrplanprüfung",
-      "variant": "dashed",
-      "note": "ab best-quality, eigenes Budget (D94)"
+      "label": "Lehrplanprüfung ab best-quality",
+      "variant": "dashed"
     },
     {
       "id": "teil1-start",
@@ -754,9 +814,8 @@
       "from": "teil1",
       "to": "llm",
       "y": 449,
-      "label": "Zuordnung, Text",
-      "variant": "dashed",
-      "note": "Zuordnung ab best-quality, Text in den -generated-Profilen"
+      "label": "Zuordnung, Text je Profil",
+      "variant": "dashed"
     },
     {
       "id": "abgelehnt",
@@ -765,7 +824,7 @@
       "y": 481,
       "label": "Schlüssel oder Route abgelehnt",
       "variant": "security",
-      "note": "401/402/403, 429 nach Wiederholungen, ausgesetzte Route: Rest der Anfrage llm-free"
+      "note": "Rest llm-free"
     },
     {
       "id": "bausteine",
@@ -780,9 +839,9 @@
       "from": "endpunkt",
       "to": "aufrufer",
       "y": 553,
-      "label": "200 JSON",
+      "label": "200 JSON, X-B3-TraceId",
       "variant": "return",
-      "note": "Markdown, Audit; Teile 2 und 3 eingefügt"
+      "note": "Markdown, Audit"
     }
   ],
   "activations": [
@@ -849,7 +908,16 @@
         "llm-free: jeder Schritt nach Regeln",
         "balanced: Artikelwahl per LLM; best-quality: auch Zuordnung und Lehrplanprüfung",
         "best-quality-generated schreibt zudem den Text, best-coverage-generated füllt jeden Baustein",
-        "Ohne preset: PRESET_DEFAULT (best-quality-generated), ohne LLM llm-free"
+        "Ohne preset: PRESET_DEFAULT (best-quality-generated), ohne LLM llm-free; ein LLM-Profil ohne eingerichtetes LLM: 503"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Eingabe",
+      "items": [
+        "topic: das Thema direkt; node_id: der Dienst liest den Knoten aus edu-sharing, mit B3-Headern wie jeder Aufruf",
+        "material oder collection_context: derselbe Knoten als Text, ohne Repository (D114); GET /api/v2/nodes/{id} liefert ihn als text_input",
+        "sources: Texte für Teil 1 wie die Materialien von knowledge_collection_id; Teil 3 braucht weiter collection_id"
       ]
     },
     {
@@ -859,7 +927,7 @@
         "Mit B_API_KEY_SOURCE=request nimmt take_b_api_key den Schlüssel aus Authorization, sonst X-API-Key, nur für diese Anfrage",
         "Jeder LLM-Aufruf schickt ihn unverändert an die b-api; ohne ihn gilt B_API_KEY; direkte Aufrufer: API_KEYS",
         "Provider openai mit gpt-6-luna oder router (D97)",
-        "Trace-Header (x-client-trace-id, B3, traceparent) und X-Request-ID gehen mit an b-api und edu-sharing (D108)"
+        "Mit jedem Aufruf an b-api und edu-sharing gehen X-B3-TraceId, X-B3-SpanId, X-B3-Sampled und traceparent mit dem Span der Anfrage, dazu x-client-trace-id und X-Request-ID (D115)"
       ]
     },
     {

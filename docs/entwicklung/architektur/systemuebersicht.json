@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "9aa8980ea7ece3d6b1cf329f0ecd43bdb7606c65"
+      "revision": "1e0671ce5b83dfcbc80d29cb6113dd0813a00c91"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -280,9 +280,6 @@
       "viewer.passport.relationship.direction.loop": "SCHLEIFE",
       "viewer.passport.sourceCount.one": "{count} verifizierte Quellenreferenz",
       "viewer.passport.sourceCount.other": "{count} verifizierte Quellenreferenzen",
-      "viewer.passport.sourceMarker": "QUELLE",
-      "viewer.passport.beacon.one": "{count} verifizierte Quelle; diesen Knoten fokussieren, um sie zu prüfen",
-      "viewer.passport.beacon.other": "{count} verifizierte Quellen; diesen Knoten fokussieren, um sie zu prüfen",
       "viewer.passport.repository.open": "Verifizierte Repository-Revision {revision} öffnen",
       "viewer.passport.source.open": "Verifizierte Quelle {path} bei Revision {revision} öffnen",
       "viewer.passport.source.openLink": "Öffnen ↗",
@@ -433,7 +430,73 @@
       "viewer.common.copyFailed": "Kopieren fehlgeschlagen",
       "viewer.common.copyLink": "Link kopieren",
       "viewer.common.clear": "Löschen",
-      "viewer.common.close": "Schließen"
+      "viewer.common.close": "Schließen",
+      "diagram.description.tree": "Ein von Archify erstelltes Hierarchiediagramm.",
+      "node.context.tree.root": "Wurzel",
+      "node.context.tree.branch": "Zweig",
+      "node.context.tree.leaf": "Blatt",
+      "tree.toggle.collapse": "{label} einklappen ({count} untergeordnete Knoten)",
+      "tree.toggle.expand": "{label} ausklappen ({count} verborgen)",
+      "tree.expandAll": "Alle ausklappen",
+      "diagram.description.class": "Ein von Archify erstelltes Klassen- und Schnittstellendiagramm.",
+      "node.context.class.class": "Klasse",
+      "node.context.class.abstract": "Abstrakte Klasse",
+      "node.context.class.interface": "Schnittstelle",
+      "node.context.class.enum": "Aufzählung",
+      "node.context.class.record": "Datensatz",
+      "legend.class.dependency": "Abhängig von",
+      "legend.class.association": "Assoziation",
+      "legend.class.inheritance": "Erbt von",
+      "legend.class.realization": "Implementiert",
+      "legend.class.composition": "Komposition",
+      "legend.class.aggregation": "Aggregation",
+      "diagram.description.timeline": "Eine von Archify erstellte Ereigniszeitleiste.",
+      "timeline.axis": "Zeit",
+      "timeline.break": "Achsenunterbrechung: {duration} ohne Ereignisse ausgelassen",
+      "timeline.compressed": "{count} ruhige Zeiträume komprimiert (≈)",
+      "timeline.evidence.observed": "Beobachtete Ereignisse",
+      "timeline.evidence.illustrative": "Beispieldaten",
+      "legend.timeline.default": "Ereignis",
+      "legend.timeline.change": "Änderung",
+      "legend.timeline.alert": "Warnung",
+      "legend.timeline.action": "Reaktion",
+      "legend.timeline.recovery": "Wiederherstellung",
+      "diagram.description.waterfall": "Ein von Archify erstelltes Wasserfalldiagramm der Ausführung.",
+      "waterfall.evidence.measured": "Gemessene Zeiten",
+      "waterfall.evidence.illustrative": "Beispielzeiten",
+      "waterfall.wall": "Gesamtdauer {duration}",
+      "waterfall.share": "{percent} der Gesamtdauer {total}",
+      "waterfall.incomplete": "unvollständig, ≥ {duration}",
+      "waterfall.operation": "Vorgang",
+      "legend.waterfall.ok": "Abgeschlossen",
+      "legend.waterfall.error": "Fehler",
+      "legend.waterfall.cancelled": "Abgebrochen",
+      "legend.waterfall.incomplete": "Unvollständig (kein Ende aufgezeichnet)",
+      "viewer.export.svg.auto": "SVG · Automatisch",
+      "viewer.export.svg.auto.hint": "Folgt dem Design der Umgebung",
+      "viewer.export.svg.light": "SVG · Hell",
+      "viewer.export.svg.light.hint": "Immer hell",
+      "viewer.export.svg.dark": "SVG · Dunkel",
+      "viewer.export.svg.dark.hint": "Immer dunkel",
+      "viewer.guide.title": "Dieses System erkunden",
+      "viewer.focus.selectedNodes": "{count} ausgewählte Knoten",
+      "viewer.guide.credit": "Archify nützlich? Ein Stern auf GitHub hilft",
+      "viewer.guide.star": "Stern",
+      "viewer.passport.move": "Semantischen Pass verschieben. Ziehen, Pfeiltasten nutzen oder Pos1 zum Zurücksetzen drücken.",
+      "viewer.outline.title": "Knotenverzeichnis",
+      "viewer.rail.show": "Hinweise und Verzeichnis",
+      "viewer.rail.controls": "Seitenleiste",
+      "viewer.rail.collapse": "Seitenleiste einklappen",
+      "viewer.rail.bottom": "Leiste unter das Diagramm verschieben",
+      "viewer.rail.right": "Leiste neben das Diagramm verschieben",
+      "diagram.description.erd": "Ein von Archify erstelltes Entity-Relationship-Diagramm.",
+      "node.context.erd": "Entität",
+      "legend.erd.pk": "Primärschlüssel",
+      "legend.erd.fk": "Fremdschlüssel",
+      "legend.erd.uk": "Eindeutiger Schlüssel",
+      "legend.erd.one": "Eins",
+      "legend.erd.many": "Viele",
+      "legend.erd.optional": "Optional"
     }
   },
   "components": [
@@ -458,10 +521,10 @@
           "label": "HEALTHCHECK an INTERNAL_PORT, sonst PUBLIC_PORT"
         },
         {
-          "path": "docs/uebergabe/helm-values.example.yaml",
-          "line": 31,
-          "end_line": 34,
-          "label": "Proben an Port 9000"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 105,
+          "end_line": 115,
+          "label": "Helm: Proben am Port internal"
         }
       ]
     },
@@ -486,10 +549,10 @@
           "label": "POST /api/v2/compendium"
         },
         {
-          "path": "docs/uebergabe/helm-values.example.yaml",
-          "line": 91,
-          "end_line": 103,
-          "label": "öffentliche Pfade am Ingress"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 402,
+          "end_line": 419,
+          "label": "Helm: öffentliche Pfade am Ingress"
         }
       ]
     },
@@ -509,20 +572,20 @@
       "sources": [
         {
           "path": "README.md",
-          "line": 1104,
-          "end_line": 1113,
+          "line": 1130,
+          "end_line": 1141,
           "label": "Proxy reicht den Schlüssel weiter (D105)"
         },
         {
-          "path": "docs/uebergabe/helm-values.example.yaml",
-          "line": 88,
-          "end_line": 90,
-          "label": "nur der Proxy erreicht den Dienst"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 423,
+          "end_line": 433,
+          "label": "Helm: Port 8000 nur für den Proxy der b-api"
         },
         {
           "path": "docs/betrieb.md",
-          "line": 251,
-          "end_line": 251,
+          "line": 257,
+          "end_line": 257,
           "label": "Aufruf über /api/v1/proxy/<dienst>"
         }
       ]
@@ -605,8 +668,8 @@
       "sources": [
         {
           "path": "app/api/internal_port.py",
-          "line": 21,
-          "end_line": 32,
+          "line": 23,
+          "end_line": 35,
           "label": "an anderen Ports 404 (D110)"
         },
         {
@@ -617,8 +680,8 @@
         },
         {
           "path": "app/settings.py",
-          "line": 354,
-          "end_line": 368,
+          "line": 379,
+          "end_line": 393,
           "label": "PUBLIC_PORT 8000, INTERNAL_PORT 9000 (D111)"
         }
       ]
@@ -627,7 +690,7 @@
       "id": "api",
       "type": "backend",
       "label": "API-Dienst",
-      "sublabel": "FastAPI + uvicorn",
+      "sublabel": "FastAPI + uvicorn, ein Span je Anfrage",
       "pos": [
         675,
         430
@@ -640,20 +703,20 @@
         {
           "path": "docker-compose.yml",
           "line": 38,
-          "end_line": 80,
-          "label": "Dienst api, Ports 8000 und 9000"
+          "end_line": 81,
+          "label": "Compose: Dienst api, Ports 8000 und 9000"
         },
         {
-          "path": "app/serve.py",
-          "line": 34,
-          "end_line": 34,
-          "label": "uvicorn app.main:create_app"
+          "path": "deploy/helm/compendious-text-generator/templates/deployment-api.yaml",
+          "line": 38,
+          "end_line": 44,
+          "label": "Helm: Deployment, Ports 8000 und 9000"
         },
         {
-          "path": "app/main.py",
-          "line": 324,
-          "end_line": 343,
-          "label": "Router von /api/v2"
+          "path": "app/api/request_log.py",
+          "line": 76,
+          "end_line": 79,
+          "label": "Span je Anfrage, Proben ohne (D115)"
         }
       ]
     },
@@ -661,27 +724,33 @@
       "id": "prometheus",
       "type": "backend",
       "label": "Prometheus",
-      "sublabel": "Profil monitoring",
+      "sublabel": "Compose-Profil, ServiceMonitor",
       "pos": [
-        855,
+        835,
         175
       ],
       "size": [
-        150,
+        190,
         64
       ],
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 165,
-          "end_line": 180,
-          "label": "Dienst prometheus"
+          "line": 167,
+          "end_line": 182,
+          "label": "Compose: Dienst prometheus"
         },
         {
           "path": "monitoring/prometheus.yml",
           "line": 18,
           "end_line": 22,
           "label": "Job kompendium, api:9000"
+        },
+        {
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 470,
+          "end_line": 482,
+          "label": "Helm: ServiceMonitor, optional"
         }
       ]
     },
@@ -689,7 +758,7 @@
       "id": "edusharing",
       "type": "external",
       "label": "edu-sharing",
-      "sublabel": "WLO-Repository (REST)",
+      "sublabel": "WLO-Repository, optional",
       "pos": [
         1205,
         40
@@ -701,21 +770,21 @@
       "sources": [
         {
           "path": "app/sources/wlo/client.py",
-          "line": 161,
-          "end_line": 182,
+          "line": 162,
+          "end_line": 183,
           "label": "Sammlungen, Referenzen"
         },
         {
           "path": "app/sources/wlo/client.py",
-          "line": 237,
-          "end_line": 262,
-          "label": "Knoten, Textinhalt"
+          "line": 308,
+          "end_line": 311,
+          "label": "B3-Header bei jedem Lesen"
         },
         {
-          "path": "app/compendium/repository.py",
-          "line": 110,
-          "end_line": 125,
-          "label": "Konto nur fürs eigene Repository (D112)"
+          "path": "app/service.py",
+          "line": 145,
+          "end_line": 150,
+          "label": "Knoten gelesen oder als Text (D114)"
         }
       ]
     },
@@ -735,8 +804,8 @@
       "sources": [
         {
           "path": "app/wiring.py",
-          "line": 212,
-          "end_line": 254,
+          "line": 207,
+          "end_line": 249,
           "label": "nur mit LLM_ENABLED und Schlüssel"
         },
         {
@@ -747,8 +816,8 @@
         },
         {
           "path": "app/llm/client.py",
-          "line": 168,
-          "end_line": 170,
+          "line": 179,
+          "end_line": 181,
           "label": "Wiederholung, Schutzschalter"
         }
       ]
@@ -769,20 +838,20 @@
       "sources": [
         {
           "path": "app/llm/client.py",
-          "line": 266,
-          "end_line": 268,
+          "line": 280,
+          "end_line": 282,
           "label": "/api/v1/llm/{provider}"
         },
         {
           "path": "app/llm/client.py",
-          "line": 675,
-          "end_line": 678,
-          "label": "Schlüssel der Anfrage, sonst B_API_KEY"
+          "line": 715,
+          "end_line": 716,
+          "label": "Schlüssel und B3-Header"
         },
         {
           "path": "app/settings.py",
-          "line": 249,
-          "end_line": 263,
+          "line": 274,
+          "end_line": 288,
           "label": "B_API_PROVIDER, B_API_ROUTE (D97)"
         }
       ]
@@ -837,14 +906,14 @@
       "sources": [
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 442,
-          "end_line": 460,
+          "line": 448,
+          "end_line": 466,
           "label": "neu bauen, dann tauschen"
         },
         {
           "path": "app/sources/lehrplan/store.py",
-          "line": 182,
-          "end_line": 187,
+          "line": 188,
+          "end_line": 193,
           "label": "Lesen je Aufruf"
         },
         {
@@ -871,14 +940,14 @@
       "sources": [
         {
           "path": "app/sources/local_index.py",
-          "line": 30,
-          "end_line": 49,
+          "line": 32,
+          "end_line": 51,
           "label": "atomar schreiben"
         },
         {
           "path": "app/sources/local_index.py",
-          "line": 99,
-          "end_line": 126,
+          "line": 113,
+          "end_line": 140,
           "label": "nur lesen, neu öffnen"
         },
         {
@@ -927,7 +996,7 @@
       "id": "zimupdater",
       "type": "backend",
       "label": "zim-updater",
-      "sublabel": "zim sync --loop",
+      "sublabel": "CronJob So 04:15 / --loop",
       "pos": [
         680,
         765
@@ -939,15 +1008,15 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 82,
-          "end_line": 101,
-          "label": "Dienst zim-updater"
+          "line": 83,
+          "end_line": 102,
+          "label": "Compose: zim sync --loop"
         },
         {
-          "path": "app/cli_zim.py",
-          "line": 95,
-          "end_line": 129,
-          "label": "Schleife, Lebenszeichen"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 244,
+          "end_line": 245,
+          "label": "Helm: CronJob sonntags 04:15"
         },
         {
           "path": "app/jobs/zim_sync.py",
@@ -961,7 +1030,7 @@
       "id": "lehrplanupdater",
       "type": "backend",
       "label": "lehrplan-updater",
-      "sublabel": "lehrplan harvest --loop",
+      "sublabel": "CronJob So 03:15 / --loop",
       "pos": [
         880,
         765
@@ -973,15 +1042,15 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 103,
-          "end_line": 120,
-          "label": "Dienst lehrplan-updater"
+          "line": 104,
+          "end_line": 121,
+          "label": "Compose: lehrplan harvest --loop"
         },
         {
-          "path": "app/cli_lehrplan.py",
-          "line": 91,
-          "end_line": 143,
-          "label": "Prüfung, Harvest wenn fällig"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 262,
+          "end_line": 263,
+          "label": "Helm: CronJob sonntags 03:15"
         },
         {
           "path": "app/sources/lehrplan/harvest.py",
@@ -995,7 +1064,7 @@
       "id": "indexupdater",
       "type": "backend",
       "label": "wikidata-/gnd-updater",
-      "sublabel": "sync --loop, täglich",
+      "sublabel": "CronJob 02:15, 01:15 / --loop",
       "pos": [
         1080,
         765
@@ -1007,21 +1076,21 @@
       "sources": [
         {
           "path": "docker-compose.yml",
-          "line": 122,
-          "end_line": 163,
-          "label": "zwei Dienste"
+          "line": 123,
+          "end_line": 164,
+          "label": "Compose: zwei Dienste mit --loop"
         },
         {
-          "path": "app/cli_wikidata.py",
-          "line": 62,
-          "end_line": 87,
-          "label": "wikidata sync"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 237,
+          "end_line": 238,
+          "label": "Helm: GND 01:15, Wikidata 02:15 täglich"
         },
         {
-          "path": "app/cli_gnd.py",
-          "line": 65,
-          "end_line": 90,
-          "label": "gnd sync"
+          "path": "deploy/helm/compendious-text-generator/templates/updaters.yaml",
+          "line": 13,
+          "end_line": 43,
+          "label": "CronJob ohne --loop, sonst Deployment"
         }
       ]
     },
@@ -1075,8 +1144,8 @@
         },
         {
           "path": "app/settings.py",
-          "line": 180,
-          "end_line": 182,
+          "line": 195,
+          "end_line": 197,
           "label": "LEHRPLAN_ENDPOINT"
         }
       ]
@@ -1108,12 +1177,46 @@
           "label": "DNB-Abzüge, SHA-256"
         }
       ]
+    },
+    {
+      "id": "collector",
+      "type": "external",
+      "label": "Trace-Collector",
+      "sublabel": "z. B. Jaeger, optional",
+      "pos": [
+        1000,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ],
+      "sources": [
+        {
+          "path": "app/settings.py",
+          "line": 108,
+          "end_line": 114,
+          "label": "OTEL_EXPORTER_OTLP_ENDPOINT, Vorgabe leer"
+        },
+        {
+          "path": "app/tracing.py",
+          "line": 90,
+          "end_line": 106,
+          "label": "OTLP/HTTP-Exporter nur mit Endpunkt"
+        },
+        {
+          "path": "Dockerfile",
+          "line": 71,
+          "end_line": 71,
+          "label": "Extra otlp im Image"
+        }
+      ]
     }
   ],
   "boundaries": [
     {
       "kind": "region",
-      "label": "Docker Compose",
+      "label": "Docker Compose oder Helm-Chart (D116)",
       "pad": 22,
       "wraps": [
         "zugang",
@@ -1230,7 +1333,7 @@
       "id": "teil3",
       "from": "api",
       "to": "edusharing",
-      "label": "Teil 3, Knoten (REST)",
+      "label": "node_id, Teil 3 (REST), B3",
       "fromSide": "top",
       "toSide": "bottom"
     },
@@ -1244,7 +1347,7 @@
       "id": "chat",
       "from": "llmgateway",
       "to": "bapi",
-      "label": "chat/completions, Schlüssel"
+      "label": "chat/completions, Schlüssel, B3"
     },
     {
       "id": "teil1",
@@ -1313,6 +1416,13 @@
       "from": "indexupdater",
       "to": "dumps",
       "label": "Dumps laden"
+    },
+    {
+      "id": "spans",
+      "from": "api",
+      "to": "collector",
+      "label": "Spans (OTLP/HTTP)",
+      "variant": "dashed"
     }
   ],
   "cards": [
@@ -1325,6 +1435,15 @@
         "Schlüssel, Rate-Limit und Körpergrenze greifen, bevor der Körper gelesen wird",
         "Admin-Endpunkte nur mit ADMIN_TOKEN, sonst 404",
         "EDU_SHARING_USER und EDU_SHARING_PASSWORD (etwa das Gastkonto der WLO) gelten nur für das konfigurierte Repository, für Knoten und Sammlungen (D112)"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Texteingabe statt Repository (D114)",
+      "items": [
+        "material (Titel, Beschreibung, Schlagworte, Fächer, Stufen, URL) oder collection_context (Titel, Pfad darüber, Kinder, Materialien, Nachbarn) ersetzen node_id für compendium, /knowledge und /qa",
+        "sources (Titel, Text, URL, Lizenz, Autoren) speisen Teil 1 wie die Materialien von knowledge_collection_id",
+        "edu-sharing braucht der Dienst nur noch für node_id, collection_id, knowledge_collection_id und Teil 3; GET /api/v2/nodes/{id} liefert den Knoten als text_input"
       ]
     },
     {
@@ -1362,17 +1481,28 @@
       "items": [
         "/health, /ready, /metrics und der Stand von ZIM und Lehrplan antworten nur an INTERNAL_PORT 9000, an Port 8000 mit 404 (D110)",
         "Beide Ports einstellbar (PUBLIC_PORT, INTERNAL_PORT, D111); INTERNAL_PORT=0 legt alles auf PUBLIC_PORT, /metrics optional mit METRICS_TOKEN",
-        "Jeder Sidecar schreibt Status- und Lebenszeichen-Dateien in sein Volume (zim oder state); /metrics liest sie bei jeder Abfrage",
-        "Prometheus-Alarme melden stumme oder gescheiterte Sidecars"
+        "Jeder Updater schreibt Status-Dateien, eine Schleife auch Lebenszeichen, in sein Volume (zim oder state); /metrics liest sie bei jeder Abfrage",
+        "Prometheus-Alarme melden stumme Schleifen (Compose) oder gescheiterte CronJob-Läufe (KompendiumUpdaterRunFailed, Helm)"
       ]
     },
     {
       "dot": "slate",
       "title": "Protokoll und Trace",
       "items": [
-        "API und Updater-Schleifen loggen nach stdout (D109), mit LOG_FORMAT=json samt trace_id",
-        "x-client-trace-id, B3 und traceparent gehen mit X-Request-ID an b-api und edu-sharing (D108)",
+        "Je Anfrage ein Server-Span (OpenTelemetry): Kind des B3- oder W3C-Kontexts des Aufrufers, sonst ein neuer Trace; Proben ohne Span (D115)",
+        "An b-api und edu-sharing gehen X-B3-TraceId, X-B3-SpanId, X-B3-Sampled und traceparent mit dem eigenen Span, dazu x-client-trace-id und X-Request-ID",
+        "Die Antwort nennt den Trace in X-B3-TraceId; JSON-Logzeilen tragen service, trace_id, span_id und client_trace_id, nach stdout (D109)",
+        "Spans verlassen den Dienst nur mit OTEL_EXPORTER_OTLP_ENDPOINT (OTLP/HTTP, etwa Jaeger); Vorgabe leer, also aus",
         "WLO_CACHE_PATH legt den Repository-Cache je Pod ab; leer: wlo_cache.db im Volume state"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Zwei Betriebswege, ein Image (D116)",
+      "items": [
+        "Docker Compose bleibt: die vier Updater als Container mit --loop (ZIM alle 30 Tage, Lehrpläne alle 7 Tage, Wikidata und GND täglich)",
+        "Helm-Chart je Versions-Tag als OCI-Chart: API-Deployment mit Ports 8000 und 9000, NetworkPolicy, PVCs zim und state, ServiceMonitor und PrometheusRule optional",
+        "Updater als CronJobs nachts versetzt (Europe/Berlin): GND 01:15 und Wikidata 02:15 täglich, Lehrpläne 03:15 und ZIM 04:15 sonntags; mit updaters.mode=deployment als Deployments mit --loop"
       ]
     }
   ]
