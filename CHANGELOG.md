@@ -29,6 +29,14 @@ zur Übergabe vom 03.11.2026.
   `oci://ghcr.io/janschachtschabel/charts/compendious-text-generator` in derselben Version; Updater als CronJobs
   gestaffelt nachts oder wie bisher als Deployments; NetworkPolicy je Workload. Es ersetzt
   `docs/uebergabe/helm-values.example.yaml`. Docker Compose bleibt unverändert.
+- **Review vom 04.11.2026, behoben:** Texte aus `sources` zählen unter `CORPUS_MAX_CHUNKS` wie Materialien,
+  `audit.text_sources` nennt `cut`; `/qa` richtet die Fragen nach einem Material als Text aus wie nach einem Knoten;
+  `GET /nodes` gibt nur bekannte Fächer und die fehlenden Teile des Baums (`missing`) aus; B3 gewinnt auch bei
+  gemischten Headern, ein fehlendes `X-B3-Sampled` heißt „aufgeschoben“; das Chart öffnet mit
+  `tracing.otlpEndpoint` den Port des Sammlers; ein Updater ohne `--loop` (CronJob) endet bei SIGTERM sauber.
+- **Doku:** Steckbrief kompakt mit zwei Grafiken, ein [Leitfaden für andere Dienste](docs/uebergabe/leitfaden-dienste.md)
+  (b-api, Logging, Ports, Helm), das [Qualitätsprofil](docs/uebergabe/qualitaetsprofil.md); Architekturdiagramme mit
+  archify 3.2.0 neu erzeugt.
 - **Abhängigkeiten:** opentelemetry-sdk und opentelemetry-propagator-b3 1.45.2, im Image dazu
   opentelemetry-exporter-otlp-proto-http (mit protobuf).
 
