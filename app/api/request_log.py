@@ -31,7 +31,7 @@ from app.api.metrics import METRICS_PATH
 from app.api.paths import route_path
 from app.logging import REQUEST_ID_HEADER, set_request_id
 from app.observability.metrics import UNMATCHED_ROUTE, observe_request
-from app.tracing import take_trace_headers
+from app.tracing import TRACE_RESPONSE, end_request, start_request, trace_id
 
 log = logging.getLogger(__name__)
 
@@ -74,7 +74,9 @@ class RequestLog:
             await self.app(scope, receive, send)
             return
         request_id = set_request_id(_header(scope, REQUEST_ID_HEADER))
-        take_trace_headers(scope["headers"], request_id)  # sent on with every call made for the request (D108)
+        # its span and trace, sent on with every call made for the request (D108, D115); the probes trace nothing, as
+        # the B3 note on /health has it
+        current = start_request(scope["headers"], request_id, scope["method"], traced=route_path(scope) not in PROBES)
         started = time.perf_counter()
         if scope["method"] not in READS:
             target = _target(scope)
@@ -88,7 +90,11 @@ class RequestLog:
             nonlocal status, answered
             if message["type"] == "http.response.start":
                 status, answered = message["status"], True
-                MutableHeaders(scope=message)[REQUEST_ID_HEADER] = request_id
+                headers = MutableHeaders(scope=message)
+                headers[REQUEST_ID_HEADER] = request_id
+                trace = trace_id()
+                if trace is not None:  # to name the trace when asking about a request (D115)
+                    headers[TRACE_RESPONSE] = trace
             await send(message)
 
         try:
@@ -101,9 +107,11 @@ class RequestLog:
                 content = {"detail": INTERNAL_ERROR, "request_id": request_id}
                 await JsonResponse(content, status_code=500)(scope, receive, named)
         finally:
-            self._record(scope, status, time.perf_counter() - started)
+            route = self._record(scope, status, time.perf_counter() - started)
+            end_request(current, status, route)
 
-    def _record(self, scope: Scope, status: int, seconds: float) -> None:
+    def _record(self, scope: Scope, status: int, seconds: float) -> str:
+        """Count and log the request; its route, which names the span."""
         path = route_path(scope)  # behind a prefix too (audit 2026-10-15)
         route = getattr(scope.get("route"), "path", None) or route_template(self.routes, scope)
         if scope.get(REFUSED_INTERNAL):  # asked on the public port: no traffic of the path (review of 2026-10-17)
@@ -111,7 +119,7 @@ class RequestLog:
         if path != METRICS_PATH:  # a scrape is no request of the service
             observe_request(scope["method"], route, status, seconds)
         if path in PROBES and status < 400:
-            return
+            return route
         target = _target(scope)
         client = scope.get("client")
         fields = {
@@ -123,6 +131,7 @@ class RequestLog:
             "client": client[0] if client else "-",
         }
         log.info("%s %s %d %d ms", fields["method"], target, status, fields["duration_ms"], extra={"fields": fields})
+        return route
 
 
 def _target(scope: Scope) -> str:

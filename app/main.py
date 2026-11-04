@@ -57,6 +57,7 @@ from app.sources.wikidata.index import WikidataIndex
 from app.sources.zim.catalog import OPDS_DEFAULT_URL, KiwixCatalog
 from app.sources.zim.refresh import RegistryRefresher
 from app.templates.manager import SHIPPED_DEFAULT, TemplateManager, TemplateNotFoundError
+from app.tracing import configure as configure_tracing
 from app.ui.routes import ui_router
 from app.wiring import build_registry, build_service, load_subscriptions, resolve_required_ids
 
@@ -277,6 +278,7 @@ def create_app(settings: Settings | None = None, *, document_internal: bool = Fa
     /metrics excepted, for the tests of their documentation."""
     settings = settings or get_settings()
     configure_logging(settings.log_level, settings.log_format, stream=sys.stdout)  # the server logs to stdout (D109)
+    configure_tracing(settings.otel_service_name, settings.otel_exporter_otlp_endpoint)  # per worker (D115)
     warn_about_removed_settings()
     registry = build_registry(settings)
     templates = TemplateManager(custom_dir=settings.custom_templates_dir)

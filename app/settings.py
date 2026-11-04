@@ -97,6 +97,21 @@ class Settings(BaseSettings):
     log_format: Literal["text", "json"] = Field(
         "text", description="text: one plain line per event; json: one JSON object per event, for a log collector"
     )
+    otel_service_name: str = Field(
+        "compendious-text-generator",
+        min_length=1,
+        max_length=100,
+        pattern=r"^[A-Za-z0-9._-]+$",
+        description="The service's name in its JSON log lines (field service) and spans, to filter its lines among "
+        "those of all services (D115)",
+    )
+    otel_exporter_otlp_endpoint: str = Field(
+        "",
+        max_length=500,
+        description="A collector for the spans over OTLP/HTTP, e.g. http://jaeger-collector:4318 (Jaeger, Tempo, the "
+        "OpenTelemetry Collector); empty: no spans leave the service, the log lines name trace and span all the same "
+        "(D115)",
+    )
 
     # --- ZIM archives ------------------------------------------------------------------------
     zim_dir: Path = Field(Path("data/zim"), description="Directory with ZIM archives and active.json")

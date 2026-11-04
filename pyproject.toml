@@ -27,6 +27,11 @@ dependencies = [
     "scikit-learn>=1.6",
     "pyyaml>=6.0",
     "prometheus-client>=0.22",
+    # Tracing in the platform's B3 format (D115): the SDK makes trace and span ids, the propagator reads and writes
+    # the X-B3-* headers; the service imports the API itself, which fastapi brings as well
+    "opentelemetry-api>=1.45",
+    "opentelemetry-sdk>=1.45",
+    "opentelemetry-propagator-b3>=1.45",
 ]
 
 [project.optional-dependencies]
@@ -35,6 +40,9 @@ embeddings = ["model2vec>=0.9", "huggingface-hub>=1.31"]
 # spaCy brings the German NER for /api/v2/entities; the model itself is baked into the image (Dockerfile,
 # SPACY_MODEL_VERSION). Without the extra the endpoint still answers - with the terms from the archives only.
 entities = ["spacy>=3.8"]
+# Sends the spans to a collector such as Jaeger over OTLP/HTTP when OTEL_EXPORTER_OTLP_ENDPOINT is set (D115); the
+# image has it, the service runs without it and only logs the ids
+otlp = ["opentelemetry-exporter-otlp-proto-http>=1.45"]
 
 [project.scripts]
 compendium = "app.cli:main"

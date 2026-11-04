@@ -23,7 +23,7 @@ from contextvars import ContextVar
 from datetime import UTC, datetime
 from typing import Any, TextIO
 
-from app.tracing import trace_id
+from app.tracing import client_trace_id, service_name, span_id, trace_id
 
 # The process: with two workers their lines interleave, and uvicorn names a worker that died by its pid (logging
 # review of 2026-10-08)
@@ -87,9 +87,14 @@ class _JsonFormatter(logging.Formatter):
             "request_id": getattr(record, "request_id", NO_REQUEST),
             "message": record.getMessage(),
         }
+        event["service"] = service_name()  # the service among the lines of all, OTEL_SERVICE_NAME (D115)
         trace = trace_id()  # the trace of the platform, to filter the lines of all services for one request (D108)
         if trace is not None:
             event["trace_id"] = trace
+            event["span_id"] = span_id() or ""
+        client_trace = client_trace_id()  # the trace id of a client, beside the platform's (D115)
+        if client_trace is not None:
+            event["client_trace_id"] = client_trace
         if record.exc_info:
             event["exc"] = self.formatException(record.exc_info)
         # The fields of an event (``extra={"fields": ...}``: a request's status and duration) become fields of its

@@ -25,7 +25,7 @@ ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-dev --group build --extra embeddings --extra entities
+    uv sync --locked --no-install-project --no-dev --group build --extra embeddings --extra entities --extra otlp
 # Embedding-Modell zur Bauzeit laden, damit die Laufzeit den Hugging-Face-Hub nie anspricht. Die Revision ist
 # festgelegt, damit jeder Build dasselbe Modell enthaelt (neue Revision: Eval neu messen, dann hier eintragen).
 # MODEL2VEC_ID="" baut ohne Modell; der Matcher laeuft dann mit BM25 und Char-TF-IDF, und MODEL2VEC_PATH bleibt leer.
@@ -68,7 +68,7 @@ COPY app ./app
 # the venv carries what was copied - a silently old image is worse than a failed build.
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --inexact --no-dev --group build --no-editable --reinstall-package compendious-text-fastapi \
-      --extra embeddings --extra entities \
+      --extra embeddings --extra entities --extra otlp \
     && ! find app -name __pycache__ -print -quit | grep -q . \
     && installed=$(/app/.venv/bin/python -c "import app, pathlib; print(pathlib.Path(app.__file__).parent)") \
     && diff -r -x __pycache__ app "$installed"

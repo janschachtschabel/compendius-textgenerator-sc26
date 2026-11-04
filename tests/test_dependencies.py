@@ -39,12 +39,15 @@ def test_every_package_the_app_imports_is_declared() -> None:
     """A package that comes only as another one's dependency goes when that one drops it, and the service fails at its
     import. fastapi brought starlette and anyio, which the service imports itself, while pyproject.toml named neither."""
     distributions = packages_distributions()
-    imported = {
-        _normalized(distribution)
-        for module in _imported_modules()
-        for distribution in distributions.get(module, [module])
-    }
-    assert imported <= _declared(), sorted(imported - _declared())
+    declared = _declared()
+    missing: set[str] = set()
+    for module in _imported_modules():
+        found = {_normalized(distribution) for distribution in distributions.get(module, [module])}
+        # A namespace package (opentelemetry) is shared by many distributions, most of them dependencies of the
+        # declared ones: one declared is enough there (D115)
+        if (found - declared) and not (len(found) > 1 and found & declared):
+            missing |= found - declared
+    assert not missing, sorted(missing)
 
 
 def test_the_server_comes_without_reload_and_websocket_packages() -> None:

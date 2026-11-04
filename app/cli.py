@@ -30,6 +30,7 @@ from app.sources.wlo.client import EduSharingError
 from app.sources.wlo.repository import RepositoryNotAllowedError
 from app.templates.manager import TemplateManager, TemplateNotFoundError
 from app.templates.schema import Template
+from app.tracing import configure as configure_tracing
 
 
 def cmd_generate(args: argparse.Namespace) -> int:
@@ -295,6 +296,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     settings = get_settings()
     configure_logging(settings.log_level, settings.log_format, stream=log_stream(args))
+    configure_tracing(settings.otel_service_name)  # the name in the log lines; a CLI run traces no request
     result: int = args.func(args)
     return result
 
