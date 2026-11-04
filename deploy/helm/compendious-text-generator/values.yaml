@@ -1,5 +1,5 @@
-# Values des Charts "Kompendiale Texte". Herkunft: docs/uebergabe/helm-values.example.yaml (Vorlage für T6) und
-# docker-compose.yml; Bedeutung und Vorgaben der Umgebungsvariablen: docs/uebergabe/konfiguration.md.
+# Values des Charts "Kompendiale Texte", abgeleitet aus docker-compose.yml (D116); Bedeutung und Vorgaben der
+# Umgebungsvariablen: docs/uebergabe/konfiguration.md.
 # Betrieb hinter dem Proxy der b-api (Variante A). Compose bleibt die Alternative für einen einzelnen Host.
 
 ## @section Allgemein
@@ -464,6 +464,20 @@ networkPolicy:
     ## @param networkPolicy.egress.gndUpdater data.dnb.de
     gndUpdater:
       - ports: [{ port: 443, protocol: TCP }]
+
+## @section Tracing (B3 mit OpenTelemetry, D115)
+
+# Der Dienst liest B3 und W3C, legt ohne Spur eine an und nennt trace_id und span_id in jeder JSON-Logzeile; Spans
+# verlassen ihn nur mit otlpEndpoint. Die NetworkPolicy der API öffnet dann den Port des Sammlers.
+tracing:
+  ## @param tracing.serviceName Name im Feld service jeder Logzeile und in den Spans (OTEL_SERVICE_NAME)
+  serviceName: compendious-text-generator
+  ## @param tracing.otlpEndpoint Sammler der Spans über OTLP/HTTP, etwa http://jaeger-collector.observability:4318 (OTEL_EXPORTER_OTLP_ENDPOINT); leer: keine Spans nach außen
+  otlpEndpoint: ""
+  ## @param tracing.collectorPort Port des Sammlers, den die NetworkPolicy der API öffnet (OTLP/HTTP: 4318)
+  collectorPort: 4318
+  ## @param tracing.collectorTo Wo der Sammler läuft (NetworkPolicyPeer-Liste, etwa sein Namespace); leer: jedes Ziel auf collectorPort
+  collectorTo: []
 
 ## @section Überwachung (Prometheus Operator)
 

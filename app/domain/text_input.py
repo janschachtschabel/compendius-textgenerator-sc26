@@ -87,8 +87,9 @@ class CollectionText(TextInput):
     missing: list[Literal["path", "children", "materials", "neighbours"]] = Field(
         default_factory=list,
         max_length=4,
-        description="The parts of the place the repository did not give (GET /api/v2/nodes/{node_id} names them); "
-        "without path the LLM hears no place in the tree, as for the node",
+        description="The parts of the place the repository did not give, as GET /api/v2/nodes/{node_id} names them: "
+        "path (the collections above it; then the LLM hears no place in the tree, as for the node), children (its "
+        "sub-collections), materials (its first materials), neighbours (the other sub-collections of its parent)",
     )
 
 

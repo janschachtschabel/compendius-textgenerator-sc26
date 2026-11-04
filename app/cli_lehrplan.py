@@ -124,8 +124,8 @@ def cmd_harvest(args: argparse.Namespace) -> int:
     harvest = _harvest(settings)
     max_age = parse_interval(settings.lehrplan_harvest_max_age)
 
+    stop_on_sigterm()  # once as well: a CronJob runs it as PID 1 (review of D116)
     if args.loop:
-        stop_on_sigterm()
         try:
             run_periodically(
                 loop_task(harvest, max_age=max_age, force=bool(args.force)),
@@ -151,6 +151,10 @@ def cmd_harvest(args: argparse.Namespace) -> int:
         return 1
     except SparqlError as exc:
         print(f"Harvest abgebrochen, alter Cache bleibt: {exc}", file=sys.stderr)
+        return 1
+    except KeyboardInterrupt:
+        # a CronJob's deadline or a deleted pod sends SIGTERM to PID 1: the run writes its status and frees its lock
+        print("Harvest abgebrochen, alter Cache bleibt.", file=sys.stderr)
         return 1
     print(CURRENT if report is None else json.dumps(asdict(report), ensure_ascii=False, indent=2))
     return 0

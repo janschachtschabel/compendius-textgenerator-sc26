@@ -26,6 +26,10 @@ data:
   {{- $api := deepCopy (.Values.api.env | default dict) }}
   {{- $_ := set $api "PUBLIC_PORT" (.Values.api.port | toString) }}
   {{- $_ := set $api "INTERNAL_PORT" (.Values.api.internalPort | toString) }}
+  {{- $_ := set $api "OTEL_SERVICE_NAME" .Values.tracing.serviceName }}
+  {{- if .Values.tracing.otlpEndpoint }}
+  {{- $_ := set $api "OTEL_EXPORTER_OTLP_ENDPOINT" .Values.tracing.otlpEndpoint }}
+  {{- end }}
   {{- if .Values.templates.enabled }}
   {{- $_ := set $api "TEMPLATES_DIR" .Values.templates.mountPath }}
   {{- end }}

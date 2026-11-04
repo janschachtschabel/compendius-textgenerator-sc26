@@ -98,7 +98,7 @@ lesen lässt. Rohdaten: [lasttest-2026-10-16.json](lasttest-2026-10-16.json).
   dort stabil über die letzten zehn Anfragen, rund 2 GiB je Worker. Mit Seiten-Cache bis 4,73 GiB, innerhalb von 6g.
 - **Sichere Werte:** Request 5 Gi und Limit 6 Gi für die API mit zwei Workern, Request 2 und Limit 4 CPU; das lässt
   Reserve für die größere Wikipedia 2026-10, deren Einfluss auf den Speicher der Prozesse hier nicht gemessen ist. Die
-  Sidecars beim Bau ihrer Indexe sind weiter nicht gemessen; die Beispiel-Values setzen großzügig 1 Gi, dem `wikidata-updater` 2 Gi: Ein Abbruch wegen Speicher lässt die
+  Sidecars beim Bau ihrer Indexe sind weiter nicht gemessen; die Values des Charts setzen großzügig 1 Gi, dem `wikidata-updater` 2 Gi: Ein Abbruch wegen Speicher lässt die
   Sperrdatei liegen, und der nächste Lauf kommt erst nach 3 bis 4 Stunden; nach den ersten Läufen messen und senken.
 - **`best-quality-generated` braucht mit fünf gleichzeitigen Anfragen gut eine Minute** und im Mittel rund 97.000
   Tokens; allein im Median 28 s (M91). Die Zeit geht an die b-api, nicht an die CPU des Dienstes.
@@ -229,7 +229,9 @@ Funktionstest: lokal über Volumes und mit Python 3.12 ohne die Umgebung des Pro
   Branch oder Tag nur einmal zugleich (`resource_group`). So zeigen `:main` und `:latest` nie auf einen älteren Commit
   zurück.
 - **Was GitHub mehr hat:** Dependabot (auf GitLab wäre das Renovate), die Prüfung, dass das Image ohne Anmeldung
-  ziehbar ist, und die Pages mit den Diagrammen; intern ist davon vermutlich nichts nötig.
+  ziehbar ist, die Pages mit den Diagrammen und das Helm-Chart: `helm lint`, kubeconform und je Tag der Push des
+  Charts (D116). Im GitLab überspringt `tests/test_helm_chart.py` die Render-Tests ohne helm; wer das Chart dort
+  baut, ergänzt einen Job mit helm.
 
 Für das neue GitLab zu klären:
 

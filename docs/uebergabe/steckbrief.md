@@ -26,9 +26,10 @@ allein im Median (M82, M91), Kosten mit `gpt-6-luna` über die b-api. Standard m
 | Entitäten mit Kennungen (1.500 Zeichen) | `POST /api/v2/entities` | 2,4 s · 0 | 5,8 s · 1.200 | wie Standard |
 | Wissenstexte eines Themas | `POST /api/v2/knowledge` | 0,6 s · 0 | 3,6 s · 750 | wie Standard |
 | Lehrplansuche | `GET /api/v2/lehrplan/search` | 0,02 bis 0,6 s · 0 | 2,7 bis 4,4 s · 4.500 bis 4.900 | wie Standard |
-| Knoten lesen, als Text ausgeben | `GET /api/v2/nodes/{id}` | unter 1 s · 0 | – | – |
+| Knoten lesen, als Text ausgeben | `GET /api/v2/nodes/{id}` | nicht gemessen, hängt an edu-sharing · 0 | – | – |
 
-Unter Last: fünf Kompendien zugleich im Standard 36 bis 86 s (die Zeit liegt bei der b-api), in `llm-free` bis 24 s;
+Unter Last, auf dem Testserver: fünf Kompendien zugleich im Standard 36 bis 86 s (die Zeit liegt bei der b-api), in
+`llm-free` 17,5 bis 26,5 s;
 Frist 300 s. Profile `balanced` (3,8 s, 320 Tokens) und `best-quality` (14,9 s, 52.000 Tokens) liegen dazwischen.
 
 ## Eingaben
@@ -68,7 +69,7 @@ liefert einen Knoten fertig als Text. Nur Teil 3 braucht das Repository (`collec
 | Docker Compose | `docker-compose.yml` für einen Host, mit demselben Image; wird weiter gepflegt und bei jedem Release mitgetestet | erfüllt |
 | Image | Mehrstufig, `python:3.13-slim`, nicht root, nur lesend; zwei Modelle (380 MB) bewusst im Image | erfüllt |
 | Updates der Daten | Vier Updater (Kiwix, Lehrpläne, Wikidata, GND). Helm: CronJobs gestaffelt nachts (GND 01:15 täglich, Wikidata 02:15 täglich, Lehrpläne sonntags 03:15, Kiwix sonntags 04:15); Compose: Container mit Schleife | erfüllt |
-| Netz | NetworkPolicy im Chart. API: ein nur von der b-api, aus nur zu b-api, edu-sharing und DNS. Updater: nur zu ihren Downloadquellen (Port 443) | erfüllt |
+| Netz | NetworkPolicy im Chart. API: ein nur von der b-api (8000) und vom Monitoring (9000); aus DNS und HTTPS (443), mit Sammler auch dessen Port. Updater: nichts ein, aus DNS und HTTPS. Eine NetworkPolicy kennt keine Hostnamen: Ziele auf b-api, edu-sharing und die Downloadquellen begrenzen per `ipBlock` oder FQDN-Regeln des CNI | erfüllt |
 | Skalierung | API-Pods zustandslos, beliebig viele; Indexe als lokale Kopie je Pod, Volumes nur lesend (D113); Updater je genau einmal | erfüllt |
 | Datenbank | Keine; SQLite nur lesend und als Cache je Pod | erfüllt |
 | Volumes | `zim` 60 Gi und `state` 5 Gi (ReadWriteMany), `emptyDir` 2 Gi je API-Pod | erfüllt |

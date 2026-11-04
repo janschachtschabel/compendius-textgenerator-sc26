@@ -219,3 +219,18 @@ jobs:
           printf '%s' "$TOKEN" | helm registry login ghcr.io --username "$ACTOR" --password-stdin
           helm push "dist/compendious-text-generator-${GITHUB_REF_NAME#v}.tgz" "oci://ghcr.io/${OWNER}/charts"
           helm registry logout ghcr.io
+      # The platform pulls the chart without a login, as the image (README of the chart). GHCR makes a new package
+      # private: after the first tag the package charts/compendious-text-generator has to be made public once, and
+      # this step stays red until it is (CONTRIBUTING.md).
+      - name: Chart pullable without a login
+        shell: bash
+        env:
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          name="${OWNER}/charts/compendious-text-generator"
+          token="$(curl -sf "https://ghcr.io/token?scope=repository:${name}:pull&service=ghcr.io" \
+            | sed -n 's/.*"token":"\([^"]*\)".*/\1/p')"
+          test -n "$token"
+          curl -sf -o /dev/null -H "Authorization: Bearer ${token}" \
+            -H "Accept: application/vnd.oci.image.manifest.v1+json" \
+            "https://ghcr.io/v2/${name}/manifests/${GITHUB_REF_NAME#v}"

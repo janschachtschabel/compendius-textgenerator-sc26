@@ -99,11 +99,16 @@ def cmd_sync(args: argparse.Namespace) -> int:
         profile=args.profile or settings.zim_profile,
         download_missing=args.download_missing or settings.zim_bootstrap_download,
     )
+    stop_on_sigterm()  # once as well: a CronJob runs it as PID 1 (review of D116)
     if not args.loop:
         try:
             report = sync.run(options)
         except SyncRunningError as exc:
             print(f"{exc}; der Updater setzt den Lauf fort.", file=sys.stderr)
+            return 1
+        except KeyboardInterrupt:
+            # a CronJob's deadline or a deleted pod sends SIGTERM to PID 1: the run writes its status and frees its lock
+            print("ZIM-Sync abgebrochen.", file=sys.stderr)
             return 1
         _print_report(report)
         return 1 if report.errors else 0
@@ -112,7 +117,6 @@ def cmd_sync(args: argparse.Namespace) -> int:
     log.info(
         "Sync-Schleife: Profil %s, Intervall %s, Trigger-Datei %s", options.profile, settings.zim_sync_interval, trigger
     )
-    stop_on_sigterm()
     try:
         run_periodically(
             lambda: _run_once(sync, options, interval),

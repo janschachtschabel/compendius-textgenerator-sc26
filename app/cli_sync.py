@@ -62,8 +62,8 @@ def run_sync(task: Callable[[], None], *, loop: bool, interval: str, name: str, 
                 raise
             log.warning("%s nicht gebaut, der alte bleibt bis zur nächsten Prüfung: %s", name, exc)
 
+    stop_on_sigterm()  # once as well: a CronJob runs it as PID 1 (review of D116)
     if loop:
-        stop_on_sigterm()
         try:
             run_periodically(
                 checked,
@@ -81,6 +81,10 @@ def run_sync(task: Callable[[], None], *, loop: bool, interval: str, name: str, 
         task()
     except SYNC_ERRORS as exc:
         print(f"{name} nicht gebaut, der vorhandene bleibt: {exc}", file=sys.stderr)
+        return 1
+    except KeyboardInterrupt:
+        # a CronJob's deadline or a deleted pod sends SIGTERM to PID 1: the run writes its status and frees its lock
+        print(f"{name} abgebrochen, der vorhandene bleibt.", file=sys.stderr)
         return 1
     return 0
 

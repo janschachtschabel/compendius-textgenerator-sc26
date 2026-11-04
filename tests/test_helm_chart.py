@@ -188,3 +188,31 @@ def test_the_service_monitor_scrapes_the_internal_port_as_the_job_the_rules_ask_
     assert endpoint["port"] == "internal" and endpoint["path"] == "/metrics"
     assert {"targetLabel": "job", "replacement": "kompendium"} in endpoint["relabelings"]
     assert endpoint["authorization"]["credentials"] == {"name": "kompendium-secrets", "key": "METRICS_TOKEN"}
+
+
+@needs_helm
+def test_a_collector_of_spans_gets_its_endpoint_and_its_port_through_the_network_policy() -> None:
+    """D115: spans leave the service only to tracing.otlpEndpoint; the NetworkPolicy of the API opened only 443."""
+    plain = render()
+    api_env = next(
+        doc
+        for doc in of_kind(plain, "ConfigMap")
+        if doc["metadata"]["labels"].get("app.kubernetes.io/component") == "api"
+    )["data"]
+    assert api_env["OTEL_SERVICE_NAME"] == "compendious-text-generator" and "OTEL_EXPORTER_OTLP_ENDPOINT" not in api_env
+
+    docs = render(
+        "--set",
+        "tracing.otlpEndpoint=http://jaeger-collector.observability:4318",
+        "--set",
+        r"tracing.collectorTo[0].namespaceSelector.matchLabels.kubernetes\.io/metadata\.name=observability",
+    )
+    api_env = next(
+        doc
+        for doc in of_kind(docs, "ConfigMap")
+        if doc["metadata"]["labels"].get("app.kubernetes.io/component") == "api"
+    )["data"]
+    assert api_env["OTEL_EXPORTER_OTLP_ENDPOINT"] == "http://jaeger-collector.observability:4318"
+    policy = next(doc for doc in of_kind(docs, "NetworkPolicy") if component(doc) == "api")
+    rule = next(rule for rule in policy["spec"]["egress"] if rule["ports"][0]["port"] == 4318)
+    assert rule["to"][0]["namespaceSelector"]["matchLabels"] == {"kubernetes.io/metadata.name": "observability"}

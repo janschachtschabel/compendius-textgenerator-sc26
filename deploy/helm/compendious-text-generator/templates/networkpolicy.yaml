@@ -38,6 +38,16 @@ spec:
     {{- with .Values.networkPolicy.egress.api }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+    {{- if .Values.tracing.otlpEndpoint }}
+    # die Spans an den Sammler (tracing.otlpEndpoint, D115)
+    - ports:
+        - port: {{ .Values.tracing.collectorPort }}
+          protocol: TCP
+      {{- with .Values.tracing.collectorTo }}
+      to:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- end }}
 {{- range $key := list "zimUpdater" "lehrplanUpdater" "wikidataUpdater" "gndUpdater" }}
 {{- if (index $root.Values.updaters $key).enabled }}
 {{- $component := include "kompendium.updaterKind" $key }}

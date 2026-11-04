@@ -115,6 +115,25 @@ einmalige Job der Installation läuft beim Wechsel nicht.
 Argo CD rendert mit `helm template`, also bei jedem Abgleich wie eine Installation: dort `updaters.initialRun.enabled`
 auf `false` setzen und die ersten Läufe mit `kubectl create job --from=cronjob/…` starten.
 
+## Tracing (B3, D115)
+
+Der Dienst liest B3 und W3C, legt ohne Spur eine an und nennt `trace_id`, `span_id` und `service` in jeder
+JSON-Logzeile; an b-api und edu-sharing gehen `X-B3-TraceId`, `X-B3-SpanId` und `X-B3-Sampled`. Spans an Jaeger oder
+einen anderen Sammler über OTLP/HTTP:
+
+```yaml
+tracing:
+  serviceName: compendious-text-generator
+  otlpEndpoint: http://jaeger-collector.observability:4318
+  collectorTo:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: observability
+```
+
+`otlpEndpoint` setzt `OTEL_EXPORTER_OTLP_ENDPOINT` und öffnet in der NetworkPolicy der API den Port des Sammlers
+(`collectorPort`, 4318); ohne ihn verlassen keine Spans den Dienst.
+
 ## Compose bleibt die Alternative
 
 Für einen einzelnen Host bleibt `docker-compose.yml` unverändert unterstützt: dieselben fünf Container mit `--loop`

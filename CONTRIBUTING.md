@@ -98,12 +98,16 @@ Ein Release X.Y.Z:
 
 1. Version in `pyproject.toml`, `app/__init__.py` und `deploy/helm/compendious-text-generator/Chart.yaml` (`version`
    und `appVersion`), dann `uvx --from 'uv==0.13.0' uv lock` (`tests/test_version.py` und `tests/test_helm_chart.py`
-   verlangen dieselbe Version an allen Stellen; die CI veröffentlicht zum Tag auch das Chart).
+   verlangen dieselbe Version an allen Stellen; die CI veröffentlicht zum Tag auch das Chart), dazu `--version` im
+   README des Charts.
 2. `CHANGELOG.md`: der Abschnitt „Unveröffentlicht“ wird „X.Y.Z – Datum“; dazu der Absatz im README („Stand“), die
    Zeile in `docs/betrieb.md` („Updates“) und die Versionsangaben in `docs/installation.md` und `docs/uebergabe/`.
 3. Alle Prüfungen oben, Commit `chore(release): X.Y.Z`, Push auf `main`, CI abwarten.
 4. Tag `vX.Y.Z` (annotiert, „Release X.Y.Z“) und pushen. Die CI veröffentlicht das geprüfte Image als
    `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:X.Y.Z`, `:X.Y` und `:<sha>`; `:latest` und `:main`
-   bekommt nur der Commit, auf den `main` zeigt.
+   bekommt nur der Commit, auf den `main` zeigt. Dazu das Chart als
+   `oci://ghcr.io/janschachtschabel/charts/compendious-text-generator:X.Y.Z`; nach dem ersten Tag das Paket
+   `charts/compendious-text-generator` einmal öffentlich stellen, sonst bleibt der Schritt „Chart pullable without a
+   login“ rot.
 5. Auf dem Server nach `docs/betrieb.md`, „Updates“: Compose und Variablen abgleichen, danach `GET /health` lesen
    (`version`, `revision`).
