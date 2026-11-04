@@ -1,76 +1,125 @@
-# Steckbrief: Kompendiale Texte
+# Technischer Service-Steckbrief
 
-[Übergabe](README.md) · Stand 05.11.2026 · Release 2.26.0 · Vorlage „Technischer Service-Steckbrief“ von Team 6
+[Übergabe](README.md) · Stand 05.11.2026 · Release 2.26.0 · Vorlage „Technischer Service-Steckbrief“ von Team 6.
+Ausführlich: [Antworten für das IT-Team](anforderungen.md), [Leitfaden für Dienste](leitfaden-dienste.md).
 
 | | |
 |---|---|
 | **Service** | Kompendiale Texte (`compendious-text-generator`) |
-| **Zweck** | Belegter Sachtext zu einem Thema für Lehrkräfte (Teil 1), passende Lehrplanelemente (Teil 2), Überblick über eine edu-sharing-Sammlung (Teil 3); dazu Fragen und Antworten, Entitäten mit Wikidata- und GND-Kennung, Wissenstexte |
-| **Owner** | Jan Schachtschabel · Vertretung: *offen* |
-| **Status** | Übergabeprüfung · 4 offene Punkte, davon 1 kritisch |
-| **Jira** | [GEN-323](https://edu-sharing.atlassian.net/browse/GEN-323), [GEN-346](https://edu-sharing.atlassian.net/browse/GEN-346) |
-| **Repository** | GitLab (Produktion): `scm.edu-sharing.com/edu-sharing/projects/wlo/compendious-text-generator` · GitHub (Entwicklung): [compendius-textgenerator-sc26](https://github.com/janschachtschabel/compendius-textgenerator-sc26) |
+| **Technischer Owner** | Jan Schachtschabel · Vertretung: *offen* |
+| **Readiness Status** | Übergabeprüfung |
+| **Offene Punkte** | 6 |
+| **Kritische Offene Punkte** | 1 |
+| **Jira** | [GEN-323](https://edu-sharing.atlassian.net/browse/GEN-323) & [GEN-346](https://edu-sharing.atlassian.net/browse/GEN-346) |
 
-![Kompendiale Texte im Kontext](bilder/steckbrief_kontext.png)
+## Stammdaten & API
 
-## Funktionen
+| | | Status |
+|---|---|---|
+| Anzeigename und Beschreibung | „Kompendiale Texte“: belegter Sachtext zu einem Thema (Teil 1), Lehrplanbezüge (Teil 2), Sammlungsüberblick (Teil 3); dazu QA-Paare, Entitäten, Wissenstexte | erfüllt |
+| Repository-Link | GitLab (Produktion): `scm.edu-sharing.com/edu-sharing/projects/wlo/compendious-text-generator` · GitHub (Entwicklung): [compendius-textgenerator-sc26](https://github.com/janschachtschabel/compendius-textgenerator-sc26) | erfüllt |
+| OpenAPI Spec | `GET /openapi.json`, lesbar unter `/docs`, Beispiele je Endpunkt | erfüllt |
+| Pipeline und Git-Tags | Tag `vX.Y.Z` → Image `:X.Y.Z` und Helm-Chart `X.Y.Z` (GitHub Actions); aktuell `v2.26.0` | erfüllt |
+| Endpunkte | Port **8000**: `/api/v2/…`, `/docs` · Port **9000**: `/health`, `/ready`, `/metrics` | erfüllt |
+| Header und Content-Types | Ein: `Authorization: Bearer`, B3 (`X-B3-*`), `traceparent` · Aus: `X-Request-ID`, `X-B3-TraceId` · nur JSON | erfüllt |
+| Asynchrone Job-Endpunkte | keine; synchron, Frist 300 s, Proxy-Timeout ≥ 330 s | nicht anwendbar |
+| Funktionen, Laufzeit, Kosten | siehe Grafik; Eingabe auch ohne Repository als Text (`material`, `collection_context`, `sources`) | erfüllt |
 
 ![Funktionen: Sekunden je Aufruf, llm-free und Standard](bilder/steckbrief_funktionen.png)
 
-- `preset` wählt je Anfrage zwischen Tempo und Qualität; ohne LLM läuft alles mit `llm-free`.
-- Eingaben auch ohne Repository, als Text: `topic`, `material`, `collection_context`, `sources`.
-- API-Doku: `/docs` am Port 8000, mit Beispielen je Endpunkt.
+## Architektur
 
-## Betrieb
+| | | Status |
+|---|---|---|
+| Übersicht | Ein Image, API plus vier Updater, zwei Volumes; [Diagramme](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/10-architektur.md) | erfüllt |
+| zustandslos oder zustandsbehaftet | API zustandslos (nur Caches je Pod); Daten auf Volumes, geschrieben nur von den Updatern | erfüllt |
+| Horizontale Skalierbarkeit | API-Pods beliebig, auch über Nodes; Grenzen siehe „Clusterfähigkeit“ | erfüllt |
 
-| | |
-|---|---|
-| Image | `ghcr.io/janschachtschabel/compendius-textgenerator-sc26:X.Y.Z` · nicht root, nur lesend |
-| Helm-Chart | `oci://ghcr.io/janschachtschabel/charts/compendious-text-generator` in derselben Version, je Git-Tag |
-| Compose | `docker-compose.yml` für einen Host, dasselbe Image |
-| Ports | **8000** API, `/docs` (über die b-api) · **9000** intern: `/health`, `/ready`, `/metrics` |
-| Updater | CronJobs nachts: GND 01:15 und Wikidata 02:15 täglich, Lehrpläne 03:15 und Kiwix 04:15 sonntags |
-| Volumes | `zim` 60 Gi, `state` 5 Gi (ReadWriteMany) · `emptyDir` 2 Gi je API-Pod |
-| Ressourcen API | 2 Worker: Request 2 CPU / 5 Gi, Limit 4 CPU / 6 Gi; je weiterer Worker +2 Gi |
-| Skalierung | API-Pods zustandslos, beliebig viele · Updater je genau einmal |
-| Datenbank | keine (SQLite nur lesend und als Cache) |
-| Netz | NetworkPolicy: ein nur von b-api (8000) und Monitoring (9000) · aus DNS, HTTPS, ggf. Trace-Sammler |
+![Kompendiale Texte im Kontext](bilder/steckbrief_kontext.png)
+
+## Clusterfähigkeit
+
+| | | Status |
+|---|---|---|
+| Geht | mehrere API-Pods auf mehreren Nodes · HPA · Indexe als lokale Kopie je Pod (`INDEX_COPY_DIR`) · Volumes für die API nur lesend · Templates per ConfigMap | erfüllt |
+| Braucht | Volumes `zim` und `state` als **ReadWriteMany** (NFSv4.1, CephFS) · `emptyDir` 2 Gi je Pod · `ADMIN_TOKEN` leer | Cluster-Wert |
+| Geht nicht | Updater mehrfach (je **genau einer**) · Admin-Schreibpfade bei nur lesenden Volumes · ohne RWX über mehrere Nodes | bewusst |
+| Grenze | ZIM-Archive (19 GB) liest jeder Pod über das Netz-Volume: Leistung, nicht Korrektheit; viele Pods: Objektspeicher (Stufe 2, nicht gebaut) | bekannt |
+
+## Deployment und Infrastruktur
+
+| | | Status |
+|---|---|---|
+| Docker-Files | Mehrstufig, `python:3.13-slim`, nicht root, Dateisystem nur lesend | erfüllt |
+| Image-Größe | **577 MB** komprimiert (2.25.1): Modelle 304 MB, Python-Pakete 229 MB, Basis 44 MB · ohne Modelle rund 275 MB (Build-Args `MODEL2VEC_ID=""`, `SPACY_MODEL=""`; Modelle dann per Volume) · API und Updater teilen das Image | entscheiden |
+| HELM-Chart | [`deploy/helm/compendious-text-generator`](https://github.com/janschachtschabel/compendius-textgenerator-sc26/tree/main/deploy/helm/compendious-text-generator) · je Tag `oci://ghcr.io/janschachtschabel/charts/compendious-text-generator` | erfüllt |
+| Wichtige Values | `image.tag` · `api.resources` · `api.env` (B-API) · `api.secrets.existingSecret` · `persistence.*.storageClass` · `networkPolicy.publicFrom`/`internalFrom` · `ingress.hosts` · `updaters.mode` und `*.schedule` · `tracing.otlpEndpoint` | erfüllt |
+| Docker Compose | `docker-compose.yml` für einen Host, dasselbe Image, weiter gepflegt | erfüllt |
+| Abschaltbare Komponenten | Updater (`updaters.<name>Updater.enabled`), LLM, Prüfansicht, API-Doku, Metriken, Tracing | erfüllt |
+| Datenbank | keine; SQLite nur lesend und als Cache | erfüllt |
+| Volumes | `zim` 60 Gi (Kiwix), `state` 5 Gi (Lehrpläne, Indexe) | erfüllt |
+| Netz | NetworkPolicy: ein nur b-api (8000) und Monitoring (9000) · aus DNS, 443, ggf. Trace-Sammler (4318) | erfüllt |
+
+## Updates und CronJobs
+
+| | | Status |
+|---|---|---|
+| Updater im Chart | CronJobs nachts (Europe/Berlin): GND 01:15 und Wikidata 02:15 täglich, Lehrpläne 03:15 und Kiwix 04:15 sonntags; einmalig sofort bei `helm install` | im Cluster noch nicht gelaufen |
+| Updater in Compose | Container mit Schleife (Kiwix 30 Tage, Lehrpläne 7 Tage, Wikidata und GND täglich) | läuft (Testserver) |
+| Läuft er? | `/health` und `/metrics` nennen Stand je Datenquelle; Alarm `KompendiumUpdaterRunFailed` (CronJob) bzw. `*Silent` (Schleife) | erfüllt |
+| Update des Dienstes | neues Tag → Chart derselben Version; Abhängigkeiten per Dependabot | erfüllt |
 
 ## B-API
 
-| | |
-|---|---|
-| Rolle | Dienst-Proxy: die b-api prüft den Schlüssel und reicht ihn weiter; der Dienst prüft nicht selbst |
-| Proxy-Eintrag | Port 8000, `forwardApiKey`, Timeout ≥ 330 s · **offen, kritisch** |
-| LLM | über die b-api mit dem Schlüssel des Aufrufers: `openai` / `gpt-6-luna` |
-| Route (Vorschlag) | `gpt-6-luna` → Reserve `gpt-5.6-luna` · Qwen über academiccloud erst nach einer Probe |
-| Kosten | Standard < 1 Cent je Kompendium · `llm-free` 0 · keine weiteren externen Kosten |
+| | | Status |
+|---|---|---|
+| Authentifizierung | Mit b-api (empfohlen): Schlüssel des Aufrufers wird durchgereicht, der Dienst prüft nicht selbst und loggt ihn nie · ohne b-api: `API_KEYS` und eigener `B_API_KEY` | erfüllt |
+| Proxy-Eintrag | `compendious-text-generator` → Port 8000, `forwardApiKey` an, Timeout ≥ 330 s | **offen, kritisch** |
+| Rechte des Schlüssels | `chat/completions` (Aufrufer); `B_API_KEY` zusätzlich `models` · keine Routenverwaltung | erfüllt |
+| Modell heute | `B_API_PROVIDER=openai`, `B_API_MODEL=gpt-6-luna` | erfüllt |
+| Routing | Route der b-api (global, Admin): `gpt-6-luna` → Reserve `gpt-5.6-luna` (gleiche Parameterfamilie); Qwen über academiccloud erst nach Probe; dann `B_API_PROVIDER=router`, `B_API_ROUTE=<name>` | Route festlegen |
+| Limits | b-api lehnt ab (401/402/403/429) → Dienst arbeitet ohne LLM weiter (`llm-free`) und nennt den Grund | Status-Codes bestätigen |
 
-## Monitoring
+## Security und Konfiguration
 
-| | |
-|---|---|
-| Metriken | `/metrics` am Port 9000 · 25 Alarmregeln, im Chart als PrometheusRule |
-| Logs | JSON nach stdout: `service`, `trace_id`, `span_id`, `request_id` |
-| Tracing | B3 (`X-B3-*`) mit OpenTelemetry · Spans optional an Jaeger |
+| | | Status |
+|---|---|---|
+| Env-Variablen inklusive Defaults | 87, alle mit Vorgabe ([konfiguration.md](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/konfiguration.md)) | erfüllt |
+| Benötigte Secrets (ohne Werte) | `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN`, `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD` · alle optional | erfüllt |
+| WLO / edu-sharing | Standardfelder von edu-sharing; Repository nur für `node_id` und Teil 3, sonst Text-Input | erfüllt |
 
-## Konfiguration
+## Monitoring und Betrieb
 
-| | |
-|---|---|
-| Env | 87 Variablen, alle mit Vorgabe ([Konfiguration](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/konfiguration.md)) |
-| Secrets | `B_API_KEY`, `API_KEYS`, `ADMIN_TOKEN`, `METRICS_TOKEN`, `EDU_SHARING_USER`, `EDU_SHARING_PASSWORD` · alle optional |
+| | | Status |
+|---|---|---|
+| Prometheus-Endpunkt | `GET /metrics` am Port 9000, optional `METRICS_TOKEN` | erfüllt |
+| Applikationsmetriken und Alarmregeln | Anfragen, LLM, Tokens, Rückfälle, Daten · 25 Regeln mit Tests, im Chart als PrometheusRule | erfüllt |
+| Log-Format und Trace-ID | JSON nach stdout: `service`, `trace_id`, `span_id`, `request_id` · B3 mit OpenTelemetry, an b-api und edu-sharing weitergegeben · Spans optional an Jaeger | erfüllt |
+
+## Ressourcen und Kosten
+
+| | | Status |
+|---|---|---|
+| RAM API | **weitgehend fest**: 3,3 GiB nach Start, 4,0 GiB warm, unter Last +0,2 GiB, mit Seiten-Cache bis 4,7 GiB (2 Worker) · je weiterer Worker +2 GiB | gemessen |
+| Empfehlung API | Request **2 CPU / 5 Gi**, Limit **4 CPU / 6 Gi** (rund 1,3 GiB Puffer über dem Höchstwert) · CPU-Spitze 3,4 Kerne | erfüllt |
+| Updater | Request 128 Mi, Limit 1 Gi, Wikidata 2 Gi (geschätzt, nach ersten Läufen senken); als CronJob nur während des Laufs | nachmessen |
+| Storage | `zim` 60 Gi, `state` 5 Gi, `emptyDir` 2 Gi je API-Pod | erfüllt |
+| LLM-Kosten | Standard rund 89.000 Tokens, < 1 Cent je Kompendium · `llm-free` 0 | erfüllt |
+| Externe Kosten | keine (Kiwix, Wikimedia, DNB, MEM, edu-sharing) | erfüllt |
+
+## Übergabe
+
+| | | Status |
+|---|---|---|
+| Ansprechperson in T4 | Jan Schachtschabel · Vertretung *offen* | offen |
+| Einschränkungen | siehe „Clusterfähigkeit“ und „Offene Punkte“ | erfüllt |
+| Links | [Übergabe](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/README.md) · [Betrieb](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/betrieb.md) · [Audit](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/audits/2026-10-16-audit.md) · [Änderungen](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/CHANGELOG.md) | erfüllt |
 
 ## Offene Punkte
 
-1. **Kritisch:** Proxy-Eintrag in der b-api anlegen – Team der b-api.
-2. Status der b-api bei erreichtem Limit bestätigen (der Dienst nimmt 401, 402, 403, 429) – Team der b-api.
-3. Route anlegen, falls gewünscht; Ebene 2 vorher proben – Administrator der b-api.
-4. Werte des Clusters fürs Chart: StorageClass (RWX), Selektoren der NetworkPolicy, Ingress-Host, Secret – T4.
-
-Mehr: [Antworten für das IT-Team](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/anforderungen.md) ·
-[Aufrufe](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/aufrufe.md) ·
-[Betrieb](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/betrieb.md) ·
-[Leitfaden für Dienste](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/uebergabe/leitfaden-dienste.md) ·
-[Architektur](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/docs/entwicklung/10-architektur.md) ·
-[Änderungen](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/CHANGELOG.md)
+1. **Kritisch:** Proxy-Eintrag in der b-api – Team der b-api.
+2. Status-Codes der b-api bei erreichtem Limit bestätigen – Team der b-api.
+3. Route festlegen und in der Konfiguration vorschreiben; Ebene 2 vorher proben – Administrator der b-api.
+4. Cluster-Werte fürs Chart (StorageClass RWX, NetworkPolicy-Selektoren, Ingress-Host, Secret); CronJobs im Cluster erstmals beobachten – T4.
+5. Vertretung als Ansprechperson benennen.
+6. Image-Größe: Modelle im Image lassen oder per Volume liefern – T4 und Owner.

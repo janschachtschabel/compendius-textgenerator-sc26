@@ -32,6 +32,7 @@ from contextvars import ContextVar
 
 caller_key: ContextVar[tuple[str, str] | None] = ContextVar("caller_key", default=None)
 
+
 def take_key(headers) -> None:  # in einer Middleware, je Anfrage
     auth = headers.get("authorization", "")
     if auth.lower().startswith("bearer ") and len(auth) >= 23:  # ein Schlüssel hat mindestens 16 Zeichen
@@ -88,10 +89,12 @@ provider = TracerProvider(resource=Resource.create({"service.name": "mein-dienst
 tracer = provider.get_tracer(__name__)
 B3 = B3MultiFormat()
 
-def on_request(headers: dict[str, str]):          # Kind des Aufrufers oder neue Spur
+
+def on_request(headers: dict[str, str]):  # Kind des Aufrufers oder neue Spur
     return tracer.start_span("POST /api/…", context=B3.extract(headers))
 
-def outgoing(span) -> dict[str, str]:              # X-B3-TraceId, X-B3-SpanId, X-B3-Sampled
+
+def outgoing(span) -> dict[str, str]:  # X-B3-TraceId, X-B3-SpanId, X-B3-Sampled
     carrier: dict[str, str] = {}
     B3.inject(carrier, context=trace.set_span_in_context(span))
     return carrier
