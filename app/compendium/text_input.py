@@ -51,13 +51,15 @@ def collection_node(collection: CollectionText) -> NodeInfo:
 def collection_tree(collection: CollectionText, content: bool) -> TreeContext:
     """The place in the topic tree as ``read_tree`` returns it: the path always, the rest only with ``content``, so
     the rules see what they see for a node and the audit shows the same."""
+    missing = tuple(collection.missing)
     if not content:
-        return TreeContext(path=tuple(collection.path))
+        return TreeContext(path=tuple(collection.path), missing=tuple(m for m in missing if m == "path"))
     return TreeContext(
         path=tuple(collection.path),
         children=tuple(collection.children),
         materials=tuple(collection.materials),
         neighbours=tuple(collection.neighbours),
+        missing=missing,
     )
 
 

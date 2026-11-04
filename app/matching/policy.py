@@ -148,7 +148,8 @@ def _by_source(
 ) -> tuple[float, list[str]]:
     """The score weighed by the source: the projects the block prefers, and the materials of a collection."""
     if source is not None and slot.source_preference:
-        if source.project == slot.source_preference[0]:
+        first = slot.source_preference[0]
+        if source.project == first or (source.role is SourceRole.MATERIAL and first == MATERIALS):
             score *= FIRST_SOURCE_BOOST
 
     # wlo_material in a template names the materials of a request, a knowledge collection's and the texts sent as

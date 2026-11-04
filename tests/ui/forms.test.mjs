@@ -346,3 +346,12 @@ test('an example with a node as text fills the text field, its sources the sourc
   assert.equal(values.sources_text, 'T\nEin Satz.');
   assert.equal(values.node, '');
 });
+
+test('a source names its licence, link and authors in lines under its title, and an example keeps them', () => {
+  const sources_text = 'Lochkamera\nLizenz: CC BY 4.0\nLink: https://example.org/lochkamera\nAutoren: A. B., C. D.\nDas Bild steht auf dem Kopf, weil Licht geradlinig läuft.';
+  const [run] = buildRequests('compendium', form('compendium', { topic: 'Optik', sources_text }), options);
+  const source = { title: 'Lochkamera', license: 'CC BY 4.0', url: 'https://example.org/lochkamera', authors: ['A. B.', 'C. D.'], text: 'Das Bild steht auf dem Kopf, weil Licht geradlinig läuft.' };
+
+  assert.deepEqual(run.request.body.sources, [source]);
+  assert.equal(fromExample('compendium', { values: { topic: 'Optik', sources: [source] } }).sources_text, sources_text);
+});

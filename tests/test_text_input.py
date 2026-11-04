@@ -15,6 +15,10 @@ import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
+from app.api.v2.qa import _text_focus
+from app.api.v2.qa_schemas import QaRequest
+from app.compendium.corpus import ORIGIN_PRIORITY
+from app.compendium.text_input import TEXT_ORIGIN, collection_tree
 from app.domain.requests import GenerateRequest
 from app.domain.text_input import CollectionText, MaterialText
 from app.main import create_app
@@ -105,7 +109,9 @@ def test_the_question_n_hears_the_same_place_from_the_text(
         fake = FakeBApi(lambda body: json.dumps({"uebersicht": "Optik", "artikel": ["Geometrische Optik"]}))
         monkeypatch.setattr(service, "llm", make_gateway(fake, per_request=200_000))
         service.generate(request)
-        prompts = [b["messages"][1]["content"] for b in fake.bodies if "Übersichtsartikel" in b["messages"][1]["content"]]
+        prompts = [
+            b["messages"][1]["content"] for b in fake.bodies if "Übersichtsartikel" in b["messages"][1]["content"]
+        ]
         return prompts[0]
 
     by_node = asked(GenerateRequest(node_id=NODE, parts=["world"], preset="balanced"))
@@ -137,7 +143,9 @@ def test_the_node_preview_returns_the_text_input_that_gives_the_same_compendium(
     assert preview["topic"] == "Optik"
 
 
-def test_the_preview_of_a_material_names_its_fields_as_text(settings: Settings, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_the_preview_of_a_material_names_its_fields_as_text(
+    settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
     with TestClient(create_app(settings)) as client:
         client_builder = CollectionBuilder(
             client=EduSharingClient(BASE, transport=httpx.MockTransport(_material_repository)), cache=None
@@ -167,16 +175,18 @@ def test_texts_feed_part_1_as_cited_materials(service: CompendiumService) -> Non
         )
     )
 
-    assert result.audit.text_sources == {"sent": 1, "sources": 1, "empty": 0}
+    assert result.audit.text_sources == {"sent": 1, "sources": 1, "empty": 0, "cut": 0}
     source = next(s for s in result.sources if s.source_id == "text:1")
     assert (source.title, source.project, source.license) == ("Lochkamera im Unterricht", "text_material", "CC BY 4.0")
 
 
 def test_a_text_without_a_line_worth_citing_is_counted_empty(service: CompendiumService) -> None:
     result = service.generate(
-        GenerateRequest(topic="Optik", sources=[{"title": "Notiz", "text": "zu kurz"}], parts=["world"], preset="llm-free")
+        GenerateRequest(
+            topic="Optik", sources=[{"title": "Notiz", "text": "zu kurz"}], parts=["world"], preset="llm-free"
+        )
     )
-    assert result.audit.text_sources == {"sent": 1, "sources": 0, "empty": 1}
+    assert result.audit.text_sources == {"sent": 1, "sources": 0, "empty": 1, "cut": 0}
 
 
 # -- what the request refuses -----------------------------------------------------------------------------------------
@@ -223,3 +233,73 @@ def test_qa_and_knowledge_take_the_text_input(settings: Settings, monkeypatch: p
     assert qa.status_code == 200, qa.text
     assert not fake.requests, "nothing of the repository is read"
     assert PARENT not in json.dumps(knowledge.json())
+
+
+# -- review of 2026-11-04 -------------------------------------------------------------------------------------------
+
+
+def test_texts_rank_as_materials_under_the_cap_and_the_audit_counts_what_is_left(
+    service: CompendiumService, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Texts are what the request asked for, like a knowledge collection's materials: not last under the cap."""
+    assert ORIGIN_PRIORITY[TEXT_ORIGIN] == ORIGIN_PRIORITY["material"]
+    monkeypatch.setattr(service.settings, "corpus_max_chunks", 3)  # the article of the topic alone fills it
+    line = "Im Unterricht bauen die Lernenden eine Lochkamera und sehen das Bild auf dem Kopf stehen."
+    result = service.generate(
+        GenerateRequest(topic="Optik", sources=[{"title": "T", "text": line}], parts=["world"], preset="llm-free")
+    )
+    assert result.audit.text_sources == {"sent": 1, "sources": 0, "empty": 0, "cut": 1}
+
+
+@pytest.mark.parametrize("field", ["title", "text"])
+def test_a_title_or_text_of_blanks_or_format_signs_is_refused(field: str) -> None:
+    source = {"title": "T", "text": "x" * 50, field: " " + chr(0x200B) + " "}
+    with pytest.raises(ValidationError, match="ist leer"):
+        GenerateRequest(topic="Optik", sources=[source])
+    with pytest.raises(ValidationError, match="ist leer"):
+        GenerateRequest(collection_context={"title": "Grundlagen", "path": [chr(0x200B)]})
+
+
+def test_a_place_the_repository_did_not_give_stays_missing_as_text() -> None:
+    tree = collection_tree(CollectionText(title="Grundlagen", missing=["path", "children"]), content=True)
+    assert tree.missing == ("path", "children")
+    assert collection_tree(CollectionText(title="Grundlagen", missing=["path", "children"]), content=False).missing == (
+        "path",
+    )
+
+
+def test_the_preview_leaves_out_a_subject_the_service_does_not_know(
+    settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """With node_id an unknown subject counts for nothing; as text it would be a 422."""
+    node = _material_node()
+    node["properties"]["ccm:taxonid"] = [PHYSIK, "http://w3id.org/openeduhub/vocabs/discipline/99999"]
+    node["properties"]["ccm:taxonid_DISPLAYNAME"] = ["Physik", "Unbekannt"]
+
+    def repository(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"node": node})
+
+    with TestClient(create_app(settings)) as client:
+        builder = CollectionBuilder(
+            client=EduSharingClient(BASE, transport=httpx.MockTransport(repository)), cache=None
+        )
+        monkeypatch.setattr(client.app.state.service, "collections", builder)  # type: ignore[attr-defined]
+        preview = client.get(f"/api/v2/nodes/{MATERIAL_ID}").json()
+
+    assert preview["text_input"]["material"]["subjects"] == ["Physik"]
+
+
+def test_qa_points_its_questions_with_a_material_sent_as_text_as_with_the_node(
+    service: CompendiumService, with_material: None
+) -> None:
+    """/qa takes the focus and levels of a material as text as of a read node (D47, D114)."""
+    _, node = service.read_node(MATERIAL_ID)
+    focus = _text_focus(QaRequest(material=STATIONS, method="llm"))
+
+    assert focus is not None
+    assert (focus.title, focus.keywords, focus.kind, focus.educational_contexts) == (
+        node.title,
+        node.keywords,
+        node.kind,
+        node.educational_contexts,
+    )

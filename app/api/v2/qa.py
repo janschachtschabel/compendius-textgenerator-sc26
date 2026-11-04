@@ -36,7 +36,7 @@ from app.api.v2.text_examples import (
     MATERIAL,
     MATERIAL_DESCRIPTION,
 )
-from app.domain.models import Compendium, Resolution
+from app.domain.models import Compendium, NodeInput, Resolution
 from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest, Preset, default_preset
 from app.knowledge.recognise import load_spacy
 from app.llm.deadline import Deadline
@@ -362,15 +362,16 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
 
     method: Method = "rule-based"
     notes: list[str] = []
-    if node is not None and payload.method == "llm" and not payload.levels:
+    focus = node or _text_focus(payload)  # a node as text points the questions as a read one does (D114)
+    if focus is not None and payload.method == "llm" and not payload.levels:
         # Only the llm stage assigns levels; the rules would only report the node's levels as lost (D47)
-        inherited = node_levels(request, node.educational_contexts)
+        inherited = node_levels(request, focus.educational_contexts)
         if inherited:
             payload = payload.model_copy(update={"levels": inherited})
             notes.append(f"Stufen aus dem Knoten: {', '.join(inherited)}")
     pairs: list[QaPair] | None = None
     if payload.method == "llm":
-        pairs, reason = from_llm(request, text, payload, node, allowance, usage)
+        pairs, reason = from_llm(request, text, payload, focus, allowance, usage)
         if pairs is None:
             notes.append(reason)
             stages["pairs"] = {"used": "rule-based", "fallback": reason}
@@ -426,3 +427,24 @@ def _llm_tokens(part_one: dict[str, int] | None, pairs: Tokens, cached: int) -> 
         "cached": cached,
     }
     return tokens if tokens["calls"] else None
+
+
+def _text_focus(payload: QaRequest) -> NodeInput | None:
+    """A material or a collection sent as text, as the node part 1 would have read: its title, keywords and levels
+    point the model's questions (D47, D114). It stays out of the answer, which names read nodes only."""
+    given = payload.material or payload.collection_context
+    if given is None:
+        return None
+    material = payload.material
+    return NodeInput(
+        node_id="",
+        repository="",
+        kind="material" if material is not None else "collection",
+        title=given.title,
+        description=material.description if material is not None else "",
+        keywords=list(material.keywords) if material is not None else [],
+        subjects=list(given.subjects),
+        educational_contexts=list(given.levels),
+        url=material.url if material is not None else None,
+        render_url="",
+    )

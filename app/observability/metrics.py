@@ -74,6 +74,7 @@ LLM_SENTENCES = Counter(
 KNOWLEDGE_MATERIALS = Counter(
     "kompendium_knowledge_materials_total", "Materials of knowledge collections by outcome", ["outcome"]
 )
+TEXT_SOURCES = Counter("kompendium_text_sources_total", "Texts sent as sources by outcome (D114)", ["outcome"])
 CHUNKS_TRUNCATED = Counter("kompendium_corpus_chunks_truncated_total", "Paragraphs left out by CORPUS_MAX_CHUNKS")
 
 
@@ -122,6 +123,9 @@ def record_compendium(compendium: Compendium) -> None:
             PARTS.labels(part, str(section.available).lower()).inc()
     if audit.knowledge is not None:
         _record_knowledge(audit.knowledge)
+    for outcome, count in (audit.text_sources or {}).items():
+        if outcome != "sent" and count:
+            TEXT_SOURCES.labels(outcome).inc(count)
     if audit.chunks_truncated:
         CHUNKS_TRUNCATED.inc(audit.chunks_truncated)
     if audit.llm:

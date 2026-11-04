@@ -301,7 +301,7 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
 
 Dasselbe geht ohne Zugang zum Repository (D114): `material` nennt Titel, Beschreibung, Schlagwörter, Fächer und
 Stufen eines Materials, `collection_context` eine Sammlung mit ihrem Ort im Themenbaum. `path` sind die Sammlungen
-darüber, von oben nach unten, die nächste zuletzt; `children` die Untersammlungen, `materials` die Titel der ersten
+darüber, von oben nach unten, die nächste zuletzt (ohne Fachportal); `children` die Untersammlungen, `materials` die Titel der ersten
 Materialien und `neighbours` die anderen Untersammlungen der Elternsammlung, die das LLM als nicht gemeint hört.
 Der Dienst liest die Felder wie die eines gelesenen Knotens und kommt zum selben Kompendium; `GET
 /api/v2/nodes/{node_id}` liefert sie fertig unter `text_input`. `/knowledge` und `/qa` nehmen dieselben Felder.
@@ -309,7 +309,7 @@ Der Dienst liest die Felder wie die eines gelesenen Knotens und kommt zum selben
 ```bash
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
-  -d '{"collection_context": {"title": "Grundlagen", "path": ["Physik", "Kernphysik"],
+  -d '{"collection_context": {"title": "Grundlagen", "path": ["Kernphysik"],
        "children": ["Atomaufbau", "Radioaktivität"], "neighbours": ["Kernspaltung", "Kernfusion"]},
        "parts": ["world"]}' \
   | jq '{thema: .topic, artikel: .resolution.title}'

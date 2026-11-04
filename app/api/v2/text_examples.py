@@ -8,7 +8,7 @@ from typing import Any
 # "Grundlagen" under Kernphysik: a title that names no subject matter, made clear by its place in the topic tree
 COLLECTION_CONTEXT: dict[str, Any] = {
     "title": "Grundlagen",
-    "path": ["Physik", "Kernphysik"],
+    "path": ["Kernphysik"],
     "children": ["Atomaufbau", "Radioaktivität"],
     "materials": ["Der Atomkern im Überblick", "Zerfallsarten erklärt"],
     "neighbours": ["Kernspaltung", "Kernfusion"],
@@ -40,7 +40,8 @@ COLLECTION_CONTEXT_DESCRIPTION = (
     "Die Sammlung als Text statt als node_id (D114): Der Dienst liest kein Repository und kommt zum selben Ergebnis "
     "wie mit dem Knoten. title ist der Titel der Sammlung; ein Titel ohne Sachbegriff wie Grundlagen steht für den "
     "nächsten aussagekräftigen Titel aus path. path sind die Sammlungen DARÜBER, von oben nach unten, die nächste "
-    "zuletzt; children ihre Untersammlungen (darunter), materials die Titel ihrer ersten Materialien, neighbours die "
+    "zuletzt, ohne Fachportal und Wurzel; children ihre Untersammlungen (darunter), materials die Titel ihrer ersten "
+    "Materialien, neighbours die "
     "anderen Untersammlungen ihrer Elternsammlung - dem LLM als nicht gemeint genannt. Ohne LLM zählt nur path, mit "
     "LLM hört die Artikelwahl alles. GET /api/v2/nodes/{node_id} liefert die Felder fertig unter "
     "text_input.collection_context."

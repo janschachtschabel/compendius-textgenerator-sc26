@@ -9,19 +9,27 @@ so the compendium is the same; ``GET /api/v2/nodes/{node_id}`` returns them as `
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import Annotated, Literal
 
-from pydantic import ConfigDict, Field
+from pydantic import AfterValidator, ConfigDict, Field
 
-from app.domain.spelling import OneSpelling
+from app.domain.spelling import OneSpelling, readable
 
 TITLE_MAX_CHARS = 300
-DESCRIPTION_MAX_CHARS = 5_000
+DESCRIPTION_MAX_CHARS = 20_000  # a repository's descriptions run longer than a caller writes
 LIST_MAX_ITEMS = 50
 SOURCES_MAX = 30
 SOURCE_TEXT_MAX_CHARS = 50_000  # as the text of /qa and /entities
 
-Title = Annotated[str, Field(min_length=1, max_length=TITLE_MAX_CHARS)]
+
+def _visible(value: str) -> str:
+    """A text of nothing but spaces or format signs names nothing: a 422, as for ``topic`` (S9)."""
+    if not readable(value).strip():
+        raise ValueError("ist leer")
+    return value
+
+
+Title = Annotated[str, Field(min_length=1, max_length=TITLE_MAX_CHARS), AfterValidator(_visible)]
 Titles = Annotated[list[Title], Field(max_length=LIST_MAX_ITEMS)]
 
 SUBJECTS_HELP = (
@@ -57,9 +65,10 @@ class CollectionText(TextInput):
     )
     path: Titles = Field(
         default_factory=list,
-        description="The collections ABOVE it, from the top down, the nearest last, e.g. ['Physik', 'Kernphysik'] "
-        "for 'Grundlagen' under Kernphysik; without the repository's root. Without the LLM the rules take the nearest "
-        "informative title of it for a neutral title; with the LLM the article choice hears the whole path",
+        description="The collections ABOVE it, from the top down, the nearest last, e.g. ['Kernphysik'] for "
+        "'Grundlagen' under Kernphysik; without the repository's root and the subject portal (Physik), as the "
+        "service reads a node, at most three levels. Without the LLM the rules take the nearest informative title of "
+        "it for a neutral title; with the LLM the article choice hears the whole path",
     )
     children: Titles = Field(
         default_factory=list,
@@ -75,13 +84,19 @@ class CollectionText(TextInput):
     )
     subjects: Titles = Field(default_factory=list, description=SUBJECTS_HELP)
     levels: Titles = Field(default_factory=list, description=LEVELS_HELP)
+    missing: list[Literal["path", "children", "materials", "neighbours"]] = Field(
+        default_factory=list,
+        max_length=4,
+        description="The parts of the place the repository did not give (GET /api/v2/nodes/{node_id} names them); "
+        "without path the LLM hears no place in the tree, as for the node",
+    )
 
 
 class SourceText(TextInput):
     """A text that feeds part 1 as a source, as a material of ``knowledge_collection_id`` does (D70)."""
 
     title: Title = Field(description="Title of the source; the sources section names it")
-    text: str = Field(
+    text: Annotated[str, AfterValidator(_visible)] = Field(
         min_length=1,
         max_length=SOURCE_TEXT_MAX_CHARS,
         description="The text: one paragraph per line; lines under 40 characters and consent notices are dropped, "

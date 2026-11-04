@@ -259,8 +259,8 @@ class AuditReport(BaseModel):
     )
     text_sources: dict[str, int] | None = Field(
         None,
-        description="The texts of sources (D114): sent, sources (those that became sources of part 1) and empty (no "
-        "line long enough to cite); null without sources",
+        description="The texts of sources (D114): sent; sources, those part 1 reads; empty, without a line long "
+        "enough to cite; cut, left out by CORPUS_MAX_CHUNKS; null without sources",
     )
     node_article: dict[str, Any] | None = Field(
         None,

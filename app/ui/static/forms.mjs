@@ -75,7 +75,7 @@ export const FORMS = {
         label: 'Eigene Texte als Quellen für Teil 1',
         advanced: true,
         optional: true,
-        help: 'Je Quelle: erste Zeile der Titel, darunter der Text, ein Absatz je Zeile (ab 40 Zeichen). Mehrere Quellen trennt eine Zeile nur mit ---. Teil 1 zitiert sie wie Materialien einer Sammlung.',
+        help: 'Je Quelle: erste Zeile der Titel, wahlweise Zeilen „Lizenz: CC BY 4.0“, „Link: https://…“ und „Autoren: A, B“, darunter der Text, ein Absatz je Zeile (ab 40 Zeichen). Mehrere Quellen trennt eine Zeile nur mit ---. Teil 1 zitiert sie wie Materialien einer Sammlung; nur eine freie Lizenz (CC0, CC BY, CC BY-SA) gibt den Text weiter.',
       },
       { name: 'steps', type: 'steps', label: 'Methode je Schritt', advanced: true, steps: FORM_STEPS },
       { name: 'target_length', type: 'number', label: 'Ziellänge in Zeichen', advanced: true, help: 'Eine Richtgröße: Wörtliche Texte werden so lang, wie die Quellen tragen; in best-coverage-generated ist sie eine Untergrenze.' },
@@ -222,7 +222,7 @@ export function fromExample(mode, example) {
     values.node_text = JSON.stringify({ [kind]: rest[kind] }, null, 2); // the node as text goes in its one field (D114)
     delete rest[kind];
   }
-  if (sources) values.sources_text = sources.map((source) => `${source.title}\n${source.text}`).join('\n---\n');
+  if (sources) values.sources_text = sources.map(sourceBlock).join('\n---\n');
   for (const [name, value] of Object.entries(rest)) values[name] = typeof value === 'number' ? String(value) : value;
   if (collection || source) Object.assign(values, { node: collection || source, node_kind: 'collection', knowledge_source: Boolean(source) });
   else if (node) values.node = node;
@@ -410,8 +410,30 @@ export function sourcesOf(value) {
     .filter(Boolean)
     .map((block) => {
       const [title, ...lines] = block.split('\n');
-      return { title: title.trim(), text: lines.join('\n').trim() };
+      const source = { title: title.trim() };
+      // the lines right under the title that name a field: licence, link, authors
+      for (let field = SOURCE_FIELD.exec(lines[0]?.trim() ?? ''); field; field = SOURCE_FIELD.exec(lines[0]?.trim() ?? '')) {
+        lines.shift();
+        const name = SOURCE_FIELDS[field[1].toLowerCase()];
+        const value = field[2].trim();
+        if (value) source[name] = name === 'authors' ? value.split(',').map((author) => author.trim()).filter(Boolean) : value;
+      }
+      source.text = lines.join('\n').trim();
+      return source;
     });
+}
+
+const SOURCE_FIELD = /^(Lizenz|Link|Autoren|Autorin|Autor):\s*(.*)$/i;
+const SOURCE_FIELDS = { lizenz: 'license', link: 'url', autoren: 'authors', autorin: 'authors', autor: 'authors' };
+
+// A source of the API as the field writes it: the title, its fields, the text
+function sourceBlock(source) {
+  const fields = [
+    source.license ? `Lizenz: ${source.license}` : '',
+    source.url ? `Link: ${source.url}` : '',
+    source.authors?.length ? `Autoren: ${source.authors.join(', ')}` : '',
+  ].filter(Boolean);
+  return [source.title, ...fields, source.text].join('\n');
 }
 
 function textInputProblems(v, found) {

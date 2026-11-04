@@ -136,7 +136,11 @@ def read_node(
     title = found.normalized.topic
     # the subjects as a caller may write them: the label where the catalog knows it, else the URI (D114)
     named = dict(zip(info.subject_uris, info.subject_labels, strict=False))
-    subjects = _titles(named[uri] if service.subjects.knows(named.get(uri, "")) else uri for uri in info.subject_uris)
+    subjects = _titles(
+        named[uri] if service.subjects.knows(named.get(uri, "")) else uri
+        for uri in info.subject_uris
+        if service.subjects.knows(named.get(uri, "")) or service.subjects.knows(uri)
+    )  # an unknown one counts for nothing with node_id and would be a 422 as text
     text_input: dict[str, MaterialText | CollectionText]
     if info.kind == "collection":
         # the whole place, as the article choice with the LLM hears it; the rules take its path (M71)
@@ -154,6 +158,7 @@ def read_node(
                 neighbours=_titles(place.neighbours),
                 subjects=subjects,
                 levels=_titles(info.educational_contexts),
+                missing=list(place.missing),
             )
         }
     else:

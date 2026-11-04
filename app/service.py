@@ -23,7 +23,14 @@ from app.compendium.gateway import LlmGateway
 from app.compendium.llm_policy import llm_switches
 from app.compendium.prepared import CurriculaResult, Made, PreparedTopic, Requested, Stopwatch, WorldPart, timed
 from app.compendium.repository import RepositoryReading
-from app.compendium.text_input import collection_node, collection_tree, material_node, text_sources, text_subjects
+from app.compendium.text_input import (
+    TEXT_ORIGIN,
+    collection_node,
+    collection_tree,
+    material_node,
+    text_sources,
+    text_subjects,
+)
 from app.compendium.world import WorldBuilding
 from app.compose.regeneration import check_names
 from app.concurrency import Beside
@@ -299,6 +306,10 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         prepared.chunks, prepared.sources, prepared.chunks_truncated = segment_corpus(
             sources, prepared.lexicon, self.settings.corpus_max_chunks
         )
+        if prepared.text_sources is not None:  # what of the texts the cap left in part 1
+            kept = sum(1 for source in prepared.sources if source.origin == TEXT_ORIGIN)
+            prepared.text_sources["cut"] = prepared.text_sources["sources"] - kept
+            prepared.text_sources["sources"] = kept
         lap("segment")
 
     def generate(

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 
+from app.compendium.text_input import TEXT_ORIGIN
 from app.domain.models import Chunk, Source, primary_of
 from app.knowledge.corpus_sources import NAMED_ORIGIN, NODE_ORIGIN
 from app.knowledge.lexicon import HeadingLexicon
@@ -19,6 +20,7 @@ ORIGIN_PRIORITY = {
     "primary": 0,
     "same_topic": 1,
     "material": 2,
+    TEXT_ORIGIN: 2,  # the texts a request sends as sources, as its materials (D114)
     NODE_ORIGIN: 2,
     NAMED_ORIGIN: 3,  # the LLM's articles on the parts of the topic, in place of linked ones (D63)
     "linked": 3,
