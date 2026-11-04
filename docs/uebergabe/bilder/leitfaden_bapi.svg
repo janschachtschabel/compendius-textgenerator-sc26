@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="430" viewBox="0 0 880 430" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Die zwei Rollen der b-api: Proxy für Dienste und Proxy für LLM"><title>Die zwei Rollen der b-api: Proxy für Dienste und Proxy für LLM</title><rect width="880" height="430" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Die b-api: Proxy für Dienste und für LLM</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Ein Schlüssel je Kunde; die b-api prüft, begrenzt, rechnet ab und reicht ihn an den Dienst weiter</text>
+<rect x="24.0" y="140.0" width="140.0" height="70.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="94.0" y="171.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Kunde / App</text>
+<text x="94.0" y="187.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Bearer-Schlüssel</text>
+<rect x="230.0" y="84.0" width="230.0" height="300.0" rx="8" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="345.0" y="108.0" font-size="15" fill="#1f2933" text-anchor="middle" font-weight="700">b-api</text>
+<rect x="250.0" y="124.0" width="190.0" height="96.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="345.0" y="152.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Dienst-Proxy</text>
+<text x="345.0" y="168.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">ein Eintrag je Dienst</text>
+<text x="345.0" y="184.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">prüft Schlüssel, Limits,</text>
+<text x="345.0" y="200.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Nutzung, Logs</text>
+<rect x="250.0" y="260.0" width="190.0" height="104.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="345.0" y="292.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">LLM-Proxy</text>
+<text x="345.0" y="308.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">/api/v1/llm/&lt;provider&gt;/…</text>
+<text x="345.0" y="324.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">/api/v1/llm/router/…</text>
+<text x="345.0" y="340.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Routen mit Reserve</text>
+<rect x="590.0" y="130.0" width="180.0" height="90.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="680.0" y="163.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Ihr Dienst</text>
+<text x="680.0" y="179.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Port 8000 öffentlich</text>
+<text x="680.0" y="195.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Port 9000 Proben, Metriken</text>
+<rect x="590.0" y="270.0" width="210.0" height="84.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="695.0" y="300.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Anbieter</text>
+<text x="695.0" y="316.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">OpenAI, academiccloud, …</text>
+<text x="695.0" y="332.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Route: eine Parameterfamilie</text>
+<rect x="800.0" y="140.0" width="64.0" height="70.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1.3"/>
+<text x="832.0" y="171.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Logs</text>
+<text x="832.0" y="187.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">trace_id</text>
+<polyline points="164.0,175.0 244.0,175.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="250.0,175.0 243.1,179.0 243.1,171.0" fill="#52606d"/>
+<text x="197.0" y="167.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">Schlüssel</text>
+<polyline points="440.0,165.0 584.0,165.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="590.0,165.0 583.1,169.0 583.1,161.0" fill="#52606d"/>
+<text x="515.0" y="157.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">forwardApiKey</text>
+<text x="515.0" y="184.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">X-B3-*, X-Request-ID</text>
+<polyline points="680.0,220.0 680.0,242.0 400.0,242.0 400.0,254.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="400.0,260.0 396.0,253.1 404.0,253.1" fill="#52606d"/>
+<text x="690.0" y="236.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">LLM-Aufruf mit dem Kundenschlüssel</text>
+<polyline points="440.0,312.0 584.0,312.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="590.0,312.0 583.1,316.0 583.1,308.0" fill="#52606d"/>
+<polyline points="770.0,175.0 794.0,175.0" fill="none" stroke="#52606d" stroke-width="1.6" stroke-dasharray="4 3"/>
+<polygon points="800.0,175.0 793.1,179.0 793.1,171.0" fill="#52606d"/>
+<text x="24.0" y="412.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Der Dienst prüft den Schlüssel nicht selbst, speichert und loggt ihn nie und ist nur über die b-api erreichbar (NetworkPolicy).</text></svg>

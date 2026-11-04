@@ -64,6 +64,12 @@ def generate_compendium(
     ``topic``, ``node_id`` or ``collection_id`` names what it is about, and a topic sent along leads. ``subject``
     helps choose an ambiguous article and narrows part 2 to the curricula of that subject.
 
+    **Without a repository (D114).** ``material`` and ``collection_context`` carry what a node brings as text - a
+    material's title, description and keywords, or a collection with its place in the topic tree (``path``: the
+    collections above it, nearest last; ``children``; ``materials``; ``neighbours``) - and give the same compendium as
+    ``node_id``; ``GET /api/v2/nodes/{node_id}`` returns them as ``text_input``. ``sources`` adds texts of your own as
+    sources of part 1, cited like the materials of ``knowledge_collection_id``. Only part 3 needs the repository.
+
     **What each profile does.** ``preset`` picks one of the five profiles of the decision paper (D53, D58, D59, D69);
     without it the server's applies (PRESET_DEFAULT, shipped best-quality-generated; llm-free on a server without an
     LLM, D68), and a switch the request sets itself wins over the profile's. Quality, time and tokens per profile are

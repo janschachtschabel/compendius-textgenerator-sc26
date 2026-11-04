@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="400" viewBox="0 0 880 400" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Kompendiale Texte im Kontext: b-api, Ports, Updater und Daten"><title>Kompendiale Texte im Kontext: b-api, Ports, Updater und Daten</title><rect width="880" height="400" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Kompendiale Texte im Kontext</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Ein Image; die API hinter der b-api, die Updater als CronJobs (Helm) oder Schleifen (Compose)</text>
+<rect x="24.0" y="84.0" width="150.0" height="60.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="99.0" y="110.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Aufrufer</text>
+<text x="99.0" y="126.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">mit b-api-Schlüssel</text>
+<rect x="220.0" y="84.0" width="160.0" height="60.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="300.0" y="110.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">b-api</text>
+<text x="300.0" y="126.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Auth, Limits, Abrechnung</text>
+<rect x="430.0" y="80.0" width="210.0" height="150.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="535.0" y="143.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">API</text>
+<text x="535.0" y="159.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Port 8000 öffentlich</text>
+<text x="535.0" y="175.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Port 9000 intern</text>
+<rect x="720.0" y="80.0" width="140.0" height="46.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="790.0" y="99.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">LLM</text>
+<text x="790.0" y="115.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">über die b-api</text>
+<rect x="720.0" y="142.0" width="140.0" height="46.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="790.0" y="161.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">edu-sharing</text>
+<text x="790.0" y="177.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">optional</text>
+<rect x="720.0" y="204.0" width="140.0" height="46.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="790.0" y="223.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Jaeger</text>
+<text x="790.0" y="239.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">optional</text>
+<rect x="220.0" y="186.0" width="160.0" height="52.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="300.0" y="208.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Prometheus</text>
+<text x="300.0" y="224.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">liest /metrics :9000</text>
+<rect x="220.0" y="300.0" width="160.0" height="60.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1.3"/>
+<text x="300.0" y="326.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Volumes</text>
+<text x="300.0" y="342.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">zim 60 Gi · state 5 Gi</text>
+<rect x="430.0" y="300.0" width="210.0" height="60.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="535.0" y="326.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Updater (4)</text>
+<text x="535.0" y="342.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">CronJobs nachts / Schleife</text>
+<rect x="720.0" y="300.0" width="140.0" height="60.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="790.0" y="326.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Quellen</text>
+<text x="790.0" y="342.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Kiwix, MEM, DNB …</text>
+<polyline points="174.0,114.0 214.0,114.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="220.0,114.0 213.1,118.0 213.1,110.0" fill="#52606d"/>
+<polyline points="380.0,114.0 424.0,114.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="430.0,114.0 423.1,118.0 423.1,110.0" fill="#52606d"/>
+<text x="405.0" y="106.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">B3</text>
+<polyline points="640.0,103.0 714.0,103.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="720.0,103.0 713.1,107.0 713.1,99.0" fill="#52606d"/>
+<polyline points="640.0,165.0 714.0,165.0" fill="none" stroke="#52606d" stroke-width="1.6" stroke-dasharray="4 3"/>
+<polygon points="720.0,165.0 713.1,169.0 713.1,161.0" fill="#52606d"/>
+<text x="680.0" y="158.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">Knoten</text>
+<polyline points="640.0,227.0 714.0,227.0" fill="none" stroke="#52606d" stroke-width="1.6" stroke-dasharray="4 3"/>
+<polygon points="720.0,227.0 713.1,231.0 713.1,223.0" fill="#52606d"/>
+<text x="680.0" y="220.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">Spans</text>
+<polyline points="380.0,212.0 424.0,212.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="430.0,212.0 423.1,216.0 423.1,208.0" fill="#52606d"/>
+<polyline points="430.0,330.0 386.0,330.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="380.0,330.0 386.9,326.0 386.9,334.0" fill="#52606d"/>
+<text x="405.0" y="322.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">schreibt</text>
+<polyline points="640.0,330.0 714.0,330.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="720.0,330.0 713.1,334.0 713.1,326.0" fill="#52606d"/>
+<polyline points="300.0,300.0 300.0,270.0 470.0,270.0 470.0,236.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="470.0,230.0 474.0,236.9 466.0,236.9" fill="#52606d"/>
+<text x="385.0" y="264.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">liest, lokale Kopie</text>
+<text x="24.0" y="392.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Gestrichelt: optional. edu-sharing nur mit node_id oder Teil 3; sonst reicht Text-Input.</text></svg>

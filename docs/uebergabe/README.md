@@ -2,7 +2,7 @@
 
 Stand 04.11.2026 · Release 2.26.0 · für den Umzug in das interne GitLab und auf einen eigenen Server
 
-Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese fünf Seiten
+Der Kompendium-Dienst ersetzt den alten Dienst (`/api/v1`), der Kompendien und QA-Paare erzeugt hat. Diese Seiten
 fassen zusammen, was der Betrieb braucht und wie andere Systeme den Dienst aufrufen. Sie beschreiben `main` und damit
 Release 2.26.0. Gegenüber 2.5.0 gilt ohne Eintrag kein Tagesbudget (D67), und ohne Profil im Aufruf läuft eine Anfrage
 `llm-free`, solange kein LLM eingerichtet ist (D68); seit 2.7.0 endet ein Satz aus Modellwissen nur noch mit
@@ -34,6 +34,8 @@ in `docker-compose.yml` und gilt mit jedem Image.
 | [Steckbrief](steckbrief.md) | Team 6 | die Vorlage „Technischer Service-Steckbrief“ ausgefüllt: Status je Punkt, offene Punkte, Links |
 | [Aufrufe](aufrufe.md) | Entwicklung der aufrufenden Systeme | alter und neuer Aufruf, Profile, die drei Teile, curl-Beispiele, Ausgabe mit jq, weitere Funktionen |
 | [Konfiguration](konfiguration.md) | Betrieb | alle Umgebungsvariablen mit Vorgabe und Empfehlung für den Betrieb |
+| [Leitfaden für Dienste](leitfaden-dienste.md) | Entwicklung anderer Dienste | Vorlage zum Abarbeiten: b-api als Proxy für Dienste und für LLM, Logging und Tracing (B3), Ports und Metriken, Helm-Chart je Tag |
+| [Qualitätsprofil](qualitaetsprofil.md) | Team 6, Redaktion | Noten der fünf Dimensionen mit Messwerten, Merkmale und Prüfmodule |
 
 Ausführlich: [installation.md](../installation.md) (Server einrichten), [betrieb.md](../betrieb.md) (Updates,
 Störungen, Überwachung), das [README](../../README.md) (alle Endpunkte und Parameter) und die

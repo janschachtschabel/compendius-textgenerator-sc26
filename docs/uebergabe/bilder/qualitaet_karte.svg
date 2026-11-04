@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="430" viewBox="0 0 880 430" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Qualitätsprofil Kompendiale Texte: Noten der fünf Dimensionen für zwei Profile"><title>Qualitätsprofil Kompendiale Texte: Noten der fünf Dimensionen für zwei Profile</title><rect width="880" height="430" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Qualitätsprofil · Kompendiale Texte · Release 2.25.1</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Freitext mit Belegen · regelbasiert, statistisch und optional LLM · synchron · Goldstandard vorhanden</text>
+<text x="24.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="700">Dimension</text>
+<text x="212.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="700">Standard</text>
+<text x="318.0" y="82.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="700">llm-free</text>
+<rect x="16.0" y="100.0" width="420.0" height="34.0" rx="4" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="121.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="600">Ausgabequalität</text>
+<circle cx="219.0" cy="117.0" r="7" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="232.0" y="121.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">4 · grün</text>
+<circle cx="325.0" cy="117.0" r="7" fill="#c8553d" stroke="none" stroke-width="1"/>
+<text x="338.0" y="121.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">2 · rot</text>
+<rect x="16.0" y="140.0" width="420.0" height="34.0" rx="4" fill="#ffffff" stroke="none" stroke-width="1"/>
+<text x="24.0" y="161.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="600">Zuverlässigkeit</text>
+<circle cx="219.0" cy="157.0" r="7" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="232.0" y="161.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">4 · grün</text>
+<circle cx="325.0" cy="157.0" r="7" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="338.0" y="161.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">5 · grün</text>
+<rect x="16.0" y="180.0" width="420.0" height="34.0" rx="4" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="201.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="600">Geschwindigkeit</text>
+<circle cx="219.0" cy="197.0" r="7" fill="#d4a20f" stroke="none" stroke-width="1"/>
+<text x="232.0" y="201.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">3 · gelb</text>
+<circle cx="325.0" cy="197.0" r="7" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="338.0" y="201.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">4 · grün</text>
+<rect x="16.0" y="220.0" width="420.0" height="34.0" rx="4" fill="#ffffff" stroke="none" stroke-width="1"/>
+<text x="24.0" y="241.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="600">Kosten</text>
+<circle cx="219.0" cy="237.0" r="7" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="232.0" y="241.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">4 · grün</text>
+<circle cx="325.0" cy="237.0" r="7" fill="#3a8f5c" stroke="none" stroke-width="1"/>
+<text x="338.0" y="241.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">5 · grün</text>
+<rect x="16.0" y="260.0" width="420.0" height="34.0" rx="4" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="24.0" y="281.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="600">Reife</text>
+<circle cx="219.0" cy="277.0" r="7" fill="#d4a20f" stroke="none" stroke-width="1"/>
+<text x="232.0" y="281.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">3 · gelb</text>
+<circle cx="325.0" cy="277.0" r="7" fill="#d4a20f" stroke="none" stroke-width="1"/>
+<text x="338.0" y="281.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">3 · gelb</text>
+<rect x="16.0" y="300.0" width="420.0" height="50.0" rx="4" fill="#ffffff" stroke="#c8553d" stroke-width="1.2"/>
+<text x="24.0" y="321.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="600">K.-o.-Kriterium</text>
+<text x="24.0" y="338.0" font-size="10.5" fill="#52606d" text-anchor="start" font-weight="normal">Halluzination, Thema verfehlt</text>
+<text x="212.0" y="321.0" font-size="12.5" fill="#1f2933" text-anchor="start" font-weight="normal">nicht ausgelöst</text>
+<text x="318.0" y="321.0" font-size="12" fill="#c8553d" text-anchor="start" font-weight="600">ja, bei Sammel-</text>
+<text x="318.0" y="338.0" font-size="12" fill="#c8553d" text-anchor="start" font-weight="600">und Aspektthemen</text>
+<polygon points="660.0,209.6 681.3,225.1 673.2,250.1 646.8,250.1 638.7,225.1" fill="#ffffff" fill-opacity="0" stroke="#dde2e8" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="660.0,187.2 702.6,218.2 686.3,268.2 633.7,268.2 617.4,218.2" fill="#ffffff" fill-opacity="0" stroke="#dde2e8" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="660.0,164.8 723.9,211.2 699.5,286.4 620.5,286.4 596.1,211.2" fill="#ffffff" fill-opacity="0" stroke="#dde2e8" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="660.0,142.4 745.2,204.3 712.7,304.5 607.3,304.5 574.8,204.3" fill="#ffffff" fill-opacity="0" stroke="#dde2e8" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="660.0,120.0 766.5,197.4 725.8,322.6 594.2,322.6 553.5,197.4" fill="#ffffff" fill-opacity="0" stroke="#dde2e8" stroke-width="2" stroke-linejoin="round"/>
+<line x1="660.0" y1="232.0" x2="660.0" y2="120.0" stroke="#dde2e8" stroke-width="1"/>
+<line x1="660.0" y1="232.0" x2="766.5" y2="197.4" stroke="#dde2e8" stroke-width="1"/>
+<line x1="660.0" y1="232.0" x2="725.8" y2="322.6" stroke="#dde2e8" stroke-width="1"/>
+<line x1="660.0" y1="232.0" x2="594.2" y2="322.6" stroke="#dde2e8" stroke-width="1"/>
+<line x1="660.0" y1="232.0" x2="553.5" y2="197.4" stroke="#dde2e8" stroke-width="1"/>
+<polygon points="660.0,187.2 766.5,197.4 712.7,304.5 594.2,322.6 596.1,211.2" fill="#2f6db5" fill-opacity="0.14" stroke="#2f6db5" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="660.0" cy="187.2" r="4" fill="#2f6db5" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="766.5" cy="197.4" r="4" fill="#2f6db5" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="712.7" cy="304.5" r="4" fill="#2f6db5" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="594.2" cy="322.6" r="4" fill="#2f6db5" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="596.1" cy="211.2" r="4" fill="#2f6db5" stroke="#ffffff" stroke-width="1.5"/>
+<polygon points="660.0,142.4 745.2,204.3 699.5,286.4 607.3,304.5 596.1,211.2" fill="#d9822b" fill-opacity="0.14" stroke="#d9822b" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="660.0" cy="142.4" r="4" fill="#d9822b" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="745.2" cy="204.3" r="4" fill="#d9822b" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="699.5" cy="286.4" r="4" fill="#d9822b" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="607.3" cy="304.5" r="4" fill="#d9822b" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="596.1" cy="211.2" r="4" fill="#d9822b" stroke="#ffffff" stroke-width="1.5"/>
+<text x="660.0" y="97.8" font-size="12" fill="#1f2933" text-anchor="middle" font-weight="600">Ausgabequalität</text>
+<text x="785.7" y="195.2" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">Zuverlässigkeit</text>
+<text x="737.7" y="342.9" font-size="12" fill="#1f2933" text-anchor="start" font-weight="600">Geschwindigkeit</text>
+<text x="582.3" y="342.9" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Kosten</text>
+<text x="534.3" y="195.2" font-size="12" fill="#1f2933" text-anchor="end" font-weight="600">Reife</text>
+<text x="664.0" y="206.6" font-size="9.5" fill="#52606d" text-anchor="start" font-weight="normal">1</text>
+<text x="664.0" y="131.0" font-size="9.5" fill="#52606d" text-anchor="start" font-weight="normal">5</text>
+<rect x="500.0" y="391.0" width="12.0" height="10.0" rx="2" fill="#d9822b" stroke="none" stroke-width="1"/>
+<text x="518.0" y="400.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Standard (best-quality-generated)</text>
+<rect x="742.5" y="391.0" width="12.0" height="10.0" rx="2" fill="#2f6db5" stroke="none" stroke-width="1"/>
+<text x="760.5" y="400.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">llm-free</text>
+<text x="24.0" y="400.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Noten 1 bis 5: grün ab 4, gelb 3, rot bis 2 (Vorschlag).</text>
+<text x="24.0" y="418.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Grundlage: Messwerte M3, M67, M91, Lastmessung 16.10.</text></svg>

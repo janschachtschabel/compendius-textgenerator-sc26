@@ -103,7 +103,9 @@ def read_node(
         ),
     ] = None,
 ) -> NodePreview:
-    """Read a material or a collection and say what it would bring to a request with ``node_id``.
+    """Read a material or a collection and say what it would bring to a request with ``node_id``, and hand it out as
+    ``text_input`` - the same facts as text, which a request may send instead of ``node_id`` without reading the
+    repository (D114): the metadata extraction before the service.
 
     Title, description, keywords, subjects and educational levels come from the node's metadata
     (``/node/v1/nodes/-home-/{id}/metadata``); ``topic``, ``topic_subjects`` and ``context`` are what the service
