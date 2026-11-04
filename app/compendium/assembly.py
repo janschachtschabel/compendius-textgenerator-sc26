@@ -171,6 +171,7 @@ def assemble(
         llm_tokens=llm_tokens,
         llm=llm_audit,
         knowledge=prepared.knowledge,
+        text_sources=prepared.text_sources,
         node_article=node_block(node_report) if node_report is not None else None,
         topic_tree=tree_block(prepared.tree, prepared.stand_in) if prepared.tree is not None else None,
         chunks_truncated=prepared.chunks_truncated,

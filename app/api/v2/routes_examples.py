@@ -8,6 +8,15 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.api.v2.text_examples import (
+    COLLECTION_CONTEXT,
+    COLLECTION_CONTEXT_DESCRIPTION,
+    MATERIAL,
+    MATERIAL_DESCRIPTION,
+    SOURCES,
+    SOURCES_DESCRIPTION,
+)
+
 EXAMPLES: dict[str, dict[str, Any]] = {
     "kuerzeste Anfrage": {
         "summary": "Das Nötigste: ein Thema",
@@ -253,6 +262,21 @@ EXAMPLES: dict[str, dict[str, Any]] = {
             "topic": "Optik",
             "parts": ["world"],
         },
+    },
+    "Sammlung als Text, ohne Repository": {
+        "summary": "Eine Sammlung mit ihrem Ort im Themenbaum als Text: dasselbe Kompendium wie mit node_id",
+        "description": COLLECTION_CONTEXT_DESCRIPTION,
+        "value": {"collection_context": COLLECTION_CONTEXT, "parts": ["world", "curricula"]},
+    },
+    "Material als Text, ohne Repository": {
+        "summary": "Die Metadaten eines Materials als Text: der Dienst sucht den Artikel wie für einen Knoten",
+        "description": MATERIAL_DESCRIPTION,
+        "value": {"material": MATERIAL, "parts": ["world"]},
+    },
+    "eigene Texte als Quellen für Teil 1": {
+        "summary": "Texte, die Teil 1 wie Materialien einer Wissens-Sammlung zitiert",
+        "description": SOURCES_DESCRIPTION,
+        "value": {"topic": "Optik", "sources": SOURCES, "parts": ["world"]},
     },
     "alle Parameter": {
         "summary": "Jedes Feld einmal gesetzt: Thema mit Material, alle drei Teile, Wissenssammlung, alle Schalter",

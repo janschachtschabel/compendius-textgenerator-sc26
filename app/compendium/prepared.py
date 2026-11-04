@@ -44,6 +44,7 @@ class PreparedTopic:
     collection: CollectionInfo | None = None
     node: NodeInput | None = None  # the node the topic came from (D45)
     knowledge: dict[str, Any] | None = None
+    text_sources: dict[str, int] | None = None  # the texts sent as sources (D114)
     chunks_truncated: int = 0  # paragraphs the CORPUS_MAX_CHUNKS cap left out
     subtopics: list[str] = field(default_factory=list)  # part 2 keywords from the whole corpus, before the cap
     article_choice: ArticleChoiceReport | None = None  # article_choice=llm: what the model was asked and answered

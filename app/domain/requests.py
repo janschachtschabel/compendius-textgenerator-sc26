@@ -10,6 +10,7 @@ from pydantic.json_schema import WithJsonSchema
 from app.domain.caller_values import NAMED, listed
 from app.domain.spelling import OneSpelling
 from app.domain.template_bounds import MAX_SLOTS, SLOT_ID_MAX_CHARS, TEMPLATE_ID_PATTERN
+from app.domain.text_input import SOURCES_MAX, CollectionText, MaterialText, SourceText
 
 Part = Literal["world", "curricula", "collection"]
 # The matching strategies of app/matching/registry.py (STRATEGIES; a test keeps both lists equal). The field stays a
@@ -357,6 +358,34 @@ NODE_ID_HELP = (
     "it gets part 3 (D77)."
 )
 # D77: a collection in node_id stands for collection_id, so either field gives part 3 its collection
+MATERIAL_HELP = (
+    "A material as text, in place of node_id (D114): title, description, keywords, subjects, levels. The service "
+    "reads them as it reads a material node (D47), so it finds the same article; GET /api/v2/nodes/{node_id} returns "
+    "them as text_input.material. Not together with node_id or collection_context"
+)
+COLLECTION_CONTEXT_HELP = (
+    "A collection as text, in place of node_id (or collection_id) for the topic (D114): its title and where it stands "
+    "in its topic tree - path (the collections above it, the nearest last), children (its sub-collections), "
+    "materials (titles of its first materials), neighbours (the other sub-collections of its parent, named to the "
+    "LLM as not meant). The service reads them as it reads a collection node (M71); GET /api/v2/nodes/{node_id} "
+    "returns them as text_input.collection_context. Part 3 still needs collection_id. Not together with node_id or "
+    "material"
+)
+
+
+def check_text_input(
+    node_id: str | None, material: MaterialText | None, collection_context: CollectionText | None
+) -> None:
+    """One node per request: a node to read, a material as text or a collection as text (D114)."""
+    given = [
+        name
+        for name, value in (("node_id", node_id), ("material", material), ("collection_context", collection_context))
+        if value
+    ]
+    if len(given) > 1:
+        raise ValueError(f"{' und '.join(given)} schließen sich aus: ein Knoten je Anfrage, gelesen oder als Text")
+
+
 PART_3_NEEDS_A_COLLECTION = "Teil 3 braucht eine Sammlung: collection_id oder eine Sammlung als node_id"
 REPOSITORY_HELP = (
     "The repository of node_id, e.g. https://repository.staging.openeduhub.net/edu-sharing/rest; default: the "
@@ -435,6 +464,16 @@ class GenerateRequest(RequestModel):
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
+    material: MaterialText | None = Field(None, description=MATERIAL_HELP)
+    collection_context: CollectionText | None = Field(None, description=COLLECTION_CONTEXT_HELP)
+    sources: list[SourceText] | None = Field(
+        None,
+        min_length=1,
+        max_length=SOURCES_MAX,
+        description="Texts that feed part 1 as sources, as the materials of knowledge_collection_id do (D70, D114), "
+        "so parts has to hold world (else a 422); they may come beside a knowledge collection. Each is cited like a "
+        "material and named in the sources section with its licence",
+    )
     parts: list[Part] = Field(
         default_factory=_default_parts,
         min_length=1,
@@ -524,6 +563,11 @@ class GenerateRequest(RequestModel):
         description="Articles the corpus may hold; default CORPUS_MAX_ARTICLES. Topic and twin are always in",
     )
 
+    @property
+    def names_topic(self) -> bool:
+        """Whether the topic comes from elsewhere than collection_id: the topic, a node, or a node as text (D114)."""
+        return bool(self.topic or self.node_id or self.material or self.collection_context)
+
     @model_validator(mode="before")
     @classmethod
     def _no_mode(cls, data: Any) -> Any:
@@ -545,8 +589,11 @@ class GenerateRequest(RequestModel):
 
     @model_validator(mode="after")
     def _topic_or_collection(self) -> GenerateRequest:
-        if not self.topic and not self.collection_id and not self.node_id:
-            raise ValueError("topic, collection_id oder node_id ist erforderlich")
+        if not (self.topic or self.collection_id or self.node_id or self.material or self.collection_context):
+            raise ValueError("topic, collection_id, node_id, material oder collection_context ist erforderlich")
+        check_text_input(self.node_id, self.material, self.collection_context)
+        if self.sources and "world" not in self.parts:
+            raise ValueError("sources speisen Teil 1; ohne world in parts blieben sie ungelesen")
         if self.repository and not self.node_id:
             raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
         if self.regenerate_sections is not None and not self.existing_markdown:

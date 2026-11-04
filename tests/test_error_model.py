@@ -48,7 +48,7 @@ def test_a_validator_answers_in_its_own_words(client: TestClient) -> None:
     assert response.status_code == 422
     [error] = response.json()["detail"]
     assert error["type"] == "value_error"
-    assert error["msg"] == "topic, collection_id oder node_id ist erforderlich"
+    assert error["msg"] == "topic, collection_id, node_id, material oder collection_context ist erforderlich"
     assert "ctx" not in error
 
 

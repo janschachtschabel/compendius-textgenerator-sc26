@@ -165,3 +165,20 @@ test('a repository that refuses the service says what the server said, not only 
 
   assert.equal(byClass('node-status').textContent, 'edu-sharing lehnt die Zugangsdaten des Dienstes ab (HTTP 401)');
 });
+
+test('a node read through the page can be taken over as text: the text field fills, the id empties (D114)', async () => {
+  const { form, asked, byClass } = compendiumForm();
+  const take = byClass('node-take');
+  assert.equal(take.hidden, true, 'nothing read, nothing to take');
+
+  form.write({ node: COLLECTION });
+  const text_input = { collection_context: { title: 'Optik', path: ['Physik'], children: ['Linsen'], materials: [], neighbours: [], subjects: ['Physik'], levels: [] } };
+  asked[0].answer({ ...OPTIK, text_input });
+  await settle();
+  assert.equal(take.hidden, false);
+
+  take.click();
+  const values = form.read();
+  assert.deepEqual(JSON.parse(values.node_text), text_input);
+  assert.equal(values.node, '');
+});

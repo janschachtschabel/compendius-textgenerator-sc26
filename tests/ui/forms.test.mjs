@@ -242,6 +242,8 @@ test('an example holds its own values, numbers as a number field holds them, and
     max_articles: '5',
     node: '',
     node_kind: '',
+    node_text: '',
+    sources_text: '',
     knowledge_source: '',
     knowledge_depth: '',
     knowledge_fulltext: '',
@@ -284,6 +286,7 @@ test('the input an example sets is the one of its mode', () => {
     topic: '',
     node: '',
     node_kind: '',
+    node_text: '',
     repository: '',
   });
   assert.deepEqual(fromExample('lehrplan', { label: 'x', values: { q: 'Optik', mode: 'topic' } }), { q: 'Optik', mode: 'topic' });
@@ -299,4 +302,47 @@ test('the facets start as the server shows them and are always sent as chosen', 
 test('without an LLM on the server the forms start with the profile that needs none', () => {
   assert.equal(defaults('compendium', { ...options, llm_configured: false }).preset, 'llm-free');
   assert.notEqual(defaults('compendium', options).preset_b, defaults('compendium', options).preset);
+});
+
+test('a collection or a material as text goes as its own field and reads no repository (D114)', () => {
+  const context = { collection_context: { title: 'Grundlagen', path: ['Physik', 'Kernphysik'], neighbours: ['Kernspaltung'] } };
+  const nodeText = JSON.stringify(context);
+  const [compendium] = buildRequests('compendium', form('compendium', { node_text: nodeText }), options);
+  const [knowledge] = buildRequests('knowledge', form('knowledge', { node_text: JSON.stringify({ material: { title: 'Stationsarbeit zur Optik' } }) }), options);
+  const [qa] = buildRequests('qa', form('qa', { node_text: nodeText }), options);
+
+  assert.deepEqual(compendium.request.body.collection_context, context.collection_context);
+  assert.equal(compendium.request.body.node_id, undefined);
+  assert.deepEqual(knowledge.request.body.material, { title: 'Stationsarbeit zur Optik' });
+  assert.deepEqual(qa.request.body.collection_context, context.collection_context);
+  assert.deepEqual(problems('compendium', form('compendium', { node_text: nodeText }), options), {});
+});
+
+test('the text field refuses what is no node as text, and an id beside it', () => {
+  assert.match(problems('compendium', form('compendium', { node_text: '{kein json' }), options).node_text, /kein gültiges JSON/);
+  assert.match(problems('qa', form('qa', { node_text: '{"title": "Grundlagen"}' }), options).node_text, /collection_context/);
+  assert.match(problems('knowledge', form('knowledge', { node_text: '{"material": {"title": " "}}' }), options).node_text, /Titel/);
+  const both = problems('compendium', form('compendium', { node: COLLECTION, node_text: '{"material": {"title": "Blatt"}}' }), options);
+  assert.match(both.node_text, /nicht beides/);
+});
+
+test('own texts are sources of part 1: a title line, the text below, blocks split by ---', () => {
+  const sources_text = 'Lochkamera\nDas Bild steht auf dem Kopf, weil sich Licht geradlinig ausbreitet.\n---\nSpiegel\nEin Spiegel wirft Licht zurück.';
+  const [run] = buildRequests('compendium', form('compendium', { topic: 'Optik', sources_text }), options);
+
+  assert.deepEqual(run.request.body.sources, [
+    { title: 'Lochkamera', text: 'Das Bild steht auf dem Kopf, weil sich Licht geradlinig ausbreitet.' },
+    { title: 'Spiegel', text: 'Ein Spiegel wirft Licht zurück.' },
+  ]);
+  assert.match(problems('compendium', form('compendium', { topic: 'Optik', sources_text, parts: ['curricula'] }), options).sources_text, /Teil 1/);
+  assert.match(problems('compendium', form('compendium', { topic: 'Optik', sources_text: 'Nur ein Titel' }), options).sources_text, /Text/);
+});
+
+test('an example with a node as text fills the text field, its sources the source field', () => {
+  const values = fromExample('compendium', {
+    values: { collection_context: { title: 'Grundlagen', path: ['Kernphysik'] }, sources: [{ title: 'T', text: 'Ein Satz.' }] },
+  });
+  assert.deepEqual(JSON.parse(values.node_text), { collection_context: { title: 'Grundlagen', path: ['Kernphysik'] } });
+  assert.equal(values.sources_text, 'T\nEin Satz.');
+  assert.equal(values.node, '');
 });

@@ -14,8 +14,18 @@ export function nodeField(spec, ctx, wrapper) {
   const control = ctx.controls.get(spec.name).focus;
   const status = h('p', { class: 'help node-status', id: `${control.id}-knoten`, role: 'status', hidden: true });
   const uses = h('ul', { class: 'node-uses' });
+  // The node as text (D114): fills the text field with what reading gave (text_input) and empties the id, so the
+  // request reads no repository and gets the same compendium
+  const take = h('button', { type: 'button', class: 'secondary node-take', hidden: true }, 'Als Text übernehmen');
+  take.addEventListener('click', () => {
+    const target = ctx.controls.get('node_text');
+    if (!target || !state.node?.text_input) return;
+    target.write(JSON.stringify(state.node.text_input, null, 2));
+    ctx.controls.get(spec.name).write('');
+    ctx.refresh();
+  });
   control.setAttribute('aria-describedby', [control.getAttribute('aria-describedby'), status.id].filter(Boolean).join(' '));
-  wrapper.append(status, uses);
+  wrapper.append(status, take, uses);
   // What reading showed, for which id and repository; an example names the kind of its id before reading answers
   const state = { key: '', id: '', node: null, error: '', reading: null, written: { id: '', kind: '' } };
   const kind = () => {
@@ -66,6 +76,7 @@ export function nodeField(spec, ctx, wrapper) {
     const id = wholeNodeId(values[spec.name]);
     status.textContent = !id ? '' : state.node ? nodeLine(state.node) : state.error || (ctx.lookup ? 'Wird gelesen …' : '');
     status.hidden = !status.textContent;
+    take.hidden = !(id && state.node?.text_input && ctx.controls.has('node_text'));
     const lines = nodeUses(ctx.mode, values, state.node, { foreign: fromAnotherRepository(values, ctx.options) });
     uses.replaceChildren(...lines.map((line) => h('li', {}, line)));
   }

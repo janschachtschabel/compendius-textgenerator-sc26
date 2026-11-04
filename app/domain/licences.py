@@ -11,6 +11,7 @@ PROJECT_LABELS = {
     "wikibooks": ("Wikibooks", "Grundlagenwerk", "Wikibooks-Autorinnen und -Autoren", "mittel"),
     "wikiversity": ("Wikiversity", "Grundlagenwerk (Hochschule)", "Wikiversity-Autorinnen und -Autoren", "mittel"),
     "wlo_material": ("WirLernenOnline", "Sammlung & Archiv", "nicht angegeben", "mittel"),
+    "text_material": ("Eingereichter Text", "Material der Anfrage", "nicht angegeben", "mittel"),  # sources (D114)
 }
 
 

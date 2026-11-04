@@ -29,6 +29,7 @@ MIN_SCORE = 0.25  # score recorded for default-slot assignments (ranks them behi
 # without it and 17 with it.
 OTHER_HEADING_FACTOR = 0.5  # the heading names another block in the lexicon; M44: 0.438 without it
 SECTION_LEAD_BOOST = 1.3  # the first paragraph of an H2 section, for the overview block; M44: 0.455
+MATERIALS = "wlo_material"  # the template's name for materials, whichever project brought them
 FIRST_SOURCE_BOOST = 1.15  # the block's most preferred source project; M44: 0.412 without it
 
 
@@ -150,7 +151,9 @@ def _by_source(
         if source.project == slot.source_preference[0]:
             score *= FIRST_SOURCE_BOOST
 
-    if source is not None and source.role is SourceRole.MATERIAL and source.project in slot.source_preference:
+    # wlo_material in a template names the materials of a request, a knowledge collection's and the texts sent as
+    # sources alike (D114)
+    if source is not None and source.role is SourceRole.MATERIAL and MATERIALS in slot.source_preference:
         # A paragraph of a collection material, whatever its licence (D70), counts as evidence for the blocks that want
         # materials (Bildung, Praxis in sc26); the ranker still orders those blocks among themselves. The
         # score starts at the confidence threshold, so the rule holds whatever threshold is configured.

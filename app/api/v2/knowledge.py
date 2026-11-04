@@ -17,12 +17,20 @@ from app.api.gates import GatedRoute
 from app.api.keys import require_api_key
 from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS, refusals
+from app.api.v2.text_examples import (
+    COLLECTION_CONTEXT,
+    COLLECTION_CONTEXT_DESCRIPTION,
+    MATERIAL,
+    MATERIAL_DESCRIPTION,
+)
 from app.compendium.llm_policy import choice_audit
 from app.compendium.prepared import PreparedTopic
 from app.domain.models import NodeInput, Resolution, Source
 from app.domain.requests import (
     ARTICLE_CHOICE_HELP,
+    COLLECTION_CONTEXT_HELP,
     LLM_ARTICLE_CHOICES,
+    MATERIAL_HELP,
     MAX_ARCHIVES,
     NODE_ID_HELP,
     NODE_ID_PATTERN,
@@ -34,8 +42,10 @@ from app.domain.requests import (
     GenerateRequest,
     Preset,
     RequestModel,
+    check_text_input,
 )
 from app.domain.template_bounds import TEMPLATE_ID_PATTERN
+from app.domain.text_input import CollectionText, MaterialText
 from app.knowledge.article_choice import choice_block
 from app.knowledge.collection_context import tree_block
 from app.knowledge.node_article import node_block
@@ -55,6 +65,8 @@ class KnowledgeRequest(RequestModel):
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
+    material: MaterialText | None = Field(None, description=MATERIAL_HELP)
+    collection_context: CollectionText | None = Field(None, description=COLLECTION_CONTEXT_HELP)
     subject: str | None = Field(
         None,
         max_length=100,
@@ -101,8 +113,9 @@ class KnowledgeRequest(RequestModel):
 
     @model_validator(mode="after")
     def _topic_or_node(self) -> KnowledgeRequest:
-        if not self.topic and not self.node_id:
-            raise ValueError("topic oder node_id ist erforderlich")
+        if not self.topic and not (self.node_id or self.material or self.collection_context):
+            raise ValueError("topic, node_id, material oder collection_context ist erforderlich")
+        check_text_input(self.node_id, self.material, self.collection_context)
         if self.repository and not self.node_id:
             raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
         return self
@@ -231,6 +244,16 @@ EXAMPLES = {
             "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest",
         },
     },
+    "Sammlung als Text": {
+        "summary": "Thema aus einer Sammlung mit ihrem Ort im Themenbaum, als Text statt node_id",
+        "description": COLLECTION_CONTEXT_DESCRIPTION,
+        "value": {"collection_context": COLLECTION_CONTEXT},
+    },
+    "Material als Text": {
+        "summary": "Thema aus den Metadaten eines Materials, als Text statt node_id",
+        "description": MATERIAL_DESCRIPTION,
+        "value": {"material": MATERIAL},
+    },
     "alle Parameter": {
         "summary": "Jedes Feld einmal gesetzt: Thema mit Material, Fach, Profil, Archiv, Grenzen und Template",
         "description": (
@@ -322,6 +345,8 @@ def knowledge(
         GenerateRequest(
             topic=payload.topic,
             node_id=payload.node_id,
+            material=payload.material,
+            collection_context=payload.collection_context,
             repository=payload.repository,
             subject=payload.subject,
             template_id=payload.template_id,

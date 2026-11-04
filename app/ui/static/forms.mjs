@@ -10,6 +10,16 @@ export const COMPENDIUM_STEPS = ['article_choice', 'matcher', 'extraction', 'gen
 // One field for a collection or a material (D77; Jan, 2026-10-02: "vielleicht reicht ein feld für die nodeid der
 // sammlung"): the page reads the node (GET /api/v2/nodes/{id}) and says under the field what it is and does
 const NODE = { name: 'node', type: 'node', label: 'Sammlung oder Material', optional: true, help: 'ID oder Link aus dem Repository, etwa 9e7ae956-e9df-430f-bace-f3db4b910013.' };
+// The same node as text (D114): the JSON GET /api/v2/nodes/{id} gives under text_input, so no repository is read
+const NODE_TEXT = {
+  name: 'node_text',
+  type: 'textarea',
+  label: 'Oder die Sammlung bzw. das Material als Text',
+  optional: true,
+  placeholder: '{"collection_context": {"title": "Grundlagen", "path": ["Physik", "Kernphysik"]}}',
+  help: 'JSON wie GET /api/v2/nodes/{id} es unter text_input liefert: {"collection_context": {...}} oder {"material": {...}}. path sind die Sammlungen darüber, die nächste zuletzt; children die darunter. Der Knopf unter einer gelesenen ID füllt es aus.',
+};
+const TEXT_KINDS = ['collection_context', 'material'];
 const REPOSITORY = { name: 'repository', type: 'text', label: 'Repository der Sammlung oder des Materials', advanced: true, placeholder: 'leer: das des Servers' };
 
 // The host of a repository address, or the address as typed where it is none
@@ -47,6 +57,7 @@ export const FORMS = {
     fields: [
       { name: 'topic', type: 'text', label: 'Thema', placeholder: 'z. B. Optik' },
       NODE,
+      NODE_TEXT,
       { name: 'knowledge_source', type: 'check', label: 'Ihre Materialien als Quelle für Teil 1', when: asCollection },
       { name: 'knowledge_fulltext', type: 'check', label: 'Volltexte der Materialien lesen, nicht nur ihre Beschreibungen', when: asSource },
       { name: 'knowledge_depth', type: 'number', label: 'Untersammlungen mitlesen (Ebenen)', when: asSource, help: '0: nur die Sammlung selbst.' },
@@ -58,6 +69,14 @@ export const FORMS = {
       { name: 'empty_note', type: 'check', label: 'Leere Bausteine mit Hinweis zeigen', option: true },
       { name: 'model_knowledge_label', type: 'check', label: 'Vermerk [Modellwissen] im Text zeigen', option: true },
       REPOSITORY,
+      {
+        name: 'sources_text',
+        type: 'textarea',
+        label: 'Eigene Texte als Quellen für Teil 1',
+        advanced: true,
+        optional: true,
+        help: 'Je Quelle: erste Zeile der Titel, darunter der Text, ein Absatz je Zeile (ab 40 Zeichen). Mehrere Quellen trennt eine Zeile nur mit ---. Teil 1 zitiert sie wie Materialien einer Sammlung.',
+      },
       { name: 'steps', type: 'steps', label: 'Methode je Schritt', advanced: true, steps: FORM_STEPS },
       { name: 'target_length', type: 'number', label: 'Ziellänge in Zeichen', advanced: true, help: 'Eine Richtgröße: Wörtliche Texte werden so lang, wie die Quellen tragen; in best-coverage-generated ist sie eine Untergrenze.' },
       { name: 'max_articles', type: 'number', label: 'Höchstens Artikel', advanced: true },
@@ -69,6 +88,7 @@ export const FORMS = {
     fields: [
       { name: 'topic', type: 'text', label: 'Thema', placeholder: 'z. B. Optik' },
       NODE,
+      NODE_TEXT,
       SUBJECT,
       PRESET,
       REPOSITORY,
@@ -106,6 +126,7 @@ export const FORMS = {
     fields: [
       { name: 'topic', type: 'text', label: 'Thema', placeholder: 'z. B. Optik' },
       NODE,
+      NODE_TEXT,
       { name: 'text', type: 'textarea', label: 'Oder ein eigener Text', optional: true },
       SUBJECT,
       PRESET,
@@ -150,6 +171,8 @@ export function defaults(mode, options) {
       return {
         ...common,
         topic: '',
+        node_text: '',
+        sources_text: '',
         knowledge_source: false,
         knowledge_depth: '',
         knowledge_fulltext: false,
@@ -163,13 +186,13 @@ export function defaults(mode, options) {
         template_id: '',
       };
     case 'knowledge':
-      return { ...common, topic: '', article_choice: '', max_articles: '', max_chars: '' };
+      return { ...common, topic: '', node_text: '', article_choice: '', max_articles: '', max_chars: '' };
     case 'lehrplan':
       return { ...common, q: '', mode: 'keyword', curriculum_check: '', limit: '' };
     case 'entities':
       return { ...common, text: '', link: true, methods: [], link_check: '', max_entities: '' };
     case 'qa':
-      return { ...common, topic: '', text: '', count: '', method: '', levels: '', max_answer_length: '' };
+      return { ...common, topic: '', text: '', node_text: '', count: '', method: '', levels: '', max_answer_length: '' };
     default:
       throw new Error(`unknown mode ${mode}`);
   }
@@ -181,11 +204,11 @@ export function defaults(mode, options) {
 // all of its input, empty where it has none. The source of a collection, its depth and full texts go with it: left
 // over from an earlier one, they would hold back an example without that collection.
 const EXAMPLE_INPUT = {
-  compendium: ['topic', 'node', 'node_kind', 'knowledge_source', 'knowledge_depth', 'knowledge_fulltext', 'repository'],
-  knowledge: ['topic', 'node', 'node_kind', 'repository'],
+  compendium: ['topic', 'node', 'node_kind', 'node_text', 'sources_text', 'knowledge_source', 'knowledge_depth', 'knowledge_fulltext', 'repository'],
+  knowledge: ['topic', 'node', 'node_kind', 'node_text', 'repository'],
   lehrplan: ['q'],
   entities: ['text', 'node', 'node_kind', 'repository'],
-  qa: ['topic', 'text', 'node', 'node_kind', 'repository'],
+  qa: ['topic', 'text', 'node', 'node_kind', 'node_text', 'repository'],
 };
 
 /** The fields an example sets: its values, numbers as a number field holds them, and the rest of its input empty.
@@ -193,7 +216,13 @@ const EXAMPLE_INPUT = {
  * as it is, its materials as a source with the box, a material or another node to be read. */
 export function fromExample(mode, example) {
   const values = Object.fromEntries((EXAMPLE_INPUT[mode] ?? []).map((name) => [name, '']));
-  const { collection_id: collection, knowledge_collection_id: source, node_id: node, ...rest } = example.values;
+  const { collection_id: collection, knowledge_collection_id: source, node_id: node, sources, ...rest } = example.values;
+  for (const kind of TEXT_KINDS) {
+    if (!rest[kind]) continue;
+    values.node_text = JSON.stringify({ [kind]: rest[kind] }, null, 2); // the node as text goes in its one field (D114)
+    delete rest[kind];
+  }
+  if (sources) values.sources_text = sources.map((source) => `${source.title}\n${source.text}`).join('\n---\n');
   for (const [name, value] of Object.entries(rest)) values[name] = typeof value === 'number' ? String(value) : value;
   if (collection || source) Object.assign(values, { node: collection || source, node_kind: 'collection', knowledge_source: Boolean(source) });
   else if (node) values.node = node;
@@ -230,7 +259,11 @@ const BUILDERS = {
     const body = {};
     put(body, 'topic', text(v.topic));
     put(body, 'subject', text(v.subject));
-    collectionOrNode(body, v, options);
+    const asText = nodeText(v.node_text)?.fields;
+    if (asText) Object.assign(body, asText);
+    else collectionOrNode(body, v, options);
+    const sources = sourcesOf(v.sources_text);
+    if (sources.length) body.sources = sources;
     body.parts = [...v.parts];
     body.preset = v.preset;
     if (withSteps) for (const step of FORM_STEPS) put(body, step, v[step]);
@@ -248,7 +281,7 @@ const BUILDERS = {
     const body = {};
     put(body, 'topic', text(v.topic));
     put(body, 'subject', text(v.subject));
-    node(body, v);
+    nodeOrText(body, v);
     body.preset = v.preset;
     if (withSteps) put(body, 'article_choice', v.article_choice);
     put(body, 'max_articles', number(v.max_articles));
@@ -279,7 +312,7 @@ const BUILDERS = {
     const body = {};
     put(body, 'text', v.text?.trim() ? v.text : '');
     put(body, 'topic', text(v.topic));
-    node(body, v);
+    nodeOrText(body, v);
     put(body, 'subject', text(v.subject));
     body.preset = v.preset;
     if (withSteps) put(body, 'method', v.method);
@@ -293,16 +326,22 @@ const BUILDERS = {
 
 const CHECKS = {
   compendium(v, found, options) {
-    if (!text(v.topic) && !text(v.node)) found.topic = 'Bitte ein Thema eingeben oder eine Sammlung bzw. ein Material.';
+    textInputProblems(v, found);
+    if (!text(v.topic) && !text(v.node) && !text(v.node_text)) found.topic = 'Bitte ein Thema eingeben oder eine Sammlung bzw. ein Material.';
     if (!v.parts?.length) found.parts = 'Bitte mindestens einen Teil wählen.';
     else if (v.parts.length === 1 && v.parts[0] === 'collection') {
       if (!text(v.node)) found.node = 'Teil 3 braucht eine Sammlung.';
       else if (v.node_kind === 'material') found.node = 'Teil 3 braucht eine Sammlung; das ist ein Material.';
     }
     if (asSource(v, options) && !v.parts?.includes('world')) found.knowledge_source = 'Die Materialien als Quelle speisen Teil 1 – bitte Teil 1 wählen.';
+    if (text(v.sources_text)) {
+      if (!v.parts?.includes('world')) found.sources_text = 'Die Texte speisen Teil 1 – bitte Teil 1 wählen.';
+      else if (sourcesOf(v.sources_text).some((source) => !source.text)) found.sources_text = 'Jede Quelle braucht unter ihrem Titel einen Text.';
+    }
   },
   knowledge(v, found) {
-    if (!text(v.topic) && !text(v.node)) found.topic = 'Bitte ein Thema eingeben oder eine Sammlung bzw. ein Material.';
+    textInputProblems(v, found);
+    if (!text(v.topic) && !text(v.node) && !text(v.node_text)) found.topic = 'Bitte ein Thema eingeben oder eine Sammlung bzw. ein Material.';
   },
   lehrplan(v, found) {
     if (!text(v.q)) found.q = 'Bitte ein Stichwort oder Thema eingeben.';
@@ -316,7 +355,8 @@ const CHECKS = {
   },
   qa(v, found) {
     const hasText = Boolean(v.text?.trim());
-    const hasTopic = Boolean(text(v.topic) || text(v.node));
+    textInputProblems(v, found);
+    const hasTopic = Boolean(text(v.topic) || text(v.node) || text(v.node_text));
     if (hasText && hasTopic) found.text = 'Entweder ein eigener Text oder ein Thema bzw. eine Sammlung oder ein Material – nicht beides.';
     else if (!hasText && !hasTopic) found.topic = 'Bitte ein Thema oder einen eigenen Text eingeben.';
     if (hasText && text(v.subject)) found.subject = 'Das Fach gilt nur für ein Thema; ein eigener Text wird so abgefragt, wie er ist.';
@@ -341,6 +381,49 @@ function numberProblem(value, { min, max }, name, found) {
 
 function formatWhole(n) {
   return new Intl.NumberFormat('de-DE').format(n);
+}
+
+/** A collection or a material as text (D114), as GET /api/v2/nodes/{id} gives it under text_input: the fields for
+ * the request, or the problem in plain words; null while the field is empty. */
+export function nodeText(value) {
+  const typed = text(value);
+  if (!typed) return null;
+  const expected = 'Erwartet wird {"collection_context": {...}} oder {"material": {...}}, wie GET /api/v2/nodes/{id} es unter text_input liefert.';
+  let parsed;
+  try {
+    parsed = JSON.parse(typed);
+  } catch {
+    return { problem: `Das ist kein gültiges JSON. ${expected}` };
+  }
+  const kinds = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? Object.keys(parsed) : [];
+  const [kind] = kinds;
+  if (kinds.length !== 1 || !TEXT_KINDS.includes(kind) || typeof parsed[kind] !== 'object' || !parsed[kind]) return { problem: expected };
+  if (!text(parsed[kind].title)) return { problem: 'Es fehlt der Titel (title).' };
+  return { fields: parsed };
+}
+
+/** The texts of the field for sources: blocks split by a line of ---, each its title on the first line, its text below. */
+export function sourcesOf(value) {
+  return String(value ?? '')
+    .split(/^\s*---\s*$/m)
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block) => {
+      const [title, ...lines] = block.split('\n');
+      return { title: title.trim(), text: lines.join('\n').trim() };
+    });
+}
+
+function textInputProblems(v, found) {
+  const typed = nodeText(v.node_text);
+  if (typed?.problem) found.node_text = typed.problem;
+  else if (typed && text(v.node)) found.node_text = 'Entweder eine ID oder die Sammlung bzw. das Material als Text – nicht beides.';
+}
+
+function nodeOrText(body, v) {
+  const asText = nodeText(v.node_text)?.fields;
+  if (asText) Object.assign(body, asText);
+  else node(body, v);
 }
 
 function node(body, v) {

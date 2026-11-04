@@ -23,6 +23,7 @@ from app.compendium.gateway import LlmGateway
 from app.compendium.llm_policy import llm_switches
 from app.compendium.prepared import CurriculaResult, Made, PreparedTopic, Requested, Stopwatch, WorldPart, timed
 from app.compendium.repository import RepositoryReading
+from app.compendium.text_input import collection_node, collection_tree, material_node, text_sources, text_subjects
 from app.compendium.world import WorldBuilding
 from app.compose.regeneration import check_names
 from app.concurrency import Beside
@@ -118,7 +119,9 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         /knowledge (audit 2026-09-27, AR-02). With ``wording`` - a writing profile - the model words the topic of a
         text in place of a topic (D72).
         """
-        self.subjects.check(request.subject)  # before any reading: a typo would otherwise count for nothing
+        # before any reading: a typo would otherwise count for nothing; the subjects of a text input as well (D114)
+        for value in (request.subject, *text_subjects(request.material, request.collection_context)):
+            self.subjects.check(value)
         timings: dict[str, int] = {}
         lap = Stopwatch(timings).lap
 
@@ -141,6 +144,10 @@ class CompendiumService(RepositoryReading, WorldBuilding):
         node_info, node = None, None
         if request.node_id:
             node_info, node = self.read_node(request.node_id, request.repository, remaining=remaining)
+        elif request.material is not None:  # the same facts as text (D114)
+            node_info = material_node(request.material)
+        elif request.collection_context is not None:
+            node_info = collection_node(request.collection_context)
         derived: list[CollectionTopic] = []
         if node_info is not None:
             derived.append(node_topic(node_info))
@@ -150,6 +157,8 @@ class CompendiumService(RepositoryReading, WorldBuilding):
 
         def place(whole: bool) -> TreeContext | None:
             """Where the collection whose title is the topic stands in its topic tree (M71)."""
+            if request.collection_context is not None:
+                return collection_tree(request.collection_context, whole)
             return self.collection_tree(node_info, collection, request.repository, remaining=remaining, content=whole)
 
         # One view of the archives for the whole request: a reload between its steps left sources and snapshot
@@ -275,6 +284,11 @@ class CompendiumService(RepositoryReading, WorldBuilding):
                     fulltext=request.knowledge_fulltext,
                 )
                 lap("knowledge")
+
+        if request.sources:  # texts sent as sources, read as a knowledge collection's materials (D114)
+            texts, empty = text_sources(request.sources, self.settings.knowledge_max_chars)
+            sources.extend(texts)
+            prepared.text_sources = {"sent": len(request.sources), "sources": len(texts), "empty": empty}
 
         # The cap only decides which paragraphs part 1 uses; part 2 searches for every neighbour of the corpus.
         primary = primary_of(sources)

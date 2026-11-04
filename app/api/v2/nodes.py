@@ -8,6 +8,7 @@ a material needs them, and without them its topic stays empty.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Path, Query, Request
@@ -20,11 +21,21 @@ from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS
 from app.domain.models import NodeInput
 from app.domain.requests import NODE_ID_PATTERN, REPOSITORY_HELP
+from app.domain.spelling import readable
+from app.domain.text_input import (
+    DESCRIPTION_MAX_CHARS,
+    LIST_MAX_ITEMS,
+    TITLE_MAX_CHARS,
+    CollectionText,
+    MaterialText,
+)
 from app.knowledge.collection_context import is_neutral, stand_in
 from app.knowledge.derived_topic import derive_topic, node_topic
 from app.knowledge.main_article import choose_main_article
 from app.knowledge.node_article import node_block
 from app.llm.deadline import Deadline
+from app.sources.wlo.models import NodeInfo
+from app.sources.wlo.tree import TreeContext
 
 router = APIRouter(prefix="/api/v2", tags=["v2"], route_class=GatedRoute)
 
@@ -54,6 +65,12 @@ class NodePreview(NodeInput):
         None,
         description="For a material: how the rules found its article - the title's article and the ranked terms of "
         "title and description (D47); null for a collection or without archives",
+    )
+    text_input: dict[str, MaterialText | CollectionText] = Field(
+        description="The node as text (D114), ready to send in place of node_id: {'material': {...}} for a material, "
+        "{'collection_context': {...}} for a collection with its place in the topic tree (path, children, materials, "
+        "neighbours). A request with it needs no repository and gets the same compendium; the fields of compendium, "
+        "knowledge and qa take it as it is"
     )
 
 
@@ -117,10 +134,39 @@ def read_node(
     found = derive_topic(None, [node_topic(info)], is_subject=service.subjects.knows)
     topic: str | None = found.normalized.topic
     title = found.normalized.topic
-    if info.kind == "collection" and is_neutral(title):  # it stands for the collection above it (M71)
-        tree = service.collection_tree(info, None, repository, content=False, remaining=deadline.remaining)
-        labels = service.subjects.labels_of(found.subjects)
-        topic = stand_in(title, tree, labels, is_subject=service.subjects.knows) or title
+    # the subjects as a caller may write them: the label where the catalog knows it, else the URI (D114)
+    named = dict(zip(info.subject_uris, info.subject_labels, strict=False))
+    subjects = _titles(named[uri] if service.subjects.knows(named.get(uri, "")) else uri for uri in info.subject_uris)
+    text_input: dict[str, MaterialText | CollectionText]
+    if info.kind == "collection":
+        # the whole place, as the article choice with the LLM hears it; the rules take its path (M71)
+        tree = service.collection_tree(info, None, repository, content=True, remaining=deadline.remaining)
+        if is_neutral(title):  # it stands for the collection above it (M71)
+            labels = service.subjects.labels_of(found.subjects)
+            topic = stand_in(title, tree, labels, is_subject=service.subjects.knows) or title
+        place = tree or TreeContext()
+        text_input = {
+            "collection_context": CollectionText(
+                title=_title(info),
+                path=_titles(place.path),
+                children=_titles(place.children),
+                materials=_titles(place.materials),
+                neighbours=_titles(place.neighbours),
+                subjects=subjects,
+                levels=_titles(info.educational_contexts),
+            )
+        }
+    else:
+        text_input = {
+            "material": MaterialText(
+                title=_title(info),
+                description=info.description[:DESCRIPTION_MAX_CHARS],
+                keywords=_titles(info.keywords),
+                subjects=subjects,
+                levels=_titles(info.educational_contexts),
+                url=info.url[:2_000] or None,
+            )
+        }
     node_article: dict[str, Any] | None = None
     if info.kind == "material":  # its title is often a format; the rules look for the article (D47)
         topic = None
@@ -134,4 +180,15 @@ def read_node(
         topic_subjects=found.subjects,
         context=found.context,
         node_article=node_article,
+        text_input=text_input,
     )
+
+
+def _titles(values: Iterable[str]) -> list[str]:
+    """Titles within the bounds of the text input: the repository holds longer ones than a caller may send."""
+    return [title[:TITLE_MAX_CHARS] for title in values if readable(title).strip()][:LIST_MAX_ITEMS]
+
+
+def _title(info: NodeInfo) -> str:
+    """The node's title for the text input; a node without a readable one is named by its id."""
+    return next(iter(_titles([info.title])), info.node_id)

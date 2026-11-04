@@ -392,6 +392,74 @@
      "node_id": "ac66224b-42b0-4676-a53d-71b058dc780b",
      "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest"
     }
+   },
+   {
+    "label": "Sammlung „Grundlagen“ unter Kernphysik als Text, ohne Repository",
+    "values": {
+     "collection_context": {
+      "title": "Grundlagen",
+      "path": [
+       "Physik",
+       "Kernphysik"
+      ],
+      "children": [
+       "Atomaufbau",
+       "Radioaktivität"
+      ],
+      "materials": [
+       "Der Atomkern im Überblick",
+       "Zerfallsarten erklärt"
+      ],
+      "neighbours": [
+       "Kernspaltung",
+       "Kernfusion"
+      ],
+      "subjects": [
+       "Physik"
+      ],
+      "levels": [
+       "Sekundarstufe I"
+      ]
+     }
+    }
+   },
+   {
+    "label": "Material als Text, ohne Repository",
+    "values": {
+     "material": {
+      "title": "Stationsarbeit zur Optik",
+      "description": "An sechs Stationen untersuchen die Lernenden, wie Licht an Linsen und Spiegeln gelenkt wird.",
+      "keywords": [
+       "Licht",
+       "Linse",
+       "Spiegel"
+      ],
+      "subjects": [
+       "Physik"
+      ],
+      "levels": [
+       "Sekundarstufe I"
+      ],
+      "url": "https://example.org/stationsarbeit-optik"
+     }
+    }
+   },
+   {
+    "label": "Optik mit einem eigenen Text als Quelle",
+    "values": {
+     "topic": "Optik",
+     "sources": [
+      {
+       "title": "Lochkamera im Unterricht",
+       "text": "Mit einer Lochkamera sehen die Lernenden, dass sich Licht geradlinig ausbreitet: Das Bild steht auf dem Kopf.\nJe kleiner das Loch, desto schärfer und dunkler wird das Bild auf dem Pergamentpapier.",
+       "url": "https://example.org/lochkamera",
+       "license": "CC BY 4.0",
+       "authors": [
+        "Beispiel-Autorin"
+       ]
+      }
+     ]
+    }
    }
   ],
   "knowledge": [
@@ -413,6 +481,36 @@
     "values": {
      "node_id": "9e7ae956-e9df-430f-bace-f3db4b910013",
      "repository": "https://repository.staging.openeduhub.net/edu-sharing/rest"
+    }
+   },
+   {
+    "label": "Thema aus einer Sammlung als Text, ohne Repository",
+    "values": {
+     "collection_context": {
+      "title": "Grundlagen",
+      "path": [
+       "Physik",
+       "Kernphysik"
+      ],
+      "children": [
+       "Atomaufbau",
+       "Radioaktivität"
+      ],
+      "materials": [
+       "Der Atomkern im Überblick",
+       "Zerfallsarten erklärt"
+      ],
+      "neighbours": [
+       "Kernspaltung",
+       "Kernfusion"
+      ],
+      "subjects": [
+       "Physik"
+      ],
+      "levels": [
+       "Sekundarstufe I"
+      ]
+     }
     }
    }
   ],

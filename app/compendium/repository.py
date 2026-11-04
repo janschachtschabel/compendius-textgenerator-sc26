@@ -42,7 +42,7 @@ class RepositoryReading:
         if not request.collection_id:
             return None
         if self.collections is None:
-            if request.topic or request.node_id:  # part 3 says it is unavailable; the topic comes from elsewhere
+            if request.names_topic:  # part 3 says it is unavailable; the topic comes from elsewhere
                 return None
             raise RepositoryUnavailableError(NO_REPOSITORY)
         try:
@@ -50,7 +50,7 @@ class RepositoryReading:
         except CollectionNotFoundError:
             raise
         except EduSharingError as exc:
-            if request.topic or request.node_id:  # the topic comes from the request or from the node
+            if request.names_topic:  # the topic comes from the request, the node or its text (D114)
                 log.warning("collection %s not readable, continuing without it: %s", request.collection_id, exc)
                 return None
             raise

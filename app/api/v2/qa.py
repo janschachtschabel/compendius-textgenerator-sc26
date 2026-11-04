@@ -30,6 +30,12 @@ from app.api.limits import rate_limited
 from app.api.responses import PROFILE_REFUSALS, refusals
 from app.api.v2.qa_schemas import LEVEL_PROPERTY, PROFILE_METHODS, Method, Pair, QaRequest, QaResponse
 from app.api.v2.qa_stages import LlmAllowance, from_llm, levels_from, node_levels
+from app.api.v2.text_examples import (
+    COLLECTION_CONTEXT,
+    COLLECTION_CONTEXT_DESCRIPTION,
+    MATERIAL,
+    MATERIAL_DESCRIPTION,
+)
 from app.domain.models import Compendium, Resolution
 from app.domain.requests import PRESETS, ArticleChoice, GenerateRequest, Preset, default_preset
 from app.knowledge.recognise import load_spacy
@@ -94,7 +100,7 @@ def _article_choice(payload: QaRequest, profile: str) -> ArticleChoice | None:
     """
     if payload.article_choice is not None:
         return payload.article_choice
-    if not payload.node_id:
+    if not payload.names_node:
         return None
     return PRESETS[profile]["article_choice"]  # type: ignore[return-value]
 
@@ -119,6 +125,8 @@ def _part_one(
         GenerateRequest(
             topic=payload.topic,
             node_id=payload.node_id,
+            material=payload.material,
+            collection_context=payload.collection_context,
             repository=payload.repository,
             subject=payload.subject,
             preset=KNOWLEDGE_PROFILE,
@@ -236,6 +244,16 @@ EXAMPLES = {
             "count": 8,
         },
     },
+    "6b · Sammlung als Text": {
+        "summary": "Paare zum Thema einer Sammlung, die als Text kommt statt als node_id",
+        "description": COLLECTION_CONTEXT_DESCRIPTION,
+        "value": {"collection_context": COLLECTION_CONTEXT, "preset": "llm-free", "count": 8},
+    },
+    "6c · Material als Text": {
+        "summary": "Paare zum Artikel eines Materials, dessen Metadaten als Text kommen",
+        "description": MATERIAL_DESCRIPTION,
+        "value": {"material": MATERIAL, "preset": "llm-free", "count": 8},
+    },
     "7 · einzelnes Verfahren": {
         "summary": "Ein einzeln gesetztes method geht dem Profil vor, hier die Regeln im Profil best-quality",
         "description": (
@@ -311,7 +329,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     profile = payload.preset or _default_profile(request)
     if payload.method is None:
         payload = payload.model_copy(update={"method": PROFILE_METHODS[profile]})
-    article_choice = _article_choice(payload, profile) if payload.topic or payload.node_id else None
+    article_choice = _article_choice(payload, profile) if payload.topic or payload.names_node else None
     needed = [
         f"{name}={value}"
         for name, value in (("method", payload.method), ("article_choice", article_choice))
@@ -325,7 +343,7 @@ def qa(payload: Annotated[QaRequest, Body(openapi_examples=EXAMPLES)], request: 
     stages: dict[str, Any] = {}  # what the LLM did for part 1 and for the pairs, as audit.llm of a compendium
     usage = Usage()
     allowance = _allowance(request, payload, profile)
-    if payload.topic or payload.node_id:
+    if payload.topic or payload.names_node:
         service = get_service(request)  # a topic needs the archives; a plain text does not
         compendium = _part_one(service, payload, allowance, article_choice)
         topic, resolution, node = compendium.topic, compendium.resolution, compendium.node

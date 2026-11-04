@@ -21,6 +21,7 @@ from app.api.v2.nodes import STAGING_COLLECTION, STAGING_MATERIAL, STAGING_REPOS
 from app.api.v2.qa_schemas import PROFILE_METHODS as QA_METHODS
 from app.api.v2.qa_schemas import Method as QaMethod
 from app.api.v2.qa_schemas import QaRequest
+from app.api.v2.text_examples import COLLECTION_CONTEXT, MATERIAL, SOURCES
 from app.domain.requests import (
     MATCHERS,
     PRESETS,
@@ -95,6 +96,12 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
             "label": "Ein Material als Eingang (Staging)",
             "values": {"node_id": STAGING_MATERIAL, **_STAGING_NODE},
         },
+        {  # D114: the same facts as text, no repository read
+            "label": "Sammlung „Grundlagen“ unter Kernphysik als Text, ohne Repository",
+            "values": {"collection_context": COLLECTION_CONTEXT},
+        },
+        {"label": "Material als Text, ohne Repository", "values": {"material": MATERIAL}},
+        {"label": "Optik mit einem eigenen Text als Quelle", "values": {"topic": "Optik", "sources": SOURCES}},
     ],
     "knowledge": [
         {"label": "Optik", "values": {"topic": "Optik"}},
@@ -103,6 +110,10 @@ EXAMPLES: dict[str, list[dict[str, Any]]] = {
             "values": {"topic": "Französische Revolution", "max_articles": 5},
         },
         {"label": "Thema aus der Sammlung Optik (Staging)", "values": {"node_id": STAGING_COLLECTION, **_STAGING_NODE}},
+        {
+            "label": "Thema aus einer Sammlung als Text, ohne Repository",
+            "values": {"collection_context": COLLECTION_CONTEXT},
+        },
     ],
     "lehrplan": [
         {

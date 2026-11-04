@@ -13,6 +13,8 @@ from pydantic import BaseModel, Field, model_validator
 
 from app.domain.models import NodeInput, Resolution
 from app.domain.requests import (
+    COLLECTION_CONTEXT_HELP,
+    MATERIAL_HELP,
     NODE_ID_HELP,
     NODE_ID_PATTERN,
     REPOSITORY_HELP,
@@ -20,7 +22,9 @@ from app.domain.requests import (
     ArticleChoice,
     Preset,
     RequestModel,
+    check_text_input,
 )
+from app.domain.text_input import CollectionText, MaterialText
 
 Method = Literal["rule-based", "llm"]
 # The method of each profile (D57, Jan): the default asks fast and without extra resources, so llm-free and
@@ -57,6 +61,8 @@ class QaRequest(RequestModel):
     )
     node_id: str | None = Field(None, pattern=NODE_ID_PATTERN, description=NODE_ID_HELP)
     repository: str | None = Field(None, max_length=300, description=REPOSITORY_HELP)
+    material: MaterialText | None = Field(None, description=MATERIAL_HELP)
+    collection_context: CollectionText | None = Field(None, description=COLLECTION_CONTEXT_HELP)
     subject: str | None = Field(
         None,
         max_length=100,
@@ -119,20 +125,26 @@ class QaRequest(RequestModel):
         "keywords become the focus of the questions (D47); note says so",
     )
 
+    @property
+    def names_node(self) -> bool:
+        """Whether a node gives the topic: read (node_id) or sent as text (D114)."""
+        return bool(self.node_id or self.material or self.collection_context)
+
     @model_validator(mode="after")
     def _text_or_topic(self) -> QaRequest:
         if self.text is not None and not self.text.strip():
             raise ValueError("text enthält nur Leerraum; ohne Sätze entstehen keine Paare")
-        if not self.text and not self.topic and not self.node_id:
-            raise ValueError("text, topic oder node_id ist erforderlich")
-        if self.text and (self.topic or self.node_id):
+        if not self.text and not self.topic and not self.names_node:
+            raise ValueError("text, topic, node_id, material oder collection_context ist erforderlich")
+        if self.text and (self.topic or self.names_node):
             raise ValueError("text oder topic/node_id, nicht beides: ein Thema macht erst Teil 1 und fragt ihn ab")
+        check_text_input(self.node_id, self.material, self.collection_context)
         if self.repository and not self.node_id:
             raise ValueError("repository gilt für node_id; ohne node_id fehlt der Knoten")
         # They decide the article of part 1; a text of the caller's is asked as it is. preset goes with a text as
         # well: it picks the method of the pairs (D53)
         for name in ("subject", "article_choice"):
-            if getattr(self, name) is not None and not (self.topic or self.node_id):
+            if getattr(self, name) is not None and not (self.topic or self.names_node):
                 raise ValueError(f"{name} gilt nur mit topic oder node_id; ein text wird abgefragt, wie er ist")
         return self
 
