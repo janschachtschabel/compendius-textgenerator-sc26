@@ -1,0 +1,100 @@
+{{- /*
+Die vier Updater, je nach updaters.mode als CronJob (ein Lauf je Termin, ohne --loop) oder als Deployment mit einem
+Replikat (Schleife mit --loop, wie in Compose). Jeder Updater läuft genau einmal: nie als Container im API-Pod.
+*/}}
+{{- $root := . }}
+{{- $mode := .Values.updaters.mode }}
+{{- range $key := list "zimUpdater" "lehrplanUpdater" "wikidataUpdater" "gndUpdater" }}
+{{- $u := index $root.Values.updaters $key }}
+{{- if $u.enabled }}
+{{- $name := include "kompendium.updaterName" (dict "root" $root "key" $key) }}
+{{- $component := include "kompendium.updaterKind" $key }}
+{{- $meta := include "kompendium.podMeta" (dict "root" $root "component" $component) | fromYaml }}
+{{- if eq $mode "cronjob" }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "kompendium.labels" $root | nindent 4 }}
+    app.kubernetes.io/component: {{ $component }}
+spec:
+  schedule: {{ $u.schedule | quote }}
+  timeZone: {{ $root.Values.updaters.timeZone | quote }}
+  concurrencyPolicy: {{ $root.Values.updaters.cronjob.concurrencyPolicy }}
+  startingDeadlineSeconds: {{ $root.Values.updaters.cronjob.startingDeadlineSeconds }}
+  successfulJobsHistoryLimit: {{ $root.Values.updaters.cronjob.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ $root.Values.updaters.cronjob.failedJobsHistoryLimit }}
+  suspend: {{ $root.Values.updaters.cronjob.suspend }}
+  jobTemplate:
+    metadata:
+      labels:
+        {{- include "kompendium.labels" $root | nindent 8 }}
+        app.kubernetes.io/component: {{ $component }}
+    spec:
+      backoffLimit: {{ $root.Values.updaters.cronjob.backoffLimit }}
+      activeDeadlineSeconds: {{ $u.activeDeadlineSeconds }}
+      template:
+        metadata:
+          {{- toYaml $meta | nindent 10 }}
+        spec:
+          restartPolicy: Never
+          {{- include "kompendium.updaterPodSpec" (dict "root" $root "key" $key "updater" $u "loop" false) | nindent 10 }}
+{{- if and $root.Values.updaters.initialRun.enabled $root.Release.IsInstall }}
+---
+# Der erste Lauf gleich bei der Installation, nicht erst zum ersten Termin. Nur bei helm install: Helm löscht ihn beim
+# Upgrade nicht (keep), er räumt sich nach ttlSecondsAfterFinished selbst weg; der Zufallsteil im Namen lässt eine
+# neue Installation nicht an einem verbliebenen Job scheitern.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ printf "%s-init-%s" $name (randAlphaNum 5 | lower) }}
+  labels:
+    {{- include "kompendium.labels" $root | nindent 4 }}
+    app.kubernetes.io/component: {{ $component }}
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  backoffLimit: {{ $root.Values.updaters.cronjob.backoffLimit }}
+  activeDeadlineSeconds: {{ $u.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: {{ $root.Values.updaters.initialRun.ttlSecondsAfterFinished }}
+  template:
+    metadata:
+      {{- toYaml $meta | nindent 6 }}
+    spec:
+      restartPolicy: Never
+      {{- include "kompendium.updaterPodSpec" (dict "root" $root "key" $key "updater" $u "loop" false) | nindent 6 }}
+{{- end }}
+{{- else }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "kompendium.labels" $root | nindent 4 }}
+    app.kubernetes.io/component: {{ $component }}
+spec:
+  # Genau ein Lauf: nie zwei Replikate, auch nicht beim Update
+  replicas: 1
+  strategy:
+    type: {{ $root.Values.updaters.deployment.strategy }}
+  selector:
+    matchLabels:
+      {{- include "kompendium.selectorLabels" $root | nindent 6 }}
+      app.kubernetes.io/component: {{ $component }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $root.Template.BasePath "/configmap.yaml") $root | sha256sum }}
+        {{- with $meta.annotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- toYaml $meta.labels | nindent 8 }}
+    spec:
+      {{- include "kompendium.updaterPodSpec" (dict "root" $root "key" $key "updater" $u "loop" true) | nindent 6 }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,509 @@
+# Values des Charts "Kompendiale Texte". Herkunft: docs/uebergabe/helm-values.example.yaml (Vorlage für T6) und
+# docker-compose.yml; Bedeutung und Vorgaben der Umgebungsvariablen: docs/uebergabe/konfiguration.md.
+# Betrieb hinter dem Proxy der b-api (Variante A). Compose bleibt die Alternative für einen einzelnen Host.
+
+## @section Allgemein
+
+## @param nameOverride Ersetzt den Chart-Namen in den Namen der Ressourcen
+nameOverride: ""
+## @param fullnameOverride Ersetzt den ganzen Namen (Release und Chart)
+fullnameOverride: ""
+
+## @section Image
+
+image:
+  ## @param image.repository Image der API und der Updater (ein Image für alle Container)
+  repository: ghcr.io/janschachtschabel/compendius-textgenerator-sc26
+  ## @param image.tag Tag des Images; leer: appVersion des Charts, also die Version, zu der dieses Chart gehört. In Produktion nie latest
+  tag: ""
+  ## @param image.digest Digest (sha256:...), geht dem Tag vor, wenn gesetzt
+  digest: ""
+  ## @param image.pullPolicy Pull-Policy
+  pullPolicy: IfNotPresent
+
+## @param imagePullSecrets Secrets für eine private Registry, z. B. [{ name: ghcr-pull }]; das Paket auf GHCR ist öffentlich
+imagePullSecrets: []
+
+## @section Gemeinsame Umgebung
+
+## @param env Für alle Container (API und Updater), wie in Compose die gemeinsame .env; jeder Schlüssel wird zur Umgebungsvariable gleichen Namens. Keine Geheimnisse hier (siehe api.secrets). ZIM_DIR und STATE_DIR setzt das Chart aus persistence.*.mountPath
+env:
+  LOG_FORMAT: json
+  LOG_LEVEL: INFO
+  ZIM_PROFILE: standard
+
+## @section Pod-Einstellungen für alle Workloads
+
+## @param enableServiceLinks Kubernetes-Variablen je Service im Namespace. Ein Service namens internal oder public setzte sonst INTERNAL_PORT=tcp://... in jeden Pod; die Updater nennen die Ports nicht selbst und starteten nicht (Audit 2026-10-15, C8)
+enableServiceLinks: false
+## @param automountServiceAccountToken Kein Pod spricht mit der Kubernetes-API
+automountServiceAccountToken: false
+## @param serviceAccountName Service-Account der Pods; leer: default des Namespace
+serviceAccountName: ""
+## @param podAnnotations Annotationen an jedem Pod
+podAnnotations: {}
+## @param podLabels Labels an jedem Pod
+podLabels: {}
+## @param nodeSelector nodeSelector für jeden Pod
+nodeSelector: {}
+## @param tolerations Tolerations für jeden Pod
+tolerations: []
+## @param affinity Affinity für jeden Pod
+affinity: {}
+
+## @param podSecurityContext Wie docker-compose.yml: kein root; Pod Security Standard "restricted"
+podSecurityContext:
+  runAsUser: 10001
+  runAsGroup: 10001
+  runAsNonRoot: true
+  # PVCs übernehmen das chown des Images nicht: ohne fsGroup schreiben die Updater nicht.
+  fsGroup: 10001
+  fsGroupChangePolicy: OnRootMismatch
+  # Viele NFS- und CephFS-Treiber übergehen fsGroup (CSIDriver fsGroupPolicy: None): dann legt der Provisioner die
+  # Volumes mit uid/gid 10001 an, oder ein Init-Container (root, nur dafür) macht einmal chown -R 10001:10001.
+  seccompProfile:
+    type: RuntimeDefault
+
+## @param containerSecurityContext Nur lesendes Wurzeldateisystem, keine Capabilities; gilt für die API und die Updater
+containerSecurityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: [ALL]
+
+## @section API
+
+api:
+  ## @param api.replicaCount Pods der API; mehr als einer: zim und state als ReadWriteMany, Updater je genau einmal (anforderungen.md, 5.1). Ohne Wirkung mit autoscaling.enabled
+  replicaCount: 1
+  ## @param api.port Die API, über den Ingress (PUBLIC_PORT, D111); das Chart setzt PUBLIC_PORT daraus
+  port: 8000
+  ## @param api.internalPort Proben, /metrics, Stand (INTERNAL_PORT, D110); kein Ingress, nur im Cluster. Das Chart setzt INTERNAL_PORT daraus; 0 (alles auf PUBLIC_PORT) lässt es nicht zu
+  internalPort: 9000
+  ## @param api.strategy Strategie des Deployments; leer: RollingUpdate von Kubernetes
+  strategy: {}
+  ## @param api.resources Gemessen 16.10.2026 mit zwei Workern, mit Reserve (docs/uebergabe/README.md, Ressourcen); je weiterem Worker (WEB_CONCURRENCY) rund 2 GiB mehr. ephemeral-storage: das emptyDir /tmp
+  resources:
+    requests:
+      cpu: "2"
+      memory: 5Gi
+      ephemeral-storage: 2Gi
+    limits:
+      cpu: "4"
+      memory: 6Gi
+      ephemeral-storage: 3Gi
+  ## @param api.tmpEmptyDir.mountPath Die API schreibt dorthin Metrikdateien, ihre Log-Konfiguration (app/serve.py), mit WLO_CACHE_PATH den Repository-Cache und mit INDEX_COPY_DIR die Kopien der Indexe
+  ## @param api.tmpEmptyDir.sizeLimit Indexe bis ~1 GB (die vorige Fassung bleibt bis zur nächsten); auf Platte, nicht im RAM
+  tmpEmptyDir:
+    mountPath: /tmp
+    sizeLimit: 2Gi
+  # Am internen Port des Pods; am Port 8000 antworten die Pfade mit 404. Der Start dauert 22 bis 31 s; die Startprobe
+  # fragt alle 5 s, bis zu 600 s. /health liest in den Threads der Überwachung (app/api/system_threads.py): unter Last
+  # großzügig, damit kein beschäftigter Pod neu startet. Beim ersten Start bleibt /ready 503, bis der ZIM-Updater die
+  # Pflichtarchive geladen hat (rund 19 GB): helm --wait läuft dann ab; den ersten Start ohne --wait oder mit langer
+  # --timeout.
+  probes:
+    ## @param api.probes.startup Startprobe auf /health am Port internal
+    startup:
+      httpGet: { path: /health, port: internal }
+      periodSeconds: 5
+      failureThreshold: 120
+      timeoutSeconds: 5
+    ## @param api.probes.readiness Readiness auf /ready am Port internal (503 ohne Pflichtarchive)
+    readiness:
+      httpGet: { path: /ready, port: internal }
+      periodSeconds: 10
+      timeoutSeconds: 5
+    ## @param api.probes.liveness Liveness auf /health am Port internal
+    liveness:
+      httpGet: { path: /health, port: internal }
+      periodSeconds: 30
+      timeoutSeconds: 10
+      failureThreshold: 5
+  ## @param api.lifecycle Die Endpunkte des Service folgen dem SIGTERM verzögert: erst warten, dann schließen
+  lifecycle:
+    preStop:
+      exec:
+        command: [sleep, "10"]
+  ## @param api.terminationGracePeriodSeconds Laufende Anfragen enden, bevor der Pod geht (wie API_STOP_GRACE_PERIOD in Compose); mit REQUEST_TIMEOUT_S über 600 s anheben
+  terminationGracePeriodSeconds: 630
+  ## @param api.env Nur für die API, in einer eigenen ConfigMap; PUBLIC_PORT, INTERNAL_PORT und TEMPLATES_DIR setzt das Chart
+  env:
+    WEB_CONCURRENCY: "2"
+    LLM_ENABLED: "true"
+    B_API_KEY_SOURCE: request    # Schlüssel des Aufrufers, den die b-api weiterreicht (D105)
+    B_API_PROVIDER: openai       # ohne Routing; router erst mit einer globalen Route der b-api
+    B_API_MODEL: gpt-6-luna
+    RATE_LIMIT: "0"              # die b-api begrenzt je Schlüssel (D104)
+    UI_ENABLED: "false"
+    WLO_CACHE_PATH: /tmp/wlo_cache.db   # je Pod im emptyDir /tmp: kein SQLite-Schreiben über ein geteiltes Volume
+    INDEX_COPY_DIR: /tmp/indexes        # je Pod eine lokale Kopie von lehrplan.db, wikidata.db, gnd.db (D113)
+    API_DOCS_ENABLED: "true"     # /openapi.json für die b-api und den Produktkatalog
+    EDU_SHARING_BASE_URL: https://redaktion.openeduhub.net/edu-sharing/rest
+    # Leer folgt die b-api dem Repository (redaktion -> b-api.prod, staging -> b-api.staging). Sie muss die Instanz
+    # sein, deren Proxy die Schlüssel weiterreicht: ein Schlüssel der Staging-b-api gegen die Produktion gibt 401, und
+    # jede Anfrage fiele still auf llm-free zurück (D106).
+    B_API_BASE_URL: https://b-api.prod.openeduhub.net
+  ## @param api.extraEnv Weitere Variablen der API als EnvVar-Liste (z. B. mit valueFrom)
+  extraEnv: []
+  secrets:
+    ## @param api.secrets.existingSecret Secret mit den Schlüsseln unten, angelegt außerhalb des Charts (nie in den Values); leer: keine Geheimnisse
+    existingSecret: kompendium-secrets
+    ## @param api.secrets.keys Je Schlüssel eine Variable per secretKeyRef mit optional: true. Ein gesetztes Token braucht mindestens 16 Zeichen (openssl rand -hex 32), sonst startet der Container nicht
+    keys:
+      - B_API_KEY                # bei B_API_KEY_SOURCE=request nur für Anfragen ohne eigenen Schlüssel
+      - API_KEYS                 # hinter dem Proxy der b-api leer lassen
+      - ADMIN_TOKEN              # leer lassen: die Admin-Pfade schreiben auf die Volumes, die die API hier nur liest
+      - METRICS_TOKEN            # empfohlen auch im Cluster (betrieb.md); dann auch im serviceMonitor
+      - EDU_SHARING_USER         # nur, wenn der Dienst allein über die b-api erreichbar ist (konfiguration.md)
+      - EDU_SHARING_PASSWORD
+
+## @section Autoscaling der API
+
+autoscaling:
+  ## @param autoscaling.enabled HorizontalPodAutoscaler für die API; braucht zim und state als ReadWriteMany. Je Pod rund 5 GiB, und /ready wartet beim Start auf die Kopie der Indexe
+  enabled: false
+  ## @param autoscaling.minReplicas Mindestzahl der Pods
+  minReplicas: 1
+  ## @param autoscaling.maxReplicas Höchstzahl der Pods
+  maxReplicas: 3
+  ## @param autoscaling.targetCPUUtilizationPercentage CPU-Ziel in Prozent der Requests
+  targetCPUUtilizationPercentage: 70
+  ## @param autoscaling.targetMemoryUtilizationPercentage Speicher-Ziel in Prozent der Requests; leer: ohne
+  targetMemoryUtilizationPercentage: ""
+
+## @section Updater
+
+# Die Updater nutzen dasselbe Image mit eigenem Befehl, ohne Secrets, und jeder läuft genau einmal. Zwei Betriebsarten:
+#   cronjob     (Vorgabe) ein CronJob je Updater, der den Befehl einmal ausführt (ohne --loop) und endet. Die Läufe
+#               liegen nachts und versetzt, damit sie sich nicht überlagern. Nach der Installation startet je Updater
+#               ein einmaliger Job, damit die Daten nicht bis zum ersten Termin fehlen (updaters.initialRun).
+#   deployment  wie bisher und wie in Compose: je Updater ein Deployment mit einem Replikat, Strategie Recreate, das
+#               den Befehl mit --loop dauerhaft laufen lässt (Intervalle ZIM_SYNC_INTERVAL 30d,
+#               LEHRPLAN_CHECK_INTERVAL 7d, WIKIDATA_CHECK_INTERVAL 1d, GND_CHECK_INTERVAL 1d).
+updaters:
+  ## @param updaters.mode cronjob (Vorgabe) oder deployment
+  mode: cronjob
+  ## @param updaters.timeZone Zeitzone der Zeitpläne (CronJob.spec.timeZone)
+  timeZone: Europe/Berlin
+  ## @param updaters.env Variablen für alle Updater zusätzlich zu env
+  env: {}
+  # Ressourcen: im Leerlauf je rund 108 MiB gemessen, beim Bau der Indexe nicht. Ein OOMKill mitten im Bau lässt die
+  # Sperrdatei liegen, der nächste Lauf übernimmt sie erst nach 1 h (ZIM), 3 h (Indexe) oder 4 h (Harvest): die
+  # Grenzen sind darum großzügig geschätzt; nach den ersten Läufen messen und senken (anforderungen.md, 5.3).
+  ## @param updaters.resources Vorgabe für jeden Updater ohne eigene resources
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+      ephemeral-storage: 2Gi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+      ephemeral-storage: 3Gi
+  # readOnlyRootFilesystem gilt auch für die Updater; in Compose sind sie bewusst beschreibbar. SQLite legt beim Bau
+  # der Indexe seine Sortier-Dateien ins erste beschreibbare von /var/tmp und /tmp, beim Wikidata-Index Hunderte MB;
+  # ohne beschreibbares Verzeichnis scheitert der Bau. Darum je Updater ein emptyDir auf /tmp.
+  ## @param updaters.tmpEmptyDir.mountPath Beschreibbares Verzeichnis je Updater
+  ## @param updaters.tmpEmptyDir.sizeLimit Auf Platte, nicht im RAM (kein medium: Memory)
+  tmpEmptyDir:
+    mountPath: /tmp
+    sizeLimit: 2Gi
+  deployment:
+    ## @param updaters.deployment.strategy Nie zwei Läufe zugleich, auch nicht beim Update (nur mode deployment)
+    strategy: Recreate
+  cronjob:
+    ## @param updaters.cronjob.concurrencyPolicy Nie zwei Läufe desselben Updaters zugleich; ersetzt die Sperrdateien nicht, die bleiben
+    concurrencyPolicy: Forbid
+    ## @param updaters.cronjob.startingDeadlineSeconds Ein verpasster Termin (Controller aus, Forbid) startet höchstens so spät noch, sonst erst der nächste
+    startingDeadlineSeconds: 3600
+    ## @param updaters.cronjob.backoffLimit Wiederholungen eines gescheiterten Laufs (Exit-Code 1: Quelle nicht erreichbar, Download abgebrochen, Sperre belegt); ein Download setzt die .part-Datei fort
+    backoffLimit: 2
+    ## @param updaters.cronjob.successfulJobsHistoryLimit Erfolgreiche Jobs, die bleiben (Logs)
+    successfulJobsHistoryLimit: 3
+    ## @param updaters.cronjob.failedJobsHistoryLimit Gescheiterte Jobs, die bleiben (Logs)
+    failedJobsHistoryLimit: 3
+    ## @param updaters.cronjob.suspend Alle CronJobs anhalten (z. B. während einer Wartung)
+    suspend: false
+  initialRun:
+    ## @param updaters.initialRun.enabled Nur mode cronjob: bei helm install (nicht bei upgrade) je Updater ein Job, der sofort läuft. Ohne ihn fehlen die Archive bis zum ersten Termin und /ready bleibt 503. Argo CD rendert mit helm template, also bei jedem Abgleich wie eine Installation: dort false setzen und den ersten Lauf von Hand starten (README)
+    enabled: true
+    ## @param updaters.initialRun.ttlSecondsAfterFinished Der Job räumt sich danach selbst weg; Helm löscht ihn beim Upgrade nicht (resource-policy keep)
+    ttlSecondsAfterFinished: 86400
+
+  # Je Updater: enabled, command (ohne --loop; mode deployment hängt --loop an), schedule (Cron, Zeitzone oben),
+  # activeDeadlineSeconds (ein Lauf darüber wird beendet), env, volumes (lesend und schreibend), readOnlyVolumes,
+  # resources (leer: updaters.resources).
+  # Zeitplan: nachts, eine Stunde Abstand, die kurzen Läufe zuerst, so dass sich keine zwei überlagern:
+  #   01:15 täglich GND, 02:15 täglich Wikidata, 03:15 sonntags Lehrpläne, 04:15 sonntags ZIM.
+  zimUpdater:
+    ## @param updaters.zimUpdater.enabled ZIM-Archive von Kiwix (Wikipedia, Klexikon)
+    enabled: true
+    ## @param updaters.zimUpdater.command Prüft den Katalog, lädt neuere Dumps, schaltet um und löscht abgelöste Archive nach ZIM_RETENTION_HOURS
+    command: [compendium, zim, sync]
+    ## @param updaters.zimUpdater.schedule Sonntags 04:15. Die Schleife prüft alle 30 Tage (ZIM_SYNC_INTERVAL); wöchentlich, weil eine Prüfung nur den Katalog fragt (geladen wird nur ein neuerer Dump), ein abgebrochener Download nicht einen Monat wartet und ein abgelöstes Archiv nach rund einer Woche statt einem Monat gelöscht wird
+    schedule: "15 4 * * 0"
+    ## @param updaters.zimUpdater.activeDeadlineSeconds 8 h: ein neues Wikipedia-Archiv hat rund 19 GB; der nächste Lauf setzt einen abgebrochenen Download fort
+    activeDeadlineSeconds: 28800
+    ## @param updaters.zimUpdater.env Erststart: fehlende Pflichtarchive des Profils laden
+    env:
+      ZIM_BOOTSTRAP_DOWNLOAD: "true"
+    ## @param updaters.zimUpdater.volumes Eingehängte Volumes
+    volumes: [zim]
+    ## @param updaters.zimUpdater.readOnlyVolumes Davon nur lesend
+    readOnlyVolumes: []
+    ## @param updaters.zimUpdater.resources Eigene Ressourcen; leer: updaters.resources
+    resources: {}
+  lehrplanUpdater:
+    ## @param updaters.lehrplanUpdater.enabled Lehrpläne aus dem MEM-SPARQL-Endpunkt (LEHRPLAN_ENDPOINT)
+    enabled: true
+    ## @param updaters.lehrplanUpdater.command Vergleicht die Zählung je Land mit MEM; Vollabzug bei Änderung oder nach LEHRPLAN_HARVEST_MAX_AGE (30d)
+    command: [compendium, lehrplan, harvest]
+    ## @param updaters.lehrplanUpdater.schedule Sonntags 03:15, wie die Schleife wöchentlich (LEHRPLAN_CHECK_INTERVAL 7d); ein Vollabzug dauert rund 25 Minuten
+    schedule: "15 3 * * 0"
+    ## @param updaters.lehrplanUpdater.activeDeadlineSeconds 2 h
+    activeDeadlineSeconds: 7200
+    ## @param updaters.lehrplanUpdater.env Eigene Variablen
+    env: {}
+    ## @param updaters.lehrplanUpdater.volumes Eingehängte Volumes
+    volumes: [state]
+    ## @param updaters.lehrplanUpdater.readOnlyVolumes Davon nur lesend
+    readOnlyVolumes: []
+    ## @param updaters.lehrplanUpdater.resources Eigene Ressourcen; leer: updaters.resources
+    resources: {}
+  wikidataUpdater:
+    ## @param updaters.wikidataUpdater.enabled Wikidata-Index für /entities (D43, D64, D65)
+    enabled: true
+    ## @param updaters.wikidataUpdater.command Baut den Index, wenn er fehlt oder ein neueres Wikipedia-Archiv einen neueren Dump braucht (rund 750 MB)
+    command: [compendium, wikidata, sync]
+    ## @param updaters.wikidataUpdater.schedule Täglich 02:15, wie die Schleife (WIKIDATA_CHECK_INTERVAL 1d); ein neues Archiv vom Sonntag bekommt seinen Index in der Nacht zum Montag
+    schedule: "15 2 * * *"
+    ## @param updaters.wikidataUpdater.activeDeadlineSeconds 2 h; ein Lauf lädt und baut in rund 8 bis 20 Minuten
+    activeDeadlineSeconds: 7200
+    ## @param updaters.wikidataUpdater.env Eigene Variablen
+    env: {}
+    ## @param updaters.wikidataUpdater.volumes Eingehängte Volumes
+    volumes: [zim, state]
+    ## @param updaters.wikidataUpdater.readOnlyVolumes Liest active.json und das Datum des Archivs, schreibt nur in state
+    readOnlyVolumes: [zim]
+    ## @param updaters.wikidataUpdater.resources Baut den Index aus rund 750 MB Dumps
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+        ephemeral-storage: 2Gi
+      limits:
+        cpu: "1"
+        memory: 2Gi
+        ephemeral-storage: 3Gi
+  gndUpdater:
+    ## @param updaters.gndUpdater.enabled GND-Index für /entities (D65)
+    enabled: true
+    ## @param updaters.gndUpdater.command Baut den Index, wenn er fehlt oder die DNB eine neuere Ausgabe veröffentlicht (rund 65 MB)
+    command: [compendium, gnd, sync]
+    ## @param updaters.gndUpdater.schedule Täglich 01:15, wie die Schleife (GND_CHECK_INTERVAL 1d); ein Lauf dauert Minuten
+    schedule: "15 1 * * *"
+    ## @param updaters.gndUpdater.activeDeadlineSeconds 1 h
+    activeDeadlineSeconds: 3600
+    ## @param updaters.gndUpdater.env Eigene Variablen
+    env: {}
+    ## @param updaters.gndUpdater.volumes Eingehängte Volumes
+    volumes: [state]
+    ## @param updaters.gndUpdater.readOnlyVolumes Davon nur lesend
+    readOnlyVolumes: []
+    ## @param updaters.gndUpdater.resources Eigene Ressourcen; leer: updaters.resources
+    resources: {}
+
+## @section Volumes
+
+# Nur die Updater schreiben; die API hängt zim und state nur lesend ein (D113). ReadWriteMany (NFSv4.1 oder CephFS)
+# mit synchronen Uhren (NTP), weil die Updater ihre Sperrdateien nach dem Alter beurteilen.
+persistence:
+  zim:
+    ## @param persistence.zim.create PVC anlegen; false mit existingClaim
+    create: true
+    ## @param persistence.zim.existingClaim Vorhandener PVC; geht create vor
+    existingClaim: ""
+    ## @param persistence.zim.storageClass StorageClass; leer: die Vorgabe des Clusters, "-": keine (statisch gebundenes PV)
+    storageClass: ""
+    ## @param persistence.zim.accessModes ReadWriteMany: API-Pods und Updater auf verschiedenen Nodes
+    accessModes: [ReadWriteMany]
+    ## @param persistence.zim.size Archive rund 18,7 GB, beim Wechsel der Wikipedia bis rund 38 GB
+    size: 60Gi
+    ## @param persistence.zim.mountPath Pfad im Container (ZIM_DIR)
+    mountPath: /data/zim
+    ## @param persistence.zim.keep helm uninstall lässt den PVC stehen (rund 19 GB Downloads)
+    keep: true
+    ## @param persistence.zim.annotations Annotationen am PVC
+    annotations: {}
+  state:
+    ## @param persistence.state.create PVC anlegen; false mit existingClaim
+    create: true
+    ## @param persistence.state.existingClaim Vorhandener PVC; geht create vor
+    existingClaim: ""
+    ## @param persistence.state.storageClass StorageClass; leer: die Vorgabe des Clusters, "-": keine
+    storageClass: ""
+    ## @param persistence.state.accessModes ReadWriteMany: API-Pods und Updater auf verschiedenen Nodes
+    accessModes: [ReadWriteMany]
+    ## @param persistence.state.size 0,45 GB, dazu rund 1,5 GB frei für den Neubau des Wikidata-Index
+    size: 5Gi
+    ## @param persistence.state.mountPath Pfad im Container (STATE_DIR)
+    mountPath: /data/state
+    ## @param persistence.state.keep helm uninstall lässt den PVC stehen
+    keep: true
+    ## @param persistence.state.annotations Annotationen am PVC
+    annotations: {}
+
+## @section Eigene Templates
+
+# Eigene Templates (eine JSON-Datei je Template) nur lesend aus einer ConfigMap, nur für die API; das Chart setzt
+# TEMPLATES_DIR auf mountPath. Ohne ConfigMap startet der Pod mit den eingebauten Templates.
+templates:
+  ## @param templates.enabled ConfigMap einhängen und TEMPLATES_DIR setzen; false: Templates im Volume state
+  enabled: true
+  ## @param templates.configMap Name einer vorhandenen ConfigMap; leer mit files: die des Charts
+  configMap: kompendium-templates
+  ## @param templates.optional Ohne die ConfigMap startet der Pod trotzdem
+  optional: true
+  ## @param templates.mountPath Pfad im Container (TEMPLATES_DIR)
+  mountPath: /config/templates
+  ## @param templates.files Templates als Dateiname -> JSON-Text; nicht leer: das Chart legt die ConfigMap selbst an (templates.configMap leer lassen)
+  files: {}
+
+## @section Service
+
+service:
+  ## @param service.type Typ des Service
+  type: ClusterIP
+  ## @param service.annotations Annotationen am Service
+  annotations: {}
+  ## @param service.labels Weitere Labels am Service
+  labels: {}
+  # Zwei Ports: http (api.port) für die API, internal (api.internalPort) für Proben, /metrics und Stand. Der Ingress
+  # nennt immer nur http.
+
+## @section Ingress
+
+ingress:
+  ## @param ingress.enabled Ingress anlegen. Variante A: nur der Proxy der b-api darf den Dienst erreichen (internes Ingress oder NetworkPolicy), denn API_KEYS ist leer und der Dienst prüft den Schlüssel nicht selbst. Ruft die b-api den Service direkt (Port 8000), entfällt der Ingress
+  enabled: false
+  ## @param ingress.className IngressClass
+  className: ""
+  ## @param ingress.annotations ingress-nginx: Vorgabe 1m und 60 s
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 13m        # existing_markdown bis 13 MB je Anfrage (README.md)
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "330"   # REQUEST_TIMEOUT_S 300 plus Puffer; academiccloud: 630
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "330"
+  ## @param ingress.hosts Hostnamen; jeder bekommt alle paths
+  hosts: []
+  #  - kompendium.example.org
+  ## @param ingress.tls TLS wie im Ingress, z. B. [{ secretName: kompendium-tls, hosts: [kompendium.example.org] }]
+  tls: []
+  # Freigegeben nur die öffentlichen Pfade (betrieb.md, Erreichbarkeit); intern bleiben Proben, /metrics, die
+  # Statusendpunkte und alle Admin-Pfade. Ein Ingress (networking.k8s.io/v1) kennt nur Pfade; die Methoden je Pfad
+  # sind Absicht, keine Regel. Wer sie erzwingen will, braucht ein Gateway (HTTPRoute mit method) oder Regeln des
+  # Controllers. Jeder Pfad geht an den Service-Port http (api.port), nie an internal.
+  ## @param ingress.paths Öffentliche Pfade (pathType Vorgabe Prefix)
+  paths:
+    - { path: /api/v2/compendium, methods: [POST] }
+    - { path: /api/v2/knowledge, methods: [POST] }
+    - { path: /api/v2/entities, methods: [POST] }
+    - { path: /api/v2/qa, methods: [POST] }
+    - { path: /api/v2/nodes/, methods: [GET] }
+    - { path: /api/v2/collections/, methods: [GET] }      # nur .../overview
+    - { path: /api/v2/lehrplan/search, methods: [GET] }
+    - { path: /api/v2/matching/strategies, methods: [GET] }
+    - { path: /api/v2/templates, methods: [GET] }          # lesen; PUT und DELETE sind Admin
+    - { path: /openapi.json, methods: [GET], pathType: Exact }
+    - { path: /docs, methods: [GET] }
+    - { path: /redoc, methods: [GET] }
+
+## @section NetworkPolicy
+
+# Variante A: Port 8000 nur für den Proxy der b-api, Port 9000 nur für Prometheus (die Proben des Kubelets lassen die
+# üblichen CNIs ohnehin zu). Die Selektoren hängen vom Cluster ab. Ruft die b-api den Service direkt, genügt ihr
+# Namespace; geht sie über den Ingress, kommt der Verkehr aus dem Namespace des Ingress-Controllers: diesen in
+# publicFrom nennen. Ein leeres publicFrom oder internalFrom sperrt den Port ganz.
+networkPolicy:
+  ## @param networkPolicy.enabled Je Workload eine NetworkPolicy (API und jeder Updater)
+  enabled: true
+  ## @param networkPolicy.publicFrom Wer Port http (8000) erreichen darf (NetworkPolicyPeer-Liste)
+  publicFrom:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: b-api
+  ## @param networkPolicy.internalFrom Wer Port internal (9000) erreichen darf
+  internalFrom:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: monitoring
+  ## @param networkPolicy.dns Ziel der DNS-Anfragen (UDP und TCP 53), für jeden Workload erlaubt
+  dns:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+  # Ausgehend je Workload (docs/uebergabe/README.md, Netz), jeweils eine Liste von NetworkPolicyEgressRule. Eine
+  # NetworkPolicy kennt keine Hostnamen: ohne FQDN-Regeln (Cilium, Calico Enterprise, ein Egress-Proxy) bleibt Port
+  # 443 offen. Wer die Adressen kennt, ersetzt die Regel durch ipBlock-Ziele; eine leere Liste lässt nur DNS zu.
+  egress:
+    ## @param networkPolicy.egress.api b-api (B_API_BASE_URL) und edu-sharing (EDU_SHARING_BASE_URL)
+    api:
+      - ports: [{ port: 443, protocol: TCP }]
+    ## @param networkPolicy.egress.zimUpdater opds.library.kiwix.org, download.kiwix.org und seine wechselnden Spiegel (geprüft per SHA-256)
+    zimUpdater:
+      - ports: [{ port: 443, protocol: TCP }]
+    ## @param networkPolicy.egress.lehrplanUpdater MEM-SPARQL-Endpunkt (LEHRPLAN_ENDPOINT, sparql.mem.edufeed.org)
+    lehrplanUpdater:
+      - ports: [{ port: 443, protocol: TCP }]
+    ## @param networkPolicy.egress.wikidataUpdater dumps.wikimedia.org
+    wikidataUpdater:
+      - ports: [{ port: 443, protocol: TCP }]
+    ## @param networkPolicy.egress.gndUpdater data.dnb.de
+    gndUpdater:
+      - ports: [{ port: 443, protocol: TCP }]
+
+## @section Überwachung (Prometheus Operator)
+
+serviceMonitor:
+  ## @param serviceMonitor.enabled ServiceMonitor anlegen (CRD des Prometheus Operators)
+  enabled: false
+  ## @param serviceMonitor.labels Labels, nach denen Prometheus die ServiceMonitors wählt (z. B. release: prometheus)
+  labels: {}
+  ## @param serviceMonitor.interval Abfrageintervall
+  interval: 30s
+  ## @param serviceMonitor.scrapeTimeout Zeitlimit je Abfrage
+  scrapeTimeout: 10s
+  ## @param serviceMonitor.path Pfad der Metriken am Port internal; am Port 8000 antwortet /metrics mit 404
+  path: /metrics
+  ## @param serviceMonitor.jobName Name des Jobs in Prometheus: die Regeln fragen up{job="kompendium"}; sonst hieße er wie der Service, und KompendiumDown schwiege
+  jobName: kompendium
+  bearerToken:
+    ## @param serviceMonitor.bearerToken.enabled METRICS_TOKEN als Authorization: Bearer; nur mit gesetztem METRICS_TOKEN
+    enabled: true
+    ## @param serviceMonitor.bearerToken.secretName Secret mit dem Token; leer: api.secrets.existingSecret
+    secretName: ""
+    ## @param serviceMonitor.bearerToken.key Schlüssel im Secret
+    key: METRICS_TOKEN
+
+prometheusRule:
+  ## @param prometheusRule.enabled PrometheusRule aus monitoring/alerts.yml (eine Kopie liegt in files/alerts.yml)
+  enabled: false
+  ## @param prometheusRule.labels Labels, nach denen Prometheus die Regeln wählt
+  labels: {}
+  # Die Lebenszeichen-Alarme (*Silent) erwarten eine Schleife, die stündlich ein Lebenszeichen schreibt; ein CronJob
+  # schreibt keines, sie meldeten in mode cronjob ständig. Dort fallen sie weg; einen gescheiterten oder hängenden
+  # Lauf meldet stattdessen KompendiumUpdaterRunFailed (unten), einen ausbleibenden die Stale-Alarme.
+  ## @param prometheusRule.cronJobDroppedAlerts In mode cronjob ausgelassene Alarme aus alerts.yml
+  cronJobDroppedAlerts:
+    - KompendiumZimSyncSilent
+    - KompendiumLehrplanHarvestSilent
+    - KompendiumWikidataSyncSilent
+    - KompendiumGndSyncSilent
+  cronJobAlert:
+    ## @param prometheusRule.cronJobAlert.enabled In mode cronjob: KompendiumUpdaterRunFailed, wenn der letzte Lauf eines Updaters nicht gelang (braucht kube-state-metrics)
+    enabled: true
+    ## @param prometheusRule.cronJobAlert.for Länger als der längste Lauf (activeDeadlineSeconds des ZIM-Updaters, 8 h)
+    for: 9h

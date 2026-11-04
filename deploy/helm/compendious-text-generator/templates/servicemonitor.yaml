@@ -1,0 +1,40 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "kompendium.apiName" . }}
+  labels:
+    {{- include "kompendium.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+    {{- with .Values.serviceMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "kompendium.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: api
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  endpoints:
+    # Der Port internal (9000): am Port http antwortet /metrics mit 404
+    - port: internal
+      path: {{ .Values.serviceMonitor.path }}
+      interval: {{ .Values.serviceMonitor.interval }}
+      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+      {{- if .Values.serviceMonitor.bearerToken.enabled }}
+      {{- if not (.Values.serviceMonitor.bearerToken.secretName | default .Values.api.secrets.existingSecret) }}
+      {{- fail "serviceMonitor.bearerToken braucht serviceMonitor.bearerToken.secretName oder api.secrets.existingSecret" }}
+      {{- end }}
+      authorization:
+        type: Bearer
+        credentials:
+          name: {{ .Values.serviceMonitor.bearerToken.secretName | default .Values.api.secrets.existingSecret }}
+          key: {{ .Values.serviceMonitor.bearerToken.key }}
+      {{- end }}
+      relabelings:
+        # Die Regeln fragen up{job="kompendium"}; ohne diesen Namen hieße der Job wie der Service
+        - targetLabel: job
+          replacement: {{ .Values.serviceMonitor.jobName }}
+{{- end }}

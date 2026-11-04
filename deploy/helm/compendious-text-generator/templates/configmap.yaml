@@ -1,0 +1,50 @@
+{{- include "kompendium.validate" . }}
+# Die gemeinsame Umgebung aller Container, wie in Compose die .env (ohne Geheimnisse)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kompendium.envConfigMap" . }}
+  labels:
+    {{- include "kompendium.labels" . | nindent 4 }}
+data:
+  {{- $common := merge (deepCopy (.Values.env | default dict)) (dict) }}
+  {{- $_ := set $common "ZIM_DIR" .Values.persistence.zim.mountPath }}
+  {{- $_ := set $common "STATE_DIR" .Values.persistence.state.mountPath }}
+  {{- range $name, $value := $common }}
+  {{ $name }}: {{ $value | toString | quote }}
+  {{- end }}
+---
+# Nur für die API; die Ports und TEMPLATES_DIR folgen den Values des Charts
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kompendium.apiEnvConfigMap" . }}
+  labels:
+    {{- include "kompendium.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+data:
+  {{- $api := deepCopy (.Values.api.env | default dict) }}
+  {{- $_ := set $api "PUBLIC_PORT" (.Values.api.port | toString) }}
+  {{- $_ := set $api "INTERNAL_PORT" (.Values.api.internalPort | toString) }}
+  {{- if .Values.templates.enabled }}
+  {{- $_ := set $api "TEMPLATES_DIR" .Values.templates.mountPath }}
+  {{- end }}
+  {{- range $name, $value := $api }}
+  {{ $name }}: {{ $value | toString | quote }}
+  {{- end }}
+{{- if and .Values.templates.enabled .Values.templates.files }}
+---
+# Eigene Templates aus den Values (templates.files)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kompendium.templatesConfigMap" . }}
+  labels:
+    {{- include "kompendium.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+data:
+  {{- range $file, $content := .Values.templates.files }}
+  {{ $file }}: |
+    {{- $content | nindent 4 }}
+  {{- end }}
+{{- end }}

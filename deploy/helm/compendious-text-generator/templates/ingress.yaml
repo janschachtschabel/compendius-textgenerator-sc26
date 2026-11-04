@@ -1,0 +1,40 @@
+{{- if .Values.ingress.enabled }}
+{{- if not .Values.ingress.hosts }}
+{{- fail "ingress.enabled braucht mindestens einen Eintrag in ingress.hosts" }}
+{{- end }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "kompendium.apiName" . }}
+  labels:
+    {{- include "kompendium.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- with .Values.ingress.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ . | quote }}
+      http:
+        # Jeder Pfad fest an den Port http: der interne Port (Proben, /metrics, Stand) gehört nie nach außen
+        paths:
+          {{- range $.Values.ingress.paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType | default "Prefix" }}
+            backend:
+              service:
+                name: {{ include "kompendium.apiName" $ }}
+                port:
+                  name: http
+          {{- end }}
+    {{- end }}
+{{- end }}

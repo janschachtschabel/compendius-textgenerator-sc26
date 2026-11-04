@@ -1,0 +1,46 @@
+{{- if .Values.prometheusRule.enabled }}
+{{- /*
+Die Regeln aus files/alerts.yml, einer Kopie von monitoring/alerts.yml (tests/test_helm_chart.py hält beide gleich).
+In mode cronjob fehlen die Lebenszeichen-Alarme der Schleifen; dafür meldet KompendiumUpdaterRunFailed einen Lauf,
+der nicht gelang (values.yaml, prometheusRule).
+*/}}
+{{- $alerts := .Files.Get "files/alerts.yml" | fromYaml }}
+{{- $cron := eq .Values.updaters.mode "cronjob" }}
+{{- $dropped := ternary .Values.prometheusRule.cronJobDroppedAlerts list $cron }}
+{{- $groups := list }}
+{{- range $alerts.groups }}
+{{- $rules := list }}
+{{- range .rules }}
+{{- if not (has (.alert | default "") $dropped) }}
+{{- $rules = append $rules . }}
+{{- end }}
+{{- end }}
+{{- $groups = append $groups (dict "name" .name "rules" $rules) }}
+{{- end }}
+{{- if and $cron .Values.prometheusRule.cronJobAlert.enabled }}
+{{- $names := list }}
+{{- range $key := list "zimUpdater" "lehrplanUpdater" "wikidataUpdater" "gndUpdater" }}
+{{- if (index $.Values.updaters $key).enabled }}
+{{- $names = append $names (include "kompendium.updaterName" (dict "root" $ "key" $key)) }}
+{{- end }}
+{{- end }}
+{{- if $names }}
+{{- $selector := printf "namespace=%q, cronjob=~%q" .Release.Namespace (join "|" $names) }}
+{{- $expr := printf "(\n  kube_cronjob_status_last_schedule_time{%s}\n    - on(namespace, cronjob) kube_cronjob_status_last_successful_time{%s}\n) > 0\nor\n(\n  kube_cronjob_status_last_schedule_time{%s}\n    unless on(namespace, cronjob) kube_cronjob_status_last_successful_time{%s}\n)\n" $selector $selector $selector $selector }}
+{{- $rule := dict "alert" "KompendiumUpdaterRunFailed" "expr" $expr "for" .Values.prometheusRule.cronJobAlert.for "labels" (dict "severity" "warning") "annotations" (dict "summary" "Der letzte Lauf eines Updaters ist nicht gelungen" "description" "Der CronJob {{ $labels.cronjob }} hat seit seinem letzten Termin keinen erfolgreichen Lauf: gescheitert, über activeDeadlineSeconds oder hängend. kubectl get jobs und das Log des letzten Pods prüfen; der vorhandene Stand bleibt in Betrieb.") }}
+{{- $groups = append $groups (dict "name" "kompendium-updater-cronjobs" "rules" (list $rule)) }}
+{{- end }}
+{{- end }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "kompendium.fullname" . }}
+  labels:
+    {{- include "kompendium.labels" . | nindent 4 }}
+    {{- with .Values.prometheusRule.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  groups:
+    {{- toYaml $groups | nindent 4 }}
+{{- end }}

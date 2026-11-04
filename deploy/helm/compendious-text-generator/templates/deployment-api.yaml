@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kompendium.apiName" . }}
+  labels:
+    {{- include "kompendium.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.api.replicaCount }}
+  {{- end }}
+  {{- with .Values.api.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "kompendium.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      {{- $meta := include "kompendium.podMeta" (dict "root" . "component" "api") | fromYaml }}
+      annotations:
+        # Eine geänderte Konfiguration startet die Pods neu
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with $meta.annotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- toYaml $meta.labels | nindent 8 }}
+    spec:
+      {{- include "kompendium.podCommon" . | trim | nindent 6 }}
+      terminationGracePeriodSeconds: {{ .Values.api.terminationGracePeriodSeconds }}
+      containers:
+        - name: api
+          image: {{ include "kompendium.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.api.port }}
+              protocol: TCP
+            - name: internal
+              containerPort: {{ .Values.api.internalPort }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "kompendium.envConfigMap" . }}
+            - configMapRef:
+                name: {{ include "kompendium.apiEnvConfigMap" . }}
+          {{- if or (and .Values.api.secrets.existingSecret .Values.api.secrets.keys) .Values.api.extraEnv }}
+          env:
+            {{- if .Values.api.secrets.existingSecret }}
+            {{- range .Values.api.secrets.keys }}
+            - name: {{ . }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.api.secrets.existingSecret }}
+                  key: {{ . }}
+                  optional: true
+            {{- end }}
+            {{- end }}
+            {{- with .Values.api.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- with .Values.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.api.probes.startup }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.api.probes.readiness }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.api.probes.liveness }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.api.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.api.resources | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: {{ .Values.api.tmpEmptyDir.mountPath }}
+            # zim und state nur lesend: nur die Updater schreiben (D113)
+            - name: zim
+              mountPath: {{ .Values.persistence.zim.mountPath }}
+              readOnly: true
+            - name: state
+              mountPath: {{ .Values.persistence.state.mountPath }}
+              readOnly: true
+            {{- if .Values.templates.enabled }}
+            - name: templates
+              mountPath: {{ .Values.templates.mountPath }}
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: {{ .Values.api.tmpEmptyDir.sizeLimit }}
+        - name: zim
+          persistentVolumeClaim:
+            claimName: {{ include "kompendium.claimName" (dict "root" . "volume" "zim") }}
+            readOnly: true
+        - name: state
+          persistentVolumeClaim:
+            claimName: {{ include "kompendium.claimName" (dict "root" . "volume" "state") }}
+            readOnly: true
+        {{- if .Values.templates.enabled }}
+        - name: templates
+          configMap:
+            name: {{ include "kompendium.templatesConfigMap" . }}
+            optional: {{ .Values.templates.optional }}
+        {{- end }}

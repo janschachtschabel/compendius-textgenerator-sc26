@@ -1,7 +1,8 @@
 # Checks for every push to main, every version tag and every pull request (the same commands as the GitLab
 # pipeline), then the image a host pulls. Publishing is a job of this workflow and waits for the checks: only a
 # tested commit becomes an image, and :latest and :main only the commit main points to (audit 2026-09-27, BE-01).
-# Actions are pinned to commits; Dependabot updates the pins together with the version comments.
+# A version tag also gets the Helm chart of the same version (job chart). Actions are pinned to commits; Dependabot
+# updates the pins together with the version comments.
 name: CI
 
 on:
@@ -35,6 +36,31 @@ jobs:
           uv run ruff format --check .
       - name: Types
         run: uv run mypy app scripts tests
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          # Before the tests: tests/test_helm_chart.py renders the chart and fails on GitHub without helm
+          version: v3.22.1
+      - name: Helm chart lints and renders
+        # Once with the defaults (updaters as CronJobs) and once with every option on (ingress, HPA, ServiceMonitor,
+        # PrometheusRule, updaters as Deployments); kubeconform checks the manifests against the Kubernetes schemas
+        # and the CRDs of the Prometheus Operator, without a cluster
+        env:
+          CHART: deploy/helm/compendious-text-generator
+          KUBECONFORM_VERSION: v0.8.0
+          KUBECONFORM_SHA256: 9bc2bffbf71f261128533edaf912153948b7ff238f9a531ae6d34466ec287883
+        run: |
+          curl -sSfL -o kubeconform.tar.gz \
+            "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
+          echo "${KUBECONFORM_SHA256}  kubeconform.tar.gz" | sha256sum --check --strict
+          tar -xzf kubeconform.tar.gz kubeconform && rm kubeconform.tar.gz
+          helm lint --strict "$CHART"
+          helm lint --strict "$CHART" --values "$CHART/ci/all-on-values.yaml"
+          helm template kt "$CHART" > rendered-default.yaml
+          helm template kt "$CHART" --values "$CHART/ci/all-on-values.yaml" > rendered-all-on.yaml
+          ./kubeconform -strict -summary -kubernetes-version 1.30.0 -schema-location default \
+            -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+            rendered-default.yaml rendered-all-on.yaml
+          rm kubeconform rendered-default.yaml rendered-all-on.yaml
       - name: Tests with coverage gate
         # Set on purpose: tests/conftest.py must keep shell configuration away from the tests (test_isolation.py)
         env:
@@ -155,3 +181,41 @@ jobs:
           curl -sf -o /dev/null -H "Authorization: Bearer ${token}" \
             -H "Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json" \
             "https://ghcr.io/v2/${REPO}/manifests/${GITHUB_SHA::7}"
+
+  chart:
+    # The Helm chart of a version tag, after its image: the platform deploys every image version with the chart of the
+    # same version (deploy/helm/compendious-text-generator/README.md). Version and appVersion are the tag's; the step
+    # refuses a tag that Chart.yaml does not name, so a chart never points at another release's image.
+    needs: [checks, publish]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false  # no job token in .git/config for the steps after it (audit 2026-10-15)
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          version: v3.22.1
+      - name: Package
+        env:
+          CHART: deploy/helm/compendious-text-generator
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          declared="$(sed -n 's/^version: *//p' "$CHART/Chart.yaml")"
+          if [ "$version" != "$declared" ]; then
+            echo "Tag $GITHUB_REF_NAME, Chart.yaml names $declared: release the chart with the version"; exit 1
+          fi
+          helm package "$CHART" --version "$version" --app-version "$version" --destination dist
+      - name: Push to oci://ghcr.io/${{ github.repository_owner }}/charts
+        env:
+          OWNER: ${{ github.repository_owner }}
+          ACTOR: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          printf '%s' "$TOKEN" | helm registry login ghcr.io --username "$ACTOR" --password-stdin
+          helm push "dist/compendious-text-generator-${GITHUB_REF_NAME#v}.tgz" "oci://ghcr.io/${OWNER}/charts"
+          helm registry logout ghcr.io

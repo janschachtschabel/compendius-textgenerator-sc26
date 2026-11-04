@@ -1,0 +1,37 @@
+Kompendiale Texte {{ include "kompendium.imageTag" . }} ist installiert (Release {{ .Release.Name }}, Namespace {{ .Release.Namespace }}).
+
+Die API (Port http, {{ .Values.api.port }}):
+{{- if .Values.ingress.enabled }}
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ . }}/openapi.json
+{{- end }}
+{{- else }}
+  im Cluster: http://{{ include "kompendium.apiName" . }}.{{ .Release.Namespace }}.svc:{{ .Values.api.port }}
+  von hier:   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "kompendium.apiName" . }} {{ .Values.api.port }}
+              curl http://127.0.0.1:{{ .Values.api.port }}/openapi.json
+{{- end }}
+
+Der Port internal ({{ .Values.api.internalPort }}) mit /health, /ready, /metrics und dem Stand der Daten bleibt im
+Cluster: kein Ingress führt dorthin{{ if .Values.networkPolicy.enabled }}, und die NetworkPolicy lässt nur networkPolicy.internalFrom zu{{ end }}.
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "kompendium.apiName" . }} {{ .Values.api.internalPort }}
+  curl http://127.0.0.1:{{ .Values.api.internalPort }}/health
+
+/ready meldet 503, bis der ZIM-Updater die Pflichtarchive geladen hat (Profil standard rund 19 GB).
+{{- if eq .Values.updaters.mode "cronjob" }}
+
+Updater als CronJobs (Zeitzone {{ .Values.updaters.timeZone }}):
+{{- range $key := list "zimUpdater" "lehrplanUpdater" "wikidataUpdater" "gndUpdater" }}
+{{- $u := index $.Values.updaters $key }}
+{{- if $u.enabled }}
+  {{ include "kompendium.updaterName" (dict "root" $ "key" $key) }}  "{{ $u.schedule }}"  {{ join " " $u.command }}
+{{- end }}
+{{- end }}
+{{- if and .Values.updaters.initialRun.enabled .Release.IsInstall }}
+Je Updater läuft jetzt ein erster Job: kubectl -n {{ .Release.Namespace }} get jobs
+{{- end }}
+Einen Lauf außer der Reihe:
+  kubectl -n {{ .Release.Namespace }} create job --from=cronjob/{{ include "kompendium.updaterName" (dict "root" . "key" "zimUpdater") }} zim-manual-$(date +%s)
+{{- else }}
+
+Updater als Deployments mit --loop (ein Replikat je Updater, wie in Compose).
+{{- end }}

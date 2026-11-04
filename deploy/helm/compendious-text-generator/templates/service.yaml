@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kompendium.apiName" . }}
+  labels:
+    {{- include "kompendium.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+    {{- with .Values.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "kompendium.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+  ports:
+    # Die API (PUBLIC_PORT); nur dieser Port steht im Ingress
+    - name: http
+      port: {{ .Values.api.port }}
+      targetPort: http
+      protocol: TCP
+    # Proben, /metrics und Stand (INTERNAL_PORT); für Prometheus im Cluster, nie im Ingress
+    - name: internal
+      port: {{ .Values.api.internalPort }}
+      targetPort: internal
+      protocol: TCP

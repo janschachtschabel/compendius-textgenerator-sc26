@@ -1,0 +1,19 @@
+# Nicht ins Paket: Werkzeug- und Editor-Dateien und die Values der CI (ci/)
+.DS_Store
+.git/
+.gitignore
+.bzr/
+.bzrignore
+.hg/
+.hgignore
+.svn/
+*.swp
+*.bak
+*.tmp
+*.orig
+*~
+.project
+.idea/
+*.tmproj
+.vscode/
+ci/

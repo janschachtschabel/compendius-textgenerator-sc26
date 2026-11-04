@@ -1,0 +1,261 @@
+# Alarmregeln für die Kompendium-API (Metriken siehe README, Abschnitt „Überwachung“; Maßnahmen in docs/betrieb.md).
+# Die Schwellen folgen den Standardwerten: ZIM_SYNC_INTERVAL 30d, LEHRPLAN_HARVEST_MAX_AGE 30d, WIKIDATA_CHECK_INTERVAL
+# und GND_CHECK_INTERVAL 1d, und die Dauer der Kompendien mit B_API_PROVIDER=openai; mit academiccloud (2 Aufrufe
+# zugleich, REQUEST_TIMEOUT_S 600 s) dauern die schreibenden Profile länger, dort KompendiumSlowCompendia anheben. Jemanden erreichen die Alarme erst über einen Alertmanager
+# (monitoring/prometheus.yml).
+groups:
+  - name: kompendium-verfuegbarkeit
+    rules:
+      - alert: KompendiumDown
+        expr: up{job="kompendium"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: Kompendium-API nicht erreichbar
+          description: Prometheus erreicht /metrics seit fünf Minuten nicht.
+      - alert: KompendiumNotReady
+        expr: kompendium_zim_ready == 0
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: Pflichtarchive fehlen, /ready meldet 503
+          description: kompendium_zim_required_missing nennt die Zahl; Sync-Job und active.json prüfen.
+      - alert: KompendiumHighErrorRate
+        # Ohne die Proben: /ready meldet beim Erststart 503, und viele /health-Aufrufe verdünnen echte Fehler
+        expr: |
+          sum(rate(kompendium_http_requests_total{status=~"5..", route!~"/health|/ready"}[10m]))
+            / sum(rate(kompendium_http_requests_total{route!~"/health|/ready"}[10m])) > 0.05
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: Mehr als 5 % der Anfragen enden mit 5xx
+          description: Log der API prüfen; 502 heißt edu-sharing, 503 fehlende Archive oder ein angefragter Teil, der nicht eingerichtet ist (Log „compendium request refused“).
+      - alert: KompendiumStatusIncomplete
+        # Ein gescheiterter Abschnitt fehlt im Abruf; die Alarme auf seine Werte schweigen so lange
+        expr: kompendium_status_section_failed == 1
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: Ein Teil der Zustandswerte fehlt in /metrics
+          description: Ein Abschnitt des Status-Collectors scheitert (Label section); seine Alarme schweigen, bis das behoben ist. Das Log der API nennt den Fehler („status section … left out of this scrape“).
+      - alert: KompendiumVolumeFull
+        # Ein Wikidata-Lauf braucht rund 1,5 GB im Volume state, ein ZIM-Update den Platz des neuen Archivs neben dem
+        # alten; bei vollem Volume scheitern die Syncs und zuletzt selbst ihre Statusdateien (Audit 2026-09-27, BE-07).
+        # Die 30 Minuten überbrücken den Platz, den ein Wikidata-Lauf nur während des Baus belegt.
+        expr: kompendium_volume_free_bytes < 2 * 1024 * 1024 * 1024
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Auf einem Volume sind weniger als 2 GiB frei
+          description: Das Label volume nennt es (zim oder state); liegen beide auf derselben Platte, wie bei Docker üblich, melden sich beide. Platz auf der Platte schaffen oder das Volume vergrößern (docs/betrieb.md, Störungen).
+      - alert: KompendiumSlowCompendia
+        expr: |
+          histogram_quantile(0.95,
+            sum by (le) (rate(kompendium_http_request_duration_seconds_bucket{route="/api/v2/compendium"}[15m]))
+          ) > 60
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: 95 % der Kompendien brauchen mehr als 60 Sekunden
+          description: kompendium_compendium_phase_seconds zeigt, welche Phase langsam ist.
+
+  - name: kompendium-datenquellen
+    rules:
+      - alert: KompendiumZimSyncErrors
+        expr: kompendium_zim_sync_last_run_errors > 0
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der letzte ZIM-Sync hatte Fehler
+          description: sync_status.json oder GET /api/v2/zim/progress nennen die Fehler.
+      - alert: KompendiumZimSyncStale
+        expr: time() - kompendium_zim_sync_last_run_timestamp_seconds > 35 * 86400
+        labels:
+          severity: warning
+        annotations:
+          summary: Der ZIM-Sync ist seit mehr als 35 Tagen nicht gelaufen
+          description: Der Updater-Sidecar läuft nicht oder hängt.
+      - alert: KompendiumZimSyncHangs
+        # Ein laufender Sync schreibt bei jedem Schritt und im Sekundentakt beim Download; ein toter Prozess nicht mehr
+        expr: kompendium_zim_sync_running == 1 and time() - kompendium_zim_sync_status_updated_timestamp_seconds > 6 * 3600
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der ZIM-Sync meldet seit sechs Stunden keinen Fortschritt
+          description: Laut sync_status.json läuft der Updater, er schreibt aber nicht mehr (abgestürzt, volles Volume oder hängender Download); Log des Sidecars prüfen.
+      - alert: KompendiumZimSyncSilent
+        # Die Sync-Schleife schreibt beim Start und stündlich, während sie wartet, ein Lebenszeichen, auch in den 30
+        # Tagen zwischen zwei Prüfungen; ein laufender Sync schreibt stattdessen seinen Status, einen hängenden meldet
+        # KompendiumZimSyncHangs. Fehlt das Lebenszeichen, lief der Sidecar nie: Am 27.09.2026 fehlten die Sidecars
+        # auf dem Server unbemerkt, und KompendiumZimSyncStale hätte erst nach 35 Tagen gemeldet (Audit 2026-09-28,
+        # BE-15).
+        expr: >-
+          (time() - kompendium_zim_sync_alive_timestamp_seconds > 3 * 3600 unless kompendium_zim_sync_running == 1)
+          or (absent(kompendium_zim_sync_alive_timestamp_seconds) and on() up{job="kompendium"} == 1)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der ZIM-Sidecar gibt kein Lebenszeichen
+          description: sync_alive ist älter als drei Stunden oder fehlt; der Dienst zim-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs zim-updater). Neue Archive kommen nicht an.
+      - alert: KompendiumLehrplanCacheMissing
+        expr: kompendium_lehrplan_cache_available == 0
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: Lehrplan-Cache fehlt oder ist nicht lesbar
+          description: Teil 2 enthält nur den Hinweistext; Harvest anstoßen.
+      - alert: KompendiumLehrplanCacheStale
+        expr: time() - kompendium_lehrplan_cache_harvested_timestamp_seconds > 40 * 86400
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Lehrplan-Cache ist älter als 40 Tage
+          description: Der Harvest-Sidecar läuft nicht oder scheitert.
+      - alert: KompendiumLehrplanHarvestFailed
+        expr: kompendium_lehrplan_harvest_failed == 1
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der letzte Lehrplan-Harvest ist gescheitert
+          description: lehrplan_status.json nennt den Fehler; der alte Cache bleibt in Betrieb.
+      - alert: KompendiumLehrplanHarvestSilent
+        # Wie beim ZIM-Sidecar: Die Harvest-Schleife schreibt stündlich ein Lebenszeichen, auch zwischen den
+        # wöchentlichen Prüfungen, die ohne Abzug sonst nichts schreiben. Ein Vollabzug dauert rund 25 Minuten; einer
+        # über drei Stunden hängt (Audit 2026-09-28, BE-15).
+        expr: >-
+          time() - kompendium_lehrplan_harvest_alive_timestamp_seconds > 3 * 3600
+          or (absent(kompendium_lehrplan_harvest_alive_timestamp_seconds) and on() up{job="kompendium"} == 1)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Lehrplan-Sidecar gibt kein Lebenszeichen
+          description: lehrplan_alive ist älter als drei Stunden oder fehlt; der Dienst lehrplan-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs lehrplan-updater). Der Cache bleibt in Betrieb, wird aber nicht mehr geprüft.
+      - alert: KompendiumWikidataIndexMissing
+        # Eine neue Installation hat noch keinen Index; der Sidecar lädt zwei Dumps und baut ihn in 10 bis 20 Minuten
+        expr: kompendium_wikidata_index_available == 0
+        for: 2h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Wikidata-Index fehlt oder ist nicht lesbar
+          description: /api/v2/entities nennt keine Wikidata-Nummern; Sidecar wikidata-updater und wikidata_status.json prüfen.
+      - alert: KompendiumWikidataSyncFailed
+        # Länger als die Wiederholung nach einer Stunde samt Lauf: ein Fehler, den sie behebt, meldet sich nicht
+        expr: kompendium_wikidata_sync_failed == 1
+        for: 2h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der letzte Wikidata-Sync ist gescheitert
+          description: wikidata_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
+      - alert: KompendiumGndIndexMissing
+        # Eine neue Installation hat noch keinen Index; der Sidecar lädt zwei Abzüge der DNB und baut ihn in Minuten
+        expr: kompendium_gnd_index_available == 0
+        for: 2h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der GND-Index fehlt oder ist nicht lesbar
+          description: Artikel ohne Normdaten-Block bekommen keine GND-Nummer; Sidecar gnd-updater und gnd_status.json prüfen.
+      - alert: KompendiumGndSyncFailed
+        expr: kompendium_gnd_sync_failed == 1
+        for: 2h
+        labels:
+          severity: warning
+        annotations:
+          summary: Der letzte GND-Sync ist gescheitert
+          description: gnd_status.json nennt den Fehler; der vorhandene Index bleibt in Betrieb.
+      - alert: KompendiumWikidataSyncStale
+        # Der Sidecar prüft täglich und schreibt jede Prüfung in wikidata_status.json, auch eine ohne Neubau: drei Tage
+        # ohne sind drei ausgefallene Prüfungen (Audit 2026-09-27, BE-07). Das Datum des Index taugt dafür nicht, er
+        # wird erst neu gebaut, wenn ein neueres Wikipedia-Archiv es verlangt.
+        expr: time() - kompendium_wikidata_sync_last_run_timestamp_seconds > 3 * 86400
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Wikidata-Sidecar hat seit drei Tagen nicht geprüft
+          description: Der Dienst wikidata-updater läuft nicht oder hängt (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, ein neueres Wikipedia-Archiv bekommt aber keinen passenden.
+      - alert: KompendiumGndSyncStale
+        # Wie beim Wikidata-Sidecar; der GND-Index wird erst neu gebaut, wenn die DNB eine neuere Ausgabe veröffentlicht
+        expr: time() - kompendium_gnd_sync_last_run_timestamp_seconds > 3 * 86400
+        labels:
+          severity: warning
+        annotations:
+          summary: Der GND-Sidecar hat seit drei Tagen nicht geprüft
+          description: Der Dienst gnd-updater läuft nicht oder hängt (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, eine neue Ausgabe der DNB kommt aber nicht an.
+      - alert: KompendiumWikidataSyncSilent
+        # Wie beim ZIM- und Lehrplan-Sidecar: Die Schleife schreibt beim Start und stündlich, solange sie wartet, ein
+        # Lebenszeichen. Ohne Sidecar hatten KompendiumWikidataSyncStale und KompendiumWikidataSyncFailed keine Serie,
+        # und ein von Hand gebauter Index hielt KompendiumWikidataIndexMissing still: kein Alarm meldete den fehlenden
+        # Sidecar (Audit 2026-09-29, Q5). Ein Lauf lädt und baut auf dem Server in rund acht Minuten; einer über drei
+        # Stunden hängt.
+        expr: >-
+          time() - kompendium_wikidata_sync_alive_timestamp_seconds > 3 * 3600
+          or (absent(kompendium_wikidata_sync_alive_timestamp_seconds) and on() up{job="kompendium"} == 1)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der Wikidata-Sidecar gibt kein Lebenszeichen
+          description: wikidata_alive ist älter als drei Stunden oder fehlt; der Dienst wikidata-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs wikidata-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
+      - alert: KompendiumGndSyncSilent
+        # Wie beim Wikidata-Sidecar; ein Lauf lädt rund 65 MB und baut in einer halben Minute
+        expr: >-
+          time() - kompendium_gnd_sync_alive_timestamp_seconds > 3 * 3600
+          or (absent(kompendium_gnd_sync_alive_timestamp_seconds) and on() up{job="kompendium"} == 1)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: Der GND-Sidecar gibt kein Lebenszeichen
+          description: gnd_alive ist älter als drei Stunden oder fehlt; der Dienst gnd-updater läuft nicht, hängt oder wurde nie gestartet (docker compose ps, docker compose logs gnd-updater). Der vorhandene Index bleibt in Betrieb, wird aber nicht mehr geprüft.
+
+  - name: kompendium-llm
+    rules:
+      - alert: KompendiumLlmUnavailable
+        # Aus den summierten Zählern aller Worker: kompendium_llm_available zeigt nur den Stand des Workers, der den
+        # Abruf beantwortet (letzte Modellprüfung, Schutzschalter), und sieht Antworten mit 401 oder 5xx nicht
+        expr: |
+          sum(increase(kompendium_compendium_requests_total{llm_requested="true", llm_used="false"}[15m])) > 0
+            and (sum(increase(kompendium_compendium_requests_total{llm_requested="true", llm_used="true"}[15m])) or vector(0)) == 0
+            and on() max(kompendium_llm_enabled) == 1
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Keine LLM-Anfrage erreicht das LLM, alle laufen im Regelmodus
+          description: Seit 15 Minuten fällt jede LLM-Anfrage auf den Regelmodus zurück (b-api nicht erreichbar, Modell fehlt, Antworten mit 401 oder 5xx, Schutzschalter oder ein Limit des Schlüssels in der b-api); audit.llm.note der Antworten nennt den Grund.
+      - alert: KompendiumLlmCallsFailing
+        # Ueber alle Endpunkte: kompendium_llm_calls_total zaehlt jeden Aufruf an die b-api, auch die von /entities,
+        # /qa, /knowledge und der Lehrplansuche, die kompendium_compendium_requests_total nicht sieht (Audit
+        # 2026-09-27, BE-04)
+        expr: |
+          sum(increase(kompendium_llm_calls_total{outcome="failed"}[15m])) > 0
+            and (sum(increase(kompendium_llm_calls_total{outcome="answered"}[15m])) or vector(0)) == 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Kein LLM-Aufruf bekommt eine Antwort
+          description: Seit 15 Minuten scheitert jeder Aufruf an die b-api, über alle Endpunkte; die Anfragen laufen im Regelmodus. Das Log der API nennt den Status - 401, 403 oder 404 setzen das LLM zehn Minuten aus, 429 und 5xx den Schutzschalter.
+      - alert: KompendiumLlmFallbacks
+        expr: |
+          sum(rate(kompendium_compendium_requests_total{llm_requested="true", llm_used="false"}[30m])) > 0
+        for: 30m
+        labels:
+          severity: info
+        annotations:
+          summary: LLM-Anfragen fallen auf den Regelmodus zurück
+          description: audit.llm.note der Antworten nennt den Grund.

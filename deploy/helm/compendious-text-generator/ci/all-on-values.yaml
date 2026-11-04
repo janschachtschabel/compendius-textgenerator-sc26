@@ -1,0 +1,57 @@
+# Für die CI (helm lint, helm template, kubeconform) und tests/test_helm_chart.py: jede Option an, die Updater in der
+# Betriebsart deployment. Nicht im Paket (.helmignore).
+imagePullSecrets:
+  - name: ghcr-pull
+podAnnotations:
+  example.org/team: t6
+podLabels:
+  example.org/cost-center: wlo
+nodeSelector:
+  kubernetes.io/os: linux
+tolerations:
+  - { key: dedicated, operator: Equal, value: kompendium, effect: NoSchedule }
+api:
+  replicaCount: 2
+  extraEnv:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef: { fieldPath: metadata.name }
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetMemoryUtilizationPercentage: 80
+updaters:
+  mode: deployment
+  env:
+    LOG_LEVEL: DEBUG
+persistence:
+  zim:
+    storageClass: cephfs
+  state:
+    storageClass: "-"
+    keep: false
+templates:
+  configMap: ""
+  files:
+    eigenes.json: |
+      {"id": "eigenes", "title": "Eigenes Template"}
+service:
+  annotations:
+    example.org/owner: t6
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - kompendium.example.org
+  tls:
+    - secretName: kompendium-tls
+      hosts: [kompendium.example.org]
+serviceMonitor:
+  enabled: true
+  labels:
+    release: prometheus
+prometheusRule:
+  enabled: true
+  labels:
+    release: prometheus

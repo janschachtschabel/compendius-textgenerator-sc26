@@ -1,0 +1,35 @@
+{{- range $volume := list "zim" "state" }}
+{{- $p := index $.Values.persistence $volume }}
+{{- if and $p.create (not $p.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "kompendium.claimName" (dict "root" $ "volume" $volume) }}
+  labels:
+    {{- include "kompendium.labels" $ | nindent 4 }}
+  {{- if or $p.keep $p.annotations }}
+  annotations:
+    {{- if $p.keep }}
+    # helm uninstall lässt den PVC und seine Daten stehen
+    helm.sh/resource-policy: keep
+    {{- end }}
+    {{- with $p.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml $p.accessModes | nindent 4 }}
+  {{- if $p.storageClass }}
+  {{- if eq "-" $p.storageClass }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: {{ $p.storageClass | quote }}
+  {{- end }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $p.size }}
+{{- end }}
+{{- end }}
