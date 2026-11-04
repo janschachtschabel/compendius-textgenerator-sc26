@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "1e0671ce5b83dfcbc80d29cb6113dd0813a00c91"
+      "revision": "454bdafb49b21d359244177103aae35a3e13c169"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -572,8 +572,8 @@
       "sources": [
         {
           "path": "README.md",
-          "line": 1130,
-          "end_line": 1141,
+          "line": 1133,
+          "end_line": 1144,
           "label": "Proxy reicht den Schlüssel weiter (D105)"
         },
         {
@@ -584,8 +584,8 @@
         },
         {
           "path": "docs/betrieb.md",
-          "line": 257,
-          "end_line": 257,
+          "line": 261,
+          "end_line": 261,
           "label": "Aufruf über /api/v1/proxy/<dienst>"
         }
       ]
@@ -748,8 +748,8 @@
         },
         {
           "path": "deploy/helm/compendious-text-generator/values.yaml",
-          "line": 470,
-          "end_line": 482,
+          "line": 484,
+          "end_line": 496,
           "label": "Helm: ServiceMonitor, optional"
         }
       ]
@@ -782,8 +782,8 @@
         },
         {
           "path": "app/service.py",
-          "line": 145,
-          "end_line": 150,
+          "line": 152,
+          "end_line": 157,
           "label": "Knoten gelesen oder als Text (D114)"
         }
       ]
@@ -1193,22 +1193,22 @@
       ],
       "sources": [
         {
-          "path": "app/settings.py",
-          "line": 108,
-          "end_line": 114,
-          "label": "OTEL_EXPORTER_OTLP_ENDPOINT, Vorgabe leer"
-        },
-        {
           "path": "app/tracing.py",
-          "line": 90,
-          "end_line": 106,
+          "line": 94,
+          "end_line": 110,
           "label": "OTLP/HTTP-Exporter nur mit Endpunkt"
         },
         {
-          "path": "Dockerfile",
-          "line": 71,
-          "end_line": 71,
-          "label": "Extra otlp im Image"
+          "path": "deploy/helm/compendious-text-generator/values.yaml",
+          "line": 475,
+          "end_line": 478,
+          "label": "Helm: tracing.otlpEndpoint, Port 4318"
+        },
+        {
+          "path": "deploy/helm/compendious-text-generator/templates/networkpolicy.yaml",
+          "line": 41,
+          "end_line": 50,
+          "label": "Helm: NetworkPolicy der API öffnet den Port"
         }
       ]
     }
@@ -1489,10 +1489,10 @@
       "dot": "slate",
       "title": "Protokoll und Trace",
       "items": [
-        "Je Anfrage ein Server-Span (OpenTelemetry): Kind des B3- oder W3C-Kontexts des Aufrufers, sonst ein neuer Trace; Proben ohne Span (D115)",
+        "Je Anfrage ein Server-Span (OpenTelemetry): Kind des Aufrufer-Kontexts, B3 vor W3C, sonst ein neuer Trace; Proben ohne Span (D115)",
         "An b-api und edu-sharing gehen X-B3-TraceId, X-B3-SpanId, X-B3-Sampled und traceparent mit dem eigenen Span, dazu x-client-trace-id und X-Request-ID",
         "Die Antwort nennt den Trace in X-B3-TraceId; JSON-Logzeilen tragen service, trace_id, span_id und client_trace_id, nach stdout (D109)",
-        "Spans verlassen den Dienst nur mit OTEL_EXPORTER_OTLP_ENDPOINT (OTLP/HTTP, etwa Jaeger); Vorgabe leer, also aus",
+        "Spans verlassen den Dienst nur mit OTEL_EXPORTER_OTLP_ENDPOINT (OTLP/HTTP, etwa Jaeger); Vorgabe leer, also aus; im Helm-Chart setzt tracing.otlpEndpoint ihn und öffnet in der NetworkPolicy der API den Port des Sammlers (4318)",
         "WLO_CACHE_PATH legt den Repository-Cache je Pod ab; leer: wlo_cache.db im Volume state"
       ]
     },
@@ -1502,7 +1502,7 @@
       "items": [
         "Docker Compose bleibt: die vier Updater als Container mit --loop (ZIM alle 30 Tage, Lehrpläne alle 7 Tage, Wikidata und GND täglich)",
         "Helm-Chart je Versions-Tag als OCI-Chart: API-Deployment mit Ports 8000 und 9000, NetworkPolicy, PVCs zim und state, ServiceMonitor und PrometheusRule optional",
-        "Updater als CronJobs nachts versetzt (Europe/Berlin): GND 01:15 und Wikidata 02:15 täglich, Lehrpläne 03:15 und ZIM 04:15 sonntags; mit updaters.mode=deployment als Deployments mit --loop"
+        "Updater als CronJobs nachts versetzt (Europe/Berlin): GND 01:15 und Wikidata 02:15 täglich, Lehrpläne 03:15 und ZIM 04:15 sonntags; bei SIGTERM endet ein Lauf mit Status und freier Sperre; mit updaters.mode=deployment als Deployments mit --loop"
       ]
     }
   ]

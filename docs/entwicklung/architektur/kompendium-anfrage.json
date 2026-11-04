@@ -13,7 +13,7 @@
     ],
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "1e0671ce5b83dfcbc80d29cb6113dd0813a00c91"
+      "revision": "454bdafb49b21d359244177103aae35a3e13c169"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -535,8 +535,8 @@
         },
         {
           "path": "app/tracing.py",
-          "line": 113,
-          "end_line": 129,
+          "line": 116,
+          "end_line": 131,
           "label": "Span als Kind des Aufrufer-Trace (D115)"
         }
       ]
@@ -575,14 +575,14 @@
       "sources": [
         {
           "path": "app/service.py",
-          "line": 145,
-          "end_line": 150,
+          "line": 152,
+          "end_line": 157,
           "label": "node_id lesen oder Text übernehmen (D114)"
         },
         {
           "path": "app/service.py",
-          "line": 320,
-          "end_line": 352,
+          "line": 331,
+          "end_line": 363,
           "label": "Frist, Budget, Teile 2 und 3 nebenher"
         },
         {
@@ -653,14 +653,14 @@
       "sources": [
         {
           "path": "app/service.py",
-          "line": 164,
-          "end_line": 179,
+          "line": 171,
+          "end_line": 186,
           "label": "Sicht, Hauptartikel, 404"
         },
         {
           "path": "app/service.py",
-          "line": 288,
-          "end_line": 291,
+          "line": 295,
+          "end_line": 298,
           "label": "sources als Text zum Korpus (D114)"
         }
       ]
@@ -917,7 +917,7 @@
       "items": [
         "topic: das Thema direkt; node_id: der Dienst liest den Knoten aus edu-sharing, mit B3-Headern wie jeder Aufruf",
         "material oder collection_context: derselbe Knoten als Text, ohne Repository (D114); GET /api/v2/nodes/{id} liefert ihn als text_input",
-        "sources: Texte für Teil 1 wie die Materialien von knowledge_collection_id; Teil 3 braucht weiter collection_id"
+        "sources: Texte für Teil 1, gereiht wie die Materialien von knowledge_collection_id unter CORPUS_MAX_CHUNKS; Teil 3 braucht weiter collection_id"
       ]
     },
     {

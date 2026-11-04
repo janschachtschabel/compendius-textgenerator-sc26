@@ -1,11 +1,11 @@
 # Architektur
 
-[Übersicht](README.md) · Stand 04.11.2026 · Commit `1e0671c` (Release 2.26.0 in Vorbereitung) · drei interaktive
-Diagramme, erzeugt mit dem Skill archify 3.1.0
+[Übersicht](README.md) · Stand 04.11.2026 · Commit `454bdaf` (Release 2.26.0 in Vorbereitung) · drei interaktive
+Diagramme, erzeugt mit dem Skill archify 3.2.0
 
 Drei Diagramme zeigen, woraus der Dienst besteht, wie eine Anfrage durch ihn läuft und wie die Updater die lokalen
 Daten aktuell halten. Jeder Baustein nennt die Stellen im Code, die ihn belegen: Datei und Zeilen im Commit
-`1e0671c`, in der HTML-Fassung im semantischen Pass des Bausteins als verifizierter Quellnachweis mit Link auf GitHub.
+`454bdaf`, in der HTML-Fassung im semantischen Pass des Bausteins als verifizierter Quellnachweis mit Link auf GitHub.
 Die HTML-Seiten brauchen keine weiteren Dateien und laden nichts nach; die Schriften sind eingebettet.
 
 | Diagramm | Inhalt |
@@ -26,16 +26,18 @@ Quelltext. Die Quellen liegen daneben in `architektur/*.html` und `*.json`.
   und GND-Indizes (`/entities`) und seinen Zustand (Templates, Status-Dateien, Repository-Cache). Nach außen fragt er
   über das LLM-Gateway die b-api, mit dem Schlüssel der Anfrage oder `B_API_KEY` (D105), und edu-sharing.
 - edu-sharing ist optional (D114): `material` und `collection_context` bringen einen Knoten als Text statt `node_id`
-  (für `compendium`, `/knowledge` und `/qa`), `sources` bringt Texte für Teil 1 wie die Materialien von
-  `knowledge_collection_id`. Das Repository braucht der Dienst nur noch für `node_id`, `collection_id`,
-  `knowledge_collection_id` und Teil 3; mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`, etwa dem Gastkonto der WLO,
-  liest er das konfigurierte Repository mit dem Konto, jedes andere ohne (D112). `GET /api/v2/nodes/{id}` liefert einen
-  Knoten als `text_input`, fertig zum Senden.
-- Je Anfrage öffnet der Dienst einen Span (OpenTelemetry, D115): als Kind des B3- oder W3C-Kontexts des Aufrufers,
+  (für `compendium`, `/knowledge` und `/qa`), `sources` bringt Texte für Teil 1, gereiht wie die Materialien von
+  `knowledge_collection_id` unter `CORPUS_MAX_CHUNKS`. Das Repository braucht der Dienst nur noch für `node_id`,
+  `collection_id`, `knowledge_collection_id` und Teil 3; mit `EDU_SHARING_USER` und `EDU_SHARING_PASSWORD`, etwa dem
+  Gastkonto der WLO, liest er das konfigurierte Repository mit dem Konto, jedes andere ohne (D112).
+  `GET /api/v2/nodes/{id}` liefert einen Knoten als `text_input`, fertig zum Senden.
+- Je Anfrage öffnet der Dienst einen Span (OpenTelemetry, D115): als Kind des Kontexts des Aufrufers (B3 vor W3C),
   sonst als neuen Trace; die Proben laufen ohne. An b-api und edu-sharing gehen `X-B3-TraceId`, `X-B3-SpanId`,
   `X-B3-Sampled` und `traceparent` mit dem eigenen Span, dazu `x-client-trace-id` und `X-Request-ID`; die Antwort nennt
   den Trace in `X-B3-TraceId`, die JSON-Logzeilen tragen `service`, `trace_id`, `span_id` und `client_trace_id`. Spans
   gehen nur mit `OTEL_EXPORTER_OTLP_ENDPOINT` per OTLP/HTTP an einen Collector wie Jaeger; die Vorgabe ist leer.
+  Im Helm-Chart setzt `tracing.otlpEndpoint` die Variable und öffnet in der NetworkPolicy der API den Port des
+  Collectors (`tracing.collectorPort`, Vorgabe 4318).
 - Am internen Port 9000 antworten `/health`, `/ready`, `/metrics` und die Statusendpunkte (D110); beide Ports sind
   einstellbar (`PUBLIC_PORT`, `INTERNAL_PORT`, D111). Docker-Healthcheck und Kubernetes-Proben fragen dort, Prometheus
   (Compose-Profil `monitoring` oder ein ServiceMonitor des Helm-Charts) holt dort die Metriken.
@@ -68,7 +70,8 @@ Quelltext. Die Quellen liegen daneben in `architektur/*.html` und `*.json`.
 
 - Jeder Updater lädt aus seiner Quelle, prüft die Prüfsumme und ersetzt die Datei in einem Schritt: die ZIM-Archive
   (Wikipedia und Klexikon, D99) mit `active.json`, `lehrplan.db`, `wikidata.db` und `gnd.db`. Eine Lock-Datei je
-  Updater verhindert einen zweiten Lauf.
+  Updater verhindert einen zweiten Lauf. Auch ein einmaliger Lauf (CronJob, dort PID 1) nimmt SIGTERM an, etwa bei
+  Fristende oder gelöschtem Pod: Er schreibt seinen Status, gibt die Sperre frei und endet mit 1 (D116).
 - Takt (D116): Im Helm-Chart (Vorgabe `updaters.mode=cronjob`) läuft jeder Updater als CronJob einmal je Termin, ohne
   `--loop`, nachts versetzt (Europe/Berlin): GND 01:15 und Wikidata 02:15 täglich, Lehrpläne 03:15 und ZIM 04:15
   sonntags; bei `helm install` startet je Updater gleich ein erster Lauf. In Docker Compose (und mit
@@ -106,9 +109,10 @@ Die Diagramme entstehen aus den JSON-Dateien daneben (`architektur/*.json`) mit 
    `git clone --no-local`, dessen `origin` per `git remote set-url` auf GitHub gesetzt und der Commit ausgecheckt ist.
    `--out-dir` hält die Prüfquittungen aus dem Repository; sie enthalten lokale Pfade. Die Dateien `*.delivery.json`
    und `*.delivery-pending.json`, die archify trotzdem neben das HTML legt, nicht committen.
-3. Die deutsche Oberfläche steht in `meta.translations`: `examples/locales/de.json` von archify 3.1.0 und 25 eigene
-   Übersetzungen der Schlüssel, die dort fehlen; archify meldet fehlende Schlüssel als Warnung `i18n/*`. Meldet archify
-   mit `meta.locale: "de"` nur „Renderer failed before emitting a structured diagnostic“ oder `internal/unclassified`,
-   zeigt ein Lauf ohne `meta.locale` und `meta.translations` die eigentliche Meldung.
+3. Die deutsche Oberfläche steht in `meta.translations`: `examples/locales/de.json` von archify 3.2.0 und 25 eigene
+   Übersetzungen der Schlüssel, die dort fehlen (das Paket bringt kein eingebautes `de`); archify meldet fehlende
+   Schlüssel als Warnung `i18n/*`. Meldet archify mit `meta.locale: "de"` nur „Renderer failed before emitting a
+   structured diagnostic“ oder `internal/unclassified`, zeigt ein Lauf ohne `meta.locale` und `meta.translations` die
+   eigentliche Meldung.
 4. Die Kompendium-Anfrage muss mindestens 1,55-mal so breit wie hoch bleiben (1080 × 690), sonst ragt sie über ein
    Fenster von 1440 × 900; Notizen an den Nachrichten bleiben eine Zeile kurz, Einzelheiten stehen in den Karten.

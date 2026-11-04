@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "1e0671ce5b83dfcbc80d29cb6113dd0813a00c91"
+      "revision": "454bdafb49b21d359244177103aae35a3e13c169"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -622,8 +622,8 @@
         },
         {
           "path": "app/service.py",
-          "line": 145,
-          "end_line": 150,
+          "line": 152,
+          "end_line": 157,
           "label": "Knoten gelesen oder als Text (D114)"
         }
       ]
@@ -650,9 +650,9 @@
         },
         {
           "path": "app/cli_zim.py",
-          "line": 110,
-          "end_line": 126,
-          "label": "Schleife, Lebenszeichen"
+          "line": 102,
+          "end_line": 132,
+          "label": "SIGTERM, Schleife, Lebenszeichen"
         }
       ]
     },
@@ -678,9 +678,9 @@
         },
         {
           "path": "app/cli_lehrplan.py",
-          "line": 122,
-          "end_line": 143,
-          "label": "Schleife, Lebenszeichen"
+          "line": 127,
+          "end_line": 158,
+          "label": "SIGTERM, Schleife, Lebenszeichen"
         }
       ]
     },
@@ -1226,6 +1226,7 @@
       "items": [
         "Jeder Lauf hält eine Sperrdatei (sync.lock, lehrplan.harvest.lock, wikidata_sync.lock, gnd_sync.lock): ein zweiter Lauf wartet",
         "Eine Sperre ohne Lebenszeichen (1 h ZIM, 3 h Indizes, 4 h Harvest) gilt als verwaist und wird übernommen",
+        "Auch ein einmaliger Lauf (CronJob, PID 1) nimmt SIGTERM an: Er schreibt seinen Status, gibt die Sperre frei und endet mit 1 (D116)",
         "Die API und die Schleifen der Updater protokollieren nach stdout (D109), ein einmaliger Lauf, auch der eines CronJobs, nach stderr"
       ]
     },
