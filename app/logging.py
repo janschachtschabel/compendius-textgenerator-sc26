@@ -132,6 +132,9 @@ def configure_logging(level: str = "INFO", format_: str = "text", *, stream: Tex
     root.setLevel(level.upper())
     for name in QUIET_LOGGERS:
         logging.getLogger(name).setLevel(logging.WARNING)
+    # A caller's tracestate member the W3C grammar does not allow made the SDK write a WARNING with the caller's text
+    # per request; the member is dropped all the same (review of D115)
+    logging.getLogger("opentelemetry.trace.span").setLevel(logging.ERROR)
 
 
 def uvicorn_log_config(level: str = "INFO", format_: str = "text") -> dict[str, Any]:

@@ -42,12 +42,49 @@ def test_every_package_the_app_imports_is_declared() -> None:
     declared = _declared()
     missing: set[str] = set()
     for module in _imported_modules():
+        if module in NAMESPACES:
+            continue  # its parts are checked one by one below
         found = {_normalized(distribution) for distribution in distributions.get(module, [module])}
-        # A namespace package (opentelemetry) is shared by many distributions, most of them dependencies of the
-        # declared ones: one declared is enough there (D115)
-        if (found - declared) and not (len(found) > 1 and found & declared):
-            missing |= found - declared
+        missing |= found - declared
+    # A namespace package is shared by many distributions, most of them only dependencies of others: each part the
+    # service imports needs the distribution of that part (review of D115)
+    for name in _imported_names():
+        owner = next((owner for prefix, owner in NAMESPACES.get(name.split(".")[0], ()) if _within(name, prefix)), None)
+        if name.split(".")[0] in NAMESPACES:
+            assert owner is not None, f"{name}: no distribution named for this part of a namespace package"
+            missing |= {owner} - declared
     assert not missing, sorted(missing)
+
+
+# The parts of a namespace package and their distributions, the longest prefix first
+NAMESPACES: dict[str, tuple[tuple[str, str], ...]] = {
+    "opentelemetry": (
+        ("opentelemetry.exporter.otlp.proto.http", "opentelemetry-exporter-otlp-proto-http"),
+        ("opentelemetry.propagators.b3", "opentelemetry-propagator-b3"),
+        ("opentelemetry.sdk", "opentelemetry-sdk"),
+        ("opentelemetry.trace", "opentelemetry-api"),
+        ("opentelemetry.context", "opentelemetry-api"),
+        ("opentelemetry.propagators.composite", "opentelemetry-api"),
+        ("opentelemetry", "opentelemetry-api"),
+    )
+}
+
+
+def _within(name: str, prefix: str) -> bool:
+    """The top level alone (``from opentelemetry import trace``) names only itself: a new part needs its own entry."""
+    return name == prefix or ("." in prefix and name.startswith(prefix + "."))
+
+
+def _imported_names() -> set[str]:
+    """The dotted modules ``app`` imports, ``from a.b import c`` as ``a.b``."""
+    found: set[str] = set()
+    for path in (ROOT / "app").rglob("*.py"):
+        for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
+            if isinstance(node, ast.Import):
+                found.update(alias.name for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                found.add(node.module)
+    return found
 
 
 def test_the_server_comes_without_reload_and_websocket_packages() -> None:

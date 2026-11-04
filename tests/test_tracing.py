@@ -24,6 +24,7 @@ from app.logging import _JsonFormatter
 from app.sources.wlo.client import EduSharingClient
 from app.tracing import (
     _trace,
+    _trace_headers,
     client_trace_id,
     configure,
     end_request,
@@ -191,18 +192,17 @@ def test_a_span_ends_with_the_route_and_the_answer() -> None:
 
 def test_a_tracestate_goes_on_as_the_w3c_allows_it() -> None:
     """Spaces after a comma, vendor keys with *, values with ~, and repeated headers joined; it travels with the
-    W3C trace."""
-    parent = (b"traceparent", b"00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01")
-    current = start_request(
-        [parent, (b"tracestate", b"rojo=00f067aa0ba902b7, congo=t61rcWkgMzE"), (b"tracestate", b"tenant*v=x~y")],
-        "req-1",
-        "GET",
+    W3C trace, also beside B3 of the same trace."""
+    found = _trace_headers(
+        [(b"tracestate", b"rojo=00f067aa0ba902b7, congo=t61rcWkgMzE"), (b"tracestate", b"tenant*v=x~y")]
     )
-    assert current.headers["tracestate"] == "rojo=00f067aa0ba902b7, congo=t61rcWkgMzE,tenant*v=x~y"
-    assert "rojo=00f067aa0ba902b7" in outgoing_headers()["tracestate"]
+    assert found["tracestate"] == "rojo=00f067aa0ba902b7, congo=t61rcWkgMzE,tenant*v=x~y"
     long_state = "vendor=" + "a" * 500
-    assert start_request([(b"tracestate", long_state.encode())], "req-1", "GET").headers["tracestate"] == long_state
-    assert start_request([(b"tracestate", b"a=" + bytes([1]) + b"b")], "req-1", "GET").headers == {}
+    assert _trace_headers([(b"tracestate", long_state.encode())])["tracestate"] == long_state
+    assert _trace_headers([(b"tracestate", b"a=" + bytes([1]) + b"b")]) == {}
+    parent = (b"traceparent", f"00-{TRACE}-00f067aa0ba902b7-01".encode())
+    start_request([parent, (b"tracestate", b"rojo=00f067aa0ba902b7"), *TRACED[1:]], "req-1", "GET")
+    assert outgoing_headers()["tracestate"] == "rojo=00f067aa0ba902b7"
 
 
 def test_the_threads_of_a_request_carry_its_trace() -> None:
@@ -212,3 +212,78 @@ def test_the_threads_of_a_request_carry_its_trace() -> None:
     seen = map_in_threads(lambda _: outgoing_headers(), [1, 2, 3], 3)
 
     assert all(headers["x-b3-traceid"] == TRACE for headers in seen)
+
+
+# -- review of 2026-11-04 -------------------------------------------------------------------------------------------
+
+W3C_TRACE = "0af7651916cd43dd8448eb211c80319c"
+
+
+@pytest.mark.parametrize(
+    "headers",
+    [
+        # a B3 trace id without a span id beside W3C of another trace
+        [(b"x-b3-traceid", TRACE.encode()), (b"traceparent", f"00-{W3C_TRACE}-00f067aa0ba902b7-01".encode())],
+        # B3 of a span beside W3C of another trace
+        [*TRACED[1:3], (b"traceparent", f"00-{W3C_TRACE}-00f067aa0ba902b7-01".encode())],
+        # the single header beside the multi header of another trace: the single one wins, as the propagator reads
+        [(b"b3", f"{TRACE}-{CALLER_SPAN}-1".encode()), (b"x-b3-traceid", b"11111111111111111111111111111111")],
+    ],
+)
+def test_b3_wins_and_log_answer_and_calls_name_one_trace(headers: list[tuple[bytes, bytes]]) -> None:
+    start_request(headers, "req-1", "GET")
+    sent = outgoing_headers()
+    assert trace_id() == TRACE == sent["x-b3-traceid"]
+    assert sent["traceparent"].split("-")[1] == TRACE
+
+
+def test_a_b3_trace_of_zeros_is_no_trace() -> None:
+    start_request([(b"x-b3-traceid", b"0000000000000000"), (b"x-b3-spanid", CALLER_SPAN.encode())], "req-1", "GET")
+    assert trace_id() != "0000000000000000" and HEX32.fullmatch(trace_id() or "")
+    assert outgoing_headers()["x-b3-traceid"] == trace_id()
+
+
+def test_a_missing_sampling_decision_is_deferred_not_a_no() -> None:
+    start_request(TRACED[1:3], "req-1", "GET")
+    assert outgoing_headers()["x-b3-sampled"] == "1"
+
+
+def test_a_span_ends_when_the_route_raises() -> None:
+    ended: list[Any] = []
+
+    async def boom(request: Request) -> JSONResponse:
+        ended.append(_trace.get())
+        raise RuntimeError("kaputt")
+
+    app = RequestLog(Starlette(routes=[Route("/", boom)]), routes=[])
+    with TestClient(app, raise_server_exceptions=False) as client:
+        assert client.get("/").status_code == 500
+    assert ended[0].span is not None and not ended[0].span.is_recording()
+
+
+def test_the_collector_gets_the_traces_path_once(monkeypatch: pytest.MonkeyPatch) -> None:
+    from opentelemetry.exporter.otlp.proto.http import trace_exporter
+
+    seen: list[str] = []
+    monkeypatch.setattr(trace_exporter.OTLPSpanExporter, "__init__", lambda self, endpoint: seen.append(endpoint))
+    monkeypatch.setattr("opentelemetry.sdk.trace.export.BatchSpanProcessor.__init__", lambda self, exporter: None)
+    monkeypatch.setattr("opentelemetry.sdk.trace.TracerProvider.add_span_processor", lambda self, processor: None)
+    try:
+        configure("x", "http://jaeger:4318/")
+        configure("x", "http://jaeger:4318/v1/traces")
+    finally:
+        configure()
+    assert seen == ["http://jaeger:4318/v1/traces", "http://jaeger:4318/v1/traces"]
+
+
+def test_with_the_sdk_switched_off_no_trace_of_zeros_is_logged(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OTEL_SDK_DISABLED", "true")
+    try:
+        configure()
+        start_request([], "req-1", "GET")
+        assert trace_id() is None and span_id() is None
+        start_request(TRACED, "req-1", "GET")
+        assert trace_id() == TRACE
+    finally:
+        monkeypatch.delenv("OTEL_SDK_DISABLED")
+        configure()

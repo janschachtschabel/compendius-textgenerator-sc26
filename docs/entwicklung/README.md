@@ -164,7 +164,7 @@ Vergleich](01-alt-und-neu.md).
    Tabelle; je Schritt (Artikelwahl, Korpus, Zuordnung, Text, Lehrplanschnipsel, QA-Paare, Entitäten) die gemessenen
    Methoden mit Güte, Zeit und Tokens und warum welches Profil welche nutzt; Kosten je Profil und Endpunkt (M82)
 10. [Architektur](10-architektur.md): drei interaktive Diagramme mit Belegen im Code - Systemübersicht, der Weg einer
-    Kompendium-Anfrage und die Sidecars mit ihren lokalen Daten; als HTML unter `architektur/`
+    Kompendium-Anfrage und die Updater mit ihren lokalen Daten; als HTML unter `architektur/`
 
 Die Seiten sind als Baum für Confluence gedacht: diese Übersicht als Elternseite, die zehn übrigen darunter. Die
 Links zwischen ihnen zeigen auf die Markdown-Dateien und müssen nach dem Import auf die Confluence-Seiten umgestellt
