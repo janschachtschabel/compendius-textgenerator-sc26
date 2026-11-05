@@ -1,12 +1,15 @@
 # Aufrufe: alter und neuer Dienst
 
-[Übergabe](README.md) · Stand 04.11.2026 · Release 2.26.0
+[Übergabe](README.md) · Stand 05.11.2026 · Release 2.26.1
 
 Diese Seite zeigt, wie die aufrufenden Systeme vom alten Dienst (`/api/v1`) auf den neuen (`/api/v2`) umsteigen: die
 Aufrufe vorher und nachher, die Profile, die Wahl der drei Teile und wie man aus der Antwort nur den fertigen Text
-oder nur die QA-Paare holt. Jede Anfrage an den neuen Dienst auf dieser Seite ist am 30.09.2026 gelaufen; die
-Aufrufe des alten Dienstes sind aus seinem Code abgeleitet (compendious 0.2.0), denn er läuft hier nicht mehr.
-Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
+oder nur die QA-Paare holt, dazu den Aufruf über die b-api und Eingaben ohne Repository. Die Anfragen an den neuen
+Dienst sind am 30.09.2026 gelaufen; die Beispiele mit Text statt Knoten (D114) folgen denen in `/docs`, die ein Test
+durch den Dienst schickt, und alle Anfragekörper sind gegen das Schema von 2.26.1 geprüft. Den Weg über die b-api
+beschreibt diese Seite nach ihrer Dokumentation; er geht, sobald der Proxy-Eintrag besteht
+([Steckbrief](steckbrief.md), B-API). Die Aufrufe des alten Dienstes sind aus seinem Code abgeleitet (compendious
+0.2.0), denn er läuft hier nicht mehr. Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
 
 ## Was sich ändert
 
@@ -19,9 +22,11 @@ Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
 | QA-Paare zu einem Thema | `POST /api/v1/pipeline` (Kompendium und Paare in einem Aufruf) | `POST /api/v2/qa` mit `topic`: erzeugt Teil 1 selbst und fragt ihn ab |
 | Begriffe mit Wikipedia-Artikel | `POST /api/v1/linker` (live bei Wikipedia) | `POST /api/v2/entities` (lokal, mit Wikidata- und GND-Nummer) |
 | Länge | `config.length`, Vorgabe 6.000 Zeichen | `target_length`, Vorgabe des Profils, in allen 30.000 (D70, bis dahin 12.000); eine Richtgröße, der Text wird so lang, wie die Quellen tragen; seit 2.19.0 in den wörtlichen Profilen oft deutlich länger (D102) |
-| Zugang | ohne Schlüssel | Header `X-API-Key`, sobald `API_KEYS` gesetzt ist |
+| Eingang | ein Text, aus dem ein LLM Begriffe zieht | `topic`, ein Material oder eine Sammlung als Text (`material`, `collection_context`), eigene Quellen (`sources`) oder ein Knoten des Repositorys (`node_id`, `collection_id`) |
+| Zugang | ohne Schlüssel | direkt: Header `X-API-Key`, sobald `API_KEYS` gesetzt ist; über die b-api: `Authorization: Bearer <Schlüssel>` (siehe [Über die b-api](#über-die-b-api)) |
 | Grenze | 60 Anfragen je Minute und IP | keine im Dienst (`RATE_LIMIT`, Vorgabe 0, D104); die b-api begrenzt je Schlüssel |
 | Fehler | HTTP 200 mit „# Fehler bei der Generierung“ als Text | HTTP-Status mit JSON (siehe [Fehler](#fehler)) |
+| Nachverfolgung | keine | B3-Header (`X-B3-TraceId`) werden gelesen und weitergegeben; die Antwort nennt die Spur in `X-B3-TraceId` |
 
 ## Profile
 
@@ -61,6 +66,43 @@ Die Beispiele brauchen `curl` und `jq`. Ein Kompendium kann mit `best-quality` u
 lässt dafür genug Zeit. Die Frist des Dienstes ist länger (`REQUEST_TIMEOUT_S`: mit OpenAI 300 s, mit academiccloud
 600 s): Wer nie vor dem Dienst abbrechen will, nimmt `--max-time 630`. Unter Windows (Git Bash, PowerShell) schickt curl Umlaute aus `-d` nicht als UTF-8, der Dienst
 antwortet dann mit 422: dort den Körper aus einer UTF-8-Datei senden (`--data-binary @anfrage.json`).
+
+### Über die b-api
+
+Hinter der b-api ruft man den Dienst über ihren Proxy, mit dem Schlüssel der b-api statt `X-API-Key`. Die Pfade
+hinter dem Proxy-Namen sind dieselben wie direkt. Die b-api prüft den Schlüssel, begrenzt und bucht je Schlüssel und
+reicht ihn als `Authorization` weiter; der Dienst nimmt ihn für seine eigenen LLM-Aufrufe, so laufen auch deren
+Kosten auf diesen Schlüssel (`B_API_KEY_SOURCE=request`, `API_KEYS` bleibt leer, D105). Lehnt die b-api den
+Schlüssel für das LLM ab, läuft die Anfrage mit den Regeln weiter wie `llm-free`, statt zu scheitern (D106).
+
+```bash
+export BAPI=https://b-api.staging.openeduhub.net   # die b-api (hier Staging)
+export BAPI_KEY=...                                 # ein Schlüssel der b-api: Nutzer, Gast oder Anwendung
+
+curl -sS --max-time 330 -X POST "$BAPI/api/v1/proxy/compendious-text-generator/api/v2/compendium" \
+  -H "Authorization: Bearer $BAPI_KEY" -H 'Content-Type: application/json' \
+  -d '{"topic": "Photosynthese", "parts": ["world"]}' \
+  | jq -r '.markdown' > photosynthese.md
+```
+
+`Bearer` mit großem B und genau ein Schlüssel-Header: ein kleines `bearer` oder ein zusätzlicher ungültiger
+`X-API-Key` beantwortet die b-api mit 401. Der Proxy-Eintrag braucht ein Timeout von mindestens 330 s (Frist des
+Dienstes 300 s plus Reserve). Die übrigen Beispiele dieser Seite gehen ebenso: `$KOMPENDIUM` durch
+`$BAPI/api/v1/proxy/compendious-text-generator` ersetzen und `X-API-Key` durch `Authorization: Bearer`.
+
+### Anfragen verfolgen
+
+Wer eine Anfrage über mehrere Dienste verfolgt, schickt die B3-Header mit (`X-B3-TraceId`, `X-B3-SpanId`, oder W3C
+`traceparent`); ohne sie beginnt der Dienst eine neue Spur (D115). Die Antwort nennt die Spur im Header
+`X-B3-TraceId`, die Logzeilen des Dienstes in `trace_id`, und an b-api und edu-sharing geht sie weiter. Mit dieser
+Kennung findet der Betrieb eine Anfrage im Log:
+
+```bash
+curl -sS --max-time 180 -D - -o antwort.json -X POST "$KOMPENDIUM/api/v2/compendium" \
+  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"topic": "Photosynthese", "parts": ["world"]}' \
+  | grep -i '^x-b3-traceid'
+```
 
 ## Alt und neu im Vergleich
 
@@ -315,8 +357,42 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   | jq '{thema: .topic, artikel: .resolution.title}'
 ```
 
+Ein Material als Text, wie es in seinen Metadaten steht; der Titel nennt oft ein Format, den Artikel suchen die
+Regeln in Titel und Beschreibung, mit LLM nennt ihn das LLM (D47). Ein Fach muss eines aus dem Vokabular von
+edu-sharing sein (Name, Alias oder URI), sonst 422 mit der Liste der Schulfächer:
+
+```bash
+curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
+  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"material": {"title": "Stationsarbeit zur Optik",
+       "description": "An sechs Stationen untersuchen die Lernenden, wie Licht an Linsen und Spiegeln gelenkt wird.",
+       "keywords": ["Licht", "Linse", "Spiegel"], "subjects": ["Physik"], "levels": ["Sekundarstufe I"]},
+       "parts": ["world"]}' \
+  | jq '{thema: .topic, artikel: .resolution.title}'
+```
+
+Wer Knoten eines Repositorys hat, aber dem Dienst keinen Zugang geben will, liest sie selbst und schickt sie als
+Text; die Felder liefert `GET /api/v2/nodes/{node_id}` (auf einem Dienst mit Zugang) fertig zum Einsetzen:
+
+```bash
+curl -sS "$KOMPENDIUM/api/v2/nodes/ac66224b-42b0-4676-a53d-71b058dc780b" -H "X-API-Key: $API_KEY" \
+  | jq '.text_input'
+```
+
 Eigene Texte kommen mit `sources` (Titel, Text, URL, Lizenz, Autoren) als weitere Quellen in Teil 1, wie die
-Materialien einer Wissens-Sammlung; je Zeile ein Absatz ab 40 Zeichen, `audit.text_sources` zählt, was ankam.
+Materialien einer Wissens-Sammlung: je Zeile ein Absatz ab 40 Zeichen, zitiert wie ein Material und im
+Quellenverzeichnis mit seiner Lizenz genannt; weitergegeben unter CC BY-SA 4.0 nur aus freier Lizenz (CC0, PDM,
+CC BY, CC BY-SA). Teil 1 muss dabei sein. `audit.text_sources` zählt, was ankam (`sent`, `sources`, `empty`, `cut`):
+
+```bash
+curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
+  -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
+  -d '{"topic": "Lochkamera", "parts": ["world"],
+       "sources": [{"title": "Lochkamera im Unterricht", "license": "CC BY 4.0", "authors": ["Beispiel-Autorin"],
+         "url": "https://example.org/lochkamera",
+         "text": "Mit einer Lochkamera sehen die Lernenden, dass sich Licht geradlinig ausbreitet: Das Bild steht auf dem Kopf.\nJe kleiner das Loch, desto schärfer und dunkler wird das Bild auf dem Pergamentpapier."}]}' \
+  | jq '.audit.text_sources'
+```
 
 ## QA-Paare
 
@@ -380,7 +456,7 @@ Gemessen am 29.09.2026: zehn Paare zu Photosynthese mit `best-quality` in 7 s f�
 | `POST /api/v2/knowledge` | die Artikel zu einem Thema mit Einleitung und Abschnitten, ohne Zuordnung: Rohstoff für eigene Verarbeitung |
 | `GET /api/v2/lehrplan/search?q=…` | Lehrplanelemente der MEM zu Stichwörtern (Teil 2 allein) |
 | `GET /api/v2/collections/{id}/overview` | Teil 3 allein |
-| `GET /api/v2/nodes/{id}` | Metadaten eines Materials oder einer Sammlung und das daraus abgeleitete Thema |
+| `GET /api/v2/nodes/{id}` | Metadaten eines Materials oder einer Sammlung, das daraus abgeleitete Thema und unter `text_input` dieselben Angaben als Text für Aufrufe ohne Repository |
 | `GET /api/v2/templates` | die Gliederungen von Teil 1: `sc26` (13 Bausteine, Vorgabe) und `standard` (6); eigene mit `PUT` und `ADMIN_TOKEN` |
 | `existing_markdown`, `regenerate_sections` | ein früheres Kompendium mitschicken: redaktionell geprüfte Bausteine bleiben wörtlich, nur die genannten entstehen neu |
 | `/ui/` | Prüfansicht für die Redaktion (`UI_ENABLED`): die Antworten aller Endpunkte im Browser, mit Herkunft je Absatz, Qualität, Zeit und Kosten |
@@ -402,7 +478,7 @@ Fehler kommen als HTTP-Status mit JSON in `detail`, etwa bei einem unbekannten T
 
 | Status | wann |
 |---|---|
-| 401 | `API_KEYS` ist gesetzt und der Header `X-API-Key` fehlt oder passt nicht |
+| 401 | `API_KEYS` ist gesetzt und der Header `X-API-Key` fehlt oder passt nicht; über die b-api: ihr Schlüssel fehlt, ist ungültig oder steht nicht als `Bearer` da |
 | 404 | Thema nicht in den Archiven (`resolution.alternatives` schlägt andere vor), oder nach dem LLM passt keiner der Artikel, die die Regeln fanden (dann ein Fach oder ein genaueres Thema angeben; D85), Sammlung, Knoten oder Template unbekannt |
 | 413 | Körper größer als erlaubt (`REQUEST_BODY_MAX_BYTES`) |
 | 422 | ein Feld oder eine Kombination ist nicht erlaubt, etwa `knowledge_collection_id` ohne Teil 1; Körper kein UTF-8-JSON |
