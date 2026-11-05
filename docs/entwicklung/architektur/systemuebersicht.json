@@ -8,7 +8,7 @@
     "quality_profile": "showcase",
     "repository": {
       "url": "https://github.com/janschachtschabel/compendius-textgenerator-sc26.git",
-      "revision": "454bdafb49b21d359244177103aae35a3e13c169"
+      "revision": "724dd55d620599800d397b85483604ff0b86334c"
     },
     "translations": {
       "page.title": "{title} Diagramm",
@@ -532,7 +532,7 @@
       "id": "aufrufer",
       "type": "external",
       "label": "Aufrufende Systeme",
-      "sublabel": "HTTPS, /api/v2",
+      "sublabel": "Thema, Text oder Knoten",
       "pos": [
         40,
         300
@@ -826,7 +826,7 @@
       "id": "bapi",
       "type": "external",
       "label": "b-api-LLM",
-      "sublabel": "gpt-6-luna oder Route",
+      "sublabel": "Route kompendium",
       "pos": [
         1505,
         40
@@ -837,10 +837,10 @@
       ],
       "sources": [
         {
-          "path": "app/llm/client.py",
-          "line": 280,
-          "end_line": 282,
-          "label": "/api/v1/llm/{provider}"
+          "path": "deploy/b-api/route-kompendium.json",
+          "line": 1,
+          "end_line": 11,
+          "label": "Route kompendium: gpt-6-luna, 3 Rückfälle"
         },
         {
           "path": "app/llm/client.py",

@@ -37,6 +37,8 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md), [Leitfaden für Di
 
 ![Kompendiale Texte im Kontext](bilder/steckbrief_kontext.png)
 
+![Systemübersicht: Zugang, API, Volumes, Updater und externe Dienste (Release 2.26.1)](bilder/steckbrief_architektur.png)
+
 ## Clusterfähigkeit
 
 | | | Status |

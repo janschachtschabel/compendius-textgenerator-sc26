@@ -1,11 +1,11 @@
 # Architektur
 
-[Übersicht](README.md) · Stand 04.11.2026 · Commit `454bdaf` (Release 2.26.0 in Vorbereitung) · drei interaktive
+[Übersicht](README.md) · Stand 05.11.2026 · Systemübersicht an Commit `724dd55` (Release 2.26.1), die beiden anderen an `454bdaf` · drei interaktive
 Diagramme, erzeugt mit dem Skill archify 3.2.0
 
 Drei Diagramme zeigen, woraus der Dienst besteht, wie eine Anfrage durch ihn läuft und wie die Updater die lokalen
-Daten aktuell halten. Jeder Baustein nennt die Stellen im Code, die ihn belegen: Datei und Zeilen im Commit
-`454bdaf`, in der HTML-Fassung im semantischen Pass des Bausteins als verifizierter Quellnachweis mit Link auf GitHub.
+Daten aktuell halten. Jeder Baustein nennt die Stellen im Code, die ihn belegen: Datei und Zeilen im Commit,
+den die Datei nennt, in der HTML-Fassung im semantischen Pass des Bausteins als verifizierter Quellnachweis mit Link auf GitHub.
 Die HTML-Seiten brauchen keine weiteren Dateien und laden nichts nach; die Schriften sind eingebettet.
 
 | Diagramm | Inhalt |
@@ -116,3 +116,6 @@ Die Diagramme entstehen aus den JSON-Dateien daneben (`architektur/*.json`) mit 
    eigentliche Meldung.
 4. Die Kompendium-Anfrage muss mindestens 1,55-mal so breit wie hoch bleiben (1080 × 690), sonst ragt sie über ein
    Fenster von 1440 × 900; Notizen an den Nachrichten bleiben eine Zeile kurz, Einzelheiten stehen in den Karten.
+5. Helle PNG für den Steckbrief (`docs/uebergabe/bilder/steckbrief_architektur.png`): eine Kopie des HTML mit dem Stil
+   `.toolbar,.cards{display:none!important} *{animation:none!important}` vor `</head>` mit Edge headless aufnehmen,
+   Adresse mit `?theme=light&embed=1`, `--force-device-scale-factor=2 --window-size=1800,1100`.
