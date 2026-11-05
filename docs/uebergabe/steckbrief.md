@@ -77,7 +77,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md), [Leitfaden für Di
 | Proxy-Eintrag | `compendious-text-generator` → Port 8000, `forwardApiKey` an, Timeout ≥ 330 s | **offen, kritisch** |
 | Rechte des Schlüssels | `chat/completions` (Aufrufer); `B_API_KEY` zusätzlich `models` · keine Routenverwaltung | erfüllt |
 | Modell heute | `B_API_PROVIDER=openai`, `B_API_MODEL=gpt-6-luna` | erfüllt |
-| Routing | Route der b-api (global, Admin): `gpt-6-luna` → Reserve `gpt-5.6-luna` (gleiche Parameterfamilie); Qwen über academiccloud erst nach Probe; dann `B_API_PROVIDER=router`, `B_API_ROUTE=<name>` | Route festlegen |
+| Routing | Route `kompendium` (global, Admin): Stufe 0 `gpt-6-luna` → 1 `gpt-5.6-luna` → 2 `qwen3.6-35b-a3b` → 3 `qwen3.8-27b`; im Normalfall nur gpt-6-luna · fertig in [`deploy/b-api/route-kompendium.json`](https://github.com/janschachtschabel/compendius-textgenerator-sc26/blob/main/deploy/b-api/route-kompendium.json) · dann `B_API_PROVIDER=router`, `B_API_ROUTE=kompendium` · Stufen 2 und 3 (GWDG, Kontingent rund 10/min) vorher proben | Route anlegen |
 | Limits | b-api lehnt ab (401/402/403/429) → Dienst arbeitet ohne LLM weiter (`llm-free`) und nennt den Grund | Status-Codes bestätigen |
 
 ## Security und Konfiguration
@@ -101,6 +101,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md), [Leitfaden für Di
 | | | Status |
 |---|---|---|
 | RAM API | **weitgehend fest**: 3,3 GiB nach Start, 4,0 GiB warm, unter Last +0,2 GiB, mit Seiten-Cache bis 4,7 GiB (2 Worker) · je weiterer Worker +2 GiB | gemessen |
+| Grenzen im Container | Kubernetes setzt sie durch; der Dienst passt hinein über `WEB_CONCURRENCY` (2 Worker × 2 GiB + Grundbedarf ≤ Limit) · BLAS-Threads von numpy nicht begrenzt (`OMP_NUM_THREADS` unter Last prüfen) | prüfen |
 | Empfehlung API | Request **2 CPU / 5 Gi**, Limit **4 CPU / 6 Gi** (rund 1,3 GiB Puffer über dem Höchstwert) · CPU-Spitze 3,4 Kerne | erfüllt |
 | Updater | Request 128 Mi, Limit 1 Gi, Wikidata 2 Gi (geschätzt, nach ersten Läufen senken); als CronJob nur während des Laufs | nachmessen |
 | Storage | `zim` 60 Gi, `state` 5 Gi, `emptyDir` 2 Gi je API-Pod | erfüllt |
@@ -119,7 +120,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md), [Leitfaden für Di
 
 1. **Kritisch:** Proxy-Eintrag in der b-api – Team der b-api.
 2. Status-Codes der b-api bei erreichtem Limit bestätigen – Team der b-api.
-3. Route festlegen und in der Konfiguration vorschreiben; Ebene 2 vorher proben – Administrator der b-api.
+3. Route `kompendium` anlegen (`deploy/b-api/route-kompendium.json`), dann `B_API_PROVIDER=router`; Stufen 2 und 3 vorher proben – Administrator der b-api.
 4. Cluster-Werte fürs Chart (StorageClass RWX, NetworkPolicy-Selektoren, Ingress-Host, Secret); CronJobs im Cluster erstmals beobachten – T4.
 5. Vertretung als Ansprechperson benennen.
 6. Image-Größe: Modelle im Image lassen oder per Volume liefern – T4 und Owner.

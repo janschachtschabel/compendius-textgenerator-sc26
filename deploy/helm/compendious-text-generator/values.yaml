@@ -132,7 +132,8 @@ api:
     WEB_CONCURRENCY: "2"
     LLM_ENABLED: "true"
     B_API_KEY_SOURCE: request    # Schlüssel des Aufrufers, den die b-api weiterreicht (D105)
-    B_API_PROVIDER: openai       # ohne Routing; router erst mit einer globalen Route der b-api
+    B_API_PROVIDER: openai       # ohne Routing; mit der globalen Route (deploy/b-api/route-kompendium.json): router
+    # B_API_ROUTE: kompendium   # Name der Route, nur mit B_API_PROVIDER=router
     B_API_MODEL: gpt-6-luna
     RATE_LIMIT: "0"              # die b-api begrenzt je Schlüssel (D104)
     UI_ENABLED: "false"

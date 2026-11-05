@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="340" viewBox="0 0 880 340" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Zwei Ports: öffentliche API und interne Proben und Metriken, mit NetworkPolicy"><title>Zwei Ports: öffentliche API und interne Proben und Metriken, mit NetworkPolicy</title><rect width="880" height="340" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Zwei Ports und eine NetworkPolicy</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Öffentlich nur die API; Proben und Metriken nur im Cluster; ausgehend nur, was der Dienst braucht</text>
+<rect x="24.0" y="90.0" width="160.0" height="56.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="104.0" y="114.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">b-api / Ingress</text>
+<text x="104.0" y="130.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">öffentlicher Zugang</text>
+<rect x="24.0" y="200.0" width="160.0" height="56.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="104.0" y="224.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Kubelet, Prometheus</text>
+<text x="104.0" y="240.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Proben, /metrics</text>
+<rect x="260.0" y="76.0" width="330.0" height="200.0" rx="8" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="425.0" y="100.0" font-size="14" fill="#1f2933" text-anchor="middle" font-weight="700">Pod des Dienstes</text>
+<rect x="280.0" y="112.0" width="290.0" height="56.0" rx="6" fill="#ffffff" stroke="#2f6db5" stroke-width="1"/>
+<text x="425.0" y="134.0" font-size="12.5" fill="#1f2933" text-anchor="middle" font-weight="600">Port 8000: /api/…, /docs</text>
+<text x="425.0" y="154.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">OpenAPI nur mit diesen Pfaden</text>
+<rect x="280.0" y="192.0" width="290.0" height="64.0" rx="6" fill="#ffffff" stroke="#2f6db5" stroke-width="1"/>
+<text x="425.0" y="214.0" font-size="12.5" fill="#1f2933" text-anchor="middle" font-weight="600">Port 9000: /health, /ready,</text>
+<text x="425.0" y="232.0" font-size="12.5" fill="#1f2933" text-anchor="middle" font-weight="600">/metrics (optional Token)</text>
+<text x="425.0" y="249.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">nicht in der OpenAPI</text>
+<polyline points="184.0,118.0 274.2,138.7" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="280.0,140.0 272.4,142.4 274.1,134.6" fill="#52606d"/>
+<polyline points="184.0,228.0 274.0,224.2" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="280.0,224.0 273.2,228.3 272.9,220.3" fill="#52606d"/>
+<rect x="670.0" y="90.0" width="190.0" height="50.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="765.0" y="111.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">b-api (LLM)</text>
+<text x="765.0" y="127.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">443</text>
+<rect x="670.0" y="160.0" width="190.0" height="50.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="765.0" y="181.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">DNS</text>
+<text x="765.0" y="197.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">53</text>
+<rect x="670.0" y="230.0" width="190.0" height="50.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="765.0" y="251.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">weitere Ziele</text>
+<text x="765.0" y="267.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Repository, Trace-Sammler</text>
+<polyline points="590.0,115.0 664.0,115.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="670.0,115.0 663.1,119.0 663.1,111.0" fill="#52606d"/>
+<polyline points="590.0,185.0 664.0,185.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="670.0,185.0 663.1,189.0 663.1,181.0" fill="#52606d"/>
+<polyline points="590.0,250.0 664.0,254.6" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="670.0,255.0 662.8,258.6 663.3,250.6" fill="#52606d"/>
+<text x="24.0" y="312.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">NetworkPolicy im Chart: ein zu 8000 nur von der b-api, zu 9000 nur vom Monitoring; aus nur DNS und die genannten Ziele.</text>
+<text x="24.0" y="330.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Ingress und b-api zeigen nie auf Port 9000.</text></svg>

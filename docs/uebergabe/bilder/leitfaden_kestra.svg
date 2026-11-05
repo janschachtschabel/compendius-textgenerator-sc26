@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="330" viewBox="0 0 880 330" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Ein Kestra-Flow über die b-api: Freigabe, Start, Ersatzschlüssel, Ergebnis"><title>Ein Kestra-Flow über die b-api: Freigabe, Start, Ersatzschlüssel, Ergebnis</title><rect width="880" height="330" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Dienste kombinieren: Kestra-Flows über die b-api (Stand nicht final)</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Label bapi.expose gibt einen Flow frei; der Flow ruft LLM und Dienste mit einem Ersatzschlüssel</text>
+<rect x="24.0" y="90.0" width="154.0" height="86.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="101.0" y="121.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Flow in Kestra</text>
+<text x="101.0" y="137.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Label bapi.expose,</text>
+<text x="101.0" y="153.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">bapi.scopes, …</text>
+<rect x="190.0" y="90.0" width="154.0" height="86.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="267.0" y="121.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">b-api</text>
+<text x="267.0" y="137.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">liest alle 2 min, legt</text>
+<text x="267.0" y="153.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Endpunkt und Recht an</text>
+<polyline points="178.0,133.0 184.0,133.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="190.0,133.0 183.1,137.0 183.1,129.0" fill="#52606d"/>
+<rect x="356.0" y="90.0" width="154.0" height="86.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="433.0" y="121.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Start</text>
+<text x="433.0" y="137.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Kundenschlüssel,</text>
+<text x="433.0" y="153.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Inputs JSON/Datei</text>
+<polyline points="344.0,133.0 350.0,133.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="356.0,133.0 349.1,137.0 349.1,129.0" fill="#52606d"/>
+<rect x="522.0" y="90.0" width="154.0" height="86.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="599.0" y="121.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Job läuft</text>
+<text x="599.0" y="137.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">bapi_token statt</text>
+<text x="599.0" y="153.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Schlüssel, ≤ 12 h</text>
+<polyline points="510.0,133.0 516.0,133.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="522.0,133.0 515.1,137.0 515.1,129.0" fill="#52606d"/>
+<rect x="688.0" y="90.0" width="154.0" height="86.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="765.0" y="121.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Ergebnis</text>
+<text x="765.0" y="137.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">GET /api/v1/jobs/{id}</text>
+<text x="765.0" y="153.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">30 Tage, Dateien 7 Tage</text>
+<polyline points="676.0,133.0 682.0,133.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="688.0,133.0 681.1,137.0 681.1,129.0" fill="#52606d"/>
+<rect x="364.0" y="220.0" width="320.0" height="56.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="524.0" y="244.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">LLM und Dienste über die b-api</text>
+<text x="524.0" y="260.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Authorization: Bearer {{ inputs.bapi_token }}</text>
+<polyline points="619.0,176.0 619.0,214.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="619.0,220.0 615.0,213.1 623.0,213.1" fill="#52606d"/>
+<text x="24.0" y="304.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Grenzen: 20 offene Jobs je Schlüssel (429), Dateien bis 50 MB, 10 je Start; Laufzeit Vorgabe 24 h; Ergebnisse unverschlüsselt.</text>
+<text x="24.0" y="322.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Ein Dienst, der in Flows passt: Eingaben als Text, synchron oder als Job, Ergebnis als JSON oder Datei.</text></svg>

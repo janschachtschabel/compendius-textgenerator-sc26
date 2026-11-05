@@ -8,7 +8,7 @@
 <text x="345.0" y="108.0" font-size="15" fill="#1f2933" text-anchor="middle" font-weight="700">b-api</text>
 <rect x="250.0" y="124.0" width="190.0" height="96.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
 <text x="345.0" y="152.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Dienst-Proxy</text>
-<text x="345.0" y="168.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">ein Eintrag je Dienst</text>
+<text x="345.0" y="168.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">/api/v1/proxy/&lt;dienst&gt;</text>
 <text x="345.0" y="184.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">prüft Schlüssel, Limits,</text>
 <text x="345.0" y="200.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Nutzung, Logs</text>
 <rect x="250.0" y="260.0" width="190.0" height="104.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>

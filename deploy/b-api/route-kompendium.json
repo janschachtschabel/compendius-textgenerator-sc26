@@ -1,0 +1,11 @@
+{
+  "logicalModel": "kompendium",
+  "description": "Kompendiale Texte: gpt-6-luna; Reserve gpt-5.6-luna; im Notfall Qwen bei der GWDG (gemeinsames Kontingent rund 10/min, 200/h)",
+  "maxAttempts": 4,
+  "deployments": [
+    {"id": "oa-gpt6-luna", "providerId": "openai", "upstreamModel": "gpt-6-luna", "priorityTier": 0, "weight": 1},
+    {"id": "oa-gpt56-luna", "providerId": "openai", "upstreamModel": "gpt-5.6-luna", "priorityTier": 1, "weight": 1},
+    {"id": "ac-qwen36-35b", "providerId": "academiccloud", "upstreamModel": "qwen3.6-35b-a3b", "priorityTier": 2, "weight": 1},
+    {"id": "ac-qwen38-27b", "providerId": "academiccloud", "upstreamModel": "qwen3.8-27b", "priorityTier": 3, "weight": 1}
+  ]
+}

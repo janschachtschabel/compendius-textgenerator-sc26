@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="430" viewBox="0 0 880 430" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="LLM-Routing der b-api: Auflösung des Namens und Stufen einer Route"><title>LLM-Routing der b-api: Auflösung des Namens und Stufen einer Route</title><rect width="880" height="430" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">LLM über die b-api: Name, Route, Stufen</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Der Dienst schickt den Routennamen im Feld model; die b-api wählt nach Priorität und Gewicht</text>
+<rect x="24.0" y="90.0" width="170.0" height="70.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="109.0" y="113.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Dienst</text>
+<text x="109.0" y="129.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">model: "kompendium"</text>
+<text x="109.0" y="145.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Schlüssel des Kunden</text>
+<rect x="250.0" y="72.0" width="200.0" height="92.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="262.0" y="92.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">1. eigene Route des Kontos</text>
+<text x="262.0" y="110.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">2. globale Route (Admin)</text>
+<text x="262.0" y="128.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">3. Muster provider/modell</text>
+<text x="262.0" y="146.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">4. sonst 400 „No route“</text>
+<polyline points="194.0,125.0 244.0,125.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="250.0,125.0 243.1,129.0 243.1,121.0" fill="#52606d"/>
+<rect x="500.0" y="72.0" width="360.0" height="300.0" rx="8" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="680.0" y="94.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Route „kompendium“ (Vorschlag)</text>
+<rect x="516.0" y="108.0" width="328.0" height="52.0" rx="6" fill="#ffffff" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="530.0" y="129.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="700">Stufe 0</text>
+<text x="600.0" y="129.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">openai / gpt-6-luna</text>
+<text x="600.0" y="148.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">läuft im Normalfall</text>
+<rect x="516.0" y="172.0" width="328.0" height="52.0" rx="6" fill="#ffffff" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="530.0" y="193.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="700">Stufe 1</text>
+<text x="600.0" y="193.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">openai / gpt-5.6-luna</text>
+<text x="600.0" y="212.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Ausfall von Stufe 0</text>
+<polyline points="680.0,160.0 680.0,166.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="680.0,172.0 676.0,165.1 684.0,165.1" fill="#52606d"/>
+<rect x="516.0" y="236.0" width="328.0" height="52.0" rx="6" fill="#ffffff" stroke="#d9822b" stroke-width="1.3"/>
+<text x="530.0" y="257.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="700">Stufe 2</text>
+<text x="600.0" y="257.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">academiccloud / qwen3.6-35b-a3b</text>
+<text x="600.0" y="276.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Notfall, GWDG-Kontingent</text>
+<polyline points="680.0,224.0 680.0,230.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="680.0,236.0 676.0,229.1 684.0,229.1" fill="#52606d"/>
+<rect x="516.0" y="300.0" width="328.0" height="52.0" rx="6" fill="#ffffff" stroke="#d9822b" stroke-width="1.3"/>
+<text x="530.0" y="321.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="700">Stufe 3</text>
+<text x="600.0" y="321.0" font-size="12" fill="#1f2933" text-anchor="start" font-weight="normal">academiccloud / qwen3.8-27b</text>
+<text x="600.0" y="340.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">Notfall, langsam</text>
+<polyline points="680.0,288.0 680.0,294.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="680.0,300.0 676.0,293.1 684.0,293.1" fill="#52606d"/>
+<polyline points="450.0,112.0 494.0,112.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="500.0,112.0 493.1,116.0 493.1,108.0" fill="#52606d"/>
+<text x="24.0" y="200.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="700">Regeln</text>
+<text x="24.0" y="222.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Eine Route bündelt Modelle derselben Parameterfamilie</text>
+<text x="24.0" y="240.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">(GPT-5/6: max_completion_tokens, reasoning_effort).</text>
+<text x="24.0" y="258.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Qwen bei GWDG versteht denselben Körper mit</text>
+<text x="24.0" y="276.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">reasoning_effort "none" - vorher proben.</text>
+<text x="24.0" y="294.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">GWDG: rund 10 Anfragen/min, 200/h für alle</text>
+<text x="24.0" y="312.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Anwendungen zusammen - Qwen nur als Reserve.</text>
+<text x="24.0" y="330.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Wortgleiche Anfragen kommen aus dem Cache:</text>
+<text x="24.0" y="348.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">?ignore-caching=true oder eigene Kennung je Aufruf.</text>
+<text x="24.0" y="412.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Route anlegen: Administrator der b-api (global); Dienst: B_API_PROVIDER=router, B_API_ROUTE=kompendium.</text></svg>

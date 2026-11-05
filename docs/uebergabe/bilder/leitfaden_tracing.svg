@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="360" viewBox="0 0 880 360" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Trace-ID und Logs über alle Dienste: B3 von der b-api bis zum LLM"><title>Trace-ID und Logs über alle Dienste: B3 von der b-api bis zum LLM</title><rect width="880" height="360" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Eine Spur über alle Dienste (B3)</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Die TraceId entsteht beim ersten Dienst und wandert mit; jeder loggt sie mit seiner Dienst-ID</text>
+<rect x="24.0" y="74.0" width="180.0" height="34.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1"/>
+<text x="114.0" y="96.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Kunde / App</text>
+<line x1="114" y1="108" x2="114" y2="290" stroke="#dde2e8" stroke-width="2"/>
+<rect x="230.0" y="74.0" width="180.0" height="34.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1"/>
+<text x="320.0" y="96.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Plattform, b-api</text>
+<line x1="320" y1="108" x2="320" y2="290" stroke="#dde2e8" stroke-width="2"/>
+<rect x="436.0" y="74.0" width="180.0" height="34.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1"/>
+<text x="526.0" y="96.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Ihr Dienst</text>
+<line x1="526" y1="108" x2="526" y2="290" stroke="#dde2e8" stroke-width="2"/>
+<rect x="642.0" y="74.0" width="180.0" height="34.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1"/>
+<text x="732.0" y="96.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">b-api (LLM)</text>
+<line x1="732" y1="108" x2="732" y2="290" stroke="#dde2e8" stroke-width="2"/>
+<polyline points="114.0,140.0 314.0,140.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="320.0,140.0 313.1,144.0 313.1,136.0" fill="#52606d"/>
+<text x="217.0" y="132.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">Anfrage (ohne Spur)</text>
+<rect x="250.0" y="150.0" width="140.0" height="34.0" rx="4" fill="#fbeee0" stroke="#d9822b" stroke-width="1"/>
+<text x="320.0" y="171.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">TraceId, falls keine kam</text>
+<polyline points="320.0,200.0 520.0,200.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="526.0,200.0 519.1,204.0 519.1,196.0" fill="#52606d"/>
+<text x="423.0" y="192.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">X-B3-TraceId, X-B3-SpanId</text>
+<rect x="452.0" y="208.0" width="148.0" height="42.0" rx="4" fill="#e3edf8" stroke="#2f6db5" stroke-width="1"/>
+<text x="526.0" y="225.0" font-size="11" fill="#1f2933" text-anchor="middle" font-weight="normal">eigener Span (sonst neu)</text>
+<text x="526.0" y="242.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">loggt trace_id, span_id</text>
+<polyline points="526.0,278.0 726.0,278.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="732.0,278.0 725.1,282.0 725.1,274.0" fill="#52606d"/>
+<text x="640.0" y="270.0" font-size="10.5" fill="#52606d" text-anchor="middle" font-weight="normal">dieselbe TraceId, neuer Span</text>
+<rect x="24.0" y="300.0" width="832.0" height="48.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="40.0" y="320.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="700">Logzeile (JSON, stdout):</text>
+<text x="40.0" y="338.0" font-size="11" fill="#52606d" text-anchor="start" font-weight="normal">{"service": "&lt;dienst-id&gt;", "trace_id": "80f1…eff7", "span_id": "e457…6bd1", "request_id": "…", "level": "INFO", "message": "…"}</text></svg>
