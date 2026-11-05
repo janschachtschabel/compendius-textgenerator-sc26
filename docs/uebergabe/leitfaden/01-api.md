@@ -2,6 +2,8 @@
 
 [Leitfaden](../leitfaden-dienste.md) · weiter: [2.1 LLM und Routing](02-1-llm-routing.md)
 
+![Eingaben ohne Repository: Thema, Text oder Knoten-ID, Ergebnis als neutrales JSON](../bilder/leitfaden_eingaben.png)
+
 ## Vorgaben
 
 - [ ] **OpenAPI** liefern, Pfad dokumentiert (etwa `/openapi.json`, lesbar unter `/docs`). Voraussetzung für die

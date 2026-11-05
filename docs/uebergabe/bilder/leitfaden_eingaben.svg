@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="350" viewBox="0 0 880 350" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Eingaben ohne Repository: Thema, Text oder Knoten-ID, Ergebnis als neutrales JSON"><title>Eingaben ohne Repository: Thema, Text oder Knoten-ID, Ergebnis als neutrales JSON</title><rect width="880" height="350" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Eingaben ohne Repository, Ergebnis als neutrales JSON</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Thema oder Text genügen; eine Knoten-ID ist ein bequemer Weg, kein Muss</text>
+<rect x="24.0" y="84.0" width="220.0" height="58.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="134.0" y="109.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Thema</text>
+<text x="134.0" y="125.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">topic</text>
+<polyline points="244.0,113.0 282.0,113.0 282.0,181.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<rect x="24.0" y="152.0" width="220.0" height="58.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="134.0" y="169.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Text</text>
+<text x="134.0" y="185.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">material, collection_context,</text>
+<text x="134.0" y="201.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">sources</text>
+<polyline points="244.0,181.0 282.0,181.0 282.0,181.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<rect x="24.0" y="220.0" width="220.0" height="58.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="134.0" y="245.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Knoten-ID</text>
+<text x="134.0" y="261.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">node_id: liest das Repository</text>
+<polyline points="244.0,249.0 282.0,249.0 282.0,181.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polyline points="282.0,181.0 332.0,181.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="338.0,181.0 331.1,185.0 331.1,177.0" fill="#52606d"/>
+<rect x="340.0" y="131.0" width="200.0" height="100.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="440.0" y="169.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Ihr Dienst</text>
+<text x="440.0" y="185.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">dasselbe Ergebnis</text>
+<text x="440.0" y="201.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">für Text und Knoten-ID</text>
+<polyline points="540.0,181.0 608.0,181.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="614.0,181.0 607.1,185.0 607.1,177.0" fill="#52606d"/>
+<rect x="616.0" y="141.0" width="240.0" height="80.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1.3"/>
+<text x="736.0" y="169.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Neutrales JSON</text>
+<text x="736.0" y="185.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Markdown im JSON, Quellen,</text>
+<text x="736.0" y="201.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Audit; keine Kundenfelder</text>
+<rect x="24.0" y="296.0" width="832.0" height="42.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="40.0" y="314.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Hilfe für Aufrufer mit Repository: GET /api/v2/nodes/{id} gibt einen Knoten als text_input aus,</text>
+<text x="40.0" y="330.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">dieselben Felder wie „Text“. WLO-eigene Felder (ccm:oeh_*, Fachportale) nur optional nutzen.</text></svg>

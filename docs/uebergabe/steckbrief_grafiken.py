@@ -518,6 +518,89 @@ def proxy() -> None:
     svg.save("leitfaden_proxy.svg")
 
 
+def line(svg: Svg, points: list[tuple[float, float]], stroke: str = MUTED) -> None:
+    path = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
+    svg.items.append(f'<polyline points="{path}" fill="none" stroke="{stroke}" stroke-width="1.6"/>')
+
+
+def eingaben() -> None:
+    svg = Svg(880, 350, "Eingaben ohne Repository: Thema, Text oder Knoten-ID, Ergebnis als neutrales JSON")
+    svg.text(24, 32, "Eingaben ohne Repository, Ergebnis als neutrales JSON", 17, weight="700")
+    svg.text(24, 52, "Thema oder Text genügen; eine Knoten-ID ist ein bequemer Weg, kein Muss", 12, MUTED, limit=832)
+    inputs = (
+        (["Thema", "topic"], "own", 84),
+        (["Text", "material, collection_context,", "sources"], "own", 152),
+        (["Knoten-ID", "node_id: liest das Repository"], "extern", 220),
+    )
+    for lines, kind, y in inputs:
+        svg.box(24, y, 220, 58, lines, kind)
+        line(svg, [(244, y + 29), (282, y + 29), (282, 181)])
+    svg.arrow([(282, 181), (338, 181)])
+    svg.box(340, 131, 200, 100, ["Ihr Dienst", "dasselbe Ergebnis", "für Text und Knoten-ID"], "own")
+    svg.arrow([(540, 181), (614, 181)])
+    svg.box(616, 141, 240, 80, ["Neutrales JSON", "Markdown im JSON, Quellen,", "Audit; keine Kundenfelder"], "store")
+    svg.rect(24, 296, 832, 42, PANEL, 6)
+    svg.text(
+        40,
+        314,
+        "Hilfe für Aufrufer mit Repository: GET /api/v2/nodes/{id} gibt einen Knoten als text_input aus,",
+        11.5,
+        INK,
+        limit=800,
+    )
+    svg.text(
+        40,
+        330,
+        "dieselben Felder wie „Text“. WLO-eigene Felder (ccm:oeh_*, Fachportale) nur optional nutzen.",
+        11.5,
+        MUTED,
+        limit=800,
+    )
+    svg.save("leitfaden_eingaben.svg")
+
+
+def build() -> None:
+    svg = Svg(880, 320, "Vom Tag zur Plattform: CI prüft, baut Image und Helm-Chart in derselben Version")
+    svg.text(24, 32, "Vom Tag zur Plattform: Image und Chart in derselben Version", 17, weight="700")
+    svg.text(
+        24, 52, "Ein Git-Tag löst alles aus; Produktion nimmt nur getaggte Versionen, nie latest", 12, MUTED, limit=832
+    )
+    width, gap = 144, 28
+    xs = [24 + index * (width + gap) for index in range(5)]
+    svg.box(xs[0], 120, width, 64, ["Tag vX.Y.Z", "SemVer"], "own")
+    svg.box(xs[1], 110, width, 84, ["CI prüft", "Lint, Typen, Tests,", "bekannte Lücken"], "own")
+    svg.box(xs[2], 80, width, 60, ["Image", ":X.Y.Z und :X.Y"], "store")
+    svg.box(xs[2], 164, width, 60, ["Helm-Chart", "X.Y.Z als OCI"], "store")
+    svg.box(xs[3], 110, width, 84, ["Abrufbar?", "Image und Chart", "ohne Login prüfen"], "own")
+    svg.box(xs[4], 110, width, 84, ["Plattform", "Harbor-Spiegel,", "helm install"], "extern")
+    svg.arrow([(xs[0] + width, 152), (xs[1] - 2, 152)])
+    for y in (110, 194):
+        line(svg, [(xs[1] + width, 152), (xs[1] + width + gap / 2, 152), (xs[1] + width + gap / 2, y)])
+        svg.arrow([(xs[1] + width + gap / 2, y), (xs[2] - 2, y)])
+        line(svg, [(xs[2] + width, y), (xs[2] + width + gap / 2, y), (xs[2] + width + gap / 2, 152)])
+    svg.arrow([(xs[2] + width + gap / 2, 152), (xs[3] - 2, 152)])
+    svg.arrow([(xs[3] + width, 152), (xs[4] - 2, 152)])
+    svg.rect(24, 250, 832, 58, PANEL, 6)
+    svg.text(
+        40,
+        270,
+        "Chart: version = appVersion = Version des Dienstes; values.yaml kommentiert jeden Wert;"
+        " Pod Security restricted.",
+        11.5,
+        INK,
+        limit=800,
+    )
+    svg.text(
+        40,
+        288,
+        "Docker Compose bleibt Referenz für einen Host, mit demselben Image.",
+        11.5,
+        MUTED,
+        limit=800,
+    )
+    svg.save("leitfaden_build.svg")
+
+
 OUT.mkdir(parents=True, exist_ok=True)
-for chart in (kontext, funktionen, bapi, routing, tracing, ports, kestra, proxy):
+for chart in (kontext, funktionen, bapi, routing, tracing, ports, kestra, proxy, eingaben, build):
     chart()

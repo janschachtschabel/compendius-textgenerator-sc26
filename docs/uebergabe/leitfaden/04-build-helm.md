@@ -2,6 +2,8 @@
 
 [Leitfaden](../leitfaden-dienste.md) · zurück: [3. Betrieb](03-betrieb.md) · weiter: [5. Dienste kombinieren](05-kestra.md)
 
+![Vom Tag zur Plattform: Image und Helm-Chart in derselben Version](../bilder/leitfaden_build.png)
+
 ## Repository und CI
 
 - [ ] Code in einem Repository, auf das T6 Zugriff hat.

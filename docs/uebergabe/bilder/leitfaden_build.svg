@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="320" viewBox="0 0 880 320" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Vom Tag zur Plattform: CI prüft, baut Image und Helm-Chart in derselben Version"><title>Vom Tag zur Plattform: CI prüft, baut Image und Helm-Chart in derselben Version</title><rect width="880" height="320" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Vom Tag zur Plattform: Image und Chart in derselben Version</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">Ein Git-Tag löst alles aus; Produktion nimmt nur getaggte Versionen, nie latest</text>
+<rect x="24.0" y="120.0" width="144.0" height="64.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="96.0" y="148.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Tag vX.Y.Z</text>
+<text x="96.0" y="164.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">SemVer</text>
+<rect x="196.0" y="110.0" width="144.0" height="84.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="268.0" y="140.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">CI prüft</text>
+<text x="268.0" y="156.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Lint, Typen, Tests,</text>
+<text x="268.0" y="172.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">bekannte Lücken</text>
+<rect x="368.0" y="80.0" width="144.0" height="60.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1.3"/>
+<text x="440.0" y="106.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Image</text>
+<text x="440.0" y="122.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">:X.Y.Z und :X.Y</text>
+<rect x="368.0" y="164.0" width="144.0" height="60.0" rx="6" fill="#f3f6fa" stroke="#9aa5b1" stroke-width="1.3"/>
+<text x="440.0" y="190.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Helm-Chart</text>
+<text x="440.0" y="206.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">X.Y.Z als OCI</text>
+<rect x="540.0" y="110.0" width="144.0" height="84.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="612.0" y="140.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Abrufbar?</text>
+<text x="612.0" y="156.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Image und Chart</text>
+<text x="612.0" y="172.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">ohne Login prüfen</text>
+<rect x="712.0" y="110.0" width="144.0" height="84.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="784.0" y="140.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Plattform</text>
+<text x="784.0" y="156.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Harbor-Spiegel,</text>
+<text x="784.0" y="172.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">helm install</text>
+<polyline points="168.0,152.0 188.0,152.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="194.0,152.0 187.1,156.0 187.1,148.0" fill="#52606d"/>
+<polyline points="340.0,152.0 354.0,152.0 354.0,110.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polyline points="354.0,110.0 360.0,110.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="366.0,110.0 359.1,114.0 359.1,106.0" fill="#52606d"/>
+<polyline points="512.0,110.0 526.0,110.0 526.0,152.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polyline points="340.0,152.0 354.0,152.0 354.0,194.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polyline points="354.0,194.0 360.0,194.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="366.0,194.0 359.1,198.0 359.1,190.0" fill="#52606d"/>
+<polyline points="512.0,194.0 526.0,194.0 526.0,152.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polyline points="526.0,152.0 532.0,152.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="538.0,152.0 531.1,156.0 531.1,148.0" fill="#52606d"/>
+<polyline points="684.0,152.0 704.0,152.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="710.0,152.0 703.1,156.0 703.1,148.0" fill="#52606d"/>
+<rect x="24.0" y="250.0" width="832.0" height="58.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="40.0" y="270.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Chart: version = appVersion = Version des Dienstes; values.yaml kommentiert jeden Wert; Pod Security restricted.</text>
+<text x="40.0" y="288.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Docker Compose bleibt Referenz für einen Host, mit demselben Image.</text></svg>
