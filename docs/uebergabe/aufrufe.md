@@ -5,8 +5,8 @@
 Diese Seite zeigt, wie die aufrufenden Systeme vom alten Dienst (`/api/v1`) auf den neuen (`/api/v2`) umsteigen: die
 Aufrufe vorher und nachher, die Profile, die Wahl der drei Teile und wie man aus der Antwort nur den fertigen Text
 oder nur die QA-Paare holt, dazu den Aufruf über die b-api und Eingaben ohne Repository. Die Anfragen an den neuen
-Dienst sind am 30.09.2026 gelaufen; die Beispiele mit Text statt Knoten (D114) folgen denen in `/docs`, die ein Test
-durch den Dienst schickt, und alle Anfragekörper sind gegen das Schema von 2.26.1 geprüft. Den Weg über die b-api
+Dienst sind am 30.09.2026 gelaufen; die Beispiele mit Text statt Knoten (D114) und zu `X-B3-TraceId` am 05.11.2026
+gegen 2.26.1 (mit `llm-free`), und alle Anfragekörper sind gegen das Schema von 2.26.1 geprüft. Den Weg über die b-api
 beschreibt diese Seite nach ihrer Dokumentation; er geht, sobald der Proxy-Eintrag besteht
 ([Steckbrief](steckbrief.md), B-API). Die Aufrufe des alten Dienstes sind aus seinem Code abgeleitet (compendious
 0.2.0), denn er läuft hier nicht mehr. Alle Felder mit Beispielen je Profil zeigt `/docs` des Dienstes.
