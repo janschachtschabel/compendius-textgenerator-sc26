@@ -348,6 +348,26 @@ Materialien und `neighbours` die anderen Untersammlungen der Elternsammlung, die
 Der Dienst liest die Felder wie die eines gelesenen Knotens und kommt zum selben Kompendium; `GET
 /api/v2/nodes/{node_id}` liefert sie fertig unter `text_input`. `/knowledge` und `/qa` nehmen dieselben Felder.
 
+Alle Felder außer `title` sind optional; je mehr der Ort im Themenbaum sagt, desto sicherer trifft vor allem das LLM
+den gemeinten Artikel:
+
+| Feld | `material` | `collection_context` | Wirkung |
+|---|---|---|---|
+| `title` | Pflicht | Pflicht | Titel des Materials oder der Sammlung; bei der Sammlung das Thema. Ein Titel ohne Sachbegriff („Grundlagen“, „Einführung“) steht mit dem nächsten aussagekräftigen Titel aus `path` |
+| `description` | ja | – | Beschreibung; die Regeln suchen den Artikel in Titel und Beschreibung (D47) |
+| `keywords` | ja | – | Schlagwörter; Kontextwörter für die Wahl des Artikels |
+| `path` | – | ja | Sammlungen **darüber**, von oben nach unten, die nächste zuletzt, ohne Wurzel und Fachportal, höchstens drei Ebenen. Ohne LLM nehmen die Regeln den nächsten aussagekräftigen Titel daraus; mit LLM hört die Artikelwahl den ganzen Pfad |
+| `children` | – | ja | eigene Untersammlungen (**darunter**); mit LLM sagen sie, was die Sammlung umfasst |
+| `materials` | – | ja | Titel der ersten Materialien; mit LLM sagen sie, worum es geht |
+| `neighbours` | – | ja | die anderen Untersammlungen der Elternsammlung; das LLM hört sie als **nicht** gemeint, nie als Inhalt |
+| `subjects` | ja | ja | Fächer aus dem Vokabular von edu-sharing (Name, Alias oder URI), alle gleich gewichtet; ein unbekanntes ist ein 422 mit der Liste der Schulfächer. `subject` der Anfrage geht vor |
+| `levels` | ja | ja | Bildungsstufen, etwa `Sekundarstufe I`; Kontextwörter wie die Stufen eines Knotens |
+| `missing` | – | ja | die Teile des Orts, die das Repository nicht lieferte (`path`, `children`, `materials`, `neighbours`), wie `GET /api/v2/nodes/{id}` sie nennt; ein Text aus `text_input` übernimmt das Feld unverändert |
+| `url` | ja | – | Adresse des Materials; wird angezeigt, nie abgerufen |
+
+Wer `text_input` aus `GET /api/v2/nodes/{id}` einsetzt, übernimmt es samt `missing` unverändert; dann liest der Dienst
+den Text genau wie den Knoten.
+
 ```bash
 curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
   -H "X-API-Key: $API_KEY" -H 'Content-Type: application/json' \
@@ -393,6 +413,44 @@ curl -sS --max-time 180 -X POST "$KOMPENDIUM/api/v2/compendium" \
          "text": "Mit einer Lochkamera sehen die Lernenden, dass sich Licht geradlinig ausbreitet: Das Bild steht auf dem Kopf.\nJe kleiner das Loch, desto schärfer und dunkler wird das Bild auf dem Pergamentpapier."}]}' \
   | jq '.audit.text_sources'
 ```
+
+## Parameter der Anfrage
+
+Alle Felder von `POST /api/v2/compendium` im Überblick; jedes ist optional, eine Anfrage braucht nur einen Eingang.
+`/docs` erklärt jedes Feld mit Beispielen und Messwerten. Was der Betreiber einstellt (Vorgaben wie
+`PRESET_DEFAULT`, `TEMPLATE_DEFAULT`, Grenzen, Zugang), steht in [konfiguration.md](konfiguration.md).
+
+| Gruppe | Feld | Werte, Vorgabe | Wirkung |
+|---|---|---|---|
+| Eingang | `topic` | Text | Thema; geht vor dem Thema aus Knoten oder Sammlung |
+| | `material`, `collection_context` | Objekt (oben) | Material oder Sammlung als Text statt `node_id` (D114) |
+| | `node_id`, `repository` | Knoten-ID, Adresse der REST-API | Material oder Sammlung im Repository; `repository` nur, wenn es nicht das eingestellte ist |
+| | `sources` | Liste von Texten | eigene Quellen für Teil 1 |
+| | `subject` | Fach (Name, Alias, URI, WLO-ID) | entscheidet ein mehrdeutiges Thema und grenzt Teil 2 auf die Lehrpläne des Fachs ein; ohne: ein Fach im Thema („Physik: Optik“), sonst die Fächer des Knotens |
+| Teile | `parts` | `world`, `curricula`, `collection`; alle drei | Teil 1 Weltwissen, Teil 2 Lehrplanbezüge, Teil 3 Sammlung |
+| | `collection_id` | Sammlungs-ID | Sammlung für Teil 3; ohne `topic` auch das Thema |
+| | `knowledge_collection_id`, `knowledge_depth`, `knowledge_fulltext` | ID; `0` bis `5`; `false` | Materialien einer Sammlung als Quellen für Teil 1 (oben) |
+| Gestalt | `template_id` | `sc26` (13 Bausteine) oder `standard` (6), eigene per `PUT` | Gliederung von Teil 1 |
+| | `target_length` | 2.000 bis 60.000, Vorgabe 30.000 | Richtgröße für Teil 1, kein Deckel: der Text wird so lang, wie die Quellen tragen |
+| | `max_articles` | 1 bis 50, Vorgabe `CORPUS_MAX_ARTICLES` | Wikipedia-Artikel im Korpus; Thema und Klexikon-Zwilling immer dabei |
+| | `empty_slot_policy` | `omit` oder `note`; Vorgabe des Templates | Baustein ohne Quellen weglassen oder mit Hinweis stehen lassen |
+| | `frontmatter_in_markdown` | `true` | YAML-Vorspann mit KI-Kennzeichnung im Markdown; die Angaben stehen immer auch in `.frontmatter` |
+| | `facets_visible` | `false` (Server: `FACETS_VISIBLE`) | Facetten als sichtbare `[Facette: Wert]` im Text statt nur in den Markern |
+| | `model_knowledge_label` | `false` | Sätze aus Modellwissen enden sichtbar mit `[Modellwissen]` (für die Redaktion, nicht für Endkunden, D76) |
+| | `language` | `de` | nur Deutsch |
+| Profil | `preset` | `llm-free`, `balanced`, `best-quality`, `best-quality-generated`, `best-coverage-generated`; Vorgabe `PRESET_DEFAULT` | setzt alle Schalter darunter (siehe [Profile](#profile)) |
+| Schalter (gehen dem Profil vor) | `article_choice` | `rule-based`, `llm`, `llm-thorough` | wer die Artikel des Themas wählt: die Regeln; das LLM nennt Übersichtsartikel und bis zu acht Teilartikel; dazu prüft es auch sichere Wahlen mehrdeutiger Wörter (D61) |
+| | `matcher` | `hybrid_light`, `bm25`, `char_tfidf`, `lexicon_only`, `llm` | wie die Absätze ihren Baustein finden; `hybrid_light` nutzt Model2Vec |
+| | `extraction` | `rule-based`, `llm` | wer die Stellen für Teil 1 auswählt |
+| | `generation` | `rule-based`, `llm-fast`, `llm` | wörtliche Auszüge, einige Bausteine vom LLM geschrieben, alle vom LLM geschrieben |
+| | `enrichment` | `sources-only`, `model-knowledge`, `model-knowledge-full` | ob das schreibende LLM eigenes Wissen ergänzen darf (markiert) |
+| | `model_knowledge_check` | `rule-based`, `llm` | ob das LLM seine Sätze aus Modellwissen nachprüft |
+| | `curriculum_check` | `rule-based`, `llm` | wer die gefundenen Lehrplanelemente beurteilt |
+| Wiederverwendung | `existing_markdown`, `regenerate_sections` | früheres Kompendium; Baustein-IDs | redaktionell geprüfte Bausteine bleiben wörtlich, nur die genannten entstehen neu |
+
+Ein Schalter, der ein LLM braucht, ist auf einem Server ohne LLM ein 503. `/api/v2/qa` nimmt die Eingänge `text`,
+`topic`, `node_id` (mit `repository`), `material`, `collection_context`, dazu `subject`, `preset`, `article_choice`, `method`
+(`rule-based` oder `llm`), `count`, `max_answer_length` und `levels` (siehe [QA-Paare](#qa-paare)).
 
 ## QA-Paare
 
