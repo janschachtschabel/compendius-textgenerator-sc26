@@ -1,6 +1,6 @@
 # Technischer Service-Steckbrief
 
-[Übergabe](README.md) · Stand 05.11.2026 · Release 2.26.0 · Vorlage „Technischer Service-Steckbrief“ von Team 6.
+[Übergabe](README.md) · Stand 05.11.2026 · Release 2.26.1 · Vorlage „Technischer Service-Steckbrief“ von Team 6.
 Ausführlich: [Antworten für das IT-Team](anforderungen.md), [Leitfaden für Dienste](leitfaden-dienste.md).
 
 | | |
@@ -19,7 +19,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md), [Leitfaden für Di
 | Anzeigename und Beschreibung | **„Kompendiale Texte“** erzeugt zu einem Thema einen sachlichen, belegten Text für Lehrkräfte und Redaktionen; jeder Abschnitt nennt seine Quelle. Dazu liefert der Dienst passende Lehrplanelemente, einen Überblick über eine edu-sharing-Sammlung, Frage-Antwort-Paare, erkannte Entitäten mit Wikidata- und GND-Kennung sowie die Wissenstexte eines Themas. Grundlage sind lokale Wissensquellen: Wikipedia und Klexikon als Kiwix-Archive, Wikidata und GND als Indexe, Lehrpläne aus dem MEM-Cache. Zur Laufzeit fragt er nur die b-api für die KI und bei Bedarf edu-sharing. Eingaben gehen als Thema, als Text oder als Knoten eines Repositorys. Fünf Qualitätsprofile wählen zwischen Tempo und Qualität: ohne KI (llm-free, wenige Sekunden, keine Kosten) bis zu vollständig von der KI geschriebenen Texten (rund 30 s, unter 1 Cent je Kompendium). | erfüllt |
 | Repository-Link | GitLab (Produktion): `scm.edu-sharing.com/edu-sharing/projects/wlo/compendious-text-generator` · GitHub (Entwicklung): [compendius-textgenerator-sc26](https://github.com/janschachtschabel/compendius-textgenerator-sc26) | erfüllt |
 | OpenAPI Spec | `GET /openapi.json`, lesbar unter `/docs`, Beispiele je Endpunkt | erfüllt |
-| Pipeline und Git-Tags | Tag `vX.Y.Z` → Image `:X.Y.Z` und Helm-Chart `X.Y.Z` (GitHub Actions); aktuell `v2.26.0` | erfüllt |
+| Pipeline und Git-Tags | Tag `vX.Y.Z` → Image `:X.Y.Z` und Helm-Chart `X.Y.Z` (GitHub Actions); aktuell `v2.26.1` | erfüllt |
 | Endpunkte | Port **8000**: `/api/v2/…`, `/docs` · Port **9000**: `/health`, `/ready`, `/metrics` | erfüllt |
 | Header und Content-Types | Ein: `Authorization: Bearer`, B3 (`X-B3-*`), `traceparent` · Aus: `X-Request-ID`, `X-B3-TraceId` · nur JSON | erfüllt |
 | Asynchrone Job-Endpunkte | keine; synchron, Frist 300 s, Proxy-Timeout ≥ 330 s | nicht anwendbar |

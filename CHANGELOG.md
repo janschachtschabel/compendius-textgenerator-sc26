@@ -7,6 +7,17 @@ Versionen nach Semantic Versioning: eine neue Einstellung oder neues Verhalten i
 Patch-Version; einige frühe Patch-Versionen (2.2.2, 2.4.2, 2.6.1, 2.6.2) änderten auch Verhalten. Die Tags 0.1.0 bis
 0.2.0 gehören zum Vorgängerdienst, dem alten Dienst im GitLab, und stehen nur kurz am Ende.
 
+## 2.26.1 – 2026-11-05
+
+Nur Doku, der Code ist derselbe wie in 2.26.0.
+
+- **[Betrieb](docs/betrieb.md#updates):** nichts anzupassen.
+- **Doku:** Der [Leitfaden für Dienste](docs/uebergabe/leitfaden-dienste.md) ist in Kapitel geteilt (API, b-api mit
+  LLM-Routing, Dienst hinter der b-api, Logging und Tracing, Betrieb, Build und Helm, Kestra-Flows, Übergabe) und mit
+  Grafiken versehen. Vorschlag für die Route `kompendium` der b-api in `deploy/b-api/route-kompendium.json`:
+  gpt-6-luna, bei Ausfall gpt-5.6-luna, dann qwen3.6-35b-a3b und qwen3.8-27b der GWDG. Der
+  [Steckbrief](docs/uebergabe/steckbrief.md) beschreibt den Dienst in einem Absatz und nennt die Grenzen im Container.
+
 ## 2.26.0 – 2026-11-04
 
 Text-Input für alle Funktionen, Tracing im B3-Format und ein Helm-Chart je Release, nach den Anmerkungen der Technik

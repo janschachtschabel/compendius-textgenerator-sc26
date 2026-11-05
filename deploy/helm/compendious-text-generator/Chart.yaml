@@ -6,8 +6,8 @@ description: >-
 type: application
 # version und appVersion folgen der Version in pyproject.toml (tests/test_helm_chart.py); die CI packt zu jedem Tag
 # vX.Y.Z das Chart mit genau dieser Version und schiebt es nach oci://ghcr.io/janschachtschabel/charts.
-version: 2.26.0
-appVersion: "2.26.0"
+version: 2.26.1
+appVersion: "2.26.1"
 # CronJob.spec.timeZone ist ab 1.27 stabil
 kubeVersion: ">=1.27.0-0"
 home: https://github.com/janschachtschabel/compendius-textgenerator-sc26
