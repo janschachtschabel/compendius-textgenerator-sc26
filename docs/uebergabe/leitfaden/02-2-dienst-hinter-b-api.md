@@ -2,11 +2,7 @@
 
 [Leitfaden](../leitfaden-dienste.md) · zurück: [2.1 LLM und Routing](02-1-llm-routing.md) · weiter: [2.3 Logging und Tracing](02-3-logging-tracing.md)
 
-```
-Browser → edu-sharing → b-api /api/v1/proxy/<dienst> → Dienst → b-api (LLM, Router)
-          wählt Schlüssel  reicht Authorization weiter    reicht ihn   bucht auf den Schlüssel
-                                                          unverändert weiter
-```
+![Dienst hinter der b-api: ein Schlüssel von edu-sharing über den Dienst bis zum LLM](../bilder/leitfaden_proxy.png)
 
 Die b-api prüft den Schlüssel, begrenzt und bucht Nutzung und Kosten je Schlüssel (`dailyCostLimit`,
 `weeklyCostLimit`) und reicht ihn als `Authorization: Bearer <key>` an den Dienst weiter. edu-sharing wählt den

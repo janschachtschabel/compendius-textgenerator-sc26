@@ -459,6 +459,65 @@ def kestra() -> None:
     svg.save("leitfaden_kestra.svg")
 
 
+def proxy() -> None:
+    svg = Svg(880, 300, "Dienst hinter der b-api: ein Schlüssel von edu-sharing über den Dienst bis zum LLM")
+    svg.text(24, 32, "Dienst hinter der b-api: ein Schlüssel durch alle Etappen", 17, weight="700")
+    svg.text(
+        24,
+        52,
+        "edu-sharing wählt den Schlüssel, die b-api prüft und bucht ihn, der Dienst reicht ihn nur weiter",
+        12,
+        MUTED,
+        limit=832,
+    )
+    width, gap, top, height = 134, 41, 76, 80
+    boxes = (
+        (["Browser", "Nutzerin oder Gast"], "extern"),
+        (["edu-sharing", "wählt den Schlüssel", "Nutzer oder Gast"], "extern"),
+        (["b-api-Proxy", "/proxy/<dienst>", "prüft, begrenzt"], "proxy"),
+        (["Ihr Dienst", "liest Authorization", "speichert nichts"], "own"),
+        (["b-api-LLM", "Router, Route", "bucht auf Schlüssel"], "proxy"),
+    )
+    centers = []
+    for index, (lines, kind) in enumerate(boxes):
+        x = 24 + index * (width + gap)
+        svg.box(x, top, width, height, lines, kind)
+        centers.append(x + width / 2)
+        if index:
+            svg.arrow([(x - gap + 2, top + height / 2), (x - 2, top + height / 2)])
+    band = 196
+    svg.items.append(
+        f'<line x1="{centers[1]:.1f}" y1="{band}" x2="{centers[-1]:.1f}" y2="{band}" stroke="{LLM}" stroke-width="3"/>'
+    )
+    for center in centers[1:]:
+        svg.items.append(
+            f'<line x1="{center:.1f}" y1="{top + height}" x2="{center:.1f}" y2="{band}" stroke="{LLM}" '
+            f'stroke-width="1.3" stroke-dasharray="3 3"/>'
+        )
+        svg.items.append(f'<circle cx="{center:.1f}" cy="{band}" r="5" fill="{LLM}"/>')
+    middle = (centers[1] + centers[-1]) / 2
+    svg.text(middle, band + 22, "Authorization: Bearer <Schlüssel> – derselbe Header, unverändert", 12, INK, "middle")
+    svg.rect(24, 236, 832, 48, PANEL, 6)
+    svg.text(
+        40,
+        256,
+        "Der Dienst prüft den Schlüssel nicht selbst, speichert und loggt ihn nie und gibt genau diesen Header weiter.",
+        11.5,
+        INK,
+        limit=800,
+    )
+    svg.text(
+        40,
+        274,
+        "Ohne Header (lokal, Tests, Hintergrundjobs) gilt ein eigener Rückfall-Schlüssel B_API_KEY,"
+        " nie der eines Nutzers.",
+        11.5,
+        MUTED,
+        limit=800,
+    )
+    svg.save("leitfaden_proxy.svg")
+
+
 OUT.mkdir(parents=True, exist_ok=True)
-for chart in (kontext, funktionen, bapi, routing, tracing, ports, kestra):
+for chart in (kontext, funktionen, bapi, routing, tracing, ports, kestra, proxy):
     chart()

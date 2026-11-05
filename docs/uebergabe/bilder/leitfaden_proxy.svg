@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="300" viewBox="0 0 880 300" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif" role="img" aria-label="Dienst hinter der b-api: ein Schlüssel von edu-sharing über den Dienst bis zum LLM"><title>Dienst hinter der b-api: ein Schlüssel von edu-sharing über den Dienst bis zum LLM</title><rect width="880" height="300" fill="#ffffff"/>
+<text x="24.0" y="32.0" font-size="17" fill="#1f2933" text-anchor="start" font-weight="700">Dienst hinter der b-api: ein Schlüssel durch alle Etappen</text>
+<text x="24.0" y="52.0" font-size="12" fill="#52606d" text-anchor="start" font-weight="normal">edu-sharing wählt den Schlüssel, die b-api prüft und bucht ihn, der Dienst reicht ihn nur weiter</text>
+<rect x="24.0" y="76.0" width="134.0" height="80.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="91.0" y="112.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Browser</text>
+<text x="91.0" y="128.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Nutzerin oder Gast</text>
+<rect x="199.0" y="76.0" width="134.0" height="80.0" rx="6" fill="#ffffff" stroke="#9aa5b1" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="266.0" y="104.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">edu-sharing</text>
+<text x="266.0" y="120.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">wählt den Schlüssel</text>
+<text x="266.0" y="136.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Nutzer oder Gast</text>
+<polyline points="160.0,116.0 191.0,116.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="197.0,116.0 190.1,120.0 190.1,112.0" fill="#52606d"/>
+<rect x="374.0" y="76.0" width="134.0" height="80.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="441.0" y="104.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">b-api-Proxy</text>
+<text x="441.0" y="120.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">/proxy/&lt;dienst&gt;</text>
+<text x="441.0" y="136.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">prüft, begrenzt</text>
+<polyline points="335.0,116.0 366.0,116.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="372.0,116.0 365.1,120.0 365.1,112.0" fill="#52606d"/>
+<rect x="549.0" y="76.0" width="134.0" height="80.0" rx="6" fill="#e3edf8" stroke="#2f6db5" stroke-width="1.3"/>
+<text x="616.0" y="104.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">Ihr Dienst</text>
+<text x="616.0" y="120.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">liest Authorization</text>
+<text x="616.0" y="136.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">speichert nichts</text>
+<polyline points="510.0,116.0 541.0,116.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="547.0,116.0 540.1,120.0 540.1,112.0" fill="#52606d"/>
+<rect x="724.0" y="76.0" width="134.0" height="80.0" rx="6" fill="#fbeee0" stroke="#d9822b" stroke-width="1.3"/>
+<text x="791.0" y="104.0" font-size="13" fill="#1f2933" text-anchor="middle" font-weight="700">b-api-LLM</text>
+<text x="791.0" y="120.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">Router, Route</text>
+<text x="791.0" y="136.0" font-size="11" fill="#52606d" text-anchor="middle" font-weight="normal">bucht auf Schlüssel</text>
+<polyline points="685.0,116.0 716.0,116.0" fill="none" stroke="#52606d" stroke-width="1.6"/>
+<polygon points="722.0,116.0 715.1,120.0 715.1,112.0" fill="#52606d"/>
+<line x1="266.0" y1="196" x2="791.0" y2="196" stroke="#d9822b" stroke-width="3"/>
+<line x1="266.0" y1="156" x2="266.0" y2="196" stroke="#d9822b" stroke-width="1.3" stroke-dasharray="3 3"/>
+<circle cx="266.0" cy="196" r="5" fill="#d9822b"/>
+<line x1="441.0" y1="156" x2="441.0" y2="196" stroke="#d9822b" stroke-width="1.3" stroke-dasharray="3 3"/>
+<circle cx="441.0" cy="196" r="5" fill="#d9822b"/>
+<line x1="616.0" y1="156" x2="616.0" y2="196" stroke="#d9822b" stroke-width="1.3" stroke-dasharray="3 3"/>
+<circle cx="616.0" cy="196" r="5" fill="#d9822b"/>
+<line x1="791.0" y1="156" x2="791.0" y2="196" stroke="#d9822b" stroke-width="1.3" stroke-dasharray="3 3"/>
+<circle cx="791.0" cy="196" r="5" fill="#d9822b"/>
+<text x="528.5" y="218.0" font-size="12" fill="#1f2933" text-anchor="middle" font-weight="normal">Authorization: Bearer &lt;Schlüssel&gt; – derselbe Header, unverändert</text>
+<rect x="24.0" y="236.0" width="832.0" height="48.0" rx="6" fill="#f3f6fa" stroke="none" stroke-width="1"/>
+<text x="40.0" y="256.0" font-size="11.5" fill="#1f2933" text-anchor="start" font-weight="normal">Der Dienst prüft den Schlüssel nicht selbst, speichert und loggt ihn nie und gibt genau diesen Header weiter.</text>
+<text x="40.0" y="274.0" font-size="11.5" fill="#52606d" text-anchor="start" font-weight="normal">Ohne Header (lokal, Tests, Hintergrundjobs) gilt ein eigener Rückfall-Schlüssel B_API_KEY, nie der eines Nutzers.</text></svg>
