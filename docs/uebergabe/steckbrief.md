@@ -16,7 +16,7 @@ Ausführlich: [Antworten für das IT-Team](anforderungen.md), [Leitfaden für Di
 
 | | | Status |
 |---|---|---|
-| Anzeigename und Beschreibung | „Kompendiale Texte“: belegter Sachtext zu einem Thema (Teil 1), Lehrplanbezüge (Teil 2), Sammlungsüberblick (Teil 3); dazu QA-Paare, Entitäten, Wissenstexte | erfüllt |
+| Anzeigename und Beschreibung | **„Kompendiale Texte“** erzeugt zu einem Thema einen sachlichen, belegten Text für Lehrkräfte und Redaktionen; jeder Abschnitt nennt seine Quelle. Dazu liefert der Dienst passende Lehrplanelemente, einen Überblick über eine edu-sharing-Sammlung, Frage-Antwort-Paare, erkannte Entitäten mit Wikidata- und GND-Kennung sowie die Wissenstexte eines Themas. Grundlage sind lokale Wissensquellen: Wikipedia und Klexikon als Kiwix-Archive, Wikidata und GND als Indexe, Lehrpläne aus dem MEM-Cache. Zur Laufzeit fragt er nur die b-api für die KI und bei Bedarf edu-sharing. Eingaben gehen als Thema, als Text oder als Knoten eines Repositorys. Fünf Qualitätsprofile wählen zwischen Tempo und Qualität: ohne KI (llm-free, wenige Sekunden, keine Kosten) bis zu vollständig von der KI geschriebenen Texten (rund 30 s, unter 1 Cent je Kompendium). | erfüllt |
 | Repository-Link | GitLab (Produktion): `scm.edu-sharing.com/edu-sharing/projects/wlo/compendious-text-generator` · GitHub (Entwicklung): [compendius-textgenerator-sc26](https://github.com/janschachtschabel/compendius-textgenerator-sc26) | erfüllt |
 | OpenAPI Spec | `GET /openapi.json`, lesbar unter `/docs`, Beispiele je Endpunkt | erfüllt |
 | Pipeline und Git-Tags | Tag `vX.Y.Z` → Image `:X.Y.Z` und Helm-Chart `X.Y.Z` (GitHub Actions); aktuell `v2.26.0` | erfüllt |
